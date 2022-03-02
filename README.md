@@ -4,7 +4,7 @@
 [![GoDoc](https://godoc.org/github.com/samber/lo?status.svg)](https://pkg.go.dev/github.com/samber/lo)
 [![Go report](https://goreportcard.com/badge/github.com/samber/lo)](https://goreportcard.com/report/github.com/samber/lo)
 
-**`lo` is a Lodash-style Go library based on Go 1.18+ Generics.**
+✨ **`lo` is a Lodash-style Go library based on Go 1.18+ Generics.**
 
 This project have started as an experiment to discover generics implementation. It may look like Lodash in some aspects. I used to code with the awesome [go-funk](https://github.com/thoas/go-funk) package, but it uses reflection and therefore is not typesafe.
 
@@ -16,13 +16,13 @@ In the future, some of these helpers will be available in the Go standard librar
 
 I wanted a short name, similar to "Lodash", and no Go package currently use this name.
 
-## Install
+## 🚀 Install
 
 ```sh
 go get github.com/samber/lo
 ```
 
-## Usage
+## 💡 Usage
 
 You can import ``lo`` using a basic statement:
 
@@ -37,7 +37,7 @@ names := lo.Uniq[string]([]string{"Samuel", "Marc", "Samuel"})
 // []string{"Samuel", "Marc"}
 ```
 
-## Spec
+## 🤠 Spec
 
 GoDoc: [https://godoc.org/github.com/samber/lo](https://godoc.org/github.com/samber/lo)
 
@@ -545,11 +545,11 @@ ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 // []*string{"hello", "world"}
 ```
 
-## Performance
+## 🛩 Performance
 
 // TODO
 
-## Contributing
+## 🤝 Contributing
 
 * Ping me on twitter [@samuelberthe](https://twitter.com/samuelberthe) (DMs, mentions, whatever :))
 * Fork the [project](https://github.com/samber/lo)
@@ -583,6 +583,18 @@ make test
 make watch-test
 ```
 
-## Authors
+## 👤 Authors
 
 * Samuel Berthe
+
+## 💫 Show your support
+
+Give a ⭐️ if this project helped you!
+
+[![support us](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/samber)
+
+## 📝 License
+
+Copyright © 2022 [Samuel Berthe](https://github.com/samber).
+
+This project is [MIT](./LICENSE) licensed.
