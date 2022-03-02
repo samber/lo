@@ -12,7 +12,7 @@ As expected, my benchmarks demonstrate that generics will be much faster than re
 
 In the future, some of these helpers will be available in the Go standard library (under package names "slice" and "maps").
 
-## Why this name?
+### Why this name?
 
 I wanted a short name, similar to "Lodash", and no Go package currently use this name.
 
@@ -515,9 +515,15 @@ Using callbacks:
 
 ```go
 result := lo.Switch[int, string](1).
-    CaseF(1, func () int { return "1" }).
-    CaseF(2, func () int { return "2" }).
-    DefaultF(func () int { return "3" })
+    CaseF(1, func () string {
+        return "1"
+    }).
+    CaseF(2, func () string {
+        return "2"
+    }).
+    DefaultF(func () string {
+        return "3"
+    })
 // "1"
 ```
 
