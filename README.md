@@ -4,7 +4,7 @@
 [![GoDoc](https://godoc.org/github.com/samber/lo?status.svg)](https://pkg.go.dev/github.com/samber/lo)
 [![Go report](https://goreportcard.com/badge/github.com/samber/lo)](https://goreportcard.com/report/github.com/samber/lo)
 
-`lo` is a Lodash-style Go library based on Go 1.18+ Generics.
+**`lo` is a Lodash-style Go library based on Go 1.18+ Generics.**
 
 This project have started as an experiment to discover generics implementation. It may look like Lodash in some aspects. I used to code with the awesome [go-funk](https://github.com/thoas/go-funk) package, but it uses reflection and therefore is not typesafe.
 
