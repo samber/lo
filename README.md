@@ -30,11 +30,11 @@ You can import ``lo`` using a basic statement:
 import "github.com/samber/lo"
 ```
 
-Then use one of the helpers behind:
+Then use one of the helpers below:
 
 ```go
 names := lo.Uniq[string]([]string{"Samuel", "Marc", "Samuel"})
-// names == []string{"Samuel", "Marc"}
+// []string{"Samuel", "Marc"}
 ```
 
 ## Spec
