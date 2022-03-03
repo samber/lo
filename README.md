@@ -24,7 +24,7 @@ go get github.com/samber/lo
 
 ## 💡 Usage
 
-You can import ``lo`` using a basic statement:
+You can import `lo` using a basic statement:
 
 ```go
 import "github.com/samber/lo"
@@ -112,7 +112,7 @@ lo.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64) string {
 Iterates over elements of collection, returning an array of all elements predicate returns truthy for.
 
 ```go
-odd := lo.Filter[int]([]int{1, 2, 3, 4}, func(x int) bool {
+odd := lo.Filter[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
     return x%2 == 0
 })
 // []int{2, 4}
@@ -143,7 +143,7 @@ sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int) int {
 Iterates over elements of collection and invokes iteratee for each element.
 
 ```go
-odd := lo.Filter[string]([]string{"hello", "world"}, func(x string) {
+odd := lo.Filter[string]([]string{"hello", "world"}, func(x string, _ int) {
     println(x)
 })
 // prints "hello\nworld"
@@ -296,7 +296,7 @@ Transforms an array of key/value pairs into a map.
 ```go
 m := lo.FromEntries[string, int]([]lo.Entry[string, int]{
     {
-        Key: "foo", 
+        Key: "foo",
         Value: 1,
     },
     {
@@ -551,9 +551,9 @@ ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 
 ## 🤝 Contributing
 
-* Ping me on twitter [@samuelberthe](https://twitter.com/samuelberthe) (DMs, mentions, whatever :))
-* Fork the [project](https://github.com/samber/lo)
-* Fix [open issues](https://github.com/samber/lo/issues) or request new features
+- Ping me on twitter [@samuelberthe](https://twitter.com/samuelberthe) (DMs, mentions, whatever :))
+- Fork the [project](https://github.com/samber/lo)
+- Fix [open issues](https://github.com/samber/lo/issues) or request new features
 
 Don't hesitate ;)
 
@@ -585,7 +585,7 @@ make watch-test
 
 ## 👤 Authors
 
-* Samuel Berthe
+- Samuel Berthe
 
 ## 💫 Show your support
 

@@ -3,11 +3,11 @@ package lo
 import "math/rand"
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
-func Filter[V any](collection []V, predicate func(V) bool) []V {
+func Filter[V any](collection []V, predicate func(V, int) bool) []V {
 	result := []V{}
 
-	for _, item := range collection {
-		if predicate(item) {
+	for i, item := range collection {
+		if predicate(item, i) {
 			result = append(result, item)
 		}
 	}
