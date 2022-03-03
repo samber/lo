@@ -3,6 +3,7 @@ package lo
 import (
 	"fmt"
 	"math"
+	"golang.org/x/exp/constraints"
 )
 
 // import "golang.org/x/exp/constraints"
@@ -46,7 +47,7 @@ func Find[T any](collection []T, predicate func(T) bool) (T, bool) {
 }
 
 // Min search the minimum value of a collection.
-func Min[T Ordered](collection []T) T {
+func Min[T constraints.Ordered](collection []T) T {
 	var min T
 
 	for i := 0; i < len(collection); i++ {
@@ -67,7 +68,7 @@ func Min[T Ordered](collection []T) T {
 }
 
 // Max search the maximum value of a collection.
-func Max[T Ordered](collection []T) T {
+func Max[T constraints.Ordered](collection []T) T {
 	var max T
 
 	for i := 0; i < len(collection); i++ {

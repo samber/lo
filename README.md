@@ -8,9 +8,9 @@
 
 This project have started as an experiment to discover generics implementation. It may look like Lodash in some aspects. I used to code with the awesome [go-funk](https://github.com/thoas/go-funk) package, but it uses reflection and therefore is not typesafe.
 
-As expected, my benchmarks demonstrate that generics will be much faster than reflect-based implementations.
+As expected, benchmarks demonstrate that generics will be much faster than implementations based on reflect stdlib package.
 
-In the future, some of these helpers will be available in the Go standard library (under package names "slice" and "maps").
+In the future, some of these helpers will be available in the Go standard library (under package names "slices" and "maps").
 
 ### Why this name?
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0 (2022-03-03)
+
+Last and Nth return errors
+
 ## 1.2.0 (2022-03-03)
 
 Adding `lop.Map` and `lop.ForEach`.
@@ -65,4 +69,3 @@ Other functional programming helpers:
 Constraints:
 
 - Clonable
-- Ordered
