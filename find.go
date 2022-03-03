@@ -50,13 +50,14 @@ func Find[T any](collection []T, predicate func(T) bool) (T, bool) {
 func Min[T constraints.Ordered](collection []T) T {
 	var min T
 
-	for i := 0; i < len(collection); i++ {
-		item := collection[i]
+	if len(collection) == 0 {
+		return min
+	}
 
-		if i == 0 {
-			min = item
-			continue
-		}
+	min = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
 
 		// if item.Less(min) {
 		if item < min {
@@ -71,13 +72,14 @@ func Min[T constraints.Ordered](collection []T) T {
 func Max[T constraints.Ordered](collection []T) T {
 	var max T
 
-	for i := 0; i < len(collection); i++ {
-		item := collection[i]
+	if len(collection) == 0 {
+		return max
+	}
 
-		if i == 0 {
-			max = item
-			continue
-		}
+	max = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
 
 		if item > max {
 			max = item
