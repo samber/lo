@@ -30,3 +30,6 @@ go.work
 /Godeps/
 
 # End of https://www.toptal.com/developers/gitignore/api/go
+
+cover.out
+cover.html

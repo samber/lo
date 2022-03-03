@@ -17,6 +17,10 @@ watch-test: tools
 bench:
 	gotest -benchmem -bench .
 
+coverage:
+	${BIN} test -v -coverprofile cover.out .
+	${BIN} tool cover -html=cover.out -o cover.html
+
 # tools
 tools:
 	${BIN} install github.com/cespare/reflex@latest
@@ -24,6 +28,7 @@ tools:
 	${BIN} install github.com/psampaz/go-mod-outdated@latest
 	${BIN} install github.com/jondot/goweight@latest
 	${BIN} install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+	${BIN} install golang.org/x/tools/cmd/cover
 	${BIN} get -t -u github.com/sonatype-nexus-community/nancy@latest
 	go mod tidy
 
