@@ -101,7 +101,7 @@ Constraints:
 Manipulates a slice and transforms it to a slice of another type:
 
 ```go
-lo.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64) string {
+lo.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
     return strconv.FormatInt(x, 10)
 })
 // []string{"1", "2", "3", "4"}
@@ -132,7 +132,7 @@ present := lo.Contains[int]([]int{0, 1, 2, 3, 4, 5}, 5)
 Reduces collection to a value which is the accumulated result of running each element in collection through accumulator, where each successive invocation is supplied the return value of the previous.
 
 ```go
-sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int) int {
+sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
     return agg + item
 }, 0)
 // 10

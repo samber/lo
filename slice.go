@@ -16,11 +16,11 @@ func Filter[V any](collection []V, predicate func(V, int) bool) []V {
 }
 
 // Map manipulates a slice and transforms it to a slice of another type.
-func Map[T any, R any](collection []T, iteratee func(T) R) []R {
+func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	result := make([]R, 0, len(collection))
 
-	for _, item := range collection {
-		result = append(result, iteratee(item))
+	for i, item := range collection {
+		result = append(result, iteratee(item, i))
 	}
 
 	return result
@@ -28,18 +28,18 @@ func Map[T any, R any](collection []T, iteratee func(T) R) []R {
 
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
-func Reduce[T any, R any](collection []T, accumulator func(R, T) R, initial R) R {
-	for _, item := range collection {
-		initial = accumulator(initial, item)
+func Reduce[T any, R any](collection []T, accumulator func(R, T, int) R, initial R) R {
+	for i, item := range collection {
+		initial = accumulator(initial, item, i)
 	}
 
 	return initial
 }
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.
-func ForEach[T any](collection []T, iteratee func(T)) {
-	for _, item := range collection {
-		iteratee(item)
+func ForEach[T any](collection []T, iteratee func(T, int)) {
+	for i, item := range collection {
+		iteratee(item, i)
 	}
 }
 

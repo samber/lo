@@ -26,10 +26,10 @@ func TestFilter(t *testing.T) {
 func TestMap(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Map[int, string]([]int{1, 2, 3, 4}, func(x int) string {
+	result1 := Map[int, string]([]int{1, 2, 3, 4}, func(x int, _ int) string {
 		return "Hello"
 	})
-	result2 := Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64) string {
+	result2 := Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 		return strconv.FormatInt(x, 10)
 	})
 
@@ -42,10 +42,10 @@ func TestMap(t *testing.T) {
 func TestReduce(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int) int {
+	result1 := Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
 		return agg + item
 	}, 0)
-	result2 := Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int) int {
+	result2 := Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
 		return agg + item
 	}, 10)
 
