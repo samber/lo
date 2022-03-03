@@ -112,7 +112,7 @@ lo.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 // []string{"1", "2", "3", "4"}
 ```
 
-Parallel processing: like lo.Map(), but mapper is called in goroutine. Results are returns in the same order.
+Parallel processing: like `lo.Map()`, but mapper is called in goroutine. Results are returns in the same order.
 
 ```go
 import lop "github.com/samber/lo/parallel"
@@ -159,13 +159,15 @@ sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int
 Iterates over elements of collection and invokes iteratee for each element.
 
 ```go
+import "github.com/samber/lo"
+
 lo.ForEach[string]([]string{"hello", "world"}, func(x string, _ int) {
     println(x)
 })
 // prints "hello\nworld\n"
 ```
 
-Parallel processing: like lo.ForEach(), but callback is called in goroutine.
+Parallel processing: like `lo.ForEach()`, but callback is called in goroutine.
 
 ```go
 import lop "github.com/samber/lo/parallel"
