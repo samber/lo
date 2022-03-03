@@ -471,7 +471,7 @@ min := lo.Max[int]([]int{})
 Returns the last element of a collection or panics if empty.
 
 ```go
-last := lo.Last[int]([]int{1, 2, 3})
+last, err := lo.Last[int]([]int{1, 2, 3})
 // 3
 ```
 
@@ -480,10 +480,10 @@ last := lo.Last[int]([]int{1, 2, 3})
 Returns the element at index `nth` of collection. If `nth` is negative, the nth element from the end is returned.
 
 ```go
-nth := lo.Nth[int]([]int{0, 1, 2, 3}, 2)
+nth, err := lo.Nth[int]([]int{0, 1, 2, 3}, 2)
 // 2
 
-nth := lo.Nth[int]([]int{0, 1, 2, 3}, -2)
+nth, err := lo.Nth[int]([]int{0, 1, 2, 3}, -2)
 // 2
 ```
 

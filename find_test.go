@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -69,17 +70,26 @@ func TestMax(t *testing.T) {
 func TestLast(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Last[int]([]int{1, 2, 3})
+	result1, err1 := Last[int]([]int{1, 2, 3})
+	result2, err2 := Last[int]([]int{})
 
 	is.Equal(result1, 3)
+	is.Equal(err1, nil)
+	is.Equal(result2, 0)
+	is.Equal(err2, fmt.Errorf("last: cannot extract the last element of an empty slice"))
 }
 
 func TestNth(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Nth[int]([]int{0, 1, 2, 3}, 2)
-	result2 := Nth[int]([]int{0, 1, 2, 3}, -2)
+	result1, err1 := Nth[int]([]int{0, 1, 2, 3}, 2)
+	result2, err2 := Nth[int]([]int{0, 1, 2, 3}, -2)
+	result3, err3 := Nth[int]([]int{0, 1, 2, 3}, 42)
 
 	is.Equal(result1, 2)
+	is.Equal(err1, nil)
 	is.Equal(result2, 2)
+	is.Equal(err2, nil)
+	is.Equal(result3, 0)
+	is.Equal(err3, fmt.Errorf("nth: 42 out of slice bounds"))
 }
