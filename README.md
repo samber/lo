@@ -574,9 +574,42 @@ ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 // []*string{"hello", "world"}
 ```
 
-## 🛩 Performance
+## 🛩 Benchmark
 
-// TODO
+We executed a simple benchmark with the a dead-simple `lo.Map` loop:
+
+See the full implementation [here](./benchmark_test.go).
+
+```go
+_ = lo.Map[int64](arr, func(x int64, i int) string {
+    return strconv.FormatInt(x, 10)
+})
+```
+
+**Result:**
+
+Here is a comparison between `lo.Map`, `lop.Map`, `go-funk` library and a simple Go `for` loop.
+
+```
+$ go test -benchmem -bench ./...
+goos: linux
+goarch: amd64
+pkg: github.com/samber/lo
+cpu: Intel(R) Core(TM) i5-7267U CPU @ 3.10GHz
+BenchmarkMap/lo.Map-8         	       8	 131041218 ns/op	39998055 B/op	 1000001 allocs/op
+BenchmarkMap/lop.Map-8        	       2	 509805437 ns/op	120018304 B/op	 3000214 allocs/op
+BenchmarkMap/reflect-8        	       2	 840512374 ns/op	170325888 B/op	 4000042 allocs/op
+BenchmarkMap/for-8            	       9	 127074794 ns/op	39998040 B/op	 1000001 allocs/op
+PASS
+ok  	github.com/samber/lo	7.531s
+```
+
+- `lo.Map` is way faster (x7) than `go-funk`, a relection-based Map implementation.
+- `lo.Map` have the same allocation profile than `for`.
+- `lo.Map` is 4% slower than `for`.
+- `lop.Map` is slower than `lo.Map` because it implies more memory allocation and locks. `lop.Map` will be usefull for long-running callbacks, such as i/o bound processing.
+- `for` beats other implementations for memory and CPU.
+
 
 ## 🤝 Contributing
 
