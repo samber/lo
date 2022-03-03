@@ -112,7 +112,7 @@ lo.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 Iterates over elements of collection, returning an array of all elements predicate returns truthy for.
 
 ```go
-odd := lo.Filter[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+even := lo.Filter[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
     return x%2 == 0
 })
 // []int{2, 4}
@@ -143,7 +143,7 @@ sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int
 Iterates over elements of collection and invokes iteratee for each element.
 
 ```go
-odd := lo.Filter[string]([]string{"hello", "world"}, func(x string, _ int) {
+lo.ForEach[string]([]string{"hello", "world"}, func(x string, _ int) {
     println(x)
 })
 // prints "hello\nworld"
