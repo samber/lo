@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 (2022-03-03)
+
+Adding `lop.Map` and `lop.ForEach`.
+
 ## 1.1.0 (2022-03-03)
 
 Adding `i int` param to `lo.Map()`, `lo.Filter()`, `lo.ForEach()` and `lo.Reduce()` predicates.
