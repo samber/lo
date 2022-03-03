@@ -86,7 +86,7 @@ func Max[T Ordered](collection []T) T {
 	return max
 }
 
-// Last returns the last element of a collection or panics if empty.
+// Last returns the last element of a collection or error if empty.
 func Last[T any](collection []T) (T, error) {
 	length := len(collection)
 
@@ -98,7 +98,8 @@ func Last[T any](collection []T) (T, error) {
 	return collection[length-1], nil
 }
 
-// Nth returns the element at index `nth` of collection. If `nth` is negative, the nth element from the end is returned.
+// Nth returns the element at index `nth` of collection. If `nth` is negative, the nth element
+// from the end is returned. An error is returned when nth is out of slice bounds.
 func Nth[T any](collection []T, nth int) (T, error) {
 	if int(math.Abs(float64(nth))) > len(collection) {
 		var t T

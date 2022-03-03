@@ -468,7 +468,7 @@ min := lo.Max[int]([]int{})
 
 ### Last
 
-Returns the last element of a collection or panics if empty.
+Returns the last element of a collection or error if empty.
 
 ```go
 last, err := lo.Last[int]([]int{1, 2, 3})
@@ -477,7 +477,7 @@ last, err := lo.Last[int]([]int{1, 2, 3})
 
 ### Nth
 
-Returns the element at index `nth` of collection. If `nth` is negative, the nth element from the end is returned.
+Returns the element at index `nth` of collection. If `nth` is negative, the nth element from the end is returned. An error is returned when nth is out of slice bounds.
 
 ```go
 nth, err := lo.Nth[int]([]int{0, 1, 2, 3}, 2)
