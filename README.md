@@ -27,7 +27,10 @@ go get github.com/samber/lo
 You can import `lo` using a basic statement:
 
 ```go
-import "github.com/samber/lo"
+import (
+    "github.com/samber/lo"
+    lop "github.com/samber/lo/parallel"
+)
 ```
 
 Then use one of the helpers below:
@@ -101,9 +104,22 @@ Constraints:
 Manipulates a slice and transforms it to a slice of another type:
 
 ```go
+import "github.com/samber/lo"
+
 lo.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
     return strconv.FormatInt(x, 10)
 })
+// []string{"1", "2", "3", "4"}
+```
+
+Parallel processing: like lo.Map(), but mapper is called in goroutine. Results are returns in the same order.
+
+```go
+import lop "github.com/samber/lo/parallel"
+
+lop.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+    return strconv.FormatInt(x, 10)
+}, 2)
 // []string{"1", "2", "3", "4"}
 ```
 
@@ -146,7 +162,18 @@ Iterates over elements of collection and invokes iteratee for each element.
 lo.ForEach[string]([]string{"hello", "world"}, func(x string, _ int) {
     println(x)
 })
-// prints "hello\nworld"
+// prints "hello\nworld\n"
+```
+
+Parallel processing: like lo.ForEach(), but callback is called in goroutine.
+
+```go
+import lop "github.com/samber/lo/parallel"
+
+lop.ForEach[string]([]string{"hello", "world"}, func(x string, _ int) {
+    println(x)
+})
+// prints "hello\nworld\n" or "world\nhello\n"
 ```
 
 ### Uniq

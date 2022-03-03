@@ -7,15 +7,15 @@ go1.18beta1:
 	go1.18beta1 download
 
 build:
-	${BIN} build -v .
+	${BIN} build -v ./...
 
 test:
-	go test -v .
-watch-test: tools
-	reflex -R assets.go -t 50ms -s -- sh -c 'gotest -v .'
+	go test -v ./...
+watch-test:
+	reflex -R assets.go -t 50ms -s -- sh -c 'gotest -v ./...'
 
 bench:
-	gotest -benchmem -bench .
+	gotest -benchmem -bench ./...
 
 coverage:
 	${BIN} test -v -coverprofile cover.out .
