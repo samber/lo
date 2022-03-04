@@ -137,13 +137,9 @@ func Flatten[T any](collection [][]T) []T {
 
 // Shuffle returns an array of shuffled values.
 func Shuffle[T any](collection []T) []T {
-	length := len(collection)
-
-	for i := range collection {
-		j := rand.Intn(length)
+	rand.Shuffle(len(collection), func(i, j int) {
 		collection[i], collection[j] = collection[j], collection[i]
-	}
-
+	})
 	return collection
 }
 
