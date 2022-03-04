@@ -30,7 +30,7 @@ func TestEntries(t *testing.T) {
 
 	r1 := Entries[string, int](map[string]int{"foo": 1, "bar": 2})
 
-	is.Equal(r1, []Entry[string, int]{
+	is.EqualValues(r1, []Entry[string, int]{
 		{
 			Key:   "foo",
 			Value: 1,
