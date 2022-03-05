@@ -61,14 +61,14 @@ func Times[T any](count int, iteratee func(int) T) []T {
 // The order of result values is determined by the order they occur in the array.
 func Uniq[T comparable](collection []T) []T {
 	result := make([]T, 0, len(collection))
-	seen := make(map[T]bool, len(collection))
+	seen := make(map[T]struct{}, len(collection))
 
 	for _, item := range collection {
 		if _, ok := seen[item]; ok {
 			continue
 		}
 
-		seen[item] = true
+		seen[item] = struct{}{}
 		result = append(result, item)
 	}
 
@@ -80,7 +80,7 @@ func Uniq[T comparable](collection []T) []T {
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
 func UniqBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
 	result := make([]T, 0, len(collection))
-	seen := make(map[U]bool, len(collection))
+	seen := make(map[U]struct{}, len(collection))
 
 	for _, item := range collection {
 		key := iteratee(item)
@@ -89,7 +89,7 @@ func UniqBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
 			continue
 		}
 
-		seen[key] = true
+		seen[key] = struct{}{}
 		result = append(result, item)
 	}
 
