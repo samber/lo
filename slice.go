@@ -135,11 +135,12 @@ func Flatten[T any](collection [][]T) []T {
 	return result
 }
 
-// Shuffle returns an array of shuffled values.
+// Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 func Shuffle[T any](collection []T) []T {
 	rand.Shuffle(len(collection), func(i, j int) {
 		collection[i], collection[j] = collection[j], collection[i]
 	})
+
 	return collection
 }
 

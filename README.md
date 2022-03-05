@@ -8,13 +8,13 @@
 
 This project have started as an experiment to discover generics implementation. It may look like Lodash in some aspects. I used to code with the awesome [go-funk](https://github.com/thoas/go-funk) package, but it uses reflection and therefore is not typesafe.
 
-As expected, benchmarks demonstrate that generics will be much faster than implementations based on reflect stdlib package.
+As expected, benchmarks demonstrate that generics will be much faster than implementations based on reflect stdlib package. Benchmarks also shows similar performances to pure `for` loops. [#-benchmark](See below).
 
-In the future, some of these helpers will be available in the Go standard library (under package names "slices" and "maps").
+In the future, 5 to 10 helpers will overlap with those coming into the Go standard library (under package names `slices` and `maps`). Anyway I feel this library legitimate to offer many more such useful abstractions.
 
 ### Why this name?
 
-I wanted a short name, similar to "Lodash", and no Go package currently use this name.
+I wanted a **short name**, similar to "Lodash", and no Go package currently use this name.
 
 ## 🚀 Install
 
@@ -97,7 +97,6 @@ Other functional programming helpers:
 Constraints:
 
 - Clonable
-- Ordered
 
 ### Map
 
@@ -238,7 +237,7 @@ flat := lo.Flatten[int]([][]int{{0, 1}, {2, 3, 4, 5}})
 
 ### Shuffle
 
-Returns an array of shuffled values.
+Returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 
 ```go
 randomOrder := lo.Shuffle[int]([]int{0, 1, 2, 3, 4, 5})
