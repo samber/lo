@@ -36,10 +36,10 @@ func Some[T comparable](collection []T, subset []T) bool {
 // Intersect returns the intersection between two collections.
 func Intersect[T comparable](list1 []T, list2 []T) []T {
 	result := []T{}
-	seen := map[T]bool{}
+	seen := map[T]struct{}{}
 
 	for _, elem := range list1 {
-		seen[elem] = true
+		seen[elem] = struct{}{}
 	}
 
 	for _, elem := range list2 {
@@ -58,15 +58,15 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 	left := []T{}
 	right := []T{}
 
-	seenLeft := map[T]bool{}
-	seenRight := map[T]bool{}
+	seenLeft := map[T]struct{}{}
+	seenRight := map[T]struct{}{}
 
 	for _, elem := range list1 {
-		seenLeft[elem] = true
+		seenLeft[elem] = struct{}{}
 	}
 
 	for _, elem := range list2 {
-		seenRight[elem] = true
+		seenRight[elem] = struct{}{}
 	}
 
 	for _, elem := range list1 {
