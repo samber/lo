@@ -14,3 +14,6 @@ func Attempt(maxIteration int, f func(int) error) (int, error) {
 
 	return maxIteration, err
 }
+
+// throttle ?
+// debounce ?

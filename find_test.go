@@ -2,7 +2,10 @@ package lo
 
 import (
 	"fmt"
+	"math/rand"
+	"sort"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -98,4 +101,30 @@ func TestNth(t *testing.T) {
 	is.Equal(err4, fmt.Errorf("nth: 0 out of slice bounds"))
 	is.Equal(result5, 42)
 	is.Equal(err5, nil)
+}
+
+func TestSample(t *testing.T) {
+	is := assert.New(t)
+
+	rand.Seed(time.Now().UnixNano())
+
+	result1 := Sample[string]([]string{"a", "b", "c"})
+	result2 := Sample[string]([]string{})
+
+	is.True(Contains[string]([]string{"a", "b", "c"}, result1))
+	is.Equal(result2, "")
+}
+
+func TestSamples(t *testing.T) {
+	is := assert.New(t)
+
+	rand.Seed(time.Now().UnixNano())
+
+	result1 := Samples[string]([]string{"a", "b", "c"}, 3)
+	result2 := Samples[string]([]string{}, 3)
+
+	sort.Strings(result1)
+
+	is.Equal(result1, []string{"a", "b", "c"})
+	is.Equal(result2, []string{})
 }

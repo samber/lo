@@ -2,6 +2,7 @@ package lo
 
 import (
 	"fmt"
+	"math/rand"
 	"math"
 	"golang.org/x/exp/constraints"
 )
@@ -116,4 +117,41 @@ func Nth[T any](collection []T, nth int) (T, error) {
 	}
 
 	return collection[length+nth], nil
+}
+
+// Sample returns a random item from collection.
+func Sample[T any](collection []T) T {
+	size := len(collection)
+	if size == 0 {
+		return Empty[T]()
+	}
+
+	return collection[rand.Intn(size)]
+}
+
+// Samples returns N random unique items from collection.
+func Samples[T any](collection []T, count int) []T {
+	size := len(collection)
+
+	// put values into a map, for faster deletion
+	cOpy := make([]T, 0, size)
+	for _, v := range collection {
+		cOpy = append(cOpy, v)
+	}
+
+	results := []T{}
+
+	for i := 0; i < size && i < count; i++ {
+		copyLength := size - i
+
+		index := rand.Intn(size - i)
+		results = append(results, cOpy[index])
+
+		// Removes element.
+		// It is faster to swap with last element and remove it.
+		cOpy[index] = cOpy[copyLength-1]
+		cOpy = cOpy[:copyLength-1]
+	}
+
+	return results
 }

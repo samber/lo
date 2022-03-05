@@ -69,7 +69,7 @@ Supported helpers for maps:
 - Values
 - Entries
 - FromEntries
-- Assign (maps merge)
+- Assign (merge of maps)
 
 Supported helpers for tuples:
 
@@ -93,6 +93,8 @@ Supported search helpers:
 - Max
 - Last
 - Nth
+- Sample
+- Samples
 
 Other functional programming helpers:
 
@@ -604,6 +606,27 @@ nth, err := lo.Nth[int]([]int{0, 1, 2, 3}, -2)
 // 2
 ```
 
+### Sample
+
+Returns a random item from collection.
+
+```go
+lo.Sample[string]([]string{"a", "b", "c"})
+// a random string from []string{"a", "b", "c"}
+
+lo.Sample[string]([]string{})
+// ""
+```
+
+### Samples
+
+Returns N random unique items from collection.
+
+```go
+lo.Samples[string]([]string{"a", "b", "c"}, 3)
+// []string{"a", "b", "c"} in random order
+```
+
 ### Ternary
 
 A 1 line if/else statement.
@@ -726,6 +749,8 @@ iter, err := lo.Attempt(0, func(i int) error {
 // 43
 // nil
 ```
+
+For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
 ## 🛩 Benchmark
 

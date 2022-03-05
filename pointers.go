@@ -11,3 +11,9 @@ func ToSlicePtr[T any](collection []T) []*T {
 		return &x
 	})
 }
+
+// Empty returns an empty value.
+func Empty[T any]() T {
+	var t T
+	return t
+}

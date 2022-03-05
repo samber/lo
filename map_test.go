@@ -11,8 +11,8 @@ func TestKeys(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := Keys[string, int](map[string]int{"foo": 1, "bar": 2})
+	sort.Strings(r1)
 
-	sort.Sort(sort.StringSlice(r1))
 	is.Equal(r1, []string{"bar", "foo"})
 }
 
@@ -20,8 +20,8 @@ func TestValues(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := Values[string, int](map[string]int{"foo": 1, "bar": 2})
+	sort.Ints(r1)
 
-	sort.Sort(sort.IntSlice(r1))
 	is.Equal(r1, []int{1, 2})
 }
 
