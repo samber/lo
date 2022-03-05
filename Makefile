@@ -12,7 +12,7 @@ build:
 test:
 	go test -race -v ./...
 watch-test:
-	reflex -R assets.go -t 50ms -s -- sh -c 'gotest -v ./...'
+	reflex -R assets.go -t 50ms -s -- sh -c 'gotest -race -v ./...'
 
 bench:
 	go test -benchmem -count 3 -bench ./...
