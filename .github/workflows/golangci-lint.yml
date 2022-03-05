@@ -12,6 +12,10 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.18.0-beta1
+          stable: false
       - uses: actions/checkout@v2
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
@@ -23,7 +27,7 @@ jobs:
           working-directory: ./
 
           # Optional: golangci-lint command line arguments.
-          args: --config=.golangci.yml --issues-exit-code=0 --timeout 60s --max-same-issues 50
+          args: --timeout 60s --max-same-issues 50
 
           # Optional: show only new issues if it's a pull request. The default value is `false`.
           # only-new-issues: true
@@ -36,3 +40,6 @@ jobs:
 
           # Optional: if set to true then the action don't cache or restore ~/.cache/go-build.
           # skip-build-cache: true
+
+          # optionally use a specific version of Go rather than the latest one
+          go_version: '1.18.0-beta1'
