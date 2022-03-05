@@ -69,6 +69,11 @@ Supported helpers for maps:
 - FromEntries
 - Assign (maps merge)
 
+Supported helpers for tuples:
+
+- Zip2 -> Zip9
+- Unzip2 -> Unzip9
+
 Supported intersection helpers:
 
 - Contains
@@ -389,6 +394,27 @@ mergedMaps := lo.Assign[string, int](
     map[string]int{"b": 3, "c": 4},
 )
 // map[string]int{"a": 1, "b": 3, "c": 4}
+```
+
+### Zip2 -> Zip9
+
+Zip creates a slice of grouped elements, the first of which contains the first elements of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+
+When collections have different size, the Tuple attributes are filled with zero value.
+
+```go
+tuples := lo.Zip2[string, int]([]string{"a", "b"}, []int{1, 2})
+// []Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}}
+```
+
+### Unzip2 -> Unzip9
+
+Unzip accepts an array of grouped elements and creates an array regrouping the elements to their pre-zip configuration.
+
+```go
+a, b := lo.Unzip2[string, int]([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
+// []string{"a", "b"}
+// []int{1, 2}
 ```
 
 ### Every

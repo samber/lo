@@ -22,12 +22,6 @@ func Values[K comparable, V any](in map[K]V) []V {
 	return result
 }
 
-// Entry defines a key/value pairs.
-type Entry[K comparable, V any] struct {
-	Key   K
-	Value V
-}
-
 // Entries transforms a map into array of key/value pairs.
 func Entries[K comparable, V any](in map[K]V) []Entry[K, V] {
 	entries := make([]Entry[K, V], 0, len(in))
