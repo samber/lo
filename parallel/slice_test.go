@@ -1,8 +1,9 @@
 package parallel
 
 import (
-	"testing"
+	"sort"
 	"strconv"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -41,6 +42,13 @@ func TestGroupBy(t *testing.T) {
 		return i % 3
 	})
 
+	// order
+	for x := range result1 {
+		sort.Slice(result1[x], func(i, j int) bool {
+			return result1[x][i] < result1[x][j]
+		})
+	}
+
 	is.EqualValues(len(result1), 3)
 	is.EqualValues(result1, map[int][]int{
 		0: []int{0, 3},
@@ -64,6 +72,16 @@ func TestPartitionBy(t *testing.T) {
 	result1 := PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
 	result2 := PartitionBy[int, string]([]int{}, oddEven)
 
-	is.Equal(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
+	// order
+	sort.Slice(result1, func(i, j int) bool {
+		return result1[i][0] < result1[j][0]
+	})
+	for x := range result1 {
+		sort.Slice(result1[x], func(i, j int) bool {
+			return result1[x][i] < result1[x][j]
+		})
+	}
+
+	is.ElementsMatch(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
 	is.Equal(result2, [][]int{})
 }

@@ -130,6 +130,7 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func (x T) K) [][
 			result[resultIndex] = append(result[resultIndex], _item)
 
 			mu.Unlock()
+			wg.Done()
 		}(item)
 	}
 
