@@ -425,7 +425,7 @@ Returns true if all elements of a subset are contained into a collection.
 ok := lo.Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
 // true
 
-ko := lo.Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+ok := lo.Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // false
 ```
 
@@ -437,7 +437,7 @@ Returns true if at least 1 element of a subset is contained into a collection.
 ok := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
 // true
 
-ko := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+ok := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // false
 ```
 
@@ -528,10 +528,10 @@ min := lo.Min[int]([]int{})
 Search the maximum value of a collection.
 
 ```go
-min := lo.Max[int]([]int{1, 2, 3})
+max := lo.Max[int]([]int{1, 2, 3})
 // 3
 
-min := lo.Max[int]([]int{})
+max := lo.Max[int]([]int{})
 // 0
 ```
 
