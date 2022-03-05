@@ -116,6 +116,7 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func (x T) K) [][
 
 	for _, item := range collection {
 		go func(_item T) {
+			defer wg.Done()
 			key := iteratee(_item)
 
 			mu.Lock()
