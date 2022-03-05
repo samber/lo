@@ -7,17 +7,14 @@ import "sync"
 func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	result := make([]R, len(collection))
 
-	var mu sync.Mutex
 	var wg sync.WaitGroup
 	wg.Add(len(collection))
 
 	for i, item := range collection {
-		go func (_item T, _i int) {
+		go func(_item T, _i int) {
 			res := iteratee(_item, _i)
 
-			mu.Lock()
 			result[_i] = res
-			mu.Unlock()
 
 			wg.Done()
 		}(item, i)
@@ -35,7 +32,7 @@ func ForEach[T any](collection []T, iteratee func(T, int)) {
 	wg.Add(len(collection))
 
 	for i, item := range collection {
-		go func (_item T, _i int) {
+		go func(_item T, _i int) {
 			iteratee(_item, _i)
 			wg.Done()
 		}(item, i)
@@ -50,7 +47,6 @@ func ForEach[T any](collection []T, iteratee func(T, int)) {
 func Times[T any](count int, iteratee func(int) T) []T {
 	result := make([]T, count)
 
-	var mu sync.Mutex
 	var wg sync.WaitGroup
 	wg.Add(count)
 
@@ -58,9 +54,7 @@ func Times[T any](count int, iteratee func(int) T) []T {
 		go func(_i int) {
 			item := iteratee(_i)
 
-			mu.Lock()
 			result[_i] = item
-			mu.Unlock()
 
 			wg.Done()
 		}(i)
@@ -81,7 +75,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 	wg.Add(len(collection))
 
 	for _, item := range collection {
-		go func (_item T) {
+		go func(_item T) {
 			key := iteratee(_item)
 
 			mu.Lock()
@@ -91,7 +85,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 			}
 
 			result[key] = append(result[key], _item)
-			
+
 			mu.Unlock()
 			wg.Done()
 		}(item)
@@ -106,7 +100,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through iteratee.
 // `iteratee` is call in parallel.
-func PartitionBy[T any, K comparable](collection []T, iteratee func (x T) K) [][]T {
+func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]T {
 	result := [][]T{}
 	seen := map[K]int{}
 

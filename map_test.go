@@ -30,6 +30,9 @@ func TestEntries(t *testing.T) {
 
 	r1 := Entries[string, int](map[string]int{"foo": 1, "bar": 2})
 
+	sort.Slice(r1, func(i, j int) bool {
+		return r1[i].Value < r1[j].Value
+	})
 	is.EqualValues(r1, []Entry[string, int]{
 		{
 			Key:   "foo",
