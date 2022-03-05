@@ -774,12 +774,13 @@ goos: linux
 goarch: amd64
 pkg: github.com/samber/lo
 cpu: Intel(R) Core(TM) i5-7267U CPU @ 3.10GHz
-BenchmarkMap/lo.Map-8         	       8	 131041218 ns/op	39998055 B/op	 1000001 allocs/op
-BenchmarkMap/lop.Map-8        	       2	 509805437 ns/op	120018304 B/op	 3000214 allocs/op
-BenchmarkMap/reflect-8        	       2	 840512374 ns/op	170325888 B/op	 4000042 allocs/op
-BenchmarkMap/for-8            	       9	 127074794 ns/op	39998040 B/op	 1000001 allocs/op
+cpu: Intel(R) Core(TM) i7 CPU         920  @ 2.67GHz
+BenchmarkMap/lo.Map-8         	       8	 132728237 ns/op	39998945 B/op	 1000002 allocs/op
+BenchmarkMap/lop.Map-8        	       2	 503947830 ns/op	119999956 B/op	 3000007 allocs/op
+BenchmarkMap/reflect-8        	       2	 826400560 ns/op	170326512 B/op	 4000042 allocs/op
+BenchmarkMap/for-8            	       9	 126252954 ns/op	39998674 B/op	 1000001 allocs/op
 PASS
-ok  	github.com/samber/lo	7.531s
+ok  	github.com/samber/lo	6.657s
 ```
 
 - `lo.Map` is way faster (x7) than `go-funk`, a relection-based Map implementation.
