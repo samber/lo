@@ -85,6 +85,8 @@ func TestNth(t *testing.T) {
 	result1, err1 := Nth[int]([]int{0, 1, 2, 3}, 2)
 	result2, err2 := Nth[int]([]int{0, 1, 2, 3}, -2)
 	result3, err3 := Nth[int]([]int{0, 1, 2, 3}, 42)
+	result4, err4 := Nth[int]([]int{}, 0)
+	result5, err5 := Nth[int]([]int{42}, 0)
 
 	is.Equal(result1, 2)
 	is.Equal(err1, nil)
@@ -92,4 +94,8 @@ func TestNth(t *testing.T) {
 	is.Equal(err2, nil)
 	is.Equal(result3, 0)
 	is.Equal(err3, fmt.Errorf("nth: 42 out of slice bounds"))
+	is.Equal(result4, 0)
+	is.Equal(err4, fmt.Errorf("nth: 0 out of slice bounds"))
+	is.Equal(result5, 42)
+	is.Equal(err5, nil)
 }

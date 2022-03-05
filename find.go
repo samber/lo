@@ -104,7 +104,7 @@ func Last[T any](collection []T) (T, error) {
 // Nth returns the element at index `nth` of collection. If `nth` is negative, the nth element
 // from the end is returned. An error is returned when nth is out of slice bounds.
 func Nth[T any](collection []T, nth int) (T, error) {
-	if int(math.Abs(float64(nth))) > len(collection) {
+	if int(math.Abs(float64(nth))) >= len(collection) {
 		var t T
 		return t, fmt.Errorf("nth: %d out of slice bounds", nth)
 	}
