@@ -22,3 +22,37 @@ func TestMap(t *testing.T) {
 	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
 	is.Equal(result2, []string{"1", "2", "3", "4"})
 }
+
+func TestGroupBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+		return i % 3
+	})
+
+	is.Equal(len(result1), 3)
+	is.Equal(result1, map[int][]int{
+		0: []int{0, 3},
+		1: []int{1, 4},
+		2: []int{2, 5},
+	})
+}
+
+func TestPartitionBy(t *testing.T) {
+	is := assert.New(t)
+
+	oddEven := func (x int) string {
+		if x < 0 {
+			return "negative"
+		} else if x%2 == 0 {
+			return "even"
+		}
+		return "odd"
+	}
+
+	result1 := PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
+	result2 := PartitionBy[int, string]([]int{}, oddEven)
+
+	is.Equal(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
+	is.Equal(result2, [][]int{})
+}

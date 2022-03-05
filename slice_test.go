@@ -102,6 +102,25 @@ func TestChunk(t *testing.T) {
 	is.Equal(result4, [][]int{{0}})
 }
 
+func TestPartitionBy(t *testing.T) {
+	is := assert.New(t)
+
+	oddEven := func (x int) string {
+		if x < 0 {
+			return "negative"
+		} else if x%2 == 0 {
+			return "even"
+		}
+		return "odd"
+	}
+
+	result1 := PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
+	result2 := PartitionBy[int, string]([]int{}, oddEven)
+
+	is.Equal(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
+	is.Equal(result2, [][]int{})
+}
+
 func TestFlatten(t *testing.T) {
 	is := assert.New(t)
 

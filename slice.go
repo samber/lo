@@ -107,8 +107,6 @@ func Chunk[T any](collection []T, size int) [][]T {
 	}
 
 	result := make([][]T, 0, len(collection)/2+1)
-	// result := [][]T{}
-
 	length := len(collection)
 
 	for i := 0; i < length; i++ {
@@ -122,6 +120,33 @@ func Chunk[T any](collection []T, size int) [][]T {
 	}
 
 	return result
+}
+
+// PartitionBy returns an array of elements split into groups. The order of grouped values is
+// determined by the order they occur in collection. The grouping is generated from the results
+// of running each element of collection through iteratee.
+func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]T {
+	result := [][]T{}
+	seen := map[K]int{}
+
+	for _, item := range collection {
+		key := iteratee(item)
+
+		resultIndex, ok := seen[key]
+		if !ok {
+			resultIndex = len(result)
+			seen[key] = resultIndex
+			result = append(result, []T{})
+		}
+
+		result[resultIndex] = append(result[resultIndex], item)
+	}
+
+	return result
+
+	// unordered:
+	// groups := GroupBy[T, K](collection, iteratee)
+	// return Values[K, []T](groups)
 }
 
 // Flattens returns an array a single level deep.

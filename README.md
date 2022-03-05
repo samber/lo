@@ -54,6 +54,7 @@ Supported helpers for slices:
 - UniqBy
 - GroupBy
 - Chunk
+- PartitionBy
 - Flatten
 - Shuffle
 - Reverse
@@ -191,7 +192,7 @@ uniqValues := lo.Uniq[int]([]int{1, 2, 2, 1})
 Returns a duplicate-free version of an array, in which only the first occurrence of each element is kept. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
 
 ```go
-uniqValues := lo.UniqBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func (i int) int {
+uniqValues := lo.UniqBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
     return i%3
 })
 // []int{0, 1, 2}
@@ -202,7 +203,18 @@ uniqValues := lo.UniqBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func (i int) int {
 Returns an object composed of keys generated from the results of running each element of collection through iteratee.
 
 ```go
-groups := GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func (i int) int {
+groups := GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+    return i%3
+})
+// map[int][]int{0: []int{0, 3}, 1: []int{1, 4}, 2: []int{2, 5}}
+```
+
+Parallel processing: like `lo.GroupBy()`, but callback is called in goroutine.
+
+```go
+import lop "github.com/samber/lo/parallel"
+
+lop.GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
     return i%3
 })
 // map[int][]int{0: []int{0, 3}, 1: []int{1, 4}, 2: []int{2, 5}}
@@ -224,6 +236,38 @@ lo.Chunk[int]([]int{}, 2)
 
 lo.Chunk[int]([]int{0}, 2)
 // [][]int{{0}}
+```
+
+### PartitionBy
+
+Returns an array of elements split into groups. The order of grouped values is determined by the order they occur in collection. The grouping is generated from the results of running each element of collection through iteratee.
+
+```go
+partitions := lo.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
+    if x < 0 {
+        return "negative"
+    } else if x%2 == 0 {
+        return "even"
+    }
+    return "odd"
+})
+// [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}}
+```
+
+Parallel processing: like `lo.PartitionBy()`, but callback is called in goroutine. Results are returned in the same order.
+
+```go
+import lop "github.com/samber/lo/parallel"
+
+partitions := lo.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
+    if x < 0 {
+        return "negative"
+    } else if x%2 == 0 {
+        return "even"
+    }
+    return "odd"
+})
+// [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}}
 ```
 
 ### Flatten
@@ -275,7 +319,7 @@ initializedSlice := lo.Fill[foo]([]foo{foo{"a"}, foo{"a"}}, foo{"b"})
 Transforms a slice or an array of structs to a map based on a pivot callback.
 
 ```go
-m := lo.ToMap[int, string]([]string{"a", "aa", "aaa"}, func (str string) int {
+m := lo.ToMap[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
     return len(str)
 })
 // map[int]string{1: "a", 2: "aa", 3: "aaa"}
@@ -543,13 +587,13 @@ Using callbacks:
 
 ```go
 result := lo.Switch[int, string](1).
-    CaseF(1, func () string {
+    CaseF(1, func() string {
         return "1"
     }).
-    CaseF(2, func () string {
+    CaseF(2, func() string {
         return "2"
     }).
-    DefaultF(func () string {
+    DefaultF(func() string {
         return "3"
     })
 // "1"
