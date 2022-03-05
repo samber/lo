@@ -7,6 +7,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type foo struct {
+	bar string
+}
+
+func (f foo) Clone() foo {
+	return foo{f.bar}
+}
+
 func TestFilter(t *testing.T) {
 	is := assert.New(t)
 
@@ -37,6 +45,17 @@ func TestMap(t *testing.T) {
 	is.Equal(len(result2), 4)
 	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
 	is.Equal(result2, []string{"1", "2", "3", "4"})
+}
+
+func TestTimes(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Times[string](3, func(i int) string {
+		return strconv.FormatInt(int64(i), 10)
+	})
+
+	is.Equal(len(result1), 3)
+	is.Equal(result1, []string{"0", "1", "2"})
 }
 
 func TestReduce(t *testing.T) {
@@ -151,14 +170,6 @@ func TestReverse(t *testing.T) {
 	is.Equal(result3, []int{})
 }
 
-type foo struct {
-	bar string
-}
-
-func (f foo) Clone() foo {
-	return foo{f.bar}
-}
-
 func TestFill(t *testing.T) {
 	is := assert.New(t)
 
@@ -166,6 +177,16 @@ func TestFill(t *testing.T) {
 	result2 := Fill[foo]([]foo{}, foo{"a"})
 
 	is.Equal(result1, []foo{foo{"b"}, foo{"b"}})
+	is.Equal(result2, []foo{})
+}
+
+func TestRepeat(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Repeat[foo](2, foo{"a"})
+	result2 := Repeat[foo](0, foo{"a"})
+
+	is.Equal(result1, []foo{foo{"a"}, foo{"a"}})
 	is.Equal(result2, []foo{})
 }
 

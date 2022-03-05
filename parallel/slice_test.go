@@ -23,6 +23,17 @@ func TestMap(t *testing.T) {
 	is.Equal(result2, []string{"1", "2", "3", "4"})
 }
 
+func TestTimes(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Times[string](3, func(i int) string {
+		return strconv.FormatInt(int64(i), 10)
+	})
+
+	is.Equal(len(result1), 3)
+	is.Equal(result1, []string{"0", "1", "2"})
+}
+
 func TestGroupBy(t *testing.T) {
 	is := assert.New(t)
 
@@ -30,8 +41,8 @@ func TestGroupBy(t *testing.T) {
 		return i % 3
 	})
 
-	is.Equal(len(result1), 3)
-	is.Equal(result1, map[int][]int{
+	is.EqualValues(len(result1), 3)
+	is.EqualValues(result1, map[int][]int{
 		0: []int{0, 3},
 		1: []int{1, 4},
 		2: []int{2, 5},

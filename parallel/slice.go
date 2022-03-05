@@ -44,6 +44,33 @@ func ForEach[T any](collection []T, iteratee func(T, int)) {
 	wg.Wait()
 }
 
+// Times invokes the iteratee n times, returning an array of the results of each invocation.
+// The iteratee is invoked with index as argument.
+// `iteratee` is call in parallel.
+func Times[T any](count int, iteratee func(int) T) []T {
+	result := make([]T, count)
+
+	var mu sync.Mutex
+	var wg sync.WaitGroup
+	wg.Add(count)
+
+	for i := 0; i < count; i++ {
+		go func(_i int) {
+			item := iteratee(_i)
+
+			mu.Lock()
+			result[_i] = item
+			mu.Unlock()
+
+			wg.Done()
+		}(i)
+	}
+
+	wg.Wait()
+
+	return result
+}
+
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // `iteratee` is call in parallel.
 func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T {

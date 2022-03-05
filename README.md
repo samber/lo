@@ -50,6 +50,7 @@ Supported helpers for slices:
 - Map
 - Reduce
 - ForEach
+- Times
 - Uniq
 - UniqBy
 - GroupBy
@@ -59,6 +60,7 @@ Supported helpers for slices:
 - Shuffle
 - Reverse
 - Fill
+- Repeat
 - ToMap
 
 Supported helpers for maps:
@@ -99,6 +101,7 @@ Other functional programming helpers:
 - Switch / Case / Default
 - ToPtr
 - ToSlicePtr
+- Attempt
 
 Constraints:
 
@@ -183,6 +186,30 @@ lop.ForEach[string]([]string{"hello", "world"}, func(x string, _ int) {
 // prints "hello\nworld\n" or "world\nhello\n"
 ```
 
+### Times
+
+Times invokes the iteratee n times, returning an array of the results of each invocation. The iteratee is invoked with index as argument.
+
+```go
+import "github.com/samber/lo"
+
+lo.Times[string](3, func(i int) string {
+    return strconv.FormatInt(int64(i), 10)
+})
+// []string{"0", "1", "2"}
+```
+
+Parallel processing: like `lo.Times()`, but callback is called in goroutine.
+
+```go
+import lop "github.com/samber/lo/parallel"
+
+lop.Times[string](3, func(i int) string {
+    return strconv.FormatInt(int64(i), 10)
+})
+// []string{"0", "1", "2"}
+```
+
 ### Uniq
 
 Returns a duplicate-free version of an array, in which only the first occurrence of each element is kept. The order of result values is determined by the order they occur in the array.
@@ -208,7 +235,9 @@ uniqValues := lo.UniqBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 Returns an object composed of keys generated from the results of running each element of collection through iteratee.
 
 ```go
-groups := GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+import lo "github.com/samber/lo"
+
+groups := lo.GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
     return i%3
 })
 // map[int][]int{0: []int{0, 3}, 1: []int{1, 4}, 2: []int{2, 5}}
@@ -248,6 +277,8 @@ lo.Chunk[int]([]int{0}, 2)
 Returns an array of elements split into groups. The order of grouped values is determined by the order they occur in collection. The grouping is generated from the results of running each element of collection through iteratee.
 
 ```go
+import lo "github.com/samber/lo"
+
 partitions := lo.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
     if x < 0 {
         return "negative"
@@ -317,6 +348,23 @@ func (f foo) Clone() foo {
 
 initializedSlice := lo.Fill[foo]([]foo{foo{"a"}, foo{"a"}}, foo{"b"})
 // []foo{foo{"b"}, foo{"b"}}
+```
+
+### Repeat
+
+Builds a slice with N copies of initial value.
+
+```go
+type foo struct {
+	bar string
+}
+
+func (f foo) Clone() foo {
+	return foo{f.bar}
+}
+
+initializedSlice := lo.Repeat[foo](2, foo{"a"})
+// []foo{foo{"a"}, foo{"a"}}
 ```
 
 ### ToMap
@@ -641,6 +689,42 @@ Returns a slice of pointer copy of value.
 ```go
 ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 // []*string{"hello", "world"}
+```
+
+### Attempt
+
+Invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a sucessfull response is returned.
+
+```go
+iter, err := lo.Attempt(42, func(i int) error {
+    if i == 5 {
+        return nil
+    }
+
+    return fmt.Errorf("failed")
+})
+// 6
+// nil
+
+iter, err := lo.Attempt(2, func(i int) error {
+    if i == 5 {
+        return nil
+    }
+
+    return fmt.Errorf("failed")
+})
+// 2
+// error "failed"
+
+iter, err := lo.Attempt(0, func(i int) error {
+    if i < 42 {
+        return fmt.Errorf("failed")
+    }
+
+    return nil
+})
+// 43
+// nil
 ```
 
 ## 🛩 Benchmark

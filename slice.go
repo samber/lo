@@ -43,6 +43,18 @@ func ForEach[T any](collection []T, iteratee func(T, int)) {
 	}
 }
 
+// Times invokes the iteratee n times, returning an array of the results of each invocation.
+// The iteratee is invoked with index as argument.
+func Times[T any](count int, iteratee func(int) T) []T {
+	result := make([]T, count)
+
+	for i := 0; i < count; i++ {
+		result[i] = iteratee(i)
+	}
+
+	return result
+}
+
 // Uniq returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the array.
 func Uniq[T comparable](collection []T) []T {
@@ -187,6 +199,17 @@ func Fill[T Clonable[T]](collection []T, initial T) []T {
 	result := make([]T, 0, len(collection))
 
 	for _ = range collection {
+		result = append(result, initial.Clone())
+	}
+
+	return result
+}
+
+// Repeat builds a slice with N copies of initial value.
+func Repeat[T Clonable[T]](count int, initial T) []T {
+	result := make([]T, 0, count)
+
+	for i := 0; i < count; i++ {
 		result = append(result, initial.Clone())
 	}
 
