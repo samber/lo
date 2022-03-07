@@ -75,10 +75,10 @@ func TestReduce(t *testing.T) {
 func TestUniq(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Uniq[int]([]int{1, 2, 2, 1})
+	result1 := Uniq[int]([]int{1, 2, 2, 1}, []int{1, 2, 4, 5})
 
-	is.Equal(len(result1), 2)
-	is.Equal(result1, []int{1, 2})
+	is.Equal(len(result1), 4)
+	is.Equal(result1, []int{1, 2, 4, 5})
 }
 
 func TestUniqBy(t *testing.T) {
@@ -124,7 +124,7 @@ func TestChunk(t *testing.T) {
 func TestPartitionBy(t *testing.T) {
 	is := assert.New(t)
 
-	oddEven := func (x int) string {
+	oddEven := func(x int) string {
 		if x < 0 {
 			return "negative"
 		} else if x%2 == 0 {

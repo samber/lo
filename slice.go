@@ -59,17 +59,19 @@ func Times[T any](count int, iteratee func(int) T) []T {
 
 // Uniq returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the array.
-func Uniq[T comparable](collection []T) []T {
-	result := make([]T, 0, len(collection))
-	seen := make(map[T]struct{}, len(collection))
+func Uniq[T comparable](collections ...[]T) []T {
+	result := []T{}
+	seen := map[T]struct{}{}
 
-	for _, item := range collection {
-		if _, ok := seen[item]; ok {
-			continue
+	for _, collection := range collections {
+		for _, item := range collection {
+			if _, ok := seen[item]; ok {
+				continue
+			}
+
+			seen[item] = struct{}{}
+			result = append(result, item)
 		}
-
-		seen[item] = struct{}{}
-		result = append(result, item)
 	}
 
 	return result
