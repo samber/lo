@@ -28,6 +28,17 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	return result
 }
 
+// FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
+func FlatMap[T any, R any](collection []T, iteratee func(T, int) []R) []R {
+	result := []R{}
+
+	for i, item := range collection {
+		result = append(result, iteratee(item, i)...)
+	}
+
+	return result
+}
+
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
 func Reduce[T any, R any](collection []T, accumulator func(R, T, int) R, initial R) R {
