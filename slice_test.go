@@ -32,19 +32,39 @@ func TestFilter(t *testing.T) {
 }
 
 func TestMap(t *testing.T) {
-	is := assert.New(t)
+  is := assert.New(t)
 
-	result1 := Map[int, string]([]int{1, 2, 3, 4}, func(x int, _ int) string {
-		return "Hello"
-	})
-	result2 := Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
-		return strconv.FormatInt(x, 10)
-	})
+  result1 := Map[int, string]([]int{1, 2, 3, 4}, func(x int, _ int) string {
+    return "Hello"
+  })
+  result2 := Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+    return strconv.FormatInt(x, 10)
+  })
 
-	is.Equal(len(result1), 4)
-	is.Equal(len(result2), 4)
-	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
-	is.Equal(result2, []string{"1", "2", "3", "4"})
+  is.Equal(len(result1), 4)
+  is.Equal(len(result2), 4)
+  is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
+  is.Equal(result2, []string{"1", "2", "3", "4"})
+}
+
+func TestFlatMap(t *testing.T) {
+  is := assert.New(t)
+
+  result1 := FlatMap[int, string]([]int{0, 1, 2, 3, 4}, func(x int, _ int) []string {
+    return []string{"Hello"}
+  })
+  result2 := FlatMap[int64, string]([]int64{0, 1, 2, 3, 4}, func(x int64, _ int) []string {
+    result := make([]string, 0, x)
+    for i := int64(0); i < x; i++ {
+      result = append(result, strconv.FormatInt(x, 10))
+    }
+    return result
+  })
+
+  is.Equal(len(result1), 5)
+  is.Equal(len(result2), 10)
+  is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello", "Hello"})
+  is.Equal(result2, []string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"})
 }
 
 func TestTimes(t *testing.T) {
