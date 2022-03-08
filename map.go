@@ -59,3 +59,14 @@ func Assign[K comparable, V any](maps ...map[K]V) map[K]V {
 
 	return out
 }
+
+// MapValues manipulates a map values and transforms it to a map of another type.
+func MapValues[K comparable, V any, R any](in map[K]V, iteratee func(V, K) R) map[K]R {
+	result := map[K]R{}
+
+	for k, v := range in {
+		result[k] = iteratee(v, k)
+	}
+
+	return result
+}
