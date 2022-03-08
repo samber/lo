@@ -12,7 +12,7 @@ func Contains[T comparable](collection []T, element T) bool {
 }
 
 // ContainsBy returns true if predicate function return true.
-func ContainsBy[T any](collection []T, predicate func(T)bool) bool {
+func ContainsBy[T any](collection []T, predicate func(T) bool) bool {
 	for _, item := range collection {
 		if predicate(item) {
 			return true
