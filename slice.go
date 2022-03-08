@@ -19,10 +19,10 @@ func Filter[V any](collection []V, predicate func(V, int) bool) []V {
 
 // Map manipulates a slice and transforms it to a slice of another type.
 func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
-	result := make([]R, 0, len(collection))
+	result := make([]R, len(collection))
 
 	for i, item := range collection {
-		result = append(result, iteratee(item, i))
+		result[i] = iteratee(item, i)
 	}
 
 	return result
