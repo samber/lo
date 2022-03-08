@@ -134,7 +134,7 @@ import lop "github.com/samber/lo/parallel"
 
 lop.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
     return strconv.FormatInt(x, 10)
-}, 2)
+})
 // []string{"1", "2", "3", "4"}
 ```
 
