@@ -11,6 +11,17 @@ func Contains[T comparable](collection []T, element T) bool {
 	return false
 }
 
+// ContainsBy returns true if predicate function return true.
+func ContainsBy[T any](collection []T, predicate func(T)bool) bool {
+	for _, item := range collection {
+		if predicate(item) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // Every returns true if all elements of a subset are contained into a collection.
 func Every[T comparable](collection []T, subset []T) bool {
 	for _, elem := range subset {
