@@ -40,6 +40,8 @@ names := lo.Uniq[string]([]string{"Samuel", "Marc", "Samuel"})
 // []string{"Samuel", "Marc"}
 ```
 
+Most of time, the compiler will be able to infer the Type, so you can just call: `lo.Uniq([]string{...})`.
+
 ## 🤠 Spec
 
 GoDoc: [https://godoc.org/github.com/samber/lo](https://godoc.org/github.com/samber/lo)
