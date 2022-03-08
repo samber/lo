@@ -50,6 +50,7 @@ Supported helpers for slices:
 
 - Filter
 - Map
+- FlatMap
 - Reduce
 - ForEach
 - Times
@@ -72,6 +73,7 @@ Supported helpers for maps:
 - Entries
 - FromEntries
 - Assign (merge of maps)
+- MapValues
 
 Supported helpers for tuples:
 
@@ -81,6 +83,7 @@ Supported helpers for tuples:
 Supported intersection helpers:
 
 - Contains
+- ContainsBy
 - Every
 - Some
 - Intersect
@@ -135,6 +138,20 @@ lop.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 // []string{"1", "2", "3", "4"}
 ```
 
+### FlatMap
+
+Manipulates a slice and transforms and flattens it to a slice of another type.
+
+```go
+lo.FlatMap[int, string]([]int{0, 1, 2}, func(x int, _ int) []string {
+	return []string{
+		strconv.FormatInt(x, 10),
+		strconv.FormatInt(x, 10),
+	}
+})
+// []string{"0", "0", "1", "1", "2", "2"}
+```
+
 ### Filter
 
 Iterates over elements of collection, returning an array of all elements predicate returns truthy for.
@@ -152,6 +169,17 @@ Returns true if an element is present in a collection.
 
 ```go
 present := lo.Contains[int]([]int{0, 1, 2, 3, 4, 5}, 5)
+// true
+```
+
+### Contains
+
+Returns true if predicate function return true.
+
+```go
+present := lo.ContainsBy[int]([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
+    return x == 3
+})
 // true
 ```
 
@@ -446,6 +474,19 @@ mergedMaps := lo.Assign[string, int](
     map[string]int{"b": 3, "c": 4},
 )
 // map[string]int{"a": 1, "b": 3, "c": 4}
+```
+
+### MapValues
+
+Manipulates a map values and transforms it to a map of another type.
+
+```go
+m1 := map[int]int64{1: 1, 2: 2, 3: 3}
+
+m2 := lo.MapValues[int, int64, string](m, func(x int64, _ int) string {
+	return strconv.FormatInt(x, 10)
+})
+// map[int]string{1: "1", 2: "2", 3: "3"}
 ```
 
 ### Zip2 -> Zip9
