@@ -6,15 +6,15 @@
 
 ✨ **`lo` is a Lodash-style Go library based on Go 1.18+ Generics.**
 
-This project have started as an experiment to discover generics implementation. It may look like Lodash in some aspects. I used to code with the awesome [go-funk](https://github.com/thoas/go-funk) package, but it uses reflection and therefore is not typesafe.
+This project started as an experiment with the new generics implementation. It may look like [Lodash](https://github.com/lodash/lodash) in some aspects. I used to code with the fantastic ["go-funk"](https://github.com/thoas/go-funk) package, but "go-funk" uses reflection and therefore is not typesafe.
 
-As expected, benchmarks demonstrate that generics will be much faster than implementations based on reflect stdlib package. Benchmarks also shows similar performances to pure `for` loops. [See below](#-benchmark).
+As expected, benchmarks demonstrate that generics will be much faster than implementations based on the "reflect" package. Benchmarks also show similar performance gains compared to pure `for` loops. [See below](#-benchmark).
 
-In the future, 5 to 10 helpers will overlap with those coming into the Go standard library (under package names `slices` and `maps`). Anyway I feel this library legitimate to offer many more such useful abstractions.
+In the future, 5 to 10 helpers will overlap with those coming into the Go standard library (under package names `slices` and `maps`). I feel this library is legitimate and offers many more valuable abstractions.
 
 ### Why this name?
 
-I wanted a **short name**, similar to "Lodash", and no Go package currently use this name.
+I wanted a **short name**, similar to "Lodash" and no Go package currently uses this name.
 
 ## 🚀 Install
 
@@ -24,7 +24,7 @@ go get github.com/samber/lo
 
 ## 💡 Usage
 
-You can import `lo` using a basic statement:
+You can import `lo` using:
 
 ```go
 import (
@@ -40,7 +40,7 @@ names := lo.Uniq[string]([]string{"Samuel", "Marc", "Samuel"})
 // []string{"Samuel", "Marc"}
 ```
 
-Most of time, the compiler will be able to infer the Type, so you can just call: `lo.Uniq([]string{...})`.
+Most of the time, the compiler will be able to infer the type so that you can call: `lo.Uniq([]string{...})`.
 
 ## 🤠 Spec
 
@@ -116,7 +116,7 @@ Constraints:
 
 ### Map
 
-Manipulates a slice and transforms it to a slice of another type:
+Manipulates a slice of one type and transforms it into a slice of another type:
 
 ```go
 import "github.com/samber/lo"
@@ -127,7 +127,7 @@ lo.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 // []string{"1", "2", "3", "4"}
 ```
 
-Parallel processing: like `lo.Map()`, but mapper is called in goroutine. Results are returned in the same order.
+Parallel processing: like `lo.Map()`, but the mapper function is called in a goroutine. Results are returned in the same order.
 
 ```go
 import lop "github.com/samber/lo/parallel"
@@ -154,7 +154,7 @@ lo.FlatMap[int, string]([]int{0, 1, 2}, func(x int, _ int) []string {
 
 ### Filter
 
-Iterates over elements of collection, returning an array of all elements predicate returns truthy for.
+Iterates over a collection and returns an array of all the elements the predicate function returns `true` for.
 
 ```go
 even := lo.Filter[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
@@ -174,7 +174,7 @@ present := lo.Contains[int]([]int{0, 1, 2, 3, 4, 5}, 5)
 
 ### Contains
 
-Returns true if predicate function return true.
+Returns true if the predicate function returns `true`.
 
 ```go
 present := lo.ContainsBy[int]([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
@@ -185,7 +185,7 @@ present := lo.ContainsBy[int]([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
 
 ### Reduce
 
-Reduces collection to a value which is the accumulated result of running each element in collection through accumulator, where each successive invocation is supplied the return value of the previous.
+Reduces a collection to a single value. The value is calculated by accumulating the result of running each element in the collection through an accumulator function. Each successive invocation is supplied with the return value returned by the previous call.
 
 ```go
 sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
@@ -196,7 +196,7 @@ sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int
 
 ### ForEach
 
-Iterates over elements of collection and invokes iteratee for each element.
+Iterates over elements of a collection and invokes the function over each element.
 
 ```go
 import "github.com/samber/lo"
@@ -207,7 +207,7 @@ lo.ForEach[string]([]string{"hello", "world"}, func(x string, _ int) {
 // prints "hello\nworld\n"
 ```
 
-Parallel processing: like `lo.ForEach()`, but callback is called in goroutine.
+Parallel processing: like `lo.ForEach()`, but the callback is called as a goroutine.
 
 ```go
 import lop "github.com/samber/lo/parallel"
