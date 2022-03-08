@@ -47,6 +47,26 @@ func TestMap(t *testing.T) {
 	is.Equal(result2, []string{"1", "2", "3", "4"})
 }
 
+func TestFlatMap(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := FlatMap[int, string]([]int{0, 1, 2, 3, 4}, func(x int, _ int) []string {
+		return []string{"Hello"}
+	})
+	result2 := FlatMap[int64, string]([]int64{0, 1, 2, 3, 4}, func(x int64, _ int) []string {
+		result := make([]string, 0, x)
+		for i := int64(0); i < x; i++ {
+			result = append(result, strconv.FormatInt(x, 10))
+		}
+		return result
+	})
+
+	is.Equal(len(result1), 5)
+	is.Equal(len(result2), 10)
+	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello", "Hello"})
+	is.Equal(result2, []string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"})
+}
+
 func TestTimes(t *testing.T) {
 	is := assert.New(t)
 
@@ -124,7 +144,7 @@ func TestChunk(t *testing.T) {
 func TestPartitionBy(t *testing.T) {
 	is := assert.New(t)
 
-	oddEven := func (x int) string {
+	oddEven := func(x int) string {
 		if x < 0 {
 			return "negative"
 		} else if x%2 == 0 {
