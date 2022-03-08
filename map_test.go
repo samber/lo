@@ -2,6 +2,7 @@ package lo
 
 import (
 	"sort"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -71,4 +72,20 @@ func TestAssign(t *testing.T) {
 
 	is.Len(result1, 3)
 	is.Equal(result1, map[string]int{"a": 1, "b": 3, "c": 4})
+}
+
+func TestMapValues(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := MapValues[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+		return "Hello"
+	})
+	result2 := MapValues[int, int64, string](map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}, func(x int64, _ int) string {
+		return strconv.FormatInt(x, 10)
+	})
+
+	is.Equal(len(result1), 4)
+	is.Equal(len(result2), 4)
+	is.Equal(result1, map[int]string{1: "Hello", 2: "Hello", 3: "Hello", 4: "Hello"})
+	is.Equal(result2, map[int]string{1: "1", 2: "2", 3: "3", 4: "4"})
 }
