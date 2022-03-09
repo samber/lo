@@ -51,6 +51,7 @@ Supported helpers for slices:
 - Filter
 - Map
 - FlatMap
+- MapAsync
 - Reduce
 - ForEach
 - Times
