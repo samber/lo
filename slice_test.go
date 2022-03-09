@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"errors"
 	"strconv"
 	"testing"
 
@@ -65,6 +66,23 @@ func TestFlatMap(t *testing.T) {
 	is.Equal(len(result2), 10)
 	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello", "Hello"})
 	is.Equal(result2, []string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"})
+}
+func TestMapAsync(t *testing.T) {
+	is := assert.New(t)
+	arr := []int{1, 2, 3, 4, 6}
+	result1, err := MapAsync(arr, func(t int, i int) (int, error) {
+		return t * 2, nil
+	})
+	is.NoError(err)
+	is.Equal(len(result1), len(arr))
+	for idx, item := range result1 {
+		is.Equal(item, arr[idx]*2)
+	}
+	_, err = MapAsync(arr, func(t int, i int) (int, error) {
+		return 0, errors.New("test error")
+	})
+	is.Error(err)
+	is.Equal(err.Error(), "test error")
 }
 
 func TestTimes(t *testing.T) {

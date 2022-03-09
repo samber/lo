@@ -2,6 +2,8 @@ package lo
 
 import (
 	"math/rand"
+
+	"golang.org/x/sync/errgroup"
 )
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
@@ -37,6 +39,25 @@ func FlatMap[T any, R any](collection []T, iteratee func(T, int) []R) []R {
 	}
 
 	return result
+}
+
+// MapAsync map a slice like Map. but transforms func return error as last param
+func MapAsync[T any, R any](collection []T, iteratee func(T, int) (R, error)) ([]R, error) {
+	group := errgroup.Group{}
+	result := make([]R, len(collection))
+	for i, item := range collection {
+		i, item := i, item
+		group.Go(func() error {
+			if r, err := iteratee(item, i); err != nil {
+				return err
+			} else {
+				result[i] = r
+				return nil
+			}
+		})
+	}
+	err := group.Wait()
+	return result, err
 }
 
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
