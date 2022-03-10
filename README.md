@@ -565,6 +565,15 @@ left, right := Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 // []int{}, []int{}
 ```
 
+### Union
+
+Returns all distinct elements from both collections. Result will not change the order of elements relatively.
+
+```go
+union := lo.Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+// []int{0, 1, 2, 3, 4, 5, 10}
+```
+
 ### IndexOf
 
 Returns the index at which the first occurrence of a value is found in an array or return -1 if the value cannot be found.
