@@ -88,6 +88,7 @@ Supported intersection helpers:
 - Some
 - Intersect
 - Difference
+- Union
 
 Supported search helpers:
 
