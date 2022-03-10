@@ -4,32 +4,22 @@ import "golang.org/x/exp/constraints"
 
 // Range creates an array of numbers (positive and/or negative) with given length.
 func Range(elementNum int) []int {
-	if elementNum >= 0 {
-		result := make([]int, elementNum)
-		for i := 0; i < elementNum; i++ {
-			result[i] = i
-		}
-		return result
-	}
-	result := make([]int, -elementNum)
-	for i := 0; i < -elementNum; i++ {
-		result[i] = -i
+	length := If(elementNum < 0, -elementNum).Else(elementNum)
+	result := make([]int, length)
+	step := If(elementNum < 0, -1).Else(1)
+	for i, j := 0, 0; i < length; i, j = i+1, j+step {
+		result[i] = j
 	}
 	return result
 }
 
 // RangeFrom creates an array of numbers from start with specified length.
 func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum int) []T {
-	if elementNum >= 0 {
-		result := make([]T, elementNum)
-		for i := 0; i < elementNum; i++ {
-			result[i] = T(i) + start
-		}
-		return result
-	}
-	result := make([]T, -elementNum)
-	for i := 0; i < -elementNum; i++ {
-		result[i] = start - T(i)
+	length := If(elementNum < 0, -elementNum).Else(elementNum)
+	result := make([]T, length)
+	step := If(elementNum < 0, -1).Else(1)
+	for i, j := 0, start; i < length; i, j = i+1, j+T(step) {
+		result[i] = j
 	}
 	return result
 }
