@@ -65,6 +65,10 @@ Supported helpers for slices:
 - Fill
 - Repeat
 - ToMap
+- Drop
+- DropRight
+- DropWhile
+- DropRightWhile
 
 Supported helpers for maps:
 
@@ -408,6 +412,46 @@ m := lo.ToMap[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
     return len(str)
 })
 // map[int]string{1: "a", 2: "aa", 3: "aaa"}
+```
+
+### Drop
+
+Drops n elements from the beginning of a slice or array.
+
+```go
+l := lo.Drop[int]([]int{0, 1, 2, 3, 4, 5}, 2)
+// []int{2, 3, 4, 5}
+```
+
+### DropRight
+
+Drops n elements from the end of a slice or array.
+
+```go
+l := lo.DropRight[int]([]int{0, 1, 2, 3, 4, 5}, 2)
+// []int{0, 1, 2, 3}
+```
+
+### DropWhile
+
+Drop elements from the beginning of a slice or array while the predicate returns true.
+
+```go
+l := lo.DropWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool {
+	return len(val) <= 2
+})
+// []string{"aaa", "aa", "a"}
+```
+
+### DropRightWhile
+
+Drop elements from the end of a slice or array while the predicate returns true.
+
+```go
+l := lo.DropRightWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool {
+	return len(val) <= 2
+})
+// []string{"a", "aa", "aaa"}
 ```
 
 ### Keys
