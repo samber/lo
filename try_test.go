@@ -20,18 +20,18 @@ func TestTry(t *testing.T) {
 func TestTryWithErrorValue(t *testing.T) {
 	is := assert.New(t)
 
-	err, val := TryWithErrorValue(func() error {
+	err, ok := TryWithErrorValue(func() error {
 		panic("error")
 		return nil
 	})
-	is.False(err)
-	is.Equal("error", val)
+	is.False(ok)
+	is.Equal("error", err)
 
-	err, val = TryWithErrorValue(func() error {
+	err, ok = TryWithErrorValue(func() error {
 		return nil
 	})
-	is.True(err)
-	is.Equal(nil, val)
+	is.True(ok)
+	is.Equal(nil, err)
 }
 
 func TestTryCatch(t *testing.T) {
