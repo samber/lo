@@ -93,3 +93,17 @@ func TestDifference(t *testing.T) {
 	is.Equal(left3, []int{})
 	is.Equal(right3, []int{})
 }
+
+func TestUnion(t *testing.T) {
+	is := assert.New(t)
+	result1 := Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+	result2 := Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{6, 7})
+	result3 := Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{})
+	result4 := Union[int]([]int{0, 1, 2}, []int{0, 1, 2})
+	result5 := Union[int]([]int{}, []int{})
+	is.Equal(result1, []int{0, 1, 2, 3, 4, 5, 10})
+	is.Equal(result2, []int{0, 1, 2, 3, 4, 5, 6, 7})
+	is.Equal(result3, []int{0, 1, 2, 3, 4, 5})
+	is.Equal(result4, []int{0, 1, 2})
+	is.Equal(result5, []int{})
+}
