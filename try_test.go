@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -14,6 +15,75 @@ func TestTry(t *testing.T) {
 	}))
 	is.True(Try(func() error {
 		return nil
+	}))
+}
+
+func TestTryFunctions(t *testing.T) {
+	is := assert.New(t)
+
+	is.True(Try2(func() (string, error) {
+		return "", nil
+	}))
+
+	is.True(Try3(func() (string, string, error) {
+		return "", "", nil
+	}))
+
+	is.True(Try4(func() (string, string, string, error) {
+		return "", "", "", nil
+	}))
+
+	is.True(Try5(func() (string, string, string, string, error) {
+		return "", "", "", "", nil
+	}))
+
+	is.True(Try6(func() (string, string, string, string, string, error) {
+		return "", "", "", "", "", nil
+	}))
+
+	is.False(Try2(func() (string, error) {
+		panic("error")
+		return "", nil
+	}))
+
+	is.False(Try3(func() (string, string, error) {
+		panic("error")
+		return "", "", nil
+	}))
+
+	is.False(Try4(func() (string, string, string, error) {
+		panic("error")
+		return "", "", "", nil
+	}))
+
+	is.False(Try5(func() (string, string, string, string, error) {
+		panic("error")
+		return "", "", "", "", nil
+	}))
+
+	is.False(Try6(func() (string, string, string, string, string, error) {
+		panic("error")
+		return "", "", "", "", "", nil
+	}))
+
+	is.False(Try2(func() (string, error) {
+		return "", errors.New("foo")
+	}))
+
+	is.False(Try3(func() (string, string, error) {
+		return "", "", errors.New("foo")
+	}))
+
+	is.False(Try4(func() (string, string, string, error) {
+		return "", "", "", errors.New("foo")
+	}))
+
+	is.False(Try5(func() (string, string, string, string, error) {
+		return "", "", "", "", errors.New("foo")
+	}))
+
+	is.False(Try6(func() (string, string, string, string, string, error) {
+		return "", "", "", "", "", errors.New("foo")
 	}))
 }
 
