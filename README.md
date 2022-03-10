@@ -110,6 +110,7 @@ Other functional programming helpers:
 - ToPtr
 - ToSlicePtr
 - Attempt
+- Range / RangeFrom / RangeOpen
 
 Constraints:
 
@@ -792,6 +793,32 @@ iter, err := lo.Attempt(0, func(i int) error {
 })
 // 43
 // nil
+```
+
+### Range / RangeFrom / RangeOpen
+Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+```go
+result := Range(4)
+// [0, 1, 2, 3]
+
+result := Range(-4);
+// [0, -1, -2, -3]
+ 
+result := RangeFrom(1, 5);
+// [1, 2, 3, 4]
+ 
+result := RangeOpen(0, 20, 5);
+// [0, 5, 10, 15]
+
+result := RangeOpen(0, -4, -1);
+// [0, -1, -2, -3]
+
+// default step: 1
+result := RangeOpen(1, 4, 0);
+// [1, 2, 3]
+
+result := Range(0);
+// []
 ```
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
