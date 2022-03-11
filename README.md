@@ -1,6 +1,6 @@
 # lo
 
-[![Build Status](https://secure.travis-ci.org/samber/lo.svg?branch=master)](http://travis-ci.org/samber/lo)
+![Build Status](https://github.com/samber/lo/actions/workflows/go.yml/badge.svg)
 [![GoDoc](https://godoc.org/github.com/samber/lo?status.svg)](https://pkg.go.dev/github.com/samber/lo)
 [![Go report](https://goreportcard.com/badge/github.com/samber/lo)](https://goreportcard.com/report/github.com/samber/lo)
 
