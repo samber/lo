@@ -8,6 +8,22 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestFilter(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := Filter[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+		return x%2 == 0
+	})
+
+	is.ElementsMatch(r1, []int{2, 4})
+
+	r2 := Filter[string]([]string{"", "foo", "", "bar", ""}, func(x string, _ int) bool {
+		return len(x) > 0
+	})
+
+	is.ElementsMatch(r2, []string{"foo", "bar"})
+}
+
 func TestMap(t *testing.T) {
 	is := assert.New(t)
 
@@ -60,7 +76,7 @@ func TestGroupBy(t *testing.T) {
 func TestPartitionBy(t *testing.T) {
 	is := assert.New(t)
 
-	oddEven := func (x int) string {
+	oddEven := func(x int) string {
 		if x < 0 {
 			return "negative"
 		} else if x%2 == 0 {
