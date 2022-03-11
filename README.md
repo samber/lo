@@ -78,6 +78,7 @@ Supported helpers for maps:
 - FromEntries
 - Assign (merge of maps)
 - MapValues
+- KeyBy
 
 Supported helpers for tuples:
 
@@ -534,6 +535,28 @@ m2 := lo.MapValues[int, int64, string](m, func(x int64, _ int) string {
 // map[int]string{1: "1", 2: "2", 3: "3"}
 ```
 
+### KeyValue
+
+Creates an map composed of keys generated from the result of running each element of collection through iteratee. This method is highly inspired by lodash's [keyBy](https://lodash.com/docs/4.17.15#keyBy)
+
+```go
+type Character struct {
+	dir  string
+	code int
+}
+characters := []Character{
+    {dir: "left", code: 97},
+    {dir: "right", code: 100},
+}
+
+result := KeyBy[Character, string](characters, func(char Character) string {
+    return string(rune(char.code))
+})
+
+//map[a:{dir:left code:97} d:{dir:right code:100}]
+
+```
+
 ### Zip2 -> Zip9
 
 Zip creates a slice of grouped elements, the first of which contains the first elements of the given arrays, the second of which contains the second elements of the given arrays, and so on.
@@ -885,7 +908,6 @@ ok  	github.com/samber/lo	6.657s
 - `lo.Map` is 4% slower than `for`.
 - `lop.Map` is slower than `lo.Map` because it implies more memory allocation and locks. `lop.Map` will be usefull for long-running callbacks, such as i/o bound processing.
 - `for` beats other implementations for memory and CPU.
-
 
 ## 🤝 Contributing
 
