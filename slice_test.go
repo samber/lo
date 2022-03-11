@@ -219,3 +219,19 @@ func TestToMap(t *testing.T) {
 
 	is.Equal(result1, map[int]string{1: "a", 2: "aa", 3: "aaa"})
 }
+
+func TestReject(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+		return x%2 == 0
+	})
+
+	is.Equal(r1, []int{1, 3})
+
+	r2 := Reject[string]([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
+		return len(x) > 3
+	})
+
+	is.Equal(r2, []string{"foo", "bar"})
+}

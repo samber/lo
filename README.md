@@ -69,6 +69,7 @@ Supported helpers for slices:
 - DropRight
 - DropWhile
 - DropRightWhile
+- Reject
 
 Supported helpers for maps:
 
@@ -454,6 +455,17 @@ l := lo.DropRightWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val 
 	return len(val) <= 2
 })
 // []string{"a", "aa", "aaa"}
+```
+
+### Reject
+
+the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
+
+```go
+odd := lo.Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+    return x%2 == 0
+})
+// []int{1, 3}
 ```
 
 ### Keys
@@ -849,20 +861,22 @@ iter, err := lo.Attempt(0, func(i int) error {
 ```
 
 ### Range / RangeFrom / RangeWithSteps
+
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+
 ```go
 result := Range(4)
 // [0, 1, 2, 3]
 
 result := Range(-4);
 // [0, -1, -2, -3]
- 
+
 result := RangeFrom(1, 5);
 // [1, 2, 3, 4]
 
 result := RangeFrom[float64](1.0, 5);
 // [1.0, 2.0, 3.0, 4.0]
- 
+
 result := RangeWithSteps(0, 20, 5);
 // [0, 5, 10, 15]
 
@@ -914,7 +928,6 @@ ok  	github.com/samber/lo	6.657s
 - `lo.Map` is 4% slower than `for`.
 - `lop.Map` is slower than `lo.Map` because it implies more memory allocation and locks. `lop.Map` will be usefull for long-running callbacks, such as i/o bound processing.
 - `for` beats other implementations for memory and CPU.
-
 
 ## 🤝 Contributing
 
