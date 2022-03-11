@@ -110,6 +110,7 @@ Other functional programming helpers:
 - ToPtr
 - ToSlicePtr
 - Attempt
+- Debounce
 - Range / RangeFrom / RangeWithSteps
 
 Constraints:
@@ -793,6 +794,22 @@ iter, err := lo.Attempt(0, func(i int) error {
 })
 // 43
 // nil
+```
+
+### Debounce
+creates a debounced instance that delays invoking func given until after wait milliseconds have elapsed.
+```go
+var counter uint64
+f := func() {
+    atomic.AddUint64(&counter, 1)
+}
+debounce := newDebounce(100 * time.Millisecond)
+// in each loop, func given is only invoked once time
+for i := 0; i < 10; i++ {
+    debounce(f, f, f, f, f)
+    time.Sleep(200 * time.Millisecond)
+}
+// counter is 10
 ```
 
 ### Range / RangeFrom / RangeWithSteps
