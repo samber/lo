@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/tools/go/expect"
 )
 
 func TestKeys(t *testing.T) {
@@ -88,4 +89,24 @@ func TestMapValues(t *testing.T) {
 	is.Equal(len(result2), 4)
 	is.Equal(result1, map[int]string{1: "Hello", 2: "Hello", 3: "Hello", 4: "Hello"})
 	is.Equal(result2, map[int]string{1: "1", 2: "2", 3: "3", 4: "4"})
+}
+
+
+type Character struct {
+	dir  string
+	code int
+}
+func TestKeyBy(t *testing.T){
+	r1 := KeyBy[Character, string]([]Character{
+		{dir:"left", code:97},
+		{dir:"right", code:100},
+	},func(char Character)string {
+		return string(rune(char.code))
+	})
+
+	expect := Character{dir:"left",code:97}
+
+	if r1["a"] != expect {
+		t.Fatalf("Expect %+v, got %+v", expect, r1["a"] )
+	}
 }
