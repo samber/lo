@@ -13,11 +13,11 @@ type Debounce struct {
 }
 
 func (d *Debounce) Add(f func()) *Debounce {
+	d.mu.Lock()
+	defer d.mu.Unlock()
 	if d.done {
 		return d
 	}
-	d.mu.Lock()
-	defer d.mu.Unlock()
 	if d.timer != nil {
 		d.timer.Stop()
 	}
@@ -26,6 +26,8 @@ func (d *Debounce) Add(f func()) *Debounce {
 }
 
 func (d *Debounce) Cancel() {
+	d.mu.Lock()
+	defer d.mu.Unlock()
 	if d.timer != nil {
 		d.timer.Stop()
 		d.timer = nil
