@@ -5,20 +5,32 @@ import (
 	"time"
 )
 
-type debounce struct {
+type Debounce struct {
 	after time.Duration
-	mu    sync.Mutex
+	mu    *sync.Mutex
 	timer *time.Timer
+	done  bool
 }
 
-func (d *debounce) register(f func()) {
+func (d *Debounce) Add(f func()) *Debounce {
+	if d.done {
+		return d
+	}
 	d.mu.Lock()
 	defer d.mu.Unlock()
-
 	if d.timer != nil {
 		d.timer.Stop()
 	}
 	d.timer = time.AfterFunc(d.after, f)
+	return d
+}
+
+func (d *Debounce) Cancel() {
+	if d.timer != nil {
+		d.timer.Stop()
+		d.timer = nil
+	}
+	d.done = true
 }
 
 // Attempt invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a sucessfull response is returned.
@@ -39,16 +51,9 @@ func Attempt(maxIteration int, f func(int) error) (int, error) {
 // throttle ?
 
 // NewDebounce creates a debounced instance that delays invoking func given until after wait milliseconds have elapsed.
-func NewDebounce(duration time.Duration) func(f ...func()) {
-	d := debounce{
+func NewDebounce(duration time.Duration) *Debounce {
+	return &Debounce{
+		mu:    new(sync.Mutex),
 		after: duration,
-	}
-	return func(f ...func()) {
-		if len(f) == 0 {
-			return
-		}
-		for i := 0; i < len(f); i++ {
-			d.register(f[i])
-		}
 	}
 }

@@ -799,17 +799,24 @@ iter, err := lo.Attempt(0, func(i int) error {
 ### Debounce
 creates a debounced instance that delays invoking func given until after wait milliseconds have elapsed.
 ```go
-var counter uint64
 f := func() {
-    atomic.AddUint64(&counter, 1)
+    println("1. Called once after 100ms when func stopped invoking!")
 }
-debounce := newDebounce(100 * time.Millisecond)
-// in each loop, func given is only invoked once time
-for i := 0; i < 10; i++ {
-    debounce(f, f, f, f, f)
+d := lo.NewDebounce(100 * time.Millisecond)
+// f is invoked only 3 times
+for i := 0; i < 3; i++ {
+    // No matter how many times you call it, it will be invoked only the last time after 100ms
+    for j := 0; j < 10; j++ {
+        d.Add(f).Add(f).Add(f).Add(f)
+    }
     time.Sleep(200 * time.Millisecond)
 }
-// counter is 10
+d.Cancel()
+// f will never be invoked again
+for i := 0; i < 3; i++ {
+    d.Add(f).Add(f).Add(f).Add(f)
+    time.Sleep(200 * time.Millisecond)
+}
 ```
 
 ### Range / RangeFrom / RangeWithSteps

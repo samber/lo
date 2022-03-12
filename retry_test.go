@@ -2,7 +2,6 @@ package lo
 
 import (
 	"fmt"
-	"sync/atomic"
 	"testing"
 	"time"
 
@@ -50,33 +49,46 @@ func TestAttempt(t *testing.T) {
 }
 
 func TestDebounce(t *testing.T) {
-	is := assert.New(t)
-	var (
-		counter1 uint64
-		counter2 uint64
-	)
 	f1 := func() {
-		atomic.AddUint64(&counter1, 1)
+		println("1. Called once after 10ms when func stopped invoking!")
 	}
 	f2 := func() {
-		atomic.AddUint64(&counter2, 1)
+		println("2. Called once after 10ms when func stopped invoking!")
+	}
+	f3 := func() {
+		println("3. Called once after 10ms when func stopped invoking!")
 	}
 
-	debounced := NewDebounce(100 * time.Millisecond)
+	d1 := NewDebounce(10 * time.Millisecond)
 
+	// execute 3 times
 	for i := 0; i < 3; i++ {
-		// just execute one time in 100 milliseconds
+
 		for j := 0; j < 10; j++ {
-			debounced(f1)
+			d1.Add(f1)
 		}
-		time.Sleep(200 * time.Millisecond)
+		time.Sleep(20 * time.Millisecond)
 	}
+
+	d2 := NewDebounce(10 * time.Millisecond)
+
+	// execute once because it is always invoked and only last invoke is worked after 100ms
 	for i := 0; i < 3; i++ {
-		debounced(f2, f2, f2, f2, f2, f2)
-		time.Sleep(200 * time.Millisecond)
+		d2.Add(f2).Add(f2).Add(f2).Add(f2).Add(f2)
+		time.Sleep(5 * time.Millisecond)
 	}
-	result1 := int(atomic.LoadUint64(&counter1))
-	result2 := int(atomic.LoadUint64(&counter2))
-	is.Equal(result1, 3)
-	is.Equal(result2, 3)
+
+	time.Sleep(10 * time.Millisecond)
+
+	// execute once because it is canceled after 200ms.
+	d3 := NewDebounce(10 * time.Millisecond)
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 10; j++ {
+			d3.Add(f3)
+		}
+		time.Sleep(20 * time.Millisecond)
+		if i == 0 {
+			d3.Cancel()
+		}
+	}
 }
