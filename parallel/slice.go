@@ -15,12 +15,14 @@ func Filter[V any](collection []V, predicate func(V, int) bool) []V {
 
 	for i, item := range collection {
 		go func(_item V, _i int) {
-			if predicate(_item, _i) {
-				mu.Lock()
-				result = append(result, _item)
+			key := predicate(_item, _i)
+			mu.Lock()
 
-				mu.Unlock()
+			if key {
+				result = append(result, _item)
 			}
+
+			mu.Unlock()
 
 			wg.Done()
 		}(item, i)
