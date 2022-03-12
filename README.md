@@ -406,15 +406,28 @@ initializedSlice := lo.Repeat[foo](2, foo{"a"})
 // []foo{foo{"a"}, foo{"a"}}
 ```
 
-### ToMap
+### KeyBy
 
 Transforms a slice or an array of structs to a map based on a pivot callback.
 
 ```go
-m := lo.ToMap[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
+m := lo.KeyBy[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
     return len(str)
 })
 // map[int]string{1: "a", 2: "aa", 3: "aaa"}
+
+type Character struct {
+	dir  string
+	code int
+}
+characters := []Character{
+    {dir: "left", code: 97},
+    {dir: "right", code: 100},
+}
+result := KeyBy[Character, string](characters, func(char Character) string {
+    return string(rune(char.code))
+})
+//map[a:{dir:left code:97} d:{dir:right code:100}]
 ```
 
 ### Drop
@@ -534,28 +547,6 @@ m2 := lo.MapValues[int, int64, string](m, func(x int64, _ int) string {
 	return strconv.FormatInt(x, 10)
 })
 // map[int]string{1: "1", 2: "2", 3: "3"}
-```
-
-### KeyValue
-
-Creates an map composed of keys generated from the result of running each element of collection through iteratee. This method is highly inspired by lodash's [keyBy](https://lodash.com/docs/4.17.15#keyBy)
-
-```go
-type Character struct {
-	dir  string
-	code int
-}
-characters := []Character{
-    {dir: "left", code: 97},
-    {dir: "right", code: 100},
-}
-
-result := KeyBy[Character, string](characters, func(char Character) string {
-    return string(rune(char.code))
-})
-
-//map[a:{dir:left code:97} d:{dir:right code:100}]
-
 ```
 
 ### Zip2 -> Zip9
@@ -872,20 +863,22 @@ iter, err := lo.Attempt(0, func(i int) error {
 ```
 
 ### Range / RangeFrom / RangeWithSteps
+
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+
 ```go
 result := Range(4)
 // [0, 1, 2, 3]
 
 result := Range(-4);
 // [0, -1, -2, -3]
- 
+
 result := RangeFrom(1, 5);
 // [1, 2, 3, 4]
 
 result := RangeFrom[float64](1.0, 5);
 // [1.0, 2.0, 3.0, 4.0]
- 
+
 result := RangeWithSteps(0, 20, 5);
 // [0, 5, 10, 15]
 
