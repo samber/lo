@@ -210,10 +210,10 @@ func TestRepeat(t *testing.T) {
 	is.Equal(result2, []foo{})
 }
 
-func TestToMap(t *testing.T) {
+func TestKeyBy(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := ToMap[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
+	result1 := KeyBy[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
 		return len(str)
 	})
 

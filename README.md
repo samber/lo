@@ -64,7 +64,7 @@ Supported helpers for slices:
 - Reverse
 - Fill
 - Repeat
-- ToMap
+- KeyBy
 - Drop
 - DropRight
 - DropWhile
@@ -405,15 +405,28 @@ initializedSlice := lo.Repeat[foo](2, foo{"a"})
 // []foo{foo{"a"}, foo{"a"}}
 ```
 
-### ToMap
+### KeyBy
 
 Transforms a slice or an array of structs to a map based on a pivot callback.
 
 ```go
-m := lo.ToMap[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
+m := lo.KeyBy[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
     return len(str)
 })
 // map[int]string{1: "a", 2: "aa", 3: "aaa"}
+
+type Character struct {
+	dir  string
+	code int
+}
+characters := []Character{
+    {dir: "left", code: 97},
+    {dir: "right", code: 100},
+}
+result := KeyBy[Character, string](characters, func(char Character) string {
+    return string(rune(char.code))
+})
+//map[a:{dir:left code:97} d:{dir:right code:100}]
 ```
 
 ### Drop
@@ -849,20 +862,22 @@ iter, err := lo.Attempt(0, func(i int) error {
 ```
 
 ### Range / RangeFrom / RangeWithSteps
+
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+
 ```go
 result := Range(4)
 // [0, 1, 2, 3]
 
 result := Range(-4);
 // [0, -1, -2, -3]
- 
+
 result := RangeFrom(1, 5);
 // [1, 2, 3, 4]
 
 result := RangeFrom[float64](1.0, 5);
 // [1.0, 2.0, 3.0, 4.0]
- 
+
 result := RangeWithSteps(0, 20, 5);
 // [0, 5, 10, 15]
 
@@ -914,7 +929,6 @@ ok  	github.com/samber/lo	6.657s
 - `lo.Map` is 4% slower than `for`.
 - `lop.Map` is slower than `lo.Map` because it implies more memory allocation and locks. `lop.Map` will be usefull for long-running callbacks, such as i/o bound processing.
 - `for` beats other implementations for memory and CPU.
-
 
 ## 🤝 Contributing
 
