@@ -70,14 +70,3 @@ func MapValues[K comparable, V any, R any](in map[K]V, iteratee func(V, K) R) ma
 
 	return result
 }
-
-func KeyBy[T any, V comparable](entries []T, iteratee func(T) V) map[V]T {
-	result := map[V]T{}
-
-	for _, entry := range entries {
-		key := iteratee(entry)
-		result[key] = entry
-	}
-
-	return result
-}
