@@ -64,7 +64,7 @@ Supported helpers for slices:
 - Reverse
 - Fill
 - Repeat
-- ToMap
+- KeyBy
 - Drop
 - DropRight
 - DropWhile
@@ -78,7 +78,6 @@ Supported helpers for maps:
 - FromEntries
 - Assign (merge of maps)
 - MapValues
-- KeyBy
 
 Supported helpers for tuples:
 
