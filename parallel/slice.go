@@ -1,44 +1,26 @@
 package parallel
 
-import "sync"
+import (
+	"runtime"
+	"sync"
+)
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // `iteratee` is call in parallel. Result keep the same order.
 func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	result := make([]R, len(collection))
-
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
-
-	for i, item := range collection {
-		go func(_item T, _i int) {
-			res := iteratee(_item, _i)
-
-			result[_i] = res
-
-			wg.Done()
-		}(item, i)
-	}
-
-	wg.Wait()
-
+	NewTaskPool(collection, runtime.NumCPU()/2, func(v T, i int) {
+		result[i] = iteratee(v, i)
+	})
 	return result
 }
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 // `iteratee` is call in parallel.
 func ForEach[T any](collection []T, iteratee func(T, int)) {
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
-
-	for i, item := range collection {
-		go func(_item T, _i int) {
-			iteratee(_item, _i)
-			wg.Done()
-		}(item, i)
-	}
-
-	wg.Wait()
+	NewTaskPool(collection, runtime.NumCPU()/2, func(v T, i int) {
+		iteratee(v, i)
+	})
 }
 
 // Times invokes the iteratee n times, returning an array of the results of each invocation.
@@ -46,22 +28,9 @@ func ForEach[T any](collection []T, iteratee func(T, int)) {
 // `iteratee` is call in parallel.
 func Times[T any](count int, iteratee func(int) T) []T {
 	result := make([]T, count)
-
-	var wg sync.WaitGroup
-	wg.Add(count)
-
-	for i := 0; i < count; i++ {
-		go func(_i int) {
-			item := iteratee(_i)
-
-			result[_i] = item
-
-			wg.Done()
-		}(i)
-	}
-
-	wg.Wait()
-
+	NewTaskPool[int](make([]int, count), runtime.NumCPU()/2, func(_ int, i int) {
+		result[i] = iteratee(i)
+	})
 	return result
 }
 
