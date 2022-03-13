@@ -18,9 +18,7 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 // `iteratee` is called in parallel.
 func ForEach[T any](collection []T, iteratee func(T, int)) {
-	NewTaskPool(collection, runtime.NumCPU()/2, func(v T, i int) {
-		iteratee(v, i)
-	})
+	NewTaskPool(collection, runtime.NumCPU()/2, iteratee)
 }
 
 // Times invokes the iteratee n times, returning an array of the results of each invocation.
