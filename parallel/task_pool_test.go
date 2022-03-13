@@ -2,16 +2,22 @@ package parallel
 
 import (
 	"runtime"
+	"sync"
 	"testing"
 )
 
-func BenchmarkNewTaskPool(b *testing.B) {
-	l := 100000
-	c := make([]int, l)
+const l = 100000
+
+var c []int
+
+func init() {
+	c = make([]int, l)
 	for i := 0; i < l; i++ {
 		c[i] = i
 	}
+}
 
+func BenchmarkNewTaskPool(b *testing.B) {
 	result := make([]float64, l)
 
 	for n := 0; n < b.N; n++ {
@@ -21,15 +27,30 @@ func BenchmarkNewTaskPool(b *testing.B) {
 	}
 }
 
-func BenchmarkMap(b *testing.B) {
-	l := 100000
-	c := make([]int, l)
-	for i := 0; i < l; i++ {
-		c[i] = i
+func oldMap[T any, R any](collection []T, iteratee func(T, int) R) []R {
+	result := make([]R, len(collection))
+
+	var wg sync.WaitGroup
+	wg.Add(len(collection))
+
+	for i, item := range collection {
+		go func(_item T, _i int) {
+			res := iteratee(_item, _i)
+
+			result[_i] = res
+
+			wg.Done()
+		}(item, i)
 	}
 
+	wg.Wait()
+
+	return result
+}
+
+func BenchmarkMap(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		Map[int, float64](c, func(t, _ int) float64 {
+		oldMap[int, float64](c, func(t, _ int) float64 {
 			return float64(t)
 		})
 	}
