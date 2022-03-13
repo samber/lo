@@ -7,7 +7,8 @@ import (
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
 // `predicate` is call in parallel.
 func Filter[V any](collection []V, predicate func(V, int) bool) []V {
-	result := []V{}
+	var result []V
+	seen := map[int]bool{}
 
 	var wg sync.WaitGroup
 	var mu sync.Mutex
@@ -18,10 +19,8 @@ func Filter[V any](collection []V, predicate func(V, int) bool) []V {
 			key := predicate(_item, _i)
 			mu.Lock()
 
-			if key {
-				result = append(result, _item)
-			}
-
+			// make predicate results into a map, key being the item idx
+			seen[_i] = key
 			mu.Unlock()
 
 			wg.Done()
@@ -29,6 +28,12 @@ func Filter[V any](collection []V, predicate func(V, int) bool) []V {
 	}
 
 	wg.Wait()
+
+	for i, item := range collection {
+		if seen[i] {
+			result = append(result, item)
+		}
+	}
 
 	return result
 }
