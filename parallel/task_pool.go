@@ -10,8 +10,7 @@ type job[T any] struct {
 	i   int
 }
 
-func NewTaskPool[T, R any](source []T, poolSize int, fn func(T, int) R) []R {
-	result := make([]R, len(source))
+func NewTaskPool[T any](source []T, poolSize int, fn func(T, int)) {
 	cycles := int(math.Ceil(float64(len(source)) / float64(poolSize)))
 	n := len(source)
 	c := 0
@@ -29,7 +28,7 @@ func NewTaskPool[T, R any](source []T, poolSize int, fn func(T, int) R) []R {
 					wg.Done()
 					return
 				}
-				result[v.i] = fn(v.val, v.i)
+				fn(v.val, v.i)
 			}
 		}(i, jobChans[i])
 	}
@@ -56,6 +55,4 @@ func NewTaskPool[T, R any](source []T, poolSize int, fn func(T, int) R) []R {
 	}
 
 	wg.Wait()
-
-	return result
 }

@@ -1,6 +1,7 @@
 package parallel
 
 import (
+	"runtime"
 	"testing"
 )
 
@@ -11,9 +12,11 @@ func BenchmarkNewTaskPool(b *testing.B) {
 		c[i] = i
 	}
 
+	result := make([]float64, l)
+
 	for n := 0; n < b.N; n++ {
-		NewTaskPool(c, 4, func(t, _ int) float64 {
-			return float64(t)
+		NewTaskPool[int](c, runtime.NumCPU()/2, func(v, i int) {
+			result[i] = float64(v)
 		})
 	}
 }
