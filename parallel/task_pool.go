@@ -16,11 +16,11 @@ func NewTaskPool[T any](source []T, poolSize int, fn func(T, int)) {
 	c := 0
 
 	wg := &sync.WaitGroup{}
+	wg.Add(poolSize)
 
 	jobChans := make([]chan job[T], poolSize)
 	for i := 0; i < len(jobChans); i++ {
 		jobChans[i] = make(chan job[T], cycles)
-		wg.Add(1)
 		go func(i int, in <-chan job[T]) {
 			for {
 				v, ok := <-in

@@ -38,30 +38,21 @@ func Times[T any](count int, iteratee func(int) T) []T {
 // `iteratee` is call in parallel.
 func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T {
 	result := map[U][]T{}
+	resultMu := &sync.Mutex{}
 
-	var mu sync.Mutex
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
+	NewTaskPool[T](collection, runtime.NumCPU()/2, func(v T, _ int) {
+		key := iteratee(v)
 
-	for _, item := range collection {
-		go func(_item T) {
-			key := iteratee(_item)
+		resultMu.Lock()
+		if _, ok := result[key]; !ok {
+			result[key] = []T{}
+		}
+		resultMu.Unlock()
 
-			mu.Lock()
-
-			if _, ok := result[key]; !ok {
-				result[key] = []T{}
-			}
-
-			result[key] = append(result[key], _item)
-
-			mu.Unlock()
-			wg.Done()
-		}(item)
-	}
-
-	wg.Wait()
-
+		resultMu.Lock()
+		result[key] = append(result[key], v)
+		resultMu.Unlock()
+	})
 	return result
 }
 
