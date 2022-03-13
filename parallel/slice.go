@@ -6,7 +6,7 @@ import (
 )
 
 // Map manipulates a slice and transforms it to a slice of another type.
-// `iteratee` is call in parallel. Result keep the same order.
+// `iteratee` is called in parallel. Result keep the same order.
 func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	result := make([]R, len(collection))
 	NewTaskPool(collection, runtime.NumCPU()/2, func(v T, i int) {
@@ -16,7 +16,7 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 }
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.
-// `iteratee` is call in parallel.
+// `iteratee` is called in parallel.
 func ForEach[T any](collection []T, iteratee func(T, int)) {
 	NewTaskPool(collection, runtime.NumCPU()/2, func(v T, i int) {
 		iteratee(v, i)
@@ -25,7 +25,7 @@ func ForEach[T any](collection []T, iteratee func(T, int)) {
 
 // Times invokes the iteratee n times, returning an array of the results of each invocation.
 // The iteratee is invoked with index as argument.
-// `iteratee` is call in parallel.
+// `iteratee` is called in parallel.
 func Times[T any](count int, iteratee func(int) T) []T {
 	result := make([]T, count)
 	NewTaskPool[int](make([]int, count), runtime.NumCPU()/2, func(_ int, i int) {
