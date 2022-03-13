@@ -15,6 +15,10 @@ func NewTaskPool[T any](source []T, poolSize int, fn func(T, int)) {
 	n := len(source)
 	c := 0
 
+	if poolSize > n {
+		poolSize = n
+	}
+
 	wg := &sync.WaitGroup{}
 	wg.Add(poolSize)
 
