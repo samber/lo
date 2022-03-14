@@ -847,6 +847,12 @@ The TaskPool delivers the best performance on average with some long running
 and some quick jobs, beating out the normal Map implementation and the old lop.Map implementation.
 In long running jobs the TaskPool beats the normal Map implementation by a factor of about 8x.
 
+The advantage of the TaskPool is that its behaviour is modifiable. Adding the following line in front of a lop.Map call changes the behaviour of the TaskPool to match that of the old lop.Map implementation.
+
+````go
+lop.DefaultPoolSize = len(source)
+````
+
 ## 🛩 Benchmark
 
 We executed a simple benchmark with the a dead-simple `lo.Map` loop:
