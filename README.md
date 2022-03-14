@@ -423,7 +423,7 @@ characters := []Character{
     {dir: "left", code: 97},
     {dir: "right", code: 100},
 }
-result := KeyBy[Character, string](characters, func(char Character) string {
+result := lo.KeyBy[string, Character](characters, func(char Character) string {
     return string(rune(char.code))
 })
 //map[a:{dir:left code:97} d:{dir:right code:100}]
@@ -455,7 +455,7 @@ Drop elements from the beginning of a slice or array while the predicate returns
 l := lo.DropWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool {
 	return len(val) <= 2
 })
-// []string{"aaa", "aa", "a"}
+// []string{"aaa", "aa", "aa"}
 ```
 
 ### DropRightWhile
