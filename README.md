@@ -110,6 +110,10 @@ Other functional programming helpers:
 - ToSlicePtr
 - Attempt
 
+Other helper functions:
+
+- With
+
 Other parallel processing helpers:
 
 - TaskPool
@@ -799,6 +803,20 @@ iter, err := lo.Attempt(0, func(i int) error {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
+### With
+
+With modifies a value for the duration of a callback.
+
+```go
+a := 10
+cb := func() {
+    fmt.Println(a)
+}
+
+lo.With(&a, 2, cb) //prints 2
+cb() //prints 10
+```
+
 ### TaskPool
 
 TaskPool creates a pool of workers, working through n amount of jobs. The callback function receives the current job that is being worked on.
@@ -850,7 +868,9 @@ In long running jobs the TaskPool beats the normal Map implementation by a facto
 The advantage of the TaskPool is that its behaviour is modifiable. Adding the following line in front of a lop.Map call changes the behaviour of the TaskPool to match that of the old lop.Map implementation.
 
 ````go
-lop.DefaultPoolSize = len(source)
+lo.With(&lop.DefaultPoolSize, len(source), func() {
+	//...
+})
 ````
 
 ## 🛩 Benchmark
