@@ -21,8 +21,8 @@ func BenchmarkNewTaskPool(b *testing.B) {
 	result := make([]float64, l)
 
 	for n := 0; n < b.N; n++ {
-		NewTaskPool[int](c, runtime.NumCPU()/2, func(v, i int) {
-			result[i] = float64(v)
+		TaskPool[int](len(c), runtime.NumCPU()/2, func(i int) {
+			result[i] = float64(c[i])
 		})
 	}
 }

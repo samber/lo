@@ -11,8 +11,8 @@ var DefaultPoolSize = runtime.NumCPU() / 2
 // `iteratee` is called in parallel. Result keep the same order.
 func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	result := make([]R, len(collection))
-	NewTaskPool(collection, DefaultPoolSize, func(v T, i int) {
-		result[i] = iteratee(v, i)
+	TaskPool[T](len(collection), DefaultPoolSize, func(i int) {
+		result[i] = iteratee(collection[i], i)
 	})
 	return result
 }
@@ -20,7 +20,9 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 // `iteratee` is called in parallel.
 func ForEach[T any](collection []T, iteratee func(T, int)) {
-	NewTaskPool(collection, DefaultPoolSize, iteratee)
+	TaskPool[T](len(collection), DefaultPoolSize, func(i int) {
+		iteratee(collection[i], i)
+	})
 }
 
 // Times invokes the iteratee n times, returning an array of the results of each invocation.
@@ -28,7 +30,7 @@ func ForEach[T any](collection []T, iteratee func(T, int)) {
 // `iteratee` is called in parallel.
 func Times[T any](count int, iteratee func(int) T) []T {
 	result := make([]T, count)
-	NewTaskPool[int](make([]int, count), DefaultPoolSize, func(_ int, i int) {
+	TaskPool[int](count, DefaultPoolSize, func(i int) {
 		result[i] = iteratee(i)
 	})
 	return result
@@ -40,8 +42,8 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 	result := map[U][]T{}
 	resultMu := &sync.Mutex{}
 
-	NewTaskPool[T](collection, DefaultPoolSize, func(v T, _ int) {
-		key := iteratee(v)
+	TaskPool[T](len(collection), DefaultPoolSize, func(i int) {
+		key := iteratee(collection[i])
 
 		resultMu.Lock()
 		if _, ok := result[key]; !ok {
@@ -50,7 +52,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 		resultMu.Unlock()
 
 		resultMu.Lock()
-		result[key] = append(result[key], v)
+		result[key] = append(result[key], collection[i])
 		resultMu.Unlock()
 	})
 	return result

@@ -5,14 +5,11 @@ import (
 	"sync"
 )
 
-type job[T any] struct {
-	val T
-	i   int
-}
-
-func NewTaskPool[T any](source []T, poolSize int, fn func(T, int)) {
-	cycles := int(math.Ceil(float64(len(source)) / float64(poolSize)))
-	n := len(source)
+//TaskPool creates a pool of workers, working through n amount of jobs.
+//The callback function receives the current job that is being worked on.
+func TaskPool[T any](amount, poolSize int, fn func(int)) {
+	cycles := int(math.Ceil(float64(amount) / float64(poolSize)))
+	n := amount
 	c := 0
 
 	if poolSize > n {
@@ -22,17 +19,17 @@ func NewTaskPool[T any](source []T, poolSize int, fn func(T, int)) {
 	wg := &sync.WaitGroup{}
 	wg.Add(poolSize)
 
-	jobChans := make([]chan job[T], poolSize)
+	jobChans := make([]chan int, poolSize)
 	for i := 0; i < len(jobChans); i++ {
-		jobChans[i] = make(chan job[T], cycles)
-		go func(i int, in <-chan job[T]) {
+		jobChans[i] = make(chan int, cycles)
+		go func(i int, in <-chan int) {
 			for {
 				v, ok := <-in
 				if !ok {
 					wg.Done()
 					return
 				}
-				fn(v.val, v.i)
+				fn(v)
 			}
 		}(i, jobChans[i])
 	}
@@ -47,10 +44,7 @@ func NewTaskPool[T any](source []T, poolSize int, fn func(T, int)) {
 		}
 
 		for j := 0; j < batchSize; c, j = c+1, j+1 {
-			jobChans[j] <- job[T]{
-				val: source[c],
-				i:   c,
-			}
+			jobChans[j] <- c
 		}
 	}
 
