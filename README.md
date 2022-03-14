@@ -802,20 +802,19 @@ creates a debounced instance that delays invoking func given until after wait mi
 f := func() {
     println("1. Called once after 100ms when func stopped invoking!")
 }
-d := lo.NewDebounce(100 * time.Millisecond)
+d, cancel := lo.NewDebounce(100 * time.Millisecond, f)
 // f is invoked only 3 times
 for i := 0; i < 3; i++ {
     // No matter how many times you call it, it will be invoked only the last time after 100ms
     for j := 0; j < 10; j++ {
-        d.Add(f).Add(f).Add(f).Add(f)
+        d()
     }
     time.Sleep(200 * time.Millisecond)
 }
-d.Cancel()
+cancel()
 // f will never be invoked again
 for i := 0; i < 3; i++ {
-    d.Add(f).Add(f).Add(f).Add(f)
-    time.Sleep(200 * time.Millisecond)
+    d()
 }
 ```
 

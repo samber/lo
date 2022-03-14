@@ -59,36 +59,37 @@ func TestDebounce(t *testing.T) {
 		println("3. Called once after 10ms when func stopped invoking!")
 	}
 
-	d1 := NewDebounce(10 * time.Millisecond)
+	d1, _ := NewDebounce(10*time.Millisecond, f1)
 
 	// execute 3 times
 	for i := 0; i < 3; i++ {
-
 		for j := 0; j < 10; j++ {
-			d1.Add(f1)
+			d1()
 		}
 		time.Sleep(20 * time.Millisecond)
 	}
 
-	d2 := NewDebounce(10 * time.Millisecond)
+	d2, _ := NewDebounce(10*time.Millisecond, f2)
 
 	// execute once because it is always invoked and only last invoke is worked after 100ms
 	for i := 0; i < 3; i++ {
-		d2.Add(f2).Add(f2).Add(f2).Add(f2).Add(f2)
+		for j := 0; j < 5; j++ {
+			d2()
+		}
 		time.Sleep(5 * time.Millisecond)
 	}
 
 	time.Sleep(10 * time.Millisecond)
 
 	// execute once because it is canceled after 200ms.
-	d3 := NewDebounce(10 * time.Millisecond)
+	d3, cancel := NewDebounce(10*time.Millisecond, f3)
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 10; j++ {
-			d3.Add(f3)
+			d3()
 		}
 		time.Sleep(20 * time.Millisecond)
 		if i == 0 {
-			d3.Cancel()
+			cancel()
 		}
 	}
 }

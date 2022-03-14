@@ -12,7 +12,7 @@ type Debounce struct {
 	done  bool
 }
 
-func (d *Debounce) Add(f func()) *Debounce {
+func (d *Debounce) add(f func()) *Debounce {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	if d.done {
@@ -25,7 +25,7 @@ func (d *Debounce) Add(f func()) *Debounce {
 	return d
 }
 
-func (d *Debounce) Cancel() {
+func (d *Debounce) cancel() {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	if d.timer != nil {
@@ -53,9 +53,12 @@ func Attempt(maxIteration int, f func(int) error) (int, error) {
 // throttle ?
 
 // NewDebounce creates a debounced instance that delays invoking func given until after wait milliseconds have elapsed.
-func NewDebounce(duration time.Duration) *Debounce {
-	return &Debounce{
+func NewDebounce(duration time.Duration, f func()) (func(), func()) {
+	d := &Debounce{
 		mu:    new(sync.Mutex),
 		after: duration,
 	}
+	return func() {
+		d.add(f)
+	}, d.cancel
 }
