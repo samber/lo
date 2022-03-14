@@ -810,6 +810,43 @@ lop.TaskPool(10, 4, func(i int) {
 })
 ```
 
+In most cases, the TaskPool approach is quite a bit faster than the old parallel Map implementation, beating the old lop.Map implementation by a factor of about 4x.
+The normal Map implementation is the fastest of them all in most situations.
+
+```
+goos: darwin
+goarch: arm64
+pkg: github.com/samber/lo/parallel
+BenchmarkNormalMap
+BenchmarkNormalMap-8     	    6790	    174719 ns/op
+BenchmarkNewTaskPool
+BenchmarkNewTaskPool-8   	     272	   4418947 ns/op
+BenchmarkMap
+BenchmarkMap-8           	      60	  18902713 ns/op
+PASS
+```
+
+The parallel implementations really starts to shine with long running callbacks. Adding a delay of just 1ms to the previous tests yields the following results:
+
+```
+goos: darwin
+goarch: arm64
+pkg: github.com/samber/lo/parallel
+BenchmarkNormalMap
+BenchmarkNormalMap-8     	       1	115098105417 ns/op
+BenchmarkNewTaskPool
+BenchmarkNewTaskPool-8   	       1	14409710791 ns/op
+BenchmarkMap
+BenchmarkMap-8           	      38	  30249124 ns/op
+PASS
+```
+
+So while the new TaskPool beats out the old lop.Map implementation in most cases,
+the old lop.Map implementation beats the TaskPool when **all** jobs are long running.
+The TaskPool delivers the best performance on average with some long running
+and some quick jobs, beating out the normal Map implementation and the old lop.Map implementation.
+In long running jobs the TaskPool beats the normal Map implementation by a factor of about 8x.
+
 ## 🛩 Benchmark
 
 We executed a simple benchmark with the a dead-simple `lo.Map` loop:
