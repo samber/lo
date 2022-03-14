@@ -826,7 +826,7 @@ BenchmarkMap-8           	      60	  18902713 ns/op
 PASS
 ```
 
-The parallel implementations really starts to shine with long running callbacks. Adding a delay of just 1ms to the previous tests yields the following results:
+The parallel implementations really start to shine with long running callbacks. Adding a delay of just 1ms to the previous tests yields the following results:
 
 ```
 goos: darwin
