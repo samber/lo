@@ -1,6 +1,42 @@
 package parallel
 
-import "sync"
+import (
+	"sync"
+)
+
+// Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
+// `predicate` is call in parallel.
+func Filter[V any](collection []V, predicate func(V, int) bool) []V {
+	var result []V
+	seen := map[int]bool{}
+
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+	wg.Add(len(collection))
+
+	for i, item := range collection {
+		go func(_item V, _i int) {
+			key := predicate(_item, _i)
+			mu.Lock()
+
+			// make predicate results into a map, key being the item idx
+			seen[_i] = key
+			mu.Unlock()
+
+			wg.Done()
+		}(item, i)
+	}
+
+	wg.Wait()
+
+	for i, item := range collection {
+		if seen[i] {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // `iteratee` is call in parallel. Result keep the same order.
