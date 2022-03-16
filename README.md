@@ -208,6 +208,47 @@ lop.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 // []string{"1", "2", "3", "4"}
 ```
 
+### MapWithError
+
+Manipulates a slice of one type and transforms it into a slice of another type. Short circuits and returns an error if the mapper function returns an error:
+
+```go
+import "github.com/samber/lo"
+
+x, err := lo.MapWithError[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, error) {
+    if x == 5 {
+        return nil, errors.New("x is 5")
+    }
+    return strconv.FormatInt(x, 10), nil
+})
+// []string{"1", "2", "3", "4"}
+// nil
+
+x, err := lo.MapWithError[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, error) {
+    if x == 4 {
+        return nil, errors.New("x is 4")
+    }
+    return strconv.FormatInt(x, 10), nil
+})
+// nil
+// error "x is 4"
+```
+
+Parallel processing: like `lo.MapWithError()`, but the mapper function is called in a goroutine. Parallel processing is cancelled on first encountered error.
+
+```go
+import lop "github.com/samber/lo/parallel"
+
+x, err := lop.MapWithError[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, error) {
+    if x == 4 {
+        return nil, errors.New("x is 4")
+    }
+    return strconv.FormatInt(x, 10), nil
+})
+// nil
+// error "x is 4"
+```
+
 ### FlatMap
 
 Manipulates a slice and transforms and flattens it to a slice of another type.
