@@ -45,16 +45,25 @@ func Some[T comparable](collection []T, subset []T) bool {
 }
 
 // Intersect returns the intersection between two collections.
+// Elements returned will be in the order seen in list1
 func Intersect[T comparable](list1 []T, list2 []T) []T {
 	result := []T{}
-	seen := map[T]struct{}{}
 
-	for _, elem := range list1 {
-		seen[elem] = struct{}{}
-	}
+	// store list2 values as map keys, so that lookup is O(1)
+	// list2 deduplication is taken care of during this map creation
+	// maintaining a boolean value allows us to ensure that when we encounter multiple intersections,
+	// that the value is only appended to the result once
+	list2values := make(map[T]bool)
 
 	for _, elem := range list2 {
-		if _, ok := seen[elem]; ok {
+		list2values[elem] = false
+	}
+
+	for _, elem := range list1 {
+		// this can be read as, if there's an intersection && unless we've already appended the value to the result
+		if _, ok := list2values[elem]; ok && !list2values[elem] {
+			// mark that we've appended this value to result
+			list2values[elem] = true
 			result = append(result, elem)
 		}
 	}
