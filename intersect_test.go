@@ -1,6 +1,9 @@
 package lo
 
 import (
+	"fmt"
+	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -106,4 +109,203 @@ func TestUnion(t *testing.T) {
 	is.Equal(result3, []int{0, 1, 2, 3, 4, 5})
 	is.Equal(result4, []int{0, 1, 2})
 	is.Equal(result5, []int{})
+}
+
+func TestExcept(t *testing.T) {
+	type args struct {
+		list1 []int
+		list2 []int
+	}
+	tests := []struct {
+		expl string
+		args args
+		want []int
+	}{
+		{
+			expl: "nils",
+			args: args{
+				list1: nil,
+				list2: nil,
+			},
+			want: []int{},
+		},
+		{
+			expl: "empties",
+			args: args{
+				list1: []int{},
+				list2: []int{},
+			},
+			want: []int{},
+		},
+		{
+			expl: "empty, nil",
+			args: args{
+				list1: []int{},
+				list2: nil,
+			},
+			want: []int{},
+		},
+		{
+			expl: "nil, empty",
+			args: args{
+				list1: nil,
+				list2: []int{},
+			},
+			want: []int{},
+		},
+		{
+			expl: "one and none",
+			args: args{
+				list1: []int{1},
+				list2: []int{},
+			},
+			want: []int{1},
+		},
+		{
+			expl: "none and one",
+			args: args{
+				list1: []int{},
+				list2: []int{1},
+			},
+			want: []int{},
+		},
+		{
+			expl: "none and many",
+			args: args{
+				list1: []int{},
+				list2: []int{1, 2, 3},
+			},
+			want: []int{},
+		},
+		{
+			expl: "many and none",
+			args: args{
+				list1: []int{1, 2, 3},
+				list2: []int{},
+			},
+			want: []int{1, 2, 3},
+		},
+		{
+			expl: "exclude identical one",
+			args: args{
+				list1: []int{1},
+				list2: []int{1},
+			},
+			want: []int{},
+		},
+		{
+			expl: "exclude identical many",
+			args: args{
+				list1: []int{1, 2, 3},
+				list2: []int{1, 2, 3},
+			},
+			want: []int{},
+		},
+		{
+			expl: "removal from middle",
+			args: args{
+				list1: []int{1, 2, 3, 4, 5, 6},
+				list2: []int{2, 3},
+			},
+			want: []int{1, 4, 5, 6},
+		},
+		{
+			expl: "removal from beginning",
+			args: args{
+				list1: []int{1, 2, 3, 4, 5, 6},
+				list2: []int{1},
+			},
+			want: []int{2, 3, 4, 5, 6},
+		},
+		{
+			expl: "removal from end",
+			args: args{
+				list1: []int{1, 2, 3, 4, 5, 6},
+				list2: []int{6},
+			},
+			want: []int{1, 2, 3, 4, 5},
+		},
+		{
+			expl: "nothing in common",
+			args: args{
+				list1: []int{1, 2, 3, 4, 5, 6},
+				list2: []int{7, 8, 9},
+			},
+			want: []int{1, 2, 3, 4, 5, 6},
+		},
+		{
+			expl: "maintain order",
+			args: args{
+				list1: []int{7, 1, 3, 8},
+				list2: []int{1},
+			},
+			want: []int{7, 3, 8},
+		},
+		{
+			expl: "maintain order in chaos",
+			args: args{
+				list1: []int{7, 1, 3, 8, 5, 4},
+				list2: []int{1, 9, 7, 8},
+			},
+			want: []int{3, 5, 4},
+		},
+		{
+			expl: "exclude heavy",
+			args: args{
+				list1: []int{3, 1},
+				list2: []int{7, 1, 3, 8, 5, 4},
+			},
+			want: []int{},
+		},
+		{
+			expl: "keep distinct exclude nothing",
+			args: args{
+				list1: []int{3, 1, 5, 1, 3},
+				list2: []int{},
+			},
+			want: []int{3, 1, 5},
+		},
+		{
+			expl: "keep distinct exclude one",
+			args: args{
+				list1: []int{3, 1, 5, 1, 3},
+				list2: []int{1},
+			},
+			want: []int{3, 5},
+		},
+		{
+			expl: "keep distinct exclude many",
+			args: args{
+				list1: []int{3, 1, 5, 1, 3},
+				list2: []int{3, 5},
+			},
+			want: []int{1},
+		},
+	}
+
+	prettyFormatSlice := func(vals []int) string {
+		valsStr := make([]string, len(vals))
+
+		i := 0
+		for _, v := range vals {
+			valsStr[i] = strconv.Itoa(v)
+			i++
+		}
+
+		return strings.Join(valsStr, ",")
+	}
+
+	for _, tt := range tests {
+		name := fmt.Sprintf(
+			"when {%s} except {%s} expect {%s} (%s)",
+			prettyFormatSlice(tt.args.list1),
+			prettyFormatSlice(tt.args.list2),
+			prettyFormatSlice(tt.want),
+			tt.expl,
+		)
+
+		t.Run(name, func(t *testing.T) {
+			assert.Equalf(t, tt.want, Except(tt.args.list1, tt.args.list2), "Except(%v, %v)", tt.args.list1, tt.args.list2)
+		})
+	}
 }
