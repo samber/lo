@@ -129,3 +129,58 @@ func Union[T comparable](list1 []T, list2 []T) []T {
 
 	return result
 }
+
+type keepSeen struct {
+	keep bool
+	seen bool
+}
+
+// Xor is the logical inverse of Intersect.
+// Xor returns an array of unique values that is the symmetric difference of the given arrays.
+// The order of result values is determined by the order they occur in the arrays.
+// Also known as the symmetric difference of two sets or the disjunctive union.
+// See https://en.wikipedia.org/wiki/Symmetric_difference
+func Xor[T comparable](list1 []T, list2 []T) []T {
+	ks := make(map[T]*keepSeen)
+
+	var keeps int
+	for _, e := range list1 {
+		// this handles duplicates inside list1
+		if _, ok := ks[e]; !ok {
+			keeps++
+			ks[e] = &keepSeen{keep: true}
+		}
+	}
+
+	for _, e := range list2 {
+		// if !ok, we found a value not in list 1
+		// so keep it and increment keeps
+		if _, ok := ks[e]; !ok {
+			keeps++
+			ks[e] = &keepSeen{keep: true}
+		} else if ks[e].keep {
+			// we found a value that exists in both lists
+			// decrement keeps (a value from list1 that is being excluded)
+			keeps--
+			ks[e].keep = false
+		}
+	}
+
+	result := make([]T, keeps)
+
+	addToResult := func(list []T, i *int) {
+		for _, e := range list {
+			if _, ok := ks[e]; ok && ks[e].keep && !ks[e].seen {
+				ks[e].seen = true
+				result[*i] = e
+				*i++
+			}
+		}
+	}
+
+	i := 0
+	addToResult(list1, &i)
+	addToResult(list2, &i)
+
+	return result
+}
