@@ -241,8 +241,7 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	return result
 }
 
-
-// Reject - the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
+// Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
 func Reject[V any](collection []V, predicate func(V, int) bool) []V {
 	result := []V{}
 
