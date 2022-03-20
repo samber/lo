@@ -64,12 +64,13 @@ Supported helpers for slices:
 - Reverse
 - Fill
 - Repeat
-- ToMap
+- KeyBy
 - Drop
 - DropRight
 - DropWhile
 - DropRightWhile
 - Reject
+- Range / RangeFrom / RangeWithSteps
 
 Supported helpers for maps:
 
@@ -114,8 +115,18 @@ Other functional programming helpers:
 - Switch / Case / Default
 - ToPtr
 - ToSlicePtr
+
+Time based helpers:
+
 - Attempt
-- Range / RangeFrom / RangeWithSteps
+- Debounce
+
+Error handling:
+
+- Try
+- TryCatch
+- TryWithErrorValue
+- TryCatchWithErrorValue
 
 Constraints:
 
@@ -406,15 +417,28 @@ initializedSlice := lo.Repeat[foo](2, foo{"a"})
 // []foo{foo{"a"}, foo{"a"}}
 ```
 
-### ToMap
+### KeyBy
 
 Transforms a slice or an array of structs to a map based on a pivot callback.
 
 ```go
-m := lo.ToMap[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
+m := lo.KeyBy[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
     return len(str)
 })
 // map[int]string{1: "a", 2: "aa", 3: "aaa"}
+
+type Character struct {
+	dir  string
+	code int
+}
+characters := []Character{
+    {dir: "left", code: 97},
+    {dir: "right", code: 100},
+}
+result := lo.KeyBy[string, Character](characters, func(char Character) string {
+    return string(rune(char.code))
+})
+//map[a:{dir:left code:97} d:{dir:right code:100}]
 ```
 
 ### Drop
@@ -443,7 +467,7 @@ Drop elements from the beginning of a slice or array while the predicate returns
 l := lo.DropWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool {
 	return len(val) <= 2
 })
-// []string{"aaa", "aa", "a"}
+// []string{"aaa", "aa", "aa"}
 ```
 
 ### DropRightWhile
@@ -466,6 +490,36 @@ odd := lo.Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
     return x%2 == 0
 })
 // []int{1, 3}
+```
+
+### Range / RangeFrom / RangeWithSteps
+
+Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+
+```go
+result := Range(4)
+// [0, 1, 2, 3]
+
+result := Range(-4);
+// [0, -1, -2, -3]
+
+result := RangeFrom(1, 5);
+// [1, 2, 3, 4]
+
+result := RangeFrom[float64](1.0, 5);
+// [1.0, 2.0, 3.0, 4.0]
+
+result := RangeWithSteps(0, 20, 5);
+// [0, 5, 10, 15]
+
+result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
+// [-1.0, -2.0, -3.0]
+
+result := RangeWithSteps(1, 4, -1);
+// []
+
+result := Range(0);
+// []
 ```
 
 ### Keys
@@ -860,37 +914,103 @@ iter, err := lo.Attempt(0, func(i int) error {
 // nil
 ```
 
-### Range / RangeFrom / RangeWithSteps
+### Debounce
 
-Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+`NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
 
 ```go
-result := Range(4)
-// [0, 1, 2, 3]
+f := func() {
+    println("Called once after 100ms when debounce stopped invoking!")
+}
 
-result := Range(-4);
-// [0, -1, -2, -3]
+debounce, cancel := lo.NewDebounce(100 * time.Millisecond, f)
+for j := 0; j < 10; j++ {
+    debounce()
+}
 
-result := RangeFrom(1, 5);
-// [1, 2, 3, 4]
-
-result := RangeFrom[float64](1.0, 5);
-// [1.0, 2.0, 3.0, 4.0]
-
-result := RangeWithSteps(0, 20, 5);
-// [0, 5, 10, 15]
-
-result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
-// [-1.0, -2.0, -3.0]
-
-result := RangeWithSteps(1, 4, -1);
-// []
-
-result := Range(0);
-// []
+time.Sleep(1 * time.Second)
+cancel()
 ```
 
-For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+## Try
+
+Calls the function and return false in case of error and on panic.
+
+```go
+ok := lo.Try(func() error {
+    panic("error")
+    return nil
+})
+// false
+
+ok := lo.Try(func() error {
+    return nil
+})
+// true
+
+ok := lo.Try(func() error {
+    return fmt.Errorf("error")
+})
+// false
+```
+
+## Try{0->6}
+
+The same behavior than `Try`, but callback returns 2 variables.
+
+```go
+ok := lo.Try2(func() (string, error) {
+    panic("error")
+    return "", nil
+})
+// false
+```
+
+## TryWithErrorValue
+
+The same behavior than `Try`, but also returns value passed to panic.
+
+```go
+err, ok := lo.TryWithErrorValue(func() error {
+    panic("error")
+    return nil
+})
+// "error", false
+```
+
+## TryCatch
+
+The same behavior than `Try`, but calls the catch function in case of error.
+
+```go
+caught := false
+
+ok := lo.TryCatch(func() error {
+    panic("error")
+    return nil
+}, func() {
+    caught = true
+})
+// false
+// caught == true
+```
+
+## TryCatchWithErrorValue
+
+The same behavior than `TryWithErrorValue`, but calls the catch function in case of error.
+
+```go
+caught := false
+
+ok := lo.TryCatchWithErrorValue(func() error {
+    panic("error")
+    return nil
+}, func(val any) {
+    caught = val == "error"
+})
+// false
+// caught == true
+```
 
 ## 🛩 Benchmark
 

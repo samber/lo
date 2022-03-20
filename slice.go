@@ -229,8 +229,8 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 	return result
 }
 
-// ToMap transforms a slice or an array of structs to a map based on a pivot callback.
-func ToMap[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
+// KeyBy transforms a slice or an array of structs to a map based on a pivot callback.
+func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	result := make(map[K]V, len(collection))
 
 	for _, v := range collection {
