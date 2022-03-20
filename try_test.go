@@ -2,8 +2,10 @@ package lo
 
 import (
 	"errors"
-	"github.com/stretchr/testify/assert"
+	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTry(t *testing.T) {
@@ -15,6 +17,9 @@ func TestTry(t *testing.T) {
 	}))
 	is.True(Try(func() error {
 		return nil
+	}))
+	is.False(Try(func() error {
+		return fmt.Errorf("fail")
 	}))
 }
 

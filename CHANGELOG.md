@@ -1,5 +1,58 @@
 # Changelog
 
+## 1.10.0 (2022-03-11)
+
+Adding:
+
+- Range
+- RangeFrom
+- RangeWithSteps
+
+## 1.9.0 (2022-03-10)
+
+Added
+
+- Drop
+- DropRight
+- DropWhile
+- DropRightWhile
+
+## 1.8.0 (2022-03-10)
+
+Adding Union.
+
+## 1.7.0 (2022-03-09)
+
+Adding ContainBy
+
+Adding MapValues
+
+Adding FlatMap
+
+## 1.6.0 (2022-03-07)
+
+Fixed PartitionBy.
+
+Adding Sample
+
+Adding Samples
+
+## 1.5.0 (2022-03-07)
+
+Adding Times
+
+Adding Attempt
+
+Adding Repeat
+
+## 1.4.0 (2022-03-07)
+
+- adding tuple types (2->9)
+- adding Zip + Unzip
+- adding lo.PartitionBy + lop.PartitionBy
+- adding lop.GroupBy
+- fixing Nth
+
 ## 1.3.0 (2022-03-03)
 
 Last and Nth return errors

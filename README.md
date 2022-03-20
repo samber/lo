@@ -116,6 +116,13 @@ Other functional programming helpers:
 - Attempt
 - Range / RangeFrom / RangeWithSteps
 
+Error handling:
+
+- Try
+- TryCatch
+- TryWithErrorValue
+- TryCatchWithErrorValue
+
 Constraints:
 
 - Clonable
@@ -861,6 +868,8 @@ iter, err := lo.Attempt(0, func(i int) error {
 // nil
 ```
 
+For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+
 ### Range / RangeFrom / RangeWithSteps
 
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
@@ -891,7 +900,85 @@ result := Range(0);
 // []
 ```
 
-For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+## Try
+
+Calls the function and return false in case of error and on panic.
+
+```go
+ok := lo.Try(func() error {
+    panic("error")
+    return nil
+})
+// false
+
+ok := lo.Try(func() error {
+    return nil
+})
+// true
+
+ok := lo.Try(func() error {
+    return fmt.Errorf("error")
+})
+// false
+```
+
+## Try{0->6}
+
+The same behavior than `Try`, but callback returns 2 variables.
+
+```go
+ok := lo.Try2(func() (string, error) {
+    panic("error")
+    return "", nil
+})
+// false
+```
+
+## TryWithErrorValue
+
+The same behavior than `Try`, but also returns value passed to panic.
+
+```go
+err, ok := lo.TryWithErrorValue(func() error {
+    panic("error")
+    return nil
+})
+// "error", false
+```
+
+## TryCatch
+
+The same behavior than `Try`, but calls the catch function in case of error.
+
+```go
+caught := false
+
+ok := lo.TryCatch(func() error {
+    panic("error")
+    return nil
+}, func() {
+    caught = true
+})
+// false
+// caught == true
+```
+
+## TryCatchWithErrorValue
+
+The same behavior than `TryWithErrorValue`, but calls the catch function in case of error.
+
+```go
+caught := false
+
+ok := lo.TryCatchWithErrorValue(func() error {
+    panic("error")
+    return nil
+}, func(val any) {
+    caught = val == "error"
+})
+// false
+// caught == true
+```
 
 ## 🛩 Benchmark
 
