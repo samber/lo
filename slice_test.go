@@ -121,9 +121,9 @@ func TestGroupBy(t *testing.T) {
 
 	is.Equal(len(result1), 3)
 	is.Equal(result1, map[int][]int{
-		0: []int{0, 3},
-		1: []int{1, 4},
-		2: []int{2, 5},
+		0: {0, 3},
+		1: {1, 4},
+		2: {2, 5},
 	})
 }
 
@@ -193,10 +193,10 @@ func TestReverse(t *testing.T) {
 func TestFill(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Fill[foo]([]foo{foo{"a"}, foo{"a"}}, foo{"b"})
+	result1 := Fill[foo]([]foo{{"a"}, {"a"}}, foo{"b"})
 	result2 := Fill[foo]([]foo{}, foo{"a"})
 
-	is.Equal(result1, []foo{foo{"b"}, foo{"b"}})
+	is.Equal(result1, []foo{{"b"}, {"b"}})
 	is.Equal(result2, []foo{})
 }
 
@@ -206,7 +206,7 @@ func TestRepeat(t *testing.T) {
 	result1 := Repeat[foo](2, foo{"a"})
 	result2 := Repeat[foo](0, foo{"a"})
 
-	is.Equal(result1, []foo{foo{"a"}, foo{"a"}})
+	is.Equal(result1, []foo{{"a"}, {"a"}})
 	is.Equal(result2, []foo{})
 }
 

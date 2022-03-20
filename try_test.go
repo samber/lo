@@ -117,7 +117,7 @@ func TestTryCatch(t *testing.T) {
 		panic("error")
 		return nil
 	}, func() {
-		//error was caught
+		// error was caught
 		caught = true
 	})
 	is.True(caught)
@@ -126,7 +126,7 @@ func TestTryCatch(t *testing.T) {
 	TryCatch(func() error {
 		return nil
 	}, func() {
-		//no error to be caught
+		// no error to be caught
 		caught = true
 	})
 	is.False(caught)
@@ -140,7 +140,7 @@ func TestTryCatchWithErrorValue(t *testing.T) {
 		panic("error")
 		return nil
 	}, func(val any) {
-		//error was caught
+		// error was caught
 		caught = val == "error"
 	})
 	is.True(caught)
@@ -149,7 +149,7 @@ func TestTryCatchWithErrorValue(t *testing.T) {
 	TryCatchWithErrorValue(func() error {
 		return nil
 	}, func(val any) {
-		//no error to be caught
+		// no error to be caught
 		caught = true
 	})
 	is.False(caught)

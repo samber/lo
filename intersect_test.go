@@ -24,7 +24,7 @@ func TestContainsBy(t *testing.T) {
 		B string
 	}
 
-	a1 := []a{a{A: 1, B: "1"}, a{A: 2, B: "2"}, a{A: 3, B: "3"}}
+	a1 := []a{{A: 1, B: "1"}, {A: 2, B: "2"}, {A: 3, B: "3"}}
 	result1 := ContainsBy[a](a1, func(t a) bool { return t.A == 1 && t.B == "2" })
 	result2 := ContainsBy[a](a1, func(t a) bool { return t.A == 2 && t.B == "2" })
 

@@ -51,16 +51,16 @@ func TestGroupBy(t *testing.T) {
 
 	is.EqualValues(len(result1), 3)
 	is.EqualValues(result1, map[int][]int{
-		0: []int{0, 3},
-		1: []int{1, 4},
-		2: []int{2, 5},
+		0: {0, 3},
+		1: {1, 4},
+		2: {2, 5},
 	})
 }
 
 func TestPartitionBy(t *testing.T) {
 	is := assert.New(t)
 
-	oddEven := func (x int) string {
+	oddEven := func(x int) string {
 		if x < 0 {
 			return "negative"
 		} else if x%2 == 0 {
