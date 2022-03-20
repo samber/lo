@@ -69,6 +69,7 @@ Supported helpers for slices:
 - DropRight
 - DropWhile
 - DropRightWhile
+- Reject
 - Range / RangeFrom / RangeWithSteps
 
 Supported helpers for maps:
@@ -478,6 +479,17 @@ l := lo.DropRightWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val 
 	return len(val) <= 2
 })
 // []string{"a", "aa", "aaa"}
+```
+
+### Reject
+
+The opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
+
+```go
+odd := lo.Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+    return x%2 == 0
+})
+// []int{1, 3}
 ```
 
 ### Range / RangeFrom / RangeWithSteps
@@ -903,6 +915,7 @@ iter, err := lo.Attempt(0, func(i int) error {
 ```
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+
 
 ### Debounce
 
