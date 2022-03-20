@@ -114,6 +114,7 @@ Other functional programming helpers:
 - ToPtr
 - ToSlicePtr
 - Attempt
+- Debounce
 - Range / RangeFrom / RangeWithSteps
 
 Constraints:
@@ -861,6 +862,26 @@ iter, err := lo.Attempt(0, func(i int) error {
 // nil
 ```
 
+For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+
+### Debounce
+
+`NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
+
+```go
+f := func() {
+    println("Called once after 100ms when debounce stopped invoking!")
+}
+
+debounce, cancel := lo.NewDebounce(100 * time.Millisecond, f)
+for j := 0; j < 10; j++ {
+    debounce()
+}
+
+time.Sleep(1 * time.Second)
+cancel()
+```
+
 ### Range / RangeFrom / RangeWithSteps
 
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
@@ -890,8 +911,6 @@ result := RangeWithSteps(1, 4, -1);
 result := Range(0);
 // []
 ```
-
-For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
 ## 🛩 Benchmark
 
