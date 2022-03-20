@@ -796,26 +796,24 @@ iter, err := lo.Attempt(0, func(i int) error {
 // nil
 ```
 
+For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+
 ### Debounce
-creates a debounced instance that delays invoking func given until after wait milliseconds have elapsed.
+
+`NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
+
 ```go
 f := func() {
-    println("1. Called once after 100ms when func stopped invoking!")
+    println("Called once after 100ms when debounce stopped invoking!")
 }
-d, cancel := lo.NewDebounce(100 * time.Millisecond, f)
-// f is invoked only 3 times
-for i := 0; i < 3; i++ {
-    // No matter how many times you call it, it will be invoked only the last time after 100ms
-    for j := 0; j < 10; j++ {
-        d()
-    }
-    time.Sleep(200 * time.Millisecond)
+
+debounce, cancel := lo.NewDebounce(100 * time.Millisecond, f)
+for j := 0; j < 10; j++ {
+    debounce()
 }
+
+time.Sleep(1 * time.Second)
 cancel()
-// f will never be invoked again
-for i := 0; i < 3; i++ {
-    d()
-}
 ```
 
 ### Range / RangeFrom / RangeWithSteps
@@ -845,8 +843,6 @@ result := RangeWithSteps(1, 4, -1);
 result := Range(0);
 // []
 ```
-
-For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
 ## 🛩 Benchmark
 
