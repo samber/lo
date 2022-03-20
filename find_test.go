@@ -99,9 +99,9 @@ func TestFindOrElse(t *testing.T) {
 func TestMin(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Min[int]([]int{1, 2, 3})
-	result2 := Min[int]([]int{3, 2, 1})
-	result3 := Min[int]([]int{})
+	result1 := Min[int](1, 2, 3)
+	result2 := Min[int](3, 2, 1)
+	result3 := Min[int]()
 
 	is.Equal(result1, 1)
 	is.Equal(result2, 1)
@@ -129,9 +129,9 @@ func TestMinBy(t *testing.T) {
 func TestMax(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Max[int]([]int{1, 2, 3})
-	result2 := Max[int]([]int{3, 2, 1})
-	result3 := Max[int]([]int{})
+	result1 := Max[int](1, 2, 3)
+	result2 := Max[int](3, 2, 1)
+	result3 := Max[int]()
 
 	is.Equal(result1, 3)
 	is.Equal(result2, 3)
