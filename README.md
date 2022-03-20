@@ -69,6 +69,7 @@ Supported helpers for slices:
 - DropRight
 - DropWhile
 - DropRightWhile
+- Range / RangeFrom / RangeWithSteps
 
 Supported helpers for maps:
 
@@ -113,8 +114,11 @@ Other functional programming helpers:
 - Switch / Case / Default
 - ToPtr
 - ToSlicePtr
+
+Time based helpers:
+
 - Attempt
-- Range / RangeFrom / RangeWithSteps
+- Debounce
 
 Error handling:
 
@@ -474,6 +478,36 @@ l := lo.DropRightWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val 
 	return len(val) <= 2
 })
 // []string{"a", "aa", "aaa"}
+```
+
+### Range / RangeFrom / RangeWithSteps
+
+Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+
+```go
+result := Range(4)
+// [0, 1, 2, 3]
+
+result := Range(-4);
+// [0, -1, -2, -3]
+
+result := RangeFrom(1, 5);
+// [1, 2, 3, 4]
+
+result := RangeFrom[float64](1.0, 5);
+// [1.0, 2.0, 3.0, 4.0]
+
+result := RangeWithSteps(0, 20, 5);
+// [0, 5, 10, 15]
+
+result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
+// [-1.0, -2.0, -3.0]
+
+result := RangeWithSteps(1, 4, -1);
+// []
+
+result := Range(0);
+// []
 ```
 
 ### Keys
@@ -870,34 +904,22 @@ iter, err := lo.Attempt(0, func(i int) error {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
-### Range / RangeFrom / RangeWithSteps
+### Debounce
 
-Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+`NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
 
 ```go
-result := Range(4)
-// [0, 1, 2, 3]
+f := func() {
+    println("Called once after 100ms when debounce stopped invoking!")
+}
 
-result := Range(-4);
-// [0, -1, -2, -3]
+debounce, cancel := lo.NewDebounce(100 * time.Millisecond, f)
+for j := 0; j < 10; j++ {
+    debounce()
+}
 
-result := RangeFrom(1, 5);
-// [1, 2, 3, 4]
-
-result := RangeFrom[float64](1.0, 5);
-// [1.0, 2.0, 3.0, 4.0]
-
-result := RangeWithSteps(0, 20, 5);
-// [0, 5, 10, 15]
-
-result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
-// [-1.0, -2.0, -3.0]
-
-result := RangeWithSteps(1, 4, -1);
-// []
-
-result := Range(0);
-// []
+time.Sleep(1 * time.Second)
+cancel()
 ```
 
 ## Try

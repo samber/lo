@@ -4,6 +4,17 @@
 
 Adding:
 
+- Try
+- Try{0-6}
+- TryWitchValue
+- TryCatch
+- TryCatchWitchValue
+- Debounce
+
+## 1.10.0 (2022-03-11)
+
+Adding:
+
 - Range
 - RangeFrom
 - RangeWithSteps
