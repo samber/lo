@@ -24,7 +24,7 @@ func TestContainsBy(t *testing.T) {
 		B string
 	}
 
-	a1 := []a{a{A: 1, B: "1"}, a{A: 2, B: "2"}, a{A: 3, B: "3"}}
+	a1 := []a{{A: 1, B: "1"}, {A: 2, B: "2"}, {A: 3, B: "3"}}
 	result1 := ContainsBy[a](a1, func(t a) bool { return t.A == 1 && t.B == "2" })
 	result2 := ContainsBy[a](a1, func(t a) bool { return t.A == 2 && t.B == "2" })
 
@@ -99,11 +99,13 @@ func TestUnion(t *testing.T) {
 	result1 := Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
 	result2 := Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{6, 7})
 	result3 := Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{})
-	result4 := Union[int]([]int{0, 1, 2}, []int{0, 1, 2})
-	result5 := Union[int]([]int{}, []int{})
+	result4 := Union[int]([]int{0, 1, 2}, []int{0, 1, 2, 3, 3})
+	result5 := Union[int]([]int{0, 1, 2}, []int{0, 1, 2})
+	result6 := Union[int]([]int{}, []int{})
 	is.Equal(result1, []int{0, 1, 2, 3, 4, 5, 10})
 	is.Equal(result2, []int{0, 1, 2, 3, 4, 5, 6, 7})
 	is.Equal(result3, []int{0, 1, 2, 3, 4, 5})
-	is.Equal(result4, []int{0, 1, 2})
-	is.Equal(result5, []int{})
+	is.Equal(result4, []int{0, 1, 2, 3})
+	is.Equal(result5, []int{0, 1, 2})
+	is.Equal(result6, []int{})
 }
