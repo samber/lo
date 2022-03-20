@@ -47,7 +47,7 @@ func Some[T comparable](collection []T, subset []T) bool {
 // Intersect returns the intersection between two collections.
 func Intersect[T comparable](list1 []T, list2 []T) []T {
 	result := []T{}
-	seen := map[T]struct{}{}
+	seen := make(map[T]struct{}, len(list1))
 
 	for _, elem := range list1 {
 		seen[elem] = struct{}{}
@@ -69,8 +69,8 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 	left := []T{}
 	right := []T{}
 
-	seenLeft := map[T]struct{}{}
-	seenRight := map[T]struct{}{}
+	seenLeft := make(map[T]struct{}, len(list1))
+	seenRight := make(map[T]struct{}, len(list2))
 
 	for _, elem := range list1 {
 		seenLeft[elem] = struct{}{}
@@ -98,21 +98,12 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 // Union returns all distinct elements from both collections.
 // result returns will not change the order of elements relatively.
 func Union[T comparable](list1 []T, list2 []T) []T {
-	result := []T{}
-
-	seen := map[T]struct{}{}
-	hasAdd := map[T]struct{}{}
-
-	for _, e := range list1 {
-		seen[e] = struct{}{}
-	}
-
-	for _, e := range list2 {
-		seen[e] = struct{}{}
-	}
+	total := len(list1) + len(list2)
+	result := make([]T, 0, total)
+	hasAdd := make(map[T]struct{}, total)
 
 	for _, e := range list1 {
-		if _, ok := seen[e]; ok {
+		if _, ok := hasAdd[e]; !ok {
 			result = append(result, e)
 			hasAdd[e] = struct{}{}
 		}
@@ -122,9 +113,9 @@ func Union[T comparable](list1 []T, list2 []T) []T {
 		if _, ok := hasAdd[e]; ok {
 			continue
 		}
-		if _, ok := seen[e]; ok {
-			result = append(result, e)
-		}
+
+		result = append(result, e)
+		hasAdd[e] = struct{}{}
 	}
 
 	return result
