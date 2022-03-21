@@ -215,7 +215,7 @@ present := lo.Contains[int]([]int{0, 1, 2, 3, 4, 5}, 5)
 // true
 ```
 
-### Contains
+### ContainsBy
 
 Returns true if the predicate function returns `true`.
 
