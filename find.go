@@ -2,10 +2,9 @@ package lo
 
 import (
 	"fmt"
+	"golang.org/x/exp/constraints"
 	"math"
 	"math/rand"
-
-	"golang.org/x/exp/constraints"
 )
 
 // import "golang.org/x/exp/constraints"
@@ -74,6 +73,17 @@ func FindLastIndexOf[T any](collection []T, predicate func(T) bool) (T, int, boo
 
 	var result T
 	return result, -1, false
+}
+
+// FindOrElse search an element in a slice based on a predicate. It returns the element if found or a given fallback value otherwise.
+func FindOrElse[T any](collection []T, fallback T, predicate func(T) bool) T {
+	for _, item := range collection {
+		if predicate(item) {
+			return item
+		}
+	}
+
+	return fallback
 }
 
 // Min search the minimum value of a collection.
