@@ -438,7 +438,26 @@ characters := []Character{
 result := lo.KeyBy[string, Character](characters, func(char Character) string {
     return string(rune(char.code))
 })
-//map[a:{dir:left code:97} d:{dir:right code:100}]
+// map[a:{dir:left code:97} d:{dir:right code:100}]
+```
+
+### MapTo
+
+Transforms a slice or an array of structs to a map with returned in callback keys and values.
+
+```go
+type Character struct {
+	dir  string
+	code int
+}
+characters := []Character{
+    {dir: "left", code: 97},
+    {dir: "right", code: 100},
+}
+result := ToMap[Character, int, string](characters, func(char Character) (int, string) {
+    return char.code, char.dir
+})
+// map[97:left 100:right]
 ```
 
 ### Drop
