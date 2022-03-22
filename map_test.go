@@ -26,6 +26,15 @@ func TestValues(t *testing.T) {
 	is.Equal(r1, []int{1, 2})
 }
 
+func TestValuesF(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := ValuesF[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+	sort.Ints(r1)
+
+	is.Equal(r1, []int{1, 3})
+}
+
 func TestEntries(t *testing.T) {
 	is := assert.New(t)
 

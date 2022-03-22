@@ -22,6 +22,17 @@ func Values[K comparable, V any](in map[K]V) []V {
 	return result
 }
 
+// ValuesF same as Values, but additionally filters map elements by provided keys.
+func ValuesF[K comparable, V any](in map[K]V, keys []K) []V {
+	r := make([]V, 0, len(in))
+	for k, v := range in {
+		if Contains(keys, k) {
+			r = append(r, v)
+		}
+	}
+	return r
+}
+
 // Entries transforms a map into array of key/value pairs.
 func Entries[K comparable, V any](in map[K]V) []Entry[K, V] {
 	entries := make([]Entry[K, V], 0, len(in))
