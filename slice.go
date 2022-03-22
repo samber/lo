@@ -241,6 +241,16 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	return result
 }
 
+// ToMap transforms a slice or an array of structs to a map with returned in callback keys and values.
+func ToMap[C any, K comparable, V any](collection []C, iteratee func(C) (K, V)) map[K]V {
+	m := make(map[K]V, len(collection))
+	for _, elem := range collection {
+		key, value := iteratee(elem)
+		m[key] = value
+	}
+	return m
+}
+
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
 func Reject[V any](collection []V, predicate func(V, int) bool) []V {
 	result := []V{}

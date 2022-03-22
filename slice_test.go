@@ -220,6 +220,33 @@ func TestKeyBy(t *testing.T) {
 	is.Equal(result1, map[int]string{1: "a", 2: "aa", 3: "aaa"})
 }
 
+func TestToMap(t *testing.T) {
+	is := assert.New(t)
+
+	type Character struct {
+		dir  string
+		code int
+	}
+	characters := []Character{
+		{dir: "left", code: 97},
+		{dir: "right", code: 100},
+	}
+
+	result1 := ToMap[Character, int, string](characters, func(char Character) (int, string) {
+		return char.code, char.dir
+	})
+	// same result as with KeyBy helper
+	result2 := ToMap[Character, string, Character](characters, func(char Character) (string, Character) {
+		return string(rune(char.code)), char
+	})
+
+	is.Equal(result1, map[int]string{97: "left", 100: "right"})
+	is.Equal(result2, map[string]Character{
+		string(rune(characters[0].code)): characters[0],
+		string(rune(characters[1].code)): characters[1],
+	})
+}
+
 func TestReject(t *testing.T) {
 	is := assert.New(t)
 
