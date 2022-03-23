@@ -253,3 +253,37 @@ func Reject[V any](collection []V, predicate func(V, int) bool) []V {
 
 	return result
 }
+
+// All returns true if the prerdicate returns true for all of the elements in the collection or if the collection is empty.
+func All[V any](collection []V, predicate func(V) bool) bool {
+	for _, v := range collection {
+		if !predicate(v) {
+			return false
+		}
+	}
+
+	return true
+}
+
+// Any returns true if the prerdicate returns true for any of the elements in the collection.
+// If the collection is empty Any returns false.
+func Any[V any](collection []V, predicate func(V) bool) bool {
+	for _, v := range collection {
+		if predicate(v) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// None returns true if the prerdicate returns true for none of the elements in the collection or if the collection is empty.
+func None[V any](collection []V, predicate func(V) bool) bool {
+	for _, v := range collection {
+		if predicate(v) {
+			return false
+		}
+	}
+
+	return true
+}

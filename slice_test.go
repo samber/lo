@@ -235,3 +235,87 @@ func TestReject(t *testing.T) {
 
 	is.Equal(r2, []string{"foo", "bar"})
 }
+
+func TestAll(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := All[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 5
+	})
+
+	is.True(result1)
+
+	result2 := All[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 3
+	})
+
+	is.False(result2)
+
+	result3 := All[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 0
+	})
+
+	is.False(result3)
+
+	result4 := All[int]([]int{}, func(x int) bool {
+		return x < 5
+	})
+
+	is.True(result4)
+}
+
+func TestAny(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Any[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 5
+	})
+
+	is.True(result1)
+
+	result2 := Any[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 3
+	})
+
+	is.True(result2)
+
+	result3 := Any[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 0
+	})
+
+	is.False(result3)
+
+	result4 := Any[int]([]int{}, func(x int) bool {
+		return x < 5
+	})
+
+	is.False(result4)
+}
+
+func TestNone(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := None[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 5
+	})
+
+	is.False(result1)
+
+	result2 := None[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 3
+	})
+
+	is.False(result2)
+
+	result3 := None[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 0
+	})
+
+	is.True(result3)
+
+	result4 := None[int]([]int{}, func(x int) bool {
+		return x < 5
+	})
+
+	is.True(result4)
+}
