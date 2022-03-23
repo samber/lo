@@ -21,7 +21,7 @@ func IndexOf[T comparable](collection []T, element T) int {
 	return -1
 }
 
-// IndexOf returns the index at which the last occurrence of a value is found in an array or return -1
+// LastIndexOf returns the index at which the last occurrence of a value is found in an array or return -1
 // if the value cannot be found.
 func LastIndexOf[T comparable](collection []T, element T) int {
 	length := len(collection)

@@ -86,7 +86,7 @@ func Uniq[T comparable](collection []T) []T {
 	return result
 }
 
-// Uniq returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
+// UniqBy returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
 func UniqBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
