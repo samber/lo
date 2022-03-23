@@ -235,3 +235,35 @@ func TestReject(t *testing.T) {
 
 	is.Equal(r2, []string{"foo", "bar"})
 }
+
+func TestCount(t *testing.T) {
+	is := assert.New(t)
+
+	count1 := Count[int]([]int{1, 2, 1}, 1)
+	count2 := Count[int]([]int{1, 2, 1}, 3)
+	count3 := Count[int]([]int{}, 1)
+
+	is.Equal(count1, 2)
+	is.Equal(count2, 0)
+	is.Equal(count3, 0)
+}
+
+func TestCountBy(t *testing.T) {
+	is := assert.New(t)
+
+	count1 := CountBy[int]([]int{1, 2, 1}, func(i int) bool {
+		return i < 2
+	})
+
+	count2 := CountBy[int]([]int{1, 2, 1}, func(i int) bool {
+		return i > 2
+	})
+
+	count3 := CountBy[int]([]int{}, func(i int) bool {
+		return i <= 2
+	})
+
+	is.Equal(count1, 2)
+	is.Equal(count2, 0)
+	is.Equal(count3, 0)
+}
