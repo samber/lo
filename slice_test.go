@@ -92,6 +92,20 @@ func TestReduce(t *testing.T) {
 	is.Equal(result2, 20)
 }
 
+func TestReductionSteps(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := ReductionSteps[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+		return agg + item
+	}, 0)
+	result2 := ReductionSteps[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+		return agg + item
+	}, 10)
+
+	is.Equal(result1, []int{0, 1, 3, 6, 10})
+	is.Equal(result2, []int{10, 11, 13, 16, 20})
+}
+
 func TestUniq(t *testing.T) {
 	is := assert.New(t)
 
