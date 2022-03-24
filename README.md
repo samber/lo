@@ -115,6 +115,7 @@ Other functional programming helpers:
 - Switch / Case / Default
 - ToPtr
 - ToSlicePtr
+- Must
 
 Time based helpers:
 
@@ -876,6 +877,18 @@ Returns a slice of pointer copy of value.
 ```go
 ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 // []*string{"hello", "world"}
+```
+
+### Must
+
+Wraps a function call to return the given value if the error is nil, panics otherwise.
+
+```go
+val := Must(time.Parse("2006-01-02", "2022-01-15"))
+// 2022-01-15
+
+val := Must(time.Parse("2006-01-02", "bad-value"))
+// panics
 ```
 
 ### Attempt
