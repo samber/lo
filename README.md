@@ -102,7 +102,9 @@ Supported search helpers:
 - LastIndexOf
 - Find
 - Min
+- MinBy
 - Max
+- MaxBy
 - Last
 - Nth
 - Sample
@@ -737,6 +739,23 @@ min := lo.Min[int]([]int{})
 // 0
 ```
 
+### MinBy
+
+Search the minimum value of a collection using the given comparison function.
+If several values of the collection are equal to the smallest value, returns the first such value.
+
+```go
+min := lo.MinBy[string]([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// "s1"
+
+min := lo.MinBy[string]([]string{}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// ""
+```
+
 ### Max
 
 Search the maximum value of a collection.
@@ -747,6 +766,23 @@ max := lo.Max[int]([]int{1, 2, 3})
 
 max := lo.Max[int]([]int{})
 // 0
+```
+
+### MaxBy
+
+Search the maximum value of a collection using the given comparison function.
+If several values of the collection are equal to the greatest value, returns the first such value.
+
+```go
+max := lo.MaxBy[string]([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// "string1"
+
+max := lo.MaxBy[string]([]string{}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// ""
 ```
 
 ### Last
