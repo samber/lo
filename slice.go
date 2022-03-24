@@ -41,12 +41,33 @@ func FlatMap[T any, R any](collection []T, iteratee func(T, int) []R) []R {
 
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
+//
+// See also ReductionSteps.
 func Reduce[T any, R any](collection []T, accumulator func(R, T, int) R, initial R) R {
 	for i, item := range collection {
 		initial = accumulator(initial, item, i)
 	}
 
 	return initial
+}
+
+// ReductionSteps returns the steps of reducing collection, that is:
+//
+// []R{
+//	initial,
+//	Reduce(collection[0:1], accumulator, initial),
+//	Reduce(collection[0:2], accumulator, initial),
+//	...
+//	Reduce(collection, accumulator, initial),
+// }
+func ReductionSteps[T any, R any](collection []T, accumulator func(R, T, int) R, initial R) []R {
+	steps := make([]R, len(collection)+1)
+	steps[0] = initial
+	for i, item := range collection {
+		steps[i+1] = accumulator(steps[i], item, i)
+	}
+
+	return steps
 }
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.

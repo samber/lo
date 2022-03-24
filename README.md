@@ -51,7 +51,7 @@ Supported helpers for slices:
 - Filter
 - Map
 - FlatMap
-- Reduce
+- Reduce / ReductionSteps
 - ForEach
 - Times
 - Uniq
@@ -210,6 +210,17 @@ sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int
     return agg + item
 }, 0)
 // 10
+```
+
+### ReductionSteps
+
+Returns the steps of reducing collection.
+
+```go
+sums := lo.ReductionSteps[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) []int {
+    return agg + item
+}, 0)
+// []int{0, 1, 3, 6, 10}
 ```
 
 ### ForEach
