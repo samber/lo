@@ -27,14 +27,24 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 // `iteratee` is call in parallel.
-func ForEach[T any](collection []T, iteratee func(T, int)) {
+func ForEach[T any](collection []T, iteratee func(T, int), options ...*ParallelOption) {
 	var wg sync.WaitGroup
-	wg.Add(len(collection))
+	var concurrencyChn chan bool
+
+	option := mergeOptions(options)
+	if option.concurrencySetted {
+		concurrencyChn = make(chan bool, option.concurrency)
+	} else {
+		concurrencyChn = make(chan bool, len(collection))
+	}
 
 	for i, item := range collection {
+		wg.Add(1)
+		concurrencyChn <- true
 		go func(_item T, _i int) {
 			iteratee(_item, _i)
 			wg.Done()
+			<- concurrencyChn
 		}(item, i)
 	}
 
