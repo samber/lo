@@ -4,23 +4,14 @@ import "sync"
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // `iteratee` is call in parallel. Result keep the same order.
-func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
+func Map[T any, R any](collection []T, iteratee func(T, int) R, options ...*ParallelOption) []R {
 	result := make([]R, len(collection))
 
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
-
-	for i, item := range collection {
-		go func(_item T, _i int) {
-			res := iteratee(_item, _i)
-
-			result[_i] = res
-
-			wg.Done()
-		}(item, i)
+	handler := func (item T, ix int) {
+		result[ix] = iteratee(item, ix)
 	}
 
-	wg.Wait()
+	ForEach(collection, handler, options...)
 
 	return result
 }
