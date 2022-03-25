@@ -4,6 +4,7 @@ import (
 	"sort"
 	"strconv"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -22,6 +23,33 @@ func TestMap(t *testing.T) {
 	is.Equal(len(result2), 4)
 	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
 	is.Equal(result2, []string{"1", "2", "3", "4"})
+}
+
+func TestMapConcurrency(t *testing.T) {
+	is := assert.New(t)
+
+	num := 100
+	concurrency := 5
+	duration := 100 * time.Millisecond
+
+	list := []int{}
+	expected := []string{}
+	for i := 0; i < num; i++ {
+		list = append(list, i)
+		expected = append(expected, strconv.Itoa(i))
+	}
+
+	handler := func (item int, ix int) string {
+		time.Sleep(duration)
+		return strconv.Itoa(item)
+	}
+
+	startAt := time.Now()
+	result := Map(list, handler, Option().Concurrency(concurrency))
+	endAt := time.Now()
+
+	is.Equal(result, expected)
+	is.Equal(endAt.Sub(startAt).Round(duration), time.Duration(num / concurrency) * duration)
 }
 
 func TestTimes(t *testing.T) {
