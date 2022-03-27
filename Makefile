@@ -12,12 +12,12 @@ build:
 test:
 	go test -race -v ./...
 watch-test:
-	reflex -R assets.go -t 50ms -s -- sh -c 'gotest -race -v ./...'
+	reflex -t 50ms -s -- sh -c 'gotest -race -v ./...'
 
 bench:
 	go test -benchmem -count 3 -bench ./...
 watch-bench:
-	reflex -R assets.go -t 50ms -s -- sh -c 'go test -benchmem -count 3 -bench ./...'
+	reflex -t 50ms -s -- sh -c 'go test -benchmem -count 3 -bench ./...'
 
 coverage:
 	${BIN} test -v -coverprofile cover.out .

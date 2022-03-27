@@ -229,13 +229,26 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 	return result
 }
 
-// ToMap transforms a slice or an array of structs to a map based on a pivot callback.
-func ToMap[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
+// KeyBy transforms a slice or an array of structs to a map based on a pivot callback.
+func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	result := make(map[K]V, len(collection))
 
 	for _, v := range collection {
 		k := iteratee(v)
 		result[k] = v
+	}
+
+	return result
+}
+
+// Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
+func Reject[V any](collection []V, predicate func(V, int) bool) []V {
+	result := []V{}
+
+	for i, item := range collection {
+		if !predicate(item, i) {
+			result = append(result, item)
+		}
 	}
 
 	return result

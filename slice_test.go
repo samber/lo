@@ -210,12 +210,28 @@ func TestRepeat(t *testing.T) {
 	is.Equal(result2, []foo{})
 }
 
-func TestToMap(t *testing.T) {
+func TestKeyBy(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := ToMap[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
+	result1 := KeyBy[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
 		return len(str)
 	})
 
 	is.Equal(result1, map[int]string{1: "a", 2: "aa", 3: "aaa"})
+}
+
+func TestReject(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+		return x%2 == 0
+	})
+
+	is.Equal(r1, []int{1, 3})
+
+	r2 := Reject[string]([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
+		return len(x) > 3
+	})
+
+	is.Equal(r2, []string{"foo", "bar"})
 }
