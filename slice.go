@@ -241,6 +241,46 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	return result
 }
 
+type literalComparableTypes interface {
+	int | uint | uintptr |
+		int8 | int16 | int32 | int64 |
+		uint8 | uint16 | uint32 | uint64 |
+		float32 | float64
+}
+
+func partition[T literalComparableTypes](collection *[]T, l, h int) int {
+	pivot := (*collection)[h]
+	i := l - 1
+
+	for j := l; j < h; j++ {
+		if (*collection)[j] <= pivot {
+			i++
+			temp := (*collection)[i]
+			(*collection)[i] = (*collection)[j]
+			(*collection)[j] = temp
+		}
+	}
+
+	temp := (*collection)[i+1]
+	(*collection)[i+1] = (*collection)[h]
+	(*collection)[h] = temp
+
+	return i + 1
+}
+
+func quickSort[T literalComparableTypes](collection *[]T, l, h int) {
+	if l < h {
+		p := partition(collection, l, h)
+		quickSort(collection, l, p-1)
+		quickSort(collection, p+1, h)
+	}
+}
+
+func QuickSort[T literalComparableTypes](collection []T) []T {
+	quickSort(&collection, 0, len(collection)-1)
+	return collection
+}
+
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
 func Reject[V any](collection []V, predicate func(V, int) bool) []V {
 	result := []V{}

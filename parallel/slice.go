@@ -1,98 +1,74 @@
 package parallel
 
-import "sync"
+import (
+	"github.com/samber/lo/optional"
+	"runtime"
+	"sync"
+)
 
-// Map manipulates a slice and transforms it to a slice of another type.
-// `iteratee` is call in parallel. Result keep the same order.
-func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
-	result := make([]R, len(collection))
+var DefaultPoolSize = runtime.NumCPU() / 2
 
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
+type Options struct {
+	PoolSize optional.Value[int]
+}
 
-	for i, item := range collection {
-		go func(_item T, _i int) {
-			res := iteratee(_item, _i)
-
-			result[_i] = res
-
-			wg.Done()
-		}(item, i)
+func getPoolSize(options []*Options) int {
+	if options != nil && len(options) >= 0 {
+		return options[0].PoolSize.
+			OrElse(DefaultPoolSize)
 	}
 
-	wg.Wait()
+	return DefaultPoolSize
+}
 
+// Map manipulates a slice and transforms it to a slice of another type.
+// `iteratee` is called in parallel. Result keep the same order.
+func Map[T any, R any](collection []T, iteratee func(T, int) R, options ...*Options) []R {
+	result := make([]R, len(collection))
+	TaskPool[T](len(collection), getPoolSize(options), func(i int) {
+		result[i] = iteratee(collection[i], i)
+	})
 	return result
 }
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.
-// `iteratee` is call in parallel.
-func ForEach[T any](collection []T, iteratee func(T, int)) {
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
-
-	for i, item := range collection {
-		go func(_item T, _i int) {
-			iteratee(_item, _i)
-			wg.Done()
-		}(item, i)
-	}
-
-	wg.Wait()
+// `iteratee` is called in parallel.
+func ForEach[T any](collection []T, iteratee func(T, int), options ...*Options) {
+	TaskPool[T](len(collection), getPoolSize(options), func(i int) {
+		iteratee(collection[i], i)
+	})
 }
 
 // Times invokes the iteratee n times, returning an array of the results of each invocation.
 // The iteratee is invoked with index as argument.
-// `iteratee` is call in parallel.
-func Times[T any](count int, iteratee func(int) T) []T {
+// `iteratee` is called in parallel.
+func Times[T any](count int, iteratee func(int) T, options ...*Options) []T {
 	result := make([]T, count)
-
-	var wg sync.WaitGroup
-	wg.Add(count)
-
-	for i := 0; i < count; i++ {
-		go func(_i int) {
-			item := iteratee(_i)
-
-			result[_i] = item
-
-			wg.Done()
-		}(i)
-	}
-
-	wg.Wait()
-
+	TaskPool[int](count, getPoolSize(options), func(i int) {
+		result[i] = iteratee(i)
+	})
 	return result
 }
 
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // `iteratee` is call in parallel.
-func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T {
+func GroupBy[T any, U comparable](collection []T, iteratee func(T) U, options ...*Options) map[U][]T {
 	result := map[U][]T{}
+	resultMu := &sync.Mutex{}
 
-	var mu sync.Mutex
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
+	TaskPool[T](len(collection), getPoolSize(options), func(i int) {
+		key := iteratee(collection[i])
 
-	for _, item := range collection {
-		go func(_item T) {
-			key := iteratee(_item)
+		resultMu.Lock()
+		if _, ok := result[key]; !ok {
+			result[key] = []T{}
+		}
+		resultMu.Unlock()
 
-			mu.Lock()
-
-			if _, ok := result[key]; !ok {
-				result[key] = []T{}
-			}
-
-			result[key] = append(result[key], _item)
-
-			mu.Unlock()
-			wg.Done()
-		}(item)
-	}
-
-	wg.Wait()
-
+		resultMu.Lock()
+		result[key] = append(result[key], collection[i])
+		resultMu.Unlock()
+	})
 	return result
 }
 
@@ -100,35 +76,13 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through iteratee.
 // `iteratee` is call in parallel.
-func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]T {
+func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K, options ...*Options) [][]T {
 	result := [][]T{}
-	seen := map[K]int{}
+	groups := GroupBy(collection, iteratee, options...)
 
-	var mu sync.Mutex
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
-
-	for _, item := range collection {
-		go func(_item T) {
-			key := iteratee(_item)
-
-			mu.Lock()
-
-			resultIndex, ok := seen[key]
-			if !ok {
-				resultIndex = len(result)
-				seen[key] = resultIndex
-				result = append(result, []T{})
-			}
-
-			result[resultIndex] = append(result[resultIndex], _item)
-
-			mu.Unlock()
-			wg.Done()
-		}(item)
+	for _, v := range groups {
+		result = append(result, v)
 	}
-
-	wg.Wait()
 
 	return result
 }

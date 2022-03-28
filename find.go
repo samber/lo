@@ -2,9 +2,9 @@ package lo
 
 import (
 	"fmt"
-	"math/rand"
-	"math"
 	"golang.org/x/exp/constraints"
+	"math"
+	"math/rand"
 )
 
 // import "golang.org/x/exp/constraints"

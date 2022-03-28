@@ -128,6 +128,14 @@ Error handling:
 - TryWithErrorValue
 - TryCatchWithErrorValue
 
+Other helper functions:
+
+- With
+
+Other parallel processing helpers:
+
+- TaskPool
+
 Constraints:
 
 - Clonable
@@ -916,6 +924,62 @@ iter, err := lo.Attempt(0, func(i int) error {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
+### TaskPool
+
+TaskPool creates a pool of workers, working through n amount of jobs. The callback function receives the current job that is being worked on.
+
+```go
+//create a task pool with 4 workers going over 10 jobs
+lop.TaskPool(10, 4, func(i int) {
+	//...
+})
+```
+
+In most cases, the TaskPool approach is quite a bit faster than the old parallel Map implementation, beating the old lop.Map implementation by a factor of about 4x.
+The normal Map implementation is the fastest of them all in most situations.
+
+```
+goos: darwin
+goarch: arm64
+pkg: github.com/samber/lo/parallel
+BenchmarkNormalMap
+BenchmarkNormalMap-8     	    6790	    174719 ns/op
+BenchmarkNewTaskPool
+BenchmarkNewTaskPool-8   	     272	   4418947 ns/op
+BenchmarkMap
+BenchmarkMap-8           	      60	  18902713 ns/op
+PASS
+```
+
+The parallel implementations really start to shine with long running callbacks. Adding a delay of just 1ms to the previous tests yields the following results:
+
+```
+goos: darwin
+goarch: arm64
+pkg: github.com/samber/lo/parallel
+BenchmarkNormalMap
+BenchmarkNormalMap-8     	       1	115098105417 ns/op
+BenchmarkNewTaskPool
+BenchmarkNewTaskPool-8   	       1	14409710791 ns/op
+BenchmarkMap
+BenchmarkMap-8           	      38	  30249124 ns/op
+PASS
+```
+
+So while the new TaskPool beats out the old lop.Map implementation in most cases,
+the old lop.Map implementation beats the TaskPool when **all** jobs are long running.
+The TaskPool delivers the best performance on average with some long running
+and some quick jobs, beating out the normal Map implementation and the old lop.Map implementation.
+In long running jobs the TaskPool beats the normal Map implementation by a factor of about 8x.
+
+The advantage of the TaskPool is that its behaviour is modifiable. Adding the following line in front of a lop.Map call changes the behaviour of the TaskPool to match that of the old lop.Map implementation.
+
+````go
+lo.With(&lop.DefaultPoolSize, len(source), func() {
+	//...
+})
+````
+=======
 
 ### Debounce
 
