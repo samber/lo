@@ -15,7 +15,6 @@ type Options struct {
 func getPoolSize(options []*Options) int {
 	if options != nil && len(options) >= 0 {
 		return options[0].PoolSize.
-			IfPresent().
 			OrElse(DefaultPoolSize)
 	}
 

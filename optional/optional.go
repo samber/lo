@@ -5,17 +5,34 @@ type Value[T any] struct {
 	value T
 }
 
-type IfPresent[T any] struct {
-	value *Value[T]
+func (v Value[T]) IsPresent() bool {
+	return v.set
 }
 
-func (v Value[T]) IfPresent() IfPresent[T] {
-	return IfPresent[T]{
-		value: &v,
+func (v Value[T]) IsEmpty() bool {
+	return !v.set
+}
+
+func (v Value[T]) Get() T {
+	return v.value
+}
+
+func (v Value[T]) IfPresent(consumer func(T)) {
+	if v.set {
+		consumer(v.value)
 	}
 }
 
-func (v Value[T]) IfPresentOrElse(elseVal T) T {
+func (v Value[T]) IfPresentOrElse(consumer func(T), elseFunction func()) {
+	if !v.set {
+		elseFunction()
+		return
+	}
+
+	consumer(v.value)
+}
+
+func (v Value[T]) OrElse(elseVal T) T {
 	if v.set {
 		return v.value
 	}
@@ -23,24 +40,8 @@ func (v Value[T]) IfPresentOrElse(elseVal T) T {
 	return elseVal
 }
 
-func (v Value[T]) IsPresent() bool {
-	return v.set
-}
-
-func (v Value[T]) Get() T {
-	return v.value
-}
-
-func (p IfPresent[T]) OrElse(elseVal T) T {
-	if p.value.set {
-		return p.value.value
-	}
-
-	return elseVal
-}
-
-func (p IfPresent[T]) OrElseThrow() {
-	if !p.value.set {
+func (v Value[T]) OrElseThrow() {
+	if !v.set {
 		panic("Optional value was expected to be set but wasn't!")
 	}
 }
