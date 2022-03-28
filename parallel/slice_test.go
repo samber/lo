@@ -1,6 +1,7 @@
 package parallel
 
 import (
+	"github.com/samber/lo/optional"
 	"sort"
 	"strconv"
 	"testing"
@@ -60,7 +61,7 @@ func TestGroupBy(t *testing.T) {
 func TestPartitionBy(t *testing.T) {
 	is := assert.New(t)
 
-	oddEven := func (x int) string {
+	oddEven := func(x int) string {
 		if x < 0 {
 			return "negative"
 		} else if x%2 == 0 {
@@ -69,7 +70,7 @@ func TestPartitionBy(t *testing.T) {
 		return "odd"
 	}
 
-	result1 := PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
+	result1 := PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven, &Options{PoolSize: optional.Of(10)})
 	result2 := PartitionBy[int, string]([]int{}, oddEven)
 
 	// order
