@@ -156,6 +156,14 @@ lop.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 // []string{"1", "2", "3", "4"}
 ```
 
+Set max concurrency limit with optional parameters.
+```go
+handler := func(x int64, _ int) string {
+    return strconv.FormatInt(x, 10)
+}
+lop.Map([]int64{1, 2, 3, 4}, handler, lop.Option().Concurrency(20))
+```
+
 ### FlatMap
 
 Manipulates a slice and transforms and flattens it to a slice of another type.
