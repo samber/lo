@@ -497,7 +497,7 @@ odd := lo.Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 
 ### All
 
-Returns true if the prerdicate returns true for all of the elements in the collection or if the collection is empty.
+Returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
 
 ```go
 b := All[int]([]int{1, 2, 3, 4}, func(x int) bool {
@@ -508,7 +508,7 @@ b := All[int]([]int{1, 2, 3, 4}, func(x int) bool {
 
 ### Any
 
-Returns true if the prerdicate returns true for any of the elements in the collection. 
+Returns true if the predicate returns true for any of the elements in the collection. 
 If the collection is empty Any returns false.
 
 ```go
@@ -520,7 +520,7 @@ b := Any[int]([]int{1, 2, 3, 4}, func(x int) bool {
 
 ### None
 
-Returns true if the prerdicate returns true for none of the elements in the collection or if the collection is empty.
+Returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
 
 ```go
 b := None[int]([]int{1, 2, 3, 4}, func(x int) bool {
