@@ -1,5 +1,7 @@
 package lo
 
+import "golang.org/x/exp/constraints"
+
 // Contains returns true if an element is present in a collection.
 func Contains[T comparable](collection []T, element T) bool {
 	for _, item := range collection {
@@ -128,4 +130,20 @@ func Union[T comparable](list1 []T, list2 []T) []T {
 	}
 
 	return result
+}
+
+// Overlaps returns true if the collections have overlapping range start to end.
+func Overlaps[T constraints.Ordered](collection []T, start, end T) bool {
+	if start > end {
+		return false
+	}
+	if len(collection) < 2 {
+		return false
+	}
+
+	min, max := Min(collection), Max(collection)
+	return (min <= end && max >= start) ||
+		(min >= end && min <= start && max <= start) ||
+		(max <= start && max >= end && min <= end) ||
+		(min >= end && max <= start)
 }

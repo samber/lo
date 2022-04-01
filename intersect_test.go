@@ -107,3 +107,21 @@ func TestUnion(t *testing.T) {
 	is.Equal(result4, []int{0, 1, 2})
 	is.Equal(result5, []int{})
 }
+
+func TestOverlaps(t *testing.T) {
+	is := assert.New(t)
+	result1 := Overlaps[int]([]int{0, 1, 2, 3, 4, 5}, 0, 10)
+	result2 := Overlaps[int]([]int{0, 1, 2, 3, 4, 5}, 0, 6)
+	result3 := Overlaps[int]([]int{0, 1, 2, 3, 4, 5}, 0, 5)
+	result4 := Overlaps[int]([]int{0, 1, 2, 3, 4, 5}, 0, 4)
+	result5 := Overlaps[int]([]int{1, 9}, 0, 3)
+	result6 := Overlaps[int]([]int{1, 9}, 10, 2)
+	result7 := Overlaps[int]([]int{1, 9}, 10, 12)
+	is.Equal(result1, true)
+	is.Equal(result2, true)
+	is.Equal(result3, true)
+	is.Equal(result4, true)
+	is.Equal(result5, true)
+	is.Equal(result6, false)
+	is.Equal(result7, false)
+}
