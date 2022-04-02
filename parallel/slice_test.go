@@ -63,6 +63,30 @@ func TestTimes(t *testing.T) {
 	is.Equal(result1, []string{"0", "1", "2"})
 }
 
+func TestTimesConcurrency(t *testing.T) {
+	is := assert.New(t)
+
+	num := 100
+	concurrency := 5
+	duration := 100 * time.Millisecond
+
+	expected := []string{}
+	for i := 0; i < num; i++ {
+		expected = append(expected, strconv.Itoa(i))
+	}
+
+	startAt := time.Now()
+	result := Times(num, func(i int) string {
+		time.Sleep(duration)
+		return strconv.FormatInt(int64(i), 10)
+	}, Option().Concurrency(concurrency))
+	endAt := time.Now()
+
+	is.Equal(len(result), num)
+	is.Equal(result, expected)
+	is.Equal(endAt.Sub(startAt).Round(duration), time.Duration(num / concurrency) * duration)
+}
+
 func TestGroupBy(t *testing.T) {
 	is := assert.New(t)
 

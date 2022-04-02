@@ -45,22 +45,30 @@ func ForEach[T any](collection []T, iteratee func(T, int), options ...*ParallelO
 // Times invokes the iteratee n times, returning an array of the results of each invocation.
 // The iteratee is invoked with index as argument.
 // `iteratee` is call in parallel.
-func Times[T any](count int, iteratee func(int) T) []T {
-	result := make([]T, count)
+func Times[T any](count int, iteratee func(int) T, options ...*ParallelOption) []T {
+	var concurrencyChn chan bool
 
-	var wg sync.WaitGroup
-	wg.Add(count)
-
-	for i := 0; i < count; i++ {
-		go func(_i int) {
-			item := iteratee(_i)
-
-			result[_i] = item
-
-			wg.Done()
-		}(i)
+	option := mergeOptions(options)
+	if option.concurrencySetted {
+		concurrencyChn = make(chan bool, option.concurrency)
+	} else {
+		concurrencyChn = make(chan bool, count)
 	}
 
+	var wg sync.WaitGroup
+	result := make([]T, count)
+	for i := 0; i < count; i++ {
+		wg.Add(1)
+		concurrencyChn <- true
+		go func(_i int) {
+			defer func() {
+				wg.Done()
+				<- concurrencyChn
+			}()
+			item := iteratee(_i)
+			result[_i] = item
+		}(i)
+	}
 	wg.Wait()
 
 	return result
