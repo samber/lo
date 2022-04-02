@@ -10,7 +10,7 @@ import "sync"
 func Map[T any, R any](collection []T, iteratee func(T, int) R, options ...*ParallelOption) []R {
 	result := make([]R, len(collection))
 
-	handler := func (item T, ix int) {
+	handler := func(item T, ix int) {
 		result[ix] = iteratee(item, ix)
 	}
 
@@ -26,22 +26,25 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R, options ...*Para
 // `parallel.ForEach(list, iteratee, parallel.Option().Concurrency(10))`.
 func ForEach[T any](collection []T, iteratee func(T, int), options ...*ParallelOption) {
 	var wg sync.WaitGroup
-	var concurrencyChn chan bool
+	var concurrencyLimiter chan bool
 
 	option := mergeOptions(options)
 	if option.concurrencySetted {
-		concurrencyChn = make(chan bool, option.concurrency)
-	} else {
-		concurrencyChn = make(chan bool, len(collection))
+		concurrencyLimiter = make(chan bool, option.concurrency)
 	}
 
+	wg.Add(len(collection))
+
 	for i, item := range collection {
-		wg.Add(1)
-		concurrencyChn <- true
+		if concurrencyLimiter != nil {
+			concurrencyLimiter <- true
+		}
 		go func(_item T, _i int) {
 			iteratee(_item, _i)
 			wg.Done()
-			<- concurrencyChn
+			if concurrencyLimiter != nil {
+				<-concurrencyLimiter
+			}
 		}(item, i)
 	}
 
@@ -55,24 +58,27 @@ func ForEach[T any](collection []T, iteratee func(T, int), options ...*ParallelO
 // concurrent `iteratee` goroutines running at the same time, just like
 // `parallel.Times(count, iteratee, parallel.Option().Concurrency(10))`.
 func Times[T any](count int, iteratee func(int) T, options ...*ParallelOption) []T {
-	var concurrencyChn chan bool
+	var concurrencyLimiter chan bool
 
 	option := mergeOptions(options)
 	if option.concurrencySetted {
-		concurrencyChn = make(chan bool, option.concurrency)
-	} else {
-		concurrencyChn = make(chan bool, count)
+		concurrencyLimiter = make(chan bool, option.concurrency)
 	}
 
-	var wg sync.WaitGroup
 	result := make([]T, count)
+
+	var wg sync.WaitGroup
+	wg.Add(count)
 	for i := 0; i < count; i++ {
-		wg.Add(1)
-		concurrencyChn <- true
+		if concurrencyLimiter != nil {
+			concurrencyLimiter <- true
+		}
 		go func(_i int) {
 			defer func() {
 				wg.Done()
-				<- concurrencyChn
+				if concurrencyLimiter != nil {
+					<-concurrencyLimiter
+				}
 			}()
 			item := iteratee(_i)
 			result[_i] = item
@@ -92,7 +98,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U, options ..
 	result := map[U][]T{}
 	var mu sync.Mutex
 
-	handler := func (item T, ix int)  {
+	handler := func(item T, ix int) {
 		key := iteratee(item)
 
 		mu.Lock()
@@ -123,7 +129,7 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K, opti
 	seen := map[K]int{}
 	var mu sync.Mutex
 
-	handler := func (item T, ix int)  {
+	handler := func(item T, ix int) {
 		key := iteratee(item)
 
 		mu.Lock()
