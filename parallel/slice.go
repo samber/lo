@@ -102,35 +102,29 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U, options ..
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through iteratee.
 // `iteratee` is call in parallel.
-func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]T {
+func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K, options ...*ParallelOption) [][]T {
 	result := [][]T{}
+
 	seen := map[K]int{}
-
 	var mu sync.Mutex
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
 
-	for _, item := range collection {
-		go func(_item T) {
-			key := iteratee(_item)
+	handler := func (item T, ix int)  {
+		key := iteratee(item)
 
-			mu.Lock()
+		mu.Lock()
+		defer mu.Unlock()
 
-			resultIndex, ok := seen[key]
-			if !ok {
-				resultIndex = len(result)
-				seen[key] = resultIndex
-				result = append(result, []T{})
-			}
+		resultIndex, ok := seen[key]
+		if !ok {
+			resultIndex = len(result)
+			seen[key] = resultIndex
+			result = append(result, []T{})
+		}
 
-			result[resultIndex] = append(result[resultIndex], _item)
-
-			mu.Unlock()
-			wg.Done()
-		}(item)
+		result[resultIndex] = append(result[resultIndex], item)
 	}
 
-	wg.Wait()
+	ForEach(collection, handler, options...)
 
 	return result
 }

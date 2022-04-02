@@ -166,3 +166,37 @@ func TestPartitionBy(t *testing.T) {
 	is.ElementsMatch(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
 	is.Equal(result2, [][]int{})
 }
+
+func TestPartitionByConcurrency(t *testing.T) {
+	is := assert.New(t)
+
+	concurrency := 2
+	duration := 100 * time.Millisecond
+
+	oddEven := func (x int) string {
+		time.Sleep(duration)
+		if x < 0 {
+			return "negative"
+		} else if x%2 == 0 {
+			return "even"
+		}
+		return "odd"
+	}
+
+	startAt := time.Now()
+	result := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven, Option().Concurrency(concurrency))
+	endAt := time.Now()
+
+	// order
+	sort.Slice(result, func(i, j int) bool {
+		return result[i][0] < result[j][0]
+	})
+	for x := range result {
+		sort.Slice(result[x], func(i, j int) bool {
+			return result[x][i] < result[x][j]
+		})
+	}
+
+	is.ElementsMatch(result, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
+	is.Equal(endAt.Sub(startAt).Round(duration), time.Duration(8 / concurrency) * duration)
+}
