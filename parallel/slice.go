@@ -76,31 +76,24 @@ func Times[T any](count int, iteratee func(int) T, options ...*ParallelOption) [
 
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // `iteratee` is call in parallel.
-func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T {
+func GroupBy[T any, U comparable](collection []T, iteratee func(T) U, options ...*ParallelOption) map[U][]T {
 	result := map[U][]T{}
-
 	var mu sync.Mutex
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
 
-	for _, item := range collection {
-		go func(_item T) {
-			key := iteratee(_item)
+	handler := func (item T, ix int)  {
+		key := iteratee(item)
 
-			mu.Lock()
+		mu.Lock()
 
-			if _, ok := result[key]; !ok {
-				result[key] = []T{}
-			}
+		if _, ok := result[key]; !ok {
+			result[key] = []T{}
+		}
+		result[key] = append(result[key], item)
 
-			result[key] = append(result[key], _item)
-
-			mu.Unlock()
-			wg.Done()
-		}(item)
+		mu.Unlock()
 	}
 
-	wg.Wait()
+	ForEach(collection, handler, options...)
 
 	return result
 }

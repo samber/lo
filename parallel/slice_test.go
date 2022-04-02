@@ -109,6 +109,35 @@ func TestGroupBy(t *testing.T) {
 	})
 }
 
+func TestGroupByConcurrency(t *testing.T) {
+	is := assert.New(t)
+
+	concurrency := 2
+	duration := 100 * time.Millisecond
+
+	startAt := time.Now()
+	result := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+		time.Sleep(duration)
+		return i % 3
+	}, Option().Concurrency(concurrency))
+	endAt := time.Now()
+
+	// order
+	for x := range result {
+		sort.Slice(result[x], func(i, j int) bool {
+			return result[x][i] < result[x][j]
+		})
+	}
+
+	is.EqualValues(len(result), 3)
+	is.EqualValues(result, map[int][]int{
+		0: {0, 3},
+		1: {1, 4},
+		2: {2, 5},
+	})
+	is.Equal(endAt.Sub(startAt).Round(duration), time.Duration(6 / concurrency) * duration)
+}
+
 func TestPartitionBy(t *testing.T) {
 	is := assert.New(t)
 
