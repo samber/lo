@@ -115,6 +115,7 @@ Other functional programming helpers:
 - Switch / Case / Default
 - ToPtr
 - ToSlicePtr
+- Async
 
 Time based helpers:
 
@@ -876,6 +877,15 @@ Returns a slice of pointer copy of value.
 ```go
 ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 // []*string{"hello", "world"}
+```
+
+### Async
+
+Executes a function in a goroutine and returns the result in a channel.
+
+```go
+ch := lo.Async[error](func() error { time.Sleep(10 * time.Second); return nil })
+// chan err{nil}
 ```
 
 ### Attempt
