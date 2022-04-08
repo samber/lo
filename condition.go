@@ -24,10 +24,30 @@ func If[T any](condition bool, result T) *ifElse[T] {
 	return &ifElse[T]{t, false}
 }
 
+// IfF.
+func IfF[T any](condition bool, resultF func() T) *ifElse[T] {
+	if condition {
+		return &ifElse[T]{resultF(), true}
+	}
+
+	var t T
+	return &ifElse[T]{t, false}
+}
+
 // ElseIf.
 func (i *ifElse[T]) ElseIf(condition bool, result T) *ifElse[T] {
 	if !i.done && condition {
 		i.result = result
+		i.done = true
+	}
+
+	return i
+}
+
+// ElseIfF.
+func (i *ifElse[T]) ElseIfF(condition bool, resultF func() T) *ifElse[T] {
+	if !i.done && condition {
+		i.result = resultF()
 		i.done = true
 	}
 
@@ -41,6 +61,15 @@ func (i *ifElse[T]) Else(result T) T {
 	}
 
 	return result
+}
+
+// ElseF.
+func (i *ifElse[T]) ElseF(resultF func() T) T {
+	if i.done {
+		return i.result
+	}
+
+	return resultF()
 }
 
 type switchCase[T comparable, R any] struct {
