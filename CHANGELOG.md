@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.12.0 (2022-04-12)
+
+Adding:
+
+- Must
+- Must{0-6}
+- FindOrElse
+- Async
+- MinBy
+- MaxBy
+- Count
+- CountBy
+- FindIndexOf
+- FindLastIndexOf
+- FilterMap
+
 ## 1.11.0 (2022-03-11)
 
 Adding:
