@@ -130,10 +130,6 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 	for _, item := range collection {
 		key := iteratee(item)
 
-		if _, ok := result[key]; !ok {
-			result[key] = []T{}
-		}
-
 		result[key] = append(result[key], item)
 	}
 
