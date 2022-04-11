@@ -50,6 +50,7 @@ Supported helpers for slices:
 
 - Filter
 - Map
+- FilterMap
 - FlatMap
 - Reduce
 - ForEach
@@ -70,6 +71,8 @@ Supported helpers for slices:
 - DropWhile
 - DropRightWhile
 - Reject
+- Count
+- CountBy
 - Range / RangeFrom / RangeWithSteps
 
 Supported helpers for maps:
@@ -101,8 +104,12 @@ Supported search helpers:
 - IndexOf
 - LastIndexOf
 - Find
+- FindIndexOf
+- FindLastIndexOf
 - Min
+- MinBy
 - Max
+- MaxBy
 - Last
 - Nth
 - Sample
@@ -115,6 +122,7 @@ Other functional programming helpers:
 - Switch / Case / Default
 - ToPtr
 - ToSlicePtr
+- Empty
 
 Time based helpers:
 
@@ -168,6 +176,22 @@ lo.FlatMap[int, string]([]int{0, 1, 2}, func(x int, _ int) []string {
 	}
 })
 // []string{"0", "0", "1", "1", "2", "2"}
+```
+
+### FilterMap
+
+Returns a slice which obtained after both filtering and mapping using the given callback function.
+
+The callback function should return two values: the result of the mapping operation and whether the result element should be included or not.
+
+```go
+matching := lo.FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+    if strings.HasSuffix(x, "pu") {
+        return "xpu", true
+    }
+    return "", false
+})
+// []string{"xpu", "xpu"}
 ```
 
 ### Filter
@@ -492,6 +516,26 @@ odd := lo.Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 // []int{1, 3}
 ```
 
+### Count
+
+Counts the number of elements in the collection that compare equal to value.
+
+```go
+count := Count[int]([]int{1, 5, 1}, 1)
+// 2
+```
+
+### CountBy
+
+Counts the number of elements in the collection for which predicate is true.
+
+```go
+count := CountBy[int]([]int{1, 5, 1}, func(i int) bool {
+    return i < 4
+})
+// 2
+```
+
 ### Range / RangeFrom / RangeWithSteps
 
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
@@ -725,6 +769,38 @@ str, ok := lo.Find[string]([]string{"foobar"}, func(i string) bool {
 // "", false
 ```
 
+### FindIndexOf
+
+FindIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
+
+```go
+str, index, ok := lo.FindIndexOf[string]([]string{"a", "b", "a", "b"}, func(i string) bool {
+    return i == "b"
+})
+// "b", 1, true
+
+str, index, ok := lo.FindIndexOf[string]([]string{"foobar"}, func(i string) bool {
+    return i == "b"
+})
+// "", -1, false
+```
+
+### FindLastIndexOf
+
+FindLastIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
+
+```go
+str, index, ok := lo.FindLastIndexOf[string]([]string{"a", "b", "a", "b"}, func(i string) bool {
+    return i == "b"
+})
+// "b", 4, true
+
+str, index, ok := lo.FindLastIndexOf[string]([]string{"foobar"}, func(i string) bool {
+    return i == "b"
+})
+// "", -1, false
+```
+
 ### Min
 
 Search the minimum value of a collection.
@@ -737,6 +813,23 @@ min := lo.Min[int]([]int{})
 // 0
 ```
 
+### MinBy
+
+Search the minimum value of a collection using the given comparison function.
+If several values of the collection are equal to the smallest value, returns the first such value.
+
+```go
+min := lo.MinBy[string]([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// "s1"
+
+min := lo.MinBy[string]([]string{}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// ""
+```
+
 ### Max
 
 Search the maximum value of a collection.
@@ -747,6 +840,23 @@ max := lo.Max[int]([]int{1, 2, 3})
 
 max := lo.Max[int]([]int{})
 // 0
+```
+
+### MaxBy
+
+Search the maximum value of a collection using the given comparison function.
+If several values of the collection are equal to the greatest value, returns the first such value.
+
+```go
+max := lo.MaxBy[string]([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// "string1"
+
+max := lo.MaxBy[string]([]string{}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// ""
 ```
 
 ### Last
@@ -876,6 +986,19 @@ Returns a slice of pointer copy of value.
 ```go
 ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 // []*string{"hello", "world"}
+```
+
+### Empty
+
+Returns an empty value.
+
+```go
+lo.Empty[int]()
+// 0
+lo.Empty[string]()
+// ""
+lo.Empty[bool]()
+// false
 ```
 
 ### Attempt
