@@ -131,6 +131,7 @@ Time based helpers:
 
 Error handling:
 
+- Must
 - Try
 - TryCatch
 - TryWithErrorValue
@@ -1056,6 +1057,18 @@ for j := 0; j < 10; j++ {
 
 time.Sleep(1 * time.Second)
 cancel()
+```
+
+### Must
+
+Wraps a function call to return the given value if the error is nil, panics otherwise.
+
+```go
+val := Must(time.Parse("2006-01-02", "2022-01-15"))
+// 2022-01-15
+
+val := Must(time.Parse("2006-01-02", "bad-value"))
+// panics
 ```
 
 ## Try
