@@ -8,12 +8,113 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMust(t *testing.T) {
+	is := assert.New(t)
+	is.Equal("foo", Must("foo", nil))
+	is.Panics(func() {
+		Must("", errors.New("something went wrong"))
+	})
+}
+
+func TestMustX(t *testing.T) {
+	is := assert.New(t)
+
+	{
+		is.Panics(func() {
+			Must0(errors.New("something went wrong"))
+		})
+		is.NotPanics(func() {
+			Must0(nil)
+		})
+	}
+
+	{
+		val1 := Must1(1, nil)
+		is.Equal(1, val1)
+		is.Panics(func() {
+			Must1(1, errors.New("something went wrong"))
+		})
+		is.NotPanics(func() {
+			Must1(1, nil)
+		})
+	}
+
+	{
+		val1, val2 := Must2(1, 2, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Panics(func() {
+			Must2(1, 2, errors.New("something went wrong"))
+		})
+		is.NotPanics(func() {
+			Must2(1, 2, nil)
+		})
+	}
+
+	{
+		val1, val2, val3 := Must3(1, 2, 3, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Panics(func() {
+			Must3(1, 2, 3, errors.New("something went wrong"))
+		})
+		is.NotPanics(func() {
+			Must3(1, 2, 3, nil)
+		})
+	}
+
+	{
+		val1, val2, val3, val4 := Must4(1, 2, 3, 4, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Panics(func() {
+			Must4(1, 2, 3, 4, errors.New("something went wrong"))
+		})
+		is.NotPanics(func() {
+			Must4(1, 2, 3, 4, nil)
+		})
+	}
+
+	{
+		val1, val2, val3, val4, val5 := Must5(1, 2, 3, 4, 5, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Equal(5, val5)
+		is.Panics(func() {
+			Must5(1, 2, 3, 4, 5, errors.New("something went wrong"))
+		})
+		is.NotPanics(func() {
+			Must5(1, 2, 3, 4, 5, nil)
+		})
+	}
+
+	{
+		val1, val2, val3, val4, val5, val6 := Must6(1, 2, 3, 4, 5, 6, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Equal(5, val5)
+		is.Equal(6, val6)
+		is.Panics(func() {
+			Must6(1, 2, 3, 4, 5, 6, errors.New("something went wrong"))
+		})
+		is.NotPanics(func() {
+			Must6(1, 2, 3, 4, 5, 6, nil)
+		})
+	}
+}
+
 func TestTry(t *testing.T) {
 	is := assert.New(t)
 
 	is.False(Try(func() error {
 		panic("error")
-		return nil
 	}))
 	is.True(Try(func() error {
 		return nil
@@ -23,7 +124,7 @@ func TestTry(t *testing.T) {
 	}))
 }
 
-func TestTryFunctions(t *testing.T) {
+func TestTryX(t *testing.T) {
 	is := assert.New(t)
 
 	is.True(Try2(func() (string, error) {
@@ -48,27 +149,22 @@ func TestTryFunctions(t *testing.T) {
 
 	is.False(Try2(func() (string, error) {
 		panic("error")
-		return "", nil
 	}))
 
 	is.False(Try3(func() (string, string, error) {
 		panic("error")
-		return "", "", nil
 	}))
 
 	is.False(Try4(func() (string, string, string, error) {
 		panic("error")
-		return "", "", "", nil
 	}))
 
 	is.False(Try5(func() (string, string, string, string, error) {
 		panic("error")
-		return "", "", "", "", nil
 	}))
 
 	is.False(Try6(func() (string, string, string, string, string, error) {
 		panic("error")
-		return "", "", "", "", "", nil
 	}))
 
 	is.False(Try2(func() (string, error) {
@@ -97,7 +193,6 @@ func TestTryWithErrorValue(t *testing.T) {
 
 	err, ok := TryWithErrorValue(func() error {
 		panic("error")
-		return nil
 	})
 	is.False(ok)
 	is.Equal("error", err)
@@ -115,7 +210,6 @@ func TestTryCatch(t *testing.T) {
 	caught := false
 	TryCatch(func() error {
 		panic("error")
-		return nil
 	}, func() {
 		//error was caught
 		caught = true
@@ -138,7 +232,6 @@ func TestTryCatchWithErrorValue(t *testing.T) {
 	caught := false
 	TryCatchWithErrorValue(func() error {
 		panic("error")
-		return nil
 	}, func(val any) {
 		//error was caught
 		caught = val == "error"
