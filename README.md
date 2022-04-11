@@ -122,6 +122,7 @@ Other functional programming helpers:
 - Switch / Case / Default
 - ToPtr
 - ToSlicePtr
+- Empty
 
 Time based helpers:
 
@@ -985,6 +986,19 @@ Returns a slice of pointer copy of value.
 ```go
 ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 // []*string{"hello", "world"}
+```
+
+### Empty
+
+Returns an empty value.
+
+```go
+lo.Empty[int]()
+// 0
+lo.Empty[string]()
+// ""
+lo.Empty[bool]()
+// false
 ```
 
 ### Attempt
