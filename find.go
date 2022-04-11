@@ -89,8 +89,29 @@ func Min[T constraints.Ordered](collection []T) T {
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		// if item.Less(min) {
 		if item < min {
+			min = item
+		}
+	}
+
+	return min
+}
+
+// MinBy search the minimum value of a collection using the given comparison function.
+// If several values of the collection are equal to the smallest value, returns the first such value.
+func MinBy[T any](collection []T, comparison func(T, T) bool) T {
+	var min T
+
+	if len(collection) == 0 {
+		return min
+	}
+
+	min = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
+
+		if comparison(item, min) {
 			min = item
 		}
 	}
@@ -112,6 +133,28 @@ func Max[T constraints.Ordered](collection []T) T {
 		item := collection[i]
 
 		if item > max {
+			max = item
+		}
+	}
+
+	return max
+}
+
+// MaxBy search the maximum value of a collection using the given comparison function.
+// If several values of the collection are equal to the greatest value, returns the first such value.
+func MaxBy[T any](collection []T, comparison func(T, T) bool) T {
+	var max T
+
+	if len(collection) == 0 {
+		return max
+	}
+
+	max = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
+
+		if comparison(item, max) {
 			max = item
 		}
 	}
