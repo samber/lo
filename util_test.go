@@ -1,7 +1,6 @@
 package lo
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -45,12 +44,4 @@ func TestRangeClose(t *testing.T) {
 	is.Equal([]int{}, result4)
 	is.Equal([]float64{1.0, 3.0}, result5)
 	is.Equal([]float32{-1.0, -2.0, -3.0}, result6)
-}
-
-func TestMust(t *testing.T) {
-	is := assert.New(t)
-	is.Equal("foo", Must("foo", nil))
-	is.Panics(func() {
-		Must("", errors.New("something went wrong"))
-	})
 }

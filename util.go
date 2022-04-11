@@ -48,13 +48,3 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 	}
 	return result
 }
-
-// Must is a helper that wraps a call to a function returning a value and an error
-// and panics if the error is non-nil.
-func Must[T any](val T, err error) T {
-	if err != nil {
-		panic(err)
-	}
-
-	return val
-}
