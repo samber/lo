@@ -101,6 +101,7 @@ Supported search helpers:
 - IndexOf
 - LastIndexOf
 - Find
+- FindIndex
 - Min
 - Max
 - Last

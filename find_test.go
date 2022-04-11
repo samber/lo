@@ -46,6 +46,22 @@ func TestFind(t *testing.T) {
 	is.Equal(result2, "")
 }
 
+func TestFindIndex(t *testing.T) {
+	is := assert.New(t)
+
+	result1, ok1 := FindIndex[string]([]string{"a", "b", "c", "d"}, func(i string) bool {
+		return i == "b"
+	})
+	result2, ok2 := FindIndex[string]([]string{"foobar"}, func(i string) bool {
+		return i == "b"
+	})
+
+	is.Equal(ok1, true)
+	is.Equal(result1, 1)
+	is.Equal(ok2, false)
+	is.Equal(result2, -1)
+}
+
 func TestMin(t *testing.T) {
 	is := assert.New(t)
 
