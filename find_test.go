@@ -82,6 +82,20 @@ func TestFindLastIndexOf(t *testing.T) {
 	is.Equal(index2, -1)
 }
 
+func TestFindOrElse(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := FindOrElse[string]([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
+		return i == "b"
+	})
+	result2 := FindOrElse[string]([]string{"foobar"}, "x", func(i string) bool {
+		return i == "b"
+	})
+
+	is.Equal(result1, "b")
+	is.Equal(result2, "x")
+}
+
 func TestMin(t *testing.T) {
 	is := assert.New(t)
 

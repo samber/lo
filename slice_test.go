@@ -115,6 +115,24 @@ func TestReduce(t *testing.T) {
 	is.Equal(result2, 20)
 }
 
+func TestForEach(t *testing.T) {
+	is := assert.New(t)
+
+	// check of callback is called for every element and in proper order
+
+	callParams1 := []string{}
+	callParams2 := []int{}
+
+	ForEach[string]([]string{"a", "b", "c"}, func(item string, i int) {
+		callParams1 = append(callParams1, item)
+		callParams2 = append(callParams2, i)
+	})
+
+	is.ElementsMatch([]string{"a", "b", "c"}, callParams1)
+	is.ElementsMatch([]int{0, 1, 2}, callParams2)
+	is.IsIncreasing(callParams2)
+}
+
 func TestUniq(t *testing.T) {
 	is := assert.New(t)
 
