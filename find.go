@@ -22,7 +22,7 @@ func IndexOf[T comparable](collection []T, element T) int {
 	return -1
 }
 
-// IndexOf returns the index at which the last occurrence of a value is found in an array or return -1
+// LastIndexOf returns the index at which the last occurrence of a value is found in an array or return -1
 // if the value cannot be found.
 func LastIndexOf[T comparable](collection []T, element T) int {
 	length := len(collection)
@@ -98,7 +98,7 @@ func Min[T constraints.Ordered](collection []T) T {
 	return min
 }
 
-// Max search the maximum value of a collection.
+// Max searches the maximum value of a collection.
 func Max[T constraints.Ordered](collection []T) T {
 	var max T
 
