@@ -227,7 +227,7 @@ func Reverse[T any](collection []T) []T {
 func Fill[T Clonable[T]](collection []T, initial T) []T {
 	result := make([]T, 0, len(collection))
 
-	for _ = range collection {
+	for range collection {
 		result = append(result, initial.Clone())
 	}
 

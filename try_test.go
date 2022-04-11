@@ -13,7 +13,6 @@ func TestTry(t *testing.T) {
 
 	is.False(Try(func() error {
 		panic("error")
-		return nil
 	}))
 	is.True(Try(func() error {
 		return nil
@@ -48,27 +47,22 @@ func TestTryFunctions(t *testing.T) {
 
 	is.False(Try2(func() (string, error) {
 		panic("error")
-		return "", nil
 	}))
 
 	is.False(Try3(func() (string, string, error) {
 		panic("error")
-		return "", "", nil
 	}))
 
 	is.False(Try4(func() (string, string, string, error) {
 		panic("error")
-		return "", "", "", nil
 	}))
 
 	is.False(Try5(func() (string, string, string, string, error) {
 		panic("error")
-		return "", "", "", "", nil
 	}))
 
 	is.False(Try6(func() (string, string, string, string, string, error) {
 		panic("error")
-		return "", "", "", "", "", nil
 	}))
 
 	is.False(Try2(func() (string, error) {
@@ -97,7 +91,6 @@ func TestTryWithErrorValue(t *testing.T) {
 
 	err, ok := TryWithErrorValue(func() error {
 		panic("error")
-		return nil
 	})
 	is.False(ok)
 	is.Equal("error", err)
@@ -115,7 +108,6 @@ func TestTryCatch(t *testing.T) {
 	caught := false
 	TryCatch(func() error {
 		panic("error")
-		return nil
 	}, func() {
 		//error was caught
 		caught = true
@@ -138,7 +130,6 @@ func TestTryCatchWithErrorValue(t *testing.T) {
 	caught := false
 	TryCatchWithErrorValue(func() error {
 		panic("error")
-		return nil
 	}, func(val any) {
 		//error was caught
 		caught = val == "error"
