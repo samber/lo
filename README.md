@@ -70,6 +70,8 @@ Supported helpers for slices:
 - DropWhile
 - DropRightWhile
 - Reject
+- Count
+- CountBy
 - Range / RangeFrom / RangeWithSteps
 
 Supported helpers for maps:
@@ -492,6 +494,26 @@ odd := lo.Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
     return x%2 == 0
 })
 // []int{1, 3}
+```
+
+### Count
+
+Count the number of elements in the collection that compare equal to value.
+
+```go
+count := Count[int]([]int{1, 5, 1}, 1)
+// 2
+```
+
+### CountBy
+
+Count the number of elements in the collection for which predicate is true.
+
+```go
+	count1 := CountBy[int]([]int{1, 5, 1}, func(i int) bool {
+		return i < 4
+	})
+// 2
 ```
 
 ### Range / RangeFrom / RangeWithSteps
