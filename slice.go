@@ -254,7 +254,7 @@ func Reject[V any](collection []V, predicate func(V, int) bool) []V {
 	return result
 }
 
-// Count the number of elements in the collection that compare equal to value.
+// Count counts the number of elements in the collection that compare equal to value.
 func Count[T comparable](collection []T, value T) (count int) {
 	for _, item := range collection {
 		if item == value {
@@ -265,7 +265,7 @@ func Count[T comparable](collection []T, value T) (count int) {
 	return count
 }
 
-// Count the number of elements in the collection for which predicate is true.
+// CountBy counts the number of elements in the collection for which predicate is true.
 func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 	for _, item := range collection {
 		if predicate(item) {
