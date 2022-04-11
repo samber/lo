@@ -2,6 +2,7 @@ package lo
 
 import (
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -45,6 +46,28 @@ func TestMap(t *testing.T) {
 	is.Equal(len(result2), 4)
 	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
 	is.Equal(result2, []string{"1", "2", "3", "4"})
+}
+
+func TestFilterMap(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := FilterMap[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
+		if x%2 == 0 {
+			return strconv.FormatInt(x, 10), true
+		}
+		return "", false
+	})
+	r2 := FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+		if strings.HasSuffix(x, "pu") {
+			return "xpu", true
+		}
+		return "", false
+	})
+
+	is.Equal(len(r1), 2)
+	is.Equal(len(r2), 2)
+	is.Equal(r1, []string{"2", "4"})
+	is.Equal(r2, []string{"xpu", "xpu"})
 }
 
 func TestFlatMap(t *testing.T) {
@@ -234,4 +257,36 @@ func TestReject(t *testing.T) {
 	})
 
 	is.Equal(r2, []string{"foo", "bar"})
+}
+
+func TestCount(t *testing.T) {
+	is := assert.New(t)
+
+	count1 := Count[int]([]int{1, 2, 1}, 1)
+	count2 := Count[int]([]int{1, 2, 1}, 3)
+	count3 := Count[int]([]int{}, 1)
+
+	is.Equal(count1, 2)
+	is.Equal(count2, 0)
+	is.Equal(count3, 0)
+}
+
+func TestCountBy(t *testing.T) {
+	is := assert.New(t)
+
+	count1 := CountBy[int]([]int{1, 2, 1}, func(i int) bool {
+		return i < 2
+	})
+
+	count2 := CountBy[int]([]int{1, 2, 1}, func(i int) bool {
+		return i > 2
+	})
+
+	count3 := CountBy[int]([]int{}, func(i int) bool {
+		return i <= 2
+	})
+
+	is.Equal(count1, 2)
+	is.Equal(count2, 0)
+	is.Equal(count3, 0)
 }
