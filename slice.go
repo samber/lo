@@ -29,9 +29,9 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 }
 
 // FilterMap returns a slice which obtained after both filtering and mapping using the given callback function.
-// The callback function should return two values -
-// first, the result of the mapping operation and
-// second, whether the result element should be included or not.
+// The callback function should return two values:
+//   - the result of the mapping operation and
+//   - whether the result element should be included or not.
 func FilterMap[T any, R any](collection []T, callback func(T, int) (R, bool)) []R {
 	result := []R{}
 

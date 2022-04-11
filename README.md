@@ -50,6 +50,7 @@ Supported helpers for slices:
 
 - Filter
 - Map
+- FilterMap
 - FlatMap
 - Reduce
 - ForEach
@@ -172,6 +173,22 @@ lo.FlatMap[int, string]([]int{0, 1, 2}, func(x int, _ int) []string {
 	}
 })
 // []string{"0", "0", "1", "1", "2", "2"}
+```
+
+### FilterMap
+
+Returns a slice which obtained after both filtering and mapping using the given callback function.
+
+The callback function should return two values: the result of the mapping operation and whether the result element should be included or not.
+
+```go
+matching := lo.FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+    if strings.HasSuffix(x, "pu") {
+        return "xpu", true
+    }
+    return "", false
+})
+// []string{"xpu", "xpu"}
 ```
 
 ### Filter
