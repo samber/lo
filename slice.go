@@ -28,6 +28,22 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	return result
 }
 
+// FilterMap returns a slice which obtained after both filtering and mapping using the given callback function.
+// The callback function should return two values -
+// first, the result of the mapping operation and
+// second, whether the result element should be included or not.
+func FilterMap[T any, R any](collection []T, callback func(T, int) (R, bool)) []R {
+	result := []R{}
+
+	for i, item := range collection {
+		if r, ok := callback(item, i); ok {
+			result = append(result, r)
+		}
+	}
+
+	return result
+}
+
 // FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
 func FlatMap[T any, R any](collection []T, iteratee func(T, int) []R) []R {
 	result := []R{}
