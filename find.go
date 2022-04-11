@@ -2,8 +2,9 @@ package lo
 
 import (
 	"fmt"
-	"math/rand"
 	"math"
+	"math/rand"
+
 	"golang.org/x/exp/constraints"
 )
 
@@ -21,7 +22,7 @@ func IndexOf[T comparable](collection []T, element T) int {
 	return -1
 }
 
-// IndexOf returns the index at which the last occurrence of a value is found in an array or return -1
+// LastIndexOf returns the index at which the last occurrence of a value is found in an array or return -1
 // if the value cannot be found.
 func LastIndexOf[T comparable](collection []T, element T) int {
 	length := len(collection)
@@ -45,6 +46,34 @@ func Find[T any](collection []T, predicate func(T) bool) (T, bool) {
 
 	var result T
 	return result, false
+}
+
+// FindIndexOf searches an element in a slice based on a predicate and returns the index and true.
+// It returns -1 and false if the element is not found.
+func FindIndexOf[T any](collection []T, predicate func(T) bool) (T, int, bool) {
+	for i, item := range collection {
+		if predicate(item) {
+			return item, i, true
+		}
+	}
+
+	var result T
+	return result, -1, false
+}
+
+// FindLastIndexOf searches last element in a slice based on a predicate and returns the index and true.
+// It returns -1 and false if the element is not found.
+func FindLastIndexOf[T any](collection []T, predicate func(T) bool) (T, int, bool) {
+	length := len(collection)
+
+	for i := length - 1; i >= 0; i-- {
+		if predicate(collection[i]) {
+			return collection[i], i, true
+		}
+	}
+
+	var result T
+	return result, -1, false
 }
 
 // Min search the minimum value of a collection.
@@ -90,7 +119,7 @@ func MinBy[T any](collection []T, comparison func(T, T) bool) T {
 	return min
 }
 
-// Max search the maximum value of a collection.
+// Max searches the maximum value of a collection.
 func Max[T constraints.Ordered](collection []T) T {
 	var max T
 
