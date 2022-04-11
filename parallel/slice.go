@@ -80,10 +80,6 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 
 			mu.Lock()
 
-			if _, ok := result[key]; !ok {
-				result[key] = []T{}
-			}
-
 			result[key] = append(result[key], _item)
 
 			mu.Unlock()
