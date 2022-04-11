@@ -46,20 +46,40 @@ func TestFind(t *testing.T) {
 	is.Equal(result2, "")
 }
 
-func TestFindIndex(t *testing.T) {
+func TestFindIndexOf(t *testing.T) {
 	is := assert.New(t)
 
-	result1, ok1 := FindIndex[string]([]string{"a", "b", "c", "d"}, func(i string) bool {
+	item1, index1, ok1 := FindIndexOf[string]([]string{"a", "b", "c", "d", "b"}, func(i string) bool {
 		return i == "b"
 	})
-	result2, ok2 := FindIndex[string]([]string{"foobar"}, func(i string) bool {
+	item2, index2, ok2 := FindIndexOf[string]([]string{"foobar"}, func(i string) bool {
 		return i == "b"
 	})
 
+	is.Equal(item1, "b")
 	is.Equal(ok1, true)
-	is.Equal(result1, 1)
+	is.Equal(index1, 1)
+	is.Equal(item2, "")
 	is.Equal(ok2, false)
-	is.Equal(result2, -1)
+	is.Equal(index2, -1)
+}
+
+func TestFindLastIndexOf(t *testing.T) {
+	is := assert.New(t)
+
+	item1, index1, ok1 := FindLastIndexOf[string]([]string{"a", "b", "c", "d", "b"}, func(i string) bool {
+		return i == "b"
+	})
+	item2, index2, ok2 := FindLastIndexOf[string]([]string{"foobar"}, func(i string) bool {
+		return i == "b"
+	})
+
+	is.Equal(item1, "b")
+	is.Equal(ok1, true)
+	is.Equal(index1, 4)
+	is.Equal(item2, "")
+	is.Equal(ok2, false)
+	is.Equal(index2, -1)
 }
 
 func TestMin(t *testing.T) {

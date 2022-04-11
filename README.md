@@ -101,7 +101,8 @@ Supported search helpers:
 - IndexOf
 - LastIndexOf
 - Find
-- FindIndex
+- FindIndexOf
+- FindLastIndexOf
 - Min
 - Max
 - Last
@@ -724,6 +725,38 @@ str, ok := lo.Find[string]([]string{"foobar"}, func(i string) bool {
     return i == "b"
 })
 // "", false
+```
+
+### FindIndexOf
+
+FindIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
+
+```go
+str, index, ok := lo.FindIndexOf[string]([]string{"a", "b", "a", "b"}, func(i string) bool {
+    return i == "b"
+})
+// "b", 1, true
+
+str, index, ok := lo.FindIndexOf[string]([]string{"foobar"}, func(i string) bool {
+    return i == "b"
+})
+// "", -1, false
+```
+
+### FindLastIndexOf
+
+FindLastIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
+
+```go
+str, index, ok := lo.FindLastIndexOf[string]([]string{"a", "b", "a", "b"}, func(i string) bool {
+    return i == "b"
+})
+// "b", 4, true
+
+str, index, ok := lo.FindLastIndexOf[string]([]string{"foobar"}, func(i string) bool {
+    return i == "b"
+})
+// "", -1, false
 ```
 
 ### Min

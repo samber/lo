@@ -2,9 +2,10 @@ package lo
 
 import (
 	"fmt"
-	"golang.org/x/exp/constraints"
 	"math"
 	"math/rand"
+
+	"golang.org/x/exp/constraints"
 )
 
 // import "golang.org/x/exp/constraints"
@@ -47,16 +48,32 @@ func Find[T any](collection []T, predicate func(T) bool) (T, bool) {
 	return result, false
 }
 
-// FindIndex searches an element in a slice based on a predicate and returns the index and true.
+// FindIndexOf searches an element in a slice based on a predicate and returns the index and true.
 // It returns -1 and false if the element is not found.
-func FindIndex[T any](collection []T, predicate func(T) bool) (int, bool) {
+func FindIndexOf[T any](collection []T, predicate func(T) bool) (T, int, bool) {
 	for i, item := range collection {
 		if predicate(item) {
-			return i, true
+			return item, i, true
 		}
 	}
 
-	return -1, false
+	var result T
+	return result, -1, false
+}
+
+// FindLastIndexOf searches last element in a slice based on a predicate and returns the index and true.
+// It returns -1 and false if the element is not found.
+func FindLastIndexOf[T any](collection []T, predicate func(T) bool) (T, int, bool) {
+	length := len(collection)
+
+	for i := length - 1; i >= 0; i-- {
+		if predicate(collection[i]) {
+			return collection[i], i, true
+		}
+	}
+
+	var result T
+	return result, -1, false
 }
 
 // Min search the minimum value of a collection.
