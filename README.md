@@ -124,10 +124,11 @@ Other functional programming helpers:
 - ToSlicePtr
 - Empty
 
-Time based helpers:
+Concurrency helpers:
 
 - Attempt
 - Debounce
+- Async
 
 Error handling:
 
@@ -1040,7 +1041,6 @@ iter, err := lo.Attempt(0, func(i int) error {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
-
 ### Debounce
 
 `NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
@@ -1057,6 +1057,21 @@ for j := 0; j < 10; j++ {
 
 time.Sleep(1 * time.Second)
 cancel()
+```
+
+### Async
+
+Executes a function in a goroutine and returns the result in a channel.
+
+```go
+ch := lo.Async[error](func() error { time.Sleep(10 * time.Second); return nil })
+// chan err{nil}
+
+ch := lo.Async[error](func() Tuple2[int, error] {
+  time.Sleep(10 * time.Second);
+  return Tuple2[int, error]{42, nil}
+})
+// chan Tuple2[int, error]{42, nil}
 ```
 
 ### Must
