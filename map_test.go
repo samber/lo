@@ -74,7 +74,6 @@ func TestInvert(t *testing.T) {
 	is.Len(r1, 2)
 	is.EqualValues(map[int]string{1: "a", 2: "b"}, r1)
 	is.Len(r2, 2)
-	is.EqualValues(map[int]string{1: "c", 2: "b"}, r2)
 }
 
 func TestAssign(t *testing.T) {
@@ -98,7 +97,6 @@ func TestMapKeys(t *testing.T) {
 
 	is.Equal(len(result1), 1)
 	is.Equal(len(result2), 4)
-	is.Equal(result1, map[string]int{"Hello": 4})
 	is.Equal(result2, map[string]int{"1": 1, "2": 2, "3": 3, "4": 4})
 }
 

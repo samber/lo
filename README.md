@@ -73,7 +73,6 @@ Supported helpers for slices:
 - Reject
 - Count
 - CountBy
-- Range / RangeFrom / RangeWithSteps
 
 Supported helpers for maps:
 
@@ -85,6 +84,11 @@ Supported helpers for maps:
 - Assign (merge of maps)
 - MapKeys
 - MapValues
+
+Supported math helpers:
+
+- Range / RangeFrom / RangeWithSteps
+- Clamp
 
 Supported helpers for tuples:
 
@@ -541,36 +545,6 @@ count := CountBy[int]([]int{1, 5, 1}, func(i int) bool {
 // 2
 ```
 
-### Range / RangeFrom / RangeWithSteps
-
-Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
-
-```go
-result := Range(4)
-// [0, 1, 2, 3]
-
-result := Range(-4);
-// [0, -1, -2, -3]
-
-result := RangeFrom(1, 5);
-// [1, 2, 3, 4]
-
-result := RangeFrom[float64](1.0, 5);
-// [1.0, 2.0, 3.0, 4.0]
-
-result := RangeWithSteps(0, 20, 5);
-// [0, 5, 10, 15]
-
-result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
-// [-1.0, -2.0, -3.0]
-
-result := RangeWithSteps(1, 4, -1);
-// []
-
-result := Range(0);
-// []
-```
-
 ### Keys
 
 Creates an array of the map keys.
@@ -654,12 +628,10 @@ mergedMaps := lo.Assign[string, int](
 Manipulates a map keys and transforms it to a map of another type.
 
 ```go
-m1 := map[int]int64{1: 1, 2: 2, 3: 3}
-
-m2 := lo.MapValues[int, int64, string](m, func(x int64, _ int) string {
-	return strconv.FormatInt(x, 10)
+m2 := lo.MapKeys[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
+    return strconv.FormatInt(int64(v), 10)
 })
-// map[int]string{1: "1", 2: "2", 3: "3"}
+// map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}
 ```
 
 ### MapValues
@@ -669,10 +641,55 @@ Manipulates a map values and transforms it to a map of another type.
 ```go
 m1 := map[int]int64{1: 1, 2: 2, 3: 3}
 
-m2 := lo.MapValues[int, int64, string](m, func(x int64, _ int) string {
+m2 := lo.MapValues[int, int64, string](m1, func(x int64, _ int) string {
 	return strconv.FormatInt(x, 10)
 })
 // map[int]string{1: "1", 2: "2", 3: "3"}
+```
+
+### Range / RangeFrom / RangeWithSteps
+
+Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+
+```go
+result := Range(4)
+// [0, 1, 2, 3]
+
+result := Range(-4);
+// [0, -1, -2, -3]
+
+result := RangeFrom(1, 5);
+// [1, 2, 3, 4]
+
+result := RangeFrom[float64](1.0, 5);
+// [1.0, 2.0, 3.0, 4.0]
+
+result := RangeWithSteps(0, 20, 5);
+// [0, 5, 10, 15]
+
+result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
+// [-1.0, -2.0, -3.0]
+
+result := RangeWithSteps(1, 4, -1);
+// []
+
+result := Range(0);
+// []
+```
+
+### Clamp
+
+Clamps number within the inclusive lower and upper bounds.
+
+```go
+r1 := lo.Clamp(0, -10, 10)
+// 10
+
+r2 := lo.Clamp(-42, -10, 10)
+// -42
+
+r3 := lo.Clamp(42, -10, 10)
+// 42
 ```
 
 ### T2 -> T9
