@@ -65,6 +65,18 @@ func TestFromEntries(t *testing.T) {
 	is.Equal(r1["bar"], 2)
 }
 
+func TestInvert(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := Invert[string, int](map[string]int{"a": 1, "b": 2})
+	r2 := Invert[string, int](map[string]int{"a": 1, "b": 2, "c": 1})
+
+	is.Len(r1, 2)
+	is.EqualValues(map[int]string{1: "a", 2: "b"}, r1)
+	is.Len(r2, 2)
+	is.EqualValues(map[int]string{1: "c", 2: "b"}, r2)
+}
+
 func TestAssign(t *testing.T) {
 	is := assert.New(t)
 

@@ -47,6 +47,19 @@ func FromEntries[K comparable, V any](entries []Entry[K, V]) map[K]V {
 	return out
 }
 
+// Invert creates a map composed of the inverted keys and values. If map
+// contains duplicate values, subsequent values overwrite property assignments
+// of previous values.
+func Invert[K comparable, V comparable](in map[K]V) map[V]K {
+	out := map[V]K{}
+
+	for k, v := range in {
+		out[v] = k
+	}
+
+	return out
+}
+
 // Assign merges multiple maps from left to right.
 func Assign[K comparable, V any](maps ...map[K]V) map[K]V {
 	out := map[K]V{}

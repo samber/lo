@@ -81,6 +81,7 @@ Supported helpers for maps:
 - Values
 - Entries
 - FromEntries
+- Invert
 - Assign (merge of maps)
 - MapValues
 
@@ -621,6 +622,18 @@ m := lo.FromEntries[string, int]([]lo.Entry[string, int]{
     },
 })
 // map[string]int{"foo": 1, "bar": 2}
+```
+
+### Invert
+
+Creates a map composed of the inverted keys and values. If map contains duplicate values, subsequent values overwrite property assignments of previous values.
+
+```go
+m1 := lo.Invert[string, int]([map[string]int{"a": 1, "b": 2})
+// map[int]string{1: "a", 2: "b"}
+
+m2 := lo.Invert[string, int]([map[string]int{"a": 1, "b": 2, "c": 1})
+// map[int]string{1: "c", 2: "b"}
 ```
 
 ### Assign
