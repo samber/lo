@@ -83,6 +83,7 @@ Supported helpers for maps:
 - FromEntries
 - Invert
 - Assign (merge of maps)
+- MapKeys
 - MapValues
 
 Supported helpers for tuples:
@@ -646,6 +647,19 @@ mergedMaps := lo.Assign[string, int](
     map[string]int{"b": 3, "c": 4},
 )
 // map[string]int{"a": 1, "b": 3, "c": 4}
+```
+
+### MapKeys
+
+Manipulates a map keys and transforms it to a map of another type.
+
+```go
+m1 := map[int]int64{1: 1, 2: 2, 3: 3}
+
+m2 := lo.MapValues[int, int64, string](m, func(x int64, _ int) string {
+	return strconv.FormatInt(x, 10)
+})
+// map[int]string{1: "1", 2: "2", 3: "3"}
 ```
 
 ### MapValues
