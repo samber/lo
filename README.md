@@ -86,6 +86,7 @@ Supported helpers for maps:
 
 Supported helpers for tuples:
 
+- T2 -> T9
 - Zip2 -> Zip9
 - Unzip2 -> Unzip9
 
@@ -645,6 +646,19 @@ m2 := lo.MapValues[int, int64, string](m, func(x int64, _ int) string {
 	return strconv.FormatInt(x, 10)
 })
 // map[int]string{1: "1", 2: "2", 3: "3"}
+```
+
+### T2 -> T9
+
+Creates a tuple from a list of values.
+
+```go
+tuple1 := lo.T2[string, int]("x", 1)
+// Tuple2[string, int]{A: "x", B: 1}
+
+func example() (string, int) { return "y", 2 }
+tuple2 := lo.T2[string, int](example())
+// Tuple2[string, int]{A: "y", B: 2}
 ```
 
 ### Zip2 -> Zip9

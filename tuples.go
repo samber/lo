@@ -1,5 +1,45 @@
 package lo
 
+// T2 creates a tuple from a list of values.
+func T2[A any, B any](a A, b B) Tuple2[A, B] {
+	return Tuple2[A, B]{A: a, B: b}
+}
+
+// T3 creates a tuple from a list of values.
+func T3[A any, B any, C any](a A, b B, c C) Tuple3[A, B, C] {
+	return Tuple3[A, B, C]{A: a, B: b, C: c}
+}
+
+// T4 creates a tuple from a list of values.
+func T4[A any, B any, C any, D any](a A, b B, c C, d D) Tuple4[A, B, C, D] {
+	return Tuple4[A, B, C, D]{A: a, B: b, C: c, D: d}
+}
+
+// T5 creates a tuple from a list of values.
+func T5[A any, B any, C any, D any, E any](a A, b B, c C, d D, e E) Tuple5[A, B, C, D, E] {
+	return Tuple5[A, B, C, D, E]{A: a, B: b, C: c, D: d, E: e}
+}
+
+// T6 creates a tuple from a list of values.
+func T6[A any, B any, C any, D any, E any, F any](a A, b B, c C, d D, e E, f F) Tuple6[A, B, C, D, E, F] {
+	return Tuple6[A, B, C, D, E, F]{A: a, B: b, C: c, D: d, E: e, F: f}
+}
+
+// T7 creates a tuple from a list of values.
+func T7[A any, B any, C any, D any, E any, F any, G any](a A, b B, c C, d D, e E, f F, g G) Tuple7[A, B, C, D, E, F, G] {
+	return Tuple7[A, B, C, D, E, F, G]{A: a, B: b, C: c, D: d, E: e, F: f, G: g}
+}
+
+// T8 creates a tuple from a list of values.
+func T8[A any, B any, C any, D any, E any, F any, G any, H any](a A, b B, c C, d D, e E, f F, g G, h H) Tuple8[A, B, C, D, E, F, G, H] {
+	return Tuple8[A, B, C, D, E, F, G, H]{A: a, B: b, C: c, D: d, E: e, F: f, G: g, H: h}
+}
+
+// T8 creates a tuple from a list of values.
+func T9[A any, B any, C any, D any, E any, F any, G any, H any, I any](a A, b B, c C, d D, e E, f F, g G, h H, i I) Tuple9[A, B, C, D, E, F, G, H, I] {
+	return Tuple9[A, B, C, D, E, F, G, H, I]{A: a, B: b, C: c, D: d, E: e, F: f, G: g, H: h, I: i}
+}
+
 // Zip2 creates a slice of grouped elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
