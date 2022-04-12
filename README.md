@@ -948,6 +948,31 @@ result := lo.If[int](false, 1).
 // 3
 ```
 
+Using callbacks:
+
+```go
+result := lo.IfF[int](true, func () int {
+        return 1
+    }).
+    ElseIfF(false, func () int {
+        return 2
+    }).
+    ElseF(func () int {
+        return 3
+    })
+// 1
+```
+
+Mixed:
+
+```go
+result := lo.IfF[int](true, func () int {
+        return 1
+    }).
+    Else(42)
+// 1
+```
+
 ### Switch / Case / Default
 
 ```go
@@ -984,6 +1009,17 @@ result := lo.Switch[int, string](1).
         return "3"
     })
 // "1"
+```
+
+Mixed:
+
+```go
+result := lo.Switch[int, string](1).
+    CaseF(1, func() string {
+        return "1"
+    }).
+    Default("42")
+// "42"
 ```
 
 ### ToPtr
