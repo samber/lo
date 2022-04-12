@@ -38,28 +38,130 @@ func TestContainsBy(t *testing.T) {
 	is.Equal(result4, false)
 }
 
-func TestSome(t *testing.T) {
-	is := assert.New(t)
-
-	result1 := Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
-	result2 := Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
-	result3 := Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
-
-	is.Equal(result1, true)
-	is.Equal(result2, true)
-	is.Equal(result3, false)
-}
-
 func TestEvery(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
 	result2 := Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 	result3 := Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+	result4 := Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{})
 
-	is.Equal(result1, true)
-	is.Equal(result2, false)
-	is.Equal(result3, false)
+	is.True(result1)
+	is.False(result2)
+	is.False(result3)
+	is.True(result4)
+}
+
+func TestEveryBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := EveryBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 5
+	})
+
+	is.True(result1)
+
+	result2 := EveryBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 3
+	})
+
+	is.False(result2)
+
+	result3 := EveryBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 0
+	})
+
+	is.False(result3)
+
+	result4 := EveryBy[int]([]int{}, func(x int) bool {
+		return x < 5
+	})
+
+	is.True(result4)
+}
+
+func TestSome(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+	result2 := Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+	result3 := Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+	result4 := Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{})
+
+	is.True(result1)
+	is.True(result2)
+	is.False(result3)
+	is.False(result4)
+}
+
+func TestSomeBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := SomeBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 5
+	})
+
+	is.True(result1)
+
+	result2 := SomeBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 3
+	})
+
+	is.True(result2)
+
+	result3 := SomeBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 0
+	})
+
+	is.False(result3)
+
+	result4 := SomeBy[int]([]int{}, func(x int) bool {
+		return x < 5
+	})
+
+	is.False(result4)
+}
+
+func TestNone(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := None[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+	result2 := None[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+	result3 := None[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+	result4 := None[int]([]int{0, 1, 2, 3, 4, 5}, []int{})
+
+	is.False(result1)
+	is.False(result2)
+	is.True(result3)
+	is.True(result4)
+}
+
+func TestNoneBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := NoneBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 5
+	})
+
+	is.False(result1)
+
+	result2 := NoneBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 3
+	})
+
+	is.False(result2)
+
+	result3 := NoneBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+		return x < 0
+	})
+
+	is.True(result3)
+
+	result4 := NoneBy[int]([]int{}, func(x int) bool {
+		return x < 5
+	})
+
+	is.True(result4)
 }
 
 func TestIntersect(t *testing.T) {

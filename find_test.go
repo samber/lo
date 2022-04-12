@@ -46,6 +46,56 @@ func TestFind(t *testing.T) {
 	is.Equal(result2, "")
 }
 
+func TestFindIndexOf(t *testing.T) {
+	is := assert.New(t)
+
+	item1, index1, ok1 := FindIndexOf[string]([]string{"a", "b", "c", "d", "b"}, func(i string) bool {
+		return i == "b"
+	})
+	item2, index2, ok2 := FindIndexOf[string]([]string{"foobar"}, func(i string) bool {
+		return i == "b"
+	})
+
+	is.Equal(item1, "b")
+	is.Equal(ok1, true)
+	is.Equal(index1, 1)
+	is.Equal(item2, "")
+	is.Equal(ok2, false)
+	is.Equal(index2, -1)
+}
+
+func TestFindLastIndexOf(t *testing.T) {
+	is := assert.New(t)
+
+	item1, index1, ok1 := FindLastIndexOf[string]([]string{"a", "b", "c", "d", "b"}, func(i string) bool {
+		return i == "b"
+	})
+	item2, index2, ok2 := FindLastIndexOf[string]([]string{"foobar"}, func(i string) bool {
+		return i == "b"
+	})
+
+	is.Equal(item1, "b")
+	is.Equal(ok1, true)
+	is.Equal(index1, 4)
+	is.Equal(item2, "")
+	is.Equal(ok2, false)
+	is.Equal(index2, -1)
+}
+
+func TestFindOrElse(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := FindOrElse[string]([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
+		return i == "b"
+	})
+	result2 := FindOrElse[string]([]string{"foobar"}, "x", func(i string) bool {
+		return i == "b"
+	})
+
+	is.Equal(result1, "b")
+	is.Equal(result2, "x")
+}
+
 func TestMin(t *testing.T) {
 	is := assert.New(t)
 
@@ -58,6 +108,24 @@ func TestMin(t *testing.T) {
 	is.Equal(result3, 0)
 }
 
+func TestMinBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := MinBy[string]([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
+		return len(item) < len(min)
+	})
+	result2 := MinBy[string]([]string{"string1", "string2", "s3"}, func(item string, min string) bool {
+		return len(item) < len(min)
+	})
+	result3 := MinBy[string]([]string{}, func(item string, min string) bool {
+		return len(item) < len(min)
+	})
+
+	is.Equal(result1, "s1")
+	is.Equal(result2, "s3")
+	is.Equal(result3, "")
+}
+
 func TestMax(t *testing.T) {
 	is := assert.New(t)
 
@@ -68,6 +136,24 @@ func TestMax(t *testing.T) {
 	is.Equal(result1, 3)
 	is.Equal(result2, 3)
 	is.Equal(result3, 0)
+}
+
+func TestMaxBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := MaxBy[string]([]string{"s1", "string2", "s3"}, func(item string, max string) bool {
+		return len(item) > len(max)
+	})
+	result2 := MaxBy[string]([]string{"string1", "string2", "s3"}, func(item string, max string) bool {
+		return len(item) > len(max)
+	})
+	result3 := MaxBy[string]([]string{}, func(item string, max string) bool {
+		return len(item) > len(max)
+	})
+
+	is.Equal(result1, "string2")
+	is.Equal(result2, "string1")
+	is.Equal(result3, "")
 }
 
 func TestLast(t *testing.T) {

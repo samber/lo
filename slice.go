@@ -28,6 +28,22 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	return result
 }
 
+// FilterMap returns a slice which obtained after both filtering and mapping using the given callback function.
+// The callback function should return two values:
+//   - the result of the mapping operation and
+//   - whether the result element should be included or not.
+func FilterMap[T any, R any](collection []T, callback func(T, int) (R, bool)) []R {
+	result := []R{}
+
+	for i, item := range collection {
+		if r, ok := callback(item, i); ok {
+			result = append(result, r)
+		}
+	}
+
+	return result
+}
+
 // FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
 func FlatMap[T any, R any](collection []T, iteratee func(T, int) []R) []R {
 	result := []R{}
@@ -86,7 +102,7 @@ func Uniq[T comparable](collection []T) []T {
 	return result
 }
 
-// Uniq returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
+// UniqBy returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
 func UniqBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
@@ -113,10 +129,6 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 
 	for _, item := range collection {
 		key := iteratee(item)
-
-		if _, ok := result[key]; !ok {
-			result[key] = []T{}
-		}
 
 		result[key] = append(result[key], item)
 	}
@@ -174,7 +186,7 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]
 	// return Values[K, []T](groups)
 }
 
-// Flattens returns an array a single level deep.
+// Flatten returns an array a single level deep.
 func Flatten[T any](collection [][]T) []T {
 	result := []T{}
 
@@ -211,7 +223,7 @@ func Reverse[T any](collection []T) []T {
 func Fill[T Clonable[T]](collection []T, initial T) []T {
 	result := make([]T, 0, len(collection))
 
-	for _ = range collection {
+	for range collection {
 		result = append(result, initial.Clone())
 	}
 
@@ -254,36 +266,24 @@ func Reject[V any](collection []V, predicate func(V, int) bool) []V {
 	return result
 }
 
-// All returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
-func All[V any](collection []V, predicate func(V) bool) bool {
-	for _, v := range collection {
-		if !predicate(v) {
-			return false
+// Count counts the number of elements in the collection that compare equal to value.
+func Count[T comparable](collection []T, value T) (count int) {
+	for _, item := range collection {
+		if item == value {
+			count++
 		}
 	}
 
-	return true
+	return count
 }
 
-// Any returns true if the predicate returns true for any of the elements in the collection.
-// If the collection is empty Any returns false.
-func Any[V any](collection []V, predicate func(V) bool) bool {
-	for _, v := range collection {
-		if predicate(v) {
-			return true
+// CountBy counts the number of elements in the collection for which predicate is true.
+func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
+	for _, item := range collection {
+		if predicate(item) {
+			count++
 		}
 	}
 
-	return false
-}
-
-// None returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
-func None[V any](collection []V, predicate func(V) bool) bool {
-	for _, v := range collection {
-		if predicate(v) {
-			return false
-		}
-	}
-
-	return true
+	return count
 }

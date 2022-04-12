@@ -1,17 +1,5 @@
 package lo
 
-func longestCollection(collections ...[]interface{}) int {
-	max := 0
-
-	for _, collection := range collections {
-		if len(collection) > max {
-			max = len(collection)
-		}
-	}
-
-	return max
-}
-
 // Zip2 creates a slice of grouped elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.

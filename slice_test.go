@@ -2,6 +2,7 @@ package lo
 
 import (
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -47,6 +48,28 @@ func TestMap(t *testing.T) {
 	is.Equal(result2, []string{"1", "2", "3", "4"})
 }
 
+func TestFilterMap(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := FilterMap[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
+		if x%2 == 0 {
+			return strconv.FormatInt(x, 10), true
+		}
+		return "", false
+	})
+	r2 := FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+		if strings.HasSuffix(x, "pu") {
+			return "xpu", true
+		}
+		return "", false
+	})
+
+	is.Equal(len(r1), 2)
+	is.Equal(len(r2), 2)
+	is.Equal(r1, []string{"2", "4"})
+	is.Equal(r2, []string{"xpu", "xpu"})
+}
+
 func TestFlatMap(t *testing.T) {
 	is := assert.New(t)
 
@@ -90,6 +113,24 @@ func TestReduce(t *testing.T) {
 
 	is.Equal(result1, 10)
 	is.Equal(result2, 20)
+}
+
+func TestForEach(t *testing.T) {
+	is := assert.New(t)
+
+	// check of callback is called for every element and in proper order
+
+	callParams1 := []string{}
+	callParams2 := []int{}
+
+	ForEach[string]([]string{"a", "b", "c"}, func(item string, i int) {
+		callParams1 = append(callParams1, item)
+		callParams2 = append(callParams2, i)
+	})
+
+	is.ElementsMatch([]string{"a", "b", "c"}, callParams1)
+	is.ElementsMatch([]int{0, 1, 2}, callParams2)
+	is.IsIncreasing(callParams2)
 }
 
 func TestUniq(t *testing.T) {
@@ -236,86 +277,34 @@ func TestReject(t *testing.T) {
 	is.Equal(r2, []string{"foo", "bar"})
 }
 
-func TestAll(t *testing.T) {
+func TestCount(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := All[int]([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 5
-	})
+	count1 := Count[int]([]int{1, 2, 1}, 1)
+	count2 := Count[int]([]int{1, 2, 1}, 3)
+	count3 := Count[int]([]int{}, 1)
 
-	is.True(result1)
-
-	result2 := All[int]([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 3
-	})
-
-	is.False(result2)
-
-	result3 := All[int]([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 0
-	})
-
-	is.False(result3)
-
-	result4 := All[int]([]int{}, func(x int) bool {
-		return x < 5
-	})
-
-	is.True(result4)
+	is.Equal(count1, 2)
+	is.Equal(count2, 0)
+	is.Equal(count3, 0)
 }
 
-func TestAny(t *testing.T) {
+func TestCountBy(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Any[int]([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 5
+	count1 := CountBy[int]([]int{1, 2, 1}, func(i int) bool {
+		return i < 2
 	})
 
-	is.True(result1)
-
-	result2 := Any[int]([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 3
+	count2 := CountBy[int]([]int{1, 2, 1}, func(i int) bool {
+		return i > 2
 	})
 
-	is.True(result2)
-
-	result3 := Any[int]([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 0
+	count3 := CountBy[int]([]int{}, func(i int) bool {
+		return i <= 2
 	})
 
-	is.False(result3)
-
-	result4 := Any[int]([]int{}, func(x int) bool {
-		return x < 5
-	})
-
-	is.False(result4)
-}
-
-func TestNone(t *testing.T) {
-	is := assert.New(t)
-
-	result1 := None[int]([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 5
-	})
-
-	is.False(result1)
-
-	result2 := None[int]([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 3
-	})
-
-	is.False(result2)
-
-	result3 := None[int]([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 0
-	})
-
-	is.True(result3)
-
-	result4 := None[int]([]int{}, func(x int) bool {
-		return x < 5
-	})
-
-	is.True(result4)
+	is.Equal(count1, 2)
+	is.Equal(count2, 0)
+	is.Equal(count3, 0)
 }
