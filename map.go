@@ -22,8 +22,8 @@ func Values[K comparable, V any](in map[K]V) []V {
 	return result
 }
 
-// ValuesF same as Values, but additionally filters map elements by provided keys.
-func ValuesF[K comparable, V any](in map[K]V, keys []K) []V {
+// PickByKeys same as Values, but additionally filters map elements by provided keys.
+func PickByKeys[K comparable, V any](in map[K]V, keys []K) []V {
 	r := make([]V, 0, len(in))
 	for k, v := range in {
 		if Contains(keys, k) {
