@@ -542,11 +542,11 @@ values := lo.Values[string, int](map[string]int{"foo": 1, "bar": 2})
 
 ### PickByKeys
 
-same as Values, but additionally filters map elements by provided keys.
+Returns same map type filtered by given keys.
 
 ```go
 pickByKeys := lo.PickByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
-// []int{1, 3}
+// map[string]int{"foo": 1, "baz": 3}
 ```
 
 ### Entries

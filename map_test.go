@@ -30,9 +30,8 @@ func TestPickByKeys(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := PickByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
-	sort.Ints(r1)
 
-	is.Equal(r1, []int{1, 3})
+	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
 }
 
 func TestEntries(t *testing.T) {
