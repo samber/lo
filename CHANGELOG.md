@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.13.0 (2022-04-14)
+
+Adding:
+
+- PickBy
+- PickByKeys
+- PickByValues
+- OmitBy
+- OmitByKeys
+- OmitByValues
+- Clamp
+- MapKeys
+- Invert
+- IfF + ElseIfF + ElseF
+- T0() + T1() + T2() + T3() + ...
+
 ## 1.12.0 (2022-04-12)
 
 Adding:
