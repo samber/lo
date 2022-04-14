@@ -26,12 +26,56 @@ func TestValues(t *testing.T) {
 	is.Equal(r1, []int{1, 2})
 }
 
+func TestPickBy(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := PickBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+		return value%2 == 1
+	})
+
+	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+}
+
 func TestPickByKeys(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := PickByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+}
+
+func TestPickByValues(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := PickByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+
+	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+}
+
+func TestOmitBy(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := OmitBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+		return value%2 == 1
+	})
+
+	is.Equal(r1, map[string]int{"bar": 2})
+}
+
+func TestOmitByKeys(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := OmitByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+
+	is.Equal(r1, map[string]int{"bar": 2})
+}
+
+func TestOmitByValues(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := OmitByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+
+	is.Equal(r1, map[string]int{"bar": 2})
 }
 
 func TestEntries(t *testing.T) {

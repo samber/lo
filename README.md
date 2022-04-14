@@ -78,6 +78,12 @@ Supported helpers for maps:
 
 - Keys
 - Values
+- PickBy
+- PickByKeys
+- PickByValues
+- OmitBy
+- OmitByKeys
+- OmitByValues
 - Entries
 - FromEntries
 - Invert
@@ -563,13 +569,62 @@ values := lo.Values[string, int](map[string]int{"foo": 1, "bar": 2})
 // []int{1, 2}
 ```
 
+### PickBy
+
+Returns same map type filtered by given predicate.
+
+```go
+m := lo.PickBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+    return value%2 == 1
+})
+// map[string]int{"foo": 1, "baz": 3}
+```
+
 ### PickByKeys
 
 Returns same map type filtered by given keys.
 
 ```go
-pickByKeys := lo.PickByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+m := lo.PickByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
 // map[string]int{"foo": 1, "baz": 3}
+```
+
+### PickByValues
+
+Returns same map type filtered by given values.
+
+```go
+m := lo.PickByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+// map[string]int{"foo": 1, "baz": 3}
+```
+
+### OmitBy
+
+Returns same map type filtered by given predicate.
+
+```go
+m := lo.OmitBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+    return value%2 == 1
+})
+// map[string]int{"bar": 2}
+```
+
+### OmitByKeys
+
+Returns same map type filtered by given keys.
+
+```go
+m := lo.OmitByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+// map[string]int{"bar": 2}
+```
+
+### OmitByValues
+
+Returns same map type filtered by given values.
+
+```go
+m := lo.OmitByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+// map[string]int{"bar": 2}
 ```
 
 ### Entries

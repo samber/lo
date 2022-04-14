@@ -22,11 +22,66 @@ func Values[K comparable, V any](in map[K]V) []V {
 	return result
 }
 
+// PickBy returns same map type filtered by given predicate.
+func PickBy[K comparable, V any](in map[K]V, predicate func(K, V) bool) map[K]V {
+	r := map[K]V{}
+	for k, v := range in {
+		if predicate(k, v) {
+			r[k] = v
+		}
+	}
+	return r
+}
+
 // PickByKeys returns same map type filtered by given keys.
 func PickByKeys[K comparable, V any](in map[K]V, keys []K) map[K]V {
-	r := make(map[K]V)
+	r := map[K]V{}
 	for k, v := range in {
 		if Contains(keys, k) {
+			r[k] = v
+		}
+	}
+	return r
+}
+
+// PickByValues returns same map type filtered by given values.
+func PickByValues[K comparable, V comparable](in map[K]V, values []V) map[K]V {
+	r := map[K]V{}
+	for k, v := range in {
+		if Contains(values, v) {
+			r[k] = v
+		}
+	}
+	return r
+}
+
+// PickBy returns same map type filtered by given predicate.
+func OmitBy[K comparable, V any](in map[K]V, predicate func(K, V) bool) map[K]V {
+	r := map[K]V{}
+	for k, v := range in {
+		if !predicate(k, v) {
+			r[k] = v
+		}
+	}
+	return r
+}
+
+// OmitByKeys returns same map type filtered by given keys.
+func OmitByKeys[K comparable, V any](in map[K]V, keys []K) map[K]V {
+	r := map[K]V{}
+	for k, v := range in {
+		if !Contains(keys, k) {
+			r[k] = v
+		}
+	}
+	return r
+}
+
+// OmitByValues returns same map type filtered by given values.
+func OmitByValues[K comparable, V comparable](in map[K]V, values []V) map[K]V {
+	r := map[K]V{}
+	for k, v := range in {
+		if !Contains(values, v) {
 			r[k] = v
 		}
 	}
