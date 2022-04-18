@@ -14,7 +14,7 @@ func Drop[T any](collection []T, n int) []T {
 	return result
 }
 
-//DropWhile drops elements from the beginning of a slice or array while the predicate returns true.
+// DropWhile drops elements from the beginning of a slice or array while the predicate returns true.
 func DropWhile[T any](collection []T, predicate func(T) bool) []T {
 	i := 0
 	for ; i < len(collection); i++ {
@@ -39,7 +39,7 @@ func DropRight[T any](collection []T, n int) []T {
 	}
 
 	result := make([]T, len(collection)-n)
-	for i := len(collection) - 1 - n; i != 0; i-- {
+	for i := len(collection) - 1 - n; i >= 0; i-- {
 		result[i] = collection[i]
 	}
 
