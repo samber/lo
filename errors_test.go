@@ -14,6 +14,11 @@ func TestMust(t *testing.T) {
 	is.Panics(func() {
 		Must("", errors.New("something went wrong"))
 	})
+
+	is.Equal(1, Must(1, true))
+	is.Panics(func() {
+		Must(1, false)
+	})
 }
 
 func TestMustX(t *testing.T) {
@@ -106,6 +111,78 @@ func TestMustX(t *testing.T) {
 		})
 		is.NotPanics(func() {
 			Must6(1, 2, 3, 4, 5, 6, nil)
+		})
+	}
+
+	{
+		is.Panics(func() {
+			Must0(false)
+		})
+		is.NotPanics(func() {
+			Must0(true)
+		})
+	}
+
+	{
+		val1 := Must1(1, true)
+		is.Equal(1, val1)
+		is.Panics(func() {
+			Must1(1, false)
+		})
+	}
+
+	{
+		val1, val2 := Must2(1, 2, true)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Panics(func() {
+			Must2(1, 2, false)
+		})
+	}
+
+	{
+		val1, val2, val3 := Must3(1, 2, 3, true)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Panics(func() {
+			Must3(1, 2, 3, false)
+		})
+	}
+
+	{
+		val1, val2, val3, val4 := Must4(1, 2, 3, 4, true)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Panics(func() {
+			Must4(1, 2, 3, 4, false)
+		})
+	}
+
+	{
+		val1, val2, val3, val4, val5 := Must5(1, 2, 3, 4, 5, true)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Equal(5, val5)
+		is.Panics(func() {
+			Must5(1, 2, 3, 4, 5, false)
+		})
+	}
+
+	{
+		val1, val2, val3, val4, val5, val6 := Must6(1, 2, 3, 4, 5, 6, true)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Equal(5, val5)
+		is.Equal(6, val6)
+		is.Panics(func() {
+			Must6(1, 2, 3, 4, 5, 6, false)
 		})
 	}
 }

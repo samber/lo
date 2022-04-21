@@ -1,69 +1,62 @@
 package lo
 
-// Must is a helper that wraps a call to a function returning a value and an error
-// and panics if the error is non-nil.
-func Must[T any](val T, err error) T {
-	if err != nil {
-		panic(err)
+// must panics if err is error or false.
+func must(err any) {
+	b, isBool := err.(bool)
+	if isBool && !b {
+		panic("not ok")
 	}
 
+	e, isError := err.(error)
+	if isError {
+		panic(e)
+	}
+}
+
+// Must is a helper that wraps a call to a function returning a value and an error
+// and panics if err is error or false.
+func Must[T any](val T, err any) T {
+	must(err)
 	return val
 }
 
 // Must0 has the same behavior than Must, but callback returns no variable.
-func Must0(err error) {
-	if err != nil {
-		panic(err)
-	}
+func Must0(err any) {
+	must(err)
 }
 
 // Must1 is an alias to Must
-func Must1[T any](val T, err error) T {
+func Must1[T any](val T, err any) T {
 	return Must(val, err)
 }
 
 // Must2 has the same behavior than Must, but callback returns 2 variable2.
-func Must2[T1 any, T2 any](val1 T1, val2 T2, err error) (T1, T2) {
-	if err != nil {
-		panic(err)
-	}
-
+func Must2[T1 any, T2 any](val1 T1, val2 T2, err any) (T1, T2) {
+	must(err)
 	return val1, val2
 }
 
 // Must3 has the same behavior than Must, but callback returns 2 variable2.
-func Must3[T1 any, T2 any, T3 any](val1 T1, val2 T2, val3 T3, err error) (T1, T2, T3) {
-	if err != nil {
-		panic(err)
-	}
-
+func Must3[T1 any, T2 any, T3 any](val1 T1, val2 T2, val3 T3, err any) (T1, T2, T3) {
+	must(err)
 	return val1, val2, val3
 }
 
 // Must4 has the same behavior than Must, but callback returns 2 variable2.
-func Must4[T1 any, T2 any, T3 any, T4 any](val1 T1, val2 T2, val3 T3, val4 T4, err error) (T1, T2, T3, T4) {
-	if err != nil {
-		panic(err)
-	}
-
+func Must4[T1 any, T2 any, T3 any, T4 any](val1 T1, val2 T2, val3 T3, val4 T4, err any) (T1, T2, T3, T4) {
+	must(err)
 	return val1, val2, val3, val4
 }
 
 // Must5 has the same behavior than Must, but callback returns 2 variable2.
-func Must5[T1 any, T2 any, T3 any, T4 any, T5 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, err error) (T1, T2, T3, T4, T5) {
-	if err != nil {
-		panic(err)
-	}
-
+func Must5[T1 any, T2 any, T3 any, T4 any, T5 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, err any) (T1, T2, T3, T4, T5) {
+	must(err)
 	return val1, val2, val3, val4, val5
 }
 
 // Must6 has the same behavior than Must, but callback returns 2 variable2.
-func Must6[T1 any, T2 any, T3 any, T4 any, T5 any, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err error) (T1, T2, T3, T4, T5, T6) {
-	if err != nil {
-		panic(err)
-	}
-
+func Must6[T1 any, T2 any, T3 any, T4 any, T5 any, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err any) (T1, T2, T3, T4, T5, T6) {
+	must(err)
 	return val1, val2, val3, val4, val5, val6
 }
 
