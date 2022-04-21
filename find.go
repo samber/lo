@@ -237,3 +237,16 @@ func Samples[T any](collection []T, count int) []T {
 
 	return results
 }
+
+// Coalesce returns the first non-default arguments. Arguments must be comparable.
+func Coalesce[T comparable](v ...T) (result T, ok bool) {
+	for _, e := range v {
+		if e != result {
+			result = e
+			ok = true
+			return
+		}
+	}
+
+	return
+}
