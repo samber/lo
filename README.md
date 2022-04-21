@@ -136,6 +136,7 @@ Other functional programming helpers:
 - ToPtr
 - ToSlicePtr
 - Empty
+- Coalesce
 
 Concurrency helpers:
 
@@ -1159,6 +1160,23 @@ lo.Empty[string]()
 // ""
 lo.Empty[bool]()
 // false
+```
+
+### Coalesce
+
+Returns the first non-empty arguments. Arguments must be comparable.
+
+```go
+result, ok := Coalesce(0, 1, 2, 3)
+// 1 true
+
+result, ok := Coalesce("")
+// "" false
+
+var nilStr *string
+str := "foobar"
+result, ok := Coalesce[*string](nil, nilStr, &str)
+// &"foobar" true
 ```
 
 ### Attempt
