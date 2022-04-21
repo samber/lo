@@ -50,6 +50,7 @@ Supported helpers for slices:
 
 - Filter
 - Map
+- FilterMap
 - FlatMap
 - Reduce
 - ForEach
@@ -70,19 +71,34 @@ Supported helpers for slices:
 - DropWhile
 - DropRightWhile
 - Reject
-- Range / RangeFrom / RangeWithSteps
+- Count
+- CountBy
 
 Supported helpers for maps:
 
 - Keys
 - Values
+- PickBy
+- PickByKeys
+- PickByValues
+- OmitBy
+- OmitByKeys
+- OmitByValues
 - Entries
 - FromEntries
+- Invert
 - Assign (merge of maps)
+- MapKeys
 - MapValues
+
+Supported math helpers:
+
+- Range / RangeFrom / RangeWithSteps
+- Clamp
 
 Supported helpers for tuples:
 
+- T2 -> T9
 - Zip2 -> Zip9
 - Unzip2 -> Unzip9
 
@@ -101,8 +117,12 @@ Supported search helpers:
 - IndexOf
 - LastIndexOf
 - Find
+- FindIndexOf
+- FindLastIndexOf
 - Min
+- MinBy
 - Max
+- MaxBy
 - Last
 - Nth
 - Sample
@@ -115,14 +135,17 @@ Other functional programming helpers:
 - Switch / Case / Default
 - ToPtr
 - ToSlicePtr
+- Empty
 
-Time based helpers:
+Concurrency helpers:
 
 - Attempt
 - Debounce
+- Async
 
 Error handling:
 
+- Must
 - Try
 - TryCatch
 - TryWithErrorValue
@@ -176,6 +199,22 @@ lo.FlatMap[int, string]([]int{0, 1, 2}, func(x int, _ int) []string {
 // []string{"0", "0", "1", "1", "2", "2"}
 ```
 
+### FilterMap
+
+Returns a slice which obtained after both filtering and mapping using the given callback function.
+
+The callback function should return two values: the result of the mapping operation and whether the result element should be included or not.
+
+```go
+matching := lo.FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+    if strings.HasSuffix(x, "pu") {
+        return "xpu", true
+    }
+    return "", false
+})
+// []string{"xpu", "xpu"}
+```
+
 ### Filter
 
 Iterates over a collection and returns an array of all the elements the predicate function returns `true` for.
@@ -196,7 +235,7 @@ present := lo.Contains[int]([]int{0, 1, 2, 3, 4, 5}, 5)
 // true
 ```
 
-### Contains
+### ContainsBy
 
 Returns true if the predicate function returns `true`.
 
@@ -522,34 +561,24 @@ odd := lo.Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 // []int{1, 3}
 ```
 
-### Range / RangeFrom / RangeWithSteps
+### Count
 
-Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+Counts the number of elements in the collection that compare equal to value.
 
 ```go
-result := Range(4)
-// [0, 1, 2, 3]
+count := Count[int]([]int{1, 5, 1}, 1)
+// 2
+```
 
-result := Range(-4);
-// [0, -1, -2, -3]
+### CountBy
 
-result := RangeFrom(1, 5);
-// [1, 2, 3, 4]
+Counts the number of elements in the collection for which predicate is true.
 
-result := RangeFrom[float64](1.0, 5);
-// [1.0, 2.0, 3.0, 4.0]
-
-result := RangeWithSteps(0, 20, 5);
-// [0, 5, 10, 15]
-
-result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
-// [-1.0, -2.0, -3.0]
-
-result := RangeWithSteps(1, 4, -1);
-// []
-
-result := Range(0);
-// []
+```go
+count := CountBy[int]([]int{1, 5, 1}, func(i int) bool {
+    return i < 4
+})
+// 2
 ```
 
 ### Keys
@@ -568,6 +597,64 @@ Creates an array of the map values.
 ```go
 values := lo.Values[string, int](map[string]int{"foo": 1, "bar": 2})
 // []int{1, 2}
+```
+
+### PickBy
+
+Returns same map type filtered by given predicate.
+
+```go
+m := lo.PickBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+    return value%2 == 1
+})
+// map[string]int{"foo": 1, "baz": 3}
+```
+
+### PickByKeys
+
+Returns same map type filtered by given keys.
+
+```go
+m := lo.PickByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+// map[string]int{"foo": 1, "baz": 3}
+```
+
+### PickByValues
+
+Returns same map type filtered by given values.
+
+```go
+m := lo.PickByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+// map[string]int{"foo": 1, "baz": 3}
+```
+
+### OmitBy
+
+Returns same map type filtered by given predicate.
+
+```go
+m := lo.OmitBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+    return value%2 == 1
+})
+// map[string]int{"bar": 2}
+```
+
+### OmitByKeys
+
+Returns same map type filtered by given keys.
+
+```go
+m := lo.OmitByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+// map[string]int{"bar": 2}
+```
+
+### OmitByValues
+
+Returns same map type filtered by given values.
+
+```go
+m := lo.OmitByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+// map[string]int{"bar": 2}
 ```
 
 ### Entries
@@ -606,6 +693,18 @@ m := lo.FromEntries[string, int]([]lo.Entry[string, int]{
 // map[string]int{"foo": 1, "bar": 2}
 ```
 
+### Invert
+
+Creates a map composed of the inverted keys and values. If map contains duplicate values, subsequent values overwrite property assignments of previous values.
+
+```go
+m1 := lo.Invert[string, int]([map[string]int{"a": 1, "b": 2})
+// map[int]string{1: "a", 2: "b"}
+
+m2 := lo.Invert[string, int]([map[string]int{"a": 1, "b": 2, "c": 1})
+// map[int]string{1: "c", 2: "b"}
+```
+
 ### Assign
 
 Merges multiple maps from left to right.
@@ -618,6 +717,17 @@ mergedMaps := lo.Assign[string, int](
 // map[string]int{"a": 1, "b": 3, "c": 4}
 ```
 
+### MapKeys
+
+Manipulates a map keys and transforms it to a map of another type.
+
+```go
+m2 := lo.MapKeys[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
+    return strconv.FormatInt(int64(v), 10)
+})
+// map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}
+```
+
 ### MapValues
 
 Manipulates a map values and transforms it to a map of another type.
@@ -625,10 +735,68 @@ Manipulates a map values and transforms it to a map of another type.
 ```go
 m1 := map[int]int64{1: 1, 2: 2, 3: 3}
 
-m2 := lo.MapValues[int, int64, string](m, func(x int64, _ int) string {
+m2 := lo.MapValues[int, int64, string](m1, func(x int64, _ int) string {
 	return strconv.FormatInt(x, 10)
 })
 // map[int]string{1: "1", 2: "2", 3: "3"}
+```
+
+### Range / RangeFrom / RangeWithSteps
+
+Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+
+```go
+result := Range(4)
+// [0, 1, 2, 3]
+
+result := Range(-4);
+// [0, -1, -2, -3]
+
+result := RangeFrom(1, 5);
+// [1, 2, 3, 4]
+
+result := RangeFrom[float64](1.0, 5);
+// [1.0, 2.0, 3.0, 4.0]
+
+result := RangeWithSteps(0, 20, 5);
+// [0, 5, 10, 15]
+
+result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
+// [-1.0, -2.0, -3.0]
+
+result := RangeWithSteps(1, 4, -1);
+// []
+
+result := Range(0);
+// []
+```
+
+### Clamp
+
+Clamps number within the inclusive lower and upper bounds.
+
+```go
+r1 := lo.Clamp(0, -10, 10)
+// 10
+
+r2 := lo.Clamp(-42, -10, 10)
+// -42
+
+r3 := lo.Clamp(42, -10, 10)
+// 42
+```
+
+### T2 -> T9
+
+Creates a tuple from a list of values.
+
+```go
+tuple1 := lo.T2[string, int]("x", 1)
+// Tuple2[string, int]{A: "x", B: 1}
+
+func example() (string, int) { return "y", 2 }
+tuple2 := lo.T2[string, int](example())
+// Tuple2[string, int]{A: "y", B: 2}
 ```
 
 ### Zip2 -> Zip9
@@ -755,6 +923,38 @@ str, ok := lo.Find[string]([]string{"foobar"}, func(i string) bool {
 // "", false
 ```
 
+### FindIndexOf
+
+FindIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
+
+```go
+str, index, ok := lo.FindIndexOf[string]([]string{"a", "b", "a", "b"}, func(i string) bool {
+    return i == "b"
+})
+// "b", 1, true
+
+str, index, ok := lo.FindIndexOf[string]([]string{"foobar"}, func(i string) bool {
+    return i == "b"
+})
+// "", -1, false
+```
+
+### FindLastIndexOf
+
+FindLastIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
+
+```go
+str, index, ok := lo.FindLastIndexOf[string]([]string{"a", "b", "a", "b"}, func(i string) bool {
+    return i == "b"
+})
+// "b", 4, true
+
+str, index, ok := lo.FindLastIndexOf[string]([]string{"foobar"}, func(i string) bool {
+    return i == "b"
+})
+// "", -1, false
+```
+
 ### Min
 
 Search the minimum value of a collection.
@@ -767,6 +967,23 @@ min := lo.Min[int]([]int{})
 // 0
 ```
 
+### MinBy
+
+Search the minimum value of a collection using the given comparison function.
+If several values of the collection are equal to the smallest value, returns the first such value.
+
+```go
+min := lo.MinBy[string]([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// "s1"
+
+min := lo.MinBy[string]([]string{}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// ""
+```
+
 ### Max
 
 Search the maximum value of a collection.
@@ -777,6 +994,23 @@ max := lo.Max[int]([]int{1, 2, 3})
 
 max := lo.Max[int]([]int{})
 // 0
+```
+
+### MaxBy
+
+Search the maximum value of a collection using the given comparison function.
+If several values of the collection are equal to the greatest value, returns the first such value.
+
+```go
+max := lo.MaxBy[string]([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// "string1"
+
+max := lo.MaxBy[string]([]string{}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// ""
 ```
 
 ### Last
@@ -852,6 +1086,31 @@ result := lo.If[int](false, 1).
 // 3
 ```
 
+Using callbacks:
+
+```go
+result := lo.IfF[int](true, func () int {
+        return 1
+    }).
+    ElseIfF(false, func () int {
+        return 2
+    }).
+    ElseF(func () int {
+        return 3
+    })
+// 1
+```
+
+Mixed:
+
+```go
+result := lo.IfF[int](true, func () int {
+        return 1
+    }).
+    Else(42)
+// 1
+```
+
 ### Switch / Case / Default
 
 ```go
@@ -890,6 +1149,17 @@ result := lo.Switch[int, string](1).
 // "1"
 ```
 
+Mixed:
+
+```go
+result := lo.Switch[int, string](1).
+    CaseF(1, func() string {
+        return "1"
+    }).
+    Default("42")
+// "42"
+```
+
 ### ToPtr
 
 Returns a pointer copy of value.
@@ -906,6 +1176,19 @@ Returns a slice of pointer copy of value.
 ```go
 ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 // []*string{"hello", "world"}
+```
+
+### Empty
+
+Returns an empty value.
+
+```go
+lo.Empty[int]()
+// 0
+lo.Empty[string]()
+// ""
+lo.Empty[bool]()
+// false
 ```
 
 ### Attempt
@@ -946,7 +1229,6 @@ iter, err := lo.Attempt(0, func(i int) error {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
-
 ### Debounce
 
 `NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
@@ -963,6 +1245,55 @@ for j := 0; j < 10; j++ {
 
 time.Sleep(1 * time.Second)
 cancel()
+```
+
+### Async
+
+Executes a function in a goroutine and returns the result in a channel.
+
+```go
+ch := lo.Async[error](func() error { time.Sleep(10 * time.Second); return nil })
+// chan err{nil}
+
+ch := lo.Async[error](func() Tuple2[int, error] {
+  time.Sleep(10 * time.Second);
+  return Tuple2[int, error]{42, nil}
+})
+// chan Tuple2[int, error]{42, nil}
+```
+
+### Must
+
+Wraps a function call to return the given value if the error is nil, panics otherwise.
+
+```go
+val := Must(time.Parse("2006-01-02", "2022-01-15"))
+// 2022-01-15
+
+val := Must(time.Parse("2006-01-02", "bad-value"))
+// panics
+```
+
+### Must{0->6}
+
+Wraps a function call to return values if the error is nil, panics otherwise.
+
+```go
+func example0() (error)
+func example1() (int, error)
+func example2() (int, string, error)
+func example3() (int, string, time.Date, error)
+func example4() (int, string, time.Date, bool, error)
+func example5() (int, string, time.Date, bool, float64, error)
+func example6() (int, string, time.Date, bool, float64, byte, error)
+
+Must0(example0)
+val1 := Must1(example1)    // alias to Must
+val1, val2 := Must2(example2)
+val1, val2, val3 := Must3(example3)
+val1, val2, val3, val4 := Must4(example4)
+val1, val2, val3, val4, val5 := Must5(example5)
+val1, val2, val3, val4, val5, val6 := Must6(example6)
 ```
 
 ## Try

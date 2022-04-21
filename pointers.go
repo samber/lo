@@ -5,7 +5,7 @@ func ToPtr[T any](x T) *T {
 	return &x
 }
 
-// ToPtr returns a slice of pointer copy of value.
+// ToSlicePtr returns a slice of pointer copy of value.
 func ToSlicePtr[T any](collection []T) []*T {
 	return Map(collection, func (x T, _ int) *T {
 		return &x

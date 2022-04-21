@@ -100,14 +100,8 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U, options ..
 
 	handler := func(item T, ix int) {
 		key := iteratee(item)
-
 		mu.Lock()
-
-		if _, ok := result[key]; !ok {
-			result[key] = []T{}
-		}
 		result[key] = append(result[key], item)
-
 		mu.Unlock()
 	}
 

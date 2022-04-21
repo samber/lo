@@ -2,6 +2,7 @@ package lo
 
 import (
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -47,6 +48,28 @@ func TestMap(t *testing.T) {
 	is.Equal(result2, []string{"1", "2", "3", "4"})
 }
 
+func TestFilterMap(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := FilterMap[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
+		if x%2 == 0 {
+			return strconv.FormatInt(x, 10), true
+		}
+		return "", false
+	})
+	r2 := FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+		if strings.HasSuffix(x, "pu") {
+			return "xpu", true
+		}
+		return "", false
+	})
+
+	is.Equal(len(r1), 2)
+	is.Equal(len(r2), 2)
+	is.Equal(r1, []string{"2", "4"})
+	is.Equal(r2, []string{"xpu", "xpu"})
+}
+
 func TestFlatMap(t *testing.T) {
 	is := assert.New(t)
 
@@ -90,6 +113,24 @@ func TestReduce(t *testing.T) {
 
 	is.Equal(result1, 10)
 	is.Equal(result2, 20)
+}
+
+func TestForEach(t *testing.T) {
+	is := assert.New(t)
+
+	// check of callback is called for every element and in proper order
+
+	callParams1 := []string{}
+	callParams2 := []int{}
+
+	ForEach[string]([]string{"a", "b", "c"}, func(item string, i int) {
+		callParams1 = append(callParams1, item)
+		callParams2 = append(callParams2, i)
+	})
+
+	is.ElementsMatch([]string{"a", "b", "c"}, callParams1)
+	is.ElementsMatch([]int{0, 1, 2}, callParams2)
+	is.IsIncreasing(callParams2)
 }
 
 func TestUniq(t *testing.T) {
@@ -220,6 +261,64 @@ func TestKeyBy(t *testing.T) {
 	is.Equal(result1, map[int]string{1: "a", 2: "aa", 3: "aaa"})
 }
 
+func TestDrop(t *testing.T) {
+	is := assert.New(t)
+
+	is.Equal([]int{1, 2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 1))
+	is.Equal([]int{2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 2))
+	is.Equal([]int{3, 4}, Drop([]int{0, 1, 2, 3, 4}, 3))
+	is.Equal([]int{4}, Drop([]int{0, 1, 2, 3, 4}, 4))
+	is.Equal([]int{}, Drop([]int{0, 1, 2, 3, 4}, 5))
+	is.Equal([]int{}, Drop([]int{0, 1, 2, 3, 4}, 6))
+}
+
+func TestDropRight(t *testing.T) {
+	is := assert.New(t)
+
+	is.Equal([]int{0, 1, 2, 3}, DropRight([]int{0, 1, 2, 3, 4}, 1))
+	is.Equal([]int{0, 1, 2}, DropRight([]int{0, 1, 2, 3, 4}, 2))
+	is.Equal([]int{0, 1}, DropRight([]int{0, 1, 2, 3, 4}, 3))
+	is.Equal([]int{0}, DropRight([]int{0, 1, 2, 3, 4}, 4))
+	is.Equal([]int{}, DropRight([]int{0, 1, 2, 3, 4}, 5))
+	is.Equal([]int{}, DropRight([]int{0, 1, 2, 3, 4}, 6))
+}
+
+func TestDropWhile(t *testing.T) {
+	is := assert.New(t)
+
+	is.Equal([]int{4, 5, 6}, DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return t != 4
+	}))
+
+	is.Equal([]int{}, DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return true
+	}))
+
+	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return t == 10
+	}))
+}
+
+func TestDropRightWhile(t *testing.T) {
+	is := assert.New(t)
+
+	is.Equal([]int{0, 1, 2, 3}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return t != 3
+	}))
+
+	is.Equal([]int{0, 1}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return t != 1
+	}))
+
+	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return t == 10
+	}))
+
+	is.Equal([]int{}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return t != 10
+	}))
+}
+
 func TestReject(t *testing.T) {
 	is := assert.New(t)
 
@@ -234,4 +333,36 @@ func TestReject(t *testing.T) {
 	})
 
 	is.Equal(r2, []string{"foo", "bar"})
+}
+
+func TestCount(t *testing.T) {
+	is := assert.New(t)
+
+	count1 := Count[int]([]int{1, 2, 1}, 1)
+	count2 := Count[int]([]int{1, 2, 1}, 3)
+	count3 := Count[int]([]int{}, 1)
+
+	is.Equal(count1, 2)
+	is.Equal(count2, 0)
+	is.Equal(count3, 0)
+}
+
+func TestCountBy(t *testing.T) {
+	is := assert.New(t)
+
+	count1 := CountBy[int]([]int{1, 2, 1}, func(i int) bool {
+		return i < 2
+	})
+
+	count2 := CountBy[int]([]int{1, 2, 1}, func(i int) bool {
+		return i > 2
+	})
+
+	count3 := CountBy[int]([]int{}, func(i int) bool {
+		return i <= 2
+	})
+
+	is.Equal(count1, 2)
+	is.Equal(count2, 0)
+	is.Equal(count3, 0)
 }
