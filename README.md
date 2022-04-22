@@ -748,13 +748,13 @@ Clamps number within the inclusive lower and upper bounds.
 
 ```go
 r1 := lo.Clamp(0, -10, 10)
-// 10
+// 0
 
 r2 := lo.Clamp(-42, -10, 10)
-// -42
+// -10
 
 r3 := lo.Clamp(42, -10, 10)
-// 42
+// 10
 ```
 
 ### T2 -> T9
@@ -841,7 +841,7 @@ Returns the difference between two collections.
 left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
 // []int{1, 3, 4, 5}, []int{6}
 
-left, right := Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 // []int{}, []int{}
 ```
 
