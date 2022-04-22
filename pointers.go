@@ -7,7 +7,7 @@ func ToPtr[T any](x T) *T {
 
 // ToSlicePtr returns a slice of pointer copy of value.
 func ToSlicePtr[T any](collection []T) []*T {
-	return Map(collection, func (x T, _ int) *T {
+	return Map(collection, func(x T, _ int) *T {
 		return &x
 	})
 }
@@ -16,4 +16,17 @@ func ToSlicePtr[T any](collection []T) []*T {
 func Empty[T any]() T {
 	var t T
 	return t
+}
+
+// Coalesce returns the first non-empty arguments. Arguments must be comparable.
+func Coalesce[T comparable](v ...T) (result T, ok bool) {
+	for _, e := range v {
+		if e != result {
+			result = e
+			ok = true
+			return
+		}
+	}
+
+	return
 }

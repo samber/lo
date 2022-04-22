@@ -136,6 +136,7 @@ Other functional programming helpers:
 - ToPtr
 - ToSlicePtr
 - Empty
+- Coalesce
 
 Concurrency helpers:
 
@@ -747,13 +748,13 @@ Clamps number within the inclusive lower and upper bounds.
 
 ```go
 r1 := lo.Clamp(0, -10, 10)
-// 10
+// 0
 
 r2 := lo.Clamp(-42, -10, 10)
-// -42
+// -10
 
 r3 := lo.Clamp(42, -10, 10)
-// 42
+// 10
 ```
 
 ### T2 -> T9
@@ -840,7 +841,7 @@ Returns the difference between two collections.
 left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
 // []int{1, 3, 4, 5}, []int{6}
 
-left, right := Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 // []int{}, []int{}
 ```
 
@@ -1159,6 +1160,23 @@ lo.Empty[string]()
 // ""
 lo.Empty[bool]()
 // false
+```
+
+### Coalesce
+
+Returns the first non-empty arguments. Arguments must be comparable.
+
+```go
+result, ok := Coalesce(0, 1, 2, 3)
+// 1 true
+
+result, ok := Coalesce("")
+// "" false
+
+var nilStr *string
+str := "foobar"
+result, ok := Coalesce[*string](nil, nilStr, &str)
+// &"foobar" true
 ```
 
 ### Attempt
