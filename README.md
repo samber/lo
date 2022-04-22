@@ -19,8 +19,12 @@ I wanted a **short name**, similar to "Lodash" and no Go package currently uses 
 ## 🚀 Install
 
 ```sh
-go get github.com/samber/lo
+go get github.com/samber/lo@v1
 ```
+
+This library is v1 and follows SemVer strictly.
+
+No breaking changes will be made to exported APIs before v2.0.0.
 
 ## 💡 Usage
 
