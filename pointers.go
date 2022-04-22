@@ -37,7 +37,7 @@ func Safe[T any](cb func() T) (result T, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			if err, ok := r.(error); ok && err.Error() == nilPointerPanic {
-				ok = false
+				// catch error
 			} else {
 				panic(r)
 			}
