@@ -1234,7 +1234,7 @@ ch := lo.Async[error](func() Tuple2[int, error] {
 
 ### Must
 
-Wraps a function call to return the given value if the error is nil, panics otherwise.
+Wraps a function call to panics if second argument is `error` or `false`, returns the value otherwise.
 
 ```go
 val := Must(time.Parse("2006-01-02", "2022-01-15"))
@@ -1245,9 +1245,7 @@ val := Must(time.Parse("2006-01-02", "bad-value"))
 ```
 
 ### Must{0->6}
-
-Wraps a function call to return values if the error is nil, panics otherwise.
-
+Must* has the same behavior than Must, but returns multiple values.
 ```go
 func example0() (error)
 func example1() (int, error)
@@ -1257,13 +1255,22 @@ func example4() (int, string, time.Date, bool, error)
 func example5() (int, string, time.Date, bool, float64, error)
 func example6() (int, string, time.Date, bool, float64, byte, error)
 
-Must0(example0)
-val1 := Must1(example1)    // alias to Must
-val1, val2 := Must2(example2)
-val1, val2, val3 := Must3(example3)
-val1, val2, val3, val4 := Must4(example4)
-val1, val2, val3, val4, val5 := Must5(example5)
-val1, val2, val3, val4, val5, val6 := Must6(example6)
+Must0(example0())
+val1 := Must1(example1())    // alias to Must
+val1, val2 := Must2(example2())
+val1, val2, val3 := Must3(example3())
+val1, val2, val3, val4 := Must4(example4())
+val1, val2, val3, val4, val5 := Must5(example5())
+val1, val2, val3, val4, val5, val6 := Must6(example6())
+```
+
+You can wrap functions like `func (...)  (..., ok bool)`.
+```go
+// math.Signbit(float64) bool
+Must0(math.Signbit(v))
+
+// bytes.Cut([]byte,[]byte) ([]byte, []byte, bool)
+before, after := Must2(bytes.Cut(s, sep))
 ```
 
 ## Try
