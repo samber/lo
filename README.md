@@ -1240,14 +1240,14 @@ cancel()
 Executes a function in a goroutine and returns the result in a channel.
 
 ```go
-ch := lo.Async[error](func() error { time.Sleep(10 * time.Second); return nil })
-// chan err{nil}
+ch := lo.Async(func() error { time.Sleep(10 * time.Second); return nil })
+// chan error (nil)
 
-ch := lo.Async[error](func() Tuple2[int, error] {
+ch := lo.Async(func() lo.Tuple2[int, error] {
   time.Sleep(10 * time.Second);
-  return Tuple2[int, error]{42, nil}
+  return lo.Tuple2[int, error]{42, nil}
 })
-// chan Tuple2[int, error]{42, nil}
+// chan lo.Tuple2[int, error] ({42, nil})
 ```
 
 ### Must
@@ -1255,10 +1255,10 @@ ch := lo.Async[error](func() Tuple2[int, error] {
 Wraps a function call to panics if second argument is `error` or `false`, returns the value otherwise.
 
 ```go
-val := Must(time.Parse("2006-01-02", "2022-01-15"))
+val := lo.Must(time.Parse("2006-01-02", "2022-01-15"))
 // 2022-01-15
 
-val := Must(time.Parse("2006-01-02", "bad-value"))
+val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 // panics
 ```
 
@@ -1273,22 +1273,22 @@ func example4() (int, string, time.Date, bool, error)
 func example5() (int, string, time.Date, bool, float64, error)
 func example6() (int, string, time.Date, bool, float64, byte, error)
 
-Must0(example0())
-val1 := Must1(example1())    // alias to Must
-val1, val2 := Must2(example2())
-val1, val2, val3 := Must3(example3())
-val1, val2, val3, val4 := Must4(example4())
-val1, val2, val3, val4, val5 := Must5(example5())
-val1, val2, val3, val4, val5, val6 := Must6(example6())
+lo.Must0(example0())
+val1 := lo.Must1(example1())    // alias to Must
+val1, val2 := lo.Must2(example2())
+val1, val2, val3 := lo.Must3(example3())
+val1, val2, val3, val4 := lo.Must4(example4())
+val1, val2, val3, val4, val5 := lo.Must5(example5())
+val1, val2, val3, val4, val5, val6 := lo.Must6(example6())
 ```
 
 You can wrap functions like `func (...)  (..., ok bool)`.
 ```go
 // math.Signbit(float64) bool
-Must0(math.Signbit(v))
+lo.Must0(math.Signbit(v))
 
 // bytes.Cut([]byte,[]byte) ([]byte, []byte, bool)
-before, after := Must2(bytes.Cut(s, sep))
+before, after := lo.Must2(bytes.Cut(s, sep))
 ```
 
 ## Try
