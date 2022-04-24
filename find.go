@@ -202,14 +202,23 @@ func Nth[T any](collection []T, nth int) (T, error) {
 	return collection[length+nth], nil
 }
 
-// Sample returns a random item from collection.
-func Sample[T any](collection []T) T {
+func SourceSample[T any](src rand.Source, collection []T) T {
+	r := rand.New(src)
+	return IntnSample(r.Intn, collection)
+}
+
+func IntnSample[T any](inter func(n int) int, collection []T) T {
 	size := len(collection)
 	if size == 0 {
 		return Empty[T]()
 	}
 
-	return collection[rand.Intn(size)]
+	return collection[inter(size)]
+}
+
+// Sample returns a random item from collection.
+func Sample[T any](collection []T) T {
+	return IntnSample(rand.Intn, collection)
 }
 
 // Samples returns N random unique items from collection.
