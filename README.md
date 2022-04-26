@@ -1133,7 +1133,7 @@ result := lo.Switch[int, string](1).
         return "1"
     }).
     Default("42")
-// "42"
+// "1"
 ```
 
 ### ToPtr
