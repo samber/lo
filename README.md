@@ -1246,18 +1246,13 @@ Executes a function in a goroutine and returns the result in a channel.
 ```go
 ch := lo.Async(func() error { time.Sleep(10 * time.Second); return nil })
 // chan error (nil)
-
-ch := lo.Async(func() lo.Tuple2[int, error] {
-  time.Sleep(10 * time.Second);
-  return lo.Tuple2[int, error]{42, nil}
-})
-// chan lo.Tuple2[int, error] ({42, nil})
 ```
 
-### Async{0->1}
+### Async{0->6}
 
 Executes a function in a goroutine and returns the result in a channel.
-For function without return, the channel will be set once the function finishes.
+For function with multiple return values, the results will be returned as a tuple inside the channel.
+For function without return, struct{} will be returned in the channel.
 
 ```go
 ch := lo.Async0(func() { time.Sleep(10 * time.Second) })
@@ -1268,6 +1263,12 @@ ch := lo.Async1(func() int {
   return 42
 })
 // chan int (42)
+
+ch := lo.Async2(func() (int, string) {
+  time.Sleep(10 * time.Second);
+  return 42, "Hello"
+})
+// chan lo.Tuple2[int, string] ({42, "Hello"})
 ```
 
 ### Must
