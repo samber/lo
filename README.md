@@ -1257,7 +1257,7 @@ ch := lo.Async(func() lo.Tuple2[int, error] {
 ### Async{0->1}
 
 Executes a function in a goroutine and returns the result in a channel.
-For function without return, the channel will be closed once the function finishes.
+For function without return, the channel will be set once the function finishes.
 
 ```go
 ch := lo.Async0(func() { time.Sleep(10 * time.Second) })
