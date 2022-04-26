@@ -1254,6 +1254,22 @@ ch := lo.Async(func() lo.Tuple2[int, error] {
 // chan lo.Tuple2[int, error] ({42, nil})
 ```
 
+### Async{0->1}
+
+Executes a function in a goroutine and returns the result in a channel.
+For function without return, the channel will be closed once the function finishes.
+
+```go
+ch := lo.Async0(func() { time.Sleep(10 * time.Second) })
+// chan struct{}
+
+ch := lo.Async1(func() int {
+  time.Sleep(10 * time.Second);
+  return 42
+})
+// chan int (42)
+```
+
 ### Must
 
 Wraps a function call to panics if second argument is `error` or `false`, returns the value otherwise.
