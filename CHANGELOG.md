@@ -1,5 +1,25 @@
 # Changelog
 
+@samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
+
+## 1.16.0 (2022-04-26)
+
+Adding:
+
+- lo.AttemptWithDelay
+
+## 1.15.0 (2022-04-22)
+
+Improvement:
+
+- lo.Must: error or boolean value
+
+## 1.14.0 (2022-04-21)
+
+Adding:
+
+- lo.Colaesce
+
 ## 1.13.0 (2022-04-14)
 
 Adding:
