@@ -103,6 +103,7 @@ Supported math helpers:
 Supported helpers for tuples:
 
 - T2 -> T9
+- Unpack2 -> Unpack9
 - Zip2 -> Zip9
 - Unzip2 -> Unzip9
 
@@ -773,6 +774,15 @@ tuple1 := lo.T2[string, int]("x", 1)
 func example() (string, int) { return "y", 2 }
 tuple2 := lo.T2[string, int](example())
 // Tuple2[string, int]{A: "y", B: 2}
+```
+
+### Unpack2 -> Unpack9
+
+Returns values contained in tuple.
+
+```go
+r1, r2 := lo.Unpack2[string, int](lo.Tuple2[string, int]{"a", 1})
+// "a", 1
 ```
 
 ### Zip2 -> Zip9
