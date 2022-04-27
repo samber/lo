@@ -27,7 +27,7 @@ func TestAsync(t *testing.T) {
 	}
 }
 
-func TestAwait(t *testing.T) {
+func TestAwaitAll(t *testing.T) {
 	is := assert.New(t)
 
 	aAsync := Async(func() int { return 1 })
