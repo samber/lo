@@ -7,6 +7,7 @@
 Adding:
 
 - lo.Unpack2 -> lo.Unpack3
+- lo.Async0 -> lo.Async6
 
 ## 1.16.0 (2022-04-26)
 
