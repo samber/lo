@@ -103,6 +103,7 @@ Supported math helpers:
 Supported helpers for tuples:
 
 - T2 -> T9
+- Unpack2 -> Unpack9
 - Zip2 -> Zip9
 - Unzip2 -> Unzip9
 
@@ -776,6 +777,15 @@ tuple2 := lo.T2[string, int](example())
 // Tuple2[string, int]{A: "y", B: 2}
 ```
 
+### Unpack2 -> Unpack9
+
+Returns values contained in tuple.
+
+```go
+r1, r2 := lo.Unpack2[string, int](lo.Tuple2[string, int]{"a", 1})
+// "a", 1
+```
+
 ### Zip2 -> Zip9
 
 Zip creates a slice of grouped elements, the first of which contains the first elements of the given arrays, the second of which contains the second elements of the given arrays, and so on.
@@ -1269,12 +1279,29 @@ Executes a function in a goroutine and returns the result in a channel.
 ```go
 ch := lo.Async(func() error { time.Sleep(10 * time.Second); return nil })
 // chan error (nil)
+```
 
-ch := lo.Async(func() lo.Tuple2[int, error] {
+### Async{0->6}
+
+Executes a function in a goroutine and returns the result in a channel.
+For function with multiple return values, the results will be returned as a tuple inside the channel.
+For function without return, struct{} will be returned in the channel.
+
+```go
+ch := lo.Async0(func() { time.Sleep(10 * time.Second) })
+// chan struct{}
+
+ch := lo.Async1(func() int {
   time.Sleep(10 * time.Second);
-  return lo.Tuple2[int, error]{42, nil}
+  return 42
 })
-// chan lo.Tuple2[int, error] ({42, nil})
+// chan int (42)
+
+ch := lo.Async2(func() (int, string) {
+  time.Sleep(10 * time.Second);
+  return 42, "Hello"
+})
+// chan lo.Tuple2[int, string] ({42, "Hello"})
 ```
 
 ### AwaitAll{2->5}
