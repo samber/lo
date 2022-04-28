@@ -112,7 +112,11 @@ Supported intersection helpers:
 - Contains
 - ContainsBy
 - Every
+- EveryBy
 - Some
+- SomeBy
+- None
+- NoneBy
 - Intersect
 - Difference
 - Union
@@ -808,7 +812,7 @@ a, b := lo.Unzip2[string, int]([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B:
 
 ### Every
 
-Returns true if all elements of a subset are contained into a collection.
+Returns true if all elements of a subset are contained into a collection or if the subset is empty.
 
 ```go
 ok := lo.Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -818,9 +822,21 @@ ok := lo.Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // false
 ```
 
+### EveryBy
+
+Returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
+
+```go
+b := EveryBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+    return x < 5
+})
+// true
+```
+
 ### Some
 
 Returns true if at least 1 element of a subset is contained into a collection.
+If the subset is empty Some returns false.
 
 ```go
 ok := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -828,6 +844,40 @@ ok := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
 
 ok := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // false
+```
+
+### SomeBy
+
+Returns true if the predicate returns true for any of the elements in the collection. 
+If the collection is empty SomeBy returns false.
+
+```go
+b := SomeBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+    return x < 3
+})
+// true
+```
+
+### None
+
+Returns true if no element of a subset are contained into a collection or if the subset is empty.
+
+```go
+b := None[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+// false
+b := None[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+// true
+```
+
+### NoneBy
+
+Returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
+
+```go
+b := NoneBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+    return x < 0
+})
+// true
 ```
 
 ### Intersect
