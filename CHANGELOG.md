@@ -2,6 +2,15 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.18.0 (2022-04-28)
+
+Adding:
+
+- lo.SomeBy
+- lo.EveryBy
+- lo.None
+- lo.NoneBy
+
 ## 1.17.0 (2022-04-27)
 
 Adding:
