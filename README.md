@@ -812,7 +812,7 @@ a, b := lo.Unzip2[string, int]([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B:
 
 ### Every
 
-Returns true if all elements of a subset are contained into a collection or if the collection is empty.
+Returns true if all elements of a subset are contained into a collection or if the subset is empty.
 
 ```go
 ok := lo.Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -836,7 +836,7 @@ b := EveryBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
 ### Some
 
 Returns true if at least 1 element of a subset is contained into a collection.
-If the collection is empty Some returns false.
+If the subset is empty Some returns false.
 
 ```go
 ok := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -860,7 +860,7 @@ b := SomeBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
 
 ### None
 
-Returns true if no element of a subset are contained into a collection or if the collection is empty.
+Returns true if no element of a subset are contained into a collection or if the subset is empty.
 
 ```go
 b := None[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})

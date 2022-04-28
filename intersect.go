@@ -22,7 +22,7 @@ func ContainsBy[T any](collection []T, predicate func(T) bool) bool {
 	return false
 }
 
-// Every returns true if all elements of a subset are contained into a collection or if the collection is empty.
+// Every returns true if all elements of a subset are contained into a collection or if the subset is empty.
 func Every[T comparable](collection []T, subset []T) bool {
 	for _, elem := range subset {
 		if !Contains(collection, elem) {
@@ -45,7 +45,7 @@ func EveryBy[V any](collection []V, predicate func(V) bool) bool {
 }
 
 // Some returns true if at least 1 element of a subset is contained into a collection.
-// If the collection is empty SomeBy returns false.
+// If the subset is empty Some returns false.
 func Some[T comparable](collection []T, subset []T) bool {
 	for _, elem := range subset {
 		if Contains(collection, elem) {
@@ -68,7 +68,7 @@ func SomeBy[V any](collection []V, predicate func(V) bool) bool {
 	return false
 }
 
-// None returns true if no element of a subset are contained into a collection or if the collection is empty.
+// None returns true if no element of a subset are contained into a collection or if the subset is empty.
 func None[V comparable](collection []V, subset []V) bool {
 	for _, elem := range subset {
 		if Contains(collection, elem) {
