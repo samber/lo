@@ -87,3 +87,4 @@ func AwaitAll4[A any, B any, C any, D any](a chan A, b chan B, c chan C, d chan 
 // AwaitAll5 returns awaited value of async channels
 func AwaitAll5[A any, B any, C any, D any, E any](a chan A, b chan B, c chan C, d chan D, e chan E) (A, B, C, D, E) {
 	return <-a, <-b, <-c, <-d, <-e
+}
