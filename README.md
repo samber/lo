@@ -19,8 +19,12 @@ I wanted a **short name**, similar to "Lodash" and no Go package currently uses 
 ## 🚀 Install
 
 ```sh
-go get github.com/samber/lo
+go get github.com/samber/lo@v1
 ```
+
+This library is v1 and follows SemVer strictly.
+
+No breaking changes will be made to exported APIs before v2.0.0.
 
 ## 💡 Usage
 
@@ -73,19 +77,33 @@ Supported helpers for slices:
 - Reject
 - Count
 - CountBy
-- Range / RangeFrom / RangeWithSteps
 
 Supported helpers for maps:
 
 - Keys
 - Values
+- PickBy
+- PickByKeys
+- PickByValues
+- OmitBy
+- OmitByKeys
+- OmitByValues
 - Entries
 - FromEntries
+- Invert
 - Assign (merge of maps)
+- MapKeys
 - MapValues
+
+Supported math helpers:
+
+- Range / RangeFrom / RangeWithSteps
+- Clamp
 
 Supported helpers for tuples:
 
+- T2 -> T9
+- Unpack2 -> Unpack9
 - Zip2 -> Zip9
 - Unzip2 -> Unzip9
 
@@ -127,10 +145,12 @@ Other functional programming helpers:
 - ToPtr
 - ToSlicePtr
 - Empty
+- Coalesce
 
 Concurrency helpers:
 
 - Attempt
+- AttemptWithDelay
 - Debounce
 - Async
 
@@ -542,36 +562,6 @@ count := CountBy[int]([]int{1, 5, 1}, func(i int) bool {
 // 2
 ```
 
-### Range / RangeFrom / RangeWithSteps
-
-Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
-
-```go
-result := Range(4)
-// [0, 1, 2, 3]
-
-result := Range(-4);
-// [0, -1, -2, -3]
-
-result := RangeFrom(1, 5);
-// [1, 2, 3, 4]
-
-result := RangeFrom[float64](1.0, 5);
-// [1.0, 2.0, 3.0, 4.0]
-
-result := RangeWithSteps(0, 20, 5);
-// [0, 5, 10, 15]
-
-result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
-// [-1.0, -2.0, -3.0]
-
-result := RangeWithSteps(1, 4, -1);
-// []
-
-result := Range(0);
-// []
-```
-
 ### Keys
 
 Creates an array of the map keys.
@@ -588,6 +578,64 @@ Creates an array of the map values.
 ```go
 values := lo.Values[string, int](map[string]int{"foo": 1, "bar": 2})
 // []int{1, 2}
+```
+
+### PickBy
+
+Returns same map type filtered by given predicate.
+
+```go
+m := lo.PickBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+    return value%2 == 1
+})
+// map[string]int{"foo": 1, "baz": 3}
+```
+
+### PickByKeys
+
+Returns same map type filtered by given keys.
+
+```go
+m := lo.PickByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+// map[string]int{"foo": 1, "baz": 3}
+```
+
+### PickByValues
+
+Returns same map type filtered by given values.
+
+```go
+m := lo.PickByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+// map[string]int{"foo": 1, "baz": 3}
+```
+
+### OmitBy
+
+Returns same map type filtered by given predicate.
+
+```go
+m := lo.OmitBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+    return value%2 == 1
+})
+// map[string]int{"bar": 2}
+```
+
+### OmitByKeys
+
+Returns same map type filtered by given keys.
+
+```go
+m := lo.OmitByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+// map[string]int{"bar": 2}
+```
+
+### OmitByValues
+
+Returns same map type filtered by given values.
+
+```go
+m := lo.OmitByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+// map[string]int{"bar": 2}
 ```
 
 ### Entries
@@ -626,6 +674,18 @@ m := lo.FromEntries[string, int]([]lo.Entry[string, int]{
 // map[string]int{"foo": 1, "bar": 2}
 ```
 
+### Invert
+
+Creates a map composed of the inverted keys and values. If map contains duplicate values, subsequent values overwrite property assignments of previous values.
+
+```go
+m1 := lo.Invert[string, int]([map[string]int{"a": 1, "b": 2})
+// map[int]string{1: "a", 2: "b"}
+
+m2 := lo.Invert[string, int]([map[string]int{"a": 1, "b": 2, "c": 1})
+// map[int]string{1: "c", 2: "b"}
+```
+
 ### Assign
 
 Merges multiple maps from left to right.
@@ -638,6 +698,17 @@ mergedMaps := lo.Assign[string, int](
 // map[string]int{"a": 1, "b": 3, "c": 4}
 ```
 
+### MapKeys
+
+Manipulates a map keys and transforms it to a map of another type.
+
+```go
+m2 := lo.MapKeys[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
+    return strconv.FormatInt(int64(v), 10)
+})
+// map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}
+```
+
 ### MapValues
 
 Manipulates a map values and transforms it to a map of another type.
@@ -645,10 +716,77 @@ Manipulates a map values and transforms it to a map of another type.
 ```go
 m1 := map[int]int64{1: 1, 2: 2, 3: 3}
 
-m2 := lo.MapValues[int, int64, string](m, func(x int64, _ int) string {
+m2 := lo.MapValues[int, int64, string](m1, func(x int64, _ int) string {
 	return strconv.FormatInt(x, 10)
 })
 // map[int]string{1: "1", 2: "2", 3: "3"}
+```
+
+### Range / RangeFrom / RangeWithSteps
+
+Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
+
+```go
+result := Range(4)
+// [0, 1, 2, 3]
+
+result := Range(-4);
+// [0, -1, -2, -3]
+
+result := RangeFrom(1, 5);
+// [1, 2, 3, 4]
+
+result := RangeFrom[float64](1.0, 5);
+// [1.0, 2.0, 3.0, 4.0]
+
+result := RangeWithSteps(0, 20, 5);
+// [0, 5, 10, 15]
+
+result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
+// [-1.0, -2.0, -3.0]
+
+result := RangeWithSteps(1, 4, -1);
+// []
+
+result := Range(0);
+// []
+```
+
+### Clamp
+
+Clamps number within the inclusive lower and upper bounds.
+
+```go
+r1 := lo.Clamp(0, -10, 10)
+// 0
+
+r2 := lo.Clamp(-42, -10, 10)
+// -10
+
+r3 := lo.Clamp(42, -10, 10)
+// 10
+```
+
+### T2 -> T9
+
+Creates a tuple from a list of values.
+
+```go
+tuple1 := lo.T2[string, int]("x", 1)
+// Tuple2[string, int]{A: "x", B: 1}
+
+func example() (string, int) { return "y", 2 }
+tuple2 := lo.T2[string, int](example())
+// Tuple2[string, int]{A: "y", B: 2}
+```
+
+### Unpack2 -> Unpack9
+
+Returns values contained in tuple.
+
+```go
+r1, r2 := lo.Unpack2[string, int](lo.Tuple2[string, int]{"a", 1})
+// "a", 1
 ```
 
 ### Zip2 -> Zip9
@@ -768,7 +906,7 @@ Returns the difference between two collections.
 left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
 // []int{1, 3, 4, 5}, []int{6}
 
-left, right := Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 // []int{}, []int{}
 ```
 
@@ -984,6 +1122,31 @@ result := lo.If[int](false, 1).
 // 3
 ```
 
+Using callbacks:
+
+```go
+result := lo.IfF[int](true, func () int {
+        return 1
+    }).
+    ElseIfF(false, func () int {
+        return 2
+    }).
+    ElseF(func () int {
+        return 3
+    })
+// 1
+```
+
+Mixed:
+
+```go
+result := lo.IfF[int](true, func () int {
+        return 1
+    }).
+    Else(42)
+// 1
+```
+
 ### Switch / Case / Default
 
 ```go
@@ -1022,6 +1185,17 @@ result := lo.Switch[int, string](1).
 // "1"
 ```
 
+Mixed:
+
+```go
+result := lo.Switch[int, string](1).
+    CaseF(1, func() string {
+        return "1"
+    }).
+    Default("42")
+// "1"
+```
+
 ### ToPtr
 
 Returns a pointer copy of value.
@@ -1051,6 +1225,23 @@ lo.Empty[string]()
 // ""
 lo.Empty[bool]()
 // false
+```
+
+### Coalesce
+
+Returns the first non-empty arguments. Arguments must be comparable.
+
+```go
+result, ok := Coalesce(0, 1, 2, 3)
+// 1 true
+
+result, ok := Coalesce("")
+// "" false
+
+var nilStr *string
+str := "foobar"
+result, ok := Coalesce[*string](nil, nilStr, &str)
+// &"foobar" true
 ```
 
 ### Attempt
@@ -1091,6 +1282,27 @@ iter, err := lo.Attempt(0, func(i int) error {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
+### AttemptWithDelay
+
+Invokes a function N times until it returns valid output, with a pause betwwen each call. Returning either the caught error or nil.
+
+When first argument is less than `1`, the function runs until a sucessfull response is returned.
+
+```go
+iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duration time.Duration) error {
+    if i == 2 {
+        return nil
+    }
+
+    return fmt.Errorf("failed")
+})
+// 3
+// ~ 4 seconds
+// nil
+```
+
+For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+
 ### Debounce
 
 `NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
@@ -1114,32 +1326,47 @@ cancel()
 Executes a function in a goroutine and returns the result in a channel.
 
 ```go
-ch := lo.Async[error](func() error { time.Sleep(10 * time.Second); return nil })
-// chan err{nil}
+ch := lo.Async(func() error { time.Sleep(10 * time.Second); return nil })
+// chan error (nil)
+```
 
-ch := lo.Async[error](func() Tuple2[int, error] {
+### Async{0->6}
+
+Executes a function in a goroutine and returns the result in a channel.
+For function with multiple return values, the results will be returned as a tuple inside the channel.
+For function without return, struct{} will be returned in the channel.
+
+```go
+ch := lo.Async0(func() { time.Sleep(10 * time.Second) })
+// chan struct{}
+
+ch := lo.Async1(func() int {
   time.Sleep(10 * time.Second);
-  return Tuple2[int, error]{42, nil}
+  return 42
 })
-// chan Tuple2[int, error]{42, nil}
+// chan int (42)
+
+ch := lo.Async2(func() (int, string) {
+  time.Sleep(10 * time.Second);
+  return 42, "Hello"
+})
+// chan lo.Tuple2[int, string] ({42, "Hello"})
 ```
 
 ### Must
 
-Wraps a function call to return the given value if the error is nil, panics otherwise.
+Wraps a function call to panics if second argument is `error` or `false`, returns the value otherwise.
 
 ```go
-val := Must(time.Parse("2006-01-02", "2022-01-15"))
+val := lo.Must(time.Parse("2006-01-02", "2022-01-15"))
 // 2022-01-15
 
-val := Must(time.Parse("2006-01-02", "bad-value"))
+val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 // panics
 ```
 
 ### Must{0->6}
-
-Wraps a function call to return values if the error is nil, panics otherwise.
-
+Must* has the same behavior than Must, but returns multiple values.
 ```go
 func example0() (error)
 func example1() (int, error)
@@ -1149,13 +1376,22 @@ func example4() (int, string, time.Date, bool, error)
 func example5() (int, string, time.Date, bool, float64, error)
 func example6() (int, string, time.Date, bool, float64, byte, error)
 
-Must0(example0)
-val1 := Must1(example1)    // alias to Must
-val1, val2 := Must2(example2)
-val1, val2, val3 := Must3(example3)
-val1, val2, val3, val4 := Must4(example4)
-val1, val2, val3, val4, val5 := Must5(example5)
-val1, val2, val3, val4, val5, val6 := Must6(example6)
+lo.Must0(example0())
+val1 := lo.Must1(example1())    // alias to Must
+val1, val2 := lo.Must2(example2())
+val1, val2, val3 := lo.Must3(example3())
+val1, val2, val3, val4 := lo.Must4(example4())
+val1, val2, val3, val4, val5 := lo.Must5(example5())
+val1, val2, val3, val4, val5, val6 := lo.Must6(example6())
+```
+
+You can wrap functions like `func (...)  (..., ok bool)`.
+```go
+// math.Signbit(float64) bool
+lo.Must0(math.Signbit(v))
+
+// bytes.Cut([]byte,[]byte) ([]byte, []byte, bool)
+before, after := lo.Must2(bytes.Cut(s, sep))
 ```
 
 ## Try

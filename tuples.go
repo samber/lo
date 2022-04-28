@@ -1,5 +1,85 @@
 package lo
 
+// T2 creates a tuple from a list of values.
+func T2[A any, B any](a A, b B) Tuple2[A, B] {
+	return Tuple2[A, B]{A: a, B: b}
+}
+
+// T3 creates a tuple from a list of values.
+func T3[A any, B any, C any](a A, b B, c C) Tuple3[A, B, C] {
+	return Tuple3[A, B, C]{A: a, B: b, C: c}
+}
+
+// T4 creates a tuple from a list of values.
+func T4[A any, B any, C any, D any](a A, b B, c C, d D) Tuple4[A, B, C, D] {
+	return Tuple4[A, B, C, D]{A: a, B: b, C: c, D: d}
+}
+
+// T5 creates a tuple from a list of values.
+func T5[A any, B any, C any, D any, E any](a A, b B, c C, d D, e E) Tuple5[A, B, C, D, E] {
+	return Tuple5[A, B, C, D, E]{A: a, B: b, C: c, D: d, E: e}
+}
+
+// T6 creates a tuple from a list of values.
+func T6[A any, B any, C any, D any, E any, F any](a A, b B, c C, d D, e E, f F) Tuple6[A, B, C, D, E, F] {
+	return Tuple6[A, B, C, D, E, F]{A: a, B: b, C: c, D: d, E: e, F: f}
+}
+
+// T7 creates a tuple from a list of values.
+func T7[A any, B any, C any, D any, E any, F any, G any](a A, b B, c C, d D, e E, f F, g G) Tuple7[A, B, C, D, E, F, G] {
+	return Tuple7[A, B, C, D, E, F, G]{A: a, B: b, C: c, D: d, E: e, F: f, G: g}
+}
+
+// T8 creates a tuple from a list of values.
+func T8[A any, B any, C any, D any, E any, F any, G any, H any](a A, b B, c C, d D, e E, f F, g G, h H) Tuple8[A, B, C, D, E, F, G, H] {
+	return Tuple8[A, B, C, D, E, F, G, H]{A: a, B: b, C: c, D: d, E: e, F: f, G: g, H: h}
+}
+
+// T8 creates a tuple from a list of values.
+func T9[A any, B any, C any, D any, E any, F any, G any, H any, I any](a A, b B, c C, d D, e E, f F, g G, h H, i I) Tuple9[A, B, C, D, E, F, G, H, I] {
+	return Tuple9[A, B, C, D, E, F, G, H, I]{A: a, B: b, C: c, D: d, E: e, F: f, G: g, H: h, I: i}
+}
+
+// Unpack2 returns values contained in tuple.
+func Unpack2[A any, B any](tuple Tuple2[A, B]) (A, B) {
+	return tuple.A, tuple.B
+}
+
+// Unpack3 returns values contained in tuple.
+func Unpack3[A any, B any, C any](tuple Tuple3[A, B, C]) (A, B, C) {
+	return tuple.A, tuple.B, tuple.C
+}
+
+// Unpack4 returns values contained in tuple.
+func Unpack4[A any, B any, C any, D any](tuple Tuple4[A, B, C, D]) (A, B, C, D) {
+	return tuple.A, tuple.B, tuple.C, tuple.D
+}
+
+// Unpack5 returns values contained in tuple.
+func Unpack5[A any, B any, C any, D any, E any](tuple Tuple5[A, B, C, D, E]) (A, B, C, D, E) {
+	return tuple.A, tuple.B, tuple.C, tuple.D, tuple.E
+}
+
+// Unpack6 returns values contained in tuple.
+func Unpack6[A any, B any, C any, D any, E any, F any](tuple Tuple6[A, B, C, D, E, F]) (A, B, C, D, E, F) {
+	return tuple.A, tuple.B, tuple.C, tuple.D, tuple.E, tuple.F
+}
+
+// Unpack7 returns values contained in tuple.
+func Unpack7[A any, B any, C any, D any, E any, F any, G any](tuple Tuple7[A, B, C, D, E, F, G]) (A, B, C, D, E, F, G) {
+	return tuple.A, tuple.B, tuple.C, tuple.D, tuple.E, tuple.F, tuple.G
+}
+
+// Unpack8 returns values contained in tuple.
+func Unpack8[A any, B any, C any, D any, E any, F any, G any, H any](tuple Tuple8[A, B, C, D, E, F, G, H]) (A, B, C, D, E, F, G, H) {
+	return tuple.A, tuple.B, tuple.C, tuple.D, tuple.E, tuple.F, tuple.G, tuple.H
+}
+
+// Unpack9 returns values contained in tuple.
+func Unpack9[A any, B any, C any, D any, E any, F any, G any, H any, I any](tuple Tuple9[A, B, C, D, E, F, G, H, I]) (A, B, C, D, E, F, G, H, I) {
+	return tuple.A, tuple.B, tuple.C, tuple.D, tuple.E, tuple.F, tuple.G, tuple.H, tuple.I
+}
+
 // Zip2 creates a slice of grouped elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.

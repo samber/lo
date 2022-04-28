@@ -30,6 +30,20 @@ func TestIfElse(t *testing.T) {
 	is.Equal(result4, 3)
 }
 
+func TestIfFElseF(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := IfF[int](true, func() int { return 1 }).ElseIfF(false, func() int { return 2 }).ElseF(func() int { return 3 })
+	result2 := IfF[int](true, func() int { return 1 }).ElseIfF(true, func() int { return 2 }).ElseF(func() int { return 3 })
+	result3 := IfF[int](false, func() int { return 1 }).ElseIfF(true, func() int { return 2 }).ElseF(func() int { return 3 })
+	result4 := IfF[int](false, func() int { return 1 }).ElseIfF(false, func() int { return 2 }).ElseF(func() int { return 3 })
+
+	is.Equal(result1, 1)
+	is.Equal(result2, 1)
+	is.Equal(result3, 2)
+	is.Equal(result4, 3)
+}
+
 func TestSwitchCase(t *testing.T) {
 	is := assert.New(t)
 

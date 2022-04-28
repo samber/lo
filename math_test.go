@@ -45,3 +45,15 @@ func TestRangeClose(t *testing.T) {
 	is.Equal([]float64{1.0, 3.0}, result5)
 	is.Equal([]float32{-1.0, -2.0, -3.0}, result6)
 }
+
+func TestClamp(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Clamp(0, -10, 10)
+	result2 := Clamp(-42, -10, 10)
+	result3 := Clamp(42, -10, 10)
+
+	is.Equal(result1, 0)
+	is.Equal(result2, -10)
+	is.Equal(result3, 10)
+}
