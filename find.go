@@ -238,3 +238,12 @@ func Samples[T any](collection []T, count int) []T {
 
 	return results
 }
+
+// Summarizes the values in a collection.
+func SumBy[T any, R float32 | float64 | int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64](collection []T, iteratee func(T) R) R {
+	var sum R = 0
+	for _, item := range collection {
+		sum = sum + iteratee(item)
+	}
+	return sum
+}

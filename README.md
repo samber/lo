@@ -136,6 +136,7 @@ Supported search helpers:
 - Nth
 - Sample
 - Samples
+- SumBy
 
 Other functional programming helpers:
 
@@ -1090,6 +1091,30 @@ Returns N random unique items from collection.
 lo.Samples[string]([]string{"a", "b", "c"}, 3)
 // []string{"a", "b", "c"} in random order
 ```
+
+### SumBy 
+
+Summarizes the values in a collection using the given return value from the iteration function.
+If collection is empty 0 is returned.
+
+```go
+sum := lo.SumBy([]int16{4, 2, 3, 4, 5}, func(t int16) int16 {
+		return t
+})
+// 18
+
+type Player struct {
+	Name  string
+	Goals int32 
+}
+
+var players []Player
+players = append(players, Player{Name: "Sondre", Goals: 8 }, Player{Name: "Ronaldo", Goals: 7})
+
+sumGoals = SumBy[Player, float32](players, func(t Player) float32 { return t.Goals })
+
+// 15
+``
 
 ### Ternary
 
