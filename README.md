@@ -1112,7 +1112,6 @@ var players []Player
 players = append(players, Player{Name: "Sondre", Goals: 8 }, Player{Name: "Ronaldo", Goals: 7})
 
 sumGoals = SumBy[Player, float32](players, func(t Player) float32 { return t.Goals })
-
 // 15
 ```
 
