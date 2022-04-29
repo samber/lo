@@ -1232,15 +1232,15 @@ lo.Empty[bool]()
 Returns the first non-empty arguments. Arguments must be comparable.
 
 ```go
-result, ok := Coalesce(0, 1, 2, 3)
+result, ok := lo.Coalesce(0, 1, 2, 3)
 // 1 true
 
-result, ok := Coalesce("")
+result, ok := lo.Coalesce("")
 // "" false
 
 var nilStr *string
 str := "foobar"
-result, ok := Coalesce[*string](nil, nilStr, &str)
+result, ok := lo.Coalesce[*string](nil, nilStr, &str)
 // &"foobar" true
 ```
 
