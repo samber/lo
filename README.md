@@ -100,6 +100,11 @@ Supported math helpers:
 - Range / RangeFrom / RangeWithSteps
 - Clamp
 
+Supported helpers for strings:
+
+- Substring
+- RuneLength
+
 Supported helpers for tuples:
 
 - T2 -> T9
@@ -578,21 +583,6 @@ count := lo.CountBy[int]([]int{1, 5, 1}, func(i int) bool {
 // 2
 ```
 
-### Substring
-
-Return part of a string.
-
-```go
-sub := lo.Substring("hello", 2, 3)
-// "llo"
-
-sub := lo.Substring("hello", -4, 3)
-// "ell"
-
-sub := lo.Substring("hello", -2, math.MaxUint)
-// "lo"
-```
-
 ### Subset
 
 Return part of a slice.
@@ -847,6 +837,33 @@ r2 := lo.Clamp(-42, -10, 10)
 
 r3 := lo.Clamp(42, -10, 10)
 // 10
+```
+
+### Substring
+
+Return part of a string.
+
+```go
+sub := lo.Substring("hello", 2, 3)
+// "llo"
+
+sub := lo.Substring("hello", -4, 3)
+// "ell"
+
+sub := lo.Substring("hello", -2, math.MaxUint)
+// "lo"
+```
+
+### RuneLength
+
+An alias to utf8.RuneCountInString which returns the number of runes in string.
+
+```go
+sub := lo.RuneLength("hellô")
+// 5
+
+sub := len("hellô")
+// 6
 ```
 
 ### T2 -> T9

@@ -363,28 +363,6 @@ func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 	return count
 }
 
-// Substring return part of a string.
-func Substring[T ~string](str T, offset int, length uint) T {
-	size := len(str)
-
-	if offset < 0 {
-		offset = size + offset
-		if offset < 0 {
-			offset = 0
-		}
-	}
-
-	if offset > size {
-		return Empty[T]()
-	}
-
-	if length > uint(size)-uint(offset) {
-		length = uint(size - offset)
-	}
-
-	return str[offset : offset+int(length)]
-}
-
 // Subset return part of a slice.
 func Subset[T any](collection []T, offset int, length uint) []T {
 	size := len(collection)
