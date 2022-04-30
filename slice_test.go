@@ -383,3 +383,105 @@ func TestCountBy(t *testing.T) {
 	is.Equal(count2, 0)
 	is.Equal(count3, 0)
 }
+
+func TestSubstring(t *testing.T) {
+	is := assert.New(t)
+
+	str1 := Substring("hello", 0, 0)
+	str2 := Substring("hello", 10, 2)
+	str3 := Substring("hello", -10, 2)
+	str4 := Substring("hello", 0, 10)
+	str5 := Substring("hello", 0, 2)
+	str6 := Substring("hello", 2, 2)
+	str7 := Substring("hello", 2, 5)
+	str8 := Substring("hello", 2, 3)
+	str9 := Substring("hello", 2, 4)
+	str10 := Substring("hello", -2, 4)
+	str11 := Substring("hello", -4, 1)
+	str12 := Substring("hello", -4, math.MaxUint)
+
+	is.Equal("", str1)
+	is.Equal("", str2)
+	is.Equal("he", str3)
+	is.Equal("hello", str4)
+	is.Equal("he", str5)
+	is.Equal("ll", str6)
+	is.Equal("llo", str7)
+	is.Equal("llo", str8)
+	is.Equal("llo", str9)
+	is.Equal("lo", str10)
+	is.Equal("e", str11)
+	is.Equal("ello", str12)
+}
+
+func TestSubset(t *testing.T) {
+	is := assert.New(t)
+
+	in := []int{0, 1, 2, 3, 4}
+
+	out1 := Subset(in, 0, 0)
+	out2 := Subset(in, 10, 2)
+	out3 := Subset(in, -10, 2)
+	out4 := Subset(in, 0, 10)
+	out5 := Subset(in, 0, 2)
+	out6 := Subset(in, 2, 2)
+	out7 := Subset(in, 2, 5)
+	out8 := Subset(in, 2, 3)
+	out9 := Subset(in, 2, 4)
+	out10 := Subset(in, -2, 4)
+	out11 := Subset(in, -4, 1)
+	out12 := Subset(in, -4, math.MaxUint)
+
+	is.Equal([]int{}, out1)
+	is.Equal([]int{}, out2)
+	is.Equal([]int{0, 1}, out3)
+	is.Equal([]int{0, 1, 2, 3, 4}, out4)
+	is.Equal([]int{0, 1}, out5)
+	is.Equal([]int{2, 3}, out6)
+	is.Equal([]int{2, 3, 4}, out7)
+	is.Equal([]int{2, 3, 4}, out8)
+	is.Equal([]int{2, 3, 4}, out9)
+	is.Equal([]int{3, 4}, out10)
+	is.Equal([]int{1}, out11)
+	is.Equal([]int{1, 2, 3, 4}, out12)
+}
+
+func TestReplace(t *testing.T) {
+	is := assert.New(t)
+
+	in := []int{0, 1, 0, 1, 2, 3, 0}
+
+	out1 := Replace(in, 0, 42, 2)
+	out2 := Replace(in, 0, 42, 1)
+	out3 := Replace(in, 0, 42, 0)
+	out4 := Replace(in, 0, 42, -1)
+	out5 := Replace(in, 0, 42, -1)
+	out6 := Replace(in, -1, 42, 2)
+	out7 := Replace(in, -1, 42, 1)
+	out8 := Replace(in, -1, 42, 0)
+	out9 := Replace(in, -1, 42, -1)
+	out10 := Replace(in, -1, 42, -1)
+
+	is.Equal([]int{42, 1, 42, 1, 2, 3, 0}, out1)
+	is.Equal([]int{42, 1, 0, 1, 2, 3, 0}, out2)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out3)
+	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out4)
+	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out5)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out6)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out7)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out8)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out9)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out10)
+}
+
+func TestReplaceAll(t *testing.T) {
+	is := assert.New(t)
+
+	in := []int{0, 1, 0, 1, 2, 3, 0}
+
+	out1 := ReplaceAll(in, 0, 42)
+	out2 := ReplaceAll(in, -1, 42)
+
+	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out1)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out2)
+}

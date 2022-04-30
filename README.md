@@ -563,7 +563,7 @@ odd := lo.Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 Counts the number of elements in the collection that compare equal to value.
 
 ```go
-count := Count[int]([]int{1, 5, 1}, 1)
+count := lo.Count[int]([]int{1, 5, 1}, 1)
 // 2
 ```
 
@@ -572,10 +572,76 @@ count := Count[int]([]int{1, 5, 1}, 1)
 Counts the number of elements in the collection for which predicate is true.
 
 ```go
-count := CountBy[int]([]int{1, 5, 1}, func(i int) bool {
+count := lo.CountBy[int]([]int{1, 5, 1}, func(i int) bool {
     return i < 4
 })
 // 2
+```
+
+### Substring
+
+Return part of a string.
+
+```go
+sub := lo.Substring("hello", 2, 3)
+// "llo"
+
+sub := lo.Substring("hello", -4, 3)
+// "ell"
+
+sub := lo.Substring("hello", -2, math.MaxUint)
+// "lo"
+```
+
+### Subset
+
+Return part of a slice.
+
+```go
+in := []int{0, 1, 2, 3, 4}
+
+sub := lo.Subset(in, 2, 3)
+// []int{2, 3, 4}
+
+sub := lo.Subset(in, -4, 3)
+// []int{1, 2, 3}
+
+sub := lo.Subset(in, -2, math.MaxUint)
+// []int{3, 4}
+```
+
+### Replace
+
+Returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
+
+```go
+in := []int{0, 1, 0, 1, 2, 3, 0}
+
+slice := lo.Replace(in, 0, 42, 1)
+// []int{42, 1, 0, 1, 2, 3, 0}
+
+slice := lo.Replace(in, -1, 42, 1)
+// []int{0, 1, 0, 1, 2, 3, 0}
+
+slice := lo.Replace(in, 0, 42, 2)
+// []int{42, 1, 42, 1, 2, 3, 0}
+
+slice := lo.Replace(in, 0, 42, -1)
+// []int{42, 1, 42, 1, 2, 3, 42}
+```
+
+### ReplaceAll
+
+Returns a copy of the slice with all non-overlapping instances of old replaced by new.
+
+```go
+in := []int{0, 1, 0, 1, 2, 3, 0}
+
+slice := lo.ReplaceAll(in, 0, 42)
+// []int{42, 1, 42, 1, 2, 3, 42}
+
+slice := lo.ReplaceAll(in, -1, 42)
+// []int{0, 1, 0, 1, 2, 3, 0}
 ```
 
 ### Keys

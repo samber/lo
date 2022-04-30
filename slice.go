@@ -362,3 +362,69 @@ func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 
 	return count
 }
+
+// Substring return part of a string.
+func Substring[T ~string](str T, offset int, length uint) T {
+	size := len(str)
+
+	if offset < 0 {
+		offset = size + offset
+		if offset < 0 {
+			offset = 0
+		}
+	}
+
+	if offset > size {
+		return Empty[T]()
+	}
+
+	if length > uint(size)-uint(offset) {
+		length = uint(size - offset)
+	}
+
+	return str[offset : offset+int(length)]
+}
+
+// Subset return part of a slice.
+func Subset[T any](collection []T, offset int, length uint) []T {
+	size := len(collection)
+
+	if offset < 0 {
+		offset = size + offset
+		if offset < 0 {
+			offset = 0
+		}
+	}
+
+	if offset > size {
+		return []T{}
+	}
+
+	if length > uint(size)-uint(offset) {
+		length = uint(size - offset)
+	}
+
+	return collection[offset : offset+int(length)]
+}
+
+// Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
+func Replace[T comparable](collection []T, old T, new T, n int) []T {
+	size := len(collection)
+	result := make([]T, 0, size)
+
+	for _, item := range collection {
+		if item == old && n != 0 {
+			result = append(result, new)
+			n--
+		} else {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
+
+// ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
+func ReplaceAll[T comparable](collection []T, old T, new T) []T {
+	return Replace[T](collection, old, new, -1)
+}

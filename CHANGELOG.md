@@ -7,6 +7,10 @@
 Adding:
 
 - lo.RepeatBy
+- lo.Substring
+- lo.Subset
+- lo.Replace
+- lo.ReplaceAll
 
 ## 1.18.0 (2022-04-28)
 
