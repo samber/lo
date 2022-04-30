@@ -241,6 +241,17 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 	return result
 }
 
+// RepeatBy builds a slice with values returned by N calls of callback.
+func RepeatBy[T any](count int, predicate func(int) T) []T {
+	result := make([]T, 0, count)
+
+	for i := 0; i < count; i++ {
+		result = append(result, predicate(i))
+	}
+
+	return result
+}
+
 // KeyBy transforms a slice or an array of structs to a map based on a pivot callback.
 func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	result := make(map[K]V, len(collection))

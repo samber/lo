@@ -463,8 +463,24 @@ func (f foo) Clone() foo {
 	return foo{f.bar}
 }
 
-initializedSlice := lo.Repeat[foo](2, foo{"a"})
+slice := lo.Repeat[foo](2, foo{"a"})
 // []foo{foo{"a"}, foo{"a"}}
+```
+
+### RepeatBy
+
+Builds a slice with values returned by N calls of callback.
+
+```go
+slice := lo.RepeatBy[int](0, func (i int) int {
+    return math.Pow(i, 2)
+})
+// []int{}
+
+slice := lo.RepeatBy[int](5, func (i int) int {
+    return math.Pow(i, 2)
+})
+// []int{0, 1, 4, 9, 16}
 ```
 
 ### KeyBy

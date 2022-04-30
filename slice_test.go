@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"math"
 	"strconv"
 	"strings"
 	"testing"
@@ -249,6 +250,22 @@ func TestRepeat(t *testing.T) {
 
 	is.Equal(result1, []foo{foo{"a"}, foo{"a"}})
 	is.Equal(result2, []foo{})
+}
+
+func TestRepeatBy(t *testing.T) {
+	is := assert.New(t)
+
+	cb := func(i int) int {
+		return int(math.Pow(float64(i), 2))
+	}
+
+	result1 := RepeatBy[int](0, cb)
+	result2 := RepeatBy[int](2, cb)
+	result3 := RepeatBy[int](5, cb)
+
+	is.Equal([]int{}, result1)
+	is.Equal([]int{0, 1}, result2)
+	is.Equal([]int{0, 1, 4, 9, 16}, result3)
 }
 
 func TestKeyBy(t *testing.T) {

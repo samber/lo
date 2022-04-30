@@ -2,6 +2,12 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.19.0 (2022-04-30)
+
+Adding:
+
+- lo.RepeatBy
+
 ## 1.18.0 (2022-04-28)
 
 Adding:
