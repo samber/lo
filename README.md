@@ -1098,21 +1098,11 @@ Summarizes the values in a collection using the given return value from the iter
 If collection is empty 0 is returned.
 
 ```go
-sum := lo.SumBy([]int16{4, 2, 3, 4, 5}, func(t int16) int16 {
-		return t
+strings := []string{"foo", "bar"}
+sum := lo.SumBy(strings, func(item string) int {
+    return len(item)
 })
-// 18
-
-type Player struct {
-	Name  string
-	Goals int32 
-}
-
-var players []Player
-players = append(players, Player{Name: "Sondre", Goals: 8 }, Player{Name: "Ronaldo", Goals: 7})
-
-sumGoals = SumBy[Player, float32](players, func(t Player) float32 { return t.Goals })
-// 15
+// 6
 ```
 
 ### Ternary
