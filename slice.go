@@ -123,6 +123,63 @@ func UniqBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
 	return result
 }
 
+// Duplicate returns a slice with the first occurence of each duplicated elements of the collection.
+// The order of result values is determined by the order they occur in the collection.
+func Duplicate[T comparable](collection []T) []T {
+	isDupl := make(map[T]bool, len(collection))
+
+	for _, item := range collection {
+		duplicated, ok := isDupl[item]
+		if !ok {
+			isDupl[item] = false
+		} else if !duplicated {
+			isDupl[item] = true
+		}
+	}
+
+	result := make([]T, 0, len(collection)-len(isDupl))
+
+	for _, item := range collection {
+		if duplicated := isDupl[item]; duplicated {
+			result = append(result, item)
+			isDupl[item] = false
+		}
+	}
+
+	return result
+}
+
+// DuplicateBy returns a slice with the first occurence of each duplicated elements of the collection.
+// The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
+// invoked for each element in array to generate the criterion by which uniqueness is computed.
+func DuplicateBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
+	isDupl := make(map[U]bool, len(collection))
+
+	for _, item := range collection {
+		key := iteratee(item)
+
+		duplicated, ok := isDupl[key]
+		if !ok {
+			isDupl[key] = false
+		} else if !duplicated {
+			isDupl[key] = true
+		}
+	}
+
+	result := make([]T, 0, len(collection)-len(isDupl))
+
+	for _, item := range collection {
+		key := iteratee(item)
+
+		if duplicated := isDupl[key]; duplicated {
+			result = append(result, item)
+			isDupl[key] = false
+		}
+	}
+
+	return result
+}
+
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T {
 	result := map[U][]T{}

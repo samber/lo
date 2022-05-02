@@ -154,6 +154,50 @@ func TestUniqBy(t *testing.T) {
 	is.Equal(result1, []int{0, 1, 2})
 }
 
+func TestDuplicate(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Duplicate[int]([]int{1, 2, 2, 1, 2, 3})
+
+	is.Equal(2, len(result1))
+	is.Equal([]int{1, 2}, result1)
+
+	result2 := Duplicate[int]([]int{1, 2, 3})
+
+	is.Equal(0, len(result2))
+	is.Equal([]int{}, result2)
+
+	result3 := Duplicate[int]([]int{})
+
+	is.Equal(0, len(result3))
+	is.Equal([]int{}, result3)
+}
+
+func TestDuplicateBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := DuplicateBy[int, int]([]int{0, 1, 2, 3, 4}, func(i int) int {
+		return i % 3
+	})
+
+	is.Equal(2, len(result1))
+	is.Equal([]int{0, 1}, result1)
+
+	result2 := DuplicateBy[int, int]([]int{0, 1, 2, 3, 4}, func(i int) int {
+		return i % 5
+	})
+
+	is.Equal(0, len(result2))
+	is.Equal([]int{}, result2)
+
+	result3 := DuplicateBy[int, int]([]int{}, func(i int) int {
+		return i % 3
+	})
+
+	is.Equal(0, len(result3))
+	is.Equal([]int{}, result3)
+}
+
 func TestGroupBy(t *testing.T) {
 	is := assert.New(t)
 

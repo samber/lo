@@ -61,6 +61,8 @@ Supported helpers for slices:
 - Times
 - Uniq
 - UniqBy
+- Duplicate
+- DuplicateBy
 - GroupBy
 - Chunk
 - PartitionBy
@@ -333,6 +335,26 @@ uniqValues := lo.UniqBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
     return i%3
 })
 // []int{0, 1, 2}
+```
+
+### Duplicate
+
+Returns a slice with the first occurence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array.
+
+```go
+uniqValues := lo.Duplicate[int]([]int{1, 2, 2, 1, 2, 3})
+// []int{1, 2}
+```
+
+### DuplicateBy
+
+Returns a slice with the first occurence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
+
+```go
+uniqValues := lo.UniqBy[int, int]([]int{0, 1, 2, 3, 4}, func(i int) int {
+    return i%3
+})
+// []int{0, 1}
 ```
 
 ### GroupBy
