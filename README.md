@@ -1420,6 +1420,33 @@ time.Sleep(1 * time.Second)
 cancel()
 ```
 
+### Synchronize
+
+Wraps the underlying callback in a mutex. It receives an optional mutex.
+
+```go
+s := lo.Synchronize()
+
+for i := 0; i < 10; i++ {
+    go s.Do(func () {
+        println("will be called sequentially")
+    })
+}
+```
+
+It is equivalent to:
+
+```go
+mu := sync.Mutex{}
+
+func foobar() {
+    mu.Lock()
+    defer mu.Unlock()
+
+    // ...
+}
+```
+
 ### Async
 
 Executes a function in a goroutine and returns the result in a channel.

@@ -1,11 +1,63 @@
 package lo
 
 import (
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestSynchronize(t *testing.T) {
+	is := assert.New(t)
+
+	// check that callbacks are not executed concurrently
+	{
+		start := time.Now()
+
+		wg := sync.WaitGroup{}
+		wg.Add(10)
+
+		s := Synchronize()
+
+		for i := 0; i < 10; i++ {
+			go s.Do(func() {
+				time.Sleep(5 * time.Millisecond)
+				wg.Done()
+			})
+		}
+
+		wg.Wait()
+
+		duration := time.Since(start)
+
+		is.Greater(duration, 50*time.Millisecond)
+		is.Less(duration, 60*time.Millisecond)
+	}
+
+	// check locker is locked
+	{
+		mu := &sync.Mutex{}
+		s := Synchronize(mu)
+
+		s.Do(func() {
+			is.False(mu.TryLock())
+		})
+		is.True(mu.TryLock())
+
+		Try0(func() {
+			mu.Unlock()
+		})
+	}
+
+	// check we don't accept multiple arguments
+	{
+		is.PanicsWithValue("unexpected arguments", func() {
+			mu := &sync.Mutex{}
+			Synchronize(mu, mu, mu)
+		})
+	}
+}
 
 func TestAsync(t *testing.T) {
 	is := assert.New(t)
