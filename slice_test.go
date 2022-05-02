@@ -176,12 +176,12 @@ func TestDuplicate(t *testing.T) {
 func TestDuplicateBy(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := DuplicateBy[int, int]([]int{0, 1, 2, 3, 4}, func(i int) int {
+	result1 := DuplicateBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int {
 		return i % 3
 	})
 
 	is.Equal(2, len(result1))
-	is.Equal([]int{0, 1}, result1)
+	is.Equal([]int{3, 4}, result1)
 
 	result2 := DuplicateBy[int, int]([]int{0, 1, 2, 3, 4}, func(i int) int {
 		return i % 5
