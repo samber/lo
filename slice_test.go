@@ -213,10 +213,10 @@ func TestFlatten(t *testing.T) {
 func TestShuffle(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Shuffle[int]([]int{0, 1, 2, 3, 4, 5})
+	result1 := Shuffle[int]([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 	result2 := Shuffle[int]([]int{})
 
-	is.NotEqual(result1, []int{0, 1, 2, 3, 4, 5})
+	is.NotEqual(result1, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 	is.Equal(result2, []int{})
 }
 
