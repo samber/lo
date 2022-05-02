@@ -141,6 +141,7 @@ Supported search helpers:
 - Nth
 - Sample
 - Samples
+- SumBy
 
 Other functional programming helpers:
 
@@ -1188,6 +1189,19 @@ Returns N random unique items from collection.
 ```go
 lo.Samples[string]([]string{"a", "b", "c"}, 3)
 // []string{"a", "b", "c"} in random order
+```
+
+### SumBy 
+
+Summarizes the values in a collection using the given return value from the iteration function.
+If collection is empty 0 is returned.
+
+```go
+strings := []string{"foo", "bar"}
+sum := lo.SumBy(strings, func(item string) int {
+    return len(item)
+})
+// 6
 ```
 
 ### Ternary
