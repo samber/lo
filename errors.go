@@ -79,7 +79,7 @@ func Try(callback func() error) (ok bool) {
 }
 
 // Try0 has the same behavior than Try, but callback returns no variable.
-func Try0[T any](callback func()) bool {
+func Try0(callback func()) bool {
 	return Try(func() error {
 		callback()
 		return nil

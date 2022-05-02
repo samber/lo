@@ -9,6 +9,9 @@ Adding:
 - lo.Synchronize
 - lo.SumBy
 
+Change:
+- Removed generic type definition for lo.Try0: `lo.Try0[T]()` -> `lo.Try0()`
+
 ## 1.19.0 (2022-04-30)
 
 Adding:
