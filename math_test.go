@@ -57,3 +57,17 @@ func TestClamp(t *testing.T) {
 	is.Equal(result2, -10)
 	is.Equal(result3, 10)
 }
+
+func TestSumBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := SumBy[float32]([]float32{2.3, 3.3, 4, 5.3}, func(n float32) float32 { return n })
+	result2 := SumBy[int32]([]int32{2, 3, 4, 5}, func(n int32) int32 { return n })
+	result3 := SumBy[uint32]([]uint32{2, 3, 4, 5}, func(n uint32) uint32 { return n })
+	result4 := SumBy[uint32]([]uint32{}, func(n uint32) uint32 { return n })
+
+	is.Equal(result1, float32(14.900001))
+	is.Equal(result2, int32(14))
+	is.Equal(result3, uint32(14))
+	is.Equal(result4, uint32(0))
+}
