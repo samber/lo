@@ -1,5 +1,7 @@
 package lo
 
+const nilPointerPanic = "runtime error: invalid memory address or nil pointer dereference"
+
 // ToPtr returns a pointer copy of value.
 func ToPtr[T any](x T) *T {
 	return &x
@@ -28,5 +30,21 @@ func Coalesce[T comparable](v ...T) (result T, ok bool) {
 		}
 	}
 
+	return
+}
+
+func Safe[T any](cb func() T) (result T, ok bool) {
+	defer func() {
+		if r := recover(); r != nil {
+			if err, ok := r.(error); ok && err.Error() == nilPointerPanic {
+				// catch error
+			} else {
+				panic(r)
+			}
+		}
+	}()
+
+	result = cb()
+	ok = true
 	return
 }

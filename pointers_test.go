@@ -81,3 +81,52 @@ func TestCoalesce(t *testing.T) {
 	is.Equal(result10, struct1)
 	is.True(ok10)
 }
+
+func TestSafe(t *testing.T) {
+	is := assert.New(t)
+
+	type a struct {
+		foo *string
+	}
+	type b struct {
+		a *a
+	}
+	type c struct {
+		b *b
+	}
+
+	v1 := &c{b: &b{a: &a{foo: ToPtr("foobar")}}}
+	v2 := &c{b: &b{a: nil}}
+	v3 := map[string]map[string]map[string]int{
+		"foo": map[string]map[string]int{
+			"bar": map[string]int{
+				"baz": 42,
+			},
+		},
+	}
+
+	r1, ok1 := Safe(func() string { return *v1.b.a.foo })
+	r2, ok2 := Safe(func() string { return *v2.b.a.foo })
+	r3, ok3 := Safe(func() *string { return v2.b.a.foo })
+	r4, ok4 := Safe(func() int { return v3["foo"]["bar"]["baz"] })
+	r5, ok5 := Safe(func() int { return v3["hello"]["world"]["foobar"] })
+
+	is.Equal("foobar", r1)
+	is.True(ok1)
+
+	is.Equal("", r2)
+	is.False(ok2)
+
+	is.Nil(r3)
+	is.False(ok3)
+
+	is.Equal(42, r4)
+	is.True(ok4)
+
+	is.Equal(0, r5)
+	is.True(ok5)
+
+	is.Panics(func() {
+		_, _ = Safe(func() string { panic("hello world") })
+	})
+}
