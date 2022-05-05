@@ -105,6 +105,7 @@ Supported helpers for strings:
 
 - Substring
 - RuneLength
+- Chop
 
 Supported helpers for tuples:
 
@@ -878,6 +879,26 @@ sub := lo.RuneLength("hellô")
 
 sub := len("hellô")
 // 6
+```
+
+### Chop
+
+Returns with the last character removed.
+```go
+lo.Chop("")
+// ""
+
+lo.Chop("a")
+// ""
+
+lo.Chop("ab")
+// "a"
+
+lo.Chop("a\n")
+// "a"
+
+lo.Chop("a\r\n")
+// Special case "a"
 ```
 
 ### T2 -> T9
