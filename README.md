@@ -137,6 +137,7 @@ Other functional programming helpers:
 - ToSlicePtr
 - Empty
 - Coalesce
+- Bind
 
 Concurrency helpers:
 
@@ -1177,6 +1178,16 @@ var nilStr *string
 str := "foobar"
 result, ok := Coalesce[*string](nil, nilStr, &str)
 // &"foobar" true
+```
+
+### Bind
+
+Returns new function that, when called, has its first argument set to the provided value.
+```go
+add := func(x, y int) int { return x + y }
+f := Bind(add, 5)
+f(10)
+// 15
 ```
 
 ### Attempt
