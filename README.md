@@ -1109,10 +1109,10 @@ str, index, ok := lo.FindLastIndexOf[string]([]string{"foobar"}, func(i string) 
 Search the minimum value of a collection.
 
 ```go
-min := lo.Min[int]([]int{1, 2, 3})
+min := lo.Min[int](1, 2, 3)
 // 1
 
-min := lo.Min[int]([]int{})
+min := lo.Min[int]()
 // 0
 ```
 
@@ -1138,10 +1138,10 @@ min := lo.MinBy[string]([]string{}, func(item string, min string) bool {
 Search the maximum value of a collection.
 
 ```go
-max := lo.Max[int]([]int{1, 2, 3})
+max := lo.Max[int](1, 2, 3)
 // 3
 
-max := lo.Max[int]([]int{})
+max := lo.Max[int]()
 // 0
 ```
 

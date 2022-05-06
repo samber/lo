@@ -88,7 +88,7 @@ func FindOrElse[T any](collection []T, fallback T, predicate func(T) bool) T {
 }
 
 // Min search the minimum value of a collection.
-func Min[T constraints.Ordered](collection []T) T {
+func Min[T constraints.Ordered](collection ...T) T {
 	var min T
 
 	if len(collection) == 0 {
@@ -131,7 +131,7 @@ func MinBy[T any](collection []T, comparison func(T, T) bool) T {
 }
 
 // Max searches the maximum value of a collection.
-func Max[T constraints.Ordered](collection []T) T {
+func Max[T constraints.Ordered](collection ...T) T {
 	var max T
 
 	if len(collection) == 0 {
