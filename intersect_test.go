@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -167,6 +168,8 @@ func TestNoneBy(t *testing.T) {
 func TestIntersect(t *testing.T) {
 	is := assert.New(t)
 
+	// these can probably be deprecated
+	// but leaving them in for proof of non-regression
 	result1 := Intersect[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
 	result2 := Intersect[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 	result3 := Intersect[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
@@ -178,6 +181,185 @@ func TestIntersect(t *testing.T) {
 	is.Equal(result3, []int{})
 	is.Equal(result4, []int{0})
 	is.Equal(result5, []int{0})
+
+	type args struct {
+		list1 []int
+		list2 []int
+	}
+
+	tests := []struct {
+		expl string
+		args args
+		want []int
+	}{
+		// although nil and empty slices are functionally equivalent
+		// one is indeed nil, and the other is not
+		// https://go.dev/play/p/eV55dA7Y4NT
+		{
+			expl: "nil, nil",
+			args: args{
+				list1: nil,
+				list2: nil,
+			},
+			want: []int{},
+		},
+		{
+			expl: "empty, empty",
+			args: args{
+				list1: []int{},
+				list2: []int{},
+			},
+			want: []int{},
+		},
+		{
+			expl: "nil, empty",
+			args: args{
+				list1: nil,
+				list2: []int{},
+			},
+			want: []int{},
+		},
+		{
+			expl: "empty, nil",
+			args: args{
+				list1: []int{},
+				list2: nil,
+			},
+			want: []int{},
+		},
+		{
+			// ya, it's a pun
+			expl: "one with nothing",
+			args: args{
+				list1: []int{1},
+				list2: []int{},
+			},
+			want: []int{},
+		},
+		{
+			// ooo, I'm on a roll
+			expl: "all for nothing",
+			args: args{
+				list1: []int{1, 2, 3},
+				list2: []int{},
+			},
+			want: []int{},
+		},
+		{
+			// realistically, I can't stop at this point
+			// brace yourself
+			expl: "all for one",
+			args: args{
+				list1: []int{1, 2, 3},
+				list2: []int{1},
+			},
+			want: []int{1},
+		},
+		{
+			// you knew it was coming...
+			expl: "one for all",
+			args: args{
+				list1: []int{1},
+				list2: []int{1, 2, 3},
+			},
+			want: []int{1},
+		},
+		{
+			// putting my chips down
+			expl: "all in",
+			args: args{
+				list1: []int{1, 2, 3},
+				list2: []int{1, 2, 3},
+			},
+			want: []int{1, 2, 3},
+		},
+		{
+			expl: "creamy filling",
+			args: args{
+				list1: []int{1, 2, 3},
+				list2: []int{2},
+			},
+			want: []int{2},
+		},
+		{
+			expl: "end of the line",
+			args: args{
+				list1: []int{1, 2, 3},
+				list2: []int{3},
+			},
+			want: []int{3},
+		},
+		{
+			expl: "going negative",
+			args: args{
+				list1: []int{-1, 2, 3},
+				list2: []int{3},
+			},
+			want: []int{3},
+		},
+		{
+			expl: "intersect negative",
+			args: args{
+				list1: []int{-1, 2, 3},
+				list2: []int{-1},
+			},
+			want: []int{-1},
+		},
+		{
+			expl: "out of bounds",
+			args: args{
+				list1: []int{1, 2, 3},
+				list2: []int{-1, 4},
+			},
+			want: []int{},
+		},
+		{
+			expl: "distinct",
+			args: args{
+				list1: []int{1, 2, 3, 3, 5},
+				list2: []int{1, 3},
+			},
+			want: []int{1, 3},
+		},
+		{
+			// buzz lightyear
+			expl: "duplicates... everywhere...",
+			args: args{
+				list1: []int{1, 2, 2, 3, 3, 5},
+				list2: []int{1, 2, 2, 3, 3, 5},
+			},
+			want: []int{1, 2, 3, 5},
+		},
+		{
+			expl: "order matters, first come first served",
+			args: args{
+				list1: []int{3, 2, 1},
+				list2: []int{1, 2, 2, 3, 3, 5},
+			},
+			want: []int{3, 2, 1},
+		},
+		{
+			expl: "flip it and reverse it",
+			args: args{
+				list1: []int{1, 2, 3, 4, 5},
+				list2: []int{5, 4, 3, 2, 1},
+			},
+			want: []int{1, 2, 3, 4, 5},
+		},
+	}
+
+	for _, tt := range tests {
+		name := fmt.Sprintf(
+			"when {%s} intersect {%s} expect {%s} (%s)",
+			prettyFormatSlice(tt.args.list1),
+			prettyFormatSlice(tt.args.list2),
+			prettyFormatSlice(tt.want),
+			tt.expl,
+		)
+		t.Run(name, func(t *testing.T) {
+			assert.Equalf(t, tt.want, Intersect(tt.args.list1, tt.args.list2), "Intersect(%v, %v)", tt.args.list1, tt.args.list2)
+		})
+	}
 }
 
 func TestDifference(t *testing.T) {
