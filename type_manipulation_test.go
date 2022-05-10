@@ -9,7 +9,7 @@ import (
 func TestToPtr(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := ToPtr[[]int]([]int{1, 2})
+	result1 := ToPtr([]int{1, 2})
 
 	is.Equal(*result1, []int{1, 2})
 }
@@ -19,7 +19,7 @@ func TestToSlicePtr(t *testing.T) {
 
 	str1 := "foo"
 	str2 := "bar"
-	result1 := ToSlicePtr[string]([]string{str1, str2})
+	result1 := ToSlicePtr([]string{str1, str2})
 
 	is.Equal(result1, []*string{&str1, &str2})
 }
@@ -82,7 +82,7 @@ func TestCoalesce(t *testing.T) {
 
 	result1, ok1 := Coalesce[int]()
 	result2, ok2 := Coalesce(3)
-	result3, ok3 := Coalesce[*string](nil, nilStr)
+	result3, ok3 := Coalesce(nil, nilStr)
 	result4, ok4 := Coalesce(nilStr, str1)
 	result5, ok5 := Coalesce(nilStr, str1, str2)
 	result6, ok6 := Coalesce(str1, str2, nilStr)

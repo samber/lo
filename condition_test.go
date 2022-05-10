@@ -9,8 +9,8 @@ import (
 func TestTernary(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Ternary[string](true, "a", "b")
-	result2 := Ternary[string](false, "a", "b")
+	result1 := Ternary(true, "a", "b")
+	result2 := Ternary(false, "a", "b")
 
 	is.Equal(result1, "a")
 	is.Equal(result2, "b")
@@ -19,10 +19,10 @@ func TestTernary(t *testing.T) {
 func TestIfElse(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := If[int](true, 1).ElseIf(false, 2).Else(3)
-	result2 := If[int](true, 1).ElseIf(true, 2).Else(3)
-	result3 := If[int](false, 1).ElseIf(true, 2).Else(3)
-	result4 := If[int](false, 1).ElseIf(false, 2).Else(3)
+	result1 := If(true, 1).ElseIf(false, 2).Else(3)
+	result2 := If(true, 1).ElseIf(true, 2).Else(3)
+	result3 := If(false, 1).ElseIf(true, 2).Else(3)
+	result4 := If(false, 1).ElseIf(false, 2).Else(3)
 
 	is.Equal(result1, 1)
 	is.Equal(result2, 1)
@@ -33,10 +33,10 @@ func TestIfElse(t *testing.T) {
 func TestIfFElseF(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := IfF[int](true, func() int { return 1 }).ElseIfF(false, func() int { return 2 }).ElseF(func() int { return 3 })
-	result2 := IfF[int](true, func() int { return 1 }).ElseIfF(true, func() int { return 2 }).ElseF(func() int { return 3 })
-	result3 := IfF[int](false, func() int { return 1 }).ElseIfF(true, func() int { return 2 }).ElseF(func() int { return 3 })
-	result4 := IfF[int](false, func() int { return 1 }).ElseIfF(false, func() int { return 2 }).ElseF(func() int { return 3 })
+	result1 := IfF(true, func() int { return 1 }).ElseIfF(false, func() int { return 2 }).ElseF(func() int { return 3 })
+	result2 := IfF(true, func() int { return 1 }).ElseIfF(true, func() int { return 2 }).ElseF(func() int { return 3 })
+	result3 := IfF(false, func() int { return 1 }).ElseIfF(true, func() int { return 2 }).ElseF(func() int { return 3 })
+	result4 := IfF(false, func() int { return 1 }).ElseIfF(false, func() int { return 2 }).ElseF(func() int { return 3 })
 
 	is.Equal(result1, 1)
 	is.Equal(result2, 1)
