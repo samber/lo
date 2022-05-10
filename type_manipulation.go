@@ -1,0 +1,58 @@
+package lo
+
+// ToPtr returns a pointer copy of value.
+func ToPtr[T any](x T) *T {
+	return &x
+}
+
+// ToSlicePtr returns a slice of pointer copy of value.
+func ToSlicePtr[T any](collection []T) []*T {
+	return Map(collection, func(x T, _ int) *T {
+		return &x
+	})
+}
+
+// ToAnySlice returns a slice with all elements mapped to `any` type
+func ToAnySlice[T any](collection []T) []any {
+	result := make([]any, len(collection))
+	for i, item := range collection {
+		result[i] = item
+	}
+	return result
+}
+
+// FromAnySlice returns an `any` slice with all elements mapped to a type.
+// Returns false in case of type conversion failure.
+func FromAnySlice[T any](in []any) (out []T, ok bool) {
+	defer func() {
+		if r := recover(); r != nil {
+			out = []T{}
+			ok = false
+		}
+	}()
+
+	result := make([]T, len(in))
+	for i, item := range in {
+		result[i] = item.(T)
+	}
+	return result, true
+}
+
+// Empty returns an empty value.
+func Empty[T any]() T {
+	var t T
+	return t
+}
+
+// Coalesce returns the first non-empty arguments. Arguments must be comparable.
+func Coalesce[T comparable](v ...T) (result T, ok bool) {
+	for _, e := range v {
+		if e != result {
+			result = e
+			ok = true
+			return
+		}
+	}
+
+	return
+}
