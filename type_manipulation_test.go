@@ -53,6 +53,7 @@ func TestFromAnySlice(t *testing.T) {
 func TestEmpty(t *testing.T) {
 	is := assert.New(t)
 
+	//nolint:unused
 	type test struct {
 		foobar string
 	}
