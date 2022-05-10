@@ -24,6 +24,46 @@ func TestToSlicePtr(t *testing.T) {
 	is.Equal(result1, []*string{&str1, &str2})
 }
 
+func TestToAnySlice(t *testing.T) {
+	is := assert.New(t)
+
+	in1 := []int{0, 1, 2, 3}
+	in2 := []int{}
+	out1 := ToAnySlice(in1)
+	out2 := ToAnySlice(in2)
+
+	is.Equal([]any{0, 1, 2, 3}, out1)
+	is.Equal([]any{}, out2)
+}
+
+func TestFromAnySlice(t *testing.T) {
+	is := assert.New(t)
+
+	is.NotPanics(func() {
+		out1, ok1 := FromAnySlice[string]([]any{"foobar", 42})
+		out2, ok2 := FromAnySlice[string]([]any{"foobar", "42"})
+
+		is.Equal([]string{}, out1)
+		is.False(ok1)
+		is.Equal([]string{"foobar", "42"}, out2)
+		is.True(ok2)
+	})
+}
+
+func TestEmpty(t *testing.T) {
+	is := assert.New(t)
+
+	//nolint:unused
+	type test struct {
+		foobar string
+	}
+
+	is.Empty(Empty[string]())
+	is.Empty(Empty[int64]())
+	is.Empty(Empty[test]())
+	is.Empty(Empty[chan string]())
+}
+
 func TestCoalesce(t *testing.T) {
 	is := assert.New(t)
 
