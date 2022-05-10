@@ -636,11 +636,11 @@ slice := lo.ReplaceAll(in, -1, 42)
 // []int{0, 1, 0, 1, 2, 3, 0}
 ```
 
-### ToInterfaceSlice
+### ToAnySlice
 
 Returns a slice with all elements mapped to any type
 ```go
-elements := lo.ToInterfaceSlice[int]([]int{1, 5, 1})
+elements := lo.ToAnySlice[int]([]int{1, 5, 1})
 // []any{1, 5, 1}
 ```
 

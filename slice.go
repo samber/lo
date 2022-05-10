@@ -407,8 +407,8 @@ func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 	return Replace[T](collection, old, new, -1)
 }
 
-// ToInterfaceSlice returns a slice with all elements mapped to any type
-func ToInterfaceSlice[T any](collection []T) []any {
+// ToAnySlice returns a slice with all elements mapped to any type
+func ToAnySlice[T any](collection []T) []any {
 	result := make([]any, len(collection))
 	for i, item := range collection {
 		result[i] = item
