@@ -77,6 +77,7 @@ Supported helpers for slices:
 - Reject
 - Count
 - CountBy
+- ToInterfaceSlice
 
 Supported helpers for maps:
 
@@ -633,6 +634,14 @@ slice := lo.ReplaceAll(in, 0, 42)
 
 slice := lo.ReplaceAll(in, -1, 42)
 // []int{0, 1, 0, 1, 2, 3, 0}
+```
+
+### ToInterfaceSlice
+
+Returns a slice with all elements mapped to any type
+```go
+elements := lo.ToInterfaceSlice[int]([]int{1, 5, 1})
+// []any{1, 5, 1}
 ```
 
 ### Keys
