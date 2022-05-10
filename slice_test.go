@@ -455,3 +455,15 @@ func TestReplaceAll(t *testing.T) {
 	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out1)
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out2)
 }
+
+func TestToAnySlice(t *testing.T) {
+	is := assert.New(t)
+
+	in1 := []int{0, 1, 2, 3}
+	in2 := []int{}
+	out1 := ToAnySlice(in1)
+	out2 := ToAnySlice(in2)
+
+	is.Equal([]any{0, 1, 2, 3}, out1)
+	is.Equal([]any{}, out2)
+}
