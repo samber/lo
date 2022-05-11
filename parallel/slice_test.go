@@ -11,10 +11,10 @@ import (
 func TestMap(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Map[int, string]([]int{1, 2, 3, 4}, func(x int, _ int) string {
+	result1 := Map([]int{1, 2, 3, 4}, func(x int, _ int) string {
 		return "Hello"
 	})
-	result2 := Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+	result2 := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 		return strconv.FormatInt(x, 10)
 	})
 
@@ -27,7 +27,7 @@ func TestMap(t *testing.T) {
 func TestTimes(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Times[string](3, func(i int) string {
+	result1 := Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)
 	})
 
@@ -38,7 +38,7 @@ func TestTimes(t *testing.T) {
 func TestGroupBy(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+	result1 := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
 
@@ -51,16 +51,16 @@ func TestGroupBy(t *testing.T) {
 
 	is.EqualValues(len(result1), 3)
 	is.EqualValues(result1, map[int][]int{
-		0: []int{0, 3},
-		1: []int{1, 4},
-		2: []int{2, 5},
+		0: {0, 3},
+		1: {1, 4},
+		2: {2, 5},
 	})
 }
 
 func TestPartitionBy(t *testing.T) {
 	is := assert.New(t)
 
-	oddEven := func (x int) string {
+	oddEven := func(x int) string {
 		if x < 0 {
 			return "negative"
 		} else if x%2 == 0 {
@@ -69,8 +69,8 @@ func TestPartitionBy(t *testing.T) {
 		return "odd"
 	}
 
-	result1 := PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
-	result2 := PartitionBy[int, string]([]int{}, oddEven)
+	result1 := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
+	result2 := PartitionBy([]int{}, oddEven)
 
 	// order
 	sort.Slice(result1, func(i, j int) bool {

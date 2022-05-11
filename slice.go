@@ -404,5 +404,5 @@ func Replace[T comparable](collection []T, old T, new T, n int) []T {
 
 // ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
 func ReplaceAll[T comparable](collection []T, old T, new T) []T {
-	return Replace[T](collection, old, new, -1)
+	return Replace(collection, old, new, -1)
 }

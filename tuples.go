@@ -84,13 +84,13 @@ func Unpack9[A any, B any, C any, D any, E any, F any, G any, H any, I any](tupl
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
 func Zip2[A any, B any](a []A, b []B) []Tuple2[A, B] {
-	size := Max[int]([]int{len(a), len(b)})
+	size := Max([]int{len(a), len(b)})
 
 	result := make([]Tuple2[A, B], 0, size)
 
 	for index := 0; index < size; index++ {
-		_a, _ := Nth[A](a, index)
-		_b, _ := Nth[B](b, index)
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
 
 		result = append(result, Tuple2[A, B]{
 			A: _a,
@@ -105,14 +105,14 @@ func Zip2[A any, B any](a []A, b []B) []Tuple2[A, B] {
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
 func Zip3[A any, B any, C any](a []A, b []B, c []C) []Tuple3[A, B, C] {
-	size := Max[int]([]int{len(a), len(b), len(c)})
+	size := Max([]int{len(a), len(b), len(c)})
 
 	result := make([]Tuple3[A, B, C], 0, size)
 
 	for index := 0; index < size; index++ {
-		_a, _ := Nth[A](a, index)
-		_b, _ := Nth[B](b, index)
-		_c, _ := Nth[C](c, index)
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
 
 		result = append(result, Tuple3[A, B, C]{
 			A: _a,
@@ -128,15 +128,15 @@ func Zip3[A any, B any, C any](a []A, b []B, c []C) []Tuple3[A, B, C] {
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
 func Zip4[A any, B any, C any, D any](a []A, b []B, c []C, d []D) []Tuple4[A, B, C, D] {
-	size := Max[int]([]int{len(a), len(b), len(c), len(d)})
+	size := Max([]int{len(a), len(b), len(c), len(d)})
 
 	result := make([]Tuple4[A, B, C, D], 0, size)
 
 	for index := 0; index < size; index++ {
-		_a, _ := Nth[A](a, index)
-		_b, _ := Nth[B](b, index)
-		_c, _ := Nth[C](c, index)
-		_d, _ := Nth[D](d, index)
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
 
 		result = append(result, Tuple4[A, B, C, D]{
 			A: _a,
@@ -153,16 +153,16 @@ func Zip4[A any, B any, C any, D any](a []A, b []B, c []C, d []D) []Tuple4[A, B,
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
 func Zip5[A any, B any, C any, D any, E any](a []A, b []B, c []C, d []D, e []E) []Tuple5[A, B, C, D, E] {
-	size := Max[int]([]int{len(a), len(b), len(c), len(d), len(e)})
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e)})
 
 	result := make([]Tuple5[A, B, C, D, E], 0, size)
 
 	for index := 0; index < size; index++ {
-		_a, _ := Nth[A](a, index)
-		_b, _ := Nth[B](b, index)
-		_c, _ := Nth[C](c, index)
-		_d, _ := Nth[D](d, index)
-		_e, _ := Nth[E](e, index)
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+		_e, _ := Nth(e, index)
 
 		result = append(result, Tuple5[A, B, C, D, E]{
 			A: _a,
@@ -180,17 +180,17 @@ func Zip5[A any, B any, C any, D any, E any](a []A, b []B, c []C, d []D, e []E) 
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
 func Zip6[A any, B any, C any, D any, E any, F any](a []A, b []B, c []C, d []D, e []E, f []F) []Tuple6[A, B, C, D, E, F] {
-	size := Max[int]([]int{len(a), len(b), len(c), len(d), len(e), len(f)})
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f)})
 
 	result := make([]Tuple6[A, B, C, D, E, F], 0, size)
 
 	for index := 0; index < size; index++ {
-		_a, _ := Nth[A](a, index)
-		_b, _ := Nth[B](b, index)
-		_c, _ := Nth[C](c, index)
-		_d, _ := Nth[D](d, index)
-		_e, _ := Nth[E](e, index)
-		_f, _ := Nth[F](f, index)
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+		_e, _ := Nth(e, index)
+		_f, _ := Nth(f, index)
 
 		result = append(result, Tuple6[A, B, C, D, E, F]{
 			A: _a,
@@ -209,18 +209,18 @@ func Zip6[A any, B any, C any, D any, E any, F any](a []A, b []B, c []C, d []D, 
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
 func Zip7[A any, B any, C any, D any, E any, F any, G any](a []A, b []B, c []C, d []D, e []E, f []F, g []G) []Tuple7[A, B, C, D, E, F, G] {
-	size := Max[int]([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g)})
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g)})
 
 	result := make([]Tuple7[A, B, C, D, E, F, G], 0, size)
 
 	for index := 0; index < size; index++ {
-		_a, _ := Nth[A](a, index)
-		_b, _ := Nth[B](b, index)
-		_c, _ := Nth[C](c, index)
-		_d, _ := Nth[D](d, index)
-		_e, _ := Nth[E](e, index)
-		_f, _ := Nth[F](f, index)
-		_g, _ := Nth[G](g, index)
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+		_e, _ := Nth(e, index)
+		_f, _ := Nth(f, index)
+		_g, _ := Nth(g, index)
 
 		result = append(result, Tuple7[A, B, C, D, E, F, G]{
 			A: _a,
@@ -240,19 +240,19 @@ func Zip7[A any, B any, C any, D any, E any, F any, G any](a []A, b []B, c []C, 
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
 func Zip8[A any, B any, C any, D any, E any, F any, G any, H any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H) []Tuple8[A, B, C, D, E, F, G, H] {
-	size := Max[int]([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h)})
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h)})
 
 	result := make([]Tuple8[A, B, C, D, E, F, G, H], 0, size)
 
 	for index := 0; index < size; index++ {
-		_a, _ := Nth[A](a, index)
-		_b, _ := Nth[B](b, index)
-		_c, _ := Nth[C](c, index)
-		_d, _ := Nth[D](d, index)
-		_e, _ := Nth[E](e, index)
-		_f, _ := Nth[F](f, index)
-		_g, _ := Nth[G](g, index)
-		_h, _ := Nth[H](h, index)
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+		_e, _ := Nth(e, index)
+		_f, _ := Nth(f, index)
+		_g, _ := Nth(g, index)
+		_h, _ := Nth(h, index)
 
 		result = append(result, Tuple8[A, B, C, D, E, F, G, H]{
 			A: _a,
@@ -273,20 +273,20 @@ func Zip8[A any, B any, C any, D any, E any, F any, G any, H any](a []A, b []B, 
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
 func Zip9[A any, B any, C any, D any, E any, F any, G any, H any, I any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, i []I) []Tuple9[A, B, C, D, E, F, G, H, I] {
-	size := Max[int]([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h), len(i)})
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h), len(i)})
 
 	result := make([]Tuple9[A, B, C, D, E, F, G, H, I], 0, size)
 
 	for index := 0; index < size; index++ {
-		_a, _ := Nth[A](a, index)
-		_b, _ := Nth[B](b, index)
-		_c, _ := Nth[C](c, index)
-		_d, _ := Nth[D](d, index)
-		_e, _ := Nth[E](e, index)
-		_f, _ := Nth[F](f, index)
-		_g, _ := Nth[G](g, index)
-		_h, _ := Nth[H](h, index)
-		_i, _ := Nth[I](i, index)
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+		_e, _ := Nth(e, index)
+		_f, _ := Nth(f, index)
+		_g, _ := Nth(g, index)
+		_h, _ := Nth(h, index)
+		_i, _ := Nth(i, index)
 
 		result = append(result, Tuple9[A, B, C, D, E, F, G, H, I]{
 			A: _a,

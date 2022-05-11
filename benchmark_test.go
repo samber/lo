@@ -27,7 +27,7 @@ func BenchmarkMap(b *testing.B) {
 
 	b.Run("lo.Map", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			_ = Map[int64](arr, func(x int64, i int) string {
+			_ = Map(arr, func(x int64, i int) string {
 				return strconv.FormatInt(x, 10)
 			})
 		}
@@ -35,7 +35,7 @@ func BenchmarkMap(b *testing.B) {
 
 	b.Run("lop.Map", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			_ = lop.Map[int64](arr, func(x int64, i int) string {
+			_ = lop.Map(arr, func(x int64, i int) string {
 				return strconv.FormatInt(x, 10)
 			})
 		}
