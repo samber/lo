@@ -84,7 +84,6 @@ Supported helpers for slices:
 - Reject
 - Count
 - CountBy
-- ToInterfaceSlice
 
 Supported helpers for maps:
 
@@ -151,13 +150,18 @@ Supported search helpers:
 - Sample
 - Samples
 
-Other functional programming helpers:
+Conditional helpers:
 
 - Ternary (1 line if/else statement)
 - If / ElseIf / Else
 - Switch / Case / Default
+
+Type manipulation helpers:
+
 - ToPtr
 - ToSlicePtr
+- ToAnySlice
+- FromAnySlice
 - Empty
 - Coalesce
 
@@ -641,14 +645,6 @@ slice := lo.ReplaceAll(in, 0, 42)
 
 slice := lo.ReplaceAll(in, -1, 42)
 // []int{0, 1, 0, 1, 2, 3, 0}
-```
-
-### ToAnySlice
-
-Returns a slice with all elements mapped to any type
-```go
-elements := lo.ToAnySlice[int]([]int{1, 5, 1})
-// []any{1, 5, 1}
 ```
 
 ### Keys
@@ -1341,6 +1337,27 @@ Returns a slice of pointer copy of value.
 ```go
 ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 // []*string{"hello", "world"}
+```
+
+### ToAnySlice
+
+Returns a slice with all elements mapped to `any` type.
+
+```go
+elements := lo.ToAnySlice[int]([]int{1, 5, 1})
+// []any{1, 5, 1}
+```
+
+### FromAnySlice
+
+Returns an `any` slice with all elements mapped to a type. Returns false in case of type conversion failure.
+
+```go
+elements, ok := lo.FromAnySlice[string]([]any{"foobar", 42})
+// []string{}, false
+
+elements, ok := lo.FromAnySlice[string]([]any{"foobar", "42"})
+// []string{"foobar", "42"}, true
 ```
 
 ### Empty
