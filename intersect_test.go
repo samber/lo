@@ -209,3 +209,17 @@ func TestUnion(t *testing.T) {
 	is.Equal(result4, []int{0, 1, 2})
 	is.Equal(result5, []int{})
 }
+
+func TestWithout(t *testing.T) {
+	is := assert.New(t)
+	result1 := Without([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+	result2 := Without([]int{0, 1, 2, 3, 4, 5}, []int{0, 7})
+	result3 := Without([]int{0, 1, 2, 3, 4, 5}, []int{})
+	result4 := Without([]int{0, 1, 2}, []int{0, 1, 2})
+	result5 := Without([]int{}, []int{})
+	is.Equal(result1, []int{10})
+	is.Equal(result2, []int{7})
+	is.Equal(result3, []int{})
+	is.Equal(result4, []int{})
+	is.Equal(result5, []int{})
+}
