@@ -25,6 +25,41 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	return result
 }
 
+// FilterMap returns a slice which obtained after both filtering and mapping using the given callback function.
+// The callback function should return two values:
+//   - the result of the mapping operation and
+//   - whether the result element should be included or not.
+// `callback` is call in parallel. Result is not guaranteed to keep the same order.
+func FilterMap[T any, R any](collection []T, callback func(T, int) (R, bool)) []R {
+	result := []R{}
+	ch := make(chan R, len(collection))
+
+	var wg sync.WaitGroup
+	wg.Add(len(collection))
+
+	for i, item := range collection {
+		go func(_item T, _i int) {
+			if r, ok := callback(_item, _i); ok {
+				ch <- r
+			}
+
+			wg.Done()
+		}(item, i)
+	}
+
+	go func() {
+		wg.Wait()
+
+		close(ch)
+	}()
+
+	for r := range ch {
+		result = append(result, r)
+	}
+
+	return result
+}
+
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 // `iteratee` is call in parallel.
 func ForEach[T any](collection []T, iteratee func(T, int)) {

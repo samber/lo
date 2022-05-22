@@ -3,6 +3,7 @@ package parallel
 import (
 	"sort"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -22,6 +23,28 @@ func TestMap(t *testing.T) {
 	is.Equal(len(result2), 4)
 	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
 	is.Equal(result2, []string{"1", "2", "3", "4"})
+}
+
+func TestFilterMap(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := FilterMap([]int64{1, 2, 3, 2, 1}, func(x int64, _ int) (string, bool) {
+		if x%2 == 0 {
+			return strconv.FormatInt(x, 10), true
+		}
+		return "", false
+	})
+	r2 := FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+		if strings.HasSuffix(x, "pu") {
+			return "xpu", true
+		}
+		return "", false
+	})
+
+	is.Equal(len(r1), 2)
+	is.Equal(len(r2), 2)
+	is.Equal(r1, []string{"2", "2"})
+	is.Equal(r2, []string{"xpu", "xpu"})
 }
 
 func TestTimes(t *testing.T) {
