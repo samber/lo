@@ -164,6 +164,7 @@ Type manipulation helpers:
 - FromAnySlice
 - Empty
 - Coalesce
+- Pipeline
 
 Concurrency helpers:
 
@@ -1388,6 +1389,19 @@ var nilStr *string
 str := "foobar"
 result, ok := lo.Coalesce[*string](nil, nilStr, &str)
 // &"foobar" true
+```
+
+### Pipeline
+
+ Pipeline takes a list of functions and returns a function that takes a value as its argument and runs it through a pipeline of the original functions given in this function.
+```go
+	cb := func(x int) int { return x * x * x }
+	tp := func(x int) int { return 3 * x }
+	db := func(x int) int { return 2 * x }
+	f := Pipeline(cb, tp, db)
+	
+	f(5)
+	// 750
 ```
 
 ### Attempt
