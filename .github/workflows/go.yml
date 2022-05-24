@@ -2,9 +2,9 @@ name: Go
 
 on:
   push:
-    branches: [ master ]
+    tags:
+    branches:
   pull_request:
-    branches: [ master ]
 
 jobs:
 
@@ -16,7 +16,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.18.0-beta1
+        go-version: 1.18
         stable: false
   
     - name: Build

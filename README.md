@@ -1,10 +1,10 @@
 # lo
 
 [![tag](https://img.shields.io/github/tag/samber/lo.svg)](https://github.com/samber/lo/releases)
-[![codecov](https://codecov.io/gh/samber/lo/branch/master/graph/badge.svg)](https://codecov.io/gh/samber/lo)
-![Build Status](https://github.com/samber/lo/actions/workflows/go.yml/badge.svg)
 [![GoDoc](https://godoc.org/github.com/samber/lo?status.svg)](https://pkg.go.dev/github.com/samber/lo)
+![Build Status](https://github.com/samber/lo/actions/workflows/go.yml/badge.svg)
 [![Go report](https://goreportcard.com/badge/github.com/samber/lo)](https://goreportcard.com/report/github.com/samber/lo)
+[![codecov](https://codecov.io/gh/samber/lo/branch/master/graph/badge.svg)](https://codecov.io/gh/samber/lo)
 
 ✨ **`samber/lo` is a Lodash-style Go library based on Go 1.18+ Generics.**
 
@@ -17,7 +17,7 @@ In the future, 5 to 10 helpers will overlap with those coming into the Go standa
 **See also:**
 
 - [samber/do](https://github.com/samber/do): A dependency injection toolkit based on Go 1.18+ Generics
-- [samber/mo](https://github.com/samber/mo): Monads based on Go 1.18+ Generics
+- [samber/mo](https://github.com/samber/mo): Monads based on Go 1.18+ Generics (Option, Result, Either...)
 
 **Why this name?**
 
