@@ -132,6 +132,7 @@ Supported intersection helpers:
 - NoneBy
 - Intersect
 - Difference
+- Except
 - Union
 
 Supported search helpers:
@@ -1033,6 +1034,15 @@ left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
 
 left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 // []int{}, []int{}
+```
+
+### Except
+
+Returns distinct values from list1 except if that value is also in list2.
+
+```go
+except := lo.Except[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+// []int{1,3,4,5}
 ```
 
 ### Union

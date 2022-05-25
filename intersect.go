@@ -141,6 +141,40 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 	return left, right
 }
 
+// Except returns distinct values from list1 except if that value is also in list2.
+func Except[T comparable](list1 []T, list2 []T) []T {
+	// bool is 1byte
+	// we are tracking what we want to _keep_
+	// with an initial value of false
+	// since we want to return distinct values only
+	// once we've seen the value, we'll change it to true
+	// and skip over future occurrences
+	keepSeen := make(map[T]struct{})
+
+	for _, elem := range list1 {
+		keepSeen[elem] = struct{}{}
+	}
+
+	for _, elem := range list2 {
+		delete(keepSeen, elem)
+	}
+
+	result := make([]T, len(keepSeen))
+
+	i := 0
+	for _, elem := range list1 {
+		if _, ok := keepSeen[elem]; ok && !keepSeen[elem] {
+			result[i] = elem
+			i++
+			if i >= len(keepSeen) {
+				break
+			}
+		}
+	}
+
+	return result
+}
+
 // Union returns all distinct elements from both collections.
 // result returns will not change the order of elements relatively.
 func Union[T comparable](list1 []T, list2 []T) []T {
