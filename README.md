@@ -238,6 +238,21 @@ matching := lo.FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboa
 // []string{"xpu", "xpu"}
 ```
 
+Parallel processing: like `lo.FilterMap()`, but the callback function is called in a goroutine. Result is not guaranteed to keep the same order.
+
+```go
+import lop "github.com/samber/lo/parallel"
+
+matching := lop.FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+    if strings.HasSuffix(x, "pu") {
+        return "xpu", true
+    }
+	
+    return "", false
+})
+// []string{"xpu", "xpu"}
+```
+
 ### Filter
 
 Iterates over a collection and returns an array of all the elements the predicate function returns `true` for.
