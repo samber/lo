@@ -171,6 +171,7 @@ Concurrency helpers:
 - AttemptWithDelay
 - Debounce
 - Async
+- AwaitAll
 
 Error handling:
 
@@ -1524,6 +1525,18 @@ ch := lo.Async2(func() (int, string) {
   return 42, "Hello"
 })
 // chan lo.Tuple2[int, string] ({42, "Hello"})
+```
+
+### AwaitAll{2->5}
+
+Returns awaited value of async channels
+
+```go
+ch1 := lo.Async(func() int { return 1 })
+ch2 := lo.Async(func() string { return "1" })
+
+resultA, resultB := lo.AwaitAll2(ch1, ch2)
+// 1, "1"
 ```
 
 ### Must
