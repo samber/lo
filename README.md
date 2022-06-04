@@ -84,6 +84,8 @@ Supported helpers for slices:
 - Reject
 - Count
 - CountBy
+- IsSorted
+- IsSortedByKey
 
 Supported helpers for maps:
 
