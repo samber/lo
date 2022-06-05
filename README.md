@@ -84,6 +84,7 @@ Supported helpers for slices:
 - Reject
 - Count
 - CountBy
+- Compact
 
 Supported helpers for maps:
 
@@ -645,6 +646,17 @@ slice := lo.ReplaceAll(in, 0, 42)
 
 slice := lo.ReplaceAll(in, -1, 42)
 // []int{0, 1, 0, 1, 2, 3, 0}
+```
+
+### Compact
+
+Returns a slice of all non-zero elements.
+
+```go
+in := []string{"", "foo", "", "bar", ""}
+
+slice := lo.Compact[string](in)
+// []string{"foo", "bar"}
 ```
 
 ### Keys
