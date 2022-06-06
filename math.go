@@ -48,3 +48,22 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 	}
 	return result
 }
+
+// Clamp clamps number within the inclusive lower and upper bounds.
+func Clamp[T constraints.Ordered](value T, min T, max T) T {
+	if value < min {
+		return min
+	} else if value > max {
+		return max
+	}
+	return value
+}
+
+// Summarizes the values in a collection.
+func SumBy[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(T) R) R {
+	var sum R = 0
+	for _, item := range collection {
+		sum = sum + iteratee(item)
+	}
+	return sum
+}

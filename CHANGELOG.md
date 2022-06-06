@@ -1,5 +1,101 @@
 # Changelog
 
+@samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
+
+## 1.21.0 (2022-05-10)
+
+Adding:
+
+- lo.ToAnySlice
+- lo.FromAnySlice
+
+## 1.20.0 (2022-05-02)
+
+Adding:
+
+- lo.Synchronize
+- lo.SumBy
+
+Change:
+- Removed generic type definition for lo.Try0: `lo.Try0[T]()` -> `lo.Try0()`
+
+## 1.19.0 (2022-04-30)
+
+Adding:
+
+- lo.RepeatBy
+- lo.Subset
+- lo.Replace
+- lo.ReplaceAll
+- lo.Substring
+- lo.RuneLength
+
+## 1.18.0 (2022-04-28)
+
+Adding:
+
+- lo.SomeBy
+- lo.EveryBy
+- lo.None
+- lo.NoneBy
+
+## 1.17.0 (2022-04-27)
+
+Adding:
+
+- lo.Unpack2 -> lo.Unpack3
+- lo.Async0 -> lo.Async6
+
+## 1.16.0 (2022-04-26)
+
+Adding:
+
+- lo.AttemptWithDelay
+
+## 1.15.0 (2022-04-22)
+
+Improvement:
+
+- lo.Must: error or boolean value
+
+## 1.14.0 (2022-04-21)
+
+Adding:
+
+- lo.Colaesce
+
+## 1.13.0 (2022-04-14)
+
+Adding:
+
+- PickBy
+- PickByKeys
+- PickByValues
+- OmitBy
+- OmitByKeys
+- OmitByValues
+- Clamp
+- MapKeys
+- Invert
+- IfF + ElseIfF + ElseF
+- T0() + T1() + T2() + T3() + ...
+
+## 1.12.0 (2022-04-12)
+
+Adding:
+
+- Must
+- Must{0-6}
+- FindOrElse
+- Async
+- MinBy
+- MaxBy
+- Count
+- CountBy
+- FindIndexOf
+- FindLastIndexOf
+- FilterMap
+
 ## 1.11.0 (2022-03-11)
 
 Adding:

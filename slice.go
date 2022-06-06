@@ -28,6 +28,22 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	return result
 }
 
+// FilterMap returns a slice which obtained after both filtering and mapping using the given callback function.
+// The callback function should return two values:
+//   - the result of the mapping operation and
+//   - whether the result element should be included or not.
+func FilterMap[T any, R any](collection []T, callback func(T, int) (R, bool)) []R {
+	result := []R{}
+
+	for i, item := range collection {
+		if r, ok := callback(item, i); ok {
+			result = append(result, r)
+		}
+	}
+
+	return result
+}
+
 // FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
 func FlatMap[T any, R any](collection []T, iteratee func(T, int) []R) []R {
 	result := []R{}
@@ -86,7 +102,7 @@ func Uniq[T comparable](collection []T) []T {
 	return result
 }
 
-// Uniq returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
+// UniqBy returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
 func UniqBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
@@ -113,10 +129,6 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 
 	for _, item := range collection {
 		key := iteratee(item)
-
-		if _, ok := result[key]; !ok {
-			result[key] = []T{}
-		}
 
 		result[key] = append(result[key], item)
 	}
@@ -174,7 +186,7 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]
 	// return Values[K, []T](groups)
 }
 
-// Flattens returns an array a single level deep.
+// Flatten returns an array a single level deep.
 func Flatten[T any](collection [][]T) []T {
 	result := []T{}
 
@@ -211,7 +223,7 @@ func Reverse[T any](collection []T) []T {
 func Fill[T Clonable[T]](collection []T, initial T) []T {
 	result := make([]T, 0, len(collection))
 
-	for _ = range collection {
+	for range collection {
 		result = append(result, initial.Clone())
 	}
 
@@ -229,6 +241,17 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 	return result
 }
 
+// RepeatBy builds a slice with values returned by N calls of callback.
+func RepeatBy[T any](count int, predicate func(int) T) []T {
+	result := make([]T, 0, count)
+
+	for i := 0; i < count; i++ {
+		result = append(result, predicate(i))
+	}
+
+	return result
+}
+
 // KeyBy transforms a slice or an array of structs to a map based on a pivot callback.
 func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	result := make(map[K]V, len(collection))
@@ -236,6 +259,70 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	for _, v := range collection {
 		k := iteratee(v)
 		result[k] = v
+	}
+
+	return result
+}
+
+// Drop drops n elements from the beginning of a slice or array.
+func Drop[T any](collection []T, n int) []T {
+	if len(collection) <= n {
+		return make([]T, 0)
+	}
+
+	result := make([]T, len(collection)-n)
+	for i := n; i < len(collection); i++ {
+		result[i-n] = collection[i]
+	}
+
+	return result
+}
+
+// DropWhile drops elements from the beginning of a slice or array while the predicate returns true.
+func DropWhile[T any](collection []T, predicate func(T) bool) []T {
+	i := 0
+	for ; i < len(collection); i++ {
+		if !predicate(collection[i]) {
+			break
+		}
+	}
+
+	result := make([]T, len(collection)-i)
+
+	for j := 0; i < len(collection); i, j = i+1, j+1 {
+		result[j] = collection[i]
+	}
+
+	return result
+}
+
+// DropRight drops n elements from the end of a slice or array.
+func DropRight[T any](collection []T, n int) []T {
+	if len(collection) <= n {
+		return make([]T, 0)
+	}
+
+	result := make([]T, len(collection)-n)
+	for i := len(collection) - 1 - n; i >= 0; i-- {
+		result[i] = collection[i]
+	}
+
+	return result
+}
+
+// DropRightWhile drops elements from the end of a slice or array while the predicate returns true.
+func DropRightWhile[T any](collection []T, predicate func(T) bool) []T {
+	i := len(collection) - 1
+	for ; i >= 0; i-- {
+		if !predicate(collection[i]) {
+			break
+		}
+	}
+
+	result := make([]T, i+1)
+
+	for ; i >= 0; i-- {
+		result[i] = collection[i]
 	}
 
 	return result
@@ -252,4 +339,70 @@ func Reject[V any](collection []V, predicate func(V, int) bool) []V {
 	}
 
 	return result
+}
+
+// Count counts the number of elements in the collection that compare equal to value.
+func Count[T comparable](collection []T, value T) (count int) {
+	for _, item := range collection {
+		if item == value {
+			count++
+		}
+	}
+
+	return count
+}
+
+// CountBy counts the number of elements in the collection for which predicate is true.
+func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
+	for _, item := range collection {
+		if predicate(item) {
+			count++
+		}
+	}
+
+	return count
+}
+
+// Subset return part of a slice.
+func Subset[T any](collection []T, offset int, length uint) []T {
+	size := len(collection)
+
+	if offset < 0 {
+		offset = size + offset
+		if offset < 0 {
+			offset = 0
+		}
+	}
+
+	if offset > size {
+		return []T{}
+	}
+
+	if length > uint(size)-uint(offset) {
+		length = uint(size - offset)
+	}
+
+	return collection[offset : offset+int(length)]
+}
+
+// Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
+func Replace[T comparable](collection []T, old T, new T, n int) []T {
+	size := len(collection)
+	result := make([]T, 0, size)
+
+	for _, item := range collection {
+		if item == old && n != 0 {
+			result = append(result, new)
+			n--
+		} else {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
+
+// ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
+func ReplaceAll[T comparable](collection []T, old T, new T) []T {
+	return Replace(collection, old, new, -1)
 }
