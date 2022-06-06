@@ -1,12 +1,11 @@
 name: golangci-lint
+
 on:
   push:
     tags:
-      - v*
     branches:
-      - master
-      - main
   pull_request:
+
 jobs:
   golangci:
     name: lint
@@ -14,7 +13,7 @@ jobs:
     steps:
       - uses: actions/setup-go@v2
         with:
-          go-version: 1.18.0-beta1
+          go-version: 1.18
           stable: false
       - uses: actions/checkout@v2
       - name: golangci-lint
@@ -42,4 +41,4 @@ jobs:
           # skip-build-cache: true
 
           # optionally use a specific version of Go rather than the latest one
-          go_version: '1.18.0-beta1'
+          go_version: '1.18'

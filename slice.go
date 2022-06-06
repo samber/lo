@@ -241,6 +241,17 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 	return result
 }
 
+// RepeatBy builds a slice with values returned by N calls of callback.
+func RepeatBy[T any](count int, predicate func(int) T) []T {
+	result := make([]T, 0, count)
+
+	for i := 0; i < count; i++ {
+		result = append(result, predicate(i))
+	}
+
+	return result
+}
+
 // KeyBy transforms a slice or an array of structs to a map based on a pivot callback.
 func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	result := make(map[K]V, len(collection))
@@ -350,4 +361,48 @@ func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 	}
 
 	return count
+}
+
+// Subset return part of a slice.
+func Subset[T any](collection []T, offset int, length uint) []T {
+	size := len(collection)
+
+	if offset < 0 {
+		offset = size + offset
+		if offset < 0 {
+			offset = 0
+		}
+	}
+
+	if offset > size {
+		return []T{}
+	}
+
+	if length > uint(size)-uint(offset) {
+		length = uint(size - offset)
+	}
+
+	return collection[offset : offset+int(length)]
+}
+
+// Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
+func Replace[T comparable](collection []T, old T, new T, n int) []T {
+	size := len(collection)
+	result := make([]T, 0, size)
+
+	for _, item := range collection {
+		if item == old && n != 0 {
+			result = append(result, new)
+			n--
+		} else {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
+
+// ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
+func ReplaceAll[T comparable](collection []T, old T, new T) []T {
+	return Replace(collection, old, new, -1)
 }

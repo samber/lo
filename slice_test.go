@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"math"
 	"strconv"
 	"strings"
 	"testing"
@@ -19,13 +20,13 @@ func (f foo) Clone() foo {
 func TestFilter(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := Filter[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+	r1 := Filter([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 		return x%2 == 0
 	})
 
 	is.Equal(r1, []int{2, 4})
 
-	r2 := Filter[string]([]string{"", "foo", "", "bar", ""}, func(x string, _ int) bool {
+	r2 := Filter([]string{"", "foo", "", "bar", ""}, func(x string, _ int) bool {
 		return len(x) > 0
 	})
 
@@ -35,10 +36,10 @@ func TestFilter(t *testing.T) {
 func TestMap(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Map[int, string]([]int{1, 2, 3, 4}, func(x int, _ int) string {
+	result1 := Map([]int{1, 2, 3, 4}, func(x int, _ int) string {
 		return "Hello"
 	})
-	result2 := Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+	result2 := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 		return strconv.FormatInt(x, 10)
 	})
 
@@ -51,13 +52,13 @@ func TestMap(t *testing.T) {
 func TestFilterMap(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := FilterMap[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
+	r1 := FilterMap([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
 		if x%2 == 0 {
 			return strconv.FormatInt(x, 10), true
 		}
 		return "", false
 	})
-	r2 := FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+	r2 := FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
 		if strings.HasSuffix(x, "pu") {
 			return "xpu", true
 		}
@@ -73,10 +74,10 @@ func TestFilterMap(t *testing.T) {
 func TestFlatMap(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := FlatMap[int, string]([]int{0, 1, 2, 3, 4}, func(x int, _ int) []string {
+	result1 := FlatMap([]int{0, 1, 2, 3, 4}, func(x int, _ int) []string {
 		return []string{"Hello"}
 	})
-	result2 := FlatMap[int64, string]([]int64{0, 1, 2, 3, 4}, func(x int64, _ int) []string {
+	result2 := FlatMap([]int64{0, 1, 2, 3, 4}, func(x int64, _ int) []string {
 		result := make([]string, 0, x)
 		for i := int64(0); i < x; i++ {
 			result = append(result, strconv.FormatInt(x, 10))
@@ -93,7 +94,7 @@ func TestFlatMap(t *testing.T) {
 func TestTimes(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Times[string](3, func(i int) string {
+	result1 := Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)
 	})
 
@@ -104,10 +105,10 @@ func TestTimes(t *testing.T) {
 func TestReduce(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+	result1 := Reduce([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
 		return agg + item
 	}, 0)
-	result2 := Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+	result2 := Reduce([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
 		return agg + item
 	}, 10)
 
@@ -123,7 +124,7 @@ func TestForEach(t *testing.T) {
 	callParams1 := []string{}
 	callParams2 := []int{}
 
-	ForEach[string]([]string{"a", "b", "c"}, func(item string, i int) {
+	ForEach([]string{"a", "b", "c"}, func(item string, i int) {
 		callParams1 = append(callParams1, item)
 		callParams2 = append(callParams2, i)
 	})
@@ -136,7 +137,7 @@ func TestForEach(t *testing.T) {
 func TestUniq(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Uniq[int]([]int{1, 2, 2, 1})
+	result1 := Uniq([]int{1, 2, 2, 1})
 
 	is.Equal(len(result1), 2)
 	is.Equal(result1, []int{1, 2})
@@ -145,7 +146,7 @@ func TestUniq(t *testing.T) {
 func TestUniqBy(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := UniqBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+	result1 := UniqBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
 
@@ -156,25 +157,25 @@ func TestUniqBy(t *testing.T) {
 func TestGroupBy(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+	result1 := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
 
 	is.Equal(len(result1), 3)
 	is.Equal(result1, map[int][]int{
-		0: []int{0, 3},
-		1: []int{1, 4},
-		2: []int{2, 5},
+		0: {0, 3},
+		1: {1, 4},
+		2: {2, 5},
 	})
 }
 
 func TestChunk(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Chunk[int]([]int{0, 1, 2, 3, 4, 5}, 2)
-	result2 := Chunk[int]([]int{0, 1, 2, 3, 4, 5, 6}, 2)
-	result3 := Chunk[int]([]int{}, 2)
-	result4 := Chunk[int]([]int{0}, 2)
+	result1 := Chunk([]int{0, 1, 2, 3, 4, 5}, 2)
+	result2 := Chunk([]int{0, 1, 2, 3, 4, 5, 6}, 2)
+	result3 := Chunk([]int{}, 2)
+	result4 := Chunk([]int{0}, 2)
 
 	is.Equal(result1, [][]int{{0, 1}, {2, 3}, {4, 5}})
 	is.Equal(result2, [][]int{{0, 1}, {2, 3}, {4, 5}, {6}})
@@ -194,8 +195,8 @@ func TestPartitionBy(t *testing.T) {
 		return "odd"
 	}
 
-	result1 := PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
-	result2 := PartitionBy[int, string]([]int{}, oddEven)
+	result1 := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
+	result2 := PartitionBy([]int{}, oddEven)
 
 	is.Equal(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
 	is.Equal(result2, [][]int{})
@@ -204,7 +205,7 @@ func TestPartitionBy(t *testing.T) {
 func TestFlatten(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Flatten[int]([][]int{{0, 1}, {2, 3, 4, 5}})
+	result1 := Flatten([][]int{{0, 1}, {2, 3, 4, 5}})
 
 	is.Equal(result1, []int{0, 1, 2, 3, 4, 5})
 }
@@ -212,19 +213,19 @@ func TestFlatten(t *testing.T) {
 func TestShuffle(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Shuffle[int]([]int{0, 1, 2, 3, 4, 5})
-	result2 := Shuffle[int]([]int{})
+	result1 := Shuffle([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+	result2 := Shuffle([]int{})
 
-	is.NotEqual(result1, []int{0, 1, 2, 3, 4, 5})
+	is.NotEqual(result1, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 	is.Equal(result2, []int{})
 }
 
 func TestReverse(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Reverse[int]([]int{0, 1, 2, 3, 4, 5})
-	result2 := Reverse[int]([]int{0, 1, 2, 3, 4, 5, 6})
-	result3 := Reverse[int]([]int{})
+	result1 := Reverse([]int{0, 1, 2, 3, 4, 5})
+	result2 := Reverse([]int{0, 1, 2, 3, 4, 5, 6})
+	result3 := Reverse([]int{})
 
 	is.Equal(result1, []int{5, 4, 3, 2, 1, 0})
 	is.Equal(result2, []int{6, 5, 4, 3, 2, 1, 0})
@@ -234,27 +235,43 @@ func TestReverse(t *testing.T) {
 func TestFill(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Fill[foo]([]foo{foo{"a"}, foo{"a"}}, foo{"b"})
-	result2 := Fill[foo]([]foo{}, foo{"a"})
+	result1 := Fill([]foo{{"a"}, {"a"}}, foo{"b"})
+	result2 := Fill([]foo{}, foo{"a"})
 
-	is.Equal(result1, []foo{foo{"b"}, foo{"b"}})
+	is.Equal(result1, []foo{{"b"}, {"b"}})
 	is.Equal(result2, []foo{})
 }
 
 func TestRepeat(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Repeat[foo](2, foo{"a"})
-	result2 := Repeat[foo](0, foo{"a"})
+	result1 := Repeat(2, foo{"a"})
+	result2 := Repeat(0, foo{"a"})
 
-	is.Equal(result1, []foo{foo{"a"}, foo{"a"}})
+	is.Equal(result1, []foo{{"a"}, {"a"}})
 	is.Equal(result2, []foo{})
+}
+
+func TestRepeatBy(t *testing.T) {
+	is := assert.New(t)
+
+	cb := func(i int) int {
+		return int(math.Pow(float64(i), 2))
+	}
+
+	result1 := RepeatBy(0, cb)
+	result2 := RepeatBy(2, cb)
+	result3 := RepeatBy(5, cb)
+
+	is.Equal([]int{}, result1)
+	is.Equal([]int{0, 1}, result2)
+	is.Equal([]int{0, 1, 4, 9, 16}, result3)
 }
 
 func TestKeyBy(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := KeyBy[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
+	result1 := KeyBy([]string{"a", "aa", "aaa"}, func(str string) int {
 		return len(str)
 	})
 
@@ -322,13 +339,13 @@ func TestDropRightWhile(t *testing.T) {
 func TestReject(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+	r1 := Reject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 		return x%2 == 0
 	})
 
 	is.Equal(r1, []int{1, 3})
 
-	r2 := Reject[string]([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
+	r2 := Reject([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
 		return len(x) > 3
 	})
 
@@ -338,9 +355,9 @@ func TestReject(t *testing.T) {
 func TestCount(t *testing.T) {
 	is := assert.New(t)
 
-	count1 := Count[int]([]int{1, 2, 1}, 1)
-	count2 := Count[int]([]int{1, 2, 1}, 3)
-	count3 := Count[int]([]int{}, 1)
+	count1 := Count([]int{1, 2, 1}, 1)
+	count2 := Count([]int{1, 2, 1}, 3)
+	count3 := Count([]int{}, 1)
 
 	is.Equal(count1, 2)
 	is.Equal(count2, 0)
@@ -350,19 +367,91 @@ func TestCount(t *testing.T) {
 func TestCountBy(t *testing.T) {
 	is := assert.New(t)
 
-	count1 := CountBy[int]([]int{1, 2, 1}, func(i int) bool {
+	count1 := CountBy([]int{1, 2, 1}, func(i int) bool {
 		return i < 2
 	})
 
-	count2 := CountBy[int]([]int{1, 2, 1}, func(i int) bool {
+	count2 := CountBy([]int{1, 2, 1}, func(i int) bool {
 		return i > 2
 	})
 
-	count3 := CountBy[int]([]int{}, func(i int) bool {
+	count3 := CountBy([]int{}, func(i int) bool {
 		return i <= 2
 	})
 
 	is.Equal(count1, 2)
 	is.Equal(count2, 0)
 	is.Equal(count3, 0)
+}
+
+func TestSubset(t *testing.T) {
+	is := assert.New(t)
+
+	in := []int{0, 1, 2, 3, 4}
+
+	out1 := Subset(in, 0, 0)
+	out2 := Subset(in, 10, 2)
+	out3 := Subset(in, -10, 2)
+	out4 := Subset(in, 0, 10)
+	out5 := Subset(in, 0, 2)
+	out6 := Subset(in, 2, 2)
+	out7 := Subset(in, 2, 5)
+	out8 := Subset(in, 2, 3)
+	out9 := Subset(in, 2, 4)
+	out10 := Subset(in, -2, 4)
+	out11 := Subset(in, -4, 1)
+	out12 := Subset(in, -4, math.MaxUint)
+
+	is.Equal([]int{}, out1)
+	is.Equal([]int{}, out2)
+	is.Equal([]int{0, 1}, out3)
+	is.Equal([]int{0, 1, 2, 3, 4}, out4)
+	is.Equal([]int{0, 1}, out5)
+	is.Equal([]int{2, 3}, out6)
+	is.Equal([]int{2, 3, 4}, out7)
+	is.Equal([]int{2, 3, 4}, out8)
+	is.Equal([]int{2, 3, 4}, out9)
+	is.Equal([]int{3, 4}, out10)
+	is.Equal([]int{1}, out11)
+	is.Equal([]int{1, 2, 3, 4}, out12)
+}
+
+func TestReplace(t *testing.T) {
+	is := assert.New(t)
+
+	in := []int{0, 1, 0, 1, 2, 3, 0}
+
+	out1 := Replace(in, 0, 42, 2)
+	out2 := Replace(in, 0, 42, 1)
+	out3 := Replace(in, 0, 42, 0)
+	out4 := Replace(in, 0, 42, -1)
+	out5 := Replace(in, 0, 42, -1)
+	out6 := Replace(in, -1, 42, 2)
+	out7 := Replace(in, -1, 42, 1)
+	out8 := Replace(in, -1, 42, 0)
+	out9 := Replace(in, -1, 42, -1)
+	out10 := Replace(in, -1, 42, -1)
+
+	is.Equal([]int{42, 1, 42, 1, 2, 3, 0}, out1)
+	is.Equal([]int{42, 1, 0, 1, 2, 3, 0}, out2)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out3)
+	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out4)
+	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out5)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out6)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out7)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out8)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out9)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out10)
+}
+
+func TestReplaceAll(t *testing.T) {
+	is := assert.New(t)
+
+	in := []int{0, 1, 0, 1, 2, 3, 0}
+
+	out1 := ReplaceAll(in, 0, 42)
+	out2 := ReplaceAll(in, -1, 42)
+
+	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out1)
+	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out2)
 }
