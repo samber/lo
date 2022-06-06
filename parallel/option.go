@@ -6,13 +6,19 @@ type ParallelOption struct {
 	concurrencySetted bool
 }
 
+// WithConcurrency create an ParallelOption and set the maximum number of concurrent `iteratee` goroutines running
+// at the same time.
+func WithConcurrency(concurrency int) *ParallelOption {
+	return Option().WithConcurrency(concurrency)
+}
+
 // Option() create an empty ParallelOption
 func Option() *ParallelOption {
 	return &ParallelOption{}
 }
 
-// Concurrency() set the maximum number of concurrent `iteratee` goroutines running at the same time.
-func (o *ParallelOption) Concurrency(concurrency int) *ParallelOption {
+// WithConcurrency() set the maximum number of concurrent `iteratee` goroutines running at the same time.
+func (o *ParallelOption) WithConcurrency(concurrency int) *ParallelOption {
 	o.concurrency = concurrency
 	o.concurrencySetted = true
 	return o

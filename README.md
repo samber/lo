@@ -211,7 +211,7 @@ lop.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 You also can control the conurrency limit by optional ParallelOption to limit the maximum number of concurrent `iteratee` goroutines running at the same time.
 
 ```go
-lop.Map(list, iteratee, lop.Option().Concurrency(20)) // up to 20 concurrent goroutines running at the same time	
+lop.Map(list, iteratee, lop.WithConcurrency(20)) // up to 20 concurrent goroutines running at the same time	
 ```
 
 ### FlatMap
@@ -313,7 +313,7 @@ lop.ForEach[string]([]string{"hello", "world"}, func(x string, _ int) {
 You also can control the conurrency limit by optional ParallelOption to limit the maximum number of concurrent `iteratee` goroutines running at the same time.
 
 ```go
-lop.ForEach(list, iteratee, lop.Option().Concurrency(20)) // up to 20 concurrent goroutines running at the same time	
+lop.ForEach(list, iteratee, lop.WithConcurrency(20)) // up to 20 concurrent goroutines running at the same time	
 ```
 
 ### Times
@@ -343,7 +343,7 @@ lop.Times[string](3, func(i int) string {
 You also can control the conurrency limit by optional ParallelOption to limit the maximum number of concurrent `iteratee` goroutines running at the same time.
 
 ```go
-lop.Times(60, iteratee, lop.Option().Concurrency(20)) // up to 20 concurrent goroutines running at the same time	
+lop.Times(60, iteratee, lop.WithConcurrency(20)) // up to 20 concurrent goroutines running at the same time	
 ```
 
 ### Uniq
@@ -393,7 +393,7 @@ lop.GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 You also can control the conurrency limit by optional ParallelOption to limit the maximum number of concurrent `iteratee` goroutines running at the same time.
 
 ```go
-lop.GroupBy(list, iteratee, lop.Option().Concurrency(20)) // up to 20 concurrent goroutines running at the same time	
+lop.GroupBy(list, iteratee, lop.WithConcurrency(20)) // up to 20 concurrent goroutines running at the same time	
 ```
 
 ### Chunk
@@ -451,7 +451,7 @@ partitions := lo.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(
 You also can control the conurrency limit by optional ParallelOption to limit the maximum number of concurrent `iteratee` goroutines running at the same time.
 
 ```go
-lop.PartitionBy(list, iteratee, lop.Option().Concurrency(20)) // up to 20 concurrent goroutines running at the same time	
+lop.PartitionBy(list, iteratee, lop.WithConcurrency(20)) // up to 20 concurrent goroutines running at the same time	
 ```
 
 ### Flatten
