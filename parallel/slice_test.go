@@ -45,7 +45,7 @@ func TestMapConcurrency(t *testing.T) {
 	}
 
 	startAt := time.Now()
-	result := Map(list, handler, Option().WithConcurrency(concurrency))
+	result := Map(list, handler, WithConcurrency(concurrency))
 	endAt := time.Now()
 
 	is.Equal(result, expected)
@@ -79,7 +79,7 @@ func TestTimesConcurrency(t *testing.T) {
 	result := Times(num, func(i int) string {
 		time.Sleep(duration)
 		return strconv.FormatInt(int64(i), 10)
-	}, Option().WithConcurrency(concurrency))
+	}, WithConcurrency(concurrency))
 	endAt := time.Now()
 
 	is.Equal(len(result), num)
@@ -119,7 +119,7 @@ func TestGroupByConcurrency(t *testing.T) {
 	result := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		time.Sleep(duration)
 		return i % 3
-	}, Option().WithConcurrency(concurrency))
+	}, WithConcurrency(concurrency))
 	endAt := time.Now()
 
 	// order
@@ -184,7 +184,7 @@ func TestPartitionByConcurrency(t *testing.T) {
 	}
 
 	startAt := time.Now()
-	result := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven, Option().WithConcurrency(concurrency))
+	result := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven, WithConcurrency(concurrency))
 	endAt := time.Now()
 
 	// order

@@ -7,7 +7,7 @@ import "sync"
 // You also can control the conurrency limit by optional ParallelOption to limit the maximum number of
 // concurrent `iteratee` goroutines running at the same time, just like
 // `parallel.Map(list, iteratee, parallel.Option().Concurrency(10))`.
-func Map[T any, R any](collection []T, iteratee func(T, int) R, options ...*ParallelOption) []R {
+func Map[T any, R any](collection []T, iteratee func(T, int) R, options ...*Option) []R {
 	result := make([]R, len(collection))
 
 	handler := func(item T, ix int) {
@@ -24,7 +24,7 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R, options ...*Para
 // You also can control the conurrency limit by optional ParallelOption to limit the maximum number of
 // concurrent `iteratee` goroutines running at the same time, just like
 // `parallel.ForEach(list, iteratee, parallel.Option().Concurrency(10))`.
-func ForEach[T any](collection []T, iteratee func(T, int), options ...*ParallelOption) {
+func ForEach[T any](collection []T, iteratee func(T, int), options ...*Option) {
 	var wg sync.WaitGroup
 	var concurrencyLimiter chan bool
 
@@ -57,7 +57,7 @@ func ForEach[T any](collection []T, iteratee func(T, int), options ...*ParallelO
 // You also can control the conurrency limit by optional ParallelOption to limit the maximum number of
 // concurrent `iteratee` goroutines running at the same time, just like
 // `parallel.Times(count, iteratee, parallel.Option().Concurrency(10))`.
-func Times[T any](count int, iteratee func(int) T, options ...*ParallelOption) []T {
+func Times[T any](count int, iteratee func(int) T, options ...*Option) []T {
 	var concurrencyLimiter chan bool
 
 	option := mergeOptions(options)
@@ -94,7 +94,7 @@ func Times[T any](count int, iteratee func(int) T, options ...*ParallelOption) [
 // You also can control the conurrency limit by optional ParallelOption to limit the maximum number of
 // concurrent `iteratee` goroutines running at the same time, just like
 // `parallel.GroupBy(list, iteratee, parallel.Option().Concurrency(10))`.
-func GroupBy[T any, U comparable](collection []T, iteratee func(T) U, options ...*ParallelOption) map[U][]T {
+func GroupBy[T any, U comparable](collection []T, iteratee func(T) U, options ...*Option) map[U][]T {
 	result := map[U][]T{}
 	var mu sync.Mutex
 
@@ -117,7 +117,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U, options ..
 // You also can control the conurrency limit by optional ParallelOption to limit the maximum number of
 // concurrent `iteratee` goroutines running at the same time, just like
 // `parallel.PartitionBy(list, iteratee, parallel.Option().Concurrency(10))`.
-func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K, options ...*ParallelOption) [][]T {
+func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K, options ...*Option) [][]T {
 	result := [][]T{}
 
 	seen := map[K]int{}
