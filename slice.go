@@ -406,3 +406,44 @@ func Replace[T comparable](collection []T, old T, new T, n int) []T {
 func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 	return Replace(collection, old, new, -1)
 }
+
+// Interleave round-robbin alternating input slices and sequentially appending value at index into result
+func Interleave[T any](collections ...[]T) []T {
+	if len(collections) == 0 {
+		return []T{}
+	}
+
+	if len(collections) == 1 {
+		return collections[0]
+	}
+
+	maxSize := 0
+	totalSize := 0
+	for _, c := range collections {
+		size := len(c)
+		totalSize += size
+		if size > maxSize {
+			maxSize = size
+		}
+	}
+
+	if maxSize == 0 {
+		return []T{}
+	}
+
+	result := make([]T, totalSize)
+
+	resultIdx := 0
+	for i := 0; i < maxSize; i++ {
+		for j := range collections {
+			if len(collections[j])-1 < i {
+				continue
+			}
+
+			result[resultIdx] = collections[j][i]
+			resultIdx++
+		}
+	}
+
+	return result
+}

@@ -84,6 +84,7 @@ Supported helpers for slices:
 - Reject
 - Count
 - CountBy
+- Interleave
 
 Supported helpers for maps:
 
@@ -594,6 +595,15 @@ count := lo.CountBy[int]([]int{1, 5, 1}, func(i int) bool {
     return i < 4
 })
 // 2
+```
+
+### Interleave
+
+Round-robbin alternating input slices and sequentially appending value at index into result.
+
+```go
+interleaved := lo.Interleave[int]([]int{1, 4, 7}, []int{2, 5, 8}, []int{3, 6, 9})
+// []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
 ```
 
 ### Subset
