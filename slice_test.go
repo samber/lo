@@ -464,6 +464,11 @@ func TestInterleave(t *testing.T) {
 		want        []int
 	}{
 		{
+			"nil",
+			[][]int{nil},
+			[]int{},
+		},
+		{
 			"empty",
 			[][]int{},
 			[]int{},

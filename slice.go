@@ -413,10 +413,6 @@ func Interleave[T any](collections ...[]T) []T {
 		return []T{}
 	}
 
-	if len(collections) == 1 {
-		return collections[0]
-	}
-
 	maxSize := 0
 	totalSize := 0
 	for _, c := range collections {
