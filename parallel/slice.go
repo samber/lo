@@ -6,7 +6,7 @@ import (
 )
 
 // Map manipulates a slice and transforms it to a slice of another type.
-// `iteratee` is called in parallel. Result keep the same order.
+// `iteratee` is call in parallel. Result keep the same order.
 func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	result := make([]R, len(collection))
 
