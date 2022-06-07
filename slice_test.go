@@ -1,6 +1,8 @@
 package lo
 
 import (
+	"errors"
+	"fmt"
 	"math"
 	"strconv"
 	"strings"
@@ -69,6 +71,27 @@ func TestFilterMap(t *testing.T) {
 	is.Equal(len(r2), 2)
 	is.Equal(r1, []string{"2", "4"})
 	is.Equal(r2, []string{"xpu", "xpu"})
+}
+
+func TestMapWithError(t *testing.T) {
+	is := assert.New(t)
+
+	result1, err1 := MapWithError[int, string]([]int{1, 2, 3, 4}, func(x int, _ int) (string, error) {
+		return "Hello", nil
+	})
+	result2, err2 := MapWithError[int64, int64]([]int64{1, 2, 3, 4}, func(x int64, _ int) (int64, error) {
+		if x == 4 {
+			return 0, errors.New("x is 4")
+		}
+		return x, nil
+	})
+
+	is.Equal(len(result1), 4)
+	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
+	is.Nil(err1)
+
+	is.Nil(result2)
+	is.Equal(err2, fmt.Errorf("x is 4"))
 }
 
 func TestFlatMap(t *testing.T) {

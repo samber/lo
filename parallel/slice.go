@@ -1,6 +1,9 @@
 package parallel
 
-import "sync"
+import (
+	"context"
+	"sync"
+)
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // `iteratee` is call in parallel. Result keep the same order.
@@ -23,6 +26,41 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	wg.Wait()
 
 	return result
+}
+
+// MapWithError manipulates a slice and transforms it to a slice of another type.
+// `iteratee` is called in parallel. Result keep the same order.
+// Any error returned by `iteratee` cancels the remaining go routines and returns an error.
+func MapWithError[T any, R any](collection []T, iteratee func(T, int) (R, error)) ([]R, error) {
+	result := make([]R, len(collection))
+
+	var wg sync.WaitGroup
+	var errOnce sync.Once
+	var wgErr error
+	_, cancel := context.WithCancel(context.Background())
+
+	wg.Add(len(collection))
+
+	for i, item := range collection {
+		go func(_item T, _i int) {
+			defer wg.Done()
+
+			res, err := iteratee(_item, _i)
+			if err != nil {
+				errOnce.Do(func() {
+					wgErr = err
+					cancel()
+				})
+			}
+
+			result[_i] = res
+		}(item, i)
+	}
+
+	wg.Wait()
+	cancel()
+
+	return result, wgErr
 }
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.

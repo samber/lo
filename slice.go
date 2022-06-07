@@ -44,6 +44,22 @@ func FilterMap[T any, R any](collection []T, callback func(T, int) (R, bool)) []
 	return result
 }
 
+// MapWithErr manipulates a slice and transforms it to a slice of another type. If iteratee
+// returns an error the function shortcircuits and the error is returned alongside nil.
+func MapWithError[T any, R any](collection []T, iteratee func(T, int) (R, error)) ([]R, error) {
+	result := make([]R, len(collection))
+	var err error
+
+	for i, item := range collection {
+		result[i], err = iteratee(item, i)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return result, nil
+}
+
 // FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
 func FlatMap[T any, R any](collection []T, iteratee func(T, int) []R) []R {
 	result := []R{}
