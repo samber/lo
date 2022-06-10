@@ -187,14 +187,11 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]
 }
 
 // Flatten returns an array a single level deep.
-func Flatten[T any](collection [][]T) []T {
-	result := []T{}
-
+func Flatten[T any](collection [][]T) (result []T) {
 	for _, item := range collection {
 		result = append(result, item...)
 	}
-
-	return result
+	return
 }
 
 // Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
