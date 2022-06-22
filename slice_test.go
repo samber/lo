@@ -154,6 +154,19 @@ func TestUniqBy(t *testing.T) {
 	is.Equal(result1, []int{0, 1, 2})
 }
 
+func TestTake(t *testing.T) {
+	is := assert.New(t)
+
+	input := []int{1, 2, 3, 4}
+	result1 := Take(input, 0)
+	result2 := Take(input, 2)
+	result3 := Take(input, 5)
+
+	is.Equal([]int{}, result1)
+	is.Equal([]int{1, 2}, result2)
+	is.Equal([]int{1, 2, 3, 4}, result3)
+}
+
 func TestGroupBy(t *testing.T) {
 	is := assert.New(t)
 

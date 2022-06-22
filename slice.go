@@ -123,6 +123,20 @@ func UniqBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
 	return result
 }
 
+// Take returns the first count elements from the collection or the entire collection if count is greater than the length of the collection
+func Take[T any](collection []T, count int) []T {
+	result := make([]T, 0, count)
+
+	for i, item := range collection {
+		if i >= count {
+			break
+		}
+		result = append(result, item)
+	}
+
+	return result
+}
+
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T {
 	result := map[U][]T{}
