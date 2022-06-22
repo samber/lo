@@ -137,6 +137,17 @@ func TestAssign(t *testing.T) {
 	is.Equal(result1, map[string]int{"a": 1, "b": 3, "c": 4})
 }
 
+func TestAssignBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := AssignBy(func(v1 int, v2 int) int {
+		return v1 + v2
+	}, map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4})
+
+	is.Len(result1, 3)
+	is.Equal(result1, map[string]int{"a": 1, "b": 5, "c": 4})
+}
+
 func TestMapKeys(t *testing.T) {
 	is := assert.New(t)
 

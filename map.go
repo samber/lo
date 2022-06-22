@@ -139,6 +139,23 @@ func Assign[K comparable, V any](maps ...map[K]V) map[K]V {
 	return out
 }
 
+// AssignBy merges multiple maps from left to right.
+func AssignBy[K comparable, V any](iteratee func(V, V) V, maps ...map[K]V) map[K]V {
+	out := map[K]V{}
+
+	for _, m := range maps {
+		for k, v := range m {
+			if e, ok := out[k]; ok {
+				out[k] = iteratee(e, v)
+			} else {
+				out[k] = v
+			}
+		}
+	}
+
+	return out
+}
+
 // MapKeys manipulates a map keys and transforms it to a map of another type.
 func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(V, K) R) map[R]V {
 	result := map[R]V{}
