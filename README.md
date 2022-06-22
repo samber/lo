@@ -790,7 +790,7 @@ Merges multiple maps from left to right.
 
 ```go
 mergedMaps := lo.AssignBy[string, int](
-	func(v1, v2) int {
+    func(v1, v2) int {
 	    return v1 + v2	
     },
     map[string]int{"a": 1, "b": 2},
