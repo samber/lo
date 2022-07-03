@@ -1560,6 +1560,10 @@ val := lo.Must(time.Parse("2006-01-02", "2022-01-15"))
 
 val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 // panics
+
+val := lo.Must(lo.Find(myString, func(i string) bool {
+    return i == requiredChar
+}), "'%s' must always contain '%s'", myString, requiredChar)
 ```
 
 ### Must{0->6}
