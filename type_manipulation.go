@@ -5,6 +5,15 @@ func ToPtr[T any](x T) *T {
 	return &x
 }
 
+// FromPtr returns a value copy of a pointer.
+func FromPtr[T any](x *T) T {
+	if x == nil {
+		return Empty[T]()
+	}
+
+	return *x
+}
+
 // ToSlicePtr returns a slice of pointer copy of value.
 func ToSlicePtr[T any](collection []T) []*T {
 	return Map(collection, func(x T, _ int) *T {
