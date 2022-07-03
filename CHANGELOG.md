@@ -73,7 +73,7 @@ Improvement:
 
 Adding:
 
-- lo.Colaesce
+- lo.Coalesce
 
 ## 1.13.0 (2022-04-14)
 

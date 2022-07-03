@@ -1430,7 +1430,7 @@ result, ok := lo.Coalesce[*string](nil, nilStr, &str)
 
 ### Attempt
 
-Invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a sucessfull response is returned.
+Invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 iter, err := lo.Attempt(42, func(i int) error {
@@ -1468,9 +1468,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWithDelay
 
-Invokes a function N times until it returns valid output, with a pause betwwen each call. Returning either the caught error or nil.
+Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil.
 
-When first argument is less than `1`, the function runs until a sucessfull response is returned.
+When first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duration time.Duration) error {
@@ -1574,6 +1574,10 @@ val := lo.Must(time.Parse("2006-01-02", "2022-01-15"))
 
 val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 // panics
+
+val := lo.Must(lo.Find(myString, func(i string) bool {
+    return i == requiredChar
+}), "'%s' must always contain '%s'", myString, requiredChar)
 ```
 
 ### Must{0->6}
@@ -1719,10 +1723,10 @@ PASS
 ok  	github.com/samber/lo	6.657s
 ```
 
-- `lo.Map` is way faster (x7) than `go-funk`, a relection-based Map implementation.
+- `lo.Map` is way faster (x7) than `go-funk`, a reflection-based Map implementation.
 - `lo.Map` have the same allocation profile than `for`.
 - `lo.Map` is 4% slower than `for`.
-- `lop.Map` is slower than `lo.Map` because it implies more memory allocation and locks. `lop.Map` will be usefull for long-running callbacks, such as i/o bound processing.
+- `lop.Map` is slower than `lo.Map` because it implies more memory allocation and locks. `lop.Map` will be useful for long-running callbacks, such as i/o bound processing.
 - `for` beats other implementations for memory and CPU.
 
 ## 🤝 Contributing

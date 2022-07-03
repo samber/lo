@@ -76,8 +76,8 @@ func Attempt(maxIteration int, f func(int) error) (int, error) {
 }
 
 // AttemptWithDelay invokes a function N times until it returns valid output,
-// with a pause betwwen each call. Returning either the caught error or nil.
-// When first argument is less than `1`, the function runs until a sucessfull
+// with a pause between each call. Returning either the caught error or nil.
+// When first argument is less than `1`, the function runs until a successful
 // response is returned.
 func AttemptWithDelay(maxIteration int, delay time.Duration, f func(int, time.Duration) error) (int, time.Duration, error) {
 	var err error
