@@ -1,16 +1,19 @@
 package lo
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBind(t *testing.T) {
+func TestPartial(t *testing.T) {
 	is := assert.New(t)
 
-	add := func(x, y int) int { return x + y }
-	f := Bind(add, 5)
-	is.Equal(15, f(10))
-	is.Equal(0, f(-5))
+	add := func(x float64, y int) string {
+		return strconv.Itoa(int(x) + y)
+	}
+	f := Partial(add, 5)
+	is.Equal("15", f(10))
+	is.Equal("0", f(-5))
 }
