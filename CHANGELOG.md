@@ -10,6 +10,9 @@ Adding:
 - lo.FromPtr
 - lo.IsEmpty
 - lo.Compact
+- lo.ToPairs: alias to lo.Entries
+- lo.FromPairs: alias to lo.FromEntries
+- lo.Partial
 
 Change:
 
