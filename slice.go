@@ -425,3 +425,18 @@ func Replace[T comparable](collection []T, old T, new T, n int) []T {
 func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 	return Replace(collection, old, new, -1)
 }
+
+// Compact returns a slice of all non-zero elements.
+func Compact[T comparable](collection []T) []T {
+	var zero T
+
+	result := []T{}
+
+	for _, item := range collection {
+		if item != zero {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}

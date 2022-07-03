@@ -491,3 +491,44 @@ func TestReplaceAll(t *testing.T) {
 	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out1)
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out2)
 }
+
+func TestCompact(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := Compact([]int{2, 0, 4, 0})
+
+	is.Equal(r1, []int{2, 4})
+
+	r2 := Compact([]string{"", "foo", "", "bar", ""})
+
+	is.Equal(r2, []string{"foo", "bar"})
+
+	r3 := Compact([]bool{true, false, true, false})
+
+	is.Equal(r3, []bool{true, true})
+
+	type foo struct {
+		bar int
+		baz string
+	}
+
+	// slice of structs
+	// If all fields of an element are zero values, Compact removes it.
+
+	r4 := Compact([]foo{
+		{bar: 1, baz: "a"}, // all fields are non-zero values
+		{bar: 0, baz: ""},  // all fields are zero values
+		{bar: 2, baz: ""},  // bar is non-zero
+	})
+
+	is.Equal(r4, []foo{{bar: 1, baz: "a"}, {bar: 2, baz: ""}})
+
+	// slice of pointers to structs
+	// If an element is nil, Compact removes it.
+
+	e1, e2, e3 := foo{bar: 1, baz: "a"}, foo{bar: 0, baz: ""}, foo{bar: 2, baz: ""}
+	// NOTE: e2 is a zero value of foo, but its pointer &e2 is not a zero value of *foo.
+	r5 := Compact([]*foo{&e1, &e2, nil, &e3})
+
+	is.Equal(r5, []*foo{&e1, &e2, &e3})
+}
