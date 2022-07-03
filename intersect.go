@@ -108,37 +108,29 @@ func Intersect[T comparable](list1 []T, list2 []T) []T {
 	return result
 }
 
+// Minus returns list of elements of list1 that are not present in list2 keeping the order.
+func Minus[T comparable](list1 []T, list2 []T) []T {
+	result := []T{}
+	seen := map[T]struct{}{}
+
+	for _, e := range list2 {
+		seen[e] = struct{}{}
+	}
+
+	for _, e := range list1 {
+		if _, ok := seen[e]; !ok {
+			result = append(result, e)
+		}
+	}
+
+	return result
+}
+
 // Difference returns the difference between two collections.
 // The first value is the collection of element absent of list2.
 // The second value is the collection of element absent of list1.
 func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
-	left := []T{}
-	right := []T{}
-
-	seenLeft := map[T]struct{}{}
-	seenRight := map[T]struct{}{}
-
-	for _, elem := range list1 {
-		seenLeft[elem] = struct{}{}
-	}
-
-	for _, elem := range list2 {
-		seenRight[elem] = struct{}{}
-	}
-
-	for _, elem := range list1 {
-		if _, ok := seenRight[elem]; !ok {
-			left = append(left, elem)
-		}
-	}
-
-	for _, elem := range list2 {
-		if _, ok := seenLeft[elem]; !ok {
-			right = append(right, elem)
-		}
-	}
-
-	return left, right
+	return Minus(list1, list2), Minus(list2, list1)
 }
 
 // Union returns all distinct elements from both collections.

@@ -135,6 +135,8 @@ Supported intersection helpers:
 - None
 - NoneBy
 - Intersect
+- Minus
+
 - Difference
 - Union
 
@@ -1042,6 +1044,24 @@ result2 := lo.Intersect[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6}
 
 result3 := lo.Intersect[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // []int{}
+```
+
+### Minus
+
+Returns list of elements of list1 that are not present in list2 keeping the order.
+
+```go
+result1 := lo. Minus([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+// []int{1, 3, 4, 5}
+
+result2 := Minus([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+// []int{0, 1, 2, 3, 4, 5}
+
+result3 := Minus([]int{0, 6}, []int{0, 1, 2, 3, 4, 5})
+// []int{6}
+
+result4 := Minus([]int{0, 6, 0}, []int{0, 1, 2, 3, 4, 5})
+// []int{6}
 ```
 
 ### Difference

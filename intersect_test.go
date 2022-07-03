@@ -180,6 +180,22 @@ func TestIntersect(t *testing.T) {
 	is.Equal(result5, []int{0})
 }
 
+func TestMinus(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Minus([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+	result2 := Minus([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+	result3 := Minus([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+	result4 := Minus([]int{0, 6}, []int{0, 1, 2, 3, 4, 5})
+	result5 := Minus([]int{0, 6, 0}, []int{0, 1, 2, 3, 4, 5})
+
+	is.Equal(result1, []int{1, 3, 4, 5})
+	is.Equal(result2, []int{1, 2, 3, 4, 5})
+	is.Equal(result3, []int{0, 1, 2, 3, 4, 5})
+	is.Equal(result4, []int{6})
+	is.Equal(result5, []int{6})
+}
+
 func TestDifference(t *testing.T) {
 	is := assert.New(t)
 
