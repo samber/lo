@@ -389,8 +389,8 @@ func Subset[T any](collection []T, offset int, length uint) []T {
 func Slice[T comparable](collection []T, start int, end int) []T {
 	size := len(collection)
 
-	if start > end {
-		start = end
+	if start >= end {
+		return []T{}
 	}
 
 	if start > size {
