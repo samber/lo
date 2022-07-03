@@ -163,6 +163,7 @@ Conditional helpers:
 Type manipulation helpers:
 
 - ToPtr
+- FromPtr
 - ToSlicePtr
 - ToAnySlice
 - FromAnySlice
@@ -1352,6 +1353,19 @@ Returns a pointer copy of value.
 ```go
 ptr := lo.ToPtr[string]("hello world")
 // *string{"hello world"}
+```
+
+### FromPtr
+
+Returns the pointer value or empty.
+
+```go
+str := "hello world"
+value := lo.FromPtr[string](&str)
+// "hello world"
+
+value := lo.FromPtr[string](nil)
+// ""
 ```
 
 ### ToSlicePtr

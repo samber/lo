@@ -7,6 +7,11 @@
 Adding:
 
 - lo.Slice
+- lo.FromPtr
+
+Improve:
+
+- lo.Must + lo.MustX: add context to panic message
 
 ## 1.21.0 (2022-05-10)
 
