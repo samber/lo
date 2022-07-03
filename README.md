@@ -168,6 +168,7 @@ Type manipulation helpers:
 - ToAnySlice
 - FromAnySlice
 - Empty
+- IsEmpty
 - Coalesce
 
 Concurrency helpers:
@@ -1408,6 +1409,31 @@ lo.Empty[int]()
 lo.Empty[string]()
 // ""
 lo.Empty[bool]()
+// false
+```
+
+### IsEmpty
+
+Returns true if argument is a zero value.
+
+```go
+lo.IsEmpty[int](0)
+// true
+lo.IsEmpty[int](42)
+// false
+
+lo.IsEmpty[string]("")
+// true
+lo.IsEmpty[bool]("foobar")
+// false
+
+type test struct {
+    foobar string
+}
+
+lo.IsEmpty[test](test{foobar: ""})
+// true
+lo.IsEmpty[test](test{foobar: "foobar"})
 // false
 ```
 

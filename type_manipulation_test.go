@@ -77,6 +77,22 @@ func TestEmpty(t *testing.T) {
 	is.Empty(Empty[chan string]())
 }
 
+func TestIsEmpty(t *testing.T) {
+	is := assert.New(t)
+
+	//nolint:unused
+	type test struct {
+		foobar string
+	}
+
+	is.True(IsEmpty[string](""))
+	is.False(IsEmpty[string]("foo"))
+	is.True(IsEmpty[int64](0))
+	is.False(IsEmpty[int64](42))
+	is.True(IsEmpty[test](test{foobar: ""}))
+	is.False(IsEmpty[test](test{foobar: "foo"}))
+}
+
 func TestCoalesce(t *testing.T) {
 	is := assert.New(t)
 

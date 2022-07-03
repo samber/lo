@@ -8,6 +8,8 @@ Adding:
 
 - lo.Slice
 - lo.FromPtr
+- lo.IsEmpty
+- lo.Compact
 
 Improve:
 

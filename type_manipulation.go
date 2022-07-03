@@ -49,8 +49,14 @@ func FromAnySlice[T any](in []any) (out []T, ok bool) {
 
 // Empty returns an empty value.
 func Empty[T any]() T {
-	var t T
-	return t
+	var zero T
+	return zero
+}
+
+// IsEmpty returns true if argument is a zero value.
+func IsEmpty[T comparable](v T) bool {
+	var zero T
+	return zero == v
 }
 
 // Coalesce returns the first non-empty arguments. Arguments must be comparable.
