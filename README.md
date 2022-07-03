@@ -613,6 +613,26 @@ sub := lo.Subset(in, -2, math.MaxUint)
 // []int{3, 4}
 ```
 
+### Slice
+
+Slice returns a copy of a slice by specifying two indices (from `start` up to, but not including `end`).
+
+```go
+in := []int{0, 1, 2, 3, 4}
+
+slice := lo.Slice(in, 0, 5)
+// []int{0, 1, 2, 3, 4}
+
+slice := lo.Slice(in, 2, 3)
+// []int{2}
+
+slice := lo.Slice(in, 2, 6)
+// []int{2, 3, 4}
+
+slice := lo.Slice(in, 4, 3)
+// []int{}
+```
+
 ### Replace
 
 Returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
@@ -852,7 +872,7 @@ r3 := lo.Clamp(42, -10, 10)
 // 10
 ```
 
-### SumBy 
+### SumBy
 
 Summarizes the values in a collection using the given return value from the iteration function.
 If collection is empty 0 is returned.
@@ -973,7 +993,7 @@ ok := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 
 ### SomeBy
 
-Returns true if the predicate returns true for any of the elements in the collection. 
+Returns true if the predicate returns true for any of the elements in the collection.
 If the collection is empty SomeBy returns false.
 
 ```go
@@ -1539,7 +1559,9 @@ val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 ```
 
 ### Must{0->6}
-Must* has the same behavior than Must, but returns multiple values.
+
+Must\* has the same behavior than Must, but returns multiple values.
+
 ```go
 func example0() (error)
 func example1() (int, error)
@@ -1558,7 +1580,8 @@ val1, val2, val3, val4, val5 := lo.Must5(example5())
 val1, val2, val3, val4, val5, val6 := lo.Must6(example6())
 ```
 
-You can wrap functions like `func (...)  (..., ok bool)`.
+You can wrap functions like `func (...) (..., ok bool)`.
+
 ```go
 // math.Signbit(float64) bool
 lo.Must0(math.Signbit(v))
