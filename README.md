@@ -100,8 +100,8 @@ Supported helpers for maps:
 - OmitBy
 - OmitByKeys
 - OmitByValues
-- Entries
-- FromEntries
+- Entries / ToPairs
+- FromEntries / FromPairs
 - Invert
 - Assign (merge of maps)
 - MapKeys
@@ -761,7 +761,7 @@ m := lo.OmitByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, 
 // map[string]int{"bar": 2}
 ```
 
-### Entries
+### Entries (alias: ToPairs)
 
 Transforms a map into array of key/value pairs.
 
@@ -779,7 +779,7 @@ entries := lo.Entries[string, int](map[string]int{"foo": 1, "bar": 2})
 // }
 ```
 
-### FromEntries
+### FromEntries (alias: FromPairs)
 
 Transforms an array of key/value pairs into a map.
 

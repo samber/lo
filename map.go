@@ -102,6 +102,12 @@ func Entries[K comparable, V any](in map[K]V) []Entry[K, V] {
 	return entries
 }
 
+// ToPairs transforms a map into array of key/value pairs.
+// Alias of Entries().
+func ToPairs[K comparable, V any](in map[K]V) []Entry[K, V] {
+	return Entries(in)
+}
+
 // FromEntries transforms an array of key/value pairs into a map.
 func FromEntries[K comparable, V any](entries []Entry[K, V]) map[K]V {
 	out := map[K]V{}
@@ -111,6 +117,12 @@ func FromEntries[K comparable, V any](entries []Entry[K, V]) map[K]V {
 	}
 
 	return out
+}
+
+// FromPairs transforms an array of key/value pairs into a map.
+// Alias of FromEntries().
+func FromPairs[K comparable, V any](entries []Entry[K, V]) map[K]V {
+	return FromEntries(entries)
 }
 
 // Invert creates a map composed of the inverted keys and values. If map
