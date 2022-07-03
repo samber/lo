@@ -1574,10 +1574,6 @@ val := lo.Must(time.Parse("2006-01-02", "2022-01-15"))
 
 val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 // panics
-
-val := lo.Must(lo.Find(myString, func(i string) bool {
-    return i == requiredChar
-}), "'%s' must always contain '%s'", myString, requiredChar)
 ```
 
 ### Must{0->6}
@@ -1610,6 +1606,20 @@ lo.Must0(math.Signbit(v))
 
 // bytes.Cut([]byte,[]byte) ([]byte, []byte, bool)
 before, after := lo.Must2(bytes.Cut(s, sep))
+```
+
+You can give context to the panic message by adding some printf-like arguments.
+
+```go
+val := lo.Must(lo.Find(myString, func(i string) bool {
+    return i == requiredChar
+}), "'%s' must always contain '%s'", myString, requiredChar)
+
+// MustX
+lo.Must0(example0(), "'%s' must always contain '%s'", myString, requiredChar)
+val1 := lo.Must1(example1(), "'%s' must always contain '%s'", myString, requiredChar)
+val1, val2 := lo.Must2(example2(), "'%s' must always contain '%s'", myString, requiredChar)
+...
 ```
 
 ## Try

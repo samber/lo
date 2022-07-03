@@ -7,7 +7,10 @@ import (
 
 func messageFromMsgAndArgs(msgAndArgs ...interface{}) string {
 	if len(msgAndArgs) == 1 {
-		return fmt.Sprintf(msgAndArgs[0].(string))
+		if msgAsStr, ok := msgAndArgs[0].(string); ok {
+			return msgAsStr
+		}
+		return fmt.Sprintf("%+v", msgAndArgs[0])
 	}
 	if len(msgAndArgs) > 1 {
 		return fmt.Sprintf(msgAndArgs[0].(string), msgAndArgs[1:]...)
@@ -21,18 +24,19 @@ func must(err any, messageArgs ...interface{}) {
 		return
 	}
 
-	message := messageFromMsgAndArgs(messageArgs...)
-
 	switch e := err.(type) {
 	case bool:
 		if !e {
+			message := messageFromMsgAndArgs(messageArgs...)
 			if message == "" {
 				message = "not ok"
 			}
+
 			panic(message)
 		}
 
 	case error:
+		message := messageFromMsgAndArgs(messageArgs...)
 		if message != "" {
 			panic(message + ": " + e.Error())
 		} else {
