@@ -43,3 +43,14 @@ func TestRuneLength(t *testing.T) {
 	is.Equal(5, RuneLength("hellô"))
 	is.Equal(6, len("hellô"))
 }
+
+func TestChop(t *testing.T) {
+	is := assert.New(t)
+
+	is.Equal("", Chop(""))
+	is.Equal("", Chop("a"))
+	is.Equal("a", Chop("ab"))
+	is.Equal("a", Chop("a\n"))
+	is.Equal("a", Chop("a\r\n"))
+	is.Equal("a\n", Chop("a\n\r"))
+}
