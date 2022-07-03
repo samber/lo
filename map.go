@@ -55,7 +55,7 @@ func PickByValues[K comparable, V comparable](in map[K]V, values []V) map[K]V {
 	return r
 }
 
-// PickBy returns same map type filtered by given predicate.
+// OmitBy returns same map type filtered by given predicate.
 func OmitBy[K comparable, V any](in map[K]V, predicate func(K, V) bool) map[K]V {
 	r := map[K]V{}
 	for k, v := range in {

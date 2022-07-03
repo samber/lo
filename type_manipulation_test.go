@@ -14,6 +14,19 @@ func TestToPtr(t *testing.T) {
 	is.Equal(*result1, []int{1, 2})
 }
 
+func TestFromPtr(t *testing.T) {
+	is := assert.New(t)
+
+	str1 := "foo"
+	ptr := &str1
+
+	is.Equal("foo", FromPtr(ptr))
+	is.Equal("", FromPtr[string](nil))
+	is.Equal(0, FromPtr[int](nil))
+	is.Nil(FromPtr[*string](nil))
+	is.EqualValues(ptr, FromPtr(&ptr))
+}
+
 func TestToSlicePtr(t *testing.T) {
 	is := assert.New(t)
 

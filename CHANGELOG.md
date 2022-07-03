@@ -2,6 +2,17 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.22.0 (2022-07-03)
+
+Adding:
+
+- lo.Slice
+- lo.FromPtr
+
+Improve:
+
+- lo.Must + lo.MustX: add context to panic message
+
 ## 1.21.0 (2022-05-10)
 
 Adding:
@@ -62,7 +73,7 @@ Improvement:
 
 Adding:
 
-- lo.Colaesce
+- lo.Coalesce
 
 ## 1.13.0 (2022-04-14)
 

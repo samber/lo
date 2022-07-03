@@ -416,6 +416,42 @@ func TestSubset(t *testing.T) {
 	is.Equal([]int{1, 2, 3, 4}, out12)
 }
 
+func TestSlice(t *testing.T) {
+	is := assert.New(t)
+
+	in := []int{0, 1, 2, 3, 4}
+
+	out1 := Slice(in, 0, 0)
+	out2 := Slice(in, 0, 1)
+	out3 := Slice(in, 0, 5)
+	out4 := Slice(in, 0, 6)
+	out5 := Slice(in, 1, 1)
+	out6 := Slice(in, 1, 5)
+	out7 := Slice(in, 1, 6)
+	out8 := Slice(in, 4, 5)
+	out9 := Slice(in, 5, 5)
+	out10 := Slice(in, 6, 5)
+	out11 := Slice(in, 6, 6)
+	out12 := Slice(in, 1, 0)
+	out13 := Slice(in, 5, 0)
+	out14 := Slice(in, 6, 4)
+
+	is.Equal([]int{}, out1)
+	is.Equal([]int{0}, out2)
+	is.Equal([]int{0, 1, 2, 3, 4}, out3)
+	is.Equal([]int{0, 1, 2, 3, 4}, out4)
+	is.Equal([]int{}, out5)
+	is.Equal([]int{1, 2, 3, 4}, out6)
+	is.Equal([]int{1, 2, 3, 4}, out7)
+	is.Equal([]int{4}, out8)
+	is.Equal([]int{}, out9)
+	is.Equal([]int{}, out10)
+	is.Equal([]int{}, out11)
+	is.Equal([]int{}, out12)
+	is.Equal([]int{}, out13)
+	is.Equal([]int{}, out14)
+}
+
 func TestReplace(t *testing.T) {
 	is := assert.New(t)
 

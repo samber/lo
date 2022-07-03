@@ -84,6 +84,10 @@ Supported helpers for slices:
 - Reject
 - Count
 - CountBy
+- Subset
+- Slice
+- Replace
+- ReplaceAll
 - Compact
 
 Supported helpers for maps:
@@ -160,6 +164,7 @@ Conditional helpers:
 Type manipulation helpers:
 
 - ToPtr
+- FromPtr
 - ToSlicePtr
 - ToAnySlice
 - FromAnySlice
@@ -599,7 +604,7 @@ count := lo.CountBy[int]([]int{1, 5, 1}, func(i int) bool {
 
 ### Subset
 
-Return part of a slice.
+Returns a copy of a slice from `offset` up to `length` elements.
 
 ```go
 in := []int{0, 1, 2, 3, 4}
@@ -612,6 +617,26 @@ sub := lo.Subset(in, -4, 3)
 
 sub := lo.Subset(in, -2, math.MaxUint)
 // []int{3, 4}
+```
+
+### Slice
+
+Returns a copy of a slice from `start` up to, but not including `end`.
+
+```go
+in := []int{0, 1, 2, 3, 4}
+
+slice := lo.Slice(in, 0, 5)
+// []int{0, 1, 2, 3, 4}
+
+slice := lo.Slice(in, 2, 3)
+// []int{2}
+
+slice := lo.Slice(in, 2, 6)
+// []int{2, 3, 4}
+
+slice := lo.Slice(in, 4, 3)
+// []int{}
 ```
 
 ### Replace
@@ -864,7 +889,7 @@ r3 := lo.Clamp(42, -10, 10)
 // 10
 ```
 
-### SumBy 
+### SumBy
 
 Summarizes the values in a collection using the given return value from the iteration function.
 If collection is empty 0 is returned.
@@ -985,7 +1010,7 @@ ok := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 
 ### SomeBy
 
-Returns true if the predicate returns true for any of the elements in the collection. 
+Returns true if the predicate returns true for any of the elements in the collection.
 If the collection is empty SomeBy returns false.
 
 ```go
@@ -1342,6 +1367,19 @@ ptr := lo.ToPtr[string]("hello world")
 // *string{"hello world"}
 ```
 
+### FromPtr
+
+Returns the pointer value or empty.
+
+```go
+str := "hello world"
+value := lo.FromPtr[string](&str)
+// "hello world"
+
+value := lo.FromPtr[string](nil)
+// ""
+```
+
 ### ToSlicePtr
 
 Returns a slice of pointer copy of value.
@@ -1404,7 +1442,7 @@ result, ok := lo.Coalesce[*string](nil, nilStr, &str)
 
 ### Attempt
 
-Invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a sucessfull response is returned.
+Invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 iter, err := lo.Attempt(42, func(i int) error {
@@ -1442,9 +1480,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWithDelay
 
-Invokes a function N times until it returns valid output, with a pause betwwen each call. Returning either the caught error or nil.
+Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil.
 
-When first argument is less than `1`, the function runs until a sucessfull response is returned.
+When first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duration time.Duration) error {
@@ -1551,7 +1589,9 @@ val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 ```
 
 ### Must{0->6}
-Must* has the same behavior than Must, but returns multiple values.
+
+Must\* has the same behavior than Must, but returns multiple values.
+
 ```go
 func example0() (error)
 func example1() (int, error)
@@ -1570,13 +1610,28 @@ val1, val2, val3, val4, val5 := lo.Must5(example5())
 val1, val2, val3, val4, val5, val6 := lo.Must6(example6())
 ```
 
-You can wrap functions like `func (...)  (..., ok bool)`.
+You can wrap functions like `func (...) (..., ok bool)`.
+
 ```go
 // math.Signbit(float64) bool
 lo.Must0(math.Signbit(v))
 
 // bytes.Cut([]byte,[]byte) ([]byte, []byte, bool)
 before, after := lo.Must2(bytes.Cut(s, sep))
+```
+
+You can give context to the panic message by adding some printf-like arguments.
+
+```go
+val := lo.Must(lo.Find(myString, func(i string) bool {
+    return i == requiredChar
+}), "'%s' must always contain '%s'", myString, requiredChar)
+
+// MustX
+lo.Must0(example0(), "'%s' must always contain '%s'", myString, requiredChar)
+val1 := lo.Must1(example1(), "'%s' must always contain '%s'", myString, requiredChar)
+val1, val2 := lo.Must2(example2(), "'%s' must always contain '%s'", myString, requiredChar)
+...
 ```
 
 ## Try
@@ -1690,10 +1745,10 @@ PASS
 ok  	github.com/samber/lo	6.657s
 ```
 
-- `lo.Map` is way faster (x7) than `go-funk`, a relection-based Map implementation.
+- `lo.Map` is way faster (x7) than `go-funk`, a reflection-based Map implementation.
 - `lo.Map` have the same allocation profile than `for`.
 - `lo.Map` is 4% slower than `for`.
-- `lop.Map` is slower than `lo.Map` because it implies more memory allocation and locks. `lop.Map` will be usefull for long-running callbacks, such as i/o bound processing.
+- `lop.Map` is slower than `lo.Map` because it implies more memory allocation and locks. `lop.Map` will be useful for long-running callbacks, such as i/o bound processing.
 - `for` beats other implementations for memory and CPU.
 
 ## 🤝 Contributing
