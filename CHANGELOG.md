@@ -11,9 +11,13 @@ Adding:
 - lo.IsEmpty
 - lo.Compact
 
-Improve:
+Change:
 
 - lo.Must + lo.MustX: add context to panic message
+
+Fix:
+
+- lo.Nth: out of bound exception (#137)
 
 ## 1.21.0 (2022-05-10)
 

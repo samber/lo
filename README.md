@@ -605,7 +605,7 @@ count := lo.CountBy[int]([]int{1, 5, 1}, func(i int) bool {
 
 ### Subset
 
-Returns a copy of a slice from `offset` up to `length` elements.
+Returns a copy of a slice from `offset` up to `length` elements. Like `slice[start:start+length]`, but does not panic on overflow.
 
 ```go
 in := []int{0, 1, 2, 3, 4}
@@ -622,7 +622,7 @@ sub := lo.Subset(in, -2, math.MaxUint)
 
 ### Slice
 
-Returns a copy of a slice from `start` up to, but not including `end`.
+Returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
 
 ```go
 in := []int{0, 1, 2, 3, 4}
