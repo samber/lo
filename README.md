@@ -146,6 +146,8 @@ Supported search helpers:
 - Find
 - FindIndexOf
 - FindLastIndexOf
+- FindKey
+- FindKeyBy
 - Min
 - MinBy
 - Max
@@ -1156,6 +1158,40 @@ str, index, ok := lo.FindLastIndexOf[string]([]string{"foobar"}, func(i string) 
     return i == "b"
 })
 // "", -1, false
+```
+
+### FindKey
+
+Returns the key of the first value matching.
+
+```go
+result1, ok1 := lo.FindKey(map[string]int{"foo": 1, "bar": 2, "baz": 3}, 2)
+// "bar", true
+
+result2, ok2 := lo.FindKey(map[string]int{"foo": 1, "bar": 2, "baz": 3}, 42)
+// "", false
+
+type test struct {
+    foobar string
+}
+result3, ok3 := lo.FindKey(map[string]test{"foo": test{"foo"}, "bar": test{"bar"}, "baz": test{"baz"}}, test{"foo"})
+// "foo", true
+```
+
+### FindKeyBy
+
+Returns the key of the first element predicate returns truthy for.
+
+```go
+result1, ok1 := lo.FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
+    return k == "foo"
+})
+// "foo", true
+
+result2, ok2 := lo.FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
+    return false
+})
+// "", false
 ```
 
 ### Min

@@ -96,6 +96,46 @@ func TestFindOrElse(t *testing.T) {
 	is.Equal(result2, "x")
 }
 
+func TestFindKey(t *testing.T) {
+	is := assert.New(t)
+
+	result1, ok1 := FindKey(map[string]int{"foo": 1, "bar": 2, "baz": 3}, 2)
+	is.Equal("bar", result1)
+	is.True(ok1)
+
+	result2, ok2 := FindKey(map[string]int{"foo": 1, "bar": 2, "baz": 3}, 42)
+	is.Equal("", result2)
+	is.False(ok2)
+
+	type test struct {
+		foobar string
+	}
+
+	result3, ok3 := FindKey(map[string]test{"foo": test{"foo"}, "bar": test{"bar"}, "baz": test{"baz"}}, test{"foo"})
+	is.Equal("foo", result3)
+	is.True(ok3)
+
+	result4, ok4 := FindKey(map[string]test{"foo": test{"foo"}, "bar": test{"bar"}, "baz": test{"baz"}}, test{"hello world"})
+	is.Equal("", result4)
+	is.False(ok4)
+}
+
+func TestFindKeyBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1, ok1 := FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
+		return k == "foo"
+	})
+	is.Equal("foo", result1)
+	is.True(ok1)
+
+	result2, ok2 := FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
+		return false
+	})
+	is.Equal("", result2)
+	is.False(ok2)
+}
+
 func TestMin(t *testing.T) {
 	is := assert.New(t)
 

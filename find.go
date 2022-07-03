@@ -86,6 +86,28 @@ func FindOrElse[T any](collection []T, fallback T, predicate func(T) bool) T {
 	return fallback
 }
 
+// FindKey returns the key of the first value matching.
+func FindKey[K comparable, V comparable](object map[K]V, value V) (K, bool) {
+	for k, v := range object {
+		if v == value {
+			return k, true
+		}
+	}
+
+	return Empty[K](), false
+}
+
+// FindKeyBy returns the key of the first element predicate returns truthy for.
+func FindKeyBy[K comparable, V comparable](object map[K]V, predicate func(K, V) bool) (K, bool) {
+	for k, v := range object {
+		if predicate(k, v) {
+			return k, true
+		}
+	}
+
+	return Empty[K](), false
+}
+
 // Min search the minimum value of a collection.
 func Min[T constraints.Ordered](collection []T) T {
 	var min T
