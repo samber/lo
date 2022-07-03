@@ -84,6 +84,10 @@ Supported helpers for slices:
 - Reject
 - Count
 - CountBy
+- Subset
+- Slice
+- Replace
+- ReplaceAll
 
 Supported helpers for maps:
 
@@ -598,7 +602,7 @@ count := lo.CountBy[int]([]int{1, 5, 1}, func(i int) bool {
 
 ### Subset
 
-Return part of a slice.
+Returns a copy of a slice from `offset` up to `length` elements.
 
 ```go
 in := []int{0, 1, 2, 3, 4}
@@ -615,7 +619,7 @@ sub := lo.Subset(in, -2, math.MaxUint)
 
 ### Slice
 
-Slice returns a copy of a slice by specifying two indices (from `start` up to, but not including `end`).
+Returns a copy of a slice from `start` up to, but not including `end`.
 
 ```go
 in := []int{0, 1, 2, 3, 4}

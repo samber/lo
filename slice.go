@@ -363,7 +363,7 @@ func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 	return count
 }
 
-// Subset return part of a slice.
+// Subset returns a copy of a slice from `offset` up to `length` elements.
 func Subset[T any](collection []T, offset int, length uint) []T {
 	size := len(collection)
 
@@ -385,7 +385,7 @@ func Subset[T any](collection []T, offset int, length uint) []T {
 	return collection[offset : offset+int(length)]
 }
 
-// Slice returns a copy of a slice by specifying two indices (from `start` up to, but not including `end`).
+// Slice returns a copy of a slice from `start` up to, but not including `end`.
 func Slice[T comparable](collection []T, start int, end int) []T {
 	size := len(collection)
 
