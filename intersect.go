@@ -176,11 +176,11 @@ func Union[T comparable](list1 []T, list2 []T) []T {
 	return result
 }
 
-// Without returns list2 without elements of list1.
-func Without[T comparable](list1 []T, list2 []T) []T {
-	result := []T{}
-	for _, e := range list2 {
-		if !Contains(list1, e) {
+// Without returns slice excluding all given values.
+func Without[T comparable](collection []T, exclude ...T) []T {
+	result := make([]T, 0, len(collection))
+	for _, e := range collection {
+		if !Contains(exclude, e) {
 			result = append(result, e)
 		}
 	}
