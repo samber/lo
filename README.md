@@ -59,145 +59,158 @@ GoDoc: [https://godoc.org/github.com/samber/lo](https://godoc.org/github.com/sam
 
 Supported helpers for slices:
 
-- Filter
-- Map
-- FilterMap
-- FlatMap
-- Reduce
-- ForEach
-- Times
-- Uniq
-- UniqBy
-- GroupBy
-- Chunk
-- PartitionBy
-- Flatten
-- Shuffle
-- Reverse
-- Fill
-- Repeat
-- KeyBy
-- Drop
-- DropRight
-- DropWhile
-- DropRightWhile
-- Reject
-- Count
-- CountBy
-- Subset
-- Slice
-- Replace
-- ReplaceAll
-- Compact
+- [Filter](#filter)
+- [Map](#map)
+- [FilterMap](#filtermap)
+- [FlatMap](#flatmap)
+- [Reduce](#reduce)
+- [ForEach](#foreach)
+- [Times](#times)
+- [Uniq](#uniq)
+- [UniqBy](#uniqby)
+- [GroupBy](#groupby)
+- [Chunk](#chunk)
+- [PartitionBy](#partitionby)
+- [Flatten](#flatten)
+- [Shuffle](#shuffle)
+- [Reverse](#reverse)
+- [Fill](#fill)
+- [Repeat](#repeat)
+- [RepeatBy](#repeatby)
+- [KeyBy](#keyby)
+- [Drop](#drop)
+- [DropRight](#dropright)
+- [DropWhile](#dropwhile)
+- [DropRightWhile](#droprightwhile)
+- [Reject](#reject)
+- [Count](#count)
+- [CountBy](#countby)
+- [Subset](#subset)
+- [Slice](#slice)
+- [Replace](#replace)
+- [ReplaceAll](#replaceall)
+- [Compact](#compact)
 
 Supported helpers for maps:
 
-- Keys
-- Values
-- PickBy
-- PickByKeys
-- PickByValues
-- OmitBy
-- OmitByKeys
-- OmitByValues
-- Entries / ToPairs
-- FromEntries / FromPairs
-- Invert
-- Assign (merge of maps)
-- MapKeys
-- MapValues
+- [Keys](#keys)
+- [Values](#values)
+- [PickBy](#pickby)
+- [PickByKeys](#pickbykeys)
+- [PickByValues](#pickbyvalues)
+- [OmitBy](#omitby)
+- [OmitByKeys](#omitbykeys)
+- [OmitByValues](#omitbyvalues)
+- [Entries / ToPairs](#entries-alias-topairs)
+- [FromEntries / FromPairs](#fromentries-alias-frompairs)
+- [Invert](#invert)
+- [Assign (merge of maps)](#assign)
+- [MapKeys](#mapkeys)
+- [MapValues](#mapvalues)
 
 Supported math helpers:
 
-- Range / RangeFrom / RangeWithSteps
-- Clamp
-- SumBy
+- [Range / RangeFrom / RangeWithSteps](#range--rangefrom--rangewithsteps)
+- [Clamp](#clamp)
+- [SumBy](#sumby)
 
 Supported helpers for strings:
 
-- Substring
-- RuneLength
+- [Substring](#substring)
+- [RuneLength](#runelength)
 
 Supported helpers for tuples:
 
-- T2 -> T9
-- Unpack2 -> Unpack9
-- Zip2 -> Zip9
-- Unzip2 -> Unzip9
+- [T2 -> T9](#t2---t9)
+- [Unpack2 -> Unpack9](#unpack2---unpack9)
+- [Zip2 -> Zip9](#zip2---zip9)
+- [Unzip2 -> Unzip9](#unzip2---unzip9)
 
 Supported intersection helpers:
 
-- Contains
-- ContainsBy
-- Every
-- EveryBy
-- Some
-- SomeBy
-- None
-- NoneBy
-- Intersect
-- Difference
-- Union
-- Without
-- WithoutEmpty
+- [Contains](#contains)
+- [ContainsBy](#containsby)
+- [Every](#every)
+- [EveryBy](#everyby)
+- [Some](#some)
+- [SomeBy](#someby)
+- [None](#none)
+- [NoneBy](#noneby)
+- [Intersect](#intersect)
+- [Difference](#difference)
+- [Union](#union)
+- [Without](#without)
+- [WithoutEmpty](#withoutempty)
 
 Supported search helpers:
 
-- IndexOf
-- LastIndexOf
-- Find
-- FindIndexOf
-- FindLastIndexOf
-- FindKey
-- FindKeyBy
-- Min
-- MinBy
-- Max
-- MaxBy
-- Last
-- Nth
-- Sample
-- Samples
+- [IndexOf](#indexof)
+- [LastIndexOf](#lastindexof)
+- [Find](#find)
+- [FindIndexOf](#findindexof)
+- [FindLastIndexOf](#findlastindexof)
+- [FindKey](#findkey)
+- [FindKeyBy](#findkeyby)
+- [Min](#min)
+- [MinBy](#minby)
+- [Max](#max)
+- [MaxBy](#maxby)
+- [Last](#last)
+- [Nth](#nth)
+- [Sample](#sample)
+- [Samples](#samples)
 
 Conditional helpers:
 
-- Ternary (1 line if/else statement)
-- If / ElseIf / Else
-- Switch / Case / Default
+- [Ternary (1 line if/else statement)](#ternary)
+- [If / ElseIf / Else](#if--elseif--else)
+- [Switch / Case / Default](#switch--case--default)
 
 Type manipulation helpers:
 
-- ToPtr
-- FromPtr
-- ToSlicePtr
-- ToAnySlice
-- FromAnySlice
-- Empty
-- IsEmpty
-- Coalesce
+- [ToPtr](#toptr)
+- [FromPtr](#fromptr)
+- [ToSlicePtr](#tosliceptr)
+- [ToAnySlice](#toanyslice)
+- [FromAnySlice](#fromanyslice)
+- [Empty](#empty)
+- [IsEmpty](#isempty)
+- [Coalesce](#coalesce)
 
 Function helpers:
 
-- Partial
+- [Partial](#partial)
 
 Concurrency helpers:
 
-- Attempt
-- AttemptWithDelay
-- Debounce
-- Async
+- [Attempt](#attempt)
+- [AttemptWithDelay](#attemptwithdelay)
+- [Debounce](#debounce)
+- [Synchronize](#synchronize)
+- [Async](#async)
 
 Error handling:
 
-- Must
-- Try
-- TryCatch
-- TryWithErrorValue
-- TryCatchWithErrorValue
+- [Must](#must)
+- [Try](#try)
+- [TryCatch](#trycatch)
+- [TryWithErrorValue](#trywitherrorvalue)
+- [TryCatchWithErrorValue](#trycatchwitherrorvalue)
 
 Constraints:
 
 - Clonable
+
+### Filter
+
+Iterates over a collection and returns an array of all the elements the predicate function returns `true` for.
+
+```go
+even := lo.Filter[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+    return x%2 == 0
+})
+// []int{2, 4}
+```
 
 ### Map
 
@@ -223,20 +236,6 @@ lop.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 // []string{"1", "2", "3", "4"}
 ```
 
-### FlatMap
-
-Manipulates a slice and transforms and flattens it to a slice of another type.
-
-```go
-lo.FlatMap[int, string]([]int{0, 1, 2}, func(x int, _ int) []string {
-	return []string{
-		strconv.FormatInt(x, 10),
-		strconv.FormatInt(x, 10),
-	}
-})
-// []string{"0", "0", "1", "1", "2", "2"}
-```
-
 ### FilterMap
 
 Returns a slice which obtained after both filtering and mapping using the given callback function.
@@ -253,35 +252,18 @@ matching := lo.FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboa
 // []string{"xpu", "xpu"}
 ```
 
-### Filter
+### FlatMap
 
-Iterates over a collection and returns an array of all the elements the predicate function returns `true` for.
+Manipulates a slice and transforms and flattens it to a slice of another type.
 
 ```go
-even := lo.Filter[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
-    return x%2 == 0
+lo.FlatMap[int, string]([]int{0, 1, 2}, func(x int, _ int) []string {
+	return []string{
+		strconv.FormatInt(x, 10),
+		strconv.FormatInt(x, 10),
+	}
 })
-// []int{2, 4}
-```
-
-### Contains
-
-Returns true if an element is present in a collection.
-
-```go
-present := lo.Contains[int]([]int{0, 1, 2, 3, 4, 5}, 5)
-// true
-```
-
-### ContainsBy
-
-Returns true if the predicate function returns `true`.
-
-```go
-present := lo.ContainsBy[int]([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
-    return x == 3
-})
-// true
+// []string{"0", "0", "1", "1", "2", "2"}
 ```
 
 ### Reduce
@@ -981,6 +963,26 @@ a, b := lo.Unzip2[string, int]([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B:
 // []int{1, 2}
 ```
 
+### Contains
+
+Returns true if an element is present in a collection.
+
+```go
+present := lo.Contains[int]([]int{0, 1, 2, 3, 4, 5}, 5)
+// true
+```
+
+### ContainsBy
+
+Returns true if the predicate function returns `true`.
+
+```go
+present := lo.ContainsBy[int]([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
+    return x == 3
+})
+// true
+```
+
 ### Every
 
 Returns true if all elements of a subset are contained into a collection or if the subset is empty.
@@ -1123,7 +1125,7 @@ notFound := lo.IndexOf[int]([]int{0, 1, 2, 1, 2, 3}, 6)
 // -1
 ```
 
-### LastIndex
+### LastIndexOf
 
 Returns the index at which the last occurrence of a value is found in an array or return -1 if the value cannot be found.
 
@@ -1738,7 +1740,7 @@ val1, val2 := lo.Must2(example2(), "'%s' must always contain '%s'", myString, re
 ...
 ```
 
-## Try
+### Try
 
 Calls the function and return false in case of error and on panic.
 
@@ -1760,7 +1762,7 @@ ok := lo.Try(func() error {
 // false
 ```
 
-## Try{0->6}
+### Try{0->6}
 
 The same behavior than `Try`, but callback returns 2 variables.
 
@@ -1772,7 +1774,7 @@ ok := lo.Try2(func() (string, error) {
 // false
 ```
 
-## TryWithErrorValue
+### TryWithErrorValue
 
 The same behavior than `Try`, but also returns value passed to panic.
 
@@ -1784,7 +1786,7 @@ err, ok := lo.TryWithErrorValue(func() error {
 // "error", false
 ```
 
-## TryCatch
+### TryCatch
 
 The same behavior than `Try`, but calls the catch function in case of error.
 
@@ -1801,7 +1803,7 @@ ok := lo.TryCatch(func() error {
 // caught == true
 ```
 
-## TryCatchWithErrorValue
+### TryCatchWithErrorValue
 
 The same behavior than `TryWithErrorValue`, but calls the catch function in case of error.
 
