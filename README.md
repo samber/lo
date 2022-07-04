@@ -197,6 +197,10 @@ Error handling:
 - [TryWithErrorValue](#trywitherrorvalue)
 - [TryCatchWithErrorValue](#trycatchwitherrorvalue)
 
+Constraints:
+
+- Clonable
+
 ### Filter
 
 Iterates over a collection and returns an array of all the elements the predicate function returns `true` for.
