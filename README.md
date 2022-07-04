@@ -1261,6 +1261,7 @@ duplicatedValues := lo.FindDuplicatesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i i
     return i%3
 })
 // []int{3, 4}
+```
 
 ### Min
 
