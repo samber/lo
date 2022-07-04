@@ -186,3 +186,17 @@ func Without[T comparable](collection []T, exclude ...T) []T {
 	}
 	return result
 }
+
+// WithoutEmpty returns slice excluding empty values.
+func WithoutEmpty[T comparable](collection []T) []T {
+	var empty T
+
+	result := make([]T, 0, len(collection))
+	for _, e := range collection {
+		if e != empty {
+			result = append(result, e)
+		}
+	}
+
+	return result
+}

@@ -139,6 +139,7 @@ Supported intersection helpers:
 - Difference
 - Union
 - Without
+- WithoutEmpty
 
 Supported search helpers:
 
@@ -1099,6 +1100,15 @@ subset := lo.Without[int]([]int{0, 2, 10}, 2)
 
 subset := lo.Without[int]([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
 // []int{10}
+```
+
+### WithoutEmpty
+
+Returns slice excluding empty values.
+
+```go
+subset := lo.WithoutEmpty[int]([]int{0, 2, 10})
+// []int{2, 10}
 ```
 
 ### IndexOf

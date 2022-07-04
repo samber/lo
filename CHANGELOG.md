@@ -2,6 +2,13 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.24.0 (2022-07-04)
+
+Adding:
+
+- lo.Without
+- lo.WithoutEmpty
+
 ## 1.23.0 (2022-07-04)
 
 Adding:
