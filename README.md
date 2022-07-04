@@ -179,6 +179,7 @@ Type manipulation helpers:
 - [FromAnySlice](#fromanyslice)
 - [Empty](#empty)
 - [IsEmpty](#isempty)
+- [IsNotEmpty](#isnotempty)
 - [Coalesce](#coalesce)
 
 Function helpers:
@@ -1556,6 +1557,31 @@ lo.IsEmpty[test](test{foobar: ""})
 // true
 lo.IsEmpty[test](test{foobar: "foobar"})
 // false
+```
+
+### IsNotEmpty
+
+Returns true if argument is a zero value.
+
+```go
+lo.IsNotEmpty[int](0)
+// false
+lo.IsNotEmpty[int](42)
+// true
+
+lo.IsNotEmpty[string]("")
+// false
+lo.IsNotEmpty[bool]("foobar")
+// true
+
+type test struct {
+    foobar string
+}
+
+lo.IsNotEmpty[test](test{foobar: ""})
+// false
+lo.IsNotEmpty[test](test{foobar: "foobar"})
+// true
 ```
 
 ### Coalesce
