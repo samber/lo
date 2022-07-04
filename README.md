@@ -145,7 +145,7 @@ Supported intersection helpers:
 Supported search helpers:
 
 - [IndexOf](#indexof)
-- [LastIndexOf](#lastindex)
+- [LastIndexOf](#lastindexof)
 - [Find](#find)
 - [FindIndexOf](#findindexof)
 - [FindLastIndexOf](#findlastindexof)
