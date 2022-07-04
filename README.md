@@ -138,6 +138,7 @@ Supported intersection helpers:
 - Intersect
 - Difference
 - Union
+- Without
 
 Supported search helpers:
 
@@ -1086,6 +1087,18 @@ Returns all distinct elements from both collections. Result will not change the 
 ```go
 union := lo.Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
 // []int{0, 1, 2, 3, 4, 5, 10}
+```
+
+### Without
+
+Returns slice excluding all given values.
+
+```go
+subset := lo.Without[int]([]int{0, 2, 10}, 2)
+// []int{0, 10}
+
+subset := lo.Without[int]([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
+// []int{10}
 ```
 
 ### IndexOf
