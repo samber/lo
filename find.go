@@ -108,6 +108,118 @@ func FindKeyBy[K comparable, V comparable](object map[K]V, predicate func(K, V) 
 	return Empty[K](), false
 }
 
+// FindUniques returns a slice with all the unique elements of the collection.
+// The order of result values is determined by the order they occur in the collection.
+func FindUniques[T comparable](collection []T) []T {
+	isDupl := make(map[T]bool, len(collection))
+
+	for _, item := range collection {
+		duplicated, ok := isDupl[item]
+		if !ok {
+			isDupl[item] = false
+		} else if !duplicated {
+			isDupl[item] = true
+		}
+	}
+
+	result := make([]T, 0, len(collection)-len(isDupl))
+
+	for _, item := range collection {
+		if duplicated := isDupl[item]; !duplicated {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
+
+// FindUniquesBy returns a slice with all the unique elements of the collection.
+// The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
+// invoked for each element in array to generate the criterion by which uniqueness is computed.
+func FindUniquesBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
+	isDupl := make(map[U]bool, len(collection))
+
+	for _, item := range collection {
+		key := iteratee(item)
+
+		duplicated, ok := isDupl[key]
+		if !ok {
+			isDupl[key] = false
+		} else if !duplicated {
+			isDupl[key] = true
+		}
+	}
+
+	result := make([]T, 0, len(collection)-len(isDupl))
+
+	for _, item := range collection {
+		key := iteratee(item)
+
+		if duplicated := isDupl[key]; !duplicated {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
+
+// FindDuplicates returns a slice with the first occurence of each duplicated elements of the collection.
+// The order of result values is determined by the order they occur in the collection.
+func FindDuplicates[T comparable](collection []T) []T {
+	isDupl := make(map[T]bool, len(collection))
+
+	for _, item := range collection {
+		duplicated, ok := isDupl[item]
+		if !ok {
+			isDupl[item] = false
+		} else if !duplicated {
+			isDupl[item] = true
+		}
+	}
+
+	result := make([]T, 0, len(collection)-len(isDupl))
+
+	for _, item := range collection {
+		if duplicated := isDupl[item]; duplicated {
+			result = append(result, item)
+			isDupl[item] = false
+		}
+	}
+
+	return result
+}
+
+// FindDuplicatesBy returns a slice with the first occurence of each duplicated elements of the collection.
+// The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
+// invoked for each element in array to generate the criterion by which uniqueness is computed.
+func FindDuplicatesBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
+	isDupl := make(map[U]bool, len(collection))
+
+	for _, item := range collection {
+		key := iteratee(item)
+
+		duplicated, ok := isDupl[key]
+		if !ok {
+			isDupl[key] = false
+		} else if !duplicated {
+			isDupl[key] = true
+		}
+	}
+
+	result := make([]T, 0, len(collection)-len(isDupl))
+
+	for _, item := range collection {
+		key := iteratee(item)
+
+		if duplicated := isDupl[key]; duplicated {
+			result = append(result, item)
+			isDupl[key] = false
+		}
+	}
+
+	return result
+}
+
 // Min search the minimum value of a collection.
 func Min[T constraints.Ordered](collection []T) T {
 	var min T

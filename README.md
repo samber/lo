@@ -151,6 +151,10 @@ Supported search helpers:
 - [FindLastIndexOf](#findlastindexof)
 - [FindKey](#findkey)
 - [FindKeyBy](#findkeyby)
+- [FindUniques](#finduniques)
+- [FindUniquesBy](#finduniquesby)
+- [FindDuplicates](#findduplicates)
+- [FindDuplicatesBy](#findduplicatesby)
 - [Min](#min)
 - [MinBy](#minby)
 - [Max](#max)
@@ -1218,6 +1222,45 @@ result2, ok2 := lo.FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(
 })
 // "", false
 ```
+
+### FindUniques
+
+Returns a slice with all the unique elements of the collection. The order of result values is determined by the order they occur in the array.
+
+```go
+uniqueValues := lo.FindUniques[int]([]int{1, 2, 2, 1, 2, 3})
+// []int{3}
+```
+
+### FindUniquesBy
+
+Returns a slice with all the unique elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
+
+```go
+uniqueValues := lo.FindUniquesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int {
+    return i%3
+})
+// []int{5}
+```
+
+### FindDuplicates
+
+Returns a slice with the first occurence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array.
+
+```go
+duplicatedValues := lo.FindDuplicates[int]([]int{1, 2, 2, 1, 2, 3})
+// []int{1, 2}
+```
+
+### FindDuplicatesBy
+
+Returns a slice with the first occurence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
+
+```go
+duplicatedValues := lo.FindDuplicatesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int {
+    return i%3
+})
+// []int{3, 4}
 
 ### Min
 
