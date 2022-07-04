@@ -20,7 +20,7 @@ watch-bench:
 	reflex -t 50ms -s -- sh -c 'go test -benchmem -count 3 -bench ./...'
 
 coverage:
-	${BIN} test -v -coverprofile cover.out .
+	${BIN} test -v -coverprofile=cover.out -covermode=atomic .
 	${BIN} tool cover -html=cover.out -o cover.html
 
 # tools

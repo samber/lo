@@ -11,7 +11,7 @@ import (
 func TestKeys(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := Keys[string, int](map[string]int{"foo": 1, "bar": 2})
+	r1 := Keys(map[string]int{"foo": 1, "bar": 2})
 	sort.Strings(r1)
 
 	is.Equal(r1, []string{"bar", "foo"})
@@ -20,7 +20,7 @@ func TestKeys(t *testing.T) {
 func TestValues(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := Values[string, int](map[string]int{"foo": 1, "bar": 2})
+	r1 := Values(map[string]int{"foo": 1, "bar": 2})
 	sort.Ints(r1)
 
 	is.Equal(r1, []int{1, 2})
@@ -29,7 +29,7 @@ func TestValues(t *testing.T) {
 func TestPickBy(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := PickBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+	r1 := PickBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
 		return value%2 == 1
 	})
 
@@ -39,7 +39,7 @@ func TestPickBy(t *testing.T) {
 func TestPickByKeys(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := PickByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+	r1 := PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
 }
@@ -47,7 +47,7 @@ func TestPickByKeys(t *testing.T) {
 func TestPickByValues(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := PickByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+	r1 := PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
 }
@@ -55,7 +55,7 @@ func TestPickByValues(t *testing.T) {
 func TestOmitBy(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := OmitBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+	r1 := OmitBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
 		return value%2 == 1
 	})
 
@@ -65,7 +65,7 @@ func TestOmitBy(t *testing.T) {
 func TestOmitByKeys(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := OmitByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+	r1 := OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
 
 	is.Equal(r1, map[string]int{"bar": 2})
 }
@@ -73,7 +73,7 @@ func TestOmitByKeys(t *testing.T) {
 func TestOmitByValues(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := OmitByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+	r1 := OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
 	is.Equal(r1, map[string]int{"bar": 2})
 }
@@ -81,7 +81,7 @@ func TestOmitByValues(t *testing.T) {
 func TestEntries(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := Entries[string, int](map[string]int{"foo": 1, "bar": 2})
+	r1 := Entries(map[string]int{"foo": 1, "bar": 2})
 
 	sort.Slice(r1, func(i, j int) bool {
 		return r1[i].Value < r1[j].Value
@@ -101,7 +101,7 @@ func TestEntries(t *testing.T) {
 func TestFromEntries(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := FromEntries[string, int]([]Entry[string, int]{
+	r1 := FromEntries([]Entry[string, int]{
 		{
 			Key:   "foo",
 			Value: 1,
@@ -120,8 +120,8 @@ func TestFromEntries(t *testing.T) {
 func TestInvert(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := Invert[string, int](map[string]int{"a": 1, "b": 2})
-	r2 := Invert[string, int](map[string]int{"a": 1, "b": 2, "c": 1})
+	r1 := Invert(map[string]int{"a": 1, "b": 2})
+	r2 := Invert(map[string]int{"a": 1, "b": 2, "c": 1})
 
 	is.Len(r1, 2)
 	is.EqualValues(map[int]string{1: "a", 2: "b"}, r1)
@@ -131,7 +131,7 @@ func TestInvert(t *testing.T) {
 func TestAssign(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := Assign[string, int](map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4})
+	result1 := Assign(map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4})
 
 	is.Len(result1, 3)
 	is.Equal(result1, map[string]int{"a": 1, "b": 3, "c": 4})
@@ -140,10 +140,10 @@ func TestAssign(t *testing.T) {
 func TestMapKeys(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := MapKeys[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	result1 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
 		return "Hello"
 	})
-	result2 := MapKeys[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
+	result2 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
 		return strconv.FormatInt(int64(v), 10)
 	})
 
@@ -155,10 +155,10 @@ func TestMapKeys(t *testing.T) {
 func TestMapValues(t *testing.T) {
 	is := assert.New(t)
 
-	result1 := MapValues[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	result1 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
 		return "Hello"
 	})
-	result2 := MapValues[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	result2 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
 		return strconv.FormatInt(int64(x), 10)
 	})
 

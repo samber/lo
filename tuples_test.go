@@ -9,14 +9,14 @@ import (
 func TestT(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := T2[string, int]("a", 1)
+	r1 := T2("a", 1)
 	r2 := T3[string, int, float32]("b", 2, 3.0)
-	r3 := T4[string, int, float32, bool]("c", 3, 4.0, true)
-	r4 := T5[string, int, float32, bool, string]("d", 4, 5.0, false, "e")
-	r5 := T6[string, int, float32, bool, string, int]("f", 5, 6.0, true, "g", 7)
-	r6 := T7[string, int, float32, bool, string, int, float64]("h", 6, 7.0, false, "i", 8, 9.0)
-	r7 := T8[string, int, float32, bool, string, int, float64, bool]("j", 7, 8.0, true, "k", 9, 10.0, false)
-	r8 := T9[string, int, float32, bool, string, int, float64, bool, string]("l", 8, 9.0, false, "m", 10, 11.0, true, "n")
+	r3 := T4[string, int, float32]("c", 3, 4.0, true)
+	r4 := T5[string, int, float32]("d", 4, 5.0, false, "e")
+	r5 := T6[string, int, float32]("f", 5, 6.0, true, "g", 7)
+	r6 := T7[string, int, float32]("h", 6, 7.0, false, "i", 8, 9.0)
+	r7 := T8[string, int, float32]("j", 7, 8.0, true, "k", 9, 10.0, false)
+	r8 := T9[string, int, float32]("l", 8, 9.0, false, "m", 10, 11.0, true, "n")
 
 	is.Equal(r1, Tuple2[string, int]{A: "a", B: 1})
 	is.Equal(r2, Tuple3[string, int, float32]{A: "b", B: 2, C: 3.0})
@@ -34,7 +34,7 @@ func TestUnpack(t *testing.T) {
 	{
 		tuple := Tuple2[string, int]{"a", 1}
 
-		r1, r2 := Unpack2[string, int](tuple)
+		r1, r2 := Unpack2(tuple)
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -43,7 +43,7 @@ func TestUnpack(t *testing.T) {
 	{
 		tuple := Tuple3[string, int, float64]{"a", 1, 1.0}
 
-		r1, r2, r3 := Unpack3[string, int, float64](tuple)
+		r1, r2, r3 := Unpack3(tuple)
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -53,7 +53,7 @@ func TestUnpack(t *testing.T) {
 	{
 		tuple := Tuple4[string, int, float64, bool]{"a", 1, 1.0, true}
 
-		r1, r2, r3, r4 := Unpack4[string, int, float64, bool](tuple)
+		r1, r2, r3, r4 := Unpack4(tuple)
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -64,7 +64,7 @@ func TestUnpack(t *testing.T) {
 	{
 		tuple := Tuple5[string, int, float64, bool, string]{"a", 1, 1.0, true, "b"}
 
-		r1, r2, r3, r4, r5 := Unpack5[string, int, float64, bool, string](tuple)
+		r1, r2, r3, r4, r5 := Unpack5(tuple)
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -76,7 +76,7 @@ func TestUnpack(t *testing.T) {
 	{
 		tuple := Tuple6[string, int, float64, bool, string, int]{"a", 1, 1.0, true, "b", 2}
 
-		r1, r2, r3, r4, r5, r6 := Unpack6[string, int, float64, bool, string, int](tuple)
+		r1, r2, r3, r4, r5, r6 := Unpack6(tuple)
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -89,7 +89,7 @@ func TestUnpack(t *testing.T) {
 	{
 		tuple := Tuple7[string, int, float64, bool, string, int, float64]{"a", 1, 1.0, true, "b", 2, 3.0}
 
-		r1, r2, r3, r4, r5, r6, r7 := Unpack7[string, int, float64, bool, string, int, float64](tuple)
+		r1, r2, r3, r4, r5, r6, r7 := Unpack7(tuple)
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -103,7 +103,7 @@ func TestUnpack(t *testing.T) {
 	{
 		tuple := Tuple8[string, int, float64, bool, string, int, float64, bool]{"a", 1, 1.0, true, "b", 2, 3.0, true}
 
-		r1, r2, r3, r4, r5, r6, r7, r8 := Unpack8[string, int, float64, bool, string, int, float64, bool](tuple)
+		r1, r2, r3, r4, r5, r6, r7, r8 := Unpack8(tuple)
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -118,7 +118,7 @@ func TestUnpack(t *testing.T) {
 	{
 		tuple := Tuple9[string, int, float64, bool, string, int, float64, bool, string]{"a", 1, 1.0, true, "b", 2, 3.0, true, "c"}
 
-		r1, r2, r3, r4, r5, r6, r7, r8, r9 := Unpack9[string, int, float64, bool, string, int, float64, bool, string](tuple)
+		r1, r2, r3, r4, r5, r6, r7, r8, r9 := Unpack9(tuple)
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -135,24 +135,24 @@ func TestUnpack(t *testing.T) {
 func TestZip(t *testing.T) {
 	is := assert.New(t)
 
-	r1 := Zip2[string, int](
+	r1 := Zip2(
 		[]string{"a", "b"},
 		[]int{1, 2},
 	)
 
-	r2 := Zip3[string, int, int](
+	r2 := Zip3(
 		[]string{"a", "b", "c"},
 		[]int{1, 2, 3}, []int{4, 5, 6},
 	)
 
-	r3 := Zip4[string, int, int, bool](
+	r3 := Zip4(
 		[]string{"a", "b", "c", "d"},
 		[]int{1, 2, 3, 4},
 		[]int{5, 6, 7, 8},
 		[]bool{true, true, true, true},
 	)
 
-	r4 := Zip5[string, int, int, bool, float32](
+	r4 := Zip5(
 		[]string{"a", "b", "c", "d", "e"},
 		[]int{1, 2, 3, 4, 5},
 		[]int{6, 7, 8, 9, 10},
@@ -160,7 +160,7 @@ func TestZip(t *testing.T) {
 		[]float32{0.1, 0.2, 0.3, 0.4, 0.5},
 	)
 
-	r5 := Zip6[string, int, int, bool, float32, float64](
+	r5 := Zip6(
 		[]string{"a", "b", "c", "d", "e", "f"},
 		[]int{1, 2, 3, 4, 5, 6},
 		[]int{7, 8, 9, 10, 11, 12},
@@ -169,7 +169,7 @@ func TestZip(t *testing.T) {
 		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06},
 	)
 
-	r6 := Zip7[string, int, int, bool, float32, float64, int8](
+	r6 := Zip7(
 		[]string{"a", "b", "c", "d", "e", "f", "g"},
 		[]int{1, 2, 3, 4, 5, 6, 7},
 		[]int{8, 9, 10, 11, 12, 13, 14},
@@ -179,7 +179,7 @@ func TestZip(t *testing.T) {
 		[]int8{1, 2, 3, 4, 5, 6, 7},
 	)
 
-	r7 := Zip8[string, int, int, bool, float32, float64, int8, int16](
+	r7 := Zip8(
 		[]string{"a", "b", "c", "d", "e", "f", "g", "h"},
 		[]int{1, 2, 3, 4, 5, 6, 7, 8},
 		[]int{9, 10, 11, 12, 13, 14, 15, 16},
@@ -190,7 +190,7 @@ func TestZip(t *testing.T) {
 		[]int16{1, 2, 3, 4, 5, 6, 7, 8},
 	)
 
-	r8 := Zip9[string, int, int, bool, float32, float64, int8, int16, int32](
+	r8 := Zip9(
 		[]string{"a", "b", "c", "d", "e", "f", "g", "h", "i"},
 		[]int{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]int{10, 11, 12, 13, 14, 15, 16, 17, 18},
@@ -274,7 +274,7 @@ func TestZip(t *testing.T) {
 func TestUnzip(t *testing.T) {
 	is := assert.New(t)
 
-	r1, r2 := Unzip2[string, int]([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
+	r1, r2 := Unzip2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
 
 	is.Equal(r1, []string{"a", "b"})
 	is.Equal(r2, []int{1, 2})

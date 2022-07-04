@@ -2,7 +2,6 @@ package lo
 
 import (
 	"fmt"
-	"math"
 	"math/rand"
 
 	"golang.org/x/exp/constraints"
@@ -85,6 +84,28 @@ func FindOrElse[T any](collection []T, fallback T, predicate func(T) bool) T {
 	}
 
 	return fallback
+}
+
+// FindKey returns the key of the first value matching.
+func FindKey[K comparable, V comparable](object map[K]V, value V) (K, bool) {
+	for k, v := range object {
+		if v == value {
+			return k, true
+		}
+	}
+
+	return Empty[K](), false
+}
+
+// FindKeyBy returns the key of the first element predicate returns truthy for.
+func FindKeyBy[K comparable, V comparable](object map[K]V, predicate func(K, V) bool) (K, bool) {
+	for k, v := range object {
+		if predicate(k, v) {
+			return k, true
+		}
+	}
+
+	return Empty[K](), false
 }
 
 // FindUniques returns a slice with all the unique elements of the collection.
@@ -300,18 +321,16 @@ func Last[T any](collection []T) (T, error) {
 // Nth returns the element at index `nth` of collection. If `nth` is negative, the nth element
 // from the end is returned. An error is returned when nth is out of slice bounds.
 func Nth[T any](collection []T, nth int) (T, error) {
-	if int(math.Abs(float64(nth))) >= len(collection) {
+	l := len(collection)
+	if nth >= l || -nth > l {
 		var t T
 		return t, fmt.Errorf("nth: %d out of slice bounds", nth)
 	}
 
-	length := len(collection)
-
 	if nth >= 0 {
 		return collection[nth], nil
 	}
-
-	return collection[length+nth], nil
+	return collection[l+nth], nil
 }
 
 // Sample returns a random item from collection.
@@ -328,11 +347,7 @@ func Sample[T any](collection []T) T {
 func Samples[T any](collection []T, count int) []T {
 	size := len(collection)
 
-	// put values into a map, for faster deletion
-	cOpy := make([]T, 0, size)
-	for _, v := range collection {
-		cOpy = append(cOpy, v)
-	}
+	cOpy := append([]T{}, collection...)
 
 	results := []T{}
 
