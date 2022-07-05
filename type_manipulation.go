@@ -5,6 +5,15 @@ func ToPtr[T any](x T) *T {
 	return &x
 }
 
+// FromPtr returns the pointer value or empty.
+func FromPtr[T any](x *T) T {
+	if x == nil {
+		return Empty[T]()
+	}
+
+	return *x
+}
+
 // ToSlicePtr returns a slice of pointer copy of value.
 func ToSlicePtr[T any](collection []T) []*T {
 	return Map(collection, func(x T, _ int) *T {
@@ -40,8 +49,20 @@ func FromAnySlice[T any](in []any) (out []T, ok bool) {
 
 // Empty returns an empty value.
 func Empty[T any]() T {
-	var t T
-	return t
+	var zero T
+	return zero
+}
+
+// IsEmpty returns true if argument is a zero value.
+func IsEmpty[T comparable](v T) bool {
+	var zero T
+	return zero == v
+}
+
+// IsNotEmpty returns true if argument is not a zero value.
+func IsNotEmpty[T comparable](v T) bool {
+	var zero T
+	return zero != v
 }
 
 // Coalesce returns the first non-empty arguments. Arguments must be comparable.
