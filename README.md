@@ -39,8 +39,8 @@ You can import `lo` using:
 
 ```go
 import (
-"github.com/samber/lo"
-lop "github.com/samber/lo/parallel"
+    "github.com/samber/lo"
+    lop "github.com/samber/lo/parallel"
 )
 ```
 
