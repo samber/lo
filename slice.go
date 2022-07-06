@@ -437,3 +437,24 @@ func Compact[T comparable](collection []T) []T {
 
 	return result
 }
+
+// Intersperse inserts a value between each element of a slice.
+func Intersperse[T any](collection []T, separator T) []T {
+	size := len(collection)
+
+	if size == 0 {
+		return []T{}
+	}
+
+	result := make([]T, 0, size+size-1)
+
+	for i, item := range collection {
+		result = append(result, item)
+
+		if i != len(collection)-1 {
+			result = append(result, separator)
+		}
+	}
+
+	return result
+}
