@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -194,6 +195,30 @@ func TestDifference(t *testing.T) {
 	left3, right3 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 	is.Equal(left3, []int{})
 	is.Equal(right3, []int{})
+}
+
+func TestDifferenceWith(t *testing.T) {
+	is := assert.New(t)
+	type UserUser struct {
+		Name string
+		Age  int
+		ID   int
+	}
+	left1, right1 := DifferenceWith(
+		[]UserUser{{"A", 1, 1111}, {"B", 2, 2222}, {"C", 3, 3333}},
+		[]UserUser{{"E", 5, 5555}, {"B", 2, 2222}, {"C", 3, 3333}},
+		func(user UserUser) string { return user.Name },
+	)
+	is.Equal(left1, []UserUser{{"A", 1, 1111}})
+	is.Equal(right1, []UserUser{{"E", 5, 5555}})
+
+	left2, right2 := DifferenceWith(
+		[]UserUser{{"A", 1, 1111}, {"B", 2, 2222}, {"C", 3, 3333}},
+		[]UserUser{{"E", 5, 5555}, {"B", 2, 2222}, {"C", 3, 3333}},
+		func(user UserUser) string { return strconv.Itoa(user.ID) },
+	)
+	is.Equal(left2, []UserUser{{"A", 1, 1111}})
+	is.Equal(right2, []UserUser{{"E", 5, 5555}})
 }
 
 func TestUnion(t *testing.T) {
