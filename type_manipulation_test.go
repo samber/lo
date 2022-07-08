@@ -14,6 +14,19 @@ func TestToPtr(t *testing.T) {
 	is.Equal(*result1, []int{1, 2})
 }
 
+func TestFromPtr(t *testing.T) {
+	is := assert.New(t)
+
+	str1 := "foo"
+	ptr := &str1
+
+	is.Equal("foo", FromPtr(ptr))
+	is.Equal("", FromPtr[string](nil))
+	is.Equal(0, FromPtr[int](nil))
+	is.Nil(FromPtr[*string](nil))
+	is.EqualValues(ptr, FromPtr(&ptr))
+}
+
 func TestToSlicePtr(t *testing.T) {
 	is := assert.New(t)
 
@@ -62,6 +75,38 @@ func TestEmpty(t *testing.T) {
 	is.Empty(Empty[int64]())
 	is.Empty(Empty[test]())
 	is.Empty(Empty[chan string]())
+}
+
+func TestIsEmpty(t *testing.T) {
+	is := assert.New(t)
+
+	//nolint:unused
+	type test struct {
+		foobar string
+	}
+
+	is.True(IsEmpty[string](""))
+	is.False(IsEmpty[string]("foo"))
+	is.True(IsEmpty[int64](0))
+	is.False(IsEmpty[int64](42))
+	is.True(IsEmpty[test](test{foobar: ""}))
+	is.False(IsEmpty[test](test{foobar: "foo"}))
+}
+
+func TestIsNotEmpty(t *testing.T) {
+	is := assert.New(t)
+
+	//nolint:unused
+	type test struct {
+		foobar string
+	}
+
+	is.False(IsNotEmpty[string](""))
+	is.True(IsNotEmpty[string]("foo"))
+	is.False(IsNotEmpty[int64](0))
+	is.True(IsNotEmpty[int64](42))
+	is.False(IsNotEmpty[test](test{foobar: ""}))
+	is.True(IsNotEmpty[test](test{foobar: "foo"}))
 }
 
 func TestCoalesce(t *testing.T) {
