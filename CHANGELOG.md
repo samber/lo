@@ -2,6 +2,50 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.25.0 (2022-07-04)
+
+Adding:
+
+- lo.FindUniques
+- lo.FindUniquesBy
+- lo.FindDuplicates
+- lo.FindDuplicatesBy
+- lo.IsNotEmpty
+
+## 1.24.0 (2022-07-04)
+
+Adding:
+
+- lo.Without
+- lo.WithoutEmpty
+
+## 1.23.0 (2022-07-04)
+
+Adding:
+
+- lo.FindKey
+- lo.FindKeyBy
+
+## 1.22.0 (2022-07-04)
+
+Adding:
+
+- lo.Slice
+- lo.FromPtr
+- lo.IsEmpty
+- lo.Compact
+- lo.ToPairs: alias to lo.Entries
+- lo.FromPairs: alias to lo.FromEntries
+- lo.Partial
+
+Change:
+
+- lo.Must + lo.MustX: add context to panic message
+
+Fix:
+
+- lo.Nth: out of bound exception (#137)
+
 ## 1.21.0 (2022-05-10)
 
 Adding:
@@ -62,7 +106,7 @@ Improvement:
 
 Adding:
 
-- lo.Colaesce
+- lo.Coalesce
 
 ## 1.13.0 (2022-04-14)
 

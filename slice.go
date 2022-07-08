@@ -189,14 +189,11 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]
 }
 
 // Flatten returns an array a single level deep.
-func Flatten[T any](collection [][]T) []T {
-	result := []T{}
-
+func Flatten[T any](collection [][]T) (result []T) {
 	for _, item := range collection {
 		result = append(result, item...)
 	}
-
-	return result
+	return
 }
 
 // Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
@@ -365,7 +362,7 @@ func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 	return count
 }
 
-// Subset return part of a slice.
+// Subset returns a copy of a slice from `offset` up to `length` elements. Like `slice[start:start+length]`, but does not panic on overflow.
 func Subset[T any](collection []T, offset int, length uint) []T {
 	size := len(collection)
 
@@ -385,6 +382,25 @@ func Subset[T any](collection []T, offset int, length uint) []T {
 	}
 
 	return collection[offset : offset+int(length)]
+}
+
+// Slice returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
+func Slice[T comparable](collection []T, start int, end int) []T {
+	size := len(collection)
+
+	if start >= end {
+		return []T{}
+	}
+
+	if start > size {
+		start = size
+	}
+
+	if end > size {
+		end = size
+	}
+
+	return collection[start:end]
 }
 
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
@@ -409,6 +425,7 @@ func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 	return Replace(collection, old, new, -1)
 }
 
+
 // IsSorted checks if a slice is sorted.
 func IsSorted[T constraints.Ordered](collection []T) bool {
 	for i := 1; i < len(collection); i++ {
@@ -431,4 +448,19 @@ func IsSortedByKey[K constraints.Ordered, V any](collection []V, iteratee func(V
 	}
 
 	return true
+}
+
+// Compact returns a slice of all non-zero elements.
+func Compact[T comparable](collection []T) []T {
+	var zero T
+
+	result := []T{}
+
+	for _, item := range collection {
+		if item != zero {
+			result = append(result, item)
+		}
+	}
+
+	return result
 }
