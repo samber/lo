@@ -65,6 +65,14 @@ func Reduce[T any, R any](collection []T, accumulator func(R, T, int) R, initial
 	return initial
 }
 
+func ReduceRight[T any, R any](collection []T, accumulator func(R, T, int) R, initial R) R {
+	for i := len(collection) - 1; i >= 0; i-- {
+		initial = accumulator(initial, collection[i], i)
+	}
+
+	return initial
+}
+
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 func ForEach[T any](collection []T, iteratee func(T, int)) {
 	for i, item := range collection {
