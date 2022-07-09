@@ -449,7 +449,7 @@ randomOrder := lo.Shuffle[int]([]int{0, 1, 2, 3, 4, 5})
 Reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
 
 ```go
-reverseOder := lo.Reverse[int]([]int{0, 1, 2, 3, 4, 5})
+reverseOrder := lo.Reverse[int]([]int{0, 1, 2, 3, 4, 5})
 // []int{5, 4, 3, 2, 1, 0}
 ```
 
