@@ -90,6 +90,7 @@ Supported helpers for slices:
 - [Replace](#replace)
 - [ReplaceAll](#replaceall)
 - [Compact](#compact)
+- [Intersperse](#intersperse)
 
 Supported helpers for maps:
 
@@ -678,6 +679,16 @@ in := []string{"", "foo", "", "bar", ""}
 
 slice := lo.Compact[string](in)
 // []string{"foo", "bar"}
+```
+
+### Intersperse
+
+Returns a slice with a separator value between each element in the input.
+
+```go
+in := []int{1, 2, 3}
+slice := Intersperse[int](in, 100)
+// []int{1, 100, 2, 100, 3}
 ```
 
 ### Keys

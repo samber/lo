@@ -532,3 +532,13 @@ func TestCompact(t *testing.T) {
 
 	is.Equal(r5, []*foo{&e1, &e2, &e3})
 }
+
+func TestIntersperse(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := Intersperse([]int{1, 2, 3}, 100)
+	is.Equal([]int{1, 100, 2, 100, 3}, r1)
+
+	r2 := Intersperse([]string{"fizz", "buzz", "fizzbuzz"}, "|")
+	is.Equal([]string{"fizz", "|", "buzz", "|", "fizzbuzz"}, r2)
+}
