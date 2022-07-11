@@ -1,6 +1,6 @@
 package parallel
 
-// Option provides some useful configure options for parallel, such as conurrency limit.
+// Option provides some useful configure options for parallel, such as concurrency limit.
 type Option struct {
 	concurrency       int
 	concurrencySetted bool
