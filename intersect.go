@@ -90,8 +90,13 @@ func NoneBy[V any](collection []V, predicate func(V) bool) bool {
 	return true
 }
 
-// Intersect returns the intersection between two collections.
-func Intersect[T comparable](list1 []T, list2 []T) []T {
+// Intersect returns the intersection between collections.
+func Intersect[T comparable](list1 []T, list2 []T, lists ...[]T) []T {
+	if len(lists) > 0 {
+		l := Intersect(list2, lists[0])
+		return Intersect(list1, l, lists[1:]...)
+	}
+
 	result := []T{}
 	seen := map[T]struct{}{}
 
