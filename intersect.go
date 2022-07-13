@@ -143,7 +143,12 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 
 // Union returns all distinct elements from both collections.
 // result returns will not change the order of elements relatively.
-func Union[T comparable](list1 []T, list2 []T) []T {
+func Union[T comparable](list1 []T, list2 []T, lists ...[]T) []T {
+	if len(lists) > 0 {
+		l := Union(list2, lists[0])
+		return Union(list1, l, lists[1:]...)
+	}
+
 	result := []T{}
 
 	seen := map[T]struct{}{}
