@@ -181,12 +181,16 @@ func TestIntersect(t *testing.T) {
 	result3 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 	result4 := Intersect([]int{0, 6}, []int{0, 1, 2, 3, 4, 5})
 	result5 := Intersect([]int{0, 6, 0}, []int{0, 1, 2, 3, 4, 5})
+	result6 := Intersect([]int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+	result7 := Intersect([]int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{1, 6})
 
 	is.Equal(result1, []int{0, 2})
 	is.Equal(result2, []int{0})
 	is.Equal(result3, []int{})
 	is.Equal(result4, []int{0})
 	is.Equal(result5, []int{0})
+	is.Equal(result6, []int{0})
+	is.Equal(result7, []int{})
 }
 
 func TestDifference(t *testing.T) {
