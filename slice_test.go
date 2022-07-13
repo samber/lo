@@ -278,6 +278,19 @@ func TestKeyBy(t *testing.T) {
 	is.Equal(result1, map[int]string{1: "a", 2: "aa", 3: "aaa"})
 }
 
+func TestRemove(t *testing.T) {
+	is := assert.New(t)
+
+	is.Equal([]int{1, 2, 3, 4}, Remove([]int{0, 1, 2, 3, 4}, 0))
+	is.Equal([]int{0, 2, 3, 4}, Remove([]int{0, 1, 2, 3, 4}, 1))
+	is.Equal([]int{0, 1, 3, 4}, Remove([]int{0, 1, 2, 3, 4}, 2))
+	is.Equal([]int{0, 1, 2, 4}, Remove([]int{0, 1, 2, 3, 4}, 3))
+	is.Equal([]int{0, 1, 2, 3}, Remove([]int{0, 1, 2, 3, 4}, 4))
+
+	is.PanicsWithValue("Index must exist in slice",
+		func() { is.Equal([]int{}, Remove([]int{0, 1, 2, 3, 4}, 5)) })
+}
+
 func TestDrop(t *testing.T) {
 	is := assert.New(t)
 

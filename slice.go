@@ -261,6 +261,22 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	return result
 }
 
+// Remove removes an element from the slice or array.
+func Remove[T any](collection []T, i int) []T {
+	end := len(collection) - 1
+
+	if i > end {
+		panic("Index must exist in slice")
+	}
+
+	copy(collection[i:], collection[i+1:])
+
+	var zero T
+	collection[end] = zero
+
+	return collection[:end]
+}
+
 // Drop drops n elements from the beginning of a slice or array.
 func Drop[T any](collection []T, n int) []T {
 	if len(collection) <= n {
