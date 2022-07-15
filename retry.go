@@ -101,4 +101,55 @@ func AttemptWithDelay(maxIteration int, delay time.Duration, f func(index int, d
 	return maxIteration, time.Since(start), err
 }
 
+// HaltingAttempt invokes a function N times until it returns valid output.
+// Returning either the caught error or nil. It will terminate the invoke
+// immediately if second error is returned with non-nil value. When first
+// argument is less than `1`, the function runs until a successful response
+// is returned.
+func HaltingAttempt(maxIteration int, f func(int) (error, error)) (int, error, error) {
+	var err error
+	var haltingErr error
+
+	for i := 0; maxIteration <= 0 || i < maxIteration; i++ {
+		// for retries >= 0 {
+		err, haltingErr = f(i)
+		if haltingErr != nil {
+			return i + 1, nil, haltingErr
+		}
+		if err == nil {
+			return i + 1, nil, nil
+		}
+	}
+
+	return maxIteration, err, haltingErr
+}
+
+// AttemptWithDelay invokes a function N times until it returns valid output,
+// with a pause between each call. Returning either the caught error or nil.
+// It will terminate the invoke immediately if second error is returned with
+// non-nil value. When first argument is less than `1`, the function runs
+// until a successful response is returned.
+func HaltingAttemptWithDelay(maxIteration int, delay time.Duration, f func(int, time.Duration) (error, error)) (int, time.Duration, error, error) {
+	var err error
+	var haltingErr error
+
+	start := time.Now()
+
+	for i := 0; maxIteration <= 0 || i < maxIteration; i++ {
+		err, haltingErr = f(i, time.Since(start))
+		if haltingErr != nil {
+			return i + 1, time.Since(start), nil, haltingErr
+		}
+		if err == nil {
+			return i + 1, time.Since(start), nil, nil
+		}
+
+		if maxIteration <= 0 || i+1 < maxIteration {
+			time.Sleep(delay)
+		}
+	}
+
+	return maxIteration, time.Since(start), err, haltingErr
+}
+
 // throttle ?

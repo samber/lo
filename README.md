@@ -2315,7 +2315,6 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 ### AttemptWithDelay
 
 Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil.
-
 When first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go

@@ -98,6 +98,189 @@ func TestAttemptWithDelay(t *testing.T) {
 	is.Equal(err4, nil)
 }
 
+func TestHaltingAttempt(t *testing.T) {
+	is := assert.New(t)
+
+	err := fmt.Errorf("failed")
+
+	iter1, err1, haltingErr1 := HaltingAttempt(42, func(i int) (error, error) {
+		return nil, nil
+	})
+
+	is.Equal(iter1, 1)
+	is.Nil(err1)
+	is.Nil(haltingErr1)
+
+	iter2, err2, haltingErr2 := HaltingAttempt(42, func(i int) (error, error) {
+		if i == 5 {
+			return nil, nil
+		}
+
+		return err, nil
+	})
+
+	is.Equal(iter2, 6)
+	is.Nil(err2)
+	is.Nil(haltingErr2)
+
+	iter3, err3, haltingErr3 := HaltingAttempt(2, func(i int) (error, error) {
+		if i == 5 {
+			return nil, nil
+		}
+
+		return err, nil
+	})
+
+	is.Equal(iter3, 2)
+	is.Equal(err3, err)
+	is.Nil(haltingErr3)
+
+	iter4, err4, haltingErr4 := HaltingAttempt(0, func(i int) (error, error) {
+		if i < 42 {
+			return err, nil
+		}
+
+		return nil, nil
+	})
+
+	is.Equal(iter4, 43)
+	is.Nil(err4)
+	is.Nil(haltingErr4)
+
+	iter5, err5, haltingErr5 := HaltingAttempt(0, func(i int) (error, error) {
+		if i == 5 {
+			return nil, err
+		}
+
+		return err, nil
+	})
+
+	is.Equal(iter5, 6)
+	is.Nil(err5)
+	is.Equal(err, haltingErr5)
+
+	iter6, err6, haltingErr6 := HaltingAttempt(0, func(i int) (error, error) {
+		return nil, err
+	})
+
+	is.Equal(iter6, 1)
+	is.Nil(err6)
+	is.Equal(err, haltingErr6)
+
+	iter7, err7, haltingErr7 := HaltingAttempt(42, func(i int) (error, error) {
+		if i == 42 {
+			return nil, err
+		}
+		if i < 41 {
+			return err, nil
+		}
+
+		return nil, nil
+	})
+
+	is.Equal(iter7, 42)
+	is.Nil(err7)
+	is.Nil(haltingErr7)
+}
+
+func TestHaltingAttemptWithDelay(t *testing.T) {
+	is := assert.New(t)
+
+	err := fmt.Errorf("failed")
+
+	iter1, dur1, err1, haltingErr1 := HaltingAttemptWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, error) {
+		return nil, nil
+	})
+
+	is.Equal(iter1, 1)
+	is.Greater(dur1, 0*time.Millisecond)
+	is.Less(dur1, 1*time.Millisecond)
+	is.Nil(err1)
+	is.Nil(haltingErr1)
+
+	iter2, dur2, err2, haltingErr2 := HaltingAttemptWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, error) {
+		if i == 5 {
+			return nil, nil
+		}
+
+		return err, nil
+	})
+
+	is.Equal(iter2, 6)
+	is.Greater(dur2, 50*time.Millisecond)
+	is.Less(dur2, 60*time.Millisecond)
+	is.Nil(err2)
+	is.Nil(haltingErr2)
+
+	iter3, dur3, err3, haltingErr3 := HaltingAttemptWithDelay(2, 10*time.Millisecond, func(i int, d time.Duration) (error, error) {
+		if i == 5 {
+			return nil, nil
+		}
+
+		return err, nil
+	})
+
+	is.Equal(iter3, 2)
+	is.Greater(dur3, 10*time.Millisecond)
+	is.Less(dur3, 20*time.Millisecond)
+	is.Equal(err3, err)
+	is.Nil(haltingErr3)
+
+	iter4, dur4, err4, haltingErr4 := HaltingAttemptWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, error) {
+		if i < 10 {
+			return err, nil
+		}
+
+		return nil, nil
+	})
+
+	is.Equal(iter4, 11)
+	is.Greater(dur4, 100*time.Millisecond)
+	is.Less(dur4, 115*time.Millisecond)
+	is.Nil(err4)
+	is.Nil(haltingErr4)
+
+	iter5, dur5, err5, haltingErr5 := HaltingAttemptWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, error) {
+		if i == 5 {
+			return nil, err
+		}
+
+		return err, nil
+	})
+
+	is.Equal(iter5, 6)
+	is.Greater(dur5, 10*time.Millisecond)
+	is.Less(dur5, 115*time.Millisecond)
+	is.Nil(err5)
+	is.Equal(err, haltingErr5)
+
+	iter6, dur6, err6, haltingErr6 := HaltingAttemptWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, error) {
+		return nil, err
+	})
+
+	is.Equal(iter6, 1)
+	is.Less(dur6, 10*time.Millisecond)
+	is.Less(dur6, 115*time.Millisecond)
+	is.Nil(err6)
+	is.Equal(err, haltingErr6)
+
+	iter7, dur7, err7, haltingErr7 := HaltingAttemptWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, error) {
+		if i == 42 {
+			return nil, err
+		}
+		if i < 41 {
+			return err, nil
+		}
+
+		return nil, nil
+	})
+
+	is.Equal(iter7, 42)
+	is.Less(dur7, 500*time.Millisecond)
+	is.Nil(err7)
+	is.Nil(haltingErr7)
+}
+
 func TestDebounce(t *testing.T) {
 	t.Parallel()
 
