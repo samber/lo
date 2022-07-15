@@ -1657,7 +1657,6 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 ### AttemptWithDelay
 
 Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil.
-
 When first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
@@ -1674,6 +1673,90 @@ iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duratio
 ```
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+
+### HaltingAttempt
+
+Invokes a function N times until it returns valid output. Returning either the caught error or nil.
+It will terminate the invoke immediately if second error is returned with non-nil value.
+When first argument is less than `1`, the function runs until a successful response is returned.
+
+```go
+iter, err, haltingErr := lo.HaltingAttempt(42, func(i int) (error, error) {
+    if i == 5 {
+        return nil, nil
+    }
+
+    return fmt.Errorf("failed"), nil
+})
+// 6
+// nil
+// nil
+
+iter, err, haltingErr := lo.HaltingAttempt(2, func(i int) (error, error) {
+    if i == 5 {
+        return nil, nil
+    }
+
+    return fmt.Errorf("failed"), nil
+})
+// 2
+// error "failed"
+// nil
+
+iter, err, haltingErr := lo.HaltingAttempt(0, func(i int) (error, error) {
+    if i < 42 {
+        return fmt.Errorf("failed"), nil
+    }
+
+    return nil
+})
+// 43
+// nil
+// nil
+
+iter, err, haltingErr := lo.HaltingAttempt(0, func(i int) (error, error) {
+    if i == 5 {
+        return nil, fmt.Errorf("halted")
+    }
+
+    return nil
+})
+// 6
+// nil
+// halted
+```
+
+### HaltingAttemptWithDelay
+
+Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil.
+It will terminate the invoke immediately if second error is returned with non-nil value.
+When first argument is less than `1`, the function runs until a successful response is returned.
+
+```go
+iter, duration, err, haltingErr := lo.HaltingAttemptWithDelay(5, 2*time.Second, func(i int, duration time.Duration) (error, error) {
+    if i == 2 {
+        return nil
+    }
+
+    return fmt.Errorf("failed")
+})
+// 3
+// ~ 4 seconds
+// nil
+// nil
+
+iter, duration, err, haltingErr := lo.HaltingAttemptWithDelay(5, 2*time.Second, func(i int, duration time.Duration) (error, error) {
+    if i == 2 {
+        return fmt.Errorf("halted")
+    }
+
+    return nil, nil
+})
+// 3
+// ~ 4 seconds
+// nil
+// halted
+```
 
 ### Debounce
 
