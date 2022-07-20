@@ -437,3 +437,17 @@ func Compact[T comparable](collection []T) []T {
 
 	return result
 }
+
+// Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// If any of two pairs would have the same key the last one gets added to the map.
+// The returned map preserves the entry iteration order of the original array.
+func Associate[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
+	result := make(map[K]V)
+
+	for _, t := range collection {
+		k, v := transform(t)
+		result[k] = v
+	}
+
+	return result
+}
