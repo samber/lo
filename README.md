@@ -286,7 +286,7 @@ sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int
 
 ### ReduceRight
 
-Reduces a collection from right to left.
+Like `lo.Reduce` except that it iterates over elements of collection from right to left.
 
 ```go
 result := lo.ReduceRight[[]int, []int]([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {

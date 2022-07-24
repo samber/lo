@@ -7,6 +7,7 @@
 Adding:
 
 - lo.Associate
+- lo.ReduceRight
 
 ## 1.25.0 (2022-07-04)
 

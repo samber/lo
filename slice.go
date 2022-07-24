@@ -65,6 +65,7 @@ func Reduce[T any, R any](collection []T, accumulator func(R, T, int) R, initial
 	return initial
 }
 
+// ReduceRight helper is like Reduce except that it iterates over elements of collection from right to left.
 func ReduceRight[T any, R any](collection []T, accumulator func(R, T, int) R, initial R) R {
 	for i := len(collection) - 1; i >= 0; i-- {
 		initial = accumulator(initial, collection[i], i)
