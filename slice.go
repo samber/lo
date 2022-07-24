@@ -475,7 +475,7 @@ func IsSorted[T constraints.Ordered](collection []T) bool {
 }
 
 // IsSortedByKey checks if a slice is sorted by iteratee.
-func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(V) K) bool {
+func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(T) K) bool {
 	size := len(collection)
 
 	for i := 0; i < size-1; i++ {
