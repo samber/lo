@@ -4,6 +4,7 @@ import (
 	"sort"
 	"strconv"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -84,4 +85,26 @@ func TestPartitionBy(t *testing.T) {
 
 	is.ElementsMatch(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
 	is.Equal(result2, [][]int{})
+}
+
+func TestFind(t *testing.T) {
+	is := assert.New(t)
+
+	start1 := time.Now()
+	result1, ok1 := Find([]string{"a", "b", "c", "d"}, func(i string) bool {
+		time.Sleep(100 * time.Millisecond)
+		return i == "b"
+	})
+	elapsed1 := time.Since(start1)
+
+	result2, ok2 := Find([]string{"foobar"}, func(i string) bool {
+		return i == "b"
+	})
+
+	is.Equal(ok1, true)
+	is.Equal(result1, "b")
+	is.Less(elapsed1, 400*time.Millisecond)
+
+	is.Equal(ok2, false)
+	is.Equal(result2, "")
 }
