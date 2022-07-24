@@ -90,6 +90,7 @@ Supported helpers for slices:
 - [Replace](#replace)
 - [ReplaceAll](#replaceall)
 - [Compact](#compact)
+- [Associate](#associate)
 
 Supported helpers for maps:
 
@@ -678,6 +679,20 @@ in := []string{"", "foo", "", "bar", ""}
 
 slice := lo.Compact[string](in)
 // []string{"foo", "bar"}
+```
+
+### Associate
+
+Returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+If any of two pairs would have the same key the last one gets added to the map.
+The returned map preserves the entry iteration order of the original array.
+
+```go
+in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+aMap := Associate[*foo, string, int](in, func (f *foo) (string, int) { 
+	return f.baz, f.bar
+})
+// map[string][int]{ "apple":1, "banana":2 }
 ```
 
 ### Keys

@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 	"strings"
@@ -531,4 +532,37 @@ func TestCompact(t *testing.T) {
 	r5 := Compact([]*foo{&e1, &e2, nil, &e3})
 
 	is.Equal(r5, []*foo{&e1, &e2, &e3})
+}
+
+func TestAssociate(t *testing.T) {
+	type foo struct {
+		baz string
+		bar int
+	}
+	transform := func(f *foo) (string, int) {
+		return f.baz, f.bar
+	}
+	testCases := []struct {
+		in     []*foo
+		expect map[string]int
+	}{
+		{
+			in:     []*foo{{baz: "apple", bar: 1}},
+			expect: map[string]int{"apple": 1},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			expect: map[string]int{"apple": 1, "banana": 2},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			expect: map[string]int{"apple": 2},
+		},
+	}
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
+			is := assert.New(t)
+			is.Equal(Associate(testCase.in, transform), testCase.expect)
+		})
+	}
 }
