@@ -172,3 +172,14 @@ func MapValues[K comparable, V any, R any](in map[K]V, iteratee func(V, K) R) ma
 
 	return result
 }
+
+// MapToSlice transforms a map into a slice based on specific iteratee
+func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(V, K) R) []R {
+	result := make([]R, 0, len(in))
+
+	for k, v := range in {
+		result = append(result, iteratee(v, k))
+	}
+
+	return result
+}
