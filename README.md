@@ -78,6 +78,7 @@ Supported helpers for slices:
 - [Repeat](#repeat)
 - [RepeatBy](#repeatby)
 - [KeyBy](#keyby)
+- [Associate](#associate)
 - [Drop](#drop)
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
@@ -90,7 +91,6 @@ Supported helpers for slices:
 - [Replace](#replace)
 - [ReplaceAll](#replaceall)
 - [Compact](#compact)
-- [Associate](#associate)
 
 Supported helpers for maps:
 
@@ -528,6 +528,21 @@ result := lo.KeyBy[string, Character](characters, func(char Character) string {
 //map[a:{dir:left code:97} d:{dir:right code:100}]
 ```
 
+### Associate
+
+Returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+If any of two pairs would have the same key the last one gets added to the map.
+The returned map preserves the entry iteration order of the original array.
+
+```go
+in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+
+aMap := lo.Associate[*foo, string, int](in, func (f *foo) (string, int) {
+	return f.baz, f.bar
+})
+// map[string][int]{ "apple":1, "banana":2 }
+```
+
 ### Drop
 
 Drops n elements from the beginning of a slice or array.
@@ -679,20 +694,6 @@ in := []string{"", "foo", "", "bar", ""}
 
 slice := lo.Compact[string](in)
 // []string{"foo", "bar"}
-```
-
-### Associate
-
-Returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
-If any of two pairs would have the same key the last one gets added to the map.
-The returned map preserves the entry iteration order of the original array.
-
-```go
-in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
-aMap := Associate[*foo, string, int](in, func (f *foo) (string, int) { 
-	return f.baz, f.bar
-})
-// map[string][int]{ "apple":1, "banana":2 }
 ```
 
 ### Keys
