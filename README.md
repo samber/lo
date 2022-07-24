@@ -109,6 +109,7 @@ Supported helpers for maps:
 - [Assign (merge of maps)](#assign)
 - [MapKeys](#mapkeys)
 - [MapValues](#mapvalues)
+- [MapToSlice](#maptoslice)
 
 Supported math helpers:
 
@@ -867,6 +868,19 @@ m2 := lo.MapValues[int, int64, string](m1, func(x int64, _ int) string {
 	return strconv.FormatInt(x, 10)
 })
 // map[int]string{1: "1", 2: "2", 3: "3"}
+```
+
+### MapValues
+
+Transforms a map into a slice based on specific iteratee.
+
+```go
+m := map[int]int64{1: 4, 2: 5, 3: 6}
+
+s := lo.MapToSlice(m, func(k int, v int) string {
+    return fmt.Sprintf("%d_%d", k, v)
+})
+// []string{"1_4", "2_5", "3_6"}
 ```
 
 ### Range / RangeFrom / RangeWithSteps

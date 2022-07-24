@@ -9,6 +9,7 @@ Adding:
 - lo.Associate
 - lo.ReduceRight
 - lo.FromPtrOr
+- lo.MapToSlice
 
 ## 1.25.0 (2022-07-04)
 
