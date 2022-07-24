@@ -176,6 +176,7 @@ Type manipulation helpers:
 
 - [ToPtr](#toptr)
 - [FromPtr](#fromptr)
+- [FromPtrOr](#fromptror)
 - [ToSlicePtr](#tosliceptr)
 - [ToAnySlice](#toanyslice)
 - [FromAnySlice](#fromanyslice)
@@ -1517,6 +1518,19 @@ value := lo.FromPtr[string](&str)
 
 value := lo.FromPtr[string](nil)
 // ""
+```
+
+### FromPtrOr
+
+Returns the pointer value or the fallback value.
+
+```go
+str := "hello world"
+value := lo.FromPtrOr[string](&str, "empty")
+// "hello world"
+
+value := lo.FromPtrOr[string](nil, "empty")
+// "empty"
 ```
 
 ### ToSlicePtr
