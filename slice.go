@@ -270,6 +270,20 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	return result
 }
 
+// Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// If any of two pairs would have the same key the last one gets added to the map.
+// The returned map preserves the entry iteration order of the original array.
+func Associate[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
+	result := make(map[K]V)
+
+	for _, t := range collection {
+		k, v := transform(t)
+		result[k] = v
+	}
+
+	return result
+}
+
 // Drop drops n elements from the beginning of a slice or array.
 func Drop[T any](collection []T, n int) []T {
 	if len(collection) <= n {
@@ -442,20 +456,6 @@ func Compact[T comparable](collection []T) []T {
 		if item != zero {
 			result = append(result, item)
 		}
-	}
-
-	return result
-}
-
-// Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
-// If any of two pairs would have the same key the last one gets added to the map.
-// The returned map preserves the entry iteration order of the original array.
-func Associate[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
-	result := make(map[K]V)
-
-	for _, t := range collection {
-		k, v := transform(t)
-		result[k] = v
 	}
 
 	return result
