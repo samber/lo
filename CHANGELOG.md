@@ -10,6 +10,8 @@ Adding:
 - lo.ReduceRight
 - lo.FromPtrOr
 - lo.MapToSlice
+- lo.IsSorted
+- lo.IsSortedByKey
 
 ## 1.25.0 (2022-07-04)
 

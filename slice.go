@@ -448,31 +448,6 @@ func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 	return Replace(collection, old, new, -1)
 }
 
-
-// IsSorted checks if a slice is sorted.
-func IsSorted[T constraints.Ordered](collection []T) bool {
-	for i := 1; i < len(collection); i++ {
-		if collection[i-1] > collection[i] {
-			return false
-		}
-	}
-
-	return true
-}
-
-// IsSortedBy checks if a slice is sorted by iteratee.
-func IsSortedByKey[K constraints.Ordered, V any](collection []V, iteratee func(V) K) bool {
-	size := len(collection)
-
-	for i := 0; i < size-1; i++ {
-		if iteratee(collection[i]) > iteratee(collection[i+1]) {
-			return false
-		}
-	}
-
-	return true
-}
-
 // Compact returns a slice of all non-zero elements.
 func Compact[T comparable](collection []T) []T {
 	var zero T
@@ -486,4 +461,28 @@ func Compact[T comparable](collection []T) []T {
 	}
 
 	return result
+}
+
+// IsSorted checks if a slice is sorted.
+func IsSorted[T constraints.Ordered](collection []T) bool {
+	for i := 1; i < len(collection); i++ {
+		if collection[i-1] > collection[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+// IsSortedByKey checks if a slice is sorted by iteratee.
+func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(V) K) bool {
+	size := len(collection)
+
+	for i := 0; i < size-1; i++ {
+		if iteratee(collection[i]) > iteratee(collection[i+1]) {
+			return false
+		}
+	}
+
+	return true
 }

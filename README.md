@@ -712,6 +712,26 @@ slice := lo.Compact[string](in)
 // []string{"foo", "bar"}
 ```
 
+### IsSorted
+
+Checks if a slice is sorted.
+
+```go
+slice := lo.IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
+// true
+```
+
+### IsSortedByKey
+
+Checks if a slice is sorted by iteratee.
+
+```go
+slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
+    return len(s)
+})
+// true
+```
+
 ### Keys
 
 Creates an array of the map keys.
