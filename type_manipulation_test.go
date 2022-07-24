@@ -27,6 +27,23 @@ func TestFromPtr(t *testing.T) {
 	is.EqualValues(ptr, FromPtr(&ptr))
 }
 
+func TestFromPtrOr(t *testing.T) {
+	is := assert.New(t)
+
+	const fallbackStr = "fallback"
+	str := "foo"
+	ptrStr := &str
+
+	const fallbackInt = -1
+	i := 9
+	ptrInt := &i
+
+	is.Equal(str, FromPtrOr(ptrStr, fallbackStr))
+	is.Equal(fallbackStr, FromPtrOr(nil, fallbackStr))
+	is.Equal(i, FromPtrOr(ptrInt, fallbackInt))
+	is.Equal(fallbackInt, FromPtrOr(nil, fallbackInt))
+}
+
 func TestToSlicePtr(t *testing.T) {
 	is := assert.New(t)
 
