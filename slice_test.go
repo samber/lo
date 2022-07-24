@@ -503,6 +503,33 @@ func TestReplaceAll(t *testing.T) {
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out2)
 }
 
+func TestIsSorted(t *testing.T) {
+	is := assert.New(t)
+
+	is.True(IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}))
+	is.True(IsSorted([]string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"}))
+
+	is.False(IsSorted([]int{0, 1, 4, 3, 2, 5, 6, 7, 8, 9, 10}))
+	is.False(IsSorted([]string{"a", "b", "d", "c", "e", "f", "g", "h", "i", "j"}))
+}
+
+func TestIsSortedByKey(t *testing.T) {
+	is := assert.New(t)
+
+	is.True(IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
+		return len(s)
+	}))
+
+	is.False(IsSortedByKey([]string{"aa", "b", "ccc"}, func(s string) int {
+		return len(s)
+	}))
+
+	is.True(IsSortedByKey([]string{"1", "2", "3", "11"}, func(s string) int {
+		ret, _ := strconv.Atoi(s)
+		return ret
+	}))
+}
+
 func TestCompact(t *testing.T) {
 	is := assert.New(t)
 

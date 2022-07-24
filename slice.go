@@ -2,6 +2,8 @@ package lo
 
 import (
 	"math/rand"
+
+	"golang.org/x/exp/constraints"
 )
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
@@ -444,6 +446,31 @@ func Replace[T comparable](collection []T, old T, new T, n int) []T {
 // ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
 func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 	return Replace(collection, old, new, -1)
+}
+
+
+// IsSorted checks if a slice is sorted.
+func IsSorted[T constraints.Ordered](collection []T) bool {
+	for i := 1; i < len(collection); i++ {
+		if collection[i-1] > collection[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+// IsSortedBy checks if a slice is sorted by iteratee.
+func IsSortedByKey[K constraints.Ordered, V any](collection []V, iteratee func(V) K) bool {
+	size := len(collection)
+
+	for i := 0; i < size-1; i++ {
+		if iteratee(collection[i]) > iteratee(collection[i+1]) {
+			return false
+		}
+	}
+
+	return true
 }
 
 // Compact returns a slice of all non-zero elements.

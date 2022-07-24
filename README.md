@@ -92,6 +92,8 @@ Supported helpers for slices:
 - [Replace](#replace)
 - [ReplaceAll](#replaceall)
 - [Compact](#compact)
+- [IsSorted](#issorted)
+- [IsSortedByKey](#issortedbykey)
 
 Supported helpers for maps:
 
