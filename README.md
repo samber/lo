@@ -64,6 +64,7 @@ Supported helpers for slices:
 - [FilterMap](#filtermap)
 - [FlatMap](#flatmap)
 - [Reduce](#reduce)
+- [ReduceRight](#reduceright)
 - [ForEach](#foreach)
 - [Times](#times)
 - [Uniq](#uniq)
@@ -281,6 +282,17 @@ sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int
     return agg + item
 }, 0)
 // 10
+```
+
+### ReduceRight
+
+Reduces a collection from right to left.
+
+```go
+result := lo.ReduceRight[[]int, []int]([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {
+	  return append(agg, item...)
+}, []int{}))
+// []int{4, 5, 2, 3, 0, 1}
 ```
 
 ### ForEach

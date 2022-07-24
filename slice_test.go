@@ -117,6 +117,16 @@ func TestReduce(t *testing.T) {
 	is.Equal(result2, 20)
 }
 
+func TestReduceRight(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {
+		return append(agg, item...)
+	}, []int{})
+
+	is.Equal(result1, []int{4, 5, 2, 3, 0, 1})
+}
+
 func TestForEach(t *testing.T) {
 	is := assert.New(t)
 
