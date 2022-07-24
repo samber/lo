@@ -454,7 +454,7 @@ Returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 
 ```go
 randomOrder := lo.Shuffle[int]([]int{0, 1, 2, 3, 4, 5})
-// []int{0, 1, 2, 3, 4, 5}
+// []int{1, 4, 0, 3, 5, 2}
 ```
 
 ### Reverse

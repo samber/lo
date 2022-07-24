@@ -8,6 +8,7 @@ Adding:
 
 - lo.Associate
 - lo.ReduceRight
+- lo.FromPtrOr
 
 ## 1.25.0 (2022-07-04)
 
