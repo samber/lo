@@ -432,7 +432,7 @@ Parallel processing: like `lo.PartitionBy()`, but callback is called in goroutin
 ```go
 import lop "github.com/samber/lo/parallel"
 
-partitions := lo.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
+partitions := lop.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
     if x < 0 {
         return "negative"
     } else if x%2 == 0 {
