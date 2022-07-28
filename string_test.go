@@ -7,6 +7,32 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestChunkString(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := ChunkString("12345", 2)
+	is.Equal([]string{"12", "34", "5"}, result1)
+
+	result2 := ChunkString("123456", 2)
+	is.Equal([]string{"12", "34", "56"}, result2)
+
+	result3 := ChunkString("123456", 6)
+	is.Equal([]string{"123456"}, result3)
+
+	result4 := ChunkString("123456", 10)
+	is.Equal([]string{"123456"}, result4)
+
+	result5 := ChunkString("", 2)
+	is.Equal([]string{""}, result5)
+
+	result6 := ChunkString("明1好休2林森", 2)
+	is.Equal([]string{"明1", "好休", "2林", "森"}, result6)
+
+	is.Panics(func() {
+		ChunkString("12345", 0)
+	})
+}
+
 func TestSubstring(t *testing.T) {
 	is := assert.New(t)
 
