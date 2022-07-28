@@ -141,6 +141,39 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 	return left, right
 }
 
+// DifferenceWith returns the difference between two collections.
+// The first value is the collection of element absent of list2.
+// The second value is the collection of element absent of list1.
+func DifferenceWith[T any](list1 []T, list2 []T, key func(T) string) ([]T, []T) {
+	left := []T{}
+	right := []T{}
+
+	seenLeft := map[string]struct{}{}
+	seenRight := map[string]struct{}{}
+
+	for _, elem := range list1 {
+		seenLeft[key(elem)] = struct{}{}
+	}
+
+	for _, elem := range list2 {
+		seenRight[key(elem)] = struct{}{}
+	}
+
+	for _, elem := range list1 {
+		if _, ok := seenRight[key(elem)]; !ok {
+			left = append(left, elem)
+		}
+	}
+
+	for _, elem := range list2 {
+		if _, ok := seenLeft[key(elem)]; !ok {
+			right = append(right, elem)
+		}
+	}
+
+	return left, right
+}
+
 // Union returns all distinct elements from both collections.
 // result returns will not change the order of elements relatively.
 func Union[T comparable](list1 []T, list2 []T) []T {
