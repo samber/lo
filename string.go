@@ -41,7 +41,7 @@ func ChunkString[T ~string](str T, size int) []T {
 		return []T{str}
 	}
 
-	var chunks []string = make([]T, 0, ((len(str)-1)/size)+1)
+	var chunks []T = make([]T, 0, ((len(str)-1)/size)+1)
 	currentLen := 0
 	currentStart := 0
 	for i := range str {
