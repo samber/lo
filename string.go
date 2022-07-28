@@ -28,20 +28,20 @@ func Substring[T ~string](str T, offset int, length uint) T {
 
 // ChunkString returns an array of strings split into groups the length of size. If array can't be split evenly,
 // the final chunk will be the remaining elements.
-func ChunkString(str string, size int) []string {
+func ChunkString[T ~string](str T, size int) []T {
 	if size <= 0 {
 		panic("lo.ChunkString: Size parameter must be greater than 0")
 	}
 
 	if len(str) == 0 {
-		return []string{""}
+		return []T{""}
 	}
 
 	if size >= len(str) {
-		return []string{str}
+		return []T{str}
 	}
 
-	var chunks []string = make([]string, 0, ((len(str)-1)/size)+1)
+	var chunks []string = make([]T, 0, ((len(str)-1)/size)+1)
 	currentLen := 0
 	currentStart := 0
 	for i := range str {
