@@ -64,6 +64,7 @@ Supported helpers for slices:
 - [FilterMap](#filtermap)
 - [FlatMap](#flatmap)
 - [Reduce](#reduce)
+- [ReduceRight](#reduceright)
 - [ForEach](#foreach)
 - [Times](#times)
 - [Uniq](#uniq)
@@ -78,6 +79,7 @@ Supported helpers for slices:
 - [Repeat](#repeat)
 - [RepeatBy](#repeatby)
 - [KeyBy](#keyby)
+- [Associate / SliceToMap](#associate-alias-slicetomap)
 - [Drop](#drop)
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
@@ -90,6 +92,8 @@ Supported helpers for slices:
 - [Replace](#replace)
 - [ReplaceAll](#replaceall)
 - [Compact](#compact)
+- [IsSorted](#issorted)
+- [IsSortedByKey](#issortedbykey)
 
 Supported helpers for maps:
 
@@ -107,6 +111,7 @@ Supported helpers for maps:
 - [Assign (merge of maps)](#assign)
 - [MapKeys](#mapkeys)
 - [MapValues](#mapvalues)
+- [MapToSlice](#maptoslice)
 
 Supported math helpers:
 
@@ -117,6 +122,7 @@ Supported math helpers:
 Supported helpers for strings:
 
 - [Substring](#substring)
+- [ChunkString](#chunkstring)
 - [RuneLength](#runelength)
 
 Supported helpers for tuples:
@@ -174,6 +180,7 @@ Type manipulation helpers:
 
 - [ToPtr](#toptr)
 - [FromPtr](#fromptr)
+- [FromPtrOr](#fromptror)
 - [ToSlicePtr](#tosliceptr)
 - [ToAnySlice](#toanyslice)
 - [FromAnySlice](#fromanyslice)
@@ -300,6 +307,17 @@ sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int
     return agg + item
 }, 0)
 // 10
+```
+
+### ReduceRight
+
+Like `lo.Reduce` except that it iterates over elements of collection from right to left.
+
+```go
+result := lo.ReduceRight[[]int, []int]([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {
+	  return append(agg, item...)
+}, []int{}))
+// []int{4, 5, 2, 3, 0, 1}
 ```
 
 ### ForEach
@@ -453,7 +471,7 @@ Parallel processing: like `lo.PartitionBy()`, but callback is called in goroutin
 ```go
 import lop "github.com/samber/lo/parallel"
 
-partitions := lo.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
+partitions := lop.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
     if x < 0 {
         return "negative"
     } else if x%2 == 0 {
@@ -485,7 +503,7 @@ Returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 
 ```go
 randomOrder := lo.Shuffle[int]([]int{0, 1, 2, 3, 4, 5})
-// []int{0, 1, 2, 3, 4, 5}
+// []int{1, 4, 0, 3, 5, 2}
 ```
 
 ### Reverse
@@ -536,13 +554,13 @@ slice := lo.Repeat[foo](2, foo{"a"})
 Builds a slice with values returned by N calls of callback.
 
 ```go
-slice := lo.RepeatBy[int](0, func (i int) int {
-    return math.Pow(i, 2)
+slice := lo.RepeatBy[string](0, func (i int) string {
+    return strconv.FormatInt(math.Pow(i, 2), 10)
 })
 // []int{}
 
-slice := lo.RepeatBy[int](5, func (i int) int {
-    return math.Pow(i, 2)
+slice := lo.RepeatBy[string](5, func (i int) string {
+    return strconv.FormatInt(math.Pow(i, 2), 10)
 })
 // []int{0, 1, 4, 9, 16}
 ```
@@ -569,6 +587,22 @@ result := lo.KeyBy[string, Character](characters, func(char Character) string {
     return string(rune(char.code))
 })
 //map[a:{dir:left code:97} d:{dir:right code:100}]
+```
+
+### Associate (alias: SliceToMap)
+
+Returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+If any of two pairs would have the same key the last one gets added to the map.
+
+The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+
+```go
+in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+
+aMap := lo.Associate[*foo, string, int](in, func (f *foo) (string, int) {
+	return f.baz, f.bar
+})
+// map[string][int]{ "apple":1, "banana":2 }
 ```
 
 ### Drop
@@ -722,6 +756,26 @@ in := []string{"", "foo", "", "bar", ""}
 
 slice := lo.Compact[string](in)
 // []string{"foo", "bar"}
+```
+
+### IsSorted
+
+Checks if a slice is sorted.
+
+```go
+slice := lo.IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
+// true
+```
+
+### IsSortedByKey
+
+Checks if a slice is sorted by iteratee.
+
+```go
+slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
+    return len(s)
+})
+// true
 ```
 
 ### Keys
@@ -884,6 +938,19 @@ m2 := lo.MapValues[int, int64, string](m1, func(x int64, _ int) string {
 // map[int]string{1: "1", 2: "2", 3: "3"}
 ```
 
+### MapToSlice
+
+Transforms a map into a slice based on specific iteratee.
+
+```go
+m := map[int]int64{1: 4, 2: 5, 3: 6}
+
+s := lo.MapToSlice(m, func(k int, v int64) string {
+    return fmt.Sprintf("%d_%d", k, v)
+})
+// []string{"1_4", "2_5", "3_6"}
+```
+
 ### Range / RangeFrom / RangeWithSteps
 
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
@@ -955,6 +1022,24 @@ sub := lo.Substring("hello", -4, 3)
 
 sub := lo.Substring("hello", -2, math.MaxUint)
 // "lo"
+```
+
+### ChunkString
+
+Returns an array of strings split into groups the length of size. If array can't be split evenly, the final chunk will be the remaining elements.
+
+```go
+lo.ChunkString("123456", 2)
+// []string{"12", "34", "56"}
+
+lo.ChunkString("1234567", 2)
+// []string{"12", "34", "56", "7"}
+
+lo.ChunkString("", 2)
+// []string{""}
+
+lo.ChunkString("1", 2)
+// []string{"1"}
 ```
 
 ### RuneLength
@@ -1533,6 +1618,19 @@ value := lo.FromPtr[string](&str)
 
 value := lo.FromPtr[string](nil)
 // ""
+```
+
+### FromPtrOr
+
+Returns the pointer value or the fallback value.
+
+```go
+str := "hello world"
+value := lo.FromPtrOr[string](&str, "empty")
+// "hello world"
+
+value := lo.FromPtrOr[string](nil, "empty")
+// "empty"
 ```
 
 ### ToSlicePtr

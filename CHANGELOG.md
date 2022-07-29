@@ -2,6 +2,28 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.27.0 (2022-07-29)
+
+Breaking:
+
+- Change of MapToSlice prototype: `MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(V, K) R) []R` -> `MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(K, V) R) []R`
+
+Added:
+
+- lo.ChunkString
+- lo.SliceToMap (alias to lo.Associate)
+
+## 1.26.0 (2022-07-24)
+
+Adding:
+
+- lo.Associate
+- lo.ReduceRight
+- lo.FromPtrOr
+- lo.MapToSlice
+- lo.IsSorted
+- lo.IsSortedByKey
+
 ## 1.25.0 (2022-07-04)
 
 Adding:
