@@ -900,7 +900,7 @@ Transforms a map into a slice based on specific iteratee.
 ```go
 m := map[int]int64{1: 4, 2: 5, 3: 6}
 
-s := lo.MapToSlice(m, func(v int64, k int) string {
+s := lo.MapToSlice(m, func(k int, v int64) string {
     return fmt.Sprintf("%d_%d", k, v)
 })
 // []string{"1_4", "2_5", "3_6"}
