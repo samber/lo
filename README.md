@@ -510,13 +510,13 @@ slice := lo.Repeat[foo](2, foo{"a"})
 Builds a slice with values returned by N calls of callback.
 
 ```go
-slice := lo.RepeatBy[int](0, func (i int) int {
-    return math.Pow(i, 2)
+slice := lo.RepeatBy[string](0, func (i int) string {
+    return strconv.FormatInt(math.Pow(i, 2), 10)
 })
 // []int{}
 
-slice := lo.RepeatBy[int](5, func (i int) int {
-    return math.Pow(i, 2)
+slice := lo.RepeatBy[string](5, func (i int) string {
+    return strconv.FormatInt(math.Pow(i, 2), 10)
 })
 // []int{0, 1, 4, 9, 16}
 ```
