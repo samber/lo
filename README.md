@@ -892,7 +892,7 @@ m2 := lo.MapValues[int, int64, string](m1, func(x int64, _ int) string {
 // map[int]string{1: "1", 2: "2", 3: "3"}
 ```
 
-### MapValues
+### MapToSlice
 
 Transforms a map into a slice based on specific iteratee.
 
