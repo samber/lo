@@ -79,7 +79,7 @@ Supported helpers for slices:
 - [Repeat](#repeat)
 - [RepeatBy](#repeatby)
 - [KeyBy](#keyby)
-- [Associate](#associate)
+- [Associate / SliceToMap](#associate-alias-slicetomap)
 - [Drop](#drop)
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
@@ -545,11 +545,12 @@ result := lo.KeyBy[string, Character](characters, func(char Character) string {
 //map[a:{dir:left code:97} d:{dir:right code:100}]
 ```
 
-### Associate
+### Associate (alias: SliceToMap)
 
 Returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 If any of two pairs would have the same key the last one gets added to the map.
-The returned map preserves the entry iteration order of the original array.
+
+The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 
 ```go
 in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},

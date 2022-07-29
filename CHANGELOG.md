@@ -11,6 +11,7 @@ Breaking:
 Added:
 
 - lo.ChunkString
+- lo.SliceToMap (alias to lo.Associate)
 
 ## 1.26.0 (2022-07-24)
 
