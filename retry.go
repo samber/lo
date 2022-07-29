@@ -98,4 +98,28 @@ func AttemptWithDelay(maxIteration int, delay time.Duration, f func(int, time.Du
 	return maxIteration, time.Since(start), err
 }
 
+// AttemptWithDynamicDelay invokes a function N times until it returns valid output,
+// with a dynamic pause between each call. Returning either the caught error or nil.
+// When first argument is less than `1`, the function runs until a successful
+// response is returned.
+// delayF func's int type parameter starts from 1.
+func AttemptWithDynamicDelay(maxIteration int, delayF func(int) time.Duration, f func(int, time.Duration) error) (int, time.Duration, error) {
+	var err error
+
+	start := time.Now()
+
+	for i := 0; maxIteration <= 0 || i < maxIteration; i++ {
+		err = f(i, time.Since(start))
+		if err == nil {
+			return i + 1, time.Since(start), nil
+		}
+
+		if maxIteration <= 0 || i+1 < maxIteration {
+			time.Sleep(delayF(i + 1)) // should pass i+1 to the delayF func because of the first execution without delay
+		}
+	}
+
+	return maxIteration, time.Since(start), err
+}
+
 // throttle ?
