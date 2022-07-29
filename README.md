@@ -122,6 +122,7 @@ Supported math helpers:
 Supported helpers for strings:
 
 - [Substring](#substring)
+- [ChunkString](#chunkstring)
 - [RuneLength](#runelength)
 
 Supported helpers for tuples:
@@ -976,6 +977,24 @@ sub := lo.Substring("hello", -4, 3)
 
 sub := lo.Substring("hello", -2, math.MaxUint)
 // "lo"
+```
+
+### ChunkString
+
+Returns an array of strings split into groups the length of size. If array can't be split evenly, the final chunk will be the remaining elements.
+
+```go
+lo.ChunkString("123456", 2)
+// []string{"12", "34", "56"}
+
+lo.ChunkString("1234567", 2)
+// []string{"12", "34", "56", "7"}
+
+lo.ChunkString("", 2)
+// []string{""}
+
+lo.ChunkString("1", 2)
+// []string{"1"}
 ```
 
 ### RuneLength
