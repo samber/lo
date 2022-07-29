@@ -4,6 +4,7 @@ import (
 	"sort"
 	"strconv"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -24,6 +25,33 @@ func TestMap(t *testing.T) {
 	is.Equal(result2, []string{"1", "2", "3", "4"})
 }
 
+func TestMapConcurrency(t *testing.T) {
+	is := assert.New(t)
+
+	num := 100
+	concurrency := 5
+	duration := 100 * time.Millisecond
+
+	list := []int{}
+	expected := []string{}
+	for i := 0; i < num; i++ {
+		list = append(list, i)
+		expected = append(expected, strconv.Itoa(i))
+	}
+
+	handler := func(item int, ix int) string {
+		time.Sleep(duration)
+		return strconv.Itoa(item)
+	}
+
+	startAt := time.Now()
+	result := Map(list, handler, WithConcurrency(concurrency))
+	endAt := time.Now()
+
+	is.Equal(result, expected)
+	is.Equal(endAt.Sub(startAt).Round(duration), time.Duration(num/concurrency)*duration)
+}
+
 func TestTimes(t *testing.T) {
 	is := assert.New(t)
 
@@ -33,6 +61,30 @@ func TestTimes(t *testing.T) {
 
 	is.Equal(len(result1), 3)
 	is.Equal(result1, []string{"0", "1", "2"})
+}
+
+func TestTimesConcurrency(t *testing.T) {
+	is := assert.New(t)
+
+	num := 100
+	concurrency := 5
+	duration := 100 * time.Millisecond
+
+	expected := []string{}
+	for i := 0; i < num; i++ {
+		expected = append(expected, strconv.Itoa(i))
+	}
+
+	startAt := time.Now()
+	result := Times(num, func(i int) string {
+		time.Sleep(duration)
+		return strconv.FormatInt(int64(i), 10)
+	}, WithConcurrency(concurrency))
+	endAt := time.Now()
+
+	is.Equal(len(result), num)
+	is.Equal(result, expected)
+	is.Equal(endAt.Sub(startAt).Round(duration), time.Duration(num/concurrency)*duration)
 }
 
 func TestGroupBy(t *testing.T) {
@@ -55,6 +107,35 @@ func TestGroupBy(t *testing.T) {
 		1: {1, 4},
 		2: {2, 5},
 	})
+}
+
+func TestGroupByConcurrency(t *testing.T) {
+	is := assert.New(t)
+
+	concurrency := 2
+	duration := 100 * time.Millisecond
+
+	startAt := time.Now()
+	result := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+		time.Sleep(duration)
+		return i % 3
+	}, WithConcurrency(concurrency))
+	endAt := time.Now()
+
+	// order
+	for x := range result {
+		sort.Slice(result[x], func(i, j int) bool {
+			return result[x][i] < result[x][j]
+		})
+	}
+
+	is.EqualValues(len(result), 3)
+	is.EqualValues(result, map[int][]int{
+		0: {0, 3},
+		1: {1, 4},
+		2: {2, 5},
+	})
+	is.Equal(endAt.Sub(startAt).Round(duration), time.Duration(6/concurrency)*duration)
 }
 
 func TestPartitionBy(t *testing.T) {
@@ -84,4 +165,38 @@ func TestPartitionBy(t *testing.T) {
 
 	is.ElementsMatch(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
 	is.Equal(result2, [][]int{})
+}
+
+func TestPartitionByConcurrency(t *testing.T) {
+	is := assert.New(t)
+
+	concurrency := 2
+	duration := 100 * time.Millisecond
+
+	oddEven := func(x int) string {
+		time.Sleep(duration)
+		if x < 0 {
+			return "negative"
+		} else if x%2 == 0 {
+			return "even"
+		}
+		return "odd"
+	}
+
+	startAt := time.Now()
+	result := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven, WithConcurrency(concurrency))
+	endAt := time.Now()
+
+	// order
+	sort.Slice(result, func(i, j int) bool {
+		return result[i][0] < result[j][0]
+	})
+	for x := range result {
+		sort.Slice(result[x], func(i, j int) bool {
+			return result[x][i] < result[x][j]
+		})
+	}
+
+	is.ElementsMatch(result, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
+	is.Equal(endAt.Sub(startAt).Round(duration), time.Duration(8/concurrency)*duration)
 }
