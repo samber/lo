@@ -42,8 +42,8 @@ func MapWithErr[T any, R any](collection []T, iteratee func(T, int) (R, error)) 
 			return err
 		})
 	}
-	err:=g.Wait()
-	return result,err
+	err := g.Wait()
+	return result, err
 }
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.
