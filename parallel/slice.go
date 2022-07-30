@@ -1,6 +1,9 @@
 package parallel
 
-import "sync"
+import (
+	"sync"
+	"golang.org/x/sync/errgroup"
+)
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // `iteratee` is call in parallel. Result keep the same order.
