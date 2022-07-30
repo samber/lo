@@ -25,6 +25,24 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	return result
 }
 
+// Map manipulates a slice and transforms it to a slice of another type.
+// `iteratee` is call in parallel. Result keep the same order.
+func MapWithErr[T any, R any](collection []T, iteratee func(T, int) (R, error)) ([]R, error) {
+	result := make([]R, len(collection))
+	var g errgroup.Group
+	for i, item := range collection {
+		_item := item
+		_i := i
+		g.Go(func() error {
+			res,err := iteratee(_item, _i)
+			result[_i] = res
+			return err
+		})
+	}
+	err:=g.Wait()
+	return result,err
+}
+
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 // `iteratee` is call in parallel.
 func ForEach[T any](collection []T, iteratee func(T, int)) {
