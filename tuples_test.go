@@ -279,3 +279,102 @@ func TestUnzip(t *testing.T) {
 	is.Equal(r1, []string{"a", "b"})
 	is.Equal(r2, []int{1, 2})
 }
+
+func TestTuplesToMap(t *testing.T) {
+	is := assert.New(t)
+
+	r2 := []Tuple2[string, string]{
+		T2("a", "b"),
+		T2("a", "bb"),
+		T2("aa", "bb"),
+	}
+	r3 := []Tuple3[string, string, string]{
+		T3("a", "b", "c"),
+		T3("a", "bb", "c"),
+		T3("aa", "bb", "cc"),
+	}
+	r4 := []Tuple4[string, string, string, string]{
+		T4("a", "b", "c", "d"),
+		T4("a", "bb", "c", "d"),
+		T4("aa", "bb", "cc", "dd"),
+	}
+	r5 := []Tuple5[string, string, string, string, string]{
+		T5("a", "b", "c", "d", "e"),
+		T5("a", "bb", "c", "d", "e"),
+		T5("aa", "bb", "cc", "dd", "ee"),
+	}
+	r6 := []Tuple6[string, string, string, string, string, string]{
+		T6("a", "b", "c", "d", "e", "f"),
+		T6("a", "bb", "c", "d", "e", "f"),
+		T6("aa", "bb", "cc", "dd", "ee", "ff"),
+	}
+	r7 := []Tuple7[string, string, string, string, string, string, string]{
+		T7("a", "b", "c", "d", "e", "f", "g"),
+		T7("a", "bb", "c", "d", "e", "f", "g"),
+		T7("aa", "bb", "cc", "dd", "ee", "ff", "gg"),
+	}
+	r8 := []Tuple8[string, string, string, string, string, string, string, string]{
+		T8("a", "b", "c", "d", "e", "f", "g", "h"),
+		T8("a", "bb", "c", "d", "e", "f", "g", "h"),
+		T8("aa", "bb", "cc", "dd", "ee", "ff", "gg", "hh"),
+	}
+	r9 := []Tuple9[string, string, string, string, string, string, string, string, string]{
+		T9("a", "b", "c", "d", "e", "f", "g", "h", "i"),
+		T9("a", "bb", "c", "d", "e", "f", "g", "h", "i"),
+		T9("aa", "bb", "cc", "dd", "ee", "ff", "gg", "hh", "ii"),
+	}
+
+	is.EqualValues(map[string]string{
+		"a":  "bb",
+		"aa": "bb",
+	}, Tuples2ToMap(r2))
+	is.EqualValues(map[string]map[string]string{
+		"a": {
+			"b":  "c",
+			"bb": "c",
+		},
+		"aa": {"bb": "cc"},
+	}, Tuples3ToMap(r3))
+	is.EqualValues(map[string]map[string]map[string]string{
+		"a": {
+			"b":  {"c": "d"},
+			"bb": {"c": "d"},
+		},
+		"aa": {"bb": {"cc": "dd"}},
+	}, Tuples4ToMap(r4))
+	is.EqualValues(map[string]map[string]map[string]map[string]string{
+		"a": {
+			"b":  {"c": {"d": "e"}},
+			"bb": {"c": {"d": "e"}},
+		},
+		"aa": {"bb": {"cc": {"dd": "ee"}}},
+	}, Tuples5ToMap(r5))
+	is.EqualValues(map[string]map[string]map[string]map[string]map[string]string{
+		"a": {
+			"b":  {"c": {"d": {"e": "f"}}},
+			"bb": {"c": {"d": {"e": "f"}}},
+		},
+		"aa": {"bb": {"cc": {"dd": {"ee": "ff"}}}},
+	}, Tuples6ToMap(r6))
+	is.EqualValues(map[string]map[string]map[string]map[string]map[string]map[string]string{
+		"a": {
+			"b":  {"c": {"d": {"e": {"f": "g"}}}},
+			"bb": {"c": {"d": {"e": {"f": "g"}}}},
+		},
+		"aa": {"bb": {"cc": {"dd": {"ee": {"ff": "gg"}}}}},
+	}, Tuples7ToMap(r7))
+	is.EqualValues(map[string]map[string]map[string]map[string]map[string]map[string]map[string]string{
+		"a": {
+			"b":  {"c": {"d": {"e": {"f": {"g": "h"}}}}},
+			"bb": {"c": {"d": {"e": {"f": {"g": "h"}}}}},
+		},
+		"aa": {"bb": {"cc": {"dd": {"ee": {"ff": {"gg": "hh"}}}}}},
+	}, Tuples8ToMap(r8))
+	is.EqualValues(map[string]map[string]map[string]map[string]map[string]map[string]map[string]map[string]string{
+		"a": {
+			"b":  {"c": {"d": {"e": {"f": {"g": {"h": "i"}}}}}},
+			"bb": {"c": {"d": {"e": {"f": {"g": {"h": "i"}}}}}},
+		},
+		"aa": {"bb": {"cc": {"dd": {"ee": {"ff": {"gg": {"hh": "ii"}}}}}}},
+	}, Tuples9ToMap(r9))
+}

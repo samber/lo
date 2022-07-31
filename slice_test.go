@@ -289,7 +289,7 @@ func TestKeyBy(t *testing.T) {
 	is.Equal(result1, map[int]string{1: "a", 2: "aa", 3: "aaa"})
 }
 
-func TestAssociate(t *testing.T) {
+func TestSliceToMap2(t *testing.T) {
 	type foo struct {
 		baz string
 		bar int
@@ -317,9 +317,32 @@ func TestAssociate(t *testing.T) {
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			is := assert.New(t)
-			is.Equal(Associate(testCase.in, transform), testCase.expect)
+			is.Equal(SliceToMap2(testCase.in, transform), testCase.expect)
 		})
 	}
+}
+
+func TestSliceToMapX(t *testing.T) {
+	is := assert.New(t)
+
+	slice := []int{0, 1, 2, 3, 4, 5, 6}
+	transform2 := func(int) (int, int) { return 1, 2 }
+	transform3 := func(int) (int, int, int) { return 1, 2, 3 }
+	transform4 := func(int) (int, int, int, int) { return 1, 2, 3, 4 }
+	transform5 := func(int) (int, int, int, int, int) { return 1, 2, 3, 4, 5 }
+	transform6 := func(int) (int, int, int, int, int, int) { return 1, 2, 3, 4, 5, 6 }
+	transform7 := func(int) (int, int, int, int, int, int, int) { return 1, 2, 3, 4, 5, 6, 7 }
+	transform8 := func(int) (int, int, int, int, int, int, int, int) { return 1, 2, 3, 4, 5, 6, 7, 8 }
+	transform9 := func(int) (int, int, int, int, int, int, int, int, int) { return 1, 2, 3, 4, 5, 6, 7, 8, 9 }
+
+	is.EqualValues(map[int]int{1: 2}, SliceToMap2(slice, transform2))
+	is.EqualValues(map[int]map[int]int{1: {2: 3}}, SliceToMap3(slice, transform3))
+	is.EqualValues(map[int]map[int]map[int]int{1: {2: {3: 4}}}, SliceToMap4(slice, transform4))
+	is.EqualValues(map[int]map[int]map[int]map[int]int{1: {2: {3: {4: 5}}}}, SliceToMap5(slice, transform5))
+	is.EqualValues(map[int]map[int]map[int]map[int]map[int]int{1: {2: {3: {4: {5: 6}}}}}, SliceToMap6(slice, transform6))
+	is.EqualValues(map[int]map[int]map[int]map[int]map[int]map[int]int{1: {2: {3: {4: {5: {6: 7}}}}}}, SliceToMap7(slice, transform7))
+	is.EqualValues(map[int]map[int]map[int]map[int]map[int]map[int]map[int]int{1: {2: {3: {4: {5: {6: {7: 8}}}}}}}, SliceToMap8(slice, transform8))
+	is.EqualValues(map[int]map[int]map[int]map[int]map[int]map[int]map[int]map[int]int{1: {2: {3: {4: {5: {6: {7: {8: 9}}}}}}}}, SliceToMap9(slice, transform9))
 }
 
 func TestDrop(t *testing.T) {

@@ -479,3 +479,59 @@ func Unzip9[A any, B any, C any, D any, E any, F any, G any, H any, I any](tuple
 
 	return r1, r2, r3, r4, r5, r6, r7, r8, r9
 }
+
+// Tuples2ToMap returns a map containing key-value tuples.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func Tuples2ToMap[A comparable, B any](tuples []Tuple2[A, B]) map[A]B {
+	return SliceToMap2(tuples, Unpack2[A, B])
+}
+
+// Tuples3ToMap returns a map containing key-value tuples.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func Tuples3ToMap[A comparable, B comparable, C any](tuples []Tuple3[A, B, C]) map[A]map[B]C {
+	return SliceToMap3(tuples, Unpack3[A, B, C])
+}
+
+// Tuples4ToMap returns a map containing key-value tuples.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func Tuples4ToMap[A comparable, B comparable, C comparable, D any](tuples []Tuple4[A, B, C, D]) map[A]map[B]map[C]D {
+	return SliceToMap4(tuples, Unpack4[A, B, C, D])
+}
+
+// Tuples5ToMap returns a map containing key-value tuples.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func Tuples5ToMap[A comparable, B comparable, C comparable, D comparable, E any](tuples []Tuple5[A, B, C, D, E]) map[A]map[B]map[C]map[D]E {
+	return SliceToMap5(tuples, Unpack5[A, B, C, D, E])
+}
+
+// Tuples3ToMap returns a map containing key-value tuples.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func Tuples6ToMap[A comparable, B comparable, C comparable, D comparable, E comparable, F any](tuples []Tuple6[A, B, C, D, E, F]) map[A]map[B]map[C]map[D]map[E]F {
+	return SliceToMap6(tuples, Unpack6[A, B, C, D, E, F])
+}
+
+// Tuples7ToMap returns a map containing key-value tuples.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func Tuples7ToMap[A comparable, B comparable, C comparable, D comparable, E comparable, F comparable, G any](tuples []Tuple7[A, B, C, D, E, F, G]) map[A]map[B]map[C]map[D]map[E]map[F]G {
+	return SliceToMap7(tuples, Unpack7[A, B, C, D, E, F, G])
+}
+
+// Tuples8ToMap returns a map containing key-value tuples.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func Tuples8ToMap[A comparable, B comparable, C comparable, D comparable, E comparable, F comparable, G comparable, H any](tuples []Tuple8[A, B, C, D, E, F, G, H]) map[A]map[B]map[C]map[D]map[E]map[F]map[G]H {
+	return SliceToMap8(tuples, Unpack8[A, B, C, D, E, F, G, H])
+}
+
+// Tuples9ToMap returns a map containing key-value tuples.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func Tuples9ToMap[A comparable, B comparable, C comparable, D comparable, E comparable, F comparable, G comparable, H comparable, I any](tuples []Tuple9[A, B, C, D, E, F, G, H, I]) map[A]map[B]map[C]map[D]map[E]map[F]map[G]map[H]I {
+	return SliceToMap9(tuples, Unpack9[A, B, C, D, E, F, G, H, I])
+}

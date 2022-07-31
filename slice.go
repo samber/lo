@@ -272,10 +272,10 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	return result
 }
 
-// Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// SliceToMap2 returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 // If any of two pairs would have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
-func Associate[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
+func SliceToMap2[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
 	result := make(map[K]V)
 
 	for _, t := range collection {
@@ -286,12 +286,237 @@ func Associate[T any, K comparable, V any](collection []T, transform func(T) (K,
 	return result
 }
 
+// SliceToMap3 returns a map containing key-value tuples provided by transform function applied to elements of the given slice.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func SliceToMap3[T any, K1 comparable, K2 comparable, V any](collection []T, transform func(T) (K1, K2, V)) map[K1]map[K2]V {
+	result := map[K1]map[K2]V{}
+
+	for _, t := range collection {
+		k1, k2, v := transform(t)
+
+		if _, ok := result[k1]; !ok {
+			result[k1] = map[K2]V{}
+		}
+
+		result[k1][k2] = v
+	}
+
+	return result
+}
+
+// SliceToMap4 returns a map containing key-value tuples provided by transform function applied to elements of the given slice.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func SliceToMap4[T any, K1 comparable, K2 comparable, K3 comparable, V any](collection []T, transform func(T) (K1, K2, K3, V)) map[K1]map[K2]map[K3]V {
+	result := map[K1]map[K2]map[K3]V{}
+
+	for _, t := range collection {
+		k1, k2, k3, v := transform(t)
+
+		if _, ok := result[k1]; !ok {
+			result[k1] = map[K2]map[K3]V{}
+		}
+
+		if _, ok := result[k1][k2]; !ok {
+			result[k1][k2] = map[K3]V{}
+		}
+
+		result[k1][k2][k3] = v
+	}
+
+	return result
+}
+
+// SliceToMap5 returns a map containing key-value tuples provided by transform function applied to elements of the given slice.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func SliceToMap5[T any, K1 comparable, K2 comparable, K3 comparable, K4 comparable, V any](collection []T, transform func(T) (K1, K2, K3, K4, V)) map[K1]map[K2]map[K3]map[K4]V {
+	result := map[K1]map[K2]map[K3]map[K4]V{}
+
+	for _, t := range collection {
+		k1, k2, k3, k4, v := transform(t)
+
+		if _, ok := result[k1]; !ok {
+			result[k1] = map[K2]map[K3]map[K4]V{}
+		}
+
+		if _, ok := result[k1][k2]; !ok {
+			result[k1][k2] = map[K3]map[K4]V{}
+		}
+
+		if _, ok := result[k1][k2][k3]; !ok {
+			result[k1][k2][k3] = map[K4]V{}
+		}
+
+		result[k1][k2][k3][k4] = v
+	}
+
+	return result
+}
+
+// SliceToMap6 returns a map containing key-value tuples provided by transform function applied to elements of the given slice.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func SliceToMap6[T any, K1 comparable, K2 comparable, K3 comparable, K4 comparable, K5 comparable, V any](collection []T, transform func(T) (K1, K2, K3, K4, K5, V)) map[K1]map[K2]map[K3]map[K4]map[K5]V {
+	result := map[K1]map[K2]map[K3]map[K4]map[K5]V{}
+
+	for _, t := range collection {
+		k1, k2, k3, k4, k5, v := transform(t)
+
+		if _, ok := result[k1]; !ok {
+			result[k1] = map[K2]map[K3]map[K4]map[K5]V{}
+		}
+
+		if _, ok := result[k1][k2]; !ok {
+			result[k1][k2] = map[K3]map[K4]map[K5]V{}
+		}
+
+		if _, ok := result[k1][k2][k3]; !ok {
+			result[k1][k2][k3] = map[K4]map[K5]V{}
+		}
+
+		if _, ok := result[k1][k2][k3][k4]; !ok {
+			result[k1][k2][k3][k4] = map[K5]V{}
+		}
+
+		result[k1][k2][k3][k4][k5] = v
+	}
+
+	return result
+}
+
+// SliceToMap7 returns a map containing key-value tuples provided by transform function applied to elements of the given slice.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func SliceToMap7[T any, K1 comparable, K2 comparable, K3 comparable, K4 comparable, K5 comparable, K6 comparable, V any](collection []T, transform func(T) (K1, K2, K3, K4, K5, K6, V)) map[K1]map[K2]map[K3]map[K4]map[K5]map[K6]V {
+	result := map[K1]map[K2]map[K3]map[K4]map[K5]map[K6]V{}
+
+	for _, t := range collection {
+		k1, k2, k3, k4, k5, k6, v := transform(t)
+
+		if _, ok := result[k1]; !ok {
+			result[k1] = map[K2]map[K3]map[K4]map[K5]map[K6]V{}
+		}
+
+		if _, ok := result[k1][k2]; !ok {
+			result[k1][k2] = map[K3]map[K4]map[K5]map[K6]V{}
+		}
+
+		if _, ok := result[k1][k2][k3]; !ok {
+			result[k1][k2][k3] = map[K4]map[K5]map[K6]V{}
+		}
+
+		if _, ok := result[k1][k2][k3][k4]; !ok {
+			result[k1][k2][k3][k4] = map[K5]map[K6]V{}
+		}
+
+		if _, ok := result[k1][k2][k3][k4][k5]; !ok {
+			result[k1][k2][k3][k4][k5] = map[K6]V{}
+		}
+
+		result[k1][k2][k3][k4][k5][k6] = v
+	}
+
+	return result
+}
+
+// SliceToMap8 returns a map containing key-value tuples provided by transform function applied to elements of the given slice.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func SliceToMap8[T any, K1 comparable, K2 comparable, K3 comparable, K4 comparable, K5 comparable, K6 comparable, K7 comparable, V any](collection []T, transform func(T) (K1, K2, K3, K4, K5, K6, K7, V)) map[K1]map[K2]map[K3]map[K4]map[K5]map[K6]map[K7]V {
+	result := map[K1]map[K2]map[K3]map[K4]map[K5]map[K6]map[K7]V{}
+
+	for _, t := range collection {
+		k1, k2, k3, k4, k5, k6, k7, v := transform(t)
+
+		if _, ok := result[k1]; !ok {
+			result[k1] = map[K2]map[K3]map[K4]map[K5]map[K6]map[K7]V{}
+		}
+
+		if _, ok := result[k1][k2]; !ok {
+			result[k1][k2] = map[K3]map[K4]map[K5]map[K6]map[K7]V{}
+		}
+
+		if _, ok := result[k1][k2][k3]; !ok {
+			result[k1][k2][k3] = map[K4]map[K5]map[K6]map[K7]V{}
+		}
+
+		if _, ok := result[k1][k2][k3][k4]; !ok {
+			result[k1][k2][k3][k4] = map[K5]map[K6]map[K7]V{}
+		}
+
+		if _, ok := result[k1][k2][k3][k4][k5]; !ok {
+			result[k1][k2][k3][k4][k5] = map[K6]map[K7]V{}
+		}
+
+		if _, ok := result[k1][k2][k3][k4][k5][k6]; !ok {
+			result[k1][k2][k3][k4][k5][k6] = map[K7]V{}
+		}
+
+		result[k1][k2][k3][k4][k5][k6][k7] = v
+	}
+
+	return result
+}
+
+// SliceToMap9 returns a map containing key-value tuples provided by transform function applied to elements of the given slice.
+// If any of two tuples would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func SliceToMap9[T any, K1 comparable, K2 comparable, K3 comparable, K4 comparable, K5 comparable, K6 comparable, K7 comparable, K8 comparable, V any](collection []T, transform func(T) (K1, K2, K3, K4, K5, K6, K7, K8, V)) map[K1]map[K2]map[K3]map[K4]map[K5]map[K6]map[K7]map[K8]V {
+	result := map[K1]map[K2]map[K3]map[K4]map[K5]map[K6]map[K7]map[K8]V{}
+
+	for _, t := range collection {
+		k1, k2, k3, k4, k5, k6, k7, k8, v := transform(t)
+
+		if _, ok := result[k1]; !ok {
+			result[k1] = map[K2]map[K3]map[K4]map[K5]map[K6]map[K7]map[K8]V{}
+		}
+
+		if _, ok := result[k1][k2]; !ok {
+			result[k1][k2] = map[K3]map[K4]map[K5]map[K6]map[K7]map[K8]V{}
+		}
+
+		if _, ok := result[k1][k2][k3]; !ok {
+			result[k1][k2][k3] = map[K4]map[K5]map[K6]map[K7]map[K8]V{}
+		}
+
+		if _, ok := result[k1][k2][k3][k4]; !ok {
+			result[k1][k2][k3][k4] = map[K5]map[K6]map[K7]map[K8]V{}
+		}
+
+		if _, ok := result[k1][k2][k3][k4][k5]; !ok {
+			result[k1][k2][k3][k4][k5] = map[K6]map[K7]map[K8]V{}
+		}
+
+		if _, ok := result[k1][k2][k3][k4][k5][k6]; !ok {
+			result[k1][k2][k3][k4][k5][k6] = map[K7]map[K8]V{}
+		}
+
+		if _, ok := result[k1][k2][k3][k4][k5][k6][k7]; !ok {
+			result[k1][k2][k3][k4][k5][k6][k7] = map[K8]V{}
+		}
+
+		result[k1][k2][k3][k4][k5][k6][k7][k8] = v
+	}
+
+	return result
+}
+
+// SliceToMap returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// If any of two pairs would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+// Alias of SliceToMap2().
+func SliceToMap[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
+	return SliceToMap2(collection, transform)
+}
+
 // Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 // If any of two pairs would have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
-// Alias of Associate().
-func SliceToMap[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
-	return Associate(collection, transform)
+// Alias of SliceToMap().
+func Associate[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
+	return SliceToMap(collection, transform)
 }
 
 // Drop drops n elements from the beginning of a slice or array.
