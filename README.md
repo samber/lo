@@ -563,7 +563,27 @@ in := []*foo{
 aMap := lo.Associate[*foo, string, int](in, func (f *foo) (string, int) {
 	return f.baz, f.bar
 })
-// map[string][int]{ "apple":1, "banana":2 }
+// map[string]int{
+//     "apple": 1,
+//     "banana": 2,
+// }
+```
+
+Converting a slice into a map of keys, can increase lookup time.
+
+```go
+in := []string{"a", "b", "c", "a"}
+
+aMap := lo.Associate[*foo, string, struct{}](in, func (item string) (string, struct{}) {
+	return item, struct{}{}
+})
+// map[string]int{
+//     "a": struct{}{},
+//     "b": struct{}{},
+//     "c": struct{}{},
+// }
+
+_, ok := aMap["b"]
 ```
 
 ### SliceToMap2 -> SliceToMap9
