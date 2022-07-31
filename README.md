@@ -80,6 +80,7 @@ Supported helpers for slices:
 - [RepeatBy](#repeatby)
 - [KeyBy](#keyby)
 - [Associate / SliceToMap](#associate-alias-slicetomap)
+- [SliceToMap2 -> SliceToMap9](#slicetomap2---slicetomap9)
 - [Drop](#drop)
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
@@ -131,6 +132,7 @@ Supported helpers for tuples:
 - [Unpack2 -> Unpack9](#unpack2---unpack9)
 - [Zip2 -> Zip9](#zip2---zip9)
 - [Unzip2 -> Unzip9](#unzip2---unzip9)
+- [Tuples2ToMap -> Tuples9ToMap](#tuples2tomap---tuples9tomap)
 
 Supported intersection helpers:
 
@@ -553,12 +555,63 @@ If any of two pairs would have the same key the last one gets added to the map.
 The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 
 ```go
-in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+in := []*foo{
+    {baz: "apple", bar: 1},
+    {baz: "banana", bar: 2},
+}
 
 aMap := lo.Associate[*foo, string, int](in, func (f *foo) (string, int) {
 	return f.baz, f.bar
 })
-// map[string][int]{ "apple":1, "banana":2 }
+// map[string]int{
+//     "apple": 1,
+//     "banana": 2,
+// }
+```
+
+Converting a slice into a map of keys, can increase lookup time.
+
+```go
+in := []string{"a", "b", "c", "a"}
+
+aMap := lo.Associate[*foo, string, struct{}](in, func (item string) (string, struct{}) {
+	return item, struct{}{}
+})
+// map[string]int{
+//     "a": struct{}{},
+//     "b": struct{}{},
+//     "c": struct{}{},
+// }
+
+_, ok := aMap["b"]
+```
+
+### SliceToMap2 -> SliceToMap9
+
+Returns a map containing key-value tuples provided by transform function applied to elements of the given slice.
+If any of two tuples would have the same key the last one gets added to the map.
+
+The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+
+```go
+in := []*foo{
+    {baz: "apple", bar: 1},
+    {baz: "apple", bar: 42},
+    {baz: "banana", bar: 2},
+}
+
+aMap := lo.SliceToMap3[*foo, string, int, string](in, func (f *foo) (string, int, string) {
+	return f.baz, f.bar, fmt.Sprintf("%s_%d", f.baz, f.bar)
+})
+// map[string][int]string{
+//     "apple": map[int]string{
+//         1: "apple_1",
+//         42: "apple_42",
+//     },
+//     "banana": map[int]string{
+//         2: "banana_2",
+//     },
+// }
 ```
 
 ### Drop
@@ -1051,6 +1104,32 @@ Unzip accepts an array of grouped elements and creates an array regrouping the e
 a, b := lo.Unzip2[string, int]([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
 // []string{"a", "b"}
 // []int{1, 2}
+```
+
+### Tuples2ToMap -> Tuples9ToMap
+
+Returns a map containing key-value tuples.
+If any of two tuples would have the same key the last one gets added to the map.
+
+The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+
+```go
+in := []lo.Tuple3[string, int, string]{
+    lo.T3("apple", 1, "foobar"),
+    lo.T3("apple", 42, "foobar"),
+    lo.T3("banana", 1, "hello world"),
+}
+
+m := lo.Tuples3ToMap[string, int, string](in)
+// map[string][int]string{
+//     "apple": map[int]string{
+//         1: "foobar",
+//         42: "foobar",
+//     },
+//     "banana": map[int]string{
+//         1: "hello world",
+//     },
+// }
 ```
 
 ### Contains

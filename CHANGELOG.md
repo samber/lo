@@ -2,6 +2,13 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.28.0 (2022-08-xx)
+
+Adding:
+
+- lo.SliceToMap2 -> lo.SliceToMap9
+- lo.Tuples2ToMap -> lo.Tuples9ToMap
+
 ## 1.27.0 (2022-07-29)
 
 Breaking:
