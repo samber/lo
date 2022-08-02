@@ -875,10 +875,12 @@ mergedMaps := lo.Assign[string, int](
 Manipulates a map keys and transforms it to a map of another type.
 
 ```go
-m2 := lo.MapKeys[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
-    return strconv.FormatInt(int64(v), 10)
+m1 := map[int]bool{1: true, 2: false, 3: true}
+
+m2 := lo.MapKeys[int, bool, string](m1, func(k int, v bool) string {
+    return fmt.Sprint(k, "_", v)
 })
-// map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}
+// map[string]bool{"1_true": true, "2_false": false, "3_true": true}
 ```
 
 ### MapValues
@@ -886,12 +888,12 @@ m2 := lo.MapKeys[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ i
 Manipulates a map values and transforms it to a map of another type.
 
 ```go
-m1 := map[int]int64{1: 1, 2: 2, 3: 3}
+m1 := map[int]bool{1: true, 2: false, 3: true}
 
-m2 := lo.MapValues[int, int64, string](m1, func(x int64, _ int) string {
-	return strconv.FormatInt(x, 10)
+m2 := lo.MapValues[int, bool, string](m1, func(k int, v bool) string {
+    return fmt.Sprint(k, "_", v)
 })
-// map[int]string{1: "1", 2: "2", 3: "3"}
+// map[int]string{1: "1_true", 2: "2_false", 3: "3_true"}
 ```
 
 ### MapToSlice
