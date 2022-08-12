@@ -494,3 +494,16 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(T
 
 	return true
 }
+
+// CountValues counts the number of each element in the collection
+func CountValues[T comparable](collection []T) map[T]int {
+	result := make(map[T]int)
+	for _, item := range collection {
+		if _, ok := result[item]; ok {
+			result[item]++
+		} else {
+			result[item] = 1
+		}
+	}
+	return result
+}
