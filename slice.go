@@ -2,6 +2,8 @@ package lo
 
 import (
 	"math/rand"
+
+	"golang.org/x/exp/constraints"
 )
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
@@ -60,6 +62,15 @@ func FlatMap[T any, R any](collection []T, iteratee func(T, int) []R) []R {
 func Reduce[T any, R any](collection []T, accumulator func(R, T, int) R, initial R) R {
 	for i, item := range collection {
 		initial = accumulator(initial, item, i)
+	}
+
+	return initial
+}
+
+// ReduceRight helper is like Reduce except that it iterates over elements of collection from right to left.
+func ReduceRight[T any, R any](collection []T, accumulator func(R, T, int) R, initial R) R {
+	for i := len(collection) - 1; i >= 0; i-- {
+		initial = accumulator(initial, collection[i], i)
 	}
 
 	return initial
@@ -261,6 +272,28 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	return result
 }
 
+// Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// If any of two pairs would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+func Associate[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
+	result := make(map[K]V)
+
+	for _, t := range collection {
+		k, v := transform(t)
+		result[k] = v
+	}
+
+	return result
+}
+
+// Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// If any of two pairs would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+// Alias of Associate().
+func SliceToMap[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
+	return Associate(collection, transform)
+}
+
 // Drop drops n elements from the beginning of a slice or array.
 func Drop[T any](collection []T, n int) []T {
 	if len(collection) <= n {
@@ -360,7 +393,7 @@ func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 	return count
 }
 
-// Subset return part of a slice.
+// Subset returns a copy of a slice from `offset` up to `length` elements. Like `slice[start:start+length]`, but does not panic on overflow.
 func Subset[T any](collection []T, offset int, length uint) []T {
 	size := len(collection)
 
@@ -380,6 +413,25 @@ func Subset[T any](collection []T, offset int, length uint) []T {
 	}
 
 	return collection[offset : offset+int(length)]
+}
+
+// Slice returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
+func Slice[T comparable](collection []T, start int, end int) []T {
+	size := len(collection)
+
+	if start >= end {
+		return []T{}
+	}
+
+	if start > size {
+		start = size
+	}
+
+	if end > size {
+		end = size
+	}
+
+	return collection[start:end]
 }
 
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
@@ -402,4 +454,43 @@ func Replace[T comparable](collection []T, old T, new T, n int) []T {
 // ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
 func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 	return Replace(collection, old, new, -1)
+}
+
+// Compact returns a slice of all non-zero elements.
+func Compact[T comparable](collection []T) []T {
+	var zero T
+
+	result := []T{}
+
+	for _, item := range collection {
+		if item != zero {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
+
+// IsSorted checks if a slice is sorted.
+func IsSorted[T constraints.Ordered](collection []T) bool {
+	for i := 1; i < len(collection); i++ {
+		if collection[i-1] > collection[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+// IsSortedByKey checks if a slice is sorted by iteratee.
+func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(T) K) bool {
+	size := len(collection)
+
+	for i := 0; i < size-1; i++ {
+		if iteratee(collection[i]) > iteratee(collection[i+1]) {
+			return false
+		}
+	}
+
+	return true
 }

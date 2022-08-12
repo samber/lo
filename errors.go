@@ -1,62 +1,97 @@
 package lo
 
+import (
+	"fmt"
+	"reflect"
+)
+
+func messageFromMsgAndArgs(msgAndArgs ...interface{}) string {
+	if len(msgAndArgs) == 1 {
+		if msgAsStr, ok := msgAndArgs[0].(string); ok {
+			return msgAsStr
+		}
+		return fmt.Sprintf("%+v", msgAndArgs[0])
+	}
+	if len(msgAndArgs) > 1 {
+		return fmt.Sprintf(msgAndArgs[0].(string), msgAndArgs[1:]...)
+	}
+	return ""
+}
+
 // must panics if err is error or false.
-func must(err any) {
-	b, isBool := err.(bool)
-	if isBool && !b {
-		panic("not ok")
+func must(err any, messageArgs ...interface{}) {
+	if err == nil {
+		return
 	}
 
-	e, isError := err.(error)
-	if isError {
-		panic(e)
+	switch e := err.(type) {
+	case bool:
+		if !e {
+			message := messageFromMsgAndArgs(messageArgs...)
+			if message == "" {
+				message = "not ok"
+			}
+
+			panic(message)
+		}
+
+	case error:
+		message := messageFromMsgAndArgs(messageArgs...)
+		if message != "" {
+			panic(message + ": " + e.Error())
+		} else {
+			panic(e.Error())
+		}
+
+	default:
+		panic("must: invalid err type '" + reflect.TypeOf(err).Name() + "', should either be a bool or an error")
 	}
 }
 
 // Must is a helper that wraps a call to a function returning a value and an error
 // and panics if err is error or false.
-func Must[T any](val T, err any) T {
-	must(err)
+func Must[T any](val T, err any, messageArgs ...interface{}) T {
+	must(err, messageArgs...)
 	return val
 }
 
 // Must0 has the same behavior than Must, but callback returns no variable.
-func Must0(err any) {
-	must(err)
+func Must0(err any, messageArgs ...interface{}) {
+	must(err, messageArgs...)
 }
 
 // Must1 is an alias to Must
-func Must1[T any](val T, err any) T {
-	return Must(val, err)
+func Must1[T any](val T, err any, messageArgs ...interface{}) T {
+	return Must(val, err, messageArgs...)
 }
 
 // Must2 has the same behavior than Must, but callback returns 2 variables.
-func Must2[T1 any, T2 any](val1 T1, val2 T2, err any) (T1, T2) {
-	must(err)
+func Must2[T1 any, T2 any](val1 T1, val2 T2, err any, messageArgs ...interface{}) (T1, T2) {
+	must(err, messageArgs...)
 	return val1, val2
 }
 
 // Must3 has the same behavior than Must, but callback returns 3 variables.
-func Must3[T1 any, T2 any, T3 any](val1 T1, val2 T2, val3 T3, err any) (T1, T2, T3) {
-	must(err)
+func Must3[T1 any, T2 any, T3 any](val1 T1, val2 T2, val3 T3, err any, messageArgs ...interface{}) (T1, T2, T3) {
+	must(err, messageArgs...)
 	return val1, val2, val3
 }
 
 // Must4 has the same behavior than Must, but callback returns 4 variables.
-func Must4[T1 any, T2 any, T3 any, T4 any](val1 T1, val2 T2, val3 T3, val4 T4, err any) (T1, T2, T3, T4) {
-	must(err)
+func Must4[T1 any, T2 any, T3 any, T4 any](val1 T1, val2 T2, val3 T3, val4 T4, err any, messageArgs ...interface{}) (T1, T2, T3, T4) {
+	must(err, messageArgs...)
 	return val1, val2, val3, val4
 }
 
 // Must5 has the same behavior than Must, but callback returns 5 variables.
-func Must5[T1 any, T2 any, T3 any, T4 any, T5 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, err any) (T1, T2, T3, T4, T5) {
-	must(err)
+func Must5[T1 any, T2 any, T3 any, T4 any, T5 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, err any, messageArgs ...interface{}) (T1, T2, T3, T4, T5) {
+	must(err, messageArgs...)
 	return val1, val2, val3, val4, val5
 }
 
 // Must6 has the same behavior than Must, but callback returns 6 variables.
-func Must6[T1 any, T2 any, T3 any, T4 any, T5 any, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err any) (T1, T2, T3, T4, T5, T6) {
-	must(err)
+func Must6[T1 any, T2 any, T3 any, T4 any, T5 any, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err any, messageArgs ...interface{}) (T1, T2, T3, T4, T5, T6) {
+	must(err, messageArgs...)
 	return val1, val2, val3, val4, val5, val6
 }
 
