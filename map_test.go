@@ -184,3 +184,14 @@ func TestMapToSlice(t *testing.T) {
 	is.ElementsMatch(result1, []string{"1_5", "2_6", "3_7", "4_8"})
 	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
 }
+
+func TestMapEqual(t *testing.T) {
+	is := assert.New(t)
+
+	is.True(MapEqual(map[int]string{}, map[int]string{}))
+	is.True(MapEqual(map[int]string{1: "foo", 2: "bar"}, map[int]string{2: "bar", 1: "foo"}))
+
+	is.False(MapEqual(map[int]string{1: "foo", 2: "bar"}, map[int]string{1: "foo"}))
+	is.False(MapEqual(map[int]string{1: "foo", 2: "bar"}, map[int]string{1: "foo", 2: "bar", 3: "bazz"}))
+	is.False(MapEqual(map[int]string{1: "foo", 2: "bar"}, map[int]string{2: "foo", 1: "bar"}))
+}

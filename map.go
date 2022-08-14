@@ -183,3 +183,16 @@ func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(K, V) R) [
 
 	return result
 }
+
+// MapEqual checks if the maps contain the same keys and values with the same mapping between them.
+func MapEqual[K, V comparable](a, b map[K]V) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for k, va := range a {
+		if vb, ok := b[k]; !ok || vb != va {
+			return false
+		}
+	}
+	return true
+}

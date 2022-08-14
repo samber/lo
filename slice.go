@@ -494,3 +494,16 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(T
 
 	return true
 }
+
+// Equal checks if the slices contain exactly the same elements and have the same length.
+func Equal[T comparable](a, b []T) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
+}

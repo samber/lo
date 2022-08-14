@@ -603,3 +603,16 @@ func TestIsSortedByKey(t *testing.T) {
 		return ret
 	}))
 }
+
+func TestEqual(t *testing.T) {
+	is := assert.New(t)
+
+	is.True(Equal([]int{}, []int{}))
+	is.True(Equal([]int{1}, []int{1}))
+	is.True(Equal([]int{1, 2, 3, 4}, []int{1, 2, 3, 4}))
+
+	is.False(Equal([]int{1, 2, 3}, []int{}))
+	is.False(Equal([]int{1}, []int{1, 2, 3}))
+	is.False(Equal([]int{1, 2, 3}, []int{1, 3, 2}))
+	is.False(Equal([]int{1, 1}, []int{1}))
+}
