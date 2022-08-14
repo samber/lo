@@ -94,6 +94,7 @@ Supported helpers for slices:
 - [Compact](#compact)
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
+- [Equal](#equal)
 
 Supported helpers for maps:
 
@@ -112,6 +113,7 @@ Supported helpers for maps:
 - [MapKeys](#mapkeys)
 - [MapValues](#mapvalues)
 - [MapToSlice](#maptoslice)
+- [MapEqual](mapequal)
 
 Supported math helpers:
 
@@ -734,6 +736,17 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 // true
 ```
 
+### Equal
+
+Checks if two given slices of comparable elements are equal.
+
+```go
+slice1 := []int{1, 2, 3}
+slice2 := []int{1*1, 1+1, 6/2}
+eq := lo.Equal(slice1, slice2)
+// true
+```
+
 ### Keys
 
 Creates an array of the map keys.
@@ -906,6 +919,21 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 })
 // []string{"1_4", "2_5", "3_6"}
 ```
+
+### MapEqual
+
+Checks if two given maps are equal, i.e each key is contained in both and is mapped to the same value.
+
+```go
+map1 := map[int]int{0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+map2 := make(map[int]int)
+for k := range map1 {
+    map2[k] = k*k
+}
+eq := lo.MapEqual(map1, map2)
+// true
+```
+
 
 ### Range / RangeFrom / RangeWithSteps
 
