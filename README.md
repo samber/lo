@@ -187,6 +187,7 @@ Type manipulation helpers:
 - [Empty](#empty)
 - [IsEmpty](#isempty)
 - [IsNotEmpty](#isnotempty)
+- [EmptyOr](#emptyor)
 - [Coalesce](#coalesce)
 
 Function helpers:
@@ -1680,6 +1681,22 @@ lo.IsNotEmpty[test](test{foobar: ""})
 // false
 lo.IsNotEmpty[test](test{foobar: "foobar"})
 // true
+```
+
+### EmptyOr
+
+Returns fallback value if first argument is a zero value.
+
+```go
+lo.EmptyOr("", "test")
+// "test"
+lo.EmptyOr("1", "test")
+// "1"
+
+lo.EmptyOr(0, 1)
+// 1
+lo.EmptyOr(2, 1)
+// 2
 ```
 
 ### Coalesce

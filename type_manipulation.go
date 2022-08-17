@@ -74,6 +74,15 @@ func IsNotEmpty[T comparable](v T) bool {
 	return zero != v
 }
 
+// EmptyOr returns fallback value if first argument is a zero value.
+func EmptyOr[T comparable](v T, fallback T) T {
+	var zero T
+	if zero == v {
+		return fallback
+	}
+	return v
+}
+
 // Coalesce returns the first non-empty arguments. Arguments must be comparable.
 func Coalesce[T comparable](v ...T) (result T, ok bool) {
 	for _, e := range v {

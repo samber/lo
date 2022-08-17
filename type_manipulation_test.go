@@ -126,6 +126,30 @@ func TestIsNotEmpty(t *testing.T) {
 	is.True(IsNotEmpty[test](test{foobar: "foo"}))
 }
 
+func TestEmptyOr(t *testing.T) {
+	is := assert.New(t)
+
+	//nolint:unused
+	type test struct {
+		foobar string
+	}
+	result1 := EmptyOr("", "test")  // test
+	result2 := EmptyOr("1", "test") // 1
+
+	result3 := EmptyOr(0, 1) // 1
+	result4 := EmptyOr(2, 1) // 2
+
+	result5 := EmptyOr(test{}, test{foobar: "test"})            // {foobar: "test"}
+	result6 := EmptyOr(test{foobar: "1"}, test{foobar: "test"}) // {foobar: "1"}
+
+	is.Equal(result1, "test")
+	is.Equal(result2, "1")
+	is.Equal(result3, 1)
+	is.Equal(result4, 2)
+	is.Equal(result5, test{foobar: "test"})
+	is.Equal(result6, test{foobar: "1"})
+}
+
 func TestCoalesce(t *testing.T) {
 	is := assert.New(t)
 
