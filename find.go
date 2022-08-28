@@ -98,7 +98,7 @@ func FindKey[K comparable, V comparable](object map[K]V, value V) (K, bool) {
 }
 
 // FindKeyBy returns the key of the first element predicate returns truthy for.
-func FindKeyBy[K comparable, V comparable](object map[K]V, predicate func(K, V) bool) (K, bool) {
+func FindKeyBy[K comparable, V any](object map[K]V, predicate func(K, V) bool) (K, bool) {
 	for k, v := range object {
 		if predicate(k, v) {
 			return k, true
