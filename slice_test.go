@@ -151,10 +151,13 @@ func TestUniq(t *testing.T) {
 	result1 := Uniq([]int{1, 2, 2, 1})
 	var nilSlice []int
 	result2 := Uniq(nilSlice)
+	result3 := Uniq([]int{})
 
 	is.Equal(len(result1), 2)
 	is.Equal(result1, []int{1, 2})
 	is.Nil(result2)
+	is.Equal(len(result3), 0)
+	is.Equal(result3, []int{})
 }
 
 func TestUniqBy(t *testing.T) {
