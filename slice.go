@@ -99,7 +99,7 @@ func Times[T any](count int, iteratee func(int) T) []T {
 // The order of result values is determined by the order they occur in the array.
 func Uniq[T comparable](collection []T) []T {
 	if collection == nil {
-		return []T{}
+		return nil
 	}
 
 	result := make([]T, 0, len(collection))
