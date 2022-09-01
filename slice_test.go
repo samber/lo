@@ -149,9 +149,11 @@ func TestUniq(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := Uniq([]int{1, 2, 2, 1})
+	result2 := Uniq([]int{})
 
 	is.Equal(len(result1), 2)
 	is.Equal(result1, []int{1, 2})
+	is.Nil(result2)
 }
 
 func TestUniqBy(t *testing.T) {
