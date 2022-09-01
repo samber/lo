@@ -154,7 +154,6 @@ func TestUniq(t *testing.T) {
 
 	is.Equal(len(result1), 2)
 	is.Equal(result1, []int{1, 2})
-	is.Equal(len(result2), 0)
 	is.Nil(result2)
 }
 
