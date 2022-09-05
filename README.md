@@ -1091,12 +1091,12 @@ for i := range children {
 
 Many distributions strategies are available:
 
-- [DispatchingStrategyRoundRobin](./channel.go): Distributes messages in a rotating sequential manner.
-- [DispatchingStrategyRandom](./channel.go): Distributes messages in a random manner.
-- [DispatchingStrategyWeightedRandom](./channel.go): Distributes messages in a weighted manner.
-- [DispatchingStrategyFirst](./channel.go): Distributes messages in the first non-full channel.
-- [DispatchingStrategyLeast](./channel.go): Distributes messages in the emptiest channel.
-- [DispatchingStrategyMost](./channel.go): Distributes to the fulliest channel.
+- [lo.DispatchingStrategyRoundRobin](./channel.go): Distributes messages in a rotating sequential manner.
+- [lo.DispatchingStrategyRandom](./channel.go): Distributes messages in a random manner.
+- [lo.DispatchingStrategyWeightedRandom](./channel.go): Distributes messages in a weighted manner.
+- [lo.DispatchingStrategyFirst](./channel.go): Distributes messages in the first non-full channel.
+- [lo.DispatchingStrategyLeast](./channel.go): Distributes messages in the emptiest channel.
+- [lo.DispatchingStrategyMost](./channel.go): Distributes to the fulliest channel.
 
 Some strategies bring fallback, in order to favor non-blocking behaviors. See implementations.
 

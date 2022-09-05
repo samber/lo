@@ -7,12 +7,12 @@
 Adding:
 
 - lo.ChannelDispatcher with 6 dispatching strategies:
-  - DispatchingStrategyRoundRobin
-  - DispatchingStrategyRandom
-  - DispatchingStrategyWeightedRandom
-  - DispatchingStrategyFirst
-  - DispatchingStrategyLeast
-  - DispatchingStrategyMost
+  - lo.DispatchingStrategyRoundRobin
+  - lo.DispatchingStrategyRandom
+  - lo.DispatchingStrategyWeightedRandom
+  - lo.DispatchingStrategyFirst
+  - lo.DispatchingStrategyLeast
+  - lo.DispatchingStrategyMost
 
 ## 1.27.1 (2022-08-15)
 
