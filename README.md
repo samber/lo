@@ -132,6 +132,10 @@ Supported helpers for tuples:
 - [Zip2 -> Zip9](#zip2---zip9)
 - [Unzip2 -> Unzip9](#unzip2---unzip9)
 
+Supported helpers for channels:
+
+- [ChannelDispatcher](#channeldispatcher)
+
 Supported intersection helpers:
 
 - [Contains](#contains)
@@ -1051,6 +1055,85 @@ Unzip accepts an array of grouped elements and creates an array regrouping the e
 a, b := lo.Unzip2[string, int]([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
 // []string{"a", "b"}
 // []int{1, 2}
+```
+
+### ChannelDispatcher
+
+Distributes messages from input channels into N child channels. Close events are propagated to children.
+
+Underlying channels can have a fixed buffer capacity or be unbuffered when cap is 0.
+
+```go
+ch := make(chan int, 42)
+for i := 0; i <= 10; i++ {
+    ch <- i
+}
+
+children := lo.ChannelDispatcher(ch, 5, 10, DispatchingStrategyRoundRobin[int])
+// []<-chan int{...}
+
+consumer := func(c <-chan int) {
+    for {
+        msg, ok := <-c
+        if !ok {
+            println("closed")
+            break
+        }
+
+        println(msg)
+    }
+}
+
+for i := range children {
+    go consumer(children[i])
+}
+```
+
+Many distributions strategies are available:
+
+- [DispatchingStrategyRoundRobin](./channel.go): Distributes messages in a rotating sequential manner.
+- [DispatchingStrategyRandom](./channel.go): Distributes messages in a random manner.
+- [DispatchingStrategyWeightedRandom](./channel.go): Distributes messages in a weighted manner.
+- [DispatchingStrategyFirst](./channel.go): Distributes messages in the first non-full channel.
+- [DispatchingStrategyLeast](./channel.go): Distributes messages in the emptiest channel.
+- [DispatchingStrategyMost](./channel.go): Distributes to the fulliest channel.
+
+Some strategies bring fallback, in order to favor non-blocking behaviors. See implementations.
+
+For custom strategies, just implement the `lo.DispatchingStrategy` prototype:
+
+```go
+type DispatchingStrategy[T any] func(message T, messageIndex uint64, channels []<-chan T) int
+```
+
+Eg:
+
+```go
+type Message struct {
+    TenantID uuid.UUID
+}
+
+func hash(id uuid.UUID) int {
+	h := fnv.New32a()
+	h.Write([]byte(id.String()))
+	return int(h.Sum32())
+}
+
+// Routes messages per TenantID.
+customStrategy := func(message pubsub.AMQPSubMessage, messageIndex uint64, channels []<-chan pubsub.AMQPSubMessage) int {
+    destination := hash(message.TenantID) % len(channels)
+
+    // check if channel is full
+    if len(channels[destination]) < cap(channels[destination]) {
+        return destination
+    }
+
+    // fallback when child channel is full
+    return utils.DispatchingStrategyRoundRobin(message, uint64(destination), channels)
+}
+
+children := lo.ChannelDispatcher(ch, 5, 10, customStrategy)
+...
 ```
 
 ### Contains
