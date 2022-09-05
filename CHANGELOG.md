@@ -2,6 +2,18 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.28.0 (2022-09-05)
+
+Adding:
+
+- lo.ChannelDispatcher with 6 dispatching strategies:
+  - DispatchingStrategyRoundRobin
+  - DispatchingStrategyRandom
+  - DispatchingStrategyWeightedRandom
+  - DispatchingStrategyFirst
+  - DispatchingStrategyLeast
+  - DispatchingStrategyMost
+
 ## 1.27.1 (2022-08-15)
 
 Bugfix:
