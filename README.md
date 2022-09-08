@@ -1544,6 +1544,28 @@ result := lo.Ternary[string](false, "a", "b")
 // "b"
 ```
 
+### TernaryF
+
+```go
+result := lo.TernaryF[string](true, func() string { return "a" }, func() string { return "b" })
+// "a"
+
+result := lo.TernaryF[string](false, func() string { return "a" }, func() string { return "b" })
+// "b"
+```
+
+Useful to avoid nil-pointer dereferencing in intializations
+
+```go
+type S struct {
+    Val *string
+}
+
+s := S{}
+
+someStr := TernaryF[string](s.Val == nil, func() string { return "defaultValue" }, func() string { return *s.Val })
+```
+
 ### If / ElseIf / Else
 
 ```go

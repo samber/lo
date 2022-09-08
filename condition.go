@@ -9,6 +9,14 @@ func Ternary[T any](condition bool, ifOutput T, elseOutput T) T {
 	return elseOutput
 }
 
+// TernaryF is a 1 line if/else statement whose options are functions
+func TernaryF[T any](condition bool, ifFunc func() T, elseFunc func() T) T {
+	if condition {
+		return ifFunc()
+	}
+	return elseFunc()
+}
+
 type ifElse[T any] struct {
 	result T
 	done   bool
