@@ -111,6 +111,46 @@ func BenchmarkDropRight(b *testing.B) {
 	}
 }
 
+func BenchmarkDropWhile(b *testing.B) {
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = DropWhile(strs, func(v string) bool { return len(v) < 4 })
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = DropWhile(ints, func(v int) bool { return i < 10_000 })
+			}
+		})
+	}
+}
+
+func BenchmarkDropRightWhile(b *testing.B) {
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = DropRightWhile(strs, func(v string) bool { return len(v) < 4 })
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = DropRightWhile(ints, func(v int) bool { return i < 10_000 })
+			}
+		})
+	}
+}
+
 func BenchmarkReplace(b *testing.B) {
 	lengths := []int{1_000, 10_000, 100_000}
 	for _, n := range lengths {

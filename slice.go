@@ -309,12 +309,9 @@ func Drop[T any](collection []T, n int) []T {
 		return make([]T, 0)
 	}
 
-	result := make([]T, len(collection)-n)
-	for i := n; i < len(collection); i++ {
-		result[i-n] = collection[i]
-	}
+	result := make([]T, 0, len(collection)-n)
 
-	return result
+	return append(result, collection[n:]...)
 }
 
 // DropWhile drops elements from the beginning of a slice or array while the predicate returns true.
@@ -326,13 +323,8 @@ func DropWhile[T any](collection []T, predicate func(T) bool) []T {
 		}
 	}
 
-	result := make([]T, len(collection)-i)
-
-	for j := 0; i < len(collection); i, j = i+1, j+1 {
-		result[j] = collection[i]
-	}
-
-	return result
+	result := make([]T, 0, len(collection)-i)
+	return append(result, collection[i:]...)
 }
 
 // DropRight drops n elements from the end of a slice or array.
@@ -354,13 +346,8 @@ func DropRightWhile[T any](collection []T, predicate func(T) bool) []T {
 		}
 	}
 
-	result := make([]T, i+1)
-
-	for ; i >= 0; i-- {
-		result[i] = collection[i]
-	}
-
-	return result
+	result := make([]T, 0, i+1)
+	return append(result, collection[:i+1]...)
 }
 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
@@ -441,7 +428,7 @@ func Slice[T comparable](collection []T, start int, end int) []T {
 
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
 func Replace[T comparable](collection []T, old T, new T, n int) []T {
-	result := make([]T, 0, len(collection))
+	result := make([]T, len(collection))
 	copy(result, collection)
 
 	for i := range result {
