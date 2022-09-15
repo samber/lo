@@ -154,17 +154,19 @@ func Chunk[T any](collection []T, size int) [][]T {
 		panic("Second parameter must be greater than 0")
 	}
 
-	result := make([][]T, 0, len(collection)/2+1)
-	length := len(collection)
+	chunksNum := len(collection) / size
+	if len(collection)%size != 0 {
+		chunksNum += 1
+	}
 
-	for i := 0; i < length; i++ {
-		chunk := i / size
+	result := make([][]T, 0, chunksNum)
 
-		if i%size == 0 {
-			result = append(result, make([]T, 0, size))
+	for i := 0; i < chunksNum; i++ {
+		last := (i + 1) * size
+		if last > len(collection) {
+			last = len(collection)
 		}
-
-		result[chunk] = append(result[chunk], collection[i])
+		result = append(result, collection[i*size:last])
 	}
 
 	return result
@@ -198,11 +200,18 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]
 }
 
 // Flatten returns an array a single level deep.
-func Flatten[T any](collection [][]T) (result []T) {
-	for _, item := range collection {
-		result = append(result, item...)
+func Flatten[T any](collection [][]T) []T {
+	totalLen := 0
+	for i := range collection {
+		totalLen += len(collection[i])
 	}
-	return
+
+	result := make([]T, 0, totalLen)
+	for i := range collection {
+		result = append(result, collection[i]...)
+	}
+
+	return result
 }
 
 // Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
@@ -300,12 +309,9 @@ func Drop[T any](collection []T, n int) []T {
 		return make([]T, 0)
 	}
 
-	result := make([]T, len(collection)-n)
-	for i := n; i < len(collection); i++ {
-		result[i-n] = collection[i]
-	}
+	result := make([]T, 0, len(collection)-n)
 
-	return result
+	return append(result, collection[n:]...)
 }
 
 // DropWhile drops elements from the beginning of a slice or array while the predicate returns true.
@@ -317,27 +323,18 @@ func DropWhile[T any](collection []T, predicate func(T) bool) []T {
 		}
 	}
 
-	result := make([]T, len(collection)-i)
-
-	for j := 0; i < len(collection); i, j = i+1, j+1 {
-		result[j] = collection[i]
-	}
-
-	return result
+	result := make([]T, 0, len(collection)-i)
+	return append(result, collection[i:]...)
 }
 
 // DropRight drops n elements from the end of a slice or array.
 func DropRight[T any](collection []T, n int) []T {
 	if len(collection) <= n {
-		return make([]T, 0)
+		return []T{}
 	}
 
-	result := make([]T, len(collection)-n)
-	for i := len(collection) - 1 - n; i >= 0; i-- {
-		result[i] = collection[i]
-	}
-
-	return result
+	result := make([]T, 0, len(collection)-n)
+	return append(result, collection[:len(collection)-n]...)
 }
 
 // DropRightWhile drops elements from the end of a slice or array while the predicate returns true.
@@ -349,13 +346,8 @@ func DropRightWhile[T any](collection []T, predicate func(T) bool) []T {
 		}
 	}
 
-	result := make([]T, i+1)
-
-	for ; i >= 0; i-- {
-		result[i] = collection[i]
-	}
-
-	return result
+	result := make([]T, 0, i+1)
+	return append(result, collection[:i+1]...)
 }
 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
@@ -436,15 +428,13 @@ func Slice[T comparable](collection []T, start int, end int) []T {
 
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
 func Replace[T comparable](collection []T, old T, new T, n int) []T {
-	size := len(collection)
-	result := make([]T, 0, size)
+	result := make([]T, len(collection))
+	copy(result, collection)
 
-	for _, item := range collection {
-		if item == old && n != 0 {
-			result = append(result, new)
+	for i := range result {
+		if result[i] == old && n != 0 {
+			result[i] = new
 			n--
-		} else {
-			result = append(result, item)
 		}
 	}
 
