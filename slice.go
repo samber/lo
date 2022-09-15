@@ -408,7 +408,7 @@ func Subset[T any](collection []T, offset int, length uint) []T {
 }
 
 // Slice returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
-func Slice[T comparable](collection []T, start int, end int) []T {
+func Slice[T any](collection []T, start int, end int) []T {
 	size := len(collection)
 
 	if start >= end {
