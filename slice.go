@@ -295,7 +295,7 @@ func Associate[T any, K comparable, V any](collection []T, transform func(T) (K,
 	return result
 }
 
-// Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// SliceToMap returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 // If any of two pairs would have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 // Alias of Associate().
