@@ -185,9 +185,9 @@ func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(K, V) R) [
 }
 
 // MapEntries manipulates a map entries and transforms it to a map of another type.
-func MapEntries[K comparable, V any, R any](in map[K]V, iteratee func(entry Entry[K, V]) Entry[K, R]) map[K]R {
+func MapEntries[K comparable, V any, S comparable, R any](in map[K]V, iteratee func(entry Entry[K, V]) Entry[S, R]) map[S]R {
 	entries := Entries(in)
-	result := make(map[K]R, len(entries))
+	result := make(map[S]R, len(entries))
 
 	for _, entry := range entries {
 		res := iteratee(entry)
