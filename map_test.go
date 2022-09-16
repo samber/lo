@@ -192,94 +192,86 @@ func mapEntriesTest[I any, E any](t *testing.T, in map[string]I, iteratee func(e
 }
 
 func TestMapEntries(t *testing.T) {
+
 	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(entry Entry[string, int]) Entry[string, int] {
 		return Entry[string, int]{entry.Key, entry.Value + 1}
 	}, map[string]int{"foo": 2, "bar": 3})
-}
-
-func TestMapEntriesKeys(t *testing.T) {
 	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(entry Entry[string, int]) Entry[string, string] {
 		return Entry[string, string]{entry.Key, entry.Key + strconv.Itoa(entry.Value)}
 	}, map[string]string{"foo": "foo1", "bar": "bar2"})
-}
-
-func TestMapEntriesValues(t *testing.T) {
 	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(entry Entry[string, int]) Entry[string, string] {
 		return Entry[string, string]{entry.Key, strconv.Itoa(entry.Value) + entry.Key}
 	}, map[string]string{"foo": "1foo", "bar": "2bar"})
-}
 
-func TestMapEntriesNoMutation(t *testing.T) {
-	is := assert.New(t)
-	r1 := map[string]int{"foo": 1, "bar": 2}
+	// NoMutation
+	{
+		is := assert.New(t)
+		r1 := map[string]int{"foo": 1, "bar": 2}
+		MapEntries(r1, func(entry Entry[string, int]) Entry[string, string] {
+			return Entry[string, string]{
+				Key:   entry.Key,
+				Value: strconv.Itoa(entry.Value) + "!!",
+			}
+		})
+		is.Equal(r1, map[string]int{"foo": 1, "bar": 2})
+	}
+	// EmptyInput
+	{
+		mapEntriesTest(t, map[string]int{}, func(entry Entry[string, int]) Entry[string, string] {
+			return Entry[string, string]{
+				Key:   entry.Key,
+				Value: strconv.Itoa(entry.Value) + "!!",
+			}
+		}, map[string]string{})
 
-	MapEntries(r1, func(entry Entry[string, int]) Entry[string, string] {
-		return Entry[string, string]{
-			Key:   entry.Key,
-			Value: strconv.Itoa(entry.Value) + "!!",
-		}
-	})
+		mapEntriesTest(t, map[string]any{}, func(entry Entry[string, any]) Entry[string, any] {
+			return entry
+		}, map[string]any{})
+	}
+	// Identity
+	{
+		mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(entry Entry[string, int]) Entry[string, int] {
+			return entry
+		}, map[string]int{"foo": 1, "bar": 2})
+		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
+			return entry
+		}, map[string]any{"foo": 1, "bar": "2", "ccc": true})
+	}
+	// ToConstantEntry
+	{
+		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
+			return Entry[string, any]{Key: "key", Value: "value"}
+		}, map[string]any{"key": "value"})
+		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
+			return Entry[string, any]{Key: "b", Value: 5}
+		}, map[string]any{"b": 5})
+	}
 
-	is.Equal(r1, map[string]int{"foo": 1, "bar": 2})
-}
+	//// OverlappingKeys
+	//// because using range over map, the order is not guaranteed
+	//// this test is not deterministic
+	//{
+	//	mapEntriesTest(t, map[string]any{"foo": 1, "foo2": 2, "Foo": 2, "Foo2": "2", "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
+	//		return Entry[string, any]{Key: string(entry.Key[0]), Value: entry.Value}
+	//	}, map[string]any{"F": "2", "b": "2", "c": true, "f": 2})
+	//	mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(entry Entry[string, string]) Entry[string, string] {
+	//		return Entry[string, string]{Key: entry.Value, Value: entry.Key}
+	//	}, map[string]string{"1": "foo", "2": "bar", "true": "ccc"})
+	//}
+	// NormalMappers
+	{
+		mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(entry Entry[string, string]) Entry[string, string] {
+			return Entry[string, string]{Key: entry.Key, Value: entry.Key + entry.Value}
+		}, map[string]string{"Foo": "Foo2", "Foo2": "Foo22", "bar": "bar2", "ccc": "ccctrue", "foo": "foo1", "foo2": "foo22"})
 
-func TestMapEntriesEmptyInput(t *testing.T) {
-	is := assert.New(t)
-
-	r1 := MapEntries(map[string]int{}, func(entry Entry[string, int]) Entry[string, string] {
-		return Entry[string, string]{
-			Key:   entry.Key,
-			Value: strconv.Itoa(entry.Value) + "!!",
-		}
-	})
-
-	is.Equal(r1, map[string]string{})
-	mapEntriesTest(t, map[string]any{}, func(entry Entry[string, any]) Entry[string, any] {
-		return entry
-	}, map[string]any{})
-}
-
-func TestMapEntriesIdentity(t *testing.T) {
-	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(entry Entry[string, int]) Entry[string, int] {
-		return entry
-	}, map[string]int{"foo": 1, "bar": 2})
-	mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
-		return entry
-	}, map[string]any{"foo": 1, "bar": "2", "ccc": true})
-}
-
-func TestMapEntriesToConstantEntry(t *testing.T) {
-	mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
-		return Entry[string, any]{Key: "key", Value: "value"}
-	}, map[string]any{"key": "value"})
-	mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
-		return Entry[string, any]{Key: "b", Value: 5}
-	}, map[string]any{"b": 5})
-}
-
-//// because using range over map, the order is not guaranteed
-//// this test is not deterministic
-//func TestMapEntriesOverlappingKeys(t *testing.T) {
-//	//mapEntriesTest(t, map[string]any{"foo": 1, "foo2": 2, "Foo": 2, "Foo2": "2", "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
-//	//	return Entry[string, any]{Key: string(entry.Key[0]), Value: entry.Value}
-//	//}, map[string]any{"F": "2", "b": "2", "c": true, "f": 2})
-//	//mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(entry Entry[string, string]) Entry[string, string] {
-//	//	return Entry[string, string]{Key: entry.Value, Value: entry.Key}
-//	//}, map[string]string{"1": "foo", "2": "bar", "true": "ccc"})
-//}
-
-func TestMapEntriesNormalMappers(t *testing.T) {
-	mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(entry Entry[string, string]) Entry[string, string] {
-		return Entry[string, string]{Key: entry.Key, Value: entry.Key + entry.Value}
-	}, map[string]string{"Foo": "Foo2", "Foo2": "Foo22", "bar": "bar2", "ccc": "ccctrue", "foo": "foo1", "foo2": "foo22"})
-
-	mapEntriesTest(t, map[string]struct {
-		name string
-		age  int
-	}{"1-11-1": {name: "foo", age: 1}, "2-22-2": {name: "bar", age: 2}}, func(entry Entry[string, struct {
-		name string
-		age  int
-	}]) Entry[string, string] {
-		return Entry[string, string]{Key: entry.Value.name, Value: entry.Key}
-	}, map[string]string{"bar": "2-22-2", "foo": "1-11-1"})
+		mapEntriesTest(t, map[string]struct {
+			name string
+			age  int
+		}{"1-11-1": {name: "foo", age: 1}, "2-22-2": {name: "bar", age: 2}}, func(entry Entry[string, struct {
+			name string
+			age  int
+		}]) Entry[string, string] {
+			return Entry[string, string]{Key: entry.Value.name, Value: entry.Key}
+		}, map[string]string{"bar": "2-22-2", "foo": "1-11-1"})
+	}
 }
