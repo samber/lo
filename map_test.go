@@ -185,65 +185,58 @@ func TestMapToSlice(t *testing.T) {
 	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
 }
 
-func mapEntriesTest[I any, E any](t *testing.T, in map[string]I, iteratee func(entry Entry[string, I]) Entry[string, E], expected map[string]E) {
+func mapEntriesTest[I any, O any](t *testing.T, in map[string]I, iteratee func(string, I) (string, O), expected map[string]O) {
 	is := assert.New(t)
 	result := MapEntries(in, iteratee)
 	is.Equal(result, expected)
 }
 
 func TestMapEntries(t *testing.T) {
-
-	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(entry Entry[string, int]) Entry[string, int] {
-		return Entry[string, int]{entry.Key, entry.Value + 1}
+	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(k string, v int) (string, int) {
+		return k, v + 1
 	}, map[string]int{"foo": 2, "bar": 3})
-	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(entry Entry[string, int]) Entry[string, string] {
-		return Entry[string, string]{entry.Key, entry.Key + strconv.Itoa(entry.Value)}
+	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(k string, v int) (string, string) {
+		return k, k + strconv.Itoa(v)
 	}, map[string]string{"foo": "foo1", "bar": "bar2"})
-	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(entry Entry[string, int]) Entry[string, string] {
-		return Entry[string, string]{entry.Key, strconv.Itoa(entry.Value) + entry.Key}
+	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(k string, v int) (string, string) {
+		return k, strconv.Itoa(v) + k
 	}, map[string]string{"foo": "1foo", "bar": "2bar"})
 
 	// NoMutation
 	{
 		is := assert.New(t)
 		r1 := map[string]int{"foo": 1, "bar": 2}
-		MapEntries(r1, func(entry Entry[string, int]) Entry[string, string] {
-			return Entry[string, string]{
-				Key:   entry.Key,
-				Value: strconv.Itoa(entry.Value) + "!!",
-			}
+		MapEntries(r1, func(k string, v int) (string, string) {
+			return k, strconv.Itoa(v) + "!!"
 		})
 		is.Equal(r1, map[string]int{"foo": 1, "bar": 2})
 	}
 	// EmptyInput
 	{
-		mapEntriesTest(t, map[string]int{}, func(entry Entry[string, int]) Entry[string, string] {
-			return Entry[string, string]{
-				Key:   entry.Key,
-				Value: strconv.Itoa(entry.Value) + "!!",
-			}
+		mapEntriesTest(t, map[string]int{}, func(k string, v int) (string, string) {
+			return k, strconv.Itoa(v) + "!!"
 		}, map[string]string{})
 
-		mapEntriesTest(t, map[string]any{}, func(entry Entry[string, any]) Entry[string, any] {
-			return entry
+		mapEntriesTest(t, map[string]any{}, func(k string, v any) (string, any) {
+			return k, v
 		}, map[string]any{})
 	}
 	// Identity
 	{
-		mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(entry Entry[string, int]) Entry[string, int] {
-			return entry
+		mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(k string, v int) (string, int) {
+			return k, v
 		}, map[string]int{"foo": 1, "bar": 2})
-		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
-			return entry
+		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(k string, v any) (string, any) {
+			return k, v
 		}, map[string]any{"foo": 1, "bar": "2", "ccc": true})
 	}
 	// ToConstantEntry
 	{
-		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
-			return Entry[string, any]{Key: "key", Value: "value"}
+		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(k string, v any) (string, any) {
+			return "key", "value"
 		}, map[string]any{"key": "value"})
-		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
-			return Entry[string, any]{Key: "b", Value: 5}
+		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(k string, v any) (string, any) {
+			return "b", 5
 		}, map[string]any{"b": 5})
 	}
 
@@ -251,27 +244,27 @@ func TestMapEntries(t *testing.T) {
 	//// because using range over map, the order is not guaranteed
 	//// this test is not deterministic
 	//{
-	//	mapEntriesTest(t, map[string]any{"foo": 1, "foo2": 2, "Foo": 2, "Foo2": "2", "bar": "2", "ccc": true}, func(entry Entry[string, any]) Entry[string, any] {
-	//		return Entry[string, any]{Key: string(entry.Key[0]), Value: entry.Value}
+	//	mapEntriesTest(t, map[string]any{"foo": 1, "foo2": 2, "Foo": 2, "Foo2": "2", "bar": "2", "ccc": true}, func(k string, v any) (string, any) {
+	//		return string(k[0]), v
 	//	}, map[string]any{"F": "2", "b": "2", "c": true, "f": 2})
-	//	mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(entry Entry[string, string]) Entry[string, string] {
-	//		return Entry[string, string]{Key: entry.Value, Value: entry.Key}
+	//	mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(k string, v string) (string, string) {
+	//		return v, k
 	//	}, map[string]string{"1": "foo", "2": "bar", "true": "ccc"})
 	//}
-	// NormalMappers
+	//NormalMappers
 	{
-		mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(entry Entry[string, string]) Entry[string, string] {
-			return Entry[string, string]{Key: entry.Key, Value: entry.Key + entry.Value}
+		mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(k string, v string) (string, string) {
+			return k, k + v
 		}, map[string]string{"Foo": "Foo2", "Foo2": "Foo22", "bar": "bar2", "ccc": "ccctrue", "foo": "foo1", "foo2": "foo22"})
 
 		mapEntriesTest(t, map[string]struct {
 			name string
 			age  int
-		}{"1-11-1": {name: "foo", age: 1}, "2-22-2": {name: "bar", age: 2}}, func(entry Entry[string, struct {
+		}{"1-11-1": {name: "foo", age: 1}, "2-22-2": {name: "bar", age: 2}}, func(k string, v struct {
 			name string
 			age  int
-		}]) Entry[string, string] {
-			return Entry[string, string]{Key: entry.Value.name, Value: entry.Key}
+		}) (string, string) {
+			return v.name, k
 		}, map[string]string{"bar": "2-22-2", "foo": "1-11-1"})
 	}
 }
