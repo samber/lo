@@ -1,5 +1,7 @@
 package lo
 
+import "reflect"
+
 // ToPtr returns a pointer copy of value.
 func ToPtr[T any](x T) *T {
 	return &x
@@ -63,21 +65,19 @@ func Empty[T any]() T {
 }
 
 // IsEmpty returns true if argument is a zero value.
-func IsEmpty[T comparable](v T) bool {
-	var zero T
-	return zero == v
+func IsEmpty[T any](v T) bool {
+	return reflect.ValueOf(&v).Elem().IsZero()
 }
 
 // IsNotEmpty returns true if argument is not a zero value.
-func IsNotEmpty[T comparable](v T) bool {
-	var zero T
-	return zero != v
+func IsNotEmpty[T any](v T) bool {
+	return !reflect.ValueOf(&v).Elem().IsZero()
 }
 
-// Coalesce returns the first non-empty arguments. Arguments must be comparable.
-func Coalesce[T comparable](v ...T) (result T, ok bool) {
+// Coalesce returns the first non-empty arguments.
+func Coalesce[T any](v ...T) (result T, ok bool) {
 	for _, e := range v {
-		if e != result {
+		if IsNotEmpty(e) {
 			result = e
 			ok = true
 			return

@@ -1767,7 +1767,7 @@ lo.IsNotEmpty[test](test{foobar: "foobar"})
 
 ### Coalesce
 
-Returns the first non-empty arguments. Arguments must be comparable.
+Returns the first non-empty arguments. 
 
 ```go
 result, ok := lo.Coalesce(0, 1, 2, 3)
