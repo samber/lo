@@ -1,9 +1,18 @@
 package lo
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 )
+
+// Validate is a helper that creates an error when a condition is not met.
+func Validate(ok bool, format string, args ...any) error {
+	if !ok {
+		return errors.New(fmt.Sprint(format, args))
+	}
+	return nil
+}
 
 func messageFromMsgAndArgs(msgAndArgs ...interface{}) string {
 	if len(msgAndArgs) == 1 {

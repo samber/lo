@@ -207,6 +207,7 @@ Concurrency helpers:
 
 Error handling:
 
+- [Validate](#validate)
 - [Must](#must)
 - [Try](#try)
 - [TryCatch](#trycatch)
@@ -1932,6 +1933,21 @@ ch := lo.Async2(func() (int, string) {
 })
 // chan lo.Tuple2[int, string] ({42, "Hello"})
 ```
+
+### Validate
+
+Helper function that creates an error when a condition is not met.
+
+```go
+slice := []string{"a"}
+val := lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", slice)
+// error("Slice should be empty but contains [a]")
+
+slice := []string{}
+val := lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", slice)
+// nil
+```
+
 
 ### Must
 
