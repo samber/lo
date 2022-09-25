@@ -1554,16 +1554,11 @@ result := lo.TernaryF[string](false, func() string { return "a" }, func() string
 // "b"
 ```
 
-Useful to avoid nil-pointer dereferencing in intializations
+Useful to avoid nil-pointer dereferencing in intializations, or avoid running unnecessary code
 
 ```go
-type S struct {
-    Val *string
-}
-
-s := S{}
-
-someStr := TernaryF[string](s.Val == nil, func() string { return "defaultValue" }, func() string { return *s.Val })
+var s *string
+someStr := TernaryF[string](s.Val == nil, func() string { return uuid.New().String() }, func() string { return *s })
 ```
 
 ### If / ElseIf / Else
