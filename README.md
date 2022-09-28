@@ -59,7 +59,6 @@ GoDoc: [https://godoc.org/github.com/samber/lo](https://godoc.org/github.com/sam
 
 Supported helpers for slices:
 
-
 - [Filter](#filter)
 - [Map](#map)
 - [FilterMap](#filtermap)
