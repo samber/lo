@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"fmt"
 	"math"
 	"reflect"
 	"strconv"
@@ -115,6 +116,16 @@ func TestReduce(t *testing.T) {
 
 	is.Equal(result1, 10)
 	is.Equal(result2, 20)
+}
+
+func TestReduceRight(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {
+		return append(agg, item...)
+	}, []int{})
+
+	is.Equal(result1, []int{4, 5, 2, 3, 0, 1})
 }
 
 func TestForEach(t *testing.T) {
@@ -279,6 +290,39 @@ func TestKeyBy(t *testing.T) {
 	is.Equal(result1, map[int]string{1: "a", 2: "aa", 3: "aaa"})
 }
 
+func TestAssociate(t *testing.T) {
+	type foo struct {
+		baz string
+		bar int
+	}
+	transform := func(f *foo) (string, int) {
+		return f.baz, f.bar
+	}
+	testCases := []struct {
+		in     []*foo
+		expect map[string]int
+	}{
+		{
+			in:     []*foo{{baz: "apple", bar: 1}},
+			expect: map[string]int{"apple": 1},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			expect: map[string]int{"apple": 1, "banana": 2},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			expect: map[string]int{"apple": 2},
+		},
+	}
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
+			is := assert.New(t)
+			is.Equal(Associate(testCase.in, transform), testCase.expect)
+		})
+	}
+}
+
 func TestDrop(t *testing.T) {
 	is := assert.New(t)
 
@@ -417,6 +461,42 @@ func TestSubset(t *testing.T) {
 	is.Equal([]int{1, 2, 3, 4}, out12)
 }
 
+func TestSlice(t *testing.T) {
+	is := assert.New(t)
+
+	in := []int{0, 1, 2, 3, 4}
+
+	out1 := Slice(in, 0, 0)
+	out2 := Slice(in, 0, 1)
+	out3 := Slice(in, 0, 5)
+	out4 := Slice(in, 0, 6)
+	out5 := Slice(in, 1, 1)
+	out6 := Slice(in, 1, 5)
+	out7 := Slice(in, 1, 6)
+	out8 := Slice(in, 4, 5)
+	out9 := Slice(in, 5, 5)
+	out10 := Slice(in, 6, 5)
+	out11 := Slice(in, 6, 6)
+	out12 := Slice(in, 1, 0)
+	out13 := Slice(in, 5, 0)
+	out14 := Slice(in, 6, 4)
+
+	is.Equal([]int{}, out1)
+	is.Equal([]int{0}, out2)
+	is.Equal([]int{0, 1, 2, 3, 4}, out3)
+	is.Equal([]int{0, 1, 2, 3, 4}, out4)
+	is.Equal([]int{}, out5)
+	is.Equal([]int{1, 2, 3, 4}, out6)
+	is.Equal([]int{1, 2, 3, 4}, out7)
+	is.Equal([]int{4}, out8)
+	is.Equal([]int{}, out9)
+	is.Equal([]int{}, out10)
+	is.Equal([]int{}, out11)
+	is.Equal([]int{}, out12)
+	is.Equal([]int{}, out13)
+	is.Equal([]int{}, out14)
+}
+
 func TestReplace(t *testing.T) {
 	is := assert.New(t)
 
@@ -455,6 +535,74 @@ func TestReplaceAll(t *testing.T) {
 
 	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out1)
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out2)
+}
+
+func TestCompact(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := Compact([]int{2, 0, 4, 0})
+
+	is.Equal(r1, []int{2, 4})
+
+	r2 := Compact([]string{"", "foo", "", "bar", ""})
+
+	is.Equal(r2, []string{"foo", "bar"})
+
+	r3 := Compact([]bool{true, false, true, false})
+
+	is.Equal(r3, []bool{true, true})
+
+	type foo struct {
+		bar int
+		baz string
+	}
+
+	// slice of structs
+	// If all fields of an element are zero values, Compact removes it.
+
+	r4 := Compact([]foo{
+		{bar: 1, baz: "a"}, // all fields are non-zero values
+		{bar: 0, baz: ""},  // all fields are zero values
+		{bar: 2, baz: ""},  // bar is non-zero
+	})
+
+	is.Equal(r4, []foo{{bar: 1, baz: "a"}, {bar: 2, baz: ""}})
+
+	// slice of pointers to structs
+	// If an element is nil, Compact removes it.
+
+	e1, e2, e3 := foo{bar: 1, baz: "a"}, foo{bar: 0, baz: ""}, foo{bar: 2, baz: ""}
+	// NOTE: e2 is a zero value of foo, but its pointer &e2 is not a zero value of *foo.
+	r5 := Compact([]*foo{&e1, &e2, nil, &e3})
+
+	is.Equal(r5, []*foo{&e1, &e2, &e3})
+}
+
+func TestIsSorted(t *testing.T) {
+	is := assert.New(t)
+
+	is.True(IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}))
+	is.True(IsSorted([]string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"}))
+
+	is.False(IsSorted([]int{0, 1, 4, 3, 2, 5, 6, 7, 8, 9, 10}))
+	is.False(IsSorted([]string{"a", "b", "d", "c", "e", "f", "g", "h", "i", "j"}))
+}
+
+func TestIsSortedByKey(t *testing.T) {
+	is := assert.New(t)
+
+	is.True(IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
+		return len(s)
+	}))
+
+	is.False(IsSortedByKey([]string{"aa", "b", "ccc"}, func(s string) int {
+		return len(s)
+	}))
+
+	is.True(IsSortedByKey([]string{"1", "2", "3", "11"}, func(s string) int {
+		ret, _ := strconv.Atoi(s)
+		return ret
+	}))
 }
 
 func TestInterleave(t *testing.T) {
