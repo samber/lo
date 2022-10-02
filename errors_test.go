@@ -532,7 +532,7 @@ type internalError struct {
 }
 
 func (e *internalError) Error() string {
-	return fmt.Sprintf("internal error")
+	return "internal error"
 }
 
 func TestErrorsAs(t *testing.T) {
