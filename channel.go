@@ -96,11 +96,11 @@ func DispatchingStrategyRandom[T any](msg T, index uint64, channels []<-chan T) 
 
 // DispatchingStrategyRandom distributes messages in a weighted manner.
 // If the channel capacity is exceeded, another random channel will be selected and so on.
-func DispatchingStrategyWeightedRandom[T any](weigths []int) DispatchingStrategy[T] {
+func DispatchingStrategyWeightedRandom[T any](weights []int) DispatchingStrategy[T] {
 	seq := []int{}
 
-	for i := 0; i < len(weigths); i++ {
-		for j := 0; j < weigths[i]; j++ {
+	for i := 0; i < len(weights); i++ {
+		for j := 0; j < weights[i]; j++ {
 			seq = append(seq, i)
 		}
 	}
