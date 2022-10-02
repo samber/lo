@@ -14,6 +14,7 @@ func TernaryF[T any](condition bool, ifFunc func() T, elseFunc func() T) T {
 	if condition {
 		return ifFunc()
 	}
+
 	return elseFunc()
 }
 

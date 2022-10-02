@@ -176,7 +176,8 @@ Supported search helpers:
 
 Conditional helpers:
 
-- [Ternary (1 line if/else statement)](#ternary)
+- [Ternary](#ternary)
+- [TernaryF](#ternaryf)
 - [If / ElseIf / Else](#if--elseif--else)
 - [Switch / Case / Default](#switch--case--default)
 
@@ -1550,6 +1551,8 @@ result := lo.Ternary[string](false, "a", "b")
 
 ### TernaryF
 
+A 1 line if/else statement whose options are functions.
+
 ```go
 result := lo.TernaryF[string](true, func() string { return "a" }, func() string { return "b" })
 // "a"
@@ -1562,7 +1565,9 @@ Useful to avoid nil-pointer dereferencing in intializations, or avoid running un
 
 ```go
 var s *string
-someStr := TernaryF[string](s.Val == nil, func() string { return uuid.New().String() }, func() string { return *s })
+
+someStr := TernaryF[string](s == nil, func() string { return uuid.New().String() }, func() string { return *s })
+// ef782193-c30c-4e2e-a7ae-f8ab5e125e02
 ```
 
 ### If / ElseIf / Else
