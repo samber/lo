@@ -209,6 +209,9 @@ Error handling:
 
 - [Must](#must)
 - [Try](#try)
+- [Try1 -> Try6](#try0-6)
+- [TryOr](#tryor)
+- [TryOr1 -> TryOr6](#tryor0-6)
 - [TryCatch](#trycatch)
 - [TryWithErrorValue](#trywitherrorvalue)
 - [TryCatchWithErrorValue](#trycatchwitherrorvalue)
@@ -2023,6 +2026,45 @@ ok := lo.Try2(func() (string, error) {
     panic("error")
     return "", nil
 })
+// false
+```
+
+### TryOr
+
+Calls the function and return a default value in case of error and on panic.
+
+```go
+str, ok := lo.TryOr(func() (string, error) {
+    panic("error")
+    return "hello", nil
+}, "world")
+// world
+// false
+
+ok := lo.TryOr(func() error {
+    return "hello", nil
+}, "world")
+// hello
+// true
+
+ok := lo.TryOr(func() error {
+    return "hello", fmt.Errorf("error")
+}, "world")
+// world
+// false
+```
+
+### TryOr{0->6}
+
+The same behavior than `TryOr`, but callback returns 2 variables.
+
+```go
+str, nbr, ok := lo.TryOr2(func() (string, int, error) {
+    panic("error")
+    return "hello", 42, nil
+}, "world", 21)
+// world
+// 21
 // false
 ```
 
