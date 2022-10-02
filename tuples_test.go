@@ -7,6 +7,7 @@ import (
 )
 
 func TestT(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := T2("a", 1)
@@ -29,6 +30,7 @@ func TestT(t *testing.T) {
 }
 
 func TestUnpack(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	{
@@ -133,6 +135,7 @@ func TestUnpack(t *testing.T) {
 }
 
 func TestZip(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := Zip2(
@@ -272,6 +275,7 @@ func TestZip(t *testing.T) {
 }
 
 func TestUnzip(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1, r2 := Unzip2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})

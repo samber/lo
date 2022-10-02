@@ -7,6 +7,7 @@ import (
 )
 
 func TestTernary(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Ternary(true, "a", "b")
@@ -17,6 +18,7 @@ func TestTernary(t *testing.T) {
 }
 
 func TestIfElse(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := If(true, 1).ElseIf(false, 2).Else(3)
@@ -31,6 +33,7 @@ func TestIfElse(t *testing.T) {
 }
 
 func TestIfFElseF(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := IfF(true, func() int { return 1 }).ElseIfF(false, func() int { return 2 }).ElseF(func() int { return 3 })
@@ -45,6 +48,7 @@ func TestIfFElseF(t *testing.T) {
 }
 
 func TestSwitchCase(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Switch[int, int](42).Case(42, 1).Case(1, 2).Default(3)
@@ -59,6 +63,7 @@ func TestSwitchCase(t *testing.T) {
 }
 
 func TestSwitchCaseF(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Switch[int, int](42).CaseF(42, func() int { return 1 }).CaseF(1, func() int { return 2 }).DefaultF(func() int { return 3 })

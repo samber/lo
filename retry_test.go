@@ -9,6 +9,7 @@ import (
 )
 
 func TestAttempt(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	err := fmt.Errorf("failed")
@@ -49,6 +50,7 @@ func TestAttempt(t *testing.T) {
 }
 
 func TestAttemptWithDelay(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	err := fmt.Errorf("failed")
@@ -97,6 +99,8 @@ func TestAttemptWithDelay(t *testing.T) {
 }
 
 func TestDebounce(t *testing.T) {
+	t.Parallel()
+
 	f1 := func() {
 		println("1. Called once after 10ms when func stopped invoking!")
 	}
