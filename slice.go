@@ -7,6 +7,7 @@ import (
 )
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
+// Play: https://go.dev/play/p/Apjg3WeSi7K
 func Filter[V any](collection []V, predicate func(V, int) bool) []V {
 	result := []V{}
 
@@ -20,6 +21,7 @@ func Filter[V any](collection []V, predicate func(V, int) bool) []V {
 }
 
 // Map manipulates a slice and transforms it to a slice of another type.
+// Play: https://go.dev/play/p/OkPcYAhBo0D
 func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 	result := make([]R, len(collection))
 
@@ -34,6 +36,8 @@ func Map[T any, R any](collection []T, iteratee func(T, int) R) []R {
 // The callback function should return two values:
 //   - the result of the mapping operation and
 //   - whether the result element should be included or not.
+//
+// Play: https://go.dev/play/p/-AuYXfy7opz
 func FilterMap[T any, R any](collection []T, callback func(T, int) (R, bool)) []R {
 	result := []R{}
 
@@ -47,6 +51,7 @@ func FilterMap[T any, R any](collection []T, callback func(T, int) (R, bool)) []
 }
 
 // FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
+// Play: https://go.dev/play/p/YSoYmQTA8-U
 func FlatMap[T any, R any](collection []T, iteratee func(T, int) []R) []R {
 	result := []R{}
 
@@ -59,6 +64,7 @@ func FlatMap[T any, R any](collection []T, iteratee func(T, int) []R) []R {
 
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
+// Play: https://go.dev/play/p/R4UHXZNaaUG
 func Reduce[T any, R any](collection []T, accumulator func(R, T, int) R, initial R) R {
 	for i, item := range collection {
 		initial = accumulator(initial, item, i)
@@ -68,6 +74,7 @@ func Reduce[T any, R any](collection []T, accumulator func(R, T, int) R, initial
 }
 
 // ReduceRight helper is like Reduce except that it iterates over elements of collection from right to left.
+// Play: https://go.dev/play/p/Fq3W70l7wXF
 func ReduceRight[T any, R any](collection []T, accumulator func(R, T, int) R, initial R) R {
 	for i := len(collection) - 1; i >= 0; i-- {
 		initial = accumulator(initial, collection[i], i)
@@ -77,6 +84,7 @@ func ReduceRight[T any, R any](collection []T, accumulator func(R, T, int) R, in
 }
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.
+// Play: https://go.dev/play/p/oofyiUPRf8t
 func ForEach[T any](collection []T, iteratee func(T, int)) {
 	for i, item := range collection {
 		iteratee(item, i)
@@ -85,6 +93,7 @@ func ForEach[T any](collection []T, iteratee func(T, int)) {
 
 // Times invokes the iteratee n times, returning an array of the results of each invocation.
 // The iteratee is invoked with index as argument.
+// Play: https://go.dev/play/p/vgQj3Glr6lT
 func Times[T any](count int, iteratee func(int) T) []T {
 	result := make([]T, count)
 
@@ -97,6 +106,7 @@ func Times[T any](count int, iteratee func(int) T) []T {
 
 // Uniq returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the array.
+// Play: https://go.dev/play/p/DTzbeXZ6iEN
 func Uniq[T comparable](collection []T) []T {
 	result := make([]T, 0, len(collection))
 	seen := make(map[T]struct{}, len(collection))
@@ -116,6 +126,7 @@ func Uniq[T comparable](collection []T) []T {
 // UniqBy returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
+// Play: https://go.dev/play/p/g42Z3QSb53u
 func UniqBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
 	result := make([]T, 0, len(collection))
 	seen := make(map[U]struct{}, len(collection))
@@ -135,6 +146,7 @@ func UniqBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
 }
 
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
+// Play: https://go.dev/play/p/XnQBd_v6brd
 func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T {
 	result := map[U][]T{}
 
@@ -149,6 +161,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(T) U) map[U][]T 
 
 // Chunk returns an array of elements split into groups the length of size. If array can't be split evenly,
 // the final chunk will be the remaining elements.
+// Play: https://go.dev/play/p/EeKl0AuTehH
 func Chunk[T any](collection []T, size int) [][]T {
 	if size <= 0 {
 		panic("Second parameter must be greater than 0")
@@ -175,6 +188,7 @@ func Chunk[T any](collection []T, size int) [][]T {
 // PartitionBy returns an array of elements split into groups. The order of grouped values is
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through iteratee.
+// Play: https://go.dev/play/p/NfQ_nGjkgXW
 func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]T {
 	result := [][]T{}
 	seen := map[K]int{}
@@ -200,6 +214,7 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(x T) K) [][]
 }
 
 // Flatten returns an array a single level deep.
+// Play: https://go.dev/play/p/rbp9ORaMpjw
 func Flatten[T any](collection [][]T) []T {
 	totalLen := 0
 	for i := range collection {

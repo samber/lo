@@ -226,11 +226,13 @@ Constraints:
 Iterates over a collection and returns an array of all the elements the predicate function returns `true` for.
 
 ```go
-even := lo.Filter[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+even := lo.Filter[int]([]int{1, 2, 3, 4}, func(x int, index int) bool {
     return x%2 == 0
 })
 // []int{2, 4}
 ```
+
+[[play](https://go.dev/play/p/Apjg3WeSi7K)]
 
 ### Map
 
@@ -239,11 +241,13 @@ Manipulates a slice of one type and transforms it into a slice of another type:
 ```go
 import "github.com/samber/lo"
 
-lo.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+lo.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, index int) string {
     return strconv.FormatInt(x, 10)
 })
 // []string{"1", "2", "3", "4"}
 ```
+
+[[play](https://go.dev/play/p/OkPcYAhBo0D)]
 
 Parallel processing: like `lo.Map()`, but the mapper function is called in a goroutine. Results are returned in the same order.
 
@@ -272,6 +276,8 @@ matching := lo.FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboa
 // []string{"xpu", "xpu"}
 ```
 
+[[play](https://go.dev/play/p/-AuYXfy7opz)]
+
 ### FlatMap
 
 Manipulates a slice and transforms and flattens it to a slice of another type.
@@ -286,6 +292,8 @@ lo.FlatMap[int, string]([]int{0, 1, 2}, func(x int, _ int) []string {
 // []string{"0", "0", "1", "1", "2", "2"}
 ```
 
+[[play](https://go.dev/play/p/YSoYmQTA8-U)]
+
 ### Reduce
 
 Reduces a collection to a single value. The value is calculated by accumulating the result of running each element in the collection through an accumulator function. Each successive invocation is supplied with the return value returned by the previous call.
@@ -297,6 +305,8 @@ sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int
 // 10
 ```
 
+[[play](https://go.dev/play/p/R4UHXZNaaUG)]
+
 ### ReduceRight
 
 Like `lo.Reduce` except that it iterates over elements of collection from right to left.
@@ -307,6 +317,8 @@ result := lo.ReduceRight[[]int, []int]([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg
 }, []int{}))
 // []int{4, 5, 2, 3, 0, 1}
 ```
+
+[[play](https://go.dev/play/p/Fq3W70l7wXF)]
 
 ### ForEach
 
@@ -320,6 +332,8 @@ lo.ForEach[string]([]string{"hello", "world"}, func(x string, _ int) {
 })
 // prints "hello\nworld\n"
 ```
+
+[[play](https://go.dev/play/p/oofyiUPRf8t)]
 
 Parallel processing: like `lo.ForEach()`, but the callback is called as a goroutine.
 
@@ -345,6 +359,8 @@ lo.Times[string](3, func(i int) string {
 // []string{"0", "1", "2"}
 ```
 
+[[play](https://go.dev/play/p/vgQj3Glr6lT)]
+
 Parallel processing: like `lo.Times()`, but callback is called in goroutine.
 
 ```go
@@ -365,6 +381,8 @@ uniqValues := lo.Uniq[int]([]int{1, 2, 2, 1})
 // []int{1, 2}
 ```
 
+[[play](https://go.dev/play/p/DTzbeXZ6iEN)]
+
 ### UniqBy
 
 Returns a duplicate-free version of an array, in which only the first occurrence of each element is kept. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
@@ -375,6 +393,8 @@ uniqValues := lo.UniqBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 })
 // []int{0, 1, 2}
 ```
+
+[[play](https://go.dev/play/p/g42Z3QSb53u)]
 
 ### GroupBy
 
@@ -388,6 +408,8 @@ groups := lo.GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 })
 // map[int][]int{0: []int{0, 3}, 1: []int{1, 4}, 2: []int{2, 5}}
 ```
+
+[[play](https://go.dev/play/p/XnQBd_v6brd)]
 
 Parallel processing: like `lo.GroupBy()`, but callback is called in goroutine.
 
@@ -418,6 +440,8 @@ lo.Chunk[int]([]int{0}, 2)
 // [][]int{{0}}
 ```
 
+[[play](https://go.dev/play/p/EeKl0AuTehH)]
+
 ### PartitionBy
 
 Returns an array of elements split into groups. The order of grouped values is determined by the order they occur in collection. The grouping is generated from the results of running each element of collection through iteratee.
@@ -435,6 +459,8 @@ partitions := lo.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(
 })
 // [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}}
 ```
+
+[[play](https://go.dev/play/p/NfQ_nGjkgXW)]
 
 Parallel processing: like `lo.PartitionBy()`, but callback is called in goroutine. Results are returned in the same order.
 
@@ -460,6 +486,8 @@ Returns an array a single level deep.
 flat := lo.Flatten[int]([][]int{{0, 1}, {2, 3, 4, 5}})
 // []int{0, 1, 2, 3, 4, 5}
 ```
+
+[[play](https://go.dev/play/p/rbp9ORaMpjw)]
 
 ### Shuffle
 
