@@ -8,6 +8,7 @@ import (
 )
 
 func TestPartial(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	add := func(x float64, y int) string {

@@ -7,7 +7,9 @@ import (
 )
 
 func TestRange(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
+
 	result1 := Range(4)
 	result2 := Range(-4)
 	result3 := Range(0)
@@ -17,7 +19,9 @@ func TestRange(t *testing.T) {
 }
 
 func TestRangeFrom(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
+
 	result1 := RangeFrom(1, 5)
 	result2 := RangeFrom(-1, -5)
 	result3 := RangeFrom(10, 0)
@@ -31,7 +35,9 @@ func TestRangeFrom(t *testing.T) {
 }
 
 func TestRangeClose(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
+
 	result1 := RangeWithSteps(0, 20, 6)
 	result2 := RangeWithSteps(0, 3, -5)
 	result3 := RangeWithSteps(1, 1, 0)
@@ -47,6 +53,7 @@ func TestRangeClose(t *testing.T) {
 }
 
 func TestClamp(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Clamp(0, -10, 10)
@@ -59,6 +66,7 @@ func TestClamp(t *testing.T) {
 }
 
 func TestSumBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := SumBy([]float32{2.3, 3.3, 4, 5.3}, func(n float32) float32 { return n })

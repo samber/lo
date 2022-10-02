@@ -7,32 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestChannelDispatcher2(t *testing.T) {
-	ch := make(chan int, 42)
-	for i := 0; i <= 10; i++ {
-		ch <- i
-	}
-
-	children := ChannelDispatcher(ch, 5, 10, DispatchingStrategyRoundRobin[int])
-	// []<-chan int{...}
-
-	consumer := func(c <-chan int) {
-		for {
-			msg, ok := <-c
-			if !ok {
-				println("closed")
-				break
-			}
-
-			println(msg)
-		}
-	}
-
-	for i := range children {
-		go consumer(children[i])
-	}
-}
-
 func TestChannelDispatcher(t *testing.T) {
 	t.Parallel()
 	testWithTimeout(t, 100*time.Millisecond)
