@@ -2,6 +2,12 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.29.0 (2022-10-02)
+
+Adding:
+
+- lo.ErrorAs
+
 ## 1.28.0 (2022-09-05)
 
 Adding:

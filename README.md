@@ -212,6 +212,7 @@ Error handling:
 - [TryCatch](#trycatch)
 - [TryWithErrorValue](#trywitherrorvalue)
 - [TryCatchWithErrorValue](#trycatchwitherrorvalue)
+- [ErrorsAs](#errorsas)
 
 Constraints:
 
@@ -2069,6 +2070,29 @@ ok := lo.TryCatchWithErrorValue(func() error {
 })
 // false
 // caught == true
+```
+
+### ErrorsAs
+
+A shortcut for:
+
+```go
+err := doSomething()
+
+var rateLimitErr *RateLimitError
+if ok := errors.As(err, &rateLimitErr); ok {
+    // retry later
+}
+```
+
+1 line `lo` helper:
+
+```go
+err := doSomething()
+
+if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
+    // retry later
+}
 ```
 
 ## 🛩 Benchmark

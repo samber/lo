@@ -361,3 +361,27 @@ func TestTryCatchWithErrorValue(t *testing.T) {
 	})
 	is.False(caught)
 }
+
+type internalError struct {
+	foobar string
+}
+
+func (e *internalError) Error() string {
+	return fmt.Sprintf("internal error")
+}
+
+func TestErrorsAs(t *testing.T) {
+	is := assert.New(t)
+
+	err, ok := ErrorsAs[*internalError](fmt.Errorf("hello world"))
+	is.False(ok)
+	is.Nil(nil, err)
+
+	err, ok = ErrorsAs[*internalError](&internalError{foobar: "foobar"})
+	is.True(ok)
+	is.Equal(&internalError{foobar: "foobar"}, err)
+
+	err, ok = ErrorsAs[*internalError](nil)
+	is.False(ok)
+	is.Nil(nil, err)
+}

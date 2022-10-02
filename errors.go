@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 )
@@ -198,4 +199,11 @@ func TryCatchWithErrorValue(callback func() error, catch func(any)) {
 	if err, ok := TryWithErrorValue(callback); !ok {
 		catch(err)
 	}
+}
+
+// ErrorsAs is a shortcut for errors.As(err, &&T).
+func ErrorsAs[T error](err error) (T, bool) {
+	var t T
+	ok := errors.As(err, &t)
+	return t, ok
 }
