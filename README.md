@@ -1548,6 +1548,23 @@ result := lo.Ternary[string](false, "a", "b")
 // "b"
 ```
 
+### TernaryF
+
+```go
+result := lo.TernaryF[string](true, func() string { return "a" }, func() string { return "b" })
+// "a"
+
+result := lo.TernaryF[string](false, func() string { return "a" }, func() string { return "b" })
+// "b"
+```
+
+Useful to avoid nil-pointer dereferencing in intializations, or avoid running unnecessary code
+
+```go
+var s *string
+someStr := TernaryF[string](s.Val == nil, func() string { return uuid.New().String() }, func() string { return *s })
+```
+
 ### If / ElseIf / Else
 
 ```go
