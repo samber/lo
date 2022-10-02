@@ -167,6 +167,116 @@ func Try6[T, R, S, Q, U any](callback func() (T, R, S, Q, U, error)) bool {
 	})
 }
 
+// TryOr has the same behavior than Must, but returns a default value in case of error.
+func TryOr[A any](callback func() (A, error), fallbackA A) (A, bool) {
+	return TryOr1(callback, fallbackA)
+}
+
+// TryOr1 has the same behavior than Must, but returns a default value in case of error.
+func TryOr1[A any](callback func() (A, error), fallbackA A) (A, bool) {
+	ok := false
+
+	Try0(func() {
+		a, err := callback()
+		if err == nil {
+			fallbackA = a
+			ok = true
+		}
+	})
+
+	return fallbackA, ok
+}
+
+// TryOr2 has the same behavior than Must, but returns a default value in case of error.
+func TryOr2[A any, B any](callback func() (A, B, error), fallbackA A, fallbackB B) (A, B, bool) {
+	ok := false
+
+	Try0(func() {
+		a, b, err := callback()
+		if err == nil {
+			fallbackA = a
+			fallbackB = b
+			ok = true
+		}
+	})
+
+	return fallbackA, fallbackB, ok
+}
+
+// TryOr3 has the same behavior than Must, but returns a default value in case of error.
+func TryOr3[A any, B any, C any](callback func() (A, B, C, error), fallbackA A, fallbackB B, fallbackC C) (A, B, C, bool) {
+	ok := false
+
+	Try0(func() {
+		a, b, c, err := callback()
+		if err == nil {
+			fallbackA = a
+			fallbackB = b
+			fallbackC = c
+			ok = true
+		}
+	})
+
+	return fallbackA, fallbackB, fallbackC, ok
+}
+
+// TryOr4 has the same behavior than Must, but returns a default value in case of error.
+func TryOr4[A any, B any, C any, D any](callback func() (A, B, C, D, error), fallbackA A, fallbackB B, fallbackC C, fallbackD D) (A, B, C, D, bool) {
+	ok := false
+
+	Try0(func() {
+		a, b, c, d, err := callback()
+		if err == nil {
+			fallbackA = a
+			fallbackB = b
+			fallbackC = c
+			fallbackD = d
+			ok = true
+		}
+	})
+
+	return fallbackA, fallbackB, fallbackC, fallbackD, ok
+}
+
+// TryOr5 has the same behavior than Must, but returns a default value in case of error.
+func TryOr5[A any, B any, C any, D any, E any](callback func() (A, B, C, D, E, error), fallbackA A, fallbackB B, fallbackC C, fallbackD D, fallbackE E) (A, B, C, D, E, bool) {
+	ok := false
+
+	Try0(func() {
+		a, b, c, d, e, err := callback()
+		if err == nil {
+			fallbackA = a
+			fallbackB = b
+			fallbackC = c
+			fallbackD = d
+			fallbackE = e
+			ok = true
+		}
+	})
+
+	return fallbackA, fallbackB, fallbackC, fallbackD, fallbackE, ok
+}
+
+// TryOr6 has the same behavior than Must, but returns a default value in case of error.
+func TryOr6[A any, B any, C any, D any, E any, F any](callback func() (A, B, C, D, E, F, error), fallbackA A, fallbackB B, fallbackC C, fallbackD D, fallbackE E, fallbackF F) (A, B, C, D, E, F, bool) {
+	ok := false
+
+	Try0(func() {
+		a, b, c, d, e, f, err := callback()
+		if err == nil {
+			fallbackA = a
+			fallbackB = b
+			fallbackC = c
+			fallbackD = d
+			fallbackE = e
+			fallbackF = f
+			ok = true
+		}
+	})
+
+	return fallbackA, fallbackB, fallbackC, fallbackD, fallbackE, fallbackF, ok
+}
+
 // TryWithErrorValue has the same behavior than Try, but also returns value passed to panic.
 func TryWithErrorValue(callback func() error) (errorValue any, ok bool) {
 	ok = true

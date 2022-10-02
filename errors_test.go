@@ -9,6 +9,7 @@ import (
 )
 
 func TestMust(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	is.Equal("foo", Must("foo", nil))
@@ -35,6 +36,7 @@ func TestMust(t *testing.T) {
 }
 
 func TestMustX(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	{
@@ -225,6 +227,7 @@ func TestMustX(t *testing.T) {
 }
 
 func TestTry(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	is.False(Try(func() error {
@@ -239,6 +242,7 @@ func TestTry(t *testing.T) {
 }
 
 func TestTryX(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	is.True(Try2(func() (string, error) {
@@ -302,7 +306,166 @@ func TestTryX(t *testing.T) {
 	}))
 }
 
+func TestTryOr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	a1, ok1 := TryOr(func() (int, error) { panic("error") }, 42)
+	a2, ok2 := TryOr(func() (int, error) { return 21, assert.AnError }, 42)
+	a3, ok3 := TryOr(func() (int, error) { return 21, nil }, 42)
+
+	is.Equal(42, a1)
+	is.False(ok1)
+
+	is.Equal(42, a2)
+	is.False(ok2)
+
+	is.Equal(21, a3)
+	is.True(ok3)
+}
+
+func TestTryOrX(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	{
+		a1, ok1 := TryOr1(func() (int, error) { panic("error") }, 42)
+		a2, ok2 := TryOr1(func() (int, error) { return 21, assert.AnError }, 42)
+		a3, ok3 := TryOr1(func() (int, error) { return 21, nil }, 42)
+
+		is.Equal(42, a1)
+		is.False(ok1)
+
+		is.Equal(42, a2)
+		is.False(ok2)
+
+		is.Equal(21, a3)
+		is.True(ok3)
+	}
+
+	{
+		a1, b1, ok1 := TryOr2(func() (int, string, error) { panic("error") }, 42, "hello")
+		a2, b2, ok2 := TryOr2(func() (int, string, error) { return 21, "world", assert.AnError }, 42, "hello")
+		a3, b3, ok3 := TryOr2(func() (int, string, error) { return 21, "world", nil }, 42, "hello")
+
+		is.Equal(42, a1)
+		is.Equal("hello", b1)
+		is.False(ok1)
+
+		is.Equal(42, a2)
+		is.Equal("hello", b2)
+		is.False(ok2)
+
+		is.Equal(21, a3)
+		is.Equal("world", b3)
+		is.True(ok3)
+	}
+
+	{
+		a1, b1, c1, ok1 := TryOr3(func() (int, string, bool, error) { panic("error") }, 42, "hello", false)
+		a2, b2, c2, ok2 := TryOr3(func() (int, string, bool, error) { return 21, "world", true, assert.AnError }, 42, "hello", false)
+		a3, b3, c3, ok3 := TryOr3(func() (int, string, bool, error) { return 21, "world", true, nil }, 42, "hello", false)
+
+		is.Equal(42, a1)
+		is.Equal("hello", b1)
+		is.Equal(false, c1)
+		is.False(ok1)
+
+		is.Equal(42, a2)
+		is.Equal("hello", b2)
+		is.Equal(false, c2)
+		is.False(ok2)
+
+		is.Equal(21, a3)
+		is.Equal("world", b3)
+		is.Equal(true, c3)
+		is.True(ok3)
+	}
+
+	{
+		a1, b1, c1, d1, ok1 := TryOr4(func() (int, string, bool, int, error) { panic("error") }, 42, "hello", false, 42)
+		a2, b2, c2, d2, ok2 := TryOr4(func() (int, string, bool, int, error) { return 21, "world", true, 21, assert.AnError }, 42, "hello", false, 42)
+		a3, b3, c3, d3, ok3 := TryOr4(func() (int, string, bool, int, error) { return 21, "world", true, 21, nil }, 42, "hello", false, 42)
+
+		is.Equal(42, a1)
+		is.Equal("hello", b1)
+		is.Equal(false, c1)
+		is.Equal(42, d1)
+		is.False(ok1)
+
+		is.Equal(42, a2)
+		is.Equal("hello", b2)
+		is.Equal(false, c2)
+		is.Equal(42, d2)
+		is.False(ok2)
+
+		is.Equal(21, a3)
+		is.Equal("world", b3)
+		is.Equal(true, c3)
+		is.Equal(21, d3)
+		is.True(ok3)
+	}
+
+	{
+		a1, b1, c1, d1, e1, ok1 := TryOr5(func() (int, string, bool, int, int, error) { panic("error") }, 42, "hello", false, 42, 42)
+		a2, b2, c2, d2, e2, ok2 := TryOr5(func() (int, string, bool, int, int, error) { return 21, "world", true, 21, 21, assert.AnError }, 42, "hello", false, 42, 42)
+		a3, b3, c3, d3, e3, ok3 := TryOr5(func() (int, string, bool, int, int, error) { return 21, "world", true, 21, 21, nil }, 42, "hello", false, 42, 42)
+
+		is.Equal(42, a1)
+		is.Equal("hello", b1)
+		is.Equal(false, c1)
+		is.Equal(42, d1)
+		is.Equal(42, e1)
+		is.False(ok1)
+
+		is.Equal(42, a2)
+		is.Equal("hello", b2)
+		is.Equal(false, c2)
+		is.Equal(42, d2)
+		is.Equal(42, e2)
+		is.False(ok2)
+
+		is.Equal(21, a3)
+		is.Equal("world", b3)
+		is.Equal(true, c3)
+		is.Equal(21, d3)
+		is.Equal(21, e3)
+		is.True(ok3)
+	}
+
+	{
+		a1, b1, c1, d1, e1, f1, ok1 := TryOr6(func() (int, string, bool, int, int, int, error) { panic("error") }, 42, "hello", false, 42, 42, 42)
+		a2, b2, c2, d2, e2, f2, ok2 := TryOr6(func() (int, string, bool, int, int, int, error) { return 21, "world", true, 21, 21, 21, assert.AnError }, 42, "hello", false, 42, 42, 42)
+		a3, b3, c3, d3, e3, f3, ok3 := TryOr6(func() (int, string, bool, int, int, int, error) { return 21, "world", true, 21, 21, 21, nil }, 42, "hello", false, 42, 42, 42)
+
+		is.Equal(42, a1)
+		is.Equal("hello", b1)
+		is.Equal(false, c1)
+		is.Equal(42, d1)
+		is.Equal(42, e1)
+		is.Equal(42, f1)
+		is.False(ok1)
+
+		is.Equal(42, a2)
+		is.Equal("hello", b2)
+		is.Equal(false, c2)
+		is.Equal(42, d2)
+		is.Equal(42, e2)
+		is.Equal(42, f2)
+		is.False(ok2)
+
+		is.Equal(21, a3)
+		is.Equal("world", b3)
+		is.Equal(true, c3)
+		is.Equal(21, d3)
+		is.Equal(21, e3)
+		is.Equal(21, f3)
+		is.True(ok3)
+	}
+}
+
 func TestTryWithErrorValue(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	err, ok := TryWithErrorValue(func() error {
@@ -319,6 +482,7 @@ func TestTryWithErrorValue(t *testing.T) {
 }
 
 func TestTryCatch(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	caught := false
@@ -341,6 +505,7 @@ func TestTryCatch(t *testing.T) {
 }
 
 func TestTryCatchWithErrorValue(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	caught := false
@@ -367,10 +532,11 @@ type internalError struct {
 }
 
 func (e *internalError) Error() string {
-	return fmt.Sprintf("internal error")
+	return "internal error"
 }
 
 func TestErrorsAs(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	err, ok := ErrorsAs[*internalError](fmt.Errorf("hello world"))

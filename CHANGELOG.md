@@ -7,6 +7,8 @@
 Adding:
 
 - lo.ErrorAs
+- lo.TryOr
+- lo.TryOrX
 
 ## 1.28.0 (2022-09-05)
 
