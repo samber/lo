@@ -10,14 +10,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type foo struct {
-	bar string
-}
-
-func (f foo) Clone() foo {
-	return foo{f.bar}
-}
-
 func TestFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

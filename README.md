@@ -499,6 +499,8 @@ randomOrder := lo.Shuffle[int]([]int{0, 1, 2, 3, 4, 5})
 // []int{1, 4, 0, 3, 5, 2}
 ```
 
+[[play](https://go.dev/play/p/Qp73bnTDnc7)]
+
 ### Reverse
 
 Reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
@@ -507,6 +509,8 @@ Reverses array so that the first element becomes the last, the second element be
 reverseOrder := lo.Reverse[int]([]int{0, 1, 2, 3, 4, 5})
 // []int{5, 4, 3, 2, 1, 0}
 ```
+
+[[play](https://go.dev/play/p/fhUMLvZ7vS6)]
 
 ### Fill
 
@@ -525,6 +529,8 @@ initializedSlice := lo.Fill[foo]([]foo{foo{"a"}, foo{"a"}}, foo{"b"})
 // []foo{foo{"b"}, foo{"b"}}
 ```
 
+[[play](https://go.dev/play/p/VwR34GzqEub)]
+
 ### Repeat
 
 Builds a slice with N copies of initial value.
@@ -542,21 +548,25 @@ slice := lo.Repeat[foo](2, foo{"a"})
 // []foo{foo{"a"}, foo{"a"}}
 ```
 
+[[play](https://go.dev/play/p/g3uHXbmc3b6)]
+
 ### RepeatBy
 
 Builds a slice with values returned by N calls of callback.
 
 ```go
 slice := lo.RepeatBy[string](0, func (i int) string {
-    return strconv.FormatInt(math.Pow(i, 2), 10)
+    return strconv.FormatInt(int64(math.Pow(float64(i), 2)), 10)
 })
 // []int{}
 
-slice := lo.RepeatBy[string](5, func (i int) string {
-    return strconv.FormatInt(math.Pow(i, 2), 10)
+slice := lo.RepeatBy[string](5, func(i int) string {
+    return strconv.FormatInt(int64(math.Pow(float64(i), 2)), 10)
 })
 // []int{0, 1, 4, 9, 16}
 ```
+
+[[play](https://go.dev/play/p/ozZLCtX_hNU)]
 
 ### KeyBy
 
@@ -582,6 +592,8 @@ result := lo.KeyBy[string, Character](characters, func(char Character) string {
 //map[a:{dir:left code:97} d:{dir:right code:100}]
 ```
 
+[[play](https://go.dev/play/p/mdaClUAT-zZ)]
+
 ### Associate (alias: SliceToMap)
 
 Returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
@@ -590,13 +602,15 @@ If any of two pairs would have the same key the last one gets added to the map.
 The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 
 ```go
-in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}}
 
 aMap := lo.Associate[*foo, string, int](in, func (f *foo) (string, int) {
 	return f.baz, f.bar
 })
 // map[string][int]{ "apple":1, "banana":2 }
 ```
+
+[[play](https://go.dev/play/p/WHa2CfMO3Lr)]
 
 ### Drop
 
@@ -607,6 +621,8 @@ l := lo.Drop[int]([]int{0, 1, 2, 3, 4, 5}, 2)
 // []int{2, 3, 4, 5}
 ```
 
+[[play](https://go.dev/play/p/JswS7vXRJP2)]
+
 ### DropRight
 
 Drops n elements from the end of a slice or array.
@@ -615,6 +631,8 @@ Drops n elements from the end of a slice or array.
 l := lo.DropRight[int]([]int{0, 1, 2, 3, 4, 5}, 2)
 // []int{0, 1, 2, 3}
 ```
+
+[[play](https://go.dev/play/p/GG0nXkSJJa3)]
 
 ### DropWhile
 
@@ -627,6 +645,8 @@ l := lo.DropWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val strin
 // []string{"aaa", "aa", "aa"}
 ```
 
+[[play](https://go.dev/play/p/7gBPYw2IK16)]
+
 ### DropRightWhile
 
 Drop elements from the end of a slice or array while the predicate returns true.
@@ -637,6 +657,8 @@ l := lo.DropRightWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val 
 })
 // []string{"a", "aa", "aaa"}
 ```
+
+[[play](https://go.dev/play/p/3-n71oEC0Hz)]
 
 ### Reject
 
@@ -649,6 +671,8 @@ odd := lo.Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 // []int{1, 3}
 ```
 
+[[play](https://go.dev/play/p/YkLMODy1WEL)]
+
 ### Count
 
 Counts the number of elements in the collection that compare equal to value.
@@ -657,6 +681,8 @@ Counts the number of elements in the collection that compare equal to value.
 count := lo.Count[int]([]int{1, 5, 1}, 1)
 // 2
 ```
+
+[[play](https://go.dev/play/p/Y3FlK54yveC)]
 
 ### CountBy
 
@@ -668,6 +694,8 @@ count := lo.CountBy[int]([]int{1, 5, 1}, func(i int) bool {
 })
 // 2
 ```
+
+[[play](https://go.dev/play/p/ByQbNYQQi4X)]
 
 ### Subset
 
@@ -685,6 +713,8 @@ sub := lo.Subset(in, -4, 3)
 sub := lo.Subset(in, -2, math.MaxUint)
 // []int{3, 4}
 ```
+
+[[play](https://go.dev/play/p/tOQu1GhFcog)]
 
 ### Slice
 
@@ -706,6 +736,8 @@ slice := lo.Slice(in, 4, 3)
 // []int{}
 ```
 
+[[play](https://go.dev/play/p/8XWYhfMMA1h)]
+
 ### Replace
 
 Returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
@@ -726,6 +758,8 @@ slice := lo.Replace(in, 0, 42, -1)
 // []int{42, 1, 42, 1, 2, 3, 42}
 ```
 
+[[play](https://go.dev/play/p/XfPzmf9gql6)]
+
 ### ReplaceAll
 
 Returns a copy of the slice with all non-overlapping instances of old replaced by new.
@@ -740,6 +774,8 @@ slice := lo.ReplaceAll(in, -1, 42)
 // []int{0, 1, 0, 1, 2, 3, 0}
 ```
 
+[[play](https://go.dev/play/p/a9xZFUHfYcV)]
+
 ### Compact
 
 Returns a slice of all non-zero elements.
@@ -751,6 +787,8 @@ slice := lo.Compact[string](in)
 // []string{"foo", "bar"}
 ```
 
+[[play](https://go.dev/play/p/tXiy-iK6PAc)]
+
 ### IsSorted
 
 Checks if a slice is sorted.
@@ -759,6 +797,8 @@ Checks if a slice is sorted.
 slice := lo.IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
 // true
 ```
+
+[[play](https://go.dev/play/p/mc3qR-t4mcx)]
 
 ### IsSortedByKey
 
@@ -771,14 +811,18 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 // true
 ```
 
+[[play](https://go.dev/play/p/wiG6XyBBu49)]
+
 ### Keys
 
 Creates an array of the map keys.
 
 ```go
 keys := lo.Keys[string, int](map[string]int{"foo": 1, "bar": 2})
-// []string{"bar", "foo"}
+// []string{"foo", "bar"}
 ```
+
+[[play](https://go.dev/play/p/Uu11fHASqrU)]
 
 ### Values
 
@@ -788,6 +832,8 @@ Creates an array of the map values.
 values := lo.Values[string, int](map[string]int{"foo": 1, "bar": 2})
 // []int{1, 2}
 ```
+
+[[play](https://go.dev/play/p/nnRTQkzQfF6)]
 
 ### PickBy
 
@@ -800,6 +846,8 @@ m := lo.PickBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k
 // map[string]int{"foo": 1, "baz": 3}
 ```
 
+[[play](https://go.dev/play/p/kdg8GR_QMmf)]
+
 ### PickByKeys
 
 Returns same map type filtered by given keys.
@@ -809,6 +857,8 @@ m := lo.PickByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []
 // map[string]int{"foo": 1, "baz": 3}
 ```
 
+[[play](https://go.dev/play/p/R1imbuci9qU)]
+
 ### PickByValues
 
 Returns same map type filtered by given values.
@@ -817,6 +867,8 @@ Returns same map type filtered by given values.
 m := lo.PickByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 // map[string]int{"foo": 1, "baz": 3}
 ```
+
+[[play](https://go.dev/play/p/1zdzSvbfsJc)]
 
 ### OmitBy
 
@@ -829,6 +881,8 @@ m := lo.OmitBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k
 // map[string]int{"bar": 2}
 ```
 
+[[play](https://go.dev/play/p/EtBsR43bdsd)]
+
 ### OmitByKeys
 
 Returns same map type filtered by given keys.
@@ -838,6 +892,8 @@ m := lo.OmitByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []
 // map[string]int{"bar": 2}
 ```
 
+[[play](https://go.dev/play/p/t1QjCrs-ysk)]
+
 ### OmitByValues
 
 Returns same map type filtered by given values.
@@ -846,6 +902,8 @@ Returns same map type filtered by given values.
 m := lo.OmitByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 // map[string]int{"bar": 2}
 ```
+
+[[play](https://go.dev/play/p/9UYZi-hrs8j)]
 
 ### Entries (alias: ToPairs)
 
@@ -865,6 +923,8 @@ entries := lo.Entries[string, int](map[string]int{"foo": 1, "bar": 2})
 // }
 ```
 
+[[play](https://go.dev/play/p/3Dhgx46gawJ)]
+
 ### FromEntries (alias: FromPairs)
 
 Transforms an array of key/value pairs into a map.
@@ -883,17 +943,21 @@ m := lo.FromEntries[string, int]([]lo.Entry[string, int]{
 // map[string]int{"foo": 1, "bar": 2}
 ```
 
+[[play](https://go.dev/play/p/oIr5KHFGCEN)]
+
 ### Invert
 
 Creates a map composed of the inverted keys and values. If map contains duplicate values, subsequent values overwrite property assignments of previous values.
 
 ```go
-m1 := lo.Invert[string, int]([map[string]int{"a": 1, "b": 2})
+m1 := lo.Invert[string, int](map[string]int{"a": 1, "b": 2})
 // map[int]string{1: "a", 2: "b"}
 
-m2 := lo.Invert[string, int]([map[string]int{"a": 1, "b": 2, "c": 1})
+m2 := lo.Invert[string, int](map[string]int{"a": 1, "b": 2, "c": 1})
 // map[int]string{1: "c", 2: "b"}
 ```
+
+[[play](https://go.dev/play/p/rFQ4rak6iA1)]
 
 ### Assign
 
@@ -907,6 +971,8 @@ mergedMaps := lo.Assign[string, int](
 // map[string]int{"a": 1, "b": 3, "c": 4}
 ```
 
+[[play](https://go.dev/play/p/VhwfJOyxf5o)]
+
 ### MapKeys
 
 Manipulates a map keys and transforms it to a map of another type.
@@ -917,6 +983,8 @@ m2 := lo.MapKeys[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ i
 })
 // map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}
 ```
+
+[[play](https://go.dev/play/p/9_4WPIqOetJ)]
 
 ### MapValues
 
@@ -931,6 +999,8 @@ m2 := lo.MapValues[int, int64, string](m1, func(x int64, _ int) string {
 // map[int]string{1: "1", 2: "2", 3: "3"}
 ```
 
+[[play](https://go.dev/play/p/T_8xAfvcf0W)]
+
 ### MapToSlice
 
 Transforms a map into a slice based on specific iteratee.
@@ -944,6 +1014,8 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 // []string{"1_4", "2_5", "3_6"}
 ```
 
+[[play](https://go.dev/play/p/ZuiCZpDt6LD)]
+
 ### Range / RangeFrom / RangeWithSteps
 
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
@@ -952,27 +1024,29 @@ Creates an array of numbers (positive and/or negative) progressing from start up
 result := Range(4)
 // [0, 1, 2, 3]
 
-result := Range(-4);
+result := Range(-4)
 // [0, -1, -2, -3]
 
-result := RangeFrom(1, 5);
-// [1, 2, 3, 4]
+result := RangeFrom(1, 5)
+// [1, 2, 3, 4, 5]
 
-result := RangeFrom[float64](1.0, 5);
-// [1.0, 2.0, 3.0, 4.0]
+result := RangeFrom[float64](1.0, 5)
+// [1.0, 2.0, 3.0, 4.0, 5.0]
 
-result := RangeWithSteps(0, 20, 5);
+result := RangeWithSteps(0, 20, 5)
 // [0, 5, 10, 15]
 
-result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
+result := RangeWithSteps[float32](-1.0, -4.0, -1.0)
 // [-1.0, -2.0, -3.0]
 
-result := RangeWithSteps(1, 4, -1);
+result := RangeWithSteps(1, 4, -1)
 // []
 
-result := Range(0);
+result := Range(0)
 // []
 ```
+
+[[play](https://go.dev/play/p/0r6VimXAi9H)]
 
 ### Clamp
 
@@ -989,6 +1063,8 @@ r3 := lo.Clamp(42, -10, 10)
 // 10
 ```
 
+[[play](https://go.dev/play/p/RU4lJNC2hlI)]
+
 ### SumBy
 
 Summarizes the values in a collection using the given return value from the iteration function.
@@ -1001,6 +1077,8 @@ sum := lo.SumBy(strings, func(item string) int {
 })
 // 6
 ```
+
+[[play](https://go.dev/play/p/Dz_a_7jN_ca)]
 
 ### Substring
 
@@ -1016,6 +1094,8 @@ sub := lo.Substring("hello", -4, 3)
 sub := lo.Substring("hello", -2, math.MaxUint)
 // "lo"
 ```
+
+[[play](https://go.dev/play/p/TQlxQi82Lu1)]
 
 ### ChunkString
 
@@ -1035,6 +1115,8 @@ lo.ChunkString("1", 2)
 // []string{"1"}
 ```
 
+[[play](https://go.dev/play/p/__FLTuJVz54)]
+
 ### RuneLength
 
 An alias to utf8.RuneCountInString which returns the number of runes in string.
@@ -1046,6 +1128,8 @@ sub := lo.RuneLength("hellô")
 sub := len("hellô")
 // 6
 ```
+
+[[play](https://go.dev/play/p/tuhgW_lWY8l)]
 
 ### T2 -> T9
 
@@ -1577,6 +1661,8 @@ result := lo.Ternary[string](false, "a", "b")
 // "b"
 ```
 
+[[play](https://go.dev/play/p/t-D7WBL44h2)]
+
 ### TernaryF
 
 A 1 line if/else statement whose options are functions.
@@ -1597,6 +1683,8 @@ var s *string
 someStr := TernaryF[string](s == nil, func() string { return uuid.New().String() }, func() string { return *s })
 // ef782193-c30c-4e2e-a7ae-f8ab5e125e02
 ```
+
+[[play](https://go.dev/play/p/AO4VW20JoqM)]
 
 ### If / ElseIf / Else
 
@@ -1641,6 +1729,8 @@ result := lo.IfF[int](true, func () int {
     Else(42)
 // 1
 ```
+
+[[play](https://go.dev/play/p/WSw3ApMxhyW)]
 
 ### Switch / Case / Default
 
@@ -1690,6 +1780,8 @@ result := lo.Switch[int, string](1).
     Default("42")
 // "1"
 ```
+
+[[play](https://go.dev/play/p/TGbKUMAeRUd)]
 
 ### ToPtr
 

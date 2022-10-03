@@ -230,6 +230,7 @@ func Flatten[T any](collection [][]T) []T {
 }
 
 // Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
+// Play: https://go.dev/play/p/Qp73bnTDnc7
 func Shuffle[T any](collection []T) []T {
 	rand.Shuffle(len(collection), func(i, j int) {
 		collection[i], collection[j] = collection[j], collection[i]
@@ -239,6 +240,7 @@ func Shuffle[T any](collection []T) []T {
 }
 
 // Reverse reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
+// Play: https://go.dev/play/p/fhUMLvZ7vS6
 func Reverse[T any](collection []T) []T {
 	length := len(collection)
 	half := length / 2
@@ -252,6 +254,7 @@ func Reverse[T any](collection []T) []T {
 }
 
 // Fill fills elements of array with `initial` value.
+// Play: https://go.dev/play/p/VwR34GzqEub
 func Fill[T Clonable[T]](collection []T, initial T) []T {
 	result := make([]T, 0, len(collection))
 
@@ -263,6 +266,7 @@ func Fill[T Clonable[T]](collection []T, initial T) []T {
 }
 
 // Repeat builds a slice with N copies of initial value.
+// Play: https://go.dev/play/p/g3uHXbmc3b6
 func Repeat[T Clonable[T]](count int, initial T) []T {
 	result := make([]T, 0, count)
 
@@ -274,6 +278,7 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 }
 
 // RepeatBy builds a slice with values returned by N calls of callback.
+// Play: https://go.dev/play/p/ozZLCtX_hNU
 func RepeatBy[T any](count int, predicate func(int) T) []T {
 	result := make([]T, 0, count)
 
@@ -285,6 +290,7 @@ func RepeatBy[T any](count int, predicate func(int) T) []T {
 }
 
 // KeyBy transforms a slice or an array of structs to a map based on a pivot callback.
+// Play: https://go.dev/play/p/mdaClUAT-zZ
 func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 	result := make(map[K]V, len(collection))
 
@@ -299,6 +305,7 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(V) K) map[K]V {
 // Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 // If any of two pairs would have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+// Play: https://go.dev/play/p/WHa2CfMO3Lr
 func Associate[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
 	result := make(map[K]V)
 
@@ -314,11 +321,13 @@ func Associate[T any, K comparable, V any](collection []T, transform func(T) (K,
 // If any of two pairs would have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 // Alias of Associate().
+// Play: https://go.dev/play/p/WHa2CfMO3Lr
 func SliceToMap[T any, K comparable, V any](collection []T, transform func(T) (K, V)) map[K]V {
 	return Associate(collection, transform)
 }
 
 // Drop drops n elements from the beginning of a slice or array.
+// Play: https://go.dev/play/p/JswS7vXRJP2
 func Drop[T any](collection []T, n int) []T {
 	if len(collection) <= n {
 		return make([]T, 0)
@@ -329,7 +338,19 @@ func Drop[T any](collection []T, n int) []T {
 	return append(result, collection[n:]...)
 }
 
+// DropRight drops n elements from the end of a slice or array.
+// Play: https://go.dev/play/p/GG0nXkSJJa3
+func DropRight[T any](collection []T, n int) []T {
+	if len(collection) <= n {
+		return []T{}
+	}
+
+	result := make([]T, 0, len(collection)-n)
+	return append(result, collection[:len(collection)-n]...)
+}
+
 // DropWhile drops elements from the beginning of a slice or array while the predicate returns true.
+// Play: https://go.dev/play/p/7gBPYw2IK16
 func DropWhile[T any](collection []T, predicate func(T) bool) []T {
 	i := 0
 	for ; i < len(collection); i++ {
@@ -342,17 +363,8 @@ func DropWhile[T any](collection []T, predicate func(T) bool) []T {
 	return append(result, collection[i:]...)
 }
 
-// DropRight drops n elements from the end of a slice or array.
-func DropRight[T any](collection []T, n int) []T {
-	if len(collection) <= n {
-		return []T{}
-	}
-
-	result := make([]T, 0, len(collection)-n)
-	return append(result, collection[:len(collection)-n]...)
-}
-
 // DropRightWhile drops elements from the end of a slice or array while the predicate returns true.
+// Play: https://go.dev/play/p/3-n71oEC0Hz
 func DropRightWhile[T any](collection []T, predicate func(T) bool) []T {
 	i := len(collection) - 1
 	for ; i >= 0; i-- {
@@ -366,6 +378,7 @@ func DropRightWhile[T any](collection []T, predicate func(T) bool) []T {
 }
 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
+// Play: https://go.dev/play/p/YkLMODy1WEL
 func Reject[V any](collection []V, predicate func(V, int) bool) []V {
 	result := []V{}
 
@@ -379,6 +392,7 @@ func Reject[V any](collection []V, predicate func(V, int) bool) []V {
 }
 
 // Count counts the number of elements in the collection that compare equal to value.
+// Play: https://go.dev/play/p/Y3FlK54yveC
 func Count[T comparable](collection []T, value T) (count int) {
 	for _, item := range collection {
 		if item == value {
@@ -390,6 +404,7 @@ func Count[T comparable](collection []T, value T) (count int) {
 }
 
 // CountBy counts the number of elements in the collection for which predicate is true.
+// Play: https://go.dev/play/p/ByQbNYQQi4X
 func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 	for _, item := range collection {
 		if predicate(item) {
@@ -401,6 +416,7 @@ func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 }
 
 // Subset returns a copy of a slice from `offset` up to `length` elements. Like `slice[start:start+length]`, but does not panic on overflow.
+// Play: https://go.dev/play/p/tOQu1GhFcog
 func Subset[T any](collection []T, offset int, length uint) []T {
 	size := len(collection)
 
@@ -423,6 +439,7 @@ func Subset[T any](collection []T, offset int, length uint) []T {
 }
 
 // Slice returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
+// Play: https://go.dev/play/p/8XWYhfMMA1h
 func Slice[T any](collection []T, start int, end int) []T {
 	size := len(collection)
 
@@ -442,6 +459,7 @@ func Slice[T any](collection []T, start int, end int) []T {
 }
 
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
+// Play: https://go.dev/play/p/XfPzmf9gql6
 func Replace[T comparable](collection []T, old T, new T, n int) []T {
 	result := make([]T, len(collection))
 	copy(result, collection)
@@ -457,11 +475,13 @@ func Replace[T comparable](collection []T, old T, new T, n int) []T {
 }
 
 // ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
+// Play: https://go.dev/play/p/a9xZFUHfYcV
 func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 	return Replace(collection, old, new, -1)
 }
 
 // Compact returns a slice of all non-zero elements.
+// Play: https://go.dev/play/p/tXiy-iK6PAc
 func Compact[T comparable](collection []T) []T {
 	var zero T
 
@@ -477,6 +497,7 @@ func Compact[T comparable](collection []T) []T {
 }
 
 // IsSorted checks if a slice is sorted.
+// Play: https://go.dev/play/p/mc3qR-t4mcx
 func IsSorted[T constraints.Ordered](collection []T) bool {
 	for i := 1; i < len(collection); i++ {
 		if collection[i-1] > collection[i] {
@@ -488,6 +509,7 @@ func IsSorted[T constraints.Ordered](collection []T) bool {
 }
 
 // IsSortedByKey checks if a slice is sorted by iteratee.
+// Play: https://go.dev/play/p/wiG6XyBBu49
 func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(T) K) bool {
 	size := len(collection)
 

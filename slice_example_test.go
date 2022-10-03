@@ -2,6 +2,7 @@ package lo
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 )
 
@@ -175,4 +176,220 @@ func ExampleFlatten() {
 
 	fmt.Printf("%v", result)
 	// Output: [0 1 2 3 4 5]
+}
+
+func ExampleShuffle() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := Shuffle(list)
+
+	fmt.Printf("%v", result)
+}
+
+func ExampleReverse() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := Reverse(list)
+
+	fmt.Printf("%v", result)
+	// Output: [5 4 3 2 1 0]
+}
+
+func ExampleFill() {
+	list := []foo{foo{"a"}, foo{"a"}}
+
+	result := Fill[foo](list, foo{"b"})
+
+	fmt.Printf("%v", result)
+	// Output: [{b} {b}]
+}
+
+func ExampleRepeat() {
+	result := Repeat[foo](2, foo{"a"})
+
+	fmt.Printf("%v", result)
+	// Output: [{a} {a}]
+}
+
+func ExampleRepeatBy() {
+	result := RepeatBy[string](5, func(i int) string {
+		return strconv.FormatInt(int64(math.Pow(float64(i), 2)), 10)
+	})
+
+	fmt.Printf("%v", result)
+	// Output: [0 1 4 9 16]
+}
+
+func ExampleKeyBy() {
+	list := []string{"a", "aa", "aaa"}
+
+	result := KeyBy[int, string](list, func(str string) int {
+		return len(str)
+	})
+
+	fmt.Printf("%v", result)
+	// Output: map[1:a 2:aa 3:aaa]
+}
+
+func ExampleAssociate() {
+	list := []string{"a", "aa", "aaa"}
+
+	result := Associate(list, func(str string) (string, int) {
+		return str, len(str)
+	})
+
+	fmt.Printf("%v", result)
+	// Output: map[a:1 aa:2 aaa:3]
+}
+
+func ExampleDrop() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := Drop(list, 2)
+
+	fmt.Printf("%v", result)
+	// Output: [2 3 4 5]
+}
+
+func ExampleDropRight() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := DropRight(list, 2)
+
+	fmt.Printf("%v", result)
+	// Output: [0 1 2 3]
+}
+
+func ExampleDropWhile() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := DropWhile(list, func(val int) bool {
+		return val < 2
+	})
+
+	fmt.Printf("%v", result)
+	// Output: [2 3 4 5]
+}
+
+func ExampleDropRightWhile() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := DropRightWhile(list, func(val int) bool {
+		return val > 2
+	})
+
+	fmt.Printf("%v", result)
+	// Output: [0 1 2]
+}
+
+func ExampleReject() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := Reject(list, func(x int, _ int) bool {
+		return x%2 == 0
+	})
+
+	fmt.Printf("%v", result)
+	// Output: [1 3 5]
+}
+
+func ExampleCount() {
+	list := []int{0, 1, 2, 3, 4, 5, 0, 1, 2, 3}
+
+	result := Count(list, 2)
+
+	fmt.Printf("%v", result)
+	// Output: 2
+}
+
+func ExampleCountBy() {
+	list := []int{0, 1, 2, 3, 4, 5, 0, 1, 2, 3}
+
+	result := CountBy(list, func(i int) bool {
+		return i < 4
+	})
+
+	fmt.Printf("%v", result)
+	// Output: 8
+}
+
+func ExampleSubset() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := Subset(list, 2, 3)
+
+	fmt.Printf("%v", result)
+	// Output: [2 3 4]
+}
+
+func ExampleSlice() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := Slice(list, 1, 4)
+	fmt.Printf("%v\n", result)
+
+	result = Slice(list, 4, 1)
+	fmt.Printf("%v\n", result)
+
+	result = Slice(list, 4, 5)
+	fmt.Printf("%v\n", result)
+
+	// Output:
+	// [1 2 3]
+	// []
+	// [4]
+}
+
+func ExampleReplace() {
+	list := []int{0, 1, 0, 1, 2, 3, 0}
+
+	result := Replace(list, 0, 42, 1)
+	fmt.Printf("%v\n", result)
+
+	result = Replace(list, -1, 42, 1)
+	fmt.Printf("%v\n", result)
+
+	result = Replace(list, 0, 42, 2)
+	fmt.Printf("%v\n", result)
+
+	result = Replace(list, 0, 42, -1)
+	fmt.Printf("%v\n", result)
+
+	// Output:
+	// [42 1 0 1 2 3 0]
+	// [0 1 0 1 2 3 0]
+	// [42 1 42 1 2 3 0]
+	// [42 1 42 1 2 3 42]
+}
+
+func ExampleReplaceAll() {
+	list := []string{"", "foo", "", "bar", ""}
+
+	result := Compact(list)
+
+	fmt.Printf("%v", result)
+
+	// Output: [foo bar]
+}
+
+func ExampleIsSorted() {
+	list := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+	result := IsSorted(list)
+
+	fmt.Printf("%v", result)
+
+	// Output: true
+}
+
+func ExampleIsSortedByKey() {
+	list := []string{"a", "bb", "ccc"}
+
+	result := IsSortedByKey(list, func(s string) int {
+		return len(s)
+	})
+
+	fmt.Printf("%v", result)
+
+	// Output: true
 }
