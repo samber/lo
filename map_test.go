@@ -154,33 +154,37 @@ func TestMapKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	origin := map[int]bool{1: true, 2: false, 3: true}
+
+	result1 := MapKeys(origin, func(k int, _ bool) string {
 		return "Hello"
 	})
-	result2 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
-		return strconv.FormatInt(int64(v), 10)
+	result2 := MapKeys(origin, func(k int, v bool) string {
+		return fmt.Sprint(k, "_", v)
 	})
 
-	is.Equal(len(result1), 1)
-	is.Equal(len(result2), 4)
-	is.Equal(result2, map[string]int{"1": 1, "2": 2, "3": 3, "4": 4})
+	is.Equal(1, len(result1))
+	is.Equal(3, len(result2))
+	is.Equal(map[string]bool{"1_true": true, "2_false": false, "3_true": true}, result2)
 }
 
 func TestMapValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	origin := map[int]bool{1: true, 2: false, 3: true}
+
+	result1 := MapValues(origin, func(k int, _ bool) string {
 		return "Hello"
 	})
-	result2 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
-		return strconv.FormatInt(int64(x), 10)
+	result2 := MapValues(origin, func(k int, v bool) string {
+		return fmt.Sprint(k, "_", v)
 	})
 
-	is.Equal(len(result1), 4)
-	is.Equal(len(result2), 4)
-	is.Equal(result1, map[int]string{1: "Hello", 2: "Hello", 3: "Hello", 4: "Hello"})
-	is.Equal(result2, map[int]string{1: "1", 2: "2", 3: "3", 4: "4"})
+	is.Equal(3, len(result1))
+	is.Equal(3, len(result2))
+	is.Equal(map[int]string{1: "Hello", 2: "Hello", 3: "Hello"}, result1)
+	is.Equal(map[int]string{1: "1_true", 2: "2_false", 3: "3_true"}, result2)
 }
 
 func TestMapToSlice(t *testing.T) {
