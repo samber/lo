@@ -305,7 +305,7 @@ Like `lo.Reduce` except that it iterates over elements of collection from right 
 ```go
 result := lo.ReduceRight[[]int, []int]([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {
 	  return append(agg, item...)
-}, []int{}))
+}, []int{})
 // []int{4, 5, 2, 3, 0, 1}
 ```
 
