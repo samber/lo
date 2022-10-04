@@ -2324,14 +2324,6 @@ ok  	github.com/samber/lo	6.657s
 
 Don't hesitate ;)
 
-### Install go 1.18
-
-```bash
-make go1.18beta1
-```
-
-If your OS currently not default to Go 1.18, replace `BIN=go` by `BIN=go1.18beta1` in the Makefile.
-
 ### With Docker
 
 ```bash
