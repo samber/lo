@@ -2,11 +2,12 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
-## 1.x.y (2022-xx-yy)
+## 1.30.0 (2022-10-04)
 
 Adding:
 
 - lo.TernaryF
+- lo.Validate
 
 ## 1.29.0 (2022-10-02)
 

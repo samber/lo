@@ -2094,7 +2094,6 @@ val := lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", sli
 // nil
 ```
 
-
 ### Must
 
 Wraps a function call to panics if second argument is `error` or `false`, returns the value otherwise.
