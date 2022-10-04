@@ -125,9 +125,9 @@ func ExampleGroupBy() {
 		return i % 3
 	})
 
-	for _, item := range result {
-		fmt.Printf("%v\n", item)
-	}
+	fmt.Printf("%v\n", result[0])
+	fmt.Printf("%v\n", result[1])
+	fmt.Printf("%v\n", result[2])
 	// Output:
 	// [0 3]
 	// [1 4]
