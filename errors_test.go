@@ -8,6 +8,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestValidate(t *testing.T) {
+	is := assert.New(t)
+
+	slice := []string{"a"}
+	result1 := Validate(len(slice) == 0, "Slice should be empty but contains %v", slice)
+
+	slice = []string{}
+	result2 := Validate(len(slice) == 0, "Slice should be empty but contains %v", slice)
+
+	is.Error(result1)
+	is.NoError(result2)
+}
+
 func TestMust(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
