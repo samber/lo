@@ -33,6 +33,13 @@ func TestMust(t *testing.T) {
 	is.PanicsWithValue("operation shouldn't fail with foo", func() {
 		Must(1, false, "operation shouldn't fail with %s", "foo")
 	})
+
+	cb := func() error {
+		return assert.AnError
+	}
+	is.PanicsWithValue("operation should fail: assert.AnError general error for testing", func() {
+		Must0(cb(), "operation should fail")
+	})
 }
 
 func TestMustX(t *testing.T) {
