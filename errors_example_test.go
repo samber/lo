@@ -18,7 +18,7 @@ func ExampleValidate() {
 
 func ExampleMust() {
 	defer func() {
-		recover()
+		_ = recover()
 	}()
 
 	// won't panic
@@ -39,7 +39,7 @@ func ExampleMust() {
 
 func ExampleMust0() {
 	defer func() {
-		recover()
+		_ = recover()
 	}()
 
 	// won't panic
@@ -54,7 +54,7 @@ func ExampleMust0() {
 
 func ExampleMust1() {
 	defer func() {
-		recover()
+		_ = recover()
 	}()
 
 	// won't panic
@@ -75,7 +75,7 @@ func ExampleMust1() {
 
 func ExampleMust2() {
 	defer func() {
-		recover()
+		_ = recover()
 	}()
 
 	// won't panic
@@ -90,7 +90,7 @@ func ExampleMust2() {
 
 func ExampleMust3() {
 	defer func() {
-		recover()
+		_ = recover()
 	}()
 
 	// won't panic
@@ -105,7 +105,7 @@ func ExampleMust3() {
 
 func ExampleMust4() {
 	defer func() {
-		recover()
+		_ = recover()
 	}()
 
 	// won't panic
@@ -120,7 +120,7 @@ func ExampleMust4() {
 
 func ExampleMust5() {
 	defer func() {
-		recover()
+		_ = recover()
 	}()
 
 	// won't panic
@@ -135,7 +135,7 @@ func ExampleMust5() {
 
 func ExampleMust6() {
 	defer func() {
-		recover()
+		_ = recover()
 	}()
 
 	// won't panic
@@ -157,7 +157,6 @@ func ExampleTry() {
 	})
 	ok3 := Try(func() error {
 		panic("my error")
-		return nil
 	})
 
 	fmt.Printf("%v\n", ok1)
@@ -178,7 +177,6 @@ func ExampleTry1() {
 	})
 	ok3 := Try1(func() error {
 		panic("my error")
-		return nil
 	})
 
 	fmt.Printf("%v\n", ok1)
@@ -199,7 +197,6 @@ func ExampleTry2() {
 	})
 	ok3 := Try2(func() (int, error) {
 		panic("my error")
-		return 42, nil
 	})
 
 	fmt.Printf("%v\n", ok1)
@@ -220,7 +217,6 @@ func ExampleTry3() {
 	})
 	ok3 := Try3(func() (int, string, error) {
 		panic("my error")
-		return 42, "foobar", nil
 	})
 
 	fmt.Printf("%v\n", ok1)
@@ -241,7 +237,6 @@ func ExampleTry4() {
 	})
 	ok3 := Try4(func() (int, string, float64, error) {
 		panic("my error")
-		return 42, "foobar", 4.2, nil
 	})
 
 	fmt.Printf("%v\n", ok1)
@@ -262,7 +257,6 @@ func ExampleTry5() {
 	})
 	ok3 := Try5(func() (int, string, float64, bool, error) {
 		panic("my error")
-		return 42, "foobar", 4.2, true, nil
 	})
 
 	fmt.Printf("%v\n", ok1)
@@ -283,7 +277,6 @@ func ExampleTry6() {
 	})
 	ok3 := Try6(func() (int, string, float64, bool, foo, error) {
 		panic("my error")
-		return 42, "foobar", 4.2, true, foo{}, nil
 	})
 
 	fmt.Printf("%v\n", ok1)
@@ -304,7 +297,6 @@ func ExampleTryOr() {
 	}, 21)
 	value3, ok3 := TryOr(func() (int, error) {
 		panic("my error")
-		return 42, nil
 	}, 21)
 
 	fmt.Printf("%v %v\n", value1, ok1)
@@ -325,7 +317,6 @@ func ExampleTryOr1() {
 	}, 21)
 	value3, ok3 := TryOr1(func() (int, error) {
 		panic("my error")
-		return 42, nil
 	}, 21)
 
 	fmt.Printf("%v %v\n", value1, ok1)
@@ -340,7 +331,6 @@ func ExampleTryOr1() {
 func ExampleTryOr2() {
 	value1, value2, ok3 := TryOr2(func() (int, string, error) {
 		panic("my error")
-		return 42, "world", nil
 	}, 21, "hello")
 
 	fmt.Printf("%v %v %v\n", value1, value2, ok3)
@@ -350,7 +340,6 @@ func ExampleTryOr2() {
 func ExampleTryOr3() {
 	value1, value2, value3, ok3 := TryOr3(func() (int, string, bool, error) {
 		panic("my error")
-		return 42, "world", true, nil
 	}, 21, "hello", false)
 
 	fmt.Printf("%v %v %v %v\n", value1, value2, value3, ok3)
@@ -360,7 +349,6 @@ func ExampleTryOr3() {
 func ExampleTryOr4() {
 	value1, value2, value3, value4, ok3 := TryOr4(func() (int, string, bool, foo, error) {
 		panic("my error")
-		return 42, "world", true, foo{bar: "baz"}, nil
 	}, 21, "hello", false, foo{bar: "bar"})
 
 	fmt.Printf("%v %v %v %v %v\n", value1, value2, value3, value4, ok3)
@@ -370,7 +358,6 @@ func ExampleTryOr4() {
 func ExampleTryOr5() {
 	value1, value2, value3, value4, value5, ok3 := TryOr5(func() (int, string, bool, foo, float64, error) {
 		panic("my error")
-		return 42, "world", true, foo{bar: "baz"}, 4.2, nil
 	}, 21, "hello", false, foo{bar: "bar"}, 4.2)
 
 	fmt.Printf("%v %v %v %v %v %v\n", value1, value2, value3, value4, value5, ok3)
@@ -379,7 +366,6 @@ func ExampleTryOr5() {
 func ExampleTryOr6() {
 	value1, value2, value3, value4, value5, value6, ok3 := TryOr6(func() (int, string, bool, foo, float64, string, error) {
 		panic("my error")
-		return 42, "world", true, foo{bar: "baz"}, 4.2, "hello", nil
 	}, 21, "hello", false, foo{bar: "bar"}, 4.2, "world")
 
 	fmt.Printf("%v %v %v %v %v %v %v\n", value1, value2, value3, value4, value5, value6, ok3)
@@ -395,7 +381,6 @@ func ExampleTryWithErrorValue() {
 	})
 	err3, ok3 := TryWithErrorValue(func() error {
 		panic("my error")
-		return nil
 	})
 
 	fmt.Printf("%v %v\n", err1, ok1)
