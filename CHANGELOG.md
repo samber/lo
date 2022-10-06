@@ -2,6 +2,13 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.30.1 (2022-10-06)
+
+Fix:
+
+- lo.Try1: remove generic type
+- lo.Validate: format error properly
+
 ## 1.30.0 (2022-10-04)
 
 Adding:

@@ -1137,13 +1137,15 @@ sub := len("hellô")
 Creates a tuple from a list of values.
 
 ```go
-tuple1 := lo.T2[string, int]("x", 1)
+tuple1 := lo.T2("x", 1)
 // Tuple2[string, int]{A: "x", B: 1}
 
 func example() (string, int) { return "y", 2 }
-tuple2 := lo.T2[string, int](example())
+tuple2 := lo.T2(example())
 // Tuple2[string, int]{A: "y", B: 2}
 ```
+
+[[play](https://go.dev/play/p/IllL3ZO4BQm)]
 
 ### Unpack2 -> Unpack9
 
@@ -1153,6 +1155,8 @@ Returns values contained in tuple.
 r1, r2 := lo.Unpack2[string, int](lo.Tuple2[string, int]{"a", 1})
 // "a", 1
 ```
+
+[[play](https://go.dev/play/p/xVP_k0kJ96W)]
 
 ### Zip2 -> Zip9
 
@@ -1165,6 +1169,8 @@ tuples := lo.Zip2[string, int]([]string{"a", "b"}, []int{1, 2})
 // []Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}}
 ```
 
+[[play](https://go.dev/play/p/jujaA6GaJTp)]
+
 ### Unzip2 -> Unzip9
 
 Unzip accepts an array of grouped elements and creates an array regrouping the elements to their pre-zip configuration.
@@ -1174,6 +1180,8 @@ a, b := lo.Unzip2[string, int]([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B:
 // []string{"a", "b"}
 // []int{1, 2}
 ```
+
+[[play](https://go.dev/play/p/ciHugugvaAW)]
 
 ### ChannelDispatcher
 
@@ -1982,6 +1990,8 @@ iter, err := lo.Attempt(0, func(i int) error {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
+[[play](https://go.dev/play/p/3ggJZ2ZKcMj)]
+
 ### AttemptWithDelay
 
 Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil.
@@ -2003,6 +2013,8 @@ iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duratio
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
+[[play](https://go.dev/play/p/tVs6CygC7m1)]
+
 ### Debounce
 
 `NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
@@ -2020,6 +2032,8 @@ for j := 0; j < 10; j++ {
 time.Sleep(1 * time.Second)
 cancel()
 ```
+
+[[play](https://go.dev/play/p/mz32VMK2nqe)]
 
 ### Synchronize
 
@@ -2094,6 +2108,8 @@ val := lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", sli
 // nil
 ```
 
+[[play](https://go.dev/play/p/vPyh51XpCBt)]
+
 ### Must
 
 Wraps a function call to panics if second argument is `error` or `false`, returns the value otherwise.
@@ -2105,6 +2121,8 @@ val := lo.Must(time.Parse("2006-01-02", "2022-01-15"))
 val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 // panics
 ```
+
+[[play](https://go.dev/play/p/TMoWrRp3DyC)]
 
 ### Must{0->6}
 
@@ -2152,6 +2170,8 @@ lo.Must0(lo.Contains[int](list, item), "'%s' must always contain '%s'", list, it
 ...
 ```
 
+[[play](https://go.dev/play/p/TMoWrRp3DyC)]
+
 ### Try
 
 Calls the function and return false in case of error and on panic.
@@ -2174,6 +2194,8 @@ ok := lo.Try(func() error {
 // false
 ```
 
+[[play](https://go.dev/play/p/mTyyWUvn9u4)]
+
 ### Try{0->6}
 
 The same behavior than `Try`, but callback returns 2 variables.
@@ -2185,6 +2207,8 @@ ok := lo.Try2(func() (string, error) {
 })
 // false
 ```
+
+[[play](https://go.dev/play/p/mTyyWUvn9u4)]
 
 ### TryOr
 
@@ -2211,6 +2235,8 @@ ok := lo.TryOr(func() error {
 // false
 ```
 
+[[play](https://go.dev/play/p/B4F7Wg2Zh9X)]
+
 ### TryOr{0->6}
 
 The same behavior than `TryOr`, but callback returns 2 variables.
@@ -2225,6 +2251,8 @@ str, nbr, ok := lo.TryOr2(func() (string, int, error) {
 // false
 ```
 
+[[play](https://go.dev/play/p/B4F7Wg2Zh9X)]
+
 ### TryWithErrorValue
 
 The same behavior than `Try`, but also returns value passed to panic.
@@ -2236,6 +2264,8 @@ err, ok := lo.TryWithErrorValue(func() error {
 })
 // "error", false
 ```
+
+[[play](https://go.dev/play/p/Kc7afQIT2Fs)]
 
 ### TryCatch
 
@@ -2254,6 +2284,8 @@ ok := lo.TryCatch(func() error {
 // caught == true
 ```
 
+[[play](https://go.dev/play/p/PnOON-EqBiU)]
+
 ### TryCatchWithErrorValue
 
 The same behavior than `TryWithErrorValue`, but calls the catch function in case of error.
@@ -2270,6 +2302,8 @@ ok := lo.TryCatchWithErrorValue(func() error {
 // false
 // caught == true
 ```
+
+[[play](https://go.dev/play/p/8Pc9gwX_GZO)]
 
 ### ErrorsAs
 
@@ -2293,6 +2327,8 @@ if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
     // retry later
 }
 ```
+
+[[play](https://go.dev/play/p/8wk5rH8UfrE)]
 
 ## 🛩 Benchmark
 
