@@ -1,15 +1,22 @@
+//go:build !race
+// +build !race
+
 package lo
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
 func ExampleNewDebounce() {
 	i := 0
 	calls := []int{}
+	mu := sync.Mutex{}
 
 	debounce, cancel := NewDebounce(time.Millisecond, func() {
+		mu.Lock()
+		defer mu.Unlock()
 		calls = append(calls, i)
 	})
 
