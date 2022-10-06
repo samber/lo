@@ -1354,7 +1354,8 @@ Example: RabbitMQ consumer 👇
 ch := readFromQueue()
 
 for {
-    // read 1k items up to 1 second
+    // read 1k items
+    // wait up to 1 second
     items, length, _, ok := lo.BatchWithTimeout(ch, 1000, 1*time.Second)
 
     // do batching stuff
@@ -1362,6 +1363,34 @@ for {
     if !ok {
         break
     }
+}
+```
+
+Example: Multithreaded RabbitMQ consumer 👇
+
+```go
+ch := readFromQueue()
+
+// 5 workers
+// prefetch 1k messages per worker
+children := lo.ChannelDispatcher(ch, 5, 1000, DispatchingStrategyFirst[int])
+
+consumer := func(c <-chan int) {
+    for {
+        // read 1k items
+        // wait up to 1 second
+        items, length, _, ok := lo.BatchWithTimeout(ch, 1000, 1*time.Second)
+
+        // do batching stuff
+
+        if !ok {
+            break
+        }
+    }
+}
+
+for i := range children {
+    go consumer(children[i])
 }
 ```
 
