@@ -187,3 +187,107 @@ func TestDispatchingStrategyMost(t *testing.T) {
 	children[1] <- 1
 	is.Equal(0, DispatchingStrategyMost(42, 0, rochildren))
 }
+
+func TestSliceToChannel(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 10*time.Millisecond)
+	is := assert.New(t)
+
+	ch := SliceToChannel[int](2, []int{1, 2, 3})
+
+	r1, ok1 := <-ch
+	r2, ok2 := <-ch
+	r3, ok3 := <-ch
+	is.True(ok1)
+	is.Equal(1, r1)
+	is.True(ok2)
+	is.Equal(2, r2)
+	is.True(ok3)
+	is.Equal(3, r3)
+
+	_, ok4 := <-ch
+	is.False(ok4)
+}
+
+func TestGenerate(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 10*time.Millisecond)
+	is := assert.New(t)
+
+	generator := func(yield func(int)) {
+		yield(0)
+		yield(1)
+		yield(2)
+		yield(3)
+	}
+
+	i := 0
+
+	for v := range Generator(2, generator) {
+		is.Equal(i, v)
+		i++
+	}
+
+	is.Equal(i, 4)
+}
+
+func TestBatch(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 10*time.Millisecond)
+	is := assert.New(t)
+
+	ch := SliceToChannel(2, []int{1, 2, 3})
+
+	items1, length1, _, ok1 := Batch(ch, 2)
+	items2, length2, _, ok2 := Batch(ch, 2)
+	items3, length3, _, ok3 := Batch(ch, 2)
+
+	is.Equal([]int{1, 2}, items1)
+	is.Equal(2, length1)
+	is.True(ok1)
+	is.Equal([]int{3}, items2)
+	is.Equal(1, length2)
+	is.False(ok2)
+	is.Equal([]int{}, items3)
+	is.Equal(0, length3)
+	is.False(ok3)
+}
+
+func TestBatchWithTimeout(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 200*time.Millisecond)
+	is := assert.New(t)
+
+	generator := func(yield func(int)) {
+		for i := 0; i < 5; i++ {
+			yield(i)
+			time.Sleep(10 * time.Millisecond)
+		}
+	}
+	ch := Generator(0, generator)
+
+	items1, length1, _, ok1 := BatchWithTimeout(ch, 20, 15*time.Millisecond)
+	is.Equal([]int{0, 1}, items1)
+	is.Equal(2, length1)
+	is.True(ok1)
+
+	items2, length2, _, ok2 := BatchWithTimeout(ch, 20, 2*time.Millisecond)
+	is.Equal([]int{}, items2)
+	is.Equal(0, length2)
+	is.True(ok2)
+
+	items3, length3, _, ok3 := BatchWithTimeout(ch, 1, 30*time.Millisecond)
+	is.Equal([]int{2}, items3)
+	is.Equal(1, length3)
+	is.True(ok3)
+
+	items4, length4, _, ok4 := BatchWithTimeout(ch, 2, 25*time.Millisecond)
+	is.Equal([]int{3, 4}, items4)
+	is.Equal(2, length4)
+	is.True(ok4)
+
+	items5, length5, _, ok5 := BatchWithTimeout(ch, 3, 25*time.Millisecond)
+	is.Equal([]int{}, items5)
+	is.Equal(0, length5)
+	is.False(ok5)
+}

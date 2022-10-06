@@ -135,6 +135,10 @@ Supported helpers for tuples:
 Supported helpers for channels:
 
 - [ChannelDispatcher](#channeldispatcher)
+- [SliceToChannel](#slicetochannel)
+- [Generator](#generator)
+- [Batch](#batch)
+- [BatchWithTimeout](#batchwithtimeout)
 
 Supported intersection helpers:
 
@@ -1260,6 +1264,134 @@ customStrategy := func(message pubsub.AMQPSubMessage, messageIndex uint64, chann
 
 children := lo.ChannelDispatcher(ch, 5, 10, customStrategy)
 ...
+```
+
+### SliceToChannel
+
+Returns a read-only channels of collection elements. Channel is closed after last element. Channel capacity can be customized.
+
+```go
+list := []int{1, 2, 3, 4, 5}
+
+for v := range lo.SliceToChannel(2, list) {
+    println(v)		
+}
+// prints 1, then 2, then 3, then 4, then 5
+```
+
+### Generator
+
+Implements the generator design pattern. Channel is closed after last element. Channel capacity can be customized.
+
+```go
+generator := func(yield func(int)) {
+    yield(1)
+    yield(2)
+    yield(3)
+}
+
+for v := range lo.Generator(2, generator) {
+    println(v)
+}
+// prints 1, then 2, then 3
+```
+
+### Batch
+
+Creates a slice of n elements from a channel. Returns the slice, the slice length, the read time and the channel status (opened/closed).
+
+```go
+ch := lo.SliceToChannel(2, []int{1, 2, 3, 4, 5})
+
+items1, length1, duration1, ok1 := lo.Batch(ch, 3)
+// []int{1, 2, 3}, 3, 0s, true
+items2, length2, duration2, ok2 := lo.Batch(ch, 3)
+// []int{4, 5}, 2, 0s, false
+```
+
+Example: RabbitMQ consumer 👇
+
+```go
+ch := readFromQueue()
+
+for {
+    // read 1k items
+    items, length, _, ok := lo.Batch(ch, 1000)
+
+    // do batching stuff
+
+    if !ok {
+        break
+    }
+}
+```
+
+### BatchWithTimeout
+
+Creates a slice of n elements from a channel, with timeout. Returns the slice, the slice length, the read time and the channel status (opened/closed).
+
+```go
+generator := func(yield func(int)) {
+    for i := 0; i < 5; i++ {
+        yield(i)
+        time.Sleep(35*time.Millisecond)
+    }
+}
+
+ch := lo.Generator(0, generator)
+
+items1, length1, duration1, ok1 := lo.BatchWithTimeout(ch, 3, 100*time.Millisecond)
+// []int{1, 2}, 2, 100ms, true
+items2, length2, duration2, ok2 := lo.BatchWithTimeout(ch, 3, 100*time.Millisecond)
+// []int{3, 4, 5}, 3, 75ms, true
+items3, length3, duration2, ok3 := lo.BatchWithTimeout(ch, 3, 100*time.Millisecond)
+// []int{}, 0, 10ms, false
+```
+
+Example: RabbitMQ consumer 👇
+
+```go
+ch := readFromQueue()
+
+for {
+    // read 1k items
+    // wait up to 1 second
+    items, length, _, ok := lo.BatchWithTimeout(ch, 1000, 1*time.Second)
+
+    // do batching stuff
+
+    if !ok {
+        break
+    }
+}
+```
+
+Example: Multithreaded RabbitMQ consumer 👇
+
+```go
+ch := readFromQueue()
+
+// 5 workers
+// prefetch 1k messages per worker
+children := lo.ChannelDispatcher(ch, 5, 1000, DispatchingStrategyFirst[int])
+
+consumer := func(c <-chan int) {
+    for {
+        // read 1k items
+        // wait up to 1 second
+        items, length, _, ok := lo.BatchWithTimeout(ch, 1000, 1*time.Second)
+
+        // do batching stuff
+
+        if !ok {
+            break
+        }
+    }
+}
+
+for i := range children {
+    go consumer(children[i])
+}
 ```
 
 ### Contains
