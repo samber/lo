@@ -150,8 +150,8 @@ func DispatchingStrategyMost[T any](msg T, index uint64, channels []<-chan T) in
 	})
 }
 
-// ToChannel returns a read-only channels of collection elements.
-func ToChannel[T any](bufferSize int, collection []T) <-chan T {
+// SliceToChannel returns a read-only channels of collection elements.
+func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 	ch := make(chan T, bufferSize)
 
 	go func() {
@@ -182,42 +182,44 @@ func Generator[T any](bufferSize int, generator func(yield func(T))) <-chan T {
 }
 
 // Batch creates a slice of n elements from a channel. Returns the slice and the slice length.
-func Batch[T any](ch <-chan T, size int) (collection []T, length int) {
+func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
 	buffer := make([]T, 0, size)
 	index := 0
+	now := time.Now()
 
 	for ; index < size; index++ {
 		item, ok := <-ch
 		if !ok {
-			return buffer, index
+			return buffer, index, time.Since(now), false
 		}
 
 		buffer = append(buffer, item)
 	}
 
-	return buffer, index
+	return buffer, index, time.Since(now), true
 }
 
 // BatchWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
-func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int) {
+func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
 	expire := time.After(timeout)
 
 	buffer := make([]T, 0, size)
 	index := 0
+	now := time.Now()
 
 	for ; index < size; index++ {
 		select {
 		case item, ok := <-ch:
 			if !ok {
-				return buffer, index
+				return buffer, index, time.Since(now), false
 			}
 
 			buffer = append(buffer, item)
 
 		case <-expire:
-			return buffer, index
+			return buffer, index, time.Since(now), true
 		}
 	}
 
-	return buffer, index
+	return buffer, index, time.Since(now), true
 }

@@ -2,6 +2,15 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.31.0 (2022-10-06)
+
+Adding:
+
+- lo.SliceToChannel
+- lo.Generator
+- lo.Batch
+- lo.BatchWithTimeout
+
 ## 1.30.1 (2022-10-06)
 
 Fix:
