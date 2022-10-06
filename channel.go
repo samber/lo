@@ -182,6 +182,7 @@ func Generator[T any](bufferSize int, generator func(yield func(T))) <-chan T {
 }
 
 // Batch creates a slice of n elements from a channel. Returns the slice and the slice length.
+// @TODO: we should probaby provide an helper that reuse the same buffer.
 func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
 	buffer := make([]T, 0, size)
 	index := 0
@@ -200,6 +201,7 @@ func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime t
 }
 
 // BatchWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
+// @TODO: we should probaby provide an helper that reuse the same buffer.
 func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
 	expire := time.NewTimer(timeout)
 	defer expire.Stop()
