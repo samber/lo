@@ -165,6 +165,17 @@ func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 	return ch
 }
 
+// ChannelToSlice returns a slice built from channels items. Blocks until channel closes.
+func ChannelToSlice[T any](ch <-chan T) []T {
+	collection := []T{}
+
+	for item := range ch {
+		collection = append(collection, item)
+	}
+
+	return collection
+}
+
 // Generator implements the generator design pattern.
 func Generator[T any](bufferSize int, generator func(yield func(T))) <-chan T {
 	ch := make(chan T, bufferSize)

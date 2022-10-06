@@ -209,6 +209,17 @@ func TestSliceToChannel(t *testing.T) {
 	is.False(ok4)
 }
 
+func TestChannelToSlice(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 10*time.Millisecond)
+	is := assert.New(t)
+
+	ch := SliceToChannel(2, []int{1, 2, 3})
+	items := ChannelToSlice(ch)
+
+	is.Equal([]int{1, 2, 3}, items)
+}
+
 func TestGenerate(t *testing.T) {
 	t.Parallel()
 	testWithTimeout(t, 10*time.Millisecond)

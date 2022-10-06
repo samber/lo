@@ -1279,6 +1279,18 @@ for v := range lo.SliceToChannel(2, list) {
 // prints 1, then 2, then 3, then 4, then 5
 ```
 
+### ChannelToSlice
+
+Returns a slice built from channels items. Blocks until channel closes.
+
+```go
+list := []int{1, 2, 3, 4, 5}
+ch := lo.SliceToChannel(2, list)
+
+items := ChannelToSlice(ch)
+// []int{1, 2, 3, 4, 5}
+```
+
 ### Generator
 
 Implements the generator design pattern. Channel is closed after last element. Channel capacity can be customized.
