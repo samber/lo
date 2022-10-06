@@ -201,7 +201,8 @@ func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime t
 
 // BatchWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
 func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
-	expire := time.After(timeout)
+	expire := time.NewTimer(timeout)
+	defer expire.Stop()
 
 	buffer := make([]T, 0, size)
 	index := 0
@@ -216,7 +217,7 @@ func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (coll
 
 			buffer = append(buffer, item)
 
-		case <-expire:
+		case <-expire.C:
 			return buffer, index, time.Since(now), true
 		}
 	}
