@@ -26,7 +26,7 @@ tools:
 	${BIN} install github.com/jondot/goweight@latest
 	${BIN} install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 	${BIN} get -t -u golang.org/x/tools/cmd/cover
-	${BIN} get -t -u github.com/sonatype-nexus-community/nancy@latest
+	${BIN} install github.com/sonatype-nexus-community/nancy@latest
 	go mod tidy
 
 lint:
@@ -35,11 +35,9 @@ lint-fix:
 	golangci-lint run --timeout 60s --max-same-issues 50 --fix ./...
 
 audit: tools
-	${BIN} mod tidy
 	${BIN} list -json -m all | nancy sleuth
 
 outdated: tools
-	${BIN} mod tidy
 	${BIN} list -u -m -json all | go-mod-outdated -update -direct
 
 weight: tools
