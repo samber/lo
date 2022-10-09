@@ -7,6 +7,7 @@ func Partial[T1, T2, R any](f func(T1, T2) R, arg1 T1) func(T2) R {
 	}
 }
 
+// Partial1 returns new function that, when called, has its first argument set to the provided value.
 func Partial1[T1, T2, R any](f func(T1, T2) R, arg1 T1) func(T2) R {
 	return Partial(f, arg1)
 }
