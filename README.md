@@ -87,6 +87,7 @@ Supported helpers for slices:
 - [Reject](#reject)
 - [Count](#count)
 - [CountBy](#countby)
+- [CountValues](#countvalues)
 - [Subset](#subset)
 - [Slice](#slice)
 - [Replace](#replace)
@@ -701,6 +702,26 @@ count := lo.CountBy[int]([]int{1, 5, 1}, func(i int) bool {
 ```
 
 [[play](https://go.dev/play/p/ByQbNYQQi4X)]
+
+### CountValues
+
+CountValues counts the number of each element in the collection
+```go
+lo.CountValues([]int{}))
+// map[int]int{}
+
+lo.CountValues([]int{1, 2}))
+// map[int]int{1: 1, 2: 1}
+
+lo.CountValues([]int{1, 2, 2}))
+// map[int]int{1: 1, 2: 2}
+
+lo.CountValues([]string{"foo", "bar", ""}))
+// map[string]int{"": 1, "foo": 1, "bar": 1}
+
+lo.CountValues([]string{"foo", "bar", "bar"}))
+// map[string]int{"foo": 1, "bar": 2}
+```
 
 ### Subset
 
