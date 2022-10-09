@@ -10,6 +10,7 @@ import (
 )
 
 func TestKeys(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := Keys(map[string]int{"foo": 1, "bar": 2})
@@ -19,6 +20,7 @@ func TestKeys(t *testing.T) {
 }
 
 func TestValues(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := Values(map[string]int{"foo": 1, "bar": 2})
@@ -28,6 +30,7 @@ func TestValues(t *testing.T) {
 }
 
 func TestPickBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := PickBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
@@ -38,6 +41,7 @@ func TestPickBy(t *testing.T) {
 }
 
 func TestPickByKeys(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
@@ -46,6 +50,7 @@ func TestPickByKeys(t *testing.T) {
 }
 
 func TestPickByValues(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
@@ -54,6 +59,7 @@ func TestPickByValues(t *testing.T) {
 }
 
 func TestOmitBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := OmitBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
@@ -64,6 +70,7 @@ func TestOmitBy(t *testing.T) {
 }
 
 func TestOmitByKeys(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
@@ -72,6 +79,7 @@ func TestOmitByKeys(t *testing.T) {
 }
 
 func TestOmitByValues(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
@@ -80,6 +88,7 @@ func TestOmitByValues(t *testing.T) {
 }
 
 func TestEntries(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := Entries(map[string]int{"foo": 1, "bar": 2})
@@ -100,6 +109,7 @@ func TestEntries(t *testing.T) {
 }
 
 func TestFromEntries(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := FromEntries([]Entry[string, int]{
@@ -119,6 +129,7 @@ func TestFromEntries(t *testing.T) {
 }
 
 func TestInvert(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := Invert(map[string]int{"a": 1, "b": 2})
@@ -130,6 +141,7 @@ func TestInvert(t *testing.T) {
 }
 
 func TestAssign(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Assign(map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4})
@@ -139,6 +151,7 @@ func TestAssign(t *testing.T) {
 }
 
 func TestMapKeys(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
@@ -154,6 +167,7 @@ func TestMapKeys(t *testing.T) {
 }
 
 func TestMapValues(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
@@ -170,6 +184,7 @@ func TestMapValues(t *testing.T) {
 }
 
 func TestMapToSlice(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, v int) string {

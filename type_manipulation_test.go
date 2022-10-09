@@ -7,6 +7,7 @@ import (
 )
 
 func TestToPtr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := ToPtr([]int{1, 2})
@@ -15,6 +16,7 @@ func TestToPtr(t *testing.T) {
 }
 
 func TestFromPtr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
@@ -28,6 +30,7 @@ func TestFromPtr(t *testing.T) {
 }
 
 func TestFromPtrOr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	const fallbackStr = "fallback"
@@ -45,6 +48,7 @@ func TestFromPtrOr(t *testing.T) {
 }
 
 func TestToSlicePtr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
@@ -55,6 +59,7 @@ func TestToSlicePtr(t *testing.T) {
 }
 
 func TestToAnySlice(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	in1 := []int{0, 1, 2, 3}
@@ -67,6 +72,7 @@ func TestToAnySlice(t *testing.T) {
 }
 
 func TestFromAnySlice(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	is.NotPanics(func() {
@@ -81,6 +87,7 @@ func TestFromAnySlice(t *testing.T) {
 }
 
 func TestEmpty(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	//nolint:unused
@@ -95,6 +102,7 @@ func TestEmpty(t *testing.T) {
 }
 
 func TestIsEmpty(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	//nolint:unused
@@ -111,6 +119,7 @@ func TestIsEmpty(t *testing.T) {
 }
 
 func TestIsNotEmpty(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	//nolint:unused
@@ -127,6 +136,7 @@ func TestIsNotEmpty(t *testing.T) {
 }
 
 func TestCoalesce(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	newStr := func(v string) *string { return &v }
