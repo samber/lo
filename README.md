@@ -73,6 +73,7 @@ Supported helpers for slices:
 - [Chunk](#chunk)
 - [PartitionBy](#partitionby)
 - [Flatten](#flatten)
+- [Interleave](#interleave)
 - [Shuffle](#shuffle)
 - [Reverse](#reverse)
 - [Fill](#fill)
@@ -498,6 +499,15 @@ flat := lo.Flatten[int]([][]int{{0, 1}, {2, 3, 4, 5}})
 ```
 
 [[play](https://go.dev/play/p/rbp9ORaMpjw)]
+
+### Interleave
+
+Round-robbin alternating input slices and sequentially appending value at index into result.
+
+```go
+interleaved := lo.Interleave[int]([]int{1, 4, 7}, []int{2, 5, 8}, []int{3, 6, 9})
+// []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+```
 
 ### Shuffle
 

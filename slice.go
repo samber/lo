@@ -546,3 +546,40 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(T
 
 	return true
 }
+
+// Interleave round-robbin alternating input slices and sequentially appending value at index into result
+func Interleave[T any](collections ...[]T) []T {
+	if len(collections) == 0 {
+		return []T{}
+	}
+
+	maxSize := 0
+	totalSize := 0
+	for _, c := range collections {
+		size := len(c)
+		totalSize += size
+		if size > maxSize {
+			maxSize = size
+		}
+	}
+
+	if maxSize == 0 {
+		return []T{}
+	}
+
+	result := make([]T, totalSize)
+
+	resultIdx := 0
+	for i := 0; i < maxSize; i++ {
+		for j := range collections {
+			if len(collections[j])-1 < i {
+				continue
+			}
+
+			result[resultIdx] = collections[j][i]
+			resultIdx++
+		}
+	}
+
+	return result
+}
