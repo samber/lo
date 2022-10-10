@@ -563,12 +563,12 @@ Builds a slice with values returned by N calls of callback.
 slice := lo.RepeatBy[string](0, func (i int) string {
     return strconv.FormatInt(int64(math.Pow(float64(i), 2)), 10)
 })
-// []int{}
+// []string{}
 
 slice := lo.RepeatBy[string](5, func(i int) string {
     return strconv.FormatInt(int64(math.Pow(float64(i), 2)), 10)
 })
-// []int{0, 1, 4, 9, 16}
+// []string{"0", "1", "4", "9", "16"}
 ```
 
 [[play](https://go.dev/play/p/ozZLCtX_hNU)]
