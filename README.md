@@ -114,6 +114,7 @@ Supported helpers for maps:
 - [MapKeys](#mapkeys)
 - [MapValues](#mapvalues)
 - [MapToSlice](#maptoslice)
+- [MapEntries](#mapentries)
 
 Supported math helpers:
 
@@ -1076,6 +1077,19 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 ```
 
 [[play](https://go.dev/play/p/ZuiCZpDt6LD)]
+
+### MapEntries
+
+Manipulates a map entries and transforms it to a map of another type.
+
+```go
+m1 := map[string]int{"foo": 1, "bar": 2}
+
+m2 := lo.MapEntries(m1, func(k string, v int) (int, string) {
+return v,k
+})
+// map[int]string{1: "foo", 2: "bar"}
+```
 
 ### Range / RangeFrom / RangeWithSteps
 
