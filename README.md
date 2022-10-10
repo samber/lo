@@ -47,8 +47,8 @@ import (
 Then use one of the helpers below:
 
 ```go
-names := lo.Uniq[string]([]string{"Samuel", "Marc", "Samuel"})
-// []string{"Samuel", "Marc"}
+names := lo.Uniq[string]([]string{"Samuel", "John", "Samuel"})
+// []string{"Samuel", "John"}
 ```
 
 Most of the time, the compiler will be able to infer the type so that you can call: `lo.Uniq([]string{...})`.

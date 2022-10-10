@@ -11,6 +11,7 @@ Adding:
 - lo.CountValuesBy
 - lo.MapEntries
 - lo.Sum
+- lo.Interleave
 - TupleX.Unpack()
 
 ## 1.31.0 (2022-10-06)
