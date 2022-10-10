@@ -415,12 +415,28 @@ func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 	return count
 }
 
-// CountValues counts the number of each element in the collection
+// CountValues counts the number of each element in the collection.
+// Play: https://go.dev/play/p/-p-PyLT4dfy
 func CountValues[T comparable](collection []T) map[T]int {
 	result := make(map[T]int)
+
 	for _, item := range collection {
 		result[item]++
 	}
+
+	return result
+}
+
+// CountValues counts the number of each element return from mapper function.
+// Is equivalent to chaining lo.Map and lo.CountValues.
+// Play: https://go.dev/play/p/2U0dG1SnOmS
+func CountValuesBy[T any, U comparable](collection []T, mapper func(T) U) map[U]int {
+	result := make(map[U]int)
+
+	for _, item := range collection {
+		result[mapper(item)]++
+	}
+
 	return result
 }
 

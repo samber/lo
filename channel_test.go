@@ -193,7 +193,7 @@ func TestSliceToChannel(t *testing.T) {
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 
-	ch := SliceToChannel[int](2, []int{1, 2, 3})
+	ch := SliceToChannel(2, []int{1, 2, 3})
 
 	r1, ok1 := <-ch
 	r2, ok2 := <-ch

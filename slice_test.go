@@ -450,13 +450,38 @@ func TestCountBy(t *testing.T) {
 }
 
 func TestCountValues(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal(CountValues([]int{}), map[int]int{})
-	is.Equal(CountValues([]int{1, 2}), map[int]int{1: 1, 2: 1})
-	is.Equal(CountValues([]int{1, 2, 2}), map[int]int{1: 1, 2: 2})
-	is.Equal(CountValues([]string{"foo", "bar", ""}), map[string]int{"": 1, "foo": 1, "bar": 1})
-	is.Equal(CountValues([]string{"foo", "bar", "bar"}), map[string]int{"foo": 1, "bar": 2})
+	is.Equal(map[int]int{}, CountValues([]int{}))
+	is.Equal(map[int]int{1: 1, 2: 1}, CountValues([]int{1, 2}))
+	is.Equal(map[int]int{1: 1, 2: 2}, CountValues([]int{1, 2, 2}))
+	is.Equal(map[string]int{"": 1, "foo": 1, "bar": 1}, CountValues([]string{"foo", "bar", ""}))
+	is.Equal(map[string]int{"foo": 1, "bar": 2}, CountValues([]string{"foo", "bar", "bar"}))
+}
+
+func TestCountValuesBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	oddEven := func(v int) bool {
+		return v%2 == 0
+	}
+	length := func(v string) int {
+		return len(v)
+	}
+
+	result1 := CountValuesBy([]int{}, oddEven)
+	result2 := CountValuesBy([]int{1, 2}, oddEven)
+	result3 := CountValuesBy([]int{1, 2, 2}, oddEven)
+	result4 := CountValuesBy([]string{"foo", "bar", ""}, length)
+	result5 := CountValuesBy([]string{"foo", "bar", "bar"}, length)
+
+	is.Equal(map[bool]int{}, result1)
+	is.Equal(map[bool]int{true: 1, false: 1}, result2)
+	is.Equal(map[bool]int{true: 2, false: 1}, result3)
+	is.Equal(map[int]int{0: 1, 3: 2}, result4)
+	is.Equal(map[int]int{3: 3}, result5)
 }
 
 func TestSubset(t *testing.T) {

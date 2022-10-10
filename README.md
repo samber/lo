@@ -88,6 +88,7 @@ Supported helpers for slices:
 - [Count](#count)
 - [CountBy](#countby)
 - [CountValues](#countvalues)
+- [CountValuesBy](#countvaluesby)
 - [Subset](#subset)
 - [Slice](#slice)
 - [Replace](#replace)
@@ -705,23 +706,57 @@ count := lo.CountBy[int]([]int{1, 5, 1}, func(i int) bool {
 
 ### CountValues
 
-CountValues counts the number of each element in the collection
+Counts the number of each element in the collection.
+
 ```go
-lo.CountValues([]int{}))
+lo.CountValues([]int{})
 // map[int]int{}
 
-lo.CountValues([]int{1, 2}))
+lo.CountValues([]int{1, 2})
 // map[int]int{1: 1, 2: 1}
 
-lo.CountValues([]int{1, 2, 2}))
+lo.CountValues([]int{1, 2, 2})
 // map[int]int{1: 1, 2: 2}
 
-lo.CountValues([]string{"foo", "bar", ""}))
+lo.CountValues([]string{"foo", "bar", ""})
 // map[string]int{"": 1, "foo": 1, "bar": 1}
 
-lo.CountValues([]string{"foo", "bar", "bar"}))
+lo.CountValues([]string{"foo", "bar", "bar"})
 // map[string]int{"foo": 1, "bar": 2}
 ```
+
+[[play](https://go.dev/play/p/-p-PyLT4dfy)]
+
+### CountValuesBy
+
+Counts the number of each element in the collection. It ss equivalent to chaining lo.Map and lo.CountValues.
+
+```go
+isEven := func(v int) bool {
+    return v%2==0
+}
+
+lo.CountValuesBy([]int{}, isEven)
+// map[bool]int{}
+
+lo.CountValuesBy([]int{1, 2}, isEven)
+// map[bool]int{false: 1, true: 1}
+
+lo.CountValuesBy([]int{1, 2, 2}, isEven)
+// map[bool]int{false: 1, true: 2}
+
+length := func(v string) int {
+    return len(v)
+}
+
+lo.CountValuesBy([]string{"foo", "bar", ""}, length)
+// map[int]int{0: 1, 3: 2}
+
+lo.CountValuesBy([]string{"foo", "bar", "bar"}, length)
+// map[int]int{3: 3}
+```
+
+[[play](https://go.dev/play/p/2U0dG1SnOmS)]
 
 ### Subset
 

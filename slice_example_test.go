@@ -313,6 +313,55 @@ func ExampleCountBy() {
 	// Output: 8
 }
 
+func ExampleCountValues() {
+	result1 := CountValues([]int{})
+	result2 := CountValues([]int{1, 2})
+	result3 := CountValues([]int{1, 2, 2})
+	result4 := CountValues([]string{"foo", "bar", ""})
+	result5 := CountValues([]string{"foo", "bar", "bar"})
+
+	fmt.Printf("%v\n", result1)
+	fmt.Printf("%v\n", result2)
+	fmt.Printf("%v\n", result3)
+	fmt.Printf("%v\n", result4)
+	fmt.Printf("%v\n", result5)
+	// Output:
+	// map[]
+	// map[1:1 2:1]
+	// map[1:1 2:2]
+	// map[:1 bar:1 foo:1]
+	// map[bar:2 foo:1]
+}
+
+func ExampleCountValuesBy() {
+	isEven := func(v int) bool {
+		return v%2 == 0
+	}
+
+	result1 := CountValuesBy([]int{}, isEven)
+	result2 := CountValuesBy([]int{1, 2}, isEven)
+	result3 := CountValuesBy([]int{1, 2, 2}, isEven)
+
+	length := func(v string) int {
+		return len(v)
+	}
+
+	result4 := CountValuesBy([]string{"foo", "bar", ""}, length)
+	result5 := CountValuesBy([]string{"foo", "bar", "bar"}, length)
+
+	fmt.Printf("%v\n", result1)
+	fmt.Printf("%v\n", result2)
+	fmt.Printf("%v\n", result3)
+	fmt.Printf("%v\n", result4)
+	fmt.Printf("%v\n", result5)
+	// Output:
+	// map[]
+	// map[false:1 true:1]
+	// map[false:1 true:2]
+	// map[0:1 3:2]
+	// map[3:3]
+}
+
 func ExampleSubset() {
 	list := []int{0, 1, 2, 3, 4, 5}
 

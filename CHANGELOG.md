@@ -2,11 +2,13 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
-## 1.32.0 (2022-10-xx)
+## 1.32.0 (2022-10-10)
 
 Adding:
 
 - lo.ChannelToSlice
+- lo.CountValues
+- lo.CountValuesBy
 
 ## 1.31.0 (2022-10-06)
 
