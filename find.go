@@ -221,6 +221,7 @@ func FindDuplicatesBy[T any, U comparable](collection []T, iteratee func(T) U) [
 }
 
 // Min search the minimum value of a collection.
+// Returns zero value when collection is empty.
 func Min[T constraints.Ordered](collection []T) T {
 	var min T
 
@@ -243,6 +244,7 @@ func Min[T constraints.Ordered](collection []T) T {
 
 // MinBy search the minimum value of a collection using the given comparison function.
 // If several values of the collection are equal to the smallest value, returns the first such value.
+// Returns zero value when collection is empty.
 func MinBy[T any](collection []T, comparison func(T, T) bool) T {
 	var min T
 
@@ -264,6 +266,7 @@ func MinBy[T any](collection []T, comparison func(T, T) bool) T {
 }
 
 // Max searches the maximum value of a collection.
+// Returns zero value when collection is empty.
 func Max[T constraints.Ordered](collection []T) T {
 	var max T
 
@@ -286,6 +289,7 @@ func Max[T constraints.Ordered](collection []T) T {
 
 // MaxBy search the maximum value of a collection using the given comparison function.
 // If several values of the collection are equal to the greatest value, returns the first such value.
+// Returns zero value when collection is empty.
 func MaxBy[T any](collection []T, comparison func(T, T) bool) T {
 	var max T
 

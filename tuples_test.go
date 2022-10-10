@@ -40,12 +40,23 @@ func TestUnpack(t *testing.T) {
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
+
+		r1, r2 = tuple.Unpack()
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
 	}
 
 	{
 		tuple := Tuple3[string, int, float64]{"a", 1, 1.0}
 
 		r1, r2, r3 := Unpack3(tuple)
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+
+		r1, r2, r3 = tuple.Unpack()
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -61,12 +72,27 @@ func TestUnpack(t *testing.T) {
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
 		is.Equal(true, r4)
+
+		r1, r2, r3, r4 = tuple.Unpack()
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
 	}
 
 	{
 		tuple := Tuple5[string, int, float64, bool, string]{"a", 1, 1.0, true, "b"}
 
 		r1, r2, r3, r4, r5 := Unpack5(tuple)
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+		is.Equal("b", r5)
+
+		r1, r2, r3, r4, r5 = tuple.Unpack()
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -86,12 +112,31 @@ func TestUnpack(t *testing.T) {
 		is.Equal(true, r4)
 		is.Equal("b", r5)
 		is.Equal(2, r6)
+
+		r1, r2, r3, r4, r5, r6 = tuple.Unpack()
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+		is.Equal("b", r5)
+		is.Equal(2, r6)
 	}
 
 	{
 		tuple := Tuple7[string, int, float64, bool, string, int, float64]{"a", 1, 1.0, true, "b", 2, 3.0}
 
 		r1, r2, r3, r4, r5, r6, r7 := Unpack7(tuple)
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+		is.Equal("b", r5)
+		is.Equal(2, r6)
+		is.Equal(3.0, r7)
+
+		r1, r2, r3, r4, r5, r6, r7 = tuple.Unpack()
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -115,12 +160,35 @@ func TestUnpack(t *testing.T) {
 		is.Equal(2, r6)
 		is.Equal(3.0, r7)
 		is.Equal(true, r8)
+
+		r1, r2, r3, r4, r5, r6, r7, r8 = tuple.Unpack()
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+		is.Equal("b", r5)
+		is.Equal(2, r6)
+		is.Equal(3.0, r7)
+		is.Equal(true, r8)
 	}
 
 	{
 		tuple := Tuple9[string, int, float64, bool, string, int, float64, bool, string]{"a", 1, 1.0, true, "b", 2, 3.0, true, "c"}
 
 		r1, r2, r3, r4, r5, r6, r7, r8, r9 := Unpack9(tuple)
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+		is.Equal("b", r5)
+		is.Equal(2, r6)
+		is.Equal(3.0, r7)
+		is.Equal(true, r8)
+		is.Equal("c", r9)
+
+		r1, r2, r3, r4, r5, r6, r7, r8, r9 = tuple.Unpack()
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)

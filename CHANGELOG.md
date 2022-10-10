@@ -10,6 +10,7 @@ Adding:
 - lo.CountValues
 - lo.CountValuesBy
 - lo.MapEntries
+- TupleX.Unpack()
 
 ## 1.31.0 (2022-10-06)
 

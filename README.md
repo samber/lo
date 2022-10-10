@@ -1786,26 +1786,31 @@ duplicatedValues := lo.FindDuplicatesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i i
 
 Search the minimum value of a collection.
 
+Returns zero value when collection is empty.
+
 ```go
-min := lo.Min[int]([]int{1, 2, 3})
+min := lo.Min([]int{1, 2, 3})
 // 1
 
-min := lo.Min[int]([]int{})
+min := lo.Min([]int{})
 // 0
 ```
 
 ### MinBy
 
 Search the minimum value of a collection using the given comparison function.
+
 If several values of the collection are equal to the smallest value, returns the first such value.
 
+Returns zero value when collection is empty.
+
 ```go
-min := lo.MinBy[string]([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
+min := lo.MinBy([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
     return len(item) < len(min)
 })
 // "s1"
 
-min := lo.MinBy[string]([]string{}, func(item string, min string) bool {
+min := lo.MinBy([]string{}, func(item string, min string) bool {
     return len(item) < len(min)
 })
 // ""
@@ -1815,26 +1820,31 @@ min := lo.MinBy[string]([]string{}, func(item string, min string) bool {
 
 Search the maximum value of a collection.
 
+Returns zero value when collection is empty.
+
 ```go
-max := lo.Max[int]([]int{1, 2, 3})
+max := lo.Max([]int{1, 2, 3})
 // 3
 
-max := lo.Max[int]([]int{})
+max := lo.Max([]int{})
 // 0
 ```
 
 ### MaxBy
 
 Search the maximum value of a collection using the given comparison function.
+
 If several values of the collection are equal to the greatest value, returns the first such value.
 
+Returns zero value when collection is empty.
+
 ```go
-max := lo.MaxBy[string]([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
+max := lo.MaxBy([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
     return len(item) > len(max)
 })
 // "string1"
 
-max := lo.MaxBy[string]([]string{}, func(item string, max string) bool {
+max := lo.MaxBy([]string{}, func(item string, max string) bool {
     return len(item) > len(max)
 })
 // ""
