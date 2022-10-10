@@ -1026,28 +1026,28 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
 
 ```go
-result := Range(4)
+result := lo.Range(4)
 // [0, 1, 2, 3]
 
-result := Range(-4)
+result := lo.Range(-4)
 // [0, -1, -2, -3]
 
-result := RangeFrom(1, 5)
+result := lo.RangeFrom(1, 5)
 // [1, 2, 3, 4, 5]
 
-result := RangeFrom[float64](1.0, 5)
+result := lo.RangeFrom[float64](1.0, 5)
 // [1.0, 2.0, 3.0, 4.0, 5.0]
 
-result := RangeWithSteps(0, 20, 5)
+result := lo.RangeWithSteps(0, 20, 5)
 // [0, 5, 10, 15]
 
-result := RangeWithSteps[float32](-1.0, -4.0, -1.0)
+result := lo.RangeWithSteps[float32](-1.0, -4.0, -1.0)
 // [-1.0, -2.0, -3.0]
 
-result := RangeWithSteps(1, 4, -1)
+result := lo.RangeWithSteps(1, 4, -1)
 // []
 
-result := Range(0)
+result := lo.Range(0)
 // []
 ```
 
