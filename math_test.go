@@ -79,3 +79,17 @@ func TestSumBy(t *testing.T) {
 	is.Equal(result3, uint32(14))
 	is.Equal(result4, uint32(0))
 }
+
+func TestSum(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Sum([]float32{2.3, 3.3, 4, 5.3})
+	result2 := Sum([]int32{2, 3, 4, 5})
+	result3 := Sum([]uint32{2, 3, 4, 5})
+	result4 := Sum([]uint32{})
+
+	is.Equal(result1, float32(14.900001))
+	is.Equal(result2, int32(14))
+	is.Equal(result3, uint32(14))
+	is.Equal(result4, uint32(0))
+}

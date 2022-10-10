@@ -72,3 +72,12 @@ func SumBy[T any, R constraints.Float | constraints.Integer](collection []T, ite
 	}
 	return sum
 }
+
+// Sums the values in a slice.
+func Sum[T constraints.Float | constraints.Integer](collection []T) T {
+	var sum T = 0
+	for _, val := range collection {
+		sum += val
+	}
+	return sum
+}
