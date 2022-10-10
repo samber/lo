@@ -120,6 +120,7 @@ Supported math helpers:
 
 - [Range / RangeFrom / RangeWithSteps](#range--rangefrom--rangewithsteps)
 - [Clamp](#clamp)
+- [Sum](#sum)
 - [SumBy](#sumby)
 
 Supported helpers for strings:
@@ -1142,9 +1143,24 @@ r3 := lo.Clamp(42, -10, 10)
 
 [[play](https://go.dev/play/p/RU4lJNC2hlI)]
 
+### Sum
+
+Sums the values in a collection.
+
+If collection is empty 0 is returned.
+
+```go
+list := []int{1, 2, 3, 4, 5}
+sum := lo.Sum(list)
+// 15
+```
+
+[[play](https://go.dev/play/p/upfeJVqs4Bt)]
+
 ### SumBy
 
 Summarizes the values in a collection using the given return value from the iteration function.
+
 If collection is empty 0 is returned.
 
 ```go

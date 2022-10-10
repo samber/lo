@@ -47,6 +47,15 @@ func ExampleClamp() {
 	// 10
 }
 
+func ExampleSum() {
+	list := []int{1, 2, 3, 4, 5}
+
+	sum := Sum(list)
+
+	fmt.Printf("%v", sum)
+	// Output: 15
+}
+
 func ExampleSumBy() {
 	list := []string{"foo", "bar"}
 
