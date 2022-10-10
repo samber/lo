@@ -449,6 +449,16 @@ func TestCountBy(t *testing.T) {
 	is.Equal(count3, 0)
 }
 
+func TestCountValues(t *testing.T) {
+	is := assert.New(t)
+
+	is.Equal(CountValues([]int{}), map[int]int{})
+	is.Equal(CountValues([]int{1, 2}), map[int]int{1: 1, 2: 1})
+	is.Equal(CountValues([]int{1, 2, 2}), map[int]int{1: 1, 2: 2})
+	is.Equal(CountValues([]string{"foo", "bar", ""}), map[string]int{"": 1, "foo": 1, "bar": 1})
+	is.Equal(CountValues([]string{"foo", "bar", "bar"}), map[string]int{"foo": 1, "bar": 2})
+}
+
 func TestSubset(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

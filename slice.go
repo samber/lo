@@ -415,6 +415,15 @@ func CountBy[T any](collection []T, predicate func(T) bool) (count int) {
 	return count
 }
 
+// CountValues counts the number of each element in the collection
+func CountValues[T comparable](collection []T) map[T]int {
+	result := make(map[T]int)
+	for _, item := range collection {
+		result[item]++
+	}
+	return result
+}
+
 // Subset returns a copy of a slice from `offset` up to `length` elements. Like `slice[start:start+length]`, but does not panic on overflow.
 // Play: https://go.dev/play/p/tOQu1GhFcog
 func Subset[T any](collection []T, offset int, length uint) []T {
