@@ -7,6 +7,7 @@ import (
 )
 
 func TestT(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := T2("a", 1)
@@ -29,12 +30,18 @@ func TestT(t *testing.T) {
 }
 
 func TestUnpack(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	{
 		tuple := Tuple2[string, int]{"a", 1}
 
 		r1, r2 := Unpack2(tuple)
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+
+		r1, r2 = tuple.Unpack()
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -48,12 +55,25 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
+
+		r1, r2, r3 = tuple.Unpack()
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
 	}
 
 	{
 		tuple := Tuple4[string, int, float64, bool]{"a", 1, 1.0, true}
 
 		r1, r2, r3, r4 := Unpack4(tuple)
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+
+		r1, r2, r3, r4 = tuple.Unpack()
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -71,12 +91,29 @@ func TestUnpack(t *testing.T) {
 		is.Equal(1.0, r3)
 		is.Equal(true, r4)
 		is.Equal("b", r5)
+
+		r1, r2, r3, r4, r5 = tuple.Unpack()
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+		is.Equal("b", r5)
 	}
 
 	{
 		tuple := Tuple6[string, int, float64, bool, string, int]{"a", 1, 1.0, true, "b", 2}
 
 		r1, r2, r3, r4, r5, r6 := Unpack6(tuple)
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+		is.Equal("b", r5)
+		is.Equal(2, r6)
+
+		r1, r2, r3, r4, r5, r6 = tuple.Unpack()
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -98,12 +135,33 @@ func TestUnpack(t *testing.T) {
 		is.Equal("b", r5)
 		is.Equal(2, r6)
 		is.Equal(3.0, r7)
+
+		r1, r2, r3, r4, r5, r6, r7 = tuple.Unpack()
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+		is.Equal("b", r5)
+		is.Equal(2, r6)
+		is.Equal(3.0, r7)
 	}
 
 	{
 		tuple := Tuple8[string, int, float64, bool, string, int, float64, bool]{"a", 1, 1.0, true, "b", 2, 3.0, true}
 
 		r1, r2, r3, r4, r5, r6, r7, r8 := Unpack8(tuple)
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+		is.Equal("b", r5)
+		is.Equal(2, r6)
+		is.Equal(3.0, r7)
+		is.Equal(true, r8)
+
+		r1, r2, r3, r4, r5, r6, r7, r8 = tuple.Unpack()
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
@@ -129,10 +187,23 @@ func TestUnpack(t *testing.T) {
 		is.Equal(3.0, r7)
 		is.Equal(true, r8)
 		is.Equal("c", r9)
+
+		r1, r2, r3, r4, r5, r6, r7, r8, r9 = tuple.Unpack()
+
+		is.Equal("a", r1)
+		is.Equal(1, r2)
+		is.Equal(1.0, r3)
+		is.Equal(true, r4)
+		is.Equal("b", r5)
+		is.Equal(2, r6)
+		is.Equal(3.0, r7)
+		is.Equal(true, r8)
+		is.Equal("c", r9)
 	}
 }
 
 func TestZip(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1 := Zip2(
@@ -272,6 +343,7 @@ func TestZip(t *testing.T) {
 }
 
 func TestUnzip(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	r1, r2 := Unzip2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})

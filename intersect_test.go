@@ -7,6 +7,7 @@ import (
 )
 
 func TestContains(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Contains([]int{0, 1, 2, 3, 4, 5}, 5)
@@ -17,6 +18,7 @@ func TestContains(t *testing.T) {
 }
 
 func TestContainsBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	type a struct {
@@ -39,6 +41,7 @@ func TestContainsBy(t *testing.T) {
 }
 
 func TestEvery(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -53,6 +56,7 @@ func TestEvery(t *testing.T) {
 }
 
 func TestEveryBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
@@ -81,6 +85,7 @@ func TestEveryBy(t *testing.T) {
 }
 
 func TestSome(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -95,6 +100,7 @@ func TestSome(t *testing.T) {
 }
 
 func TestSomeBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := SomeBy([]int{1, 2, 3, 4}, func(x int) bool {
@@ -123,6 +129,7 @@ func TestSomeBy(t *testing.T) {
 }
 
 func TestNone(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := None([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -137,6 +144,7 @@ func TestNone(t *testing.T) {
 }
 
 func TestNoneBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := NoneBy([]int{1, 2, 3, 4}, func(x int) bool {
@@ -165,6 +173,7 @@ func TestNoneBy(t *testing.T) {
 }
 
 func TestIntersect(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -181,6 +190,7 @@ func TestIntersect(t *testing.T) {
 }
 
 func TestDifference(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	left1, right1 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
@@ -197,7 +207,9 @@ func TestDifference(t *testing.T) {
 }
 
 func TestUnion(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
+
 	result1 := Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
 	result2 := Union([]int{0, 1, 2, 3, 4, 5}, []int{6, 7})
 	result3 := Union([]int{0, 1, 2, 3, 4, 5}, []int{})
@@ -211,7 +223,9 @@ func TestUnion(t *testing.T) {
 }
 
 func TestWithout(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
+
 	result1 := Without([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
 	result2 := Without([]int{0, 7}, 0, 1, 2, 3, 4, 5)
 	result3 := Without([]int{}, 0, 1, 2, 3, 4, 5)
@@ -225,7 +239,9 @@ func TestWithout(t *testing.T) {
 }
 
 func TestWithoutEmpty(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
+
 	result1 := WithoutEmpty([]int{0, 1, 2})
 	result2 := WithoutEmpty([]int{1, 2})
 	result3 := WithoutEmpty([]int{})

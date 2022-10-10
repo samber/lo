@@ -7,7 +7,9 @@ import (
 )
 
 func TestRange(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
+
 	result1 := Range(4)
 	result2 := Range(-4)
 	result3 := Range(0)
@@ -17,7 +19,9 @@ func TestRange(t *testing.T) {
 }
 
 func TestRangeFrom(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
+
 	result1 := RangeFrom(1, 5)
 	result2 := RangeFrom(-1, -5)
 	result3 := RangeFrom(10, 0)
@@ -31,7 +35,9 @@ func TestRangeFrom(t *testing.T) {
 }
 
 func TestRangeClose(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
+
 	result1 := RangeWithSteps(0, 20, 6)
 	result2 := RangeWithSteps(0, 3, -5)
 	result3 := RangeWithSteps(1, 1, 0)
@@ -47,6 +53,7 @@ func TestRangeClose(t *testing.T) {
 }
 
 func TestClamp(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Clamp(0, -10, 10)
@@ -58,16 +65,35 @@ func TestClamp(t *testing.T) {
 	is.Equal(result3, 10)
 }
 
+func TestSum(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Sum([]float32{2.3, 3.3, 4, 5.3})
+	result2 := Sum([]int32{2, 3, 4, 5})
+	result3 := Sum([]uint32{2, 3, 4, 5})
+	result4 := Sum([]uint32{})
+	result5 := Sum([]complex128{4_4, 2_2})
+
+	is.Equal(result1, float32(14.900001))
+	is.Equal(result2, int32(14))
+	is.Equal(result3, uint32(14))
+	is.Equal(result4, uint32(0))
+	is.Equal(result5, complex128(6_6))
+}
+
 func TestSumBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := SumBy([]float32{2.3, 3.3, 4, 5.3}, func(n float32) float32 { return n })
 	result2 := SumBy([]int32{2, 3, 4, 5}, func(n int32) int32 { return n })
 	result3 := SumBy([]uint32{2, 3, 4, 5}, func(n uint32) uint32 { return n })
 	result4 := SumBy([]uint32{}, func(n uint32) uint32 { return n })
+	result5 := SumBy([]complex128{4_4, 2_2}, func(n complex128) complex128 { return n })
 
 	is.Equal(result1, float32(14.900001))
 	is.Equal(result2, int32(14))
 	is.Equal(result3, uint32(14))
 	is.Equal(result4, uint32(0))
+	is.Equal(result5, complex128(6_6))
 }

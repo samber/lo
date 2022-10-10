@@ -2,6 +2,48 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.32.0 (2022-10-10)
+
+Adding:
+
+- lo.ChannelToSlice
+- lo.CountValues
+- lo.CountValuesBy
+- lo.MapEntries
+- lo.Sum
+- TupleX.Unpack()
+
+## 1.31.0 (2022-10-06)
+
+Adding:
+
+- lo.SliceToChannel
+- lo.Generator
+- lo.Batch
+- lo.BatchWithTimeout
+
+## 1.30.1 (2022-10-06)
+
+Fix:
+
+- lo.Try1: remove generic type
+- lo.Validate: format error properly
+
+## 1.30.0 (2022-10-04)
+
+Adding:
+
+- lo.TernaryF
+- lo.Validate
+
+## 1.29.0 (2022-10-02)
+
+Adding:
+
+- lo.ErrorAs
+- lo.TryOr
+- lo.TryOrX
+
 ## 1.28.0 (2022-09-05)
 
 Adding:
