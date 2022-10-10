@@ -507,7 +507,12 @@ Round-robbin alternating input slices and sequentially appending value at index 
 ```go
 interleaved := lo.Interleave[int]([]int{1, 4, 7}, []int{2, 5, 8}, []int{3, 6, 9})
 // []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+interleaved := lo.Interleave[int]([]int{1}, []int{2, 5, 8}, []int{3, 6}, []int{4, 7, 9, 10})
+// []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 ```
+
+[[play](https://go.dev/play/p/DDhlwrShbwe)]
 
 ### Shuffle
 

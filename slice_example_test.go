@@ -178,6 +178,20 @@ func ExampleFlatten() {
 	// Output: [0 1 2 3 4 5]
 }
 
+func ExampleInterleave() {
+	list1 := [][]int{{1, 4, 7}, {2, 5, 8}, {3, 6, 9}}
+	list2 := [][]int{{1}, {2, 5, 8}, {3, 6}, {4, 7, 9, 10}}
+
+	result1 := Interleave(list1...)
+	result2 := Interleave(list2...)
+
+	fmt.Printf("%v\n", result1)
+	fmt.Printf("%v\n", result2)
+	// Output:
+	// [1 2 3 4 5 6 7 8 9]
+	// [1 2 3 4 5 6 7 8 9 10]
+}
+
 func ExampleShuffle() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
