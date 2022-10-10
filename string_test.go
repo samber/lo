@@ -8,6 +8,7 @@ import (
 )
 
 func TestChunkString(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := ChunkString("12345", 2)
@@ -34,6 +35,7 @@ func TestChunkString(t *testing.T) {
 }
 
 func TestSubstring(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := Substring("hello", 0, 0)
@@ -64,6 +66,7 @@ func TestSubstring(t *testing.T) {
 }
 
 func TestRuneLength(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	is.Equal(5, RuneLength("hellô"))

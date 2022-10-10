@@ -22,3 +22,11 @@ func testWithTimeout(t *testing.T, timeout time.Duration) {
 		}
 	}()
 }
+
+type foo struct {
+	bar string
+}
+
+func (f foo) Clone() foo {
+	return foo{f.bar}
+}

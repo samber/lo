@@ -5,6 +5,7 @@ import (
 )
 
 // Substring return part of a string.
+// Play: https://go.dev/play/p/TQlxQi82Lu1
 func Substring[T ~string](str T, offset int, length uint) T {
 	size := len(str)
 
@@ -28,6 +29,7 @@ func Substring[T ~string](str T, offset int, length uint) T {
 
 // ChunkString returns an array of strings split into groups the length of size. If array can't be split evenly,
 // the final chunk will be the remaining elements.
+// Play: https://go.dev/play/p/__FLTuJVz54
 func ChunkString[T ~string](str T, size int) []T {
 	if size <= 0 {
 		panic("lo.ChunkString: Size parameter must be greater than 0")
@@ -57,6 +59,7 @@ func ChunkString[T ~string](str T, size int) []T {
 }
 
 // RuneLength is an alias to utf8.RuneCountInString which returns the number of runes in string.
+// Play: https://go.dev/play/p/tuhgW_lWY8l
 func RuneLength(str string) int {
 	return utf8.RuneCountInString(str)
 }
