@@ -9,6 +9,7 @@ Adding:
 - lo.ChannelToSlice
 - lo.CountValues
 - lo.CountValuesBy
+- lo.MapEntries
 
 ## 1.31.0 (2022-10-06)
 

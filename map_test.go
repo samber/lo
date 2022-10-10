@@ -183,23 +183,6 @@ func TestMapValues(t *testing.T) {
 	is.Equal(result2, map[int]string{1: "1", 2: "2", 3: "3", 4: "4"})
 }
 
-func TestMapToSlice(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	result1 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, v int) string {
-		return fmt.Sprintf("%d_%d", k, v)
-	})
-	result2 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, _ int) string {
-		return strconv.FormatInt(int64(k), 10)
-	})
-
-	is.Equal(len(result1), 4)
-	is.Equal(len(result2), 4)
-	is.ElementsMatch(result1, []string{"1_5", "2_6", "3_7", "4_8"})
-	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
-}
-
 func mapEntriesTest[I any, O any](t *testing.T, in map[string]I, iteratee func(string, I) (string, O), expected map[string]O) {
 	is := assert.New(t)
 	result := MapEntries(in, iteratee)
@@ -282,4 +265,21 @@ func TestMapEntries(t *testing.T) {
 			return v.name, k
 		}, map[string]string{"bar": "2-22-2", "foo": "1-11-1"})
 	}
+}
+
+func TestMapToSlice(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, v int) string {
+		return fmt.Sprintf("%d_%d", k, v)
+	})
+	result2 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, _ int) string {
+		return strconv.FormatInt(int64(k), 10)
+	})
+
+	is.Equal(len(result1), 4)
+	is.Equal(len(result2), 4)
+	is.ElementsMatch(result1, []string{"1_5", "2_6", "3_7", "4_8"})
+	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
 }

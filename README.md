@@ -113,8 +113,8 @@ Supported helpers for maps:
 - [Assign (merge of maps)](#assign)
 - [MapKeys](#mapkeys)
 - [MapValues](#mapvalues)
-- [MapToSlice](#maptoslice)
 - [MapEntries](#mapentries)
+- [MapToSlice](#maptoslice)
 
 Supported math helpers:
 
@@ -1063,6 +1063,21 @@ m2 := lo.MapValues[int, int64, string](m1, func(x int64, _ int) string {
 
 [[play](https://go.dev/play/p/T_8xAfvcf0W)]
 
+### MapEntries
+
+Manipulates a map entries and transforms it to a map of another type.
+
+```go
+in := map[string]int{"foo": 1, "bar": 2}
+
+out := lo.MapEntries(in, func(k string, v int) (int, string) {
+    return v,k
+})
+// map[int]string{1: "foo", 2: "bar"}
+```
+
+[[play](https://go.dev/play/p/VuvNQzxKimT)]
+
 ### MapToSlice
 
 Transforms a map into a slice based on specific iteratee.
@@ -1077,19 +1092,6 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 ```
 
 [[play](https://go.dev/play/p/ZuiCZpDt6LD)]
-
-### MapEntries
-
-Manipulates a map entries and transforms it to a map of another type.
-
-```go
-m1 := map[string]int{"foo": 1, "bar": 2}
-
-m2 := lo.MapEntries(m1, func(k string, v int) (int, string) {
-return v,k
-})
-// map[int]string{1: "foo", 2: "bar"}
-```
 
 ### Range / RangeFrom / RangeWithSteps
 

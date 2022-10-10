@@ -158,6 +158,17 @@ func ExampleMapValues() {
 	// Output: 4 1 2 3 4
 }
 
+func ExampleMapEntries() {
+	kv := map[string]int{"foo": 1, "bar": 2}
+
+	result := MapEntries(kv, func(k string, v int) (int, string) {
+		return v, k
+	})
+
+	fmt.Printf("%v\n", result)
+	// Output: map[1:foo 2:bar]
+}
+
 func ExampleMapToSlice() {
 	kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
 
