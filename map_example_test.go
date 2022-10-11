@@ -180,3 +180,17 @@ func ExampleMapToSlice() {
 	fmt.Printf("%v", result)
 	// Output: [1_1 2_2 3_3 4_4]
 }
+
+func ExampleAggregateGroups() {
+	kv := map[string][]string{"phone": {"iphone 14", "iphone 15"}, "os": {"ios 14", "ios 15"}}
+
+	result := AggregateGroups(kv, func(current string, key string, first bool, accumulator string) string {
+		if first {
+			return key + " is " + current
+		}
+		return accumulator + " and " + current
+	})
+
+	fmt.Printf("%v\n", result)
+	// Output: map[os:os is ios 14 and ios 15 phone:phone is iphone 14 and iphone 15]
+}

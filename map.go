@@ -213,3 +213,12 @@ func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(K, V) R) [
 
 	return result
 }
+
+// AggregateGroups returns an object composed of keys generated from the results of the given aggregator function.
+func AggregateGroups[V any, R any](in map[string][]V, aggregator func(current V, key string, first bool, accumulator R) R) map[string]R {
+	return MapEntries(in, func(k string, v []V) (string, R) {
+		return k, Reduce(v, func(accumulator R, current V, currentIndex int) R {
+			return aggregator(current, k, currentIndex == 0, accumulator)
+		}, *new(R))
+	})
+}

@@ -283,3 +283,53 @@ func TestMapToSlice(t *testing.T) {
 	is.ElementsMatch(result1, []string{"1_5", "2_6", "3_7", "4_8"})
 	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
 }
+
+func aggregateGroupsTest[V any, R any](t *testing.T, in map[string][]V, iteratee func(current V, key string, first bool, accumulator R) R, expected map[string]R) {
+	is := assert.New(t)
+	result := AggregateGroups(in, iteratee)
+	is.Equal(result, expected)
+}
+func TestAggregateGroups(t *testing.T) {
+	aggregateGroupsTest(t, map[string][]int{"foo": {3, 2, 1, 4}, "bar": {6, 9, 8, 7}}, func(current int, key string, first bool, accumulator int) int {
+		return accumulator + current
+	}, map[string]int{"foo": 10, "bar": 30})
+	// NoMutation
+	{
+		is := assert.New(t)
+		r1 := map[string][]int{"foo": {3, 2, 1, 4}, "bar": {6, 9, 8, 7}}
+
+		AggregateGroups(r1, func(current int, key string, first bool, accumulator int) int {
+			return accumulator + current
+		})
+
+		is.Equal(r1, map[string][]int{"foo": {3, 2, 1, 4}, "bar": {6, 9, 8, 7}})
+	}
+	// GroupsFirst
+	{
+		aggregateGroupsTest(t, map[string][]int{"foo": {3, 2, 1, 4}, "bar": {6, 9, 8, 7}}, func(current int, key string, first bool, accumulator int) int {
+			if first {
+				return current
+			}
+			return accumulator
+		}, map[string]int{"foo": 3, "bar": 6})
+	}
+	// GroupsLast
+	{
+		aggregateGroupsTest(t, map[string][]int{"foo": {3, 2, 1, 4}, "bar": {6, 9, 8, 7}}, func(current int, key string, first bool, accumulator int) int {
+			return current
+		}, map[string]int{"foo": 4, "bar": 7})
+	}
+	// StringBuilding
+	{
+		aggregateGroupsTest(t, map[string][]string{"foo": {"a", "b", "c"}, "bar": {"d", "e", "f"}}, func(current string, key string, first bool, accumulator string) string {
+			if first {
+				return key + ":" + current
+			}
+			return accumulator + "," + current
+		}, map[string]string{"bar": "bar:d,e,f", "foo": "foo:a,b,c"})
+	}
+	// Empty
+	aggregateGroupsTest(t, map[string][]int{}, func(current int, key string, first bool, accumulator int) int {
+		return 1
+	}, map[string]int{})
+}
