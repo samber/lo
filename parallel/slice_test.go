@@ -24,9 +24,21 @@ func TestMap(t *testing.T) {
 	is.Equal(result2, []string{"1", "2", "3", "4"})
 }
 
+func TestForEach(t *testing.T) {
+	is := assert.New(t)
+	
+	count := 0
+	collection := []int{1, 2, 3, 4}
+	ForEach(collection, func(x int, i int) {
+		count++
+	})
+	
+	is.Equal(4, count)
+}
+
 func TestTimes(t *testing.T) {
 	is := assert.New(t)
-
+	
 	result1 := Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)
 	})
