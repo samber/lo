@@ -197,6 +197,9 @@ func TestChunk(t *testing.T) {
 	is.Equal(result2, [][]int{{0, 1}, {2, 3}, {4, 5}, {6}})
 	is.Equal(result3, [][]int{})
 	is.Equal(result4, [][]int{{0}})
+	is.PanicsWithValue("Second parameter must be greater than 0", func() {
+		Chunk([]int{0}, 0)
+	})
 }
 
 func TestPartitionBy(t *testing.T) {
@@ -379,6 +382,41 @@ func TestAssociate(t *testing.T) {
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			is := assert.New(t)
 			is.Equal(Associate(testCase.in, transform), testCase.expect)
+		})
+	}
+}
+
+func TestSliceToMap(t *testing.T) {
+	t.Parallel()
+	
+	type foo struct {
+		baz string
+		bar int
+	}
+	transform := func(f *foo) (string, int) {
+		return f.baz, f.bar
+	}
+	testCases := []struct {
+		in     []*foo
+		expect map[string]int
+	}{
+		{
+			in:     []*foo{{baz: "apple", bar: 1}},
+			expect: map[string]int{"apple": 1},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			expect: map[string]int{"apple": 1, "banana": 2},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			expect: map[string]int{"apple": 2},
+		},
+	}
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
+			is := assert.New(t)
+			is.Equal(SliceToMap(testCase.in, transform), testCase.expect)
 		})
 	}
 }
@@ -584,7 +622,8 @@ func TestSlice(t *testing.T) {
 	out12 := Slice(in, 1, 0)
 	out13 := Slice(in, 5, 0)
 	out14 := Slice(in, 6, 4)
-
+	out15 := Slice(in, 6, 7)
+	
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
@@ -599,6 +638,7 @@ func TestSlice(t *testing.T) {
 	is.Equal([]int{}, out12)
 	is.Equal([]int{}, out13)
 	is.Equal([]int{}, out14)
+	is.Equal([]int{}, out15)
 }
 
 func TestReplace(t *testing.T) {
