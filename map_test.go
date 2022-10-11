@@ -108,10 +108,31 @@ func TestEntries(t *testing.T) {
 	})
 }
 
+func TestToPairs(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	
+	r1 := ToPairs(map[string]int{"baz": 3, "qux": 4})
+	
+	sort.Slice(r1, func(i, j int) bool {
+		return r1[i].Value < r1[j].Value
+	})
+	is.EqualValues(r1, []Entry[string, int]{
+		{
+			Key:   "baz",
+			Value: 3,
+		},
+		{
+			Key:   "qux",
+			Value: 4,
+		},
+	})
+}
+
 func TestFromEntries(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-
+	
 	r1 := FromEntries([]Entry[string, int]{
 		{
 			Key:   "foo",
@@ -128,10 +149,30 @@ func TestFromEntries(t *testing.T) {
 	is.Equal(r1["bar"], 2)
 }
 
+func TestFromPairs(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	
+	r1 := FromPairs([]Entry[string, int]{
+		{
+			Key:   "baz",
+			Value: 3,
+		},
+		{
+			Key:   "qux",
+			Value: 4,
+		},
+	})
+	
+	is.Len(r1, 2)
+	is.Equal(r1["baz"], 3)
+	is.Equal(r1["qux"], 4)
+}
+
 func TestInvert(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-
+	
 	r1 := Invert(map[string]int{"a": 1, "b": 2})
 	r2 := Invert(map[string]int{"a": 1, "b": 2, "c": 1})
 
