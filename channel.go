@@ -2,6 +2,7 @@ package lo
 
 import (
 	"math/rand"
+	"sync"
 	"time"
 )
 
@@ -236,4 +237,29 @@ func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (coll
 	}
 
 	return buffer, index, time.Since(now), true
+}
+
+// ChannelMerge collect messages from multiple input channels into one buffered channel.
+// output messages has no order guarantee
+func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
+	out := make(chan T, channelBufferCap)
+	var wg sync.WaitGroup
+
+	// Start an output goroutine for each input channel in upstreams.
+	wg.Add(len(upstreams))
+	for _, c := range upstreams {
+		go func(c <-chan T) {
+			for n := range c {
+				out <- n
+			}
+			wg.Done()
+		}(c)
+	}
+
+	// Start a goroutine to close out once all the output goroutines are done.
+	go func() {
+		wg.Wait()
+		close(out)
+	}()
+	return out
 }
