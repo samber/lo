@@ -42,7 +42,7 @@ func T8[A any, B any, C any, D any, E any, F any, G any, H any](a A, b B, c C, d
 	return Tuple8[A, B, C, D, E, F, G, H]{A: a, B: b, C: c, D: d, E: e, F: f, G: g, H: h}
 }
 
-// T8 creates a tuple from a list of values.
+// T9 creates a tuple from a list of values.
 // Play: https://go.dev/play/p/IllL3ZO4BQm
 func T9[A any, B any, C any, D any, E any, F any, G any, H any, I any](a A, b B, c C, d D, e E, f F, g G, h H, i I) Tuple9[A, B, C, D, E, F, G, H, I] {
 	return Tuple9[A, B, C, D, E, F, G, H, I]{A: a, B: b, C: c, D: d, E: e, F: f, G: g, H: h, I: i}

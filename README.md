@@ -53,6 +53,18 @@ names := lo.Uniq[string]([]string{"Samuel", "John", "Samuel"})
 
 Most of the time, the compiler will be able to infer the type so that you can call: `lo.Uniq([]string{...})`.
 
+### Tips for lazy developers
+
+I cannot recommend it, but in case you are too lazy for repeating `lo.` everywhere, you can import the entire library into the namespace.
+
+```go
+import (
+    . "github.com/samber/lo"
+)
+```
+
+I take no responsibility on this junk. 😁 💩
+
 ## 🤠 Spec
 
 GoDoc: [https://godoc.org/github.com/samber/lo](https://godoc.org/github.com/samber/lo)
@@ -1337,7 +1349,7 @@ Many distributions strategies are available:
 - [lo.DispatchingStrategyWeightedRandom](./channel.go): Distributes messages in a weighted manner.
 - [lo.DispatchingStrategyFirst](./channel.go): Distributes messages in the first non-full channel.
 - [lo.DispatchingStrategyLeast](./channel.go): Distributes messages in the emptiest channel.
-- [lo.DispatchingStrategyMost](./channel.go): Distributes to the fulliest channel.
+- [lo.DispatchingStrategyMost](./channel.go): Distributes to the fullest channel.
 
 Some strategies bring fallback, in order to favor non-blocking behaviors. See implementations.
 
@@ -1795,7 +1807,7 @@ uniqueValues := lo.FindUniquesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int
 
 ### FindDuplicates
 
-Returns a slice with the first occurence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array.
+Returns a slice with the first occurrence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array.
 
 ```go
 duplicatedValues := lo.FindDuplicates[int]([]int{1, 2, 2, 1, 2, 3})
@@ -1804,7 +1816,7 @@ duplicatedValues := lo.FindDuplicates[int]([]int{1, 2, 2, 1, 2, 3})
 
 ### FindDuplicatesBy
 
-Returns a slice with the first occurence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
+Returns a slice with the first occurrence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
 
 ```go
 duplicatedValues := lo.FindDuplicatesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int {
@@ -2391,7 +2403,7 @@ val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 
 ### Must{0->6}
 
-Must\* has the same behavior than Must, but returns multiple values.
+Must\* has the same behavior as Must, but returns multiple values.
 
 ```go
 func example0() (error)
