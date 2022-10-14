@@ -239,8 +239,8 @@ func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (coll
 	return buffer, index, time.Since(now), true
 }
 
-// ChannelMerge collect messages from multiple input channels into one buffered channel.
-// output messages has no order guarantee
+// ChannelMerge collects messages from multiple input channels into a single buffered channel.
+// Output messages has no priority.
 func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 	out := make(chan T, channelBufferCap)
 	var wg sync.WaitGroup

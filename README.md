@@ -156,6 +156,7 @@ Supported helpers for channels:
 - [Generator](#generator)
 - [Batch](#batch)
 - [BatchWithTimeout](#batchwithtimeout)
+- [ChannelMerge](#channelmerge)
 
 Supported intersection helpers:
 
@@ -1397,7 +1398,7 @@ Returns a read-only channels of collection elements. Channel is closed after las
 list := []int{1, 2, 3, 4, 5}
 
 for v := range lo.SliceToChannel(2, list) {
-    println(v)		
+    println(v)
 }
 // prints 1, then 2, then 3, then 4, then 5
 ```
@@ -1527,6 +1528,18 @@ consumer := func(c <-chan int) {
 for i := range children {
     go consumer(children[i])
 }
+```
+
+### ChannelMerge
+
+Collects messages from multiple input channels into a single buffered channel. Output messages has no priority.
+
+```go
+stream1 := make(chan int, 42)
+stream2 := make(chan int, 42)
+stream3 := make(chan int, 42)
+
+all := lo.ChannelMerge(100, stream1, stream2, stream3)
 ```
 
 ### Contains
