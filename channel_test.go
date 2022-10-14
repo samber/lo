@@ -302,3 +302,43 @@ func TestBatchWithTimeout(t *testing.T) {
 	is.Equal(0, length5)
 	is.False(ok5)
 }
+
+func TestChannelMerge(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	upstreams := createChannels[int](3, 10)
+	roupstreams := channelsToReadOnly(upstreams)
+	for i := range roupstreams {
+		go func(i int) {
+			upstreams[i] <- 1
+			upstreams[i] <- 1
+			close(upstreams[i])
+		}(i)
+	}
+	out := ChannelMerge(10, roupstreams...)
+	time.Sleep(10 * time.Millisecond)
+
+	// check input channels
+	is.Equal(0, len(roupstreams[0]))
+	is.Equal(0, len(roupstreams[1]))
+	is.Equal(0, len(roupstreams[2]))
+
+	// check channels allocation
+	is.Equal(6, len(out))
+	is.Equal(10, cap(out))
+
+	// check channels content
+	for i := 0; i < 6; i++ {
+		msg0, ok0 := <-out
+		is.Equal(true, ok0)
+		is.Equal(1, msg0)
+	}
+
+	// check it is closed
+	time.Sleep(10 * time.Millisecond)
+	msg0, ok0 := <-out
+	is.Equal(false, ok0)
+	is.Equal(0, msg0)
+}
