@@ -283,6 +283,7 @@ lop.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 })
 // []string{"1", "2", "3", "4"}
 ```
+[[play](https://go.dev/play/p/EGAFAnWGft7)]
 
 ### FilterMap
 
