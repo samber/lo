@@ -584,3 +584,18 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+// TakeWhile iterates over elements of collection taking elements until predicate returns falsey.
+func TakeWhile[T any](collection []T, predicate func(item T) bool) []T {
+	var result []T
+
+	for _, item := range collection {
+		if predicate(item) {
+			result = append(result, item)
+		} else {
+			break
+		}
+	}
+
+	return result
+}
