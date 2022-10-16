@@ -515,7 +515,7 @@ flat := lo.Flatten[int]([][]int{{0, 1}, {2, 3, 4, 5}})
 
 ### Interleave
 
-Round-robbin alternating input slices and sequentially appending value at index into result.
+Round-robin alternating input slices and sequentially appending value at index into result.
 
 ```go
 interleaved := lo.Interleave[int]([]int{1, 4, 7}, []int{2, 5, 8}, []int{3, 6, 9})
