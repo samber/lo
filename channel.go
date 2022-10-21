@@ -239,6 +239,22 @@ func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (coll
 	return buffer, index, time.Since(now), true
 }
 
+// ChannelMap manipulates a channel and transforms it to a channel of another type.
+func ChannelMap[T any, R any](upstream <-chan T, iteratee func(item T) R) <-chan R {
+	return Generator(cap(upstream), func(yield func(R)) {
+		for n := range upstream {
+			yield(iteratee(n))
+		}
+	})
+}
+
+// ChannelSliceMap manipulates a slice of channel and transforms it to a slice of channel of another type.
+func ChannelSliceMap[T any, R any](upstreams []<-chan T, iteratee func(item T) R) []<-chan R {
+	return Map(upstreams, func(item <-chan T, index int) <-chan R {
+		return ChannelMap(item, iteratee)
+	})
+}
+
 // ChannelMerge collects messages from multiple input channels into a single buffered channel.
 // Output messages has no priority.
 func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {

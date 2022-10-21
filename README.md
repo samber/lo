@@ -156,6 +156,8 @@ Supported helpers for channels:
 - [Generator](#generator)
 - [Batch](#batch)
 - [BatchWithTimeout](#batchwithtimeout)
+- [ChannelMap](#channelmap)
+- [ChannelSliceMap](#channelslicemap)
 - [ChannelMerge](#channelmerge)
 
 Supported intersection helpers:
@@ -1528,6 +1530,31 @@ consumer := func(c <-chan int) {
 for i := range children {
     go consumer(children[i])
 }
+```
+### ChannelMap
+
+Manipulates a channel and transforms it to a channel of another type.
+
+```go
+ch1 := make(chan int, 42)
+
+ch2 := lo.ChannelMap(ch, func(item int) int {
+    return item * 2
+})
+```
+
+### ChannelSliceMap
+
+Manipulates a slice of channel and transforms it to a slice of channel of another type.
+
+```go
+ch1 := make(chan int, 42)
+ch2 := make(chan int, 42)
+
+chSlice1 := []<-chan int{ch1, ch2}
+chSlice2 := lo.ChannelSliceMap(chSlice1, func(item int) int {
+    return item * 2
+})
 ```
 
 ### ChannelMerge
