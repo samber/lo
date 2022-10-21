@@ -2,6 +2,19 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.34.0 (2022-10-xx)
+
+Improving:
+- lo.Union: faster and can receive more than 2 lists
+
+## 1.33.0 (2022-10-14)
+
+Adding:
+- lo.ChannelMerge
+
+Improving:
+- helpers with callbacks/predicates/iteratee now have named arguments, for easier autocompletion
+
 ## 1.32.0 (2022-10-10)
 
 Adding:

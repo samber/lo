@@ -26,7 +26,7 @@ func Values[K comparable, V any](in map[K]V) []V {
 
 // PickBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/kdg8GR_QMmf
-func PickBy[K comparable, V any](in map[K]V, predicate func(K, V) bool) map[K]V {
+func PickBy[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) map[K]V {
 	r := map[K]V{}
 	for k, v := range in {
 		if predicate(k, v) {
@@ -62,7 +62,7 @@ func PickByValues[K comparable, V comparable](in map[K]V, values []V) map[K]V {
 
 // OmitBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/EtBsR43bdsd
-func OmitBy[K comparable, V any](in map[K]V, predicate func(K, V) bool) map[K]V {
+func OmitBy[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) map[K]V {
 	r := map[K]V{}
 	for k, v := range in {
 		if !predicate(k, v) {
@@ -167,7 +167,7 @@ func Assign[K comparable, V any](maps ...map[K]V) map[K]V {
 
 // MapKeys manipulates a map keys and transforms it to a map of another type.
 // Play: https://go.dev/play/p/9_4WPIqOetJ
-func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(V, K) R) map[R]V {
+func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value V, key K) R) map[R]V {
 	result := map[R]V{}
 
 	for k, v := range in {
@@ -179,7 +179,7 @@ func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(V, K) 
 
 // MapValues manipulates a map values and transforms it to a map of another type.
 // Play: https://go.dev/play/p/T_8xAfvcf0W
-func MapValues[K comparable, V any, R any](in map[K]V, iteratee func(V, K) R) map[K]R {
+func MapValues[K comparable, V any, R any](in map[K]V, iteratee func(value V, key K) R) map[K]R {
 	result := map[K]R{}
 
 	for k, v := range in {
@@ -191,7 +191,7 @@ func MapValues[K comparable, V any, R any](in map[K]V, iteratee func(V, K) R) ma
 
 // MapEntries manipulates a map entries and transforms it to a map of another type.
 // Play: https://go.dev/play/p/VuvNQzxKimT
-func MapEntries[K1 comparable, V1 any, K2 comparable, V2 any](in map[K1]V1, iteratee func(K1, V1) (K2, V2)) map[K2]V2 {
+func MapEntries[K1 comparable, V1 any, K2 comparable, V2 any](in map[K1]V1, iteratee func(key K1, value V1) (K2, V2)) map[K2]V2 {
 	result := make(map[K2]V2, len(in))
 
 	for k1, v1 := range in {
@@ -204,7 +204,7 @@ func MapEntries[K1 comparable, V1 any, K2 comparable, V2 any](in map[K1]V1, iter
 
 // MapToSlice transforms a map into a slice based on specific iteratee
 // Play: https://go.dev/play/p/ZuiCZpDt6LD
-func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(K, V) R) []R {
+func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key K, value V) R) []R {
 	result := make([]R, 0, len(in))
 
 	for k, v := range in {

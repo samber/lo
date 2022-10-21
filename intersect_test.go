@@ -220,6 +220,17 @@ func TestUnion(t *testing.T) {
 	is.Equal(result3, []int{0, 1, 2, 3, 4, 5})
 	is.Equal(result4, []int{0, 1, 2})
 	is.Equal(result5, []int{})
+
+	result11 := Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
+	result12 := Union([]int{0, 1, 2, 3, 4, 5}, []int{6, 7}, []int{8, 9})
+	result13 := Union([]int{0, 1, 2, 3, 4, 5}, []int{}, []int{})
+	result14 := Union([]int{0, 1, 2}, []int{0, 1, 2}, []int{0, 1, 2})
+	result15 := Union([]int{}, []int{}, []int{})
+	is.Equal(result11, []int{0, 1, 2, 3, 4, 5, 10, 11})
+	is.Equal(result12, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
+	is.Equal(result13, []int{0, 1, 2, 3, 4, 5})
+	is.Equal(result14, []int{0, 1, 2})
+	is.Equal(result15, []int{})
 }
 
 func TestWithout(t *testing.T) {

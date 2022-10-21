@@ -75,7 +75,7 @@ func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collec
 
 // SumBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 0 is returned.
 // Play: https://go.dev/play/p/Dz_a_7jN_ca
-func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(T) R) R {
+func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) R) R {
 	var sum R = 0
 	for _, item := range collection {
 		sum = sum + iteratee(item)

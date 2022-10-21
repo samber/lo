@@ -2,6 +2,7 @@ package lo
 
 import (
 	"math/rand"
+	"sync"
 	"time"
 )
 
@@ -140,7 +141,7 @@ func DispatchingStrategyLeast[T any](msg T, index uint64, channels []<-chan T) i
 	})
 }
 
-// DispatchingStrategyMost distributes messages in the fulliest channel.
+// DispatchingStrategyMost distributes messages in the fullest channel.
 // If the channel capacity is exceeded, the next channel will be selected and so on.
 func DispatchingStrategyMost[T any](msg T, index uint64, channels []<-chan T) int {
 	seq := Range(len(channels))
@@ -193,7 +194,7 @@ func Generator[T any](bufferSize int, generator func(yield func(T))) <-chan T {
 }
 
 // Batch creates a slice of n elements from a channel. Returns the slice and the slice length.
-// @TODO: we should probaby provide an helper that reuse the same buffer.
+// @TODO: we should probably provide an helper that reuse the same buffer.
 func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
 	buffer := make([]T, 0, size)
 	index := 0
@@ -212,7 +213,7 @@ func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime t
 }
 
 // BatchWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
-// @TODO: we should probaby provide an helper that reuse the same buffer.
+// @TODO: we should probably provide an helper that reuse the same buffer.
 func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
 	expire := time.NewTimer(timeout)
 	defer expire.Stop()
@@ -236,4 +237,29 @@ func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (coll
 	}
 
 	return buffer, index, time.Since(now), true
+}
+
+// ChannelMerge collects messages from multiple input channels into a single buffered channel.
+// Output messages has no priority.
+func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
+	out := make(chan T, channelBufferCap)
+	var wg sync.WaitGroup
+
+	// Start an output goroutine for each input channel in upstreams.
+	wg.Add(len(upstreams))
+	for _, c := range upstreams {
+		go func(c <-chan T) {
+			for n := range c {
+				out <- n
+			}
+			wg.Done()
+		}(c)
+	}
+
+	// Start a goroutine to close out once all the output goroutines are done.
+	go func() {
+		wg.Wait()
+		close(out)
+	}()
+	return out
 }

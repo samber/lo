@@ -53,6 +53,18 @@ names := lo.Uniq[string]([]string{"Samuel", "John", "Samuel"})
 
 Most of the time, the compiler will be able to infer the type so that you can call: `lo.Uniq([]string{...})`.
 
+### Tips for lazy developers
+
+I cannot recommend it, but in case you are too lazy for repeating `lo.` everywhere, you can import the entire library into the namespace.
+
+```go
+import (
+    . "github.com/samber/lo"
+)
+```
+
+I take no responsibility on this junk. 😁 💩
+
 ## 🤠 Spec
 
 GoDoc: [https://godoc.org/github.com/samber/lo](https://godoc.org/github.com/samber/lo)
@@ -144,6 +156,7 @@ Supported helpers for channels:
 - [Generator](#generator)
 - [Batch](#batch)
 - [BatchWithTimeout](#batchwithtimeout)
+- [ChannelMerge](#channelmerge)
 
 Supported intersection helpers:
 
@@ -502,7 +515,7 @@ flat := lo.Flatten[int]([][]int{{0, 1}, {2, 3, 4, 5}})
 
 ### Interleave
 
-Round-robbin alternating input slices and sequentially appending value at index into result.
+Round-robin alternating input slices and sequentially appending value at index into result.
 
 ```go
 interleaved := lo.Interleave[int]([]int{1, 4, 7}, []int{2, 5, 8}, []int{3, 6, 9})
@@ -1337,7 +1350,7 @@ Many distributions strategies are available:
 - [lo.DispatchingStrategyWeightedRandom](./channel.go): Distributes messages in a weighted manner.
 - [lo.DispatchingStrategyFirst](./channel.go): Distributes messages in the first non-full channel.
 - [lo.DispatchingStrategyLeast](./channel.go): Distributes messages in the emptiest channel.
-- [lo.DispatchingStrategyMost](./channel.go): Distributes to the fulliest channel.
+- [lo.DispatchingStrategyMost](./channel.go): Distributes to the fullest channel.
 
 Some strategies bring fallback, in order to favor non-blocking behaviors. See implementations.
 
@@ -1385,7 +1398,7 @@ Returns a read-only channels of collection elements. Channel is closed after las
 list := []int{1, 2, 3, 4, 5}
 
 for v := range lo.SliceToChannel(2, list) {
-    println(v)		
+    println(v)
 }
 // prints 1, then 2, then 3, then 4, then 5
 ```
@@ -1517,6 +1530,18 @@ for i := range children {
 }
 ```
 
+### ChannelMerge
+
+Collects messages from multiple input channels into a single buffered channel. Output messages has no priority.
+
+```go
+stream1 := make(chan int, 42)
+stream2 := make(chan int, 42)
+stream3 := make(chan int, 42)
+
+all := lo.ChannelMerge(100, stream1, stream2, stream3)
+```
+
 ### Contains
 
 Returns true if an element is present in a collection.
@@ -1639,10 +1664,10 @@ left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 
 
 ### Union
 
-Returns all distinct elements from both collections. Result will not change the order of elements relatively.
+Returns all distinct elements from given collections. Result will not change the order of elements relatively.
 
 ```go
-union := lo.Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+union := lo.Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2}, []int{0, 10})
 // []int{0, 1, 2, 3, 4, 5, 10}
 ```
 
@@ -1795,7 +1820,7 @@ uniqueValues := lo.FindUniquesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int
 
 ### FindDuplicates
 
-Returns a slice with the first occurence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array.
+Returns a slice with the first occurrence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array.
 
 ```go
 duplicatedValues := lo.FindDuplicates[int]([]int{1, 2, 2, 1, 2, 3})
@@ -1804,7 +1829,7 @@ duplicatedValues := lo.FindDuplicates[int]([]int{1, 2, 2, 1, 2, 3})
 
 ### FindDuplicatesBy
 
-Returns a slice with the first occurence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
+Returns a slice with the first occurrence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
 
 ```go
 duplicatedValues := lo.FindDuplicatesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int {
@@ -2391,7 +2416,7 @@ val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 
 ### Must{0->6}
 
-Must\* has the same behavior than Must, but returns multiple values.
+Must\* has the same behavior as Must, but returns multiple values.
 
 ```go
 func example0() (error)
