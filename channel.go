@@ -263,3 +263,29 @@ func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 	}()
 	return out
 }
+
+// ChannelMergeBy collects messages from multiple input channels into a single buffered channel.
+// It accepts `iteratee` which is invoked for each element and send the result to output channel.
+// Output messages has no priority.
+func ChannelMergeBy[T any, R any](upstreams []<-chan T, channelBufferCap int, iteratee func(msg T) R) <-chan R {
+	out := make(chan R, channelBufferCap)
+	var wg sync.WaitGroup
+
+	// Start an output goroutine for each input channel in upstreams.
+	wg.Add(len(upstreams))
+	for _, c := range upstreams {
+		go func(c <-chan T) {
+			for n := range c {
+				out <- iteratee(n)
+			}
+			wg.Done()
+		}(c)
+	}
+
+	// Start a goroutine to close out once all the output goroutines are done.
+	go func() {
+		wg.Wait()
+		close(out)
+	}()
+	return out
+}

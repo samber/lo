@@ -157,6 +157,7 @@ Supported helpers for channels:
 - [Batch](#batch)
 - [BatchWithTimeout](#batchwithtimeout)
 - [ChannelMerge](#channelmerge)
+- [ChannelMergeBy](#channelmergeby)
 
 Supported intersection helpers:
 
@@ -1540,6 +1541,24 @@ stream2 := make(chan int, 42)
 stream3 := make(chan int, 42)
 
 all := lo.ChannelMerge(100, stream1, stream2, stream3)
+```
+
+### ChannelMergeBy
+
+Collects messages from multiple input channels into a single buffered channel.
+It accepts `iteratee` which is invoked for each element and send the result to output channel.
+Output messages has no priority.
+
+
+```go
+stream1 := make(chan int, 42)
+stream2 := make(chan int, 42)
+stream3 := make(chan int, 42)
+
+streams := []<-chan{stream1, stream2, stream3}
+all := lo.ChannelMergeBy(streams, 100, func(msg int) int {
+    return msg * 2
+})
 ```
 
 ### Contains
