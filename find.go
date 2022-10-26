@@ -47,6 +47,21 @@ func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {
 	return result, false
 }
 
+// FindAll searches all elements in a slice based on a predicate. It returns the elements and true if at least one element
+// was found.
+func FindAll[T any](collection []T, predicate func(item T) bool) ([]T, bool) {
+	somethingFound := false
+	result := make([]T, 0)
+	for _, item := range collection {
+		if predicate(item) {
+			result = append(result, item)
+			somethingFound = true
+		}
+	}
+
+	return result, somethingFound
+}
+
 // FindIndexOf searches an element in a slice based on a predicate and returns the index and true.
 // It returns -1 and false if the element is not found.
 func FindIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bool) {

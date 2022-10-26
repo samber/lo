@@ -49,6 +49,23 @@ func TestFind(t *testing.T) {
 	is.Equal(result2, "")
 }
 
+func TestFindAll(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1, ok1 := FindAll([]string{"a", "b", "b", "c", "d"}, func(i string) bool {
+		return i == "b"
+	})
+	result2, ok2 := FindAll([]string{"foobar"}, func(i string) bool {
+		return i == "b"
+	})
+
+	is.Equal(ok1, true)
+	is.Equal(result1, []string{"b", "b"})
+	is.Equal(ok2, false)
+	is.Equal(result2, []string{})
+}
+
 func TestFindIndexOf(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
