@@ -513,9 +513,15 @@ func Slice[T any](collection []T, start int, end int) []T {
 	if start > size {
 		start = size
 	}
+	if start < 0 {
+		start = 0
+	}
 
 	if end > size {
 		end = size
+	}
+	if end < 0 {
+		end = 0
 	}
 
 	return collection[start:end]

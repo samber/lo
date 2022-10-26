@@ -623,6 +623,9 @@ func TestSlice(t *testing.T) {
 	out13 := Slice(in, 5, 0)
 	out14 := Slice(in, 6, 4)
 	out15 := Slice(in, 6, 7)
+	out16 := Slice(in, -10, 1)
+	out17 := Slice(in, -1, 3)
+	out18 := Slice(in, -10, 7)
 	
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
@@ -639,6 +642,9 @@ func TestSlice(t *testing.T) {
 	is.Equal([]int{}, out13)
 	is.Equal([]int{}, out14)
 	is.Equal([]int{}, out15)
+	is.Equal([]int{0}, out16)
+	is.Equal([]int{0, 1, 2}, out17)
+	is.Equal([]int{0, 1, 2, 3, 4}, out18)
 }
 
 func TestReplace(t *testing.T) {
