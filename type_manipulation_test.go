@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -116,6 +117,8 @@ func TestIsEmpty(t *testing.T) {
 	is.False(IsEmpty[int64](42))
 	is.True(IsEmpty[test](test{foobar: ""}))
 	is.False(IsEmpty[test](test{foobar: "foo"}))
+	is.True(IsEmpty[error](nil))
+	is.False(IsEmpty[error](errors.New("error")))
 }
 
 func TestIsNotEmpty(t *testing.T) {
@@ -133,6 +136,8 @@ func TestIsNotEmpty(t *testing.T) {
 	is.True(IsNotEmpty[int64](42))
 	is.False(IsNotEmpty[test](test{foobar: ""}))
 	is.True(IsNotEmpty[test](test{foobar: "foo"}))
+	is.False(IsNotEmpty[error](nil))
+	is.True(IsNotEmpty[error](errors.New("error")))
 }
 
 func TestCoalesce(t *testing.T) {
@@ -152,6 +157,9 @@ func TestCoalesce(t *testing.T) {
 	struct1 := structType{1, 1.0}
 	struct2 := structType{2, 2.0}
 
+	err1 := errors.New("error1")
+	err2 := errors.New("error2")
+
 	result1, ok1 := Coalesce[int]()
 	result2, ok2 := Coalesce(3)
 	result3, ok3 := Coalesce(nil, nilStr)
@@ -162,6 +170,7 @@ func TestCoalesce(t *testing.T) {
 	result8, ok8 := Coalesce(zeroStruct)
 	result9, ok9 := Coalesce(zeroStruct, struct1)
 	result10, ok10 := Coalesce(zeroStruct, struct1, struct2)
+	result11, ok11 := Coalesce(nil, err1, err2)
 
 	is.Equal(0, result1)
 	is.False(ok1)
@@ -181,15 +190,18 @@ func TestCoalesce(t *testing.T) {
 	is.Equal(str1, result6)
 	is.True(ok6)
 
-	is.Equal(result7, 1)
+	is.Equal(1, result7)
 	is.True(ok7)
 
-	is.Equal(result8, zeroStruct)
+	is.Equal(zeroStruct, result8)
 	is.False(ok8)
 
-	is.Equal(result9, struct1)
+	is.Equal(struct1, result9)
 	is.True(ok9)
 
-	is.Equal(result10, struct1)
+	is.Equal(struct1, result10)
 	is.True(ok10)
+
+	is.Equal(err1, result11)
+	is.True(ok11)
 }
