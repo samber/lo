@@ -118,11 +118,11 @@ func TestFindKey(t *testing.T) {
 		foobar string
 	}
 
-	result3, ok3 := FindKey(map[string]test{"foo": test{"foo"}, "bar": test{"bar"}, "baz": test{"baz"}}, test{"foo"})
+	result3, ok3 := FindKey(map[string]test{"foo": {"foo"}, "bar": {"bar"}, "baz": {"baz"}}, test{"foo"})
 	is.Equal("foo", result3)
 	is.True(ok3)
 
-	result4, ok4 := FindKey(map[string]test{"foo": test{"foo"}, "bar": test{"bar"}, "baz": test{"baz"}}, test{"hello world"})
+	result4, ok4 := FindKey(map[string]test{"foo": {"foo"}, "bar": {"bar"}, "baz": {"baz"}}, test{"hello world"})
 	is.Equal("", result4)
 	is.False(ok4)
 }
@@ -148,22 +148,22 @@ func TestFindUniques(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FindUniques[int]([]int{1, 2, 3})
+	result1 := FindUniques([]int{1, 2, 3})
 
 	is.Equal(3, len(result1))
 	is.Equal([]int{1, 2, 3}, result1)
 
-	result2 := FindUniques[int]([]int{1, 2, 2, 3, 1, 2})
+	result2 := FindUniques([]int{1, 2, 2, 3, 1, 2})
 
 	is.Equal(1, len(result2))
 	is.Equal([]int{3}, result2)
 
-	result3 := FindUniques[int]([]int{1, 2, 2, 1})
+	result3 := FindUniques([]int{1, 2, 2, 1})
 
 	is.Equal(0, len(result3))
 	is.Equal([]int{}, result3)
 
-	result4 := FindUniques[int]([]int{})
+	result4 := FindUniques([]int{})
 
 	is.Equal(0, len(result4))
 	is.Equal([]int{}, result4)
@@ -173,28 +173,28 @@ func TestFindUniquesBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FindUniquesBy[int, int]([]int{0, 1, 2}, func(i int) int {
+	result1 := FindUniquesBy([]int{0, 1, 2}, func(i int) int {
 		return i % 3
 	})
 
 	is.Equal(3, len(result1))
 	is.Equal([]int{0, 1, 2}, result1)
 
-	result2 := FindUniquesBy[int, int]([]int{0, 1, 2, 3, 4}, func(i int) int {
+	result2 := FindUniquesBy([]int{0, 1, 2, 3, 4}, func(i int) int {
 		return i % 3
 	})
 
 	is.Equal(1, len(result2))
 	is.Equal([]int{2}, result2)
 
-	result3 := FindUniquesBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+	result3 := FindUniquesBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
 
 	is.Equal(0, len(result3))
 	is.Equal([]int{}, result3)
 
-	result4 := FindUniquesBy[int, int]([]int{}, func(i int) int {
+	result4 := FindUniquesBy([]int{}, func(i int) int {
 		return i % 3
 	})
 
@@ -206,17 +206,17 @@ func TestFindDuplicates(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FindDuplicates[int]([]int{1, 2, 2, 1, 2, 3})
+	result1 := FindDuplicates([]int{1, 2, 2, 1, 2, 3})
 
 	is.Equal(2, len(result1))
 	is.Equal([]int{1, 2}, result1)
 
-	result2 := FindDuplicates[int]([]int{1, 2, 3})
+	result2 := FindDuplicates([]int{1, 2, 3})
 
 	is.Equal(0, len(result2))
 	is.Equal([]int{}, result2)
 
-	result3 := FindDuplicates[int]([]int{})
+	result3 := FindDuplicates([]int{})
 
 	is.Equal(0, len(result3))
 	is.Equal([]int{}, result3)
@@ -226,21 +226,21 @@ func TestFindDuplicatesBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FindDuplicatesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int {
+	result1 := FindDuplicatesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
 		return i % 3
 	})
 
 	is.Equal(2, len(result1))
 	is.Equal([]int{3, 4}, result1)
 
-	result2 := FindDuplicatesBy[int, int]([]int{0, 1, 2, 3, 4}, func(i int) int {
+	result2 := FindDuplicatesBy([]int{0, 1, 2, 3, 4}, func(i int) int {
 		return i % 5
 	})
 
 	is.Equal(0, len(result2))
 	is.Equal([]int{}, result2)
 
-	result3 := FindDuplicatesBy[int, int]([]int{}, func(i int) int {
+	result3 := FindDuplicatesBy([]int{}, func(i int) int {
 		return i % 3
 	})
 
