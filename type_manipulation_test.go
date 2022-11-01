@@ -91,9 +91,7 @@ func TestEmpty(t *testing.T) {
 	is := assert.New(t)
 
 	//nolint:unused
-	type test struct {
-		foobar string
-	}
+	type test struct{}
 
 	is.Empty(Empty[string]())
 	is.Empty(Empty[int64]())
@@ -110,12 +108,12 @@ func TestIsEmpty(t *testing.T) {
 		foobar string
 	}
 
-	is.True(IsEmpty[string](""))
-	is.False(IsEmpty[string]("foo"))
+	is.True(IsEmpty(""))
+	is.False(IsEmpty("foo"))
 	is.True(IsEmpty[int64](0))
 	is.False(IsEmpty[int64](42))
-	is.True(IsEmpty[test](test{foobar: ""}))
-	is.False(IsEmpty[test](test{foobar: "foo"}))
+	is.True(IsEmpty(test{foobar: ""}))
+	is.False(IsEmpty(test{foobar: "foo"}))
 }
 
 func TestIsNotEmpty(t *testing.T) {
@@ -127,12 +125,12 @@ func TestIsNotEmpty(t *testing.T) {
 		foobar string
 	}
 
-	is.False(IsNotEmpty[string](""))
-	is.True(IsNotEmpty[string]("foo"))
+	is.False(IsNotEmpty(""))
+	is.True(IsNotEmpty("foo"))
 	is.False(IsNotEmpty[int64](0))
 	is.True(IsNotEmpty[int64](42))
-	is.False(IsNotEmpty[test](test{foobar: ""}))
-	is.True(IsNotEmpty[test](test{foobar: "foo"}))
+	is.False(IsNotEmpty(test{foobar: ""}))
+	is.True(IsNotEmpty(test{foobar: "foo"}))
 }
 
 func TestCoalesce(t *testing.T) {

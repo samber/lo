@@ -210,23 +210,23 @@ func ExampleReverse() {
 }
 
 func ExampleFill() {
-	list := []foo{foo{"a"}, foo{"a"}}
+	list := []foo{{"a"}, {"a"}}
 
-	result := Fill[foo](list, foo{"b"})
+	result := Fill(list, foo{"b"})
 
 	fmt.Printf("%v", result)
 	// Output: [{b} {b}]
 }
 
 func ExampleRepeat() {
-	result := Repeat[foo](2, foo{"a"})
+	result := Repeat(2, foo{"a"})
 
 	fmt.Printf("%v", result)
 	// Output: [{a} {a}]
 }
 
 func ExampleRepeatBy() {
-	result := RepeatBy[string](5, func(i int) string {
+	result := RepeatBy(5, func(i int) string {
 		return strconv.FormatInt(int64(math.Pow(float64(i), 2)), 10)
 	})
 
@@ -237,7 +237,7 @@ func ExampleRepeatBy() {
 func ExampleKeyBy() {
 	list := []string{"a", "aa", "aaa"}
 
-	result := KeyBy[int, string](list, func(str string) int {
+	result := KeyBy(list, func(str string) int {
 		return len(str)
 	})
 
