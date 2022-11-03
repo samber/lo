@@ -318,6 +318,144 @@ func TestBatchWithTimeout(t *testing.T) {
 	is.False(ok5)
 }
 
+func TestChannelMap(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	ch := make(chan int, 10)
+
+	ch <- 0
+	ch <- 1
+	ch <- 2
+	ch <- 3
+
+	is.Equal(4, len(ch))
+
+	ret := ChannelMap(ch, func(item int) int {
+		return item * 2
+	})
+	time.Sleep(10 * time.Millisecond)
+
+	// check channels allocation
+	is.Equal(4, len(ret))
+	is.Equal(10, cap(ret))
+
+	// check channels content
+	is.Equal(0, len(ch))
+
+	msg0, ok0 := <-ret
+	is.Equal(ok0, true)
+	is.Equal(msg0, 0)
+
+	msg1, ok1 := <-ret
+	is.Equal(ok1, true)
+	is.Equal(msg1, 2)
+
+	msg2, ok2 := <-ret
+	is.Equal(ok2, true)
+	is.Equal(msg2, 4)
+
+	msg3, ok3 := <-ret
+	is.Equal(ok3, true)
+	is.Equal(msg3, 6)
+
+	// check it is closed
+	close(ch)
+	time.Sleep(10 * time.Millisecond)
+	is.Panics(func() {
+		ch <- 42
+	})
+
+	msg4, ok4 := <-ret
+	is.Equal(ok4, false)
+	is.Equal(msg4, 0)
+}
+
+func TestChannelSliceMap(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	ch1 := make(chan int, 10)
+
+	ch1 <- 0
+	ch1 <- 1
+	ch1 <- 2
+	ch1 <- 3
+
+	is.Equal(4, len(ch1))
+
+	ch2 := make(chan int, 20)
+
+	ch2 <- 10
+	ch2 <- 11
+	ch2 <- 12
+
+	is.Equal(3, len(ch2))
+
+	rets := ChannelSliceMap([]<-chan int{ch1, ch2}, func(item int) int {
+		return item * 2
+	})
+	time.Sleep(10 * time.Millisecond)
+
+	// check channels allocation
+	is.Equal(2, len(rets))
+
+	// check channels content
+	is.Equal(0, len(ch1))
+	is.Equal(0, len(ch2))
+
+	msg0, ok0 := <-rets[0]
+	is.Equal(ok0, true)
+	is.Equal(msg0, 0)
+
+	msg1, ok1 := <-rets[0]
+	is.Equal(ok1, true)
+	is.Equal(msg1, 2)
+
+	msg2, ok2 := <-rets[0]
+	is.Equal(ok2, true)
+	is.Equal(msg2, 4)
+
+	msg3, ok3 := <-rets[0]
+	is.Equal(ok3, true)
+	is.Equal(msg3, 6)
+
+	msg0, ok0 = <-rets[1]
+	is.Equal(ok0, true)
+	is.Equal(msg0, 20)
+
+	msg1, ok1 = <-rets[1]
+	is.Equal(ok1, true)
+	is.Equal(msg1, 22)
+
+	msg2, ok2 = <-rets[1]
+	is.Equal(ok2, true)
+	is.Equal(msg2, 24)
+
+	// check it is closed
+	close(ch1)
+	time.Sleep(10 * time.Millisecond)
+	is.Panics(func() {
+		ch1 <- 42
+	})
+
+	msg4, ok4 := <-rets[0]
+	is.Equal(ok4, false)
+	is.Equal(msg4, 0)
+
+	close(ch2)
+	time.Sleep(10 * time.Millisecond)
+	is.Panics(func() {
+		ch2 <- 42
+	})
+
+	msg4, ok4 = <-rets[1]
+	is.Equal(ok4, false)
+	is.Equal(msg4, 0)
+}
+
 func TestChannelMerge(t *testing.T) {
 	t.Parallel()
 	testWithTimeout(t, 100*time.Millisecond)
