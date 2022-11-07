@@ -584,3 +584,15 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+// Merge merging multiple slices
+// Play: https://go.dev/play/p/zj65ZJZaC9b
+func Merge[T any](collection ...[]T) []T {
+	result := make([]T, 0)
+
+	for _, item := range collection {
+		result = append(result, item...)
+	}
+
+	return result
+}
