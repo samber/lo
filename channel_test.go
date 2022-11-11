@@ -318,7 +318,7 @@ func TestBatchWithTimeout(t *testing.T) {
 	is.False(ok5)
 }
 
-func TestChannelMerge(t *testing.T) {
+func TestFanIn(t *testing.T) {
 	t.Parallel()
 	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
@@ -332,7 +332,7 @@ func TestChannelMerge(t *testing.T) {
 			close(upstreams[i])
 		}(i)
 	}
-	out := ChannelMerge(10, roupstreams...)
+	out := FanIn(10, roupstreams...)
 	time.Sleep(10 * time.Millisecond)
 
 	// check input channels
@@ -356,4 +356,35 @@ func TestChannelMerge(t *testing.T) {
 	msg0, ok0 := <-out
 	is.Equal(false, ok0)
 	is.Equal(0, msg0)
+}
+
+func TestFanOut(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	upstream := SliceToChannel(10, []int{0, 1, 2, 3, 4, 5})
+	rodownstreams := FanOut(3, 10, upstream)
+
+	time.Sleep(10 * time.Millisecond)
+
+	// check output channels
+	is.Equal(3, len(rodownstreams))
+
+	// check channels allocation
+	for i := range rodownstreams {
+		is.Equal(6, len(rodownstreams[i]))
+		is.Equal(10, cap(rodownstreams[i]))
+		is.Equal([]int{0, 1, 2, 3, 4, 5}, ChannelToSlice(rodownstreams[i]))
+	}
+
+	// check it is closed
+	time.Sleep(10 * time.Millisecond)
+
+	// check channels allocation
+	for i := range rodownstreams {
+		msg, ok := <-rodownstreams[i]
+		is.Equal(false, ok)
+		is.Equal(0, msg)
+	}
 }

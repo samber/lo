@@ -239,9 +239,9 @@ func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (coll
 	return buffer, index, time.Since(now), true
 }
 
-// ChannelMerge collects messages from multiple input channels into a single buffered channel.
-// Output messages has no priority.
-func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
+// FanIn collects messages from multiple input channels into a single buffered channel.
+// Output messages has no priority. When all upstream channels reach EOF, downstream channel closes.
+func FanIn[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 	out := make(chan T, channelBufferCap)
 	var wg sync.WaitGroup
 
@@ -262,4 +262,33 @@ func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 		close(out)
 	}()
 	return out
+}
+
+// ChannelMerge collects messages from multiple input channels into a single buffered channel.
+// Output messages has no priority. When all upstream channels reach EOF, downstream channel closes.
+// Deprecated: Use lo.FanIn instead.
+func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
+	return FanIn(channelBufferCap, upstreams...)
+}
+
+// FanOut broadcasts all the upstream messages to multiple downstream channels.
+// When upstream channel reach EOF, downstream channels close. If any downstream
+// channels is full, broadcasting is paused.
+func FanOut[T any](count int, channelsBufferCap int, upstream <-chan T) []<-chan T {
+	downstreams := createChannels[T](count, channelsBufferCap)
+
+	go func() {
+		for msg := range upstream {
+			for i := range downstreams {
+				downstreams[i] <- msg
+			}
+		}
+
+		// Close out once all the output goroutines are done.
+		for i := range downstreams {
+			close(downstreams[i])
+		}
+	}()
+
+	return channelsToReadOnly(downstreams)
 }
