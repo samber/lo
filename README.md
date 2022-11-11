@@ -161,7 +161,8 @@ Supported helpers for channels:
 - [Generator](#generator)
 - [Batch](#batch)
 - [BatchWithTimeout](#batchwithtimeout)
-- [ChannelMerge](#channelmerge)
+- [FanIn](#fanin)
+- [FanOut](#fanout)
 
 Supported intersection helpers:
 
@@ -1535,16 +1536,27 @@ for i := range children {
 }
 ```
 
-### ChannelMerge
+### FanIn
 
-Collects messages from multiple input channels into a single buffered channel. Output messages has no priority.
+Collects messages from multiple input channels into a single buffered channel. Output messages has no priority. When all upstream channels reach EOF, downstream channel closes.
 
 ```go
 stream1 := make(chan int, 42)
 stream2 := make(chan int, 42)
 stream3 := make(chan int, 42)
 
-all := lo.ChannelMerge(100, stream1, stream2, stream3)
+all := lo.FanIn(100, stream1, stream2, stream3)
+```
+
+### FanOut
+
+Broadcasts all the upstream messages to multiple downstream channels. When upstream channel reach EOF, downstream channels close. If any downstream channels is full, broadcasting is paused.
+
+```go
+stream := make(chan int, 42)
+
+all := lo.FanOut(5, 42, stream)
+// [5]<-chan int
 ```
 
 ### Contains
