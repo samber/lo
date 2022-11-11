@@ -2,10 +2,17 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
-## 1.34.0 (2022-10-xx)
+## 1.34.0 (2022-11-12)
 
 Improving:
 - lo.Union: faster and can receive more than 2 lists
+
+Adding:
+- lo.FanIn (alias to lo.ChannelMerge)
+- lo.FanOut
+
+Deprecation:
+- lo.ChannelMerge
 
 ## 1.33.0 (2022-10-14)
 

@@ -1538,7 +1538,7 @@ for i := range children {
 
 ### FanIn
 
-Collects messages from multiple input channels into a single buffered channel. Output messages has no priority. When all upstream channels reach EOF, downstream channel closes.
+Merge messages from multiple input channels into a single buffered channel. Output messages has no priority. When all upstream channels reach EOF, downstream channel closes.
 
 ```go
 stream1 := make(chan int, 42)
@@ -1546,6 +1546,7 @@ stream2 := make(chan int, 42)
 stream3 := make(chan int, 42)
 
 all := lo.FanIn(100, stream1, stream2, stream3)
+// <-chan int
 ```
 
 ### FanOut
@@ -1555,7 +1556,7 @@ Broadcasts all the upstream messages to multiple downstream channels. When upstr
 ```go
 stream := make(chan int, 42)
 
-all := lo.FanOut(5, 42, stream)
+all := lo.FanOut(5, 100, stream)
 // [5]<-chan int
 ```
 
