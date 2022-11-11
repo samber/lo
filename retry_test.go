@@ -98,6 +98,61 @@ func TestAttemptWithDelay(t *testing.T) {
 	is.Equal(err4, nil)
 }
 
+func TestAttemptWithDynamicDelay(t *testing.T) {
+	is := assert.New(t)
+
+	err := fmt.Errorf("failed")
+
+	delayF := func(i int) time.Duration {
+		return time.Duration(i) * time.Millisecond
+	}
+
+	iter1, dur1, err1 := AttemptWithDynamicDelay(42, delayF, func(i int, d time.Duration) error {
+		return nil
+	})
+	iter2, dur2, err2 := AttemptWithDynamicDelay(42, delayF, func(i int, d time.Duration) error {
+		if i == 5 {
+			return nil
+		}
+
+		return err
+	})
+	iter3, dur3, err3 := AttemptWithDynamicDelay(2, delayF, func(i int, d time.Duration) error {
+		if i == 5 {
+			return nil
+		}
+
+		return err
+	})
+	iter4, dur4, err4 := AttemptWithDynamicDelay(0, delayF, func(i int, d time.Duration) error {
+		if i < 10 {
+			return err
+		}
+
+		return nil
+	})
+
+	is.Equal(iter1, 1)
+	is.Greater(dur1, 0*time.Millisecond) // 0ms
+	is.Less(dur1, 1*time.Millisecond)
+	is.Equal(err1, nil)
+
+	is.Equal(iter2, 6)
+	is.Greater(dur2, 15*time.Millisecond) // (1+5)*5/2=15ms
+	is.Less(dur2, 25*time.Millisecond)
+	is.Equal(err2, nil)
+
+	is.Equal(iter3, 2)
+	is.Greater(dur3, 1*time.Millisecond) // 1ms
+	is.Less(dur3, 11*time.Millisecond)
+	is.Equal(err3, err)
+
+	is.Equal(iter4, 11)
+	is.Greater(dur4, 55*time.Millisecond) // (1+10)*10/2=55ms
+	is.Less(dur4, 65*time.Millisecond)
+	is.Equal(err4, nil)
+}
+
 func TestDebounce(t *testing.T) {
 	t.Parallel()
 

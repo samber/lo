@@ -2306,6 +2306,31 @@ iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duratio
 // nil
 ```
 
+### AttemptWithDynamicDelay
+
+Invokes a function N times until it returns valid output, with a dynamic pause between each call. Returning either the caught error or nil.
+
+When first argument is less than `1`, the function runs until a successful response is returned.
+
+delayF func's int type parameter starts from 1.
+
+```go
+delayF := func(i int) time.Duration {
+    return time.Duration(i) * time.Second
+}
+
+iter, duration, err := lo.AttemptWithDynamicDelay(5, delayF, func(i int, duration time.Duration) error {
+    if i == 2 {
+		return nil
+    }
+    
+    return fmt.Errorf("failed")
+})
+// 3
+// ~ 3 seconds
+// nil
+````
+
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
 [[play](https://go.dev/play/p/tVs6CygC7m1)]
