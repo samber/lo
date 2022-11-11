@@ -126,7 +126,7 @@ func TestDispatchingStrategyRandom(t *testing.T) {
 		children[1] <- i
 	}
 
-	is.Equal(0, DispatchingStrategyRandom[int](42, 0, rochildren))
+	is.Equal(0, DispatchingStrategyRandom(42, 0, rochildren))
 }
 
 func TestDispatchingStrategyWeightedRandom(t *testing.T) {
