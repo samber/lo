@@ -257,16 +257,16 @@ func TestGenerate(t *testing.T) {
 	is.Equal(i, 4)
 }
 
-func TestBatch(t *testing.T) {
+func TestBuffer(t *testing.T) {
 	t.Parallel()
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 
 	ch := SliceToChannel(2, []int{1, 2, 3})
 
-	items1, length1, _, ok1 := Batch(ch, 2)
-	items2, length2, _, ok2 := Batch(ch, 2)
-	items3, length3, _, ok3 := Batch(ch, 2)
+	items1, length1, _, ok1 := Buffer(ch, 2)
+	items2, length2, _, ok2 := Buffer(ch, 2)
+	items3, length3, _, ok3 := Buffer(ch, 2)
 
 	is.Equal([]int{1, 2}, items1)
 	is.Equal(2, length1)
@@ -279,7 +279,7 @@ func TestBatch(t *testing.T) {
 	is.False(ok3)
 }
 
-func TestBatchWithTimeout(t *testing.T) {
+func TestBufferWithTimeout(t *testing.T) {
 	t.Parallel()
 	testWithTimeout(t, 200*time.Millisecond)
 	is := assert.New(t)
@@ -292,27 +292,27 @@ func TestBatchWithTimeout(t *testing.T) {
 	}
 	ch := Generator(0, generator)
 
-	items1, length1, _, ok1 := BatchWithTimeout(ch, 20, 15*time.Millisecond)
+	items1, length1, _, ok1 := BufferWithTimeout(ch, 20, 15*time.Millisecond)
 	is.Equal([]int{0, 1}, items1)
 	is.Equal(2, length1)
 	is.True(ok1)
 
-	items2, length2, _, ok2 := BatchWithTimeout(ch, 20, 2*time.Millisecond)
+	items2, length2, _, ok2 := BufferWithTimeout(ch, 20, 2*time.Millisecond)
 	is.Equal([]int{}, items2)
 	is.Equal(0, length2)
 	is.True(ok2)
 
-	items3, length3, _, ok3 := BatchWithTimeout(ch, 1, 30*time.Millisecond)
+	items3, length3, _, ok3 := BufferWithTimeout(ch, 1, 30*time.Millisecond)
 	is.Equal([]int{2}, items3)
 	is.Equal(1, length3)
 	is.True(ok3)
 
-	items4, length4, _, ok4 := BatchWithTimeout(ch, 2, 25*time.Millisecond)
+	items4, length4, _, ok4 := BufferWithTimeout(ch, 2, 25*time.Millisecond)
 	is.Equal([]int{3, 4}, items4)
 	is.Equal(2, length4)
 	is.True(ok4)
 
-	items5, length5, _, ok5 := BatchWithTimeout(ch, 3, 25*time.Millisecond)
+	items5, length5, _, ok5 := BufferWithTimeout(ch, 3, 25*time.Millisecond)
 	is.Equal([]int{}, items5)
 	is.Equal(0, length5)
 	is.False(ok5)

@@ -159,8 +159,8 @@ Supported helpers for channels:
 - [ChannelDispatcher](#channeldispatcher)
 - [SliceToChannel](#slicetochannel)
 - [Generator](#generator)
-- [Batch](#batch)
-- [BatchWithTimeout](#batchwithtimeout)
+- [Buffer](#buffer)
+- [BufferWithTimeout](#bufferwithtimeout)
 - [FanIn](#fanin)
 - [FanOut](#fanout)
 
@@ -1438,16 +1438,16 @@ for v := range lo.Generator(2, generator) {
 // prints 1, then 2, then 3
 ```
 
-### Batch
+### Buffer
 
 Creates a slice of n elements from a channel. Returns the slice, the slice length, the read time and the channel status (opened/closed).
 
 ```go
 ch := lo.SliceToChannel(2, []int{1, 2, 3, 4, 5})
 
-items1, length1, duration1, ok1 := lo.Batch(ch, 3)
+items1, length1, duration1, ok1 := lo.Buffer(ch, 3)
 // []int{1, 2, 3}, 3, 0s, true
-items2, length2, duration2, ok2 := lo.Batch(ch, 3)
+items2, length2, duration2, ok2 := lo.Buffer(ch, 3)
 // []int{4, 5}, 2, 0s, false
 ```
 
@@ -1458,7 +1458,7 @@ ch := readFromQueue()
 
 for {
     // read 1k items
-    items, length, _, ok := lo.Batch(ch, 1000)
+    items, length, _, ok := lo.Buffer(ch, 1000)
 
     // do batching stuff
 
@@ -1468,7 +1468,7 @@ for {
 }
 ```
 
-### BatchWithTimeout
+### BufferWithTimeout
 
 Creates a slice of n elements from a channel, with timeout. Returns the slice, the slice length, the read time and the channel status (opened/closed).
 
@@ -1482,11 +1482,11 @@ generator := func(yield func(int)) {
 
 ch := lo.Generator(0, generator)
 
-items1, length1, duration1, ok1 := lo.BatchWithTimeout(ch, 3, 100*time.Millisecond)
+items1, length1, duration1, ok1 := lo.BufferWithTimeout(ch, 3, 100*time.Millisecond)
 // []int{1, 2}, 2, 100ms, true
-items2, length2, duration2, ok2 := lo.BatchWithTimeout(ch, 3, 100*time.Millisecond)
+items2, length2, duration2, ok2 := lo.BufferWithTimeout(ch, 3, 100*time.Millisecond)
 // []int{3, 4, 5}, 3, 75ms, true
-items3, length3, duration2, ok3 := lo.BatchWithTimeout(ch, 3, 100*time.Millisecond)
+items3, length3, duration2, ok3 := lo.BufferWithTimeout(ch, 3, 100*time.Millisecond)
 // []int{}, 0, 10ms, false
 ```
 
@@ -1498,7 +1498,7 @@ ch := readFromQueue()
 for {
     // read 1k items
     // wait up to 1 second
-    items, length, _, ok := lo.BatchWithTimeout(ch, 1000, 1*time.Second)
+    items, length, _, ok := lo.BufferWithTimeout(ch, 1000, 1*time.Second)
 
     // do batching stuff
 
@@ -1521,7 +1521,7 @@ consumer := func(c <-chan int) {
     for {
         // read 1k items
         // wait up to 1 second
-        items, length, _, ok := lo.BatchWithTimeout(ch, 1000, 1*time.Second)
+        items, length, _, ok := lo.BufferWithTimeout(ch, 1000, 1*time.Second)
 
         // do batching stuff
 

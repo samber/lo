@@ -193,9 +193,9 @@ func Generator[T any](bufferSize int, generator func(yield func(T))) <-chan T {
 	return ch
 }
 
-// Batch creates a slice of n elements from a channel. Returns the slice and the slice length.
+// Buffer creates a slice of n elements from a channel. Returns the slice and the slice length.
 // @TODO: we should probably provide an helper that reuse the same buffer.
-func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
+func Buffer[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
 	buffer := make([]T, 0, size)
 	index := 0
 	now := time.Now()
@@ -212,9 +212,15 @@ func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime t
 	return buffer, index, time.Since(now), true
 }
 
-// BatchWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
+// Buffer creates a slice of n elements from a channel. Returns the slice and the slice length.
+// Deprecated: Use lo.Buffer instead.
+func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
+	return Buffer(ch, size)
+}
+
+// BufferWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
 // @TODO: we should probably provide an helper that reuse the same buffer.
-func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
+func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
 	expire := time.NewTimer(timeout)
 	defer expire.Stop()
 
@@ -237,6 +243,12 @@ func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (coll
 	}
 
 	return buffer, index, time.Since(now), true
+}
+
+// BufferWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
+// Deprecated: Use lo.BufferWithTimeout instead.
+func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
+	return BufferWithTimeout(ch, size, timeout)
 }
 
 // FanIn collects messages from multiple input channels into a single buffered channel.
