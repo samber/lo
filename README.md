@@ -143,6 +143,7 @@ Supported math helpers:
 
 Supported helpers for strings:
 
+- [RandomString](#randomstring)
 - [Substring](#substring)
 - [ChunkString](#chunkstring)
 - [RuneLength](#runelength)
@@ -1206,6 +1207,17 @@ sum := lo.SumBy(strings, func(item string) int {
 ```
 
 [[play](https://go.dev/play/p/Dz_a_7jN_ca)]
+
+### RandomString
+
+Returns a random string of the specified length and made of the specified charset.
+
+```go
+str := lo.RandomString(5, lo.LettersCharset)
+// example: "eIGbt"
+```
+
+[[play](https://go.dev/play/p/rRseOQVVum4)]
 
 ### Substring
 
