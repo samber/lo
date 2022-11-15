@@ -212,3 +212,32 @@ func TestAsyncX(t *testing.T) {
 		}
 	}
 }
+
+func TestWaitFor(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	alwaysTrue := func(i int) bool { return true }
+	alwaysFalse := func(i int) bool { return false }
+
+	is.True(WaitFor(alwaysTrue, 10*time.Millisecond, time.Millisecond))
+	is.False(WaitFor(alwaysFalse, 10*time.Millisecond, time.Millisecond))
+
+	laterTrue := func(i int) bool {
+		return i > 5
+	}
+
+	is.True(WaitFor(laterTrue, 10*time.Millisecond, time.Millisecond))
+	is.False(WaitFor(laterTrue, 10*time.Millisecond, 5*time.Millisecond))
+
+	counter := 0
+
+	alwaysFalse = func(i int) bool {
+		is.Equal(counter, i)
+		counter++
+		return false
+	}
+
+	is.False(WaitFor(alwaysFalse, 10*time.Millisecond, time.Millisecond))
+}
