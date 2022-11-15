@@ -212,3 +212,36 @@ func TestAsyncX(t *testing.T) {
 		}
 	}
 }
+
+func TestRPC(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	ch := make(chan int)
+	rpc := NewRPC[int, int](ch)
+
+	go func() {
+		for {
+			select {
+			case msg, ok := <-rpc.C:
+				if !ok {
+					return
+				}
+
+				value, response := msg.Unpack()
+
+				time.Sleep(5 * time.Millisecond)
+				result := value * 2
+
+				response(result)
+			}
+		}
+	}()
+
+	is.Equal(2, rpc.Send(1))
+	is.Equal(4, rpc.Send(2))
+	is.Equal(6, rpc.Send(3))
+
+	close(ch)
+}
