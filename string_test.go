@@ -15,15 +15,20 @@ func TestRandomString(t *testing.T) {
 
 	rand.Seed(time.Now().UnixNano())
 
-	str1 := RandomString[string](100, LowerCaseLettersCharset)
-	is.Equal(100, len(str1))
-	is.Subset([]byte(LowerCaseLettersCharset), []byte(str1))
+	str1 := RandomString(100, LowerCaseLettersCharset)
+	is.Equal(100, RuneLength(str1))
+	is.Subset(LowerCaseLettersCharset, []rune(str1))
 
-	str2 := RandomString[string](100, LowerCaseLettersCharset)
+	str2 := RandomString(100, LowerCaseLettersCharset)
 	is.NotEqual(str1, str2)
 
-	is.Panics(func() { RandomString[string](100, "") })
-	is.Panics(func() { RandomString[string](0, LowerCaseLettersCharset) })
+	noneUtf8Charset := []rune("明1好休2林森")
+	str3 := RandomString(100, noneUtf8Charset)
+	is.Equal(100, RuneLength(str3))
+	is.Subset(noneUtf8Charset, []rune(str3))
+
+	is.PanicsWithValue("lo.RandomString: Charset parameter must not be empty", func() { RandomString(100, []rune{}) })
+	is.PanicsWithValue("lo.RandomString: Size parameter must be greater than 0", func() { RandomString(0, LowerCaseLettersCharset) })
 }
 
 func TestChunkString(t *testing.T) {

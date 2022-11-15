@@ -1217,7 +1217,7 @@ str := lo.RandomString(5, lo.LettersCharset)
 // example: "eIGbt"
 ```
 
-[[play](https://go.dev/play/p/5zFLTHCxe_T)]
+[[play](https://go.dev/play/p/rRseOQVVum4)]
 
 ### Substring
 
