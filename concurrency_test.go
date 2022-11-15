@@ -223,19 +223,17 @@ func TestRPC(t *testing.T) {
 
 	go func() {
 		for {
-			select {
-			case msg, ok := <-rpc.C:
-				if !ok {
-					return
-				}
-
-				value, response := msg.Unpack()
-
-				time.Sleep(5 * time.Millisecond)
-				result := value * 2
-
-				response(result)
+			msg, ok := <-rpc.C
+			if !ok {
+				return
 			}
+
+			value, response := msg.Unpack()
+
+			time.Sleep(5 * time.Millisecond)
+			result := value * 2
+
+			response(result)
 		}
 	}()
 
