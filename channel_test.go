@@ -388,3 +388,13 @@ func TestFanOut(t *testing.T) {
 		is.Equal(0, msg)
 	}
 }
+
+func TestSafeClose(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	ch := make(chan int)
+
+	is.True(SafeClose(ch))
+	is.False(SafeClose(ch))
+}
