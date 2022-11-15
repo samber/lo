@@ -1,6 +1,9 @@
 package lo
 
-import "sync"
+import (
+	"sync"
+	"time"
+)
 
 type synchronize struct {
 	locker sync.Locker
@@ -92,4 +95,36 @@ func Async6[A, B, C, D, E, F any](f func() (A, B, C, D, E, F)) <-chan Tuple6[A, 
 		ch <- T6(f())
 	}()
 	return ch
+}
+
+// WaitFor runs periodically until a condition is validated.
+func WaitFor(condition func(i int) bool, maxDuration time.Duration, tick time.Duration) (int, time.Duration, bool) {
+	if condition(0) {
+		return 1, 0, true
+	}
+
+	start := time.Now()
+
+	timer := time.NewTimer(maxDuration)
+	ticker := time.NewTicker(tick)
+
+	defer func() {
+		timer.Stop()
+		ticker.Stop()
+	}()
+
+	i := 1
+
+	for {
+		select {
+		case <-timer.C:
+			return i, time.Since(start), false
+		case <-ticker.C:
+			if condition(i) {
+				return i + 1, time.Since(start), true
+			}
+
+			i++
+		}
+	}
 }
