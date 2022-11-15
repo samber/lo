@@ -2,10 +2,29 @@ package lo
 
 import (
 	"math"
+	"math/rand"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestRandomString(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	rand.Seed(time.Now().UnixNano())
+
+	str1 := RandomString[string](100, LowerCaseLettersCharset)
+	is.Equal(100, len(str1))
+	is.Subset([]byte(LowerCaseLettersCharset), []byte(str1))
+
+	str2 := RandomString[string](100, LowerCaseLettersCharset)
+	is.NotEqual(str1, str2)
+
+	is.Panics(func() { RandomString[string](100, "") })
+	is.Panics(func() { RandomString[string](0, LowerCaseLettersCharset) })
+}
 
 func TestChunkString(t *testing.T) {
 	t.Parallel()

@@ -1,8 +1,36 @@
 package lo
 
 import (
+	"math/rand"
 	"unicode/utf8"
 )
+
+const (
+	LowerCaseLettersCharset = "abcdefghijklmnopqrstuvwxyz"
+	UpperCaseLettersCharset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	LettersCharset          = LowerCaseLettersCharset + UpperCaseLettersCharset
+	NumbersCharset          = "0123456789"
+	SpecialCharset          = "!@#$%^&*()_+-=[]{}|;':\",./<>?"
+	AllCharset              = LettersCharset + NumbersCharset + SpecialCharset
+)
+
+// RandomString return a random string.
+// Play: https://go.dev/play/p/5zFLTHCxe_T
+func RandomString[T ~string](size int, charset string) T {
+	if size <= 0 {
+		panic("lo.RandomString: Size parameter must be greater than 0")
+	}
+	if len(charset) <= 0 {
+		panic("lo.RandomString: Charset parameter must not be empty")
+	}
+
+	b := make([]byte, size)
+	possibleCharactersCount := len(charset)
+	for i := range b {
+		b[i] = charset[rand.Intn(possibleCharactersCount)]
+	}
+	return T(b)
+}
 
 // Substring return part of a string.
 // Play: https://go.dev/play/p/TQlxQi82Lu1
