@@ -2,9 +2,10 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
-## 1.35.0 (2022-11-xx)
+## 1.35.0 (2022-11-15)
 
 Adding:
+- lo.RandomString
 - lo.BufferWithTimeout (alias to lo.BatchWithTimeout)
 - lo.Buffer (alias to lo.Batch)
 
