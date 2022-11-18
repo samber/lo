@@ -303,6 +303,16 @@ func Fill[T Clonable[T]](collection []T, initial T) []T {
 	return result
 }
 
+func FillPod[T any](collection []T, initial T) []T {
+	result := make([]T, 0, len(collection))
+
+	for range collection {
+		result = append(result, initial)
+	}
+
+	return result
+}
+
 // Repeat builds a slice with N copies of initial value.
 // Play: https://go.dev/play/p/g3uHXbmc3b6
 func Repeat[T Clonable[T]](count int, initial T) []T {
@@ -310,6 +320,16 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 
 	for i := 0; i < count; i++ {
 		result = append(result, initial.Clone())
+	}
+
+	return result
+}
+
+func RepeatPod[T any](count int, initial T) []T {
+	result := make([]T, 0, count)
+
+	for i := 0; i < count; i++ {
+		result = append(result, initial)
 	}
 
 	return result
