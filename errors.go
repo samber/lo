@@ -66,7 +66,7 @@ func Must[T any](val T, err any, messageArgs ...interface{}) T {
 	return val
 }
 
-// Must0 has the same behavior than Must, but callback returns no variable.
+// Must0 has the same behavior as Must, but callback returns no variable.
 // Play: https://go.dev/play/p/TMoWrRp3DyC
 func Must0(err any, messageArgs ...interface{}) {
 	must(err, messageArgs...)
@@ -78,35 +78,35 @@ func Must1[T any](val T, err any, messageArgs ...interface{}) T {
 	return Must(val, err, messageArgs...)
 }
 
-// Must2 has the same behavior than Must, but callback returns 2 variables.
+// Must2 has the same behavior as Must, but callback returns 2 variables.
 // Play: https://go.dev/play/p/TMoWrRp3DyC
 func Must2[T1 any, T2 any](val1 T1, val2 T2, err any, messageArgs ...interface{}) (T1, T2) {
 	must(err, messageArgs...)
 	return val1, val2
 }
 
-// Must3 has the same behavior than Must, but callback returns 3 variables.
+// Must3 has the same behavior as Must, but callback returns 3 variables.
 // Play: https://go.dev/play/p/TMoWrRp3DyC
 func Must3[T1 any, T2 any, T3 any](val1 T1, val2 T2, val3 T3, err any, messageArgs ...interface{}) (T1, T2, T3) {
 	must(err, messageArgs...)
 	return val1, val2, val3
 }
 
-// Must4 has the same behavior than Must, but callback returns 4 variables.
+// Must4 has the same behavior as Must, but callback returns 4 variables.
 // Play: https://go.dev/play/p/TMoWrRp3DyC
 func Must4[T1 any, T2 any, T3 any, T4 any](val1 T1, val2 T2, val3 T3, val4 T4, err any, messageArgs ...interface{}) (T1, T2, T3, T4) {
 	must(err, messageArgs...)
 	return val1, val2, val3, val4
 }
 
-// Must5 has the same behavior than Must, but callback returns 5 variables.
+// Must5 has the same behavior as Must, but callback returns 5 variables.
 // Play: https://go.dev/play/p/TMoWrRp3DyC
 func Must5[T1 any, T2 any, T3 any, T4 any, T5 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, err any, messageArgs ...interface{}) (T1, T2, T3, T4, T5) {
 	must(err, messageArgs...)
 	return val1, val2, val3, val4, val5
 }
 
-// Must6 has the same behavior than Must, but callback returns 6 variables.
+// Must6 has the same behavior as Must, but callback returns 6 variables.
 // Play: https://go.dev/play/p/TMoWrRp3DyC
 func Must6[T1 any, T2 any, T3 any, T4 any, T5 any, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err any, messageArgs ...interface{}) (T1, T2, T3, T4, T5, T6) {
 	must(err, messageArgs...)
@@ -131,7 +131,7 @@ func Try(callback func() error) (ok bool) {
 	return
 }
 
-// Try0 has the same behavior than Try, but callback returns no variable.
+// Try0 has the same behavior as Try, but callback returns no variable.
 // Play: https://go.dev/play/p/mTyyWUvn9u4
 func Try0(callback func()) bool {
 	return Try(func() error {
@@ -146,7 +146,7 @@ func Try1(callback func() error) bool {
 	return Try(callback)
 }
 
-// Try2 has the same behavior than Try, but callback returns 2 variables.
+// Try2 has the same behavior as Try, but callback returns 2 variables.
 // Play: https://go.dev/play/p/mTyyWUvn9u4
 func Try2[T any](callback func() (T, error)) bool {
 	return Try(func() error {
@@ -155,7 +155,7 @@ func Try2[T any](callback func() (T, error)) bool {
 	})
 }
 
-// Try3 has the same behavior than Try, but callback returns 3 variables.
+// Try3 has the same behavior as Try, but callback returns 3 variables.
 // Play: https://go.dev/play/p/mTyyWUvn9u4
 func Try3[T, R any](callback func() (T, R, error)) bool {
 	return Try(func() error {
@@ -164,7 +164,7 @@ func Try3[T, R any](callback func() (T, R, error)) bool {
 	})
 }
 
-// Try4 has the same behavior than Try, but callback returns 4 variables.
+// Try4 has the same behavior as Try, but callback returns 4 variables.
 // Play: https://go.dev/play/p/mTyyWUvn9u4
 func Try4[T, R, S any](callback func() (T, R, S, error)) bool {
 	return Try(func() error {
@@ -173,7 +173,7 @@ func Try4[T, R, S any](callback func() (T, R, S, error)) bool {
 	})
 }
 
-// Try5 has the same behavior than Try, but callback returns 5 variables.
+// Try5 has the same behavior as Try, but callback returns 5 variables.
 // Play: https://go.dev/play/p/mTyyWUvn9u4
 func Try5[T, R, S, Q any](callback func() (T, R, S, Q, error)) bool {
 	return Try(func() error {
@@ -182,7 +182,7 @@ func Try5[T, R, S, Q any](callback func() (T, R, S, Q, error)) bool {
 	})
 }
 
-// Try6 has the same behavior than Try, but callback returns 6 variables.
+// Try6 has the same behavior as Try, but callback returns 6 variables.
 // Play: https://go.dev/play/p/mTyyWUvn9u4
 func Try6[T, R, S, Q, U any](callback func() (T, R, S, Q, U, error)) bool {
 	return Try(func() error {
@@ -191,13 +191,13 @@ func Try6[T, R, S, Q, U any](callback func() (T, R, S, Q, U, error)) bool {
 	})
 }
 
-// TryOr has the same behavior than Must, but returns a default value in case of error.
+// TryOr has the same behavior as Must, but returns a default value in case of error.
 // Play: https://go.dev/play/p/B4F7Wg2Zh9X
 func TryOr[A any](callback func() (A, error), fallbackA A) (A, bool) {
 	return TryOr1(callback, fallbackA)
 }
 
-// TryOr1 has the same behavior than Must, but returns a default value in case of error.
+// TryOr1 has the same behavior as Must, but returns a default value in case of error.
 // Play: https://go.dev/play/p/B4F7Wg2Zh9X
 func TryOr1[A any](callback func() (A, error), fallbackA A) (A, bool) {
 	ok := false
@@ -213,7 +213,7 @@ func TryOr1[A any](callback func() (A, error), fallbackA A) (A, bool) {
 	return fallbackA, ok
 }
 
-// TryOr2 has the same behavior than Must, but returns a default value in case of error.
+// TryOr2 has the same behavior as Must, but returns a default value in case of error.
 // Play: https://go.dev/play/p/B4F7Wg2Zh9X
 func TryOr2[A any, B any](callback func() (A, B, error), fallbackA A, fallbackB B) (A, B, bool) {
 	ok := false
@@ -230,7 +230,7 @@ func TryOr2[A any, B any](callback func() (A, B, error), fallbackA A, fallbackB 
 	return fallbackA, fallbackB, ok
 }
 
-// TryOr3 has the same behavior than Must, but returns a default value in case of error.
+// TryOr3 has the same behavior as Must, but returns a default value in case of error.
 // Play: https://go.dev/play/p/B4F7Wg2Zh9X
 func TryOr3[A any, B any, C any](callback func() (A, B, C, error), fallbackA A, fallbackB B, fallbackC C) (A, B, C, bool) {
 	ok := false
@@ -248,7 +248,7 @@ func TryOr3[A any, B any, C any](callback func() (A, B, C, error), fallbackA A, 
 	return fallbackA, fallbackB, fallbackC, ok
 }
 
-// TryOr4 has the same behavior than Must, but returns a default value in case of error.
+// TryOr4 has the same behavior as Must, but returns a default value in case of error.
 // Play: https://go.dev/play/p/B4F7Wg2Zh9X
 func TryOr4[A any, B any, C any, D any](callback func() (A, B, C, D, error), fallbackA A, fallbackB B, fallbackC C, fallbackD D) (A, B, C, D, bool) {
 	ok := false
@@ -267,7 +267,7 @@ func TryOr4[A any, B any, C any, D any](callback func() (A, B, C, D, error), fal
 	return fallbackA, fallbackB, fallbackC, fallbackD, ok
 }
 
-// TryOr5 has the same behavior than Must, but returns a default value in case of error.
+// TryOr5 has the same behavior as Must, but returns a default value in case of error.
 // Play: https://go.dev/play/p/B4F7Wg2Zh9X
 func TryOr5[A any, B any, C any, D any, E any](callback func() (A, B, C, D, E, error), fallbackA A, fallbackB B, fallbackC C, fallbackD D, fallbackE E) (A, B, C, D, E, bool) {
 	ok := false
@@ -287,7 +287,7 @@ func TryOr5[A any, B any, C any, D any, E any](callback func() (A, B, C, D, E, e
 	return fallbackA, fallbackB, fallbackC, fallbackD, fallbackE, ok
 }
 
-// TryOr6 has the same behavior than Must, but returns a default value in case of error.
+// TryOr6 has the same behavior as Must, but returns a default value in case of error.
 // Play: https://go.dev/play/p/B4F7Wg2Zh9X
 func TryOr6[A any, B any, C any, D any, E any, F any](callback func() (A, B, C, D, E, F, error), fallbackA A, fallbackB B, fallbackC C, fallbackD D, fallbackE E, fallbackF F) (A, B, C, D, E, F, bool) {
 	ok := false
@@ -308,7 +308,7 @@ func TryOr6[A any, B any, C any, D any, E any, F any](callback func() (A, B, C, 
 	return fallbackA, fallbackB, fallbackC, fallbackD, fallbackE, fallbackF, ok
 }
 
-// TryWithErrorValue has the same behavior than Try, but also returns value passed to panic.
+// TryWithErrorValue has the same behavior as Try, but also returns value passed to panic.
 // Play: https://go.dev/play/p/Kc7afQIT2Fs
 func TryWithErrorValue(callback func() error) (errorValue any, ok bool) {
 	ok = true
@@ -329,7 +329,7 @@ func TryWithErrorValue(callback func() error) (errorValue any, ok bool) {
 	return
 }
 
-// TryCatch has the same behavior than Try, but calls the catch function in case of error.
+// TryCatch has the same behavior as Try, but calls the catch function in case of error.
 // Play: https://go.dev/play/p/PnOON-EqBiU
 func TryCatch(callback func() error, catch func()) {
 	if !Try(callback) {
@@ -337,7 +337,7 @@ func TryCatch(callback func() error, catch func()) {
 	}
 }
 
-// TryCatchWithErrorValue has the same behavior than TryWithErrorValue, but calls the catch function in case of error.
+// TryCatchWithErrorValue has the same behavior as TryWithErrorValue, but calls the catch function in case of error.
 // Play: https://go.dev/play/p/8Pc9gwX_GZO
 func TryCatchWithErrorValue(callback func() error, catch func(any)) {
 	if err, ok := TryWithErrorValue(callback); !ok {

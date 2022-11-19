@@ -36,7 +36,7 @@ func LastIndexOf[T comparable](collection []T, element T) int {
 }
 
 // Find search an element in a slice based on a predicate. It returns element and true if element was found.
-func Find[T any](collection []T, predicate func(T) bool) (T, bool) {
+func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {
 	for _, item := range collection {
 		if predicate(item) {
 			return item, true
@@ -49,7 +49,7 @@ func Find[T any](collection []T, predicate func(T) bool) (T, bool) {
 
 // FindIndexOf searches an element in a slice based on a predicate and returns the index and true.
 // It returns -1 and false if the element is not found.
-func FindIndexOf[T any](collection []T, predicate func(T) bool) (T, int, bool) {
+func FindIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bool) {
 	for i, item := range collection {
 		if predicate(item) {
 			return item, i, true
@@ -62,7 +62,7 @@ func FindIndexOf[T any](collection []T, predicate func(T) bool) (T, int, bool) {
 
 // FindLastIndexOf searches last element in a slice based on a predicate and returns the index and true.
 // It returns -1 and false if the element is not found.
-func FindLastIndexOf[T any](collection []T, predicate func(T) bool) (T, int, bool) {
+func FindLastIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bool) {
 	length := len(collection)
 
 	for i := length - 1; i >= 0; i-- {
@@ -76,7 +76,7 @@ func FindLastIndexOf[T any](collection []T, predicate func(T) bool) (T, int, boo
 }
 
 // FindOrElse search an element in a slice based on a predicate. It returns the element if found or a given fallback value otherwise.
-func FindOrElse[T any](collection []T, fallback T, predicate func(T) bool) T {
+func FindOrElse[T any](collection []T, fallback T, predicate func(item T) bool) T {
 	for _, item := range collection {
 		if predicate(item) {
 			return item
@@ -98,7 +98,7 @@ func FindKey[K comparable, V comparable](object map[K]V, value V) (K, bool) {
 }
 
 // FindKeyBy returns the key of the first element predicate returns truthy for.
-func FindKeyBy[K comparable, V any](object map[K]V, predicate func(K, V) bool) (K, bool) {
+func FindKeyBy[K comparable, V any](object map[K]V, predicate func(key K, value V) bool) (K, bool) {
 	for k, v := range object {
 		if predicate(k, v) {
 			return k, true
@@ -136,7 +136,7 @@ func FindUniques[T comparable](collection []T) []T {
 // FindUniquesBy returns a slice with all the unique elements of the collection.
 // The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
-func FindUniquesBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
+func FindUniquesBy[T any, U comparable](collection []T, iteratee func(item T) U) []T {
 	isDupl := make(map[U]bool, len(collection))
 
 	for _, item := range collection {
@@ -163,7 +163,7 @@ func FindUniquesBy[T any, U comparable](collection []T, iteratee func(T) U) []T 
 	return result
 }
 
-// FindDuplicates returns a slice with the first occurence of each duplicated elements of the collection.
+// FindDuplicates returns a slice with the first occurrence of each duplicated elements of the collection.
 // The order of result values is determined by the order they occur in the collection.
 func FindDuplicates[T comparable](collection []T) []T {
 	isDupl := make(map[T]bool, len(collection))
@@ -189,10 +189,10 @@ func FindDuplicates[T comparable](collection []T) []T {
 	return result
 }
 
-// FindDuplicatesBy returns a slice with the first occurence of each duplicated elements of the collection.
+// FindDuplicatesBy returns a slice with the first occurrence of each duplicated elements of the collection.
 // The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
-func FindDuplicatesBy[T any, U comparable](collection []T, iteratee func(T) U) []T {
+func FindDuplicatesBy[T any, U comparable](collection []T, iteratee func(item T) U) []T {
 	isDupl := make(map[U]bool, len(collection))
 
 	for _, item := range collection {
@@ -245,7 +245,7 @@ func Min[T constraints.Ordered](collection []T) T {
 // MinBy search the minimum value of a collection using the given comparison function.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns zero value when collection is empty.
-func MinBy[T any](collection []T, comparison func(T, T) bool) T {
+func MinBy[T any](collection []T, comparison func(a T, b T) bool) T {
 	var min T
 
 	if len(collection) == 0 {
@@ -290,7 +290,7 @@ func Max[T constraints.Ordered](collection []T) T {
 // MaxBy search the maximum value of a collection using the given comparison function.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns zero value when collection is empty.
-func MaxBy[T any](collection []T, comparison func(T, T) bool) T {
+func MaxBy[T any](collection []T, comparison func(a T, b T) bool) T {
 	var max T
 
 	if len(collection) == 0 {
