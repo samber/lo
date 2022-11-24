@@ -114,6 +114,7 @@ Supported helpers for slices:
 - [Compact](#compact)
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
+- [DeepCopy](#deepcopy)
 
 Supported helpers for maps:
 
@@ -910,6 +911,18 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 ```
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
+
+### DeepCopy
+
+Returns a deep copy of the slice passed in.
+If the slice passed in contains pointers, these pointers will still point to the same values.
+
+```go
+slice := lo.DeepCopy([]string{"foo", "bar"})
+// []string{"foo", "bar"}
+```
+
+[[play](https://go.dev/play/p/QhRQrPWjWbR)]
 
 ### Keys
 
