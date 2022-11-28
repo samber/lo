@@ -2335,6 +2335,56 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 [[play](https://go.dev/play/p/tVs6CygC7m1)]
 
+### AttemptWhile
+
+Invokes a function N times until it returns valid output. Returning either the caught error or nil, and along with a bool value to identifying whether it needs invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
+
+When first argument is less than `1`, the function runs until a successful response is returned.
+
+```go
+count1, err1 := AttemptWhile(5, func(i int) (error, bool) {
+    err := doMockedHTTPRequest(i)
+    if err != nil {
+        if errors.Is(err, ErrBadRequest) { // lets assume ErrBadRequest is a critical error that needs to terminate the invoke
+            return err, false // flag the second return value as false to terminate the invoke
+        }
+
+        return err, true
+    }
+
+    return nil, false
+})
+```
+
+For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+
+[play](https://go.dev/play/p/M2wVq24PaZM)
+
+### AttemptWhileWithDelay
+
+Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil, and along with a bool value to identifying whether it needs to invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
+
+When first argument is less than `1`, the function runs until a successful response is returned.
+
+```go
+count1, time1, err1 := AttemptWhileWithDelay(5, time.Millisecond, func(i int, d time.Duration) (error, bool) {
+    err := doMockedHTTPRequest(i)
+    if err != nil {
+        if errors.Is(err, ErrBadRequest) { // lets assume ErrBadRequest is a critical error that needs to terminate the invoke
+            return err, false // flag the second return value as false to terminate the invoke
+        }
+
+        return err, true
+    }
+
+    return nil, false
+})
+```
+
+For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+
+[play](https://go.dev/play/p/LPsWgf1ilBO)
+
 ### Debounce
 
 `NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
