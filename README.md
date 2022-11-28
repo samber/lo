@@ -230,7 +230,9 @@ Function helpers:
 Concurrency helpers:
 
 - [Attempt](#attempt)
+- [AttemptWhile](#attemptwhile)
 - [AttemptWithDelay](#attemptwithdelay)
+- [AttemptWhileWithDelay](#attemptwhilewithdelay)
 - [Debounce](#debounce)
 - [Synchronize](#synchronize)
 - [Async](#async)
