@@ -2344,7 +2344,7 @@ Invokes a function N times until it returns valid output. Returning either the c
 When first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
-count1, err1 := AttemptWhile(5, func(i int) (error, bool) {
+count1, err1 := lo.AttemptWhile(5, func(i int) (error, bool) {
     err := doMockedHTTPRequest(i)
     if err != nil {
         if errors.Is(err, ErrBadRequest) { // lets assume ErrBadRequest is a critical error that needs to terminate the invoke
@@ -2360,7 +2360,7 @@ count1, err1 := AttemptWhile(5, func(i int) (error, bool) {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
-[play](https://go.dev/play/p/M2wVq24PaZM)
+[[play](https://go.dev/play/p/M2wVq24PaZM)]
 
 ### AttemptWhileWithDelay
 
@@ -2369,7 +2369,7 @@ Invokes a function N times until it returns valid output, with a pause between e
 When first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
-count1, time1, err1 := AttemptWhileWithDelay(5, time.Millisecond, func(i int, d time.Duration) (error, bool) {
+count1, time1, err1 := lo.AttemptWhileWithDelay(5, time.Millisecond, func(i int, d time.Duration) (error, bool) {
     err := doMockedHTTPRequest(i)
     if err != nil {
         if errors.Is(err, ErrBadRequest) { // lets assume ErrBadRequest is a critical error that needs to terminate the invoke
@@ -2385,7 +2385,7 @@ count1, time1, err1 := AttemptWhileWithDelay(5, time.Millisecond, func(i int, d 
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
-[play](https://go.dev/play/p/LPsWgf1ilBO)
+[[play](https://go.dev/play/p/cfcmhvLO-nv)]
 
 ### Debounce
 
