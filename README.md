@@ -2360,7 +2360,7 @@ count1, err1 := lo.AttemptWhile(5, func(i int) (error, bool) {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
-[play](https://go.dev/play/p/M2wVq24PaZM)
+[[play](https://go.dev/play/p/M2wVq24PaZM)]
 
 ### AttemptWhileWithDelay
 
@@ -2385,7 +2385,7 @@ count1, time1, err1 := lo.AttemptWhileWithDelay(5, time.Millisecond, func(i int,
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
-[play](https://go.dev/play/p/cfcmhvLO-nv)
+[[play](https://go.dev/play/p/cfcmhvLO-nv)]
 
 ### Debounce
 
