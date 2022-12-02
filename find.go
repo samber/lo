@@ -352,7 +352,7 @@ func Sample[T any](collection []T) T {
 func Samples[T any](collection []T, count int) []T {
 	size := len(collection)
 
-	cOpy := append([]T{}, collection...)
+	copy := append([]T{}, collection...)
 
 	results := []T{}
 
@@ -360,12 +360,12 @@ func Samples[T any](collection []T, count int) []T {
 		copyLength := size - i
 
 		index := rand.Intn(size - i)
-		results = append(results, cOpy[index])
+		results = append(results, copy[index])
 
 		// Removes element.
 		// It is faster to swap with last element and remove it.
-		cOpy[index] = cOpy[copyLength-1]
-		cOpy = cOpy[:copyLength-1]
+		copy[index] = copy[copyLength-1]
+		copy = copy[:copyLength-1]
 	}
 
 	return results
