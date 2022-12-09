@@ -345,7 +345,7 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(item V) K) map[K]V
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 // Play: https://go.dev/play/p/WHa2CfMO3Lr
 func Associate[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K]V {
-	result := make(map[K]V)
+	result := make(map[K]V, len(collection))
 
 	for _, t := range collection {
 		k, v := transform(t)
