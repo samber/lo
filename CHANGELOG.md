@@ -7,6 +7,9 @@
 Adding:
 - lo.PartialX
 
+Improvement:
+- lo.Associate / lo.SliceToMap: faster memory allocation
+
 ## 1.36.0 (2022-11-28)
 
 Adding:
