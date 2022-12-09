@@ -2,6 +2,11 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.37.0 (2022-12-xx)
+
+Adding:
+- lo.PartialX
+
 ## 1.36.0 (2022-11-28)
 
 Adding:

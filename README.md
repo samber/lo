@@ -226,6 +226,7 @@ Type manipulation helpers:
 Function helpers:
 
 - [Partial](#partial)
+- [Partial2 -> Partial5](#partial2---partial5)
 
 Concurrency helpers:
 
@@ -2272,6 +2273,21 @@ f(10)
 
 f(42)
 // 47
+```
+
+### Partial2 -> Partial5
+
+Returns new function that, when called, has its first argument set to the provided value.
+
+```go
+add := func(x, y, z int) int { return x + y + z }
+f := lo.Partial2(add, 42)
+
+f(10, 5)
+// 57
+
+f(42, -4)
+// 80
 ```
 
 ### Attempt
