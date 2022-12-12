@@ -6,6 +6,7 @@
 
 Adding:
 - lo.PartialX
+- lo.Transaction
 
 Improvement:
 - lo.Associate / lo.SliceToMap: faster memory allocation
