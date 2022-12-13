@@ -7,7 +7,6 @@ import (
 	"time"
 
 	lop "github.com/samber/lo/parallel"
-	"github.com/thoas/go-funk"
 )
 
 func sliceGenerator(size uint) []int64 {
@@ -41,13 +40,14 @@ func BenchmarkMap(b *testing.B) {
 		}
 	})
 
-	b.Run("reflect", func(b *testing.B) {
-		for n := 0; n < b.N; n++ {
-			_ = funk.Map(arr, func(x int64) string {
-				return strconv.FormatInt(x, 10)
-			})
-		}
-	})
+	// Commented in order to remove the dependency from samber/lo.
+	// b.Run("reflect", func(b *testing.B) {
+	// 	for n := 0; n < b.N; n++ {
+	// 		_ = funk.Map(arr, func(x int64) string {
+	// 			return strconv.FormatInt(x, 10)
+	// 		})
+	// 	}
+	// })
 
 	b.Run("for", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {

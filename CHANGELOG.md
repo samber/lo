@@ -10,6 +10,7 @@ Adding:
 
 Improvement:
 - lo.Associate / lo.SliceToMap: faster memory allocation
+- Comment benchmarks, in order to remove go-funk dependency
 
 ## 1.36.0 (2022-11-28)
 
