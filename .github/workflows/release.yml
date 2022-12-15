@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      semver:
+        type: string
+        description: Semver
+        required: true
+
+jobs:
+  release:
+    if: github.triggering_actor == 'samber'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.18
+        stable: false
+
+    - name: Test
+      run: make test
+
+    # remove tests in order to clean dependencies
+    - name: Remove xxx_test.go files
+      run: rm -rf *_test.go ./parallel/*_test.go docker-compose.yml img/
+
+    # cleanup test dependencies
+    - name: Cleanup dependencies
+      run: go mod tidy
+
+    - name: List files
+      run: tree -Cfi
+    - name: Write new go.mod into logs
+      run: cat go.mod
+    - name: Write new go.sum into logs
+      run: cat go.sum
+
+    - name: Create tag
+      run: |
+          git config --global user.name '${{ github.triggering_actor }}'
+          git config --global user.email "${{ github.triggering_actor}}@users.noreply.github.com"
+
+          git add .
+          git commit -m 'bump ${{ inputs.semver }}'
+          git tag ${{ inputs.semver }}
+          git push origin ${{ inputs.semver }}
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: ${{ inputs.semver }}
+        tag_name: ${{ inputs.semver }}
