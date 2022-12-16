@@ -1,4 +1,4 @@
-# lo
+# lo - Iterate over slices, maps, channels...
 
 [![tag](https://img.shields.io/github/tag/samber/lo.svg)](https://github.com/samber/lo/releases)
 ![Go Version](https://img.shields.io/badge/Go-%3E%3D%201.18-%23007d9c)
@@ -26,7 +26,7 @@ In the future, 5 to 10 helpers will overlap with those coming into the Go standa
 
 I wanted a **short name**, similar to "Lodash" and no Go package currently uses this name.
 
-![](img/logo-full.png)
+![lo](img/logo-full.png)
 
 ## 🚀 Install
 
