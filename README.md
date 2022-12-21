@@ -555,6 +555,8 @@ randomOrder := lo.Shuffle[int]([]int{0, 1, 2, 3, 4, 5})
 
 Reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
 
+⚠️ This helper is **mutable**. This behavior might change in `v2.0.0`. See [#160](https://github.com/samber/lo/issues/160).
+
 ```go
 reverseOrder := lo.Reverse[int]([]int{0, 1, 2, 3, 4, 5})
 // []int{5, 4, 3, 2, 1, 0}
