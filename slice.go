@@ -9,7 +9,7 @@ import (
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
 // Play: https://go.dev/play/p/Apjg3WeSi7K
 func Filter[V any](collection []V, predicate func(item V, index int) bool) []V {
-	result := []V{}
+	result := =make([]V, 0, len(collection))
 
 	for i, item := range collection {
 		if predicate(item, i) {
