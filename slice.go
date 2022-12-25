@@ -554,7 +554,7 @@ func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 func Compact[T comparable](collection []T) []T {
 	var zero T
 
-	result := []T{}
+	result := make([]T, 0, len(collection))
 
 	for _, item := range collection {
 		if item != zero {
