@@ -35,26 +35,8 @@ func RandomString(size int, charset []rune) string {
 
 // Substring return part of a string.
 // Play: https://go.dev/play/p/TQlxQi82Lu1
-func Substring[T ~string](s T, offset int, length uint) T {
-	str := []rune(s)
-	size := len(str)
-
-	if offset < 0 {
-		offset = size + offset
-		if offset < 0 {
-			offset = 0
-		}
-	}
-
-	if offset > size {
-		return Empty[T]()
-	}
-
-	if length > uint(size)-uint(offset) {
-		length = uint(size - offset)
-	}
-
-	return T(str[offset : offset+int(length)])
+func Substring[T ~string](str T, offset int, length uint) T {
+	return T(Subset([]rune(str), offset, length))
 }
 
 // ChunkString returns an array of strings split into groups the length of size. If array can't be split evenly,
