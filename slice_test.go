@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"reflect"
@@ -28,6 +29,20 @@ func TestFilter(t *testing.T) {
 	is.Equal(r2, []string{"foo", "bar"})
 }
 
+func TestFilterErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := FilterErr([]string{"", "foo", "bar", "err"}, func(item string, _ int) (bool, error) {
+		if item == "err" {
+			return false, errors.New("error")
+		}
+		return len(item) > 0, nil
+	})
+	is.Error(err)
+
+}
+
 func TestMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -43,6 +58,19 @@ func TestMap(t *testing.T) {
 	is.Equal(len(result2), 4)
 	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
 	is.Equal(result2, []string{"1", "2", "3", "4"})
+}
+
+func TestMapErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := MapErr([]string{"", "foo", "bar", "err"}, func(item string, _ int) (string, error) {
+		if item == "err" {
+			return item, errors.New("error")
+		}
+		return item + item, nil
+	})
+	is.Error(err)
 }
 
 func TestFilterMap(t *testing.T) {
@@ -68,6 +96,19 @@ func TestFilterMap(t *testing.T) {
 	is.Equal(r2, []string{"xpu", "xpu"})
 }
 
+func TestFilterMapErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := FilterMapErr([]string{"", "foo", "bar", "err"}, func(item string, index int) (string, bool, error) {
+		if item == "err" {
+			return item, false, errors.New("error")
+		}
+		return item + item, len(item) > 0, nil
+	})
+	is.Error(err)
+}
+
 func TestFlatMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -87,6 +128,19 @@ func TestFlatMap(t *testing.T) {
 	is.Equal(len(result2), 10)
 	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello", "Hello"})
 	is.Equal(result2, []string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"})
+}
+
+func TestFlatMapErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := FlatMapErr([]string{"", "foo", "bar", "err"}, func(item string, index int) ([]string, error) {
+		if item == "err" {
+			return nil, errors.New("error")
+		}
+		return []string{item}, nil
+	})
+	is.Error(err)
 }
 
 func TestTimes(t *testing.T) {
@@ -116,6 +170,19 @@ func TestReduce(t *testing.T) {
 	is.Equal(result2, 20)
 }
 
+func TestReduceErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := ReduceErr([]string{"", "foo", "bar", "err"}, func(agg string, item string, _ int) (string, error) {
+		if item == "err" {
+			return "", errors.New("error")
+		}
+		return agg + item, nil
+	}, "")
+	is.Error(err)
+}
+
 func TestReduceRight(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -125,6 +192,19 @@ func TestReduceRight(t *testing.T) {
 	}, []int{})
 
 	is.Equal(result1, []int{4, 5, 2, 3, 0, 1})
+}
+
+func TestReduceRightErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := ReduceRightErr([]string{"", "foo", "bar", "err"}, func(agg string, item string, _ int) (string, error) {
+		if item == "err" {
+			return "", errors.New("error")
+		}
+		return agg + item, nil
+	}, "")
+	is.Error(err)
 }
 
 func TestForEach(t *testing.T) {
@@ -144,6 +224,22 @@ func TestForEach(t *testing.T) {
 	is.ElementsMatch([]string{"a", "b", "c"}, callParams1)
 	is.ElementsMatch([]int{0, 1, 2}, callParams2)
 	is.IsIncreasing(callParams2)
+}
+
+func TestForEachErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	items := []string{}
+
+	err := ForEachErr([]string{"", "foo", "bar", "err"}, func(item string, index int) error {
+		if item == "err" {
+			return errors.New("error")
+		}
+		items = append(items, item)
+		return nil
+	})
+	is.Error(err)
 }
 
 func TestUniq(t *testing.T) {
@@ -168,6 +264,19 @@ func TestUniqBy(t *testing.T) {
 	is.Equal(result1, []int{0, 1, 2})
 }
 
+func TestUniqByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := UniqByErr([]string{"", "foo", "bar", "err"}, func(item string) (int, error) {
+		if item == "err" {
+			return 0, errors.New("error")
+		}
+		return len(item), nil
+	})
+	is.Error(err)
+}
+
 func TestGroupBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -182,6 +291,18 @@ func TestGroupBy(t *testing.T) {
 		1: {1, 4},
 		2: {2, 5},
 	})
+}
+
+func TestGroupByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	_, err := GroupByErr([]string{"", "foo", "bar", "err"}, func(item string) (int, error) {
+		if item == "err" {
+			return 0, errors.New("error")
+		}
+		return len(item), nil
+	})
+	is.Error(err)
 }
 
 func TestChunk(t *testing.T) {
@@ -220,6 +341,23 @@ func TestPartitionBy(t *testing.T) {
 
 	is.Equal(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
 	is.Equal(result2, [][]int{})
+}
+
+func TestPartitionByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	oddEven := func(x int) (string, error) {
+		if x == 0 {
+			return "negative", errors.New("error")
+		} else if x%2 == 0 {
+			return "even", nil
+		}
+		return "odd", nil
+	}
+
+	_, err := PartitionByErr([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
+	is.Error(err)
 }
 
 func TestFlatten(t *testing.T) {
@@ -340,6 +478,21 @@ func TestRepeatBy(t *testing.T) {
 	is.Equal([]int{0, 1, 4, 9, 16}, result3)
 }
 
+func TestRepeatByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	cb := func(i int) (int, error) {
+		if i == 0 {
+			return 0, errors.New("error")
+		}
+		return int(math.Pow(float64(i), 2)), nil
+	}
+
+	_, err := RepeatByErr(1, cb)
+	is.Error(err)
+}
+
 func TestKeyBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -349,6 +502,19 @@ func TestKeyBy(t *testing.T) {
 	})
 
 	is.Equal(result1, map[int]string{1: "a", 2: "aa", 3: "aaa"})
+}
+
+func TestKeyByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := KeyByErr([]string{"", "a", "aa", "aaa"}, func(str string) (int, error) {
+		if str == "" {
+			return 0, errors.New("error")
+		}
+		return len(str), nil
+	})
+	is.Error(err)
 }
 
 func TestAssociate(t *testing.T) {
@@ -386,9 +552,28 @@ func TestAssociate(t *testing.T) {
 	}
 }
 
+func TestAssociateErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type foo struct {
+		baz string
+		bar int
+	}
+	transform := func(f *foo) (string, int, error) {
+		if f.baz == "" {
+			return f.baz, f.bar, errors.New("error")
+		}
+		return f.baz, f.bar, nil
+	}
+
+	_, err := AssociateErr([]*foo{{baz: "apple", bar: 1}, {baz: "", bar: 2}}, transform)
+	is.Error(err)
+}
+
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
-	
+
 	type foo struct {
 		baz string
 		bar int
@@ -462,6 +647,19 @@ func TestDropWhile(t *testing.T) {
 	}))
 }
 
+func TestDropWhileErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := DropWhileErr([]int{5, 4, 3, 2, 1, 0}, func(item int) (bool, error) {
+		if item == 0 {
+			return false, errors.New("error")
+		}
+		return true, nil
+	})
+	is.Error(err)
+}
+
 func TestDropRightWhile(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -483,6 +681,19 @@ func TestDropRightWhile(t *testing.T) {
 	}))
 }
 
+func TestDropRightWhileErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := DropRightWhileErr([]int{5, 4, 3, 2, 1, 0}, func(item int) (bool, error) {
+		if item == 0 {
+			return false, errors.New("error")
+		}
+		return true, nil
+	})
+	is.Error(err)
+}
+
 func TestReject(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -498,6 +709,19 @@ func TestReject(t *testing.T) {
 	})
 
 	is.Equal(r2, []string{"foo", "bar"})
+}
+
+func TestRejectErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := RejectErr([]int{0, 1, 2, 3, 4}, func(x int, _ int) (bool, error) {
+		if x == 0 {
+			return false, errors.New("error")
+		}
+		return x%2 == 0, nil
+	})
+	is.Error(err)
 }
 
 func TestCount(t *testing.T) {
@@ -534,6 +758,19 @@ func TestCountBy(t *testing.T) {
 	is.Equal(count3, 0)
 }
 
+func TestCountByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := CountByErr([]int{0, 1, 2}, func(item int) (bool, error) {
+		if item == 0 {
+			return false, errors.New("error")
+		}
+		return item%2 == 0, nil
+	})
+	is.Error(err)
+}
+
 func TestCountValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -567,6 +804,20 @@ func TestCountValuesBy(t *testing.T) {
 	is.Equal(map[bool]int{true: 2, false: 1}, result3)
 	is.Equal(map[int]int{0: 1, 3: 2}, result4)
 	is.Equal(map[int]int{3: 3}, result5)
+}
+
+func TestCountValuesByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	oddEven := func(v int) (bool, error) {
+		if v == 0 {
+			return false, errors.New("error")
+		}
+		return v%2 == 0, nil
+	}
+	_, err := CountValuesByErr([]int{0, 1, 2}, oddEven)
+	is.Error(err)
 }
 
 func TestSubset(t *testing.T) {
@@ -626,7 +877,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
-	
+
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
@@ -758,4 +1009,17 @@ func TestIsSortedByKey(t *testing.T) {
 		ret, _ := strconv.Atoi(s)
 		return ret
 	}))
+}
+
+func TestIsSortedByKeyErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	_, err := IsSortedByKeyErr([]string{"", "a", "bb", "ccc"}, func(s string) (int, error) {
+		if s == "" {
+			return 0, errors.New("error")
+		}
+		return len(s), nil
+	})
+	is.Error(err)
 }
