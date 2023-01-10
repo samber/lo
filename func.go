@@ -39,3 +39,9 @@ func Partial5[T1, T2, T3, T4, T5, T6, R any](f func(T1, T2, T3, T4, T5, T6) R, a
 		return f(arg1, t2, t3, t4, t5, t6)
 	}
 }
+
+func Compose[T, U, V any](f func(U) V, g func(T) U) func (T) V {
+	return func(t T) V {
+		return f(g(t))
+	}
+}

@@ -78,3 +78,19 @@ func TestPartial5(t *testing.T) {
 	is.Equal("26", f(10, 9, -3, 0, 5))
 	is.Equal("21", f(-5, 8, 7, -1, 7))
 }
+
+func TestCompose(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	sumBy2 := func(x int) int { return x + 2 }
+
+	mulBy3 := func(x int) int { return x * 3 }
+
+	sumBy2AndMulBy3 := Compose(mulBy3, sumBy2)
+	mulBy3AndSumBy2 := Compose(sumBy2, mulBy3)
+
+	val := 1
+	is.Equal(9, sumBy2AndMulBy3(val))
+	is.Equal(5, mulBy3AndSumBy2(val))
+}
