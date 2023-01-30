@@ -2667,13 +2667,13 @@ str, ok := lo.TryOr(func() (string, error) {
 // world
 // false
 
-ok := lo.TryOr(func() error {
+str, ok := lo.TryOr(func() error {
     return "hello", nil
 }, "world")
 // hello
 // true
 
-ok := lo.TryOr(func() error {
+str, ok := lo.TryOr(func() error {
     return "hello", fmt.Errorf("error")
 }, "world")
 // world
@@ -2684,7 +2684,7 @@ ok := lo.TryOr(func() error {
 
 ### TryOr{0->6}
 
-The same behavior than `TryOr`, but callback returns 2 variables.
+The same behavior than `TryOr`, but callback returns `X` variables.
 
 ```go
 str, nbr, ok := lo.TryOr2(func() (string, int, error) {
