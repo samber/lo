@@ -1400,8 +1400,8 @@ func hash(id uuid.UUID) int {
 }
 
 // Routes messages per TenantID.
-customStrategy := func(message pubsub.AMQPSubMessage, messageIndex uint64, channels []<-chan pubsub.AMQPSubMessage) int {
-    destination := hash(message.TenantID) % len(channels)
+customStrategy := func(message string, messageIndex uint64, channels []<-chan string) int {
+    destination := hash(message) % len(channels)
 
     // check if channel is full
     if len(channels[destination]) < cap(channels[destination]) {
@@ -1535,7 +1535,7 @@ ch := readFromQueue()
 
 // 5 workers
 // prefetch 1k messages per worker
-children := lo.ChannelDispatcher(ch, 5, 1000, DispatchingStrategyFirst[int])
+children := lo.ChannelDispatcher(ch, 5, 1000, lo.DispatchingStrategyFirst[int])
 
 consumer := func(c <-chan int) {
     for {
