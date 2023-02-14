@@ -111,9 +111,9 @@ func TestEntries(t *testing.T) {
 func TestToPairs(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	r1 := ToPairs(map[string]int{"baz": 3, "qux": 4})
-	
+
 	sort.Slice(r1, func(i, j int) bool {
 		return r1[i].Value < r1[j].Value
 	})
@@ -132,7 +132,7 @@ func TestToPairs(t *testing.T) {
 func TestFromEntries(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	r1 := FromEntries([]Entry[string, int]{
 		{
 			Key:   "foo",
@@ -152,7 +152,7 @@ func TestFromEntries(t *testing.T) {
 func TestFromPairs(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	r1 := FromPairs([]Entry[string, int]{
 		{
 			Key:   "baz",
@@ -163,7 +163,7 @@ func TestFromPairs(t *testing.T) {
 			Value: 4,
 		},
 	})
-	
+
 	is.Len(r1, 2)
 	is.Equal(r1["baz"], 3)
 	is.Equal(r1["qux"], 4)
@@ -172,7 +172,7 @@ func TestFromPairs(t *testing.T) {
 func TestInvert(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	r1 := Invert(map[string]int{"a": 1, "b": 2})
 	r2 := Invert(map[string]int{"a": 1, "b": 2, "c": 1})
 
@@ -189,6 +189,46 @@ func TestAssign(t *testing.T) {
 
 	is.Len(result1, 3)
 	is.Equal(result1, map[string]int{"a": 1, "b": 3, "c": 4})
+}
+
+func TestMerge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	m1 := map[string]interface{}{
+		"a": 1,
+		"b": map[string]interface{}{
+			"c": 2,
+			"d": map[string]interface{}{
+				"e": 3,
+				"f": 4,
+			},
+		},
+		"c": 5,
+	}
+	m2 := map[string]interface{}{
+		"a": 1,
+		"b": map[string]interface{}{
+			"c": 2,
+			"d": map[string]interface{}{
+				"e": 3,
+				"f": 5,
+			},
+			"e": map[string]interface{}{
+				"a": 1,
+				"b": 2,
+			},
+		},
+		"c": 6,
+	}
+	m3 := map[string]interface{}{
+		"d": 1,
+		"e": 2,
+	}
+
+	r1 := Merge(m1, m2, m3)
+	is.Len(r1, 5)
+	is.Equal(r1, map[string]interface{}{"a": 1, "b": map[string]interface{}{"c": 2, "d": map[string]interface{}{"e": 3, "f": 5}, "e": map[string]interface{}{"a": 1, "b": 2}}, "c": 6, "d": 1, "e": 2})
 }
 
 func TestMapKeys(t *testing.T) {
