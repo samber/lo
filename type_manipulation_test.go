@@ -15,6 +15,19 @@ func TestToPtr(t *testing.T) {
 	is.Equal(*result1, []int{1, 2})
 }
 
+func TestToNonzeroPtr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var str1 string
+	result1 := ToNonzeroPtr(str1)
+	is.Nil(result1)
+
+	str2 := "nonzero"
+	result2 := ToNonzeroPtr(str2)
+	is.Equal(*result2, "nonzero")
+}
+
 func TestFromPtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

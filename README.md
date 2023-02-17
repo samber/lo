@@ -215,6 +215,7 @@ Conditional helpers:
 Type manipulation helpers:
 
 - [ToPtr](#toptr)
+- [ToNonzeroPtr](#tononzeroptr)
 - [FromPtr](#fromptr)
 - [FromPtrOr](#fromptror)
 - [ToSlicePtr](#tosliceptr)
@@ -2126,6 +2127,19 @@ Returns a pointer copy of value.
 
 ```go
 ptr := lo.ToPtr[string]("hello world")
+// *string{"hello world"}
+```
+
+### ToNonzeroPtr
+
+Returns a pointer copy of value if it's nonzero.
+Otherwise, returns nil pointer.
+
+```go
+ptr := lo.ToNonzeroPtr[string]("")
+// nil
+
+ptr := lo.ToNonzeroPtr[string]("hello world")
 // *string{"hello world"}
 ```
 

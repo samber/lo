@@ -5,6 +5,16 @@ func ToPtr[T any](x T) *T {
 	return &x
 }
 
+// ToNonzeroPtr returns a pointer copy of value if it's nonzero.
+// Otherwise, returns nil pointer.
+func ToNonzeroPtr[T comparable](x T) *T {
+	var zero T
+	if x == zero {
+		return nil
+	}
+	return &x
+}
+
 // FromPtr returns the pointer value or empty.
 func FromPtr[T any](x *T) T {
 	if x == nil {
