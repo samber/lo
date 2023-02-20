@@ -1,4 +1,4 @@
-# lo
+# lo - Iterate over slices, maps, channels...
 
 [![tag](https://img.shields.io/github/tag/samber/lo.svg)](https://github.com/samber/lo/releases)
 ![Go Version](https://img.shields.io/badge/Go-%3E%3D%201.18-%23007d9c)
@@ -26,7 +26,7 @@ In the future, 5 to 10 helpers will overlap with those coming into the Go standa
 
 I wanted a **short name**, similar to "Lodash" and no Go package currently uses this name.
 
-![](img/logo-full.png)
+![lo](img/logo-full.png)
 
 ## 🚀 Install
 
@@ -38,7 +38,7 @@ This library is v1 and follows SemVer strictly.
 
 No breaking changes will be made to exported APIs before v2.0.0.
 
-This library has no dependencies except the Go std lib.
+This library has no dependencies outside the Go standard library.
 
 ## 💡 Usage
 
@@ -555,6 +555,8 @@ randomOrder := lo.Shuffle[int]([]int{0, 1, 2, 3, 4, 5})
 ### Reverse
 
 Reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
+
+⚠️ This helper is **mutable**. This behavior might change in `v2.0.0`. See [#160](https://github.com/samber/lo/issues/160).
 
 ```go
 reverseOrder := lo.Reverse[int]([]int{0, 1, 2, 3, 4, 5})
@@ -1399,8 +1401,8 @@ func hash(id uuid.UUID) int {
 }
 
 // Routes messages per TenantID.
-customStrategy := func(message pubsub.AMQPSubMessage, messageIndex uint64, channels []<-chan pubsub.AMQPSubMessage) int {
-    destination := hash(message.TenantID) % len(channels)
+customStrategy := func(message string, messageIndex uint64, channels []<-chan string) int {
+    destination := hash(message) % len(channels)
 
     // check if channel is full
     if len(channels[destination]) < cap(channels[destination]) {
@@ -1534,7 +1536,7 @@ ch := readFromQueue()
 
 // 5 workers
 // prefetch 1k messages per worker
-children := lo.ChannelDispatcher(ch, 5, 1000, DispatchingStrategyFirst[int])
+children := lo.ChannelDispatcher(ch, 5, 1000, lo.DispatchingStrategyFirst[int])
 
 consumer := func(c <-chan int) {
     for {
@@ -2682,13 +2684,13 @@ str, ok := lo.TryOr(func() (string, error) {
 // world
 // false
 
-ok := lo.TryOr(func() error {
+str, ok := lo.TryOr(func() error {
     return "hello", nil
 }, "world")
 // hello
 // true
 
-ok := lo.TryOr(func() error {
+str, ok := lo.TryOr(func() error {
     return "hello", fmt.Errorf("error")
 }, "world")
 // world
@@ -2699,7 +2701,7 @@ ok := lo.TryOr(func() error {
 
 ### TryOr{0->6}
 
-The same behavior than `TryOr`, but callback returns 2 variables.
+The same behavior than `TryOr`, but callback returns `X` variables.
 
 ```go
 str, nbr, ok := lo.TryOr2(func() (string, int, error) {
