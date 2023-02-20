@@ -96,6 +96,14 @@ func OmitByValues[K comparable, V comparable](in map[K]V, values []V) map[K]V {
 	return r
 }
 
+// ValueOr returns the value of the given key or the fallback value if the key is not present.
+func ValueOr[K comparable, V any](in map[K]V, key K, fallback V) V {
+	if v, ok := in[key]; ok {
+		return v
+	}
+	return fallback
+}
+
 // Entries transforms a map into array of key/value pairs.
 // Play:
 func Entries[K comparable, V any](in map[K]V) []Entry[K, V] {

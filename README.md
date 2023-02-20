@@ -190,6 +190,7 @@ Supported search helpers:
 - [Find](#find)
 - [FindIndexOf](#findindexof)
 - [FindLastIndexOf](#findlastindexof)
+- [FindOrElse](#findorelse)
 - [FindKey](#findkey)
 - [FindKeyBy](#findkeyby)
 - [FindUniques](#finduniques)
@@ -1800,6 +1801,22 @@ str, index, ok := lo.FindLastIndexOf[string]([]string{"foobar"}, func(i string) 
     return i == "b"
 })
 // "", -1, false
+```
+
+### FindOrElse
+
+Search an element in a slice based on a predicate. It returns element and true if element was found.
+
+```go
+str := lo.FindOrElse[string]([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
+    return i == "b"
+})
+// "b"
+
+str := lo.FindOrElse[string]([]string{"foobar"}, "x", func(i string) bool {
+    return i == "b"
+})
+// "x"
 ```
 
 ### FindKey
