@@ -318,7 +318,7 @@ matching := lo.FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboa
 
 ### FlatMap
 
-Manipulates a slice and transforms and flattens it to a slice of another type.
+Manipulates a slice and transforms and flattens it to a slice of another type. The transform function can either return a slice or a `nil`, and in the `nil` case no value is added to the final slice.
 
 ```go
 lo.FlatMap[int, string]([]int{0, 1, 2}, func(x int, _ int) []string {
