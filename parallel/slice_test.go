@@ -98,3 +98,27 @@ func TestPartitionBy(t *testing.T) {
 	is.ElementsMatch(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
 	is.Equal(result2, [][]int{})
 }
+
+func TestFilter(t *testing.T) {
+	is := assert.New(t)
+
+	r1 := Filter([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+		return x%2 == 0
+	})
+
+	sort.Slice(r1, func(i, j int) bool {
+		return r1[i] < r1[j]
+	})
+
+	is.Equal(r1, []int{2, 4})
+
+	r2 := Filter([]string{"", "bar", "", "foo", ""}, func(x string, _ int) bool {
+		return len(x) > 0
+	})
+
+	sort.Slice(r2, func(i, j int) bool {
+		return r2[i] < r2[j]
+	})
+
+	is.Equal(r2, []string{"bar", "foo"})
+}
