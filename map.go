@@ -173,6 +173,25 @@ func Assign[K comparable, V any](maps ...map[K]V) map[K]V {
 	return out
 }
 
+// AssignByPartition merges multiple maps from left to right and
+// splits them into groups. The grouping is generated from the results
+// of running each element of collection through iteratee.
+func AssignByPartition[K comparable, V any, T comparable](iteratee func(key K, value V) T, maps ...map[K]V) map[T]map[K]V {
+	out := map[T]map[K]V{}
+
+	for _, m := range maps {
+		for k, v := range m {
+			partition := iteratee(k, v)
+			if _, ok := out[partition]; !ok {
+				out[partition] = map[K]V{}
+			}
+			out[partition][k] = v
+		}
+	}
+
+	return out
+}
+
 // MapKeys manipulates a map keys and transforms it to a map of another type.
 // Play: https://go.dev/play/p/9_4WPIqOetJ
 func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value V, key K) R) map[R]V {
