@@ -260,3 +260,71 @@ func TestWithoutEmpty(t *testing.T) {
 	is.Equal(result2, []int{1, 2})
 	is.Equal(result3, []int{})
 }
+
+func TestSlicesEqualUnordered(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.True(SlicesEqualUnordered([]string{"aa", "bb", "cc"}, []string{"aa", "bb", "cc"}))
+
+	is.True(SlicesEqualUnordered([]string{"aa", "bb", "cc"}, []string{"bb", "aa", "cc"}))
+
+	is.True(SlicesEqualUnordered([]string{"aa", "aa", "bb", "cc"}, []string{"aa", "aa", "bb", "cc"}))
+
+	is.True(SlicesEqualUnordered([]string{"aa", "aa", "bb", "cc"}, []string{"aa", "bb", "cc", "aa"}))
+
+	is.True(SlicesEqualUnordered([]string{}, []string{}))
+
+	is.False(SlicesEqualUnordered([]string{}, nil))
+
+	is.False(SlicesEqualUnordered([]string{"aa", "bb"}, []string{"aa", "bb", "cc"}))
+
+	is.False(SlicesEqualUnordered([]string{"aa", "bb", "cc"}, []string{"aa", "bb", "dd"}))
+
+	is.False(SlicesEqualUnordered([]string{"aa", "cc", "bb", "cc"}, []string{"aa", "aa", "bb", "cc"}))
+
+	is.True(SlicesEqualUnordered([]int{1, 2, 3}, []int{1, 2, 3}))
+
+	is.True(SlicesEqualUnordered([]int{1, 2, 3}, []int{2, 1, 3}))
+
+	is.True(SlicesEqualUnordered([]int{1, 1, 2, 3}, []int{1, 1, 2, 3}))
+
+	is.True(SlicesEqualUnordered([]int{1, 1, 2, 3}, []int{1, 2, 3, 1}))
+
+	is.True(SlicesEqualUnordered([]int{}, []int{}))
+
+	is.False(SlicesEqualUnordered([]int{}, nil))
+
+	is.False(SlicesEqualUnordered([]int{1, 2}, []int{1, 2, 3}))
+
+	is.False(SlicesEqualUnordered([]int{1, 2, 3}, []int{1, 2, 4}))
+
+	is.False(SlicesEqualUnordered([]int{1, 3, 2, 3}, []int{1, 1, 2, 3}))
+
+	a := 1
+	b := 2
+	c := 3
+	d := 4
+	aa := &a
+	bb := &b
+	cc := &c
+	dd := &d
+
+	is.True(SlicesEqualUnordered([]*int{aa, bb, cc}, []*int{aa, bb, cc}))
+
+	is.True(SlicesEqualUnordered([]*int{aa, bb, cc}, []*int{bb, aa, cc}))
+
+	is.True(SlicesEqualUnordered([]*int{aa, aa, bb, cc}, []*int{aa, aa, bb, cc}))
+
+	is.True(SlicesEqualUnordered([]*int{aa, aa, bb, cc}, []*int{aa, bb, cc, aa}))
+
+	is.True(SlicesEqualUnordered([]*int{}, []*int{}))
+
+	is.False(SlicesEqualUnordered([]*int{}, nil))
+
+	is.False(SlicesEqualUnordered([]*int{aa, bb}, []*int{aa, bb, cc}))
+
+	is.False(SlicesEqualUnordered([]*int{aa, bb, cc}, []*int{aa, bb, dd}))
+
+	is.False(SlicesEqualUnordered([]*int{aa, cc, bb, cc}, []*int{aa, aa, bb, cc}))
+}
