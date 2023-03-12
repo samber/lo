@@ -94,6 +94,19 @@ func TestCompose(t *testing.T) {
 	is.Equal(5, mulBy3AndSumBy2(val))
 }
 
+func TestCompose3(t *testing.T) {
+	t.Parallel()
+
+	sumBy2MulBy3AndSumBy2 := Compose3(sumBy2, mulBy3, sumBy2)
+	mulBy3SumBy2AndMulBy3 := Compose3(mulBy3, sumBy2, mulBy3)
+
+	is := assert.New(t)
+
+	val := 1
+	is.Equal(11, sumBy2MulBy3AndSumBy2(val))
+	is.Equal(15, mulBy3SumBy2AndMulBy3(val))
+}
+
 func TestPipe(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -104,4 +117,16 @@ func TestPipe(t *testing.T) {
 	val := 1
 	is.Equal(9, sumBy2AndMulBy3(val))
 	is.Equal(5, mulBy3AndSumBy2(val))
+}
+
+func TestPipe3(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	sumBy2MulBy3AndSumBy2 := Pipe3(sumBy2, mulBy3, sumBy2)
+	mulBy3SumBy2AndMulBy3 := Pipe3(mulBy3, sumBy2, mulBy3)
+
+	val := 1
+	is.Equal(11, sumBy2MulBy3AndSumBy2(val))
+	is.Equal(15, mulBy3SumBy2AndMulBy3(val))
 }

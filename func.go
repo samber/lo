@@ -47,7 +47,15 @@ func Compose[T, U, V any](f func(U) V, g func(T) U) func (T) V {
 	}
 }
 
+func Compose3[T1, T2, T3, R any](f func(T3) R, g func(T2) T3, h func(T1) T2) func (T1) R {
+	return Compose(f, Compose(g, h))
+}
+
 // Pipe returns new function that, when called, returns the result of calling f and then g with the result from f
 func Pipe[T, U, V any](f func(T) U, g func(U) V) func (T) V {
 	return Compose(g, f)
+}
+
+func Pipe3[T1, T2, T3, R any](f func(T1) T2, g func(T2) T3, h func(T3) R) func (T1) R {
+	return Pipe(f, Pipe(g, h))
 }
