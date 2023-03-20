@@ -51,6 +51,8 @@ func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R
 }
 
 // FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
+// The transform function can either return a slice or a `nil`, and in the `nil` case
+// no value is added to the final slice.
 // Play: https://go.dev/play/p/YSoYmQTA8-U
 func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R) []R {
 	result := make([]R, 0, len(collection))

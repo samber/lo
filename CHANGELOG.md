@@ -7,6 +7,13 @@
 Adding:
 - lo.ValueOr
 - lo.DebounceBy
+- lo.EmptyableToPtr
+
+Improvement:
+- Substring: add support for non-english chars
+
+Fix:
+- Async: Fix goroutine leak
 
 ## 1.37.0 (2022-12-15)
 
