@@ -29,6 +29,17 @@ func TestValues(t *testing.T) {
 	is.Equal(r1, []int{1, 2})
 }
 
+func TestValueOr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := ValueOr(map[string]int{"foo": 1}, "bar", 2)
+	is.Equal(r1, 2)
+
+	r2 := ValueOr(map[string]int{"foo": 1}, "foo", 2)
+	is.Equal(r2, 1)
+}
+
 func TestPickBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -85,17 +96,6 @@ func TestOmitByValues(t *testing.T) {
 	r1 := OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
 	is.Equal(r1, map[string]int{"bar": 2})
-}
-
-func TestValueOr(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	r1 := ValueOr(map[string]int{"foo": 1}, "bar", 2)
-	is.Equal(r1, 2)
-
-	r2 := ValueOr(map[string]int{"foo": 1}, "foo", 2)
-	is.Equal(r2, 1)
 }
 
 func TestEntries(t *testing.T) {
