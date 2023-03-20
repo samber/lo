@@ -13,12 +13,12 @@ type debounce struct {
 	callbacks []func()
 }
 
-func (d *debounce) reset() *debounce {
+func (d *debounce) reset() {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
 	if d.done {
-		return d
+		return
 	}
 
 	if d.timer != nil {
@@ -30,7 +30,6 @@ func (d *debounce) reset() *debounce {
 			f()
 		}
 	})
-	return d
 }
 
 func (d *debounce) cancel() {
@@ -58,6 +57,87 @@ func NewDebounce(duration time.Duration, f ...func()) (func(), func()) {
 
 	return func() {
 		d.reset()
+	}, d.cancel
+}
+
+type debounceByItem struct {
+	mu    *sync.Mutex
+	timer *time.Timer
+	count int
+}
+
+type debounceBy[T comparable] struct {
+	after     time.Duration
+	mu        *sync.Mutex
+	items     map[T]*debounceByItem
+	callbacks []func(key T, count int)
+}
+
+func (d *debounceBy[T]) reset(key T) {
+	d.mu.Lock()
+	if _, ok := d.items[key]; !ok {
+		d.items[key] = &debounceByItem{
+			mu:    new(sync.Mutex),
+			timer: nil,
+		}
+	}
+
+	item := d.items[key]
+
+	d.mu.Unlock()
+
+	item.mu.Lock()
+	defer item.mu.Unlock()
+
+	item.count++
+
+	if item.timer != nil {
+		item.timer.Stop()
+	}
+
+	item.timer = time.AfterFunc(d.after, func() {
+		item.mu.Lock()
+		count := item.count
+		item.count = 0
+		item.mu.Unlock()
+
+		for _, f := range d.callbacks {
+			f(key, count)
+		}
+
+	})
+}
+
+func (d *debounceBy[T]) cancel(key T) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
+	if item, ok := d.items[key]; ok {
+		item.mu.Lock()
+
+		if item.timer != nil {
+			item.timer.Stop()
+			item.timer = nil
+		}
+
+		item.mu.Unlock()
+
+		delete(d.items, key)
+	}
+}
+
+// NewDebounceBy creates a debounced instance for each distinct key, that delays invoking functions given until after wait milliseconds have elapsed.
+// Play: https://go.dev/play/p/d3Vpt6pxhY8
+func NewDebounceBy[T comparable](duration time.Duration, f ...func(key T, count int)) (func(key T), func(key T)) {
+	d := &debounceBy[T]{
+		after:     duration,
+		mu:        new(sync.Mutex),
+		items:     map[T]*debounceByItem{},
+		callbacks: f,
+	}
+
+	return func(key T) {
+		d.reset(key)
 	}, d.cancel
 }
 
