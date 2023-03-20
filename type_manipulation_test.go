@@ -15,6 +15,24 @@ func TestToPtr(t *testing.T) {
 	is.Equal(*result1, []int{1, 2})
 }
 
+func TestEmptyableToPtr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Nil(EmptyableToPtr(0))
+	is.Nil(EmptyableToPtr(""))
+	is.Nil(EmptyableToPtr[[]int](nil))
+	is.Nil(EmptyableToPtr[map[int]int](nil))
+	is.Nil(EmptyableToPtr[error](nil))
+
+	is.Equal(*EmptyableToPtr(42), 42)
+	is.Equal(*EmptyableToPtr("nonempty"), "nonempty")
+	is.Equal(*EmptyableToPtr([]int{}), []int{})
+	is.Equal(*EmptyableToPtr([]int{1, 2}), []int{1, 2})
+	is.Equal(*EmptyableToPtr(map[int]int{}), map[int]int{})
+	is.Equal(*EmptyableToPtr(assert.AnError), assert.AnError)
+}
+
 func TestFromPtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
