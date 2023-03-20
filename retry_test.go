@@ -2,6 +2,7 @@ package lo
 
 import (
 	"fmt"
+	"sync"
 	"testing"
 	"time"
 
@@ -313,6 +314,94 @@ func TestDebounce(t *testing.T) {
 			cancel()
 		}
 	}
+}
+
+func TestDebounceBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	mu := sync.Mutex{}
+	output := map[int]int{0: 0, 1: 0, 2: 0}
+
+	f1 := func(key int, count int) {
+		mu.Lock()
+		output[key] += count
+		mu.Unlock()
+		// fmt.Printf("[key=%d] 1. Called once after 10ms when func stopped invoking!\n", key)
+	}
+	f2 := func(key int, count int) {
+		mu.Lock()
+		output[key] += count
+		mu.Unlock()
+		// fmt.Printf("[key=%d] 2. Called once after 10ms when func stopped invoking!\n", key)
+	}
+	f3 := func(key int, count int) {
+		mu.Lock()
+		output[key] += count
+		mu.Unlock()
+		// fmt.Printf("[key=%d] 3. Called once after 10ms when func stopped invoking!\n", key)
+	}
+
+	d1, _ := NewDebounceBy(10*time.Millisecond, f1)
+
+	// execute 3 times
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 10; j++ {
+			for k := 0; k < 3; k++ {
+				d1(k)
+			}
+		}
+		time.Sleep(20 * time.Millisecond)
+	}
+
+	mu.Lock()
+	is.EqualValues(output[0], 30)
+	is.EqualValues(output[1], 30)
+	is.EqualValues(output[2], 30)
+	mu.Unlock()
+
+	d2, _ := NewDebounceBy(10*time.Millisecond, f2)
+
+	// execute once because it is always invoked and only last invoke is worked after 100ms
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 5; j++ {
+			for k := 0; k < 3; k++ {
+				d2(k)
+			}
+		}
+		time.Sleep(5 * time.Millisecond)
+	}
+
+	time.Sleep(10 * time.Millisecond)
+
+	mu.Lock()
+	is.EqualValues(output[0], 45)
+	is.EqualValues(output[1], 45)
+	is.EqualValues(output[2], 45)
+	mu.Unlock()
+
+	// execute once because it is canceled after 200ms.
+	d3, cancel := NewDebounceBy(10*time.Millisecond, f3)
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 10; j++ {
+			for k := 0; k < 3; k++ {
+				d3(k)
+			}
+		}
+
+		time.Sleep(20 * time.Millisecond)
+		if i == 0 {
+			for k := 0; k < 3; k++ {
+				cancel(k)
+			}
+		}
+	}
+
+	mu.Lock()
+	is.EqualValues(output[0], 75)
+	is.EqualValues(output[1], 75)
+	is.EqualValues(output[2], 75)
+	mu.Unlock()
 }
 
 func TestTransation(t *testing.T) {
