@@ -6,38 +6,80 @@ package lo
 import (
 	"fmt"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
 func ExampleNewDebounce() {
-	i := 0
-	calls := []int{}
+	i := int32(0)
+	calls := []int32{}
 	mu := sync.Mutex{}
 
 	debounce, cancel := NewDebounce(time.Millisecond, func() {
 		mu.Lock()
 		defer mu.Unlock()
-		calls = append(calls, i)
+		calls = append(calls, atomic.LoadInt32(&i))
 	})
 
 	debounce()
-	i++
+	atomic.AddInt32(&i, 1)
 
 	time.Sleep(5 * time.Millisecond)
 
 	debounce()
-	i++
+	atomic.AddInt32(&i, 1)
 	debounce()
-	i++
+	atomic.AddInt32(&i, 1)
 	debounce()
-	i++
+	atomic.AddInt32(&i, 1)
 
 	time.Sleep(5 * time.Millisecond)
 
 	cancel()
 
+	mu.Lock()
 	fmt.Printf("%v", calls)
+	mu.Unlock()
 	// Output: [1 4]
+}
+
+func ExampleNewDebounceBy() {
+	calls := map[string][]int{}
+	mu := sync.Mutex{}
+
+	debounce, cancel := NewDebounceBy(time.Millisecond, func(userID string, count int) {
+		mu.Lock()
+		defer mu.Unlock()
+
+		if _, ok := calls[userID]; !ok {
+			calls[userID] = []int{}
+		}
+
+		calls[userID] = append(calls[userID], count)
+	})
+
+	debounce("samuel")
+	debounce("john")
+
+	time.Sleep(5 * time.Millisecond)
+
+	debounce("john")
+	debounce("john")
+	debounce("samuel")
+	debounce("john")
+
+	time.Sleep(5 * time.Millisecond)
+
+	cancel("samuel")
+	cancel("john")
+
+	mu.Lock()
+	fmt.Printf("samuel: %v\n", calls["samuel"])
+	fmt.Printf("john: %v\n", calls["john"])
+	mu.Unlock()
+	// Output:
+	// samuel: [1 1]
+	// john: [1 3]
 }
 
 func ExampleAttempt() {

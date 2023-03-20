@@ -120,6 +120,7 @@ Supported helpers for slices:
 Supported helpers for maps:
 
 - [Keys](#keys)
+- [ValueOr](#valueor)
 - [Values](#values)
 - [PickBy](#pickby)
 - [PickByKeys](#pickbykeys)
@@ -238,6 +239,7 @@ Concurrency helpers:
 - [AttemptWithDelay](#attemptwithdelay)
 - [AttemptWhileWithDelay](#attemptwhilewithdelay)
 - [Debounce](#debounce)
+- [DebounceBy](#debounceby)
 - [Synchronize](#synchronize)
 - [Async](#async)
 - [Transaction](#transaction)
@@ -941,6 +943,20 @@ values := lo.Values[string, int](map[string]int{"foo": 1, "bar": 2})
 ```
 
 [[play](https://go.dev/play/p/nnRTQkzQfF6)]
+
+### ValueOr
+
+Creates an array of the map values.
+
+```go
+value := lo.ValueOr[string, int](map[string]int{"foo": 1, "bar": 2}, "foo", 42)
+// 1
+
+value := lo.ValueOr[string, int](map[string]int{"foo": 1, "bar": 2}, "baz", 42)
+// 42
+```
+
+[[play](https://go.dev/play/p/bAq9mHErB4V)]
 
 ### PickBy
 
@@ -2446,6 +2462,28 @@ cancel()
 
 [[play](https://go.dev/play/p/mz32VMK2nqe)]
 
+### DebounceBy
+
+`NewDebounceBy` creates a debounced instance for each distinct key, that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
+
+```go
+f := func(key string, count int) {
+    println(key + ": Called once after 100ms when debounce stopped invoking!")
+}
+
+debounce, cancel := lo.NewDebounceBy(100 * time.Millisecond, f)
+for j := 0; j < 10; j++ {
+    debounce("first key")
+    debounce("second key")
+}
+
+time.Sleep(1 * time.Second)
+cancel("first key")
+cancel("second key")
+```
+
+[[play](https://go.dev/play/p/d3Vpt6pxhY8)]
+
 ### Synchronize
 
 Wraps the underlying callback in a mutex. It receives an optional mutex.
@@ -2837,6 +2875,8 @@ ok  	github.com/samber/lo	6.657s
 - Fix [open issues](https://github.com/samber/lo/issues) or request new features
 
 Don't hesitate ;)
+
+Helper naming: helpers must be self explanatory and respect standards (other languages, libraries...). Feel free to suggest many names in your contributions.
 
 ### With Docker
 
