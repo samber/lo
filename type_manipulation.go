@@ -10,6 +10,7 @@ func ToPtr[T any](x T) *T {
 // EmptyableToPtr returns a pointer copy of value if it's nonzero.
 // Otherwise, returns nil pointer.
 func EmptyableToPtr[T any](x T) *T {
+	// 🤮
 	isZero := reflect.ValueOf(&x).Elem().IsZero()
 	if isZero {
 		return nil
