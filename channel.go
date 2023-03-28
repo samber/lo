@@ -12,13 +12,13 @@ type DispatchingStrategy[T any] func(msg T, index uint64, channels []<-chan T) i
 // Close events are propagated to children.
 // Underlying channels can have a fixed buffer capacity or be unbuffered when cap is 0.
 func ChannelDispatcher[T any](stream <-chan T, count int, channelBufferCap int, strategy DispatchingStrategy[T]) []<-chan T {
-	children := createChannels[T](count, channelBufferCap)
+	children := CreateChannels[T](count, channelBufferCap)
 
-	roChildren := channelsToReadOnly(children)
+	roChildren := ChannelsToReadOnly(children)
 
 	go func() {
 		// propagate channel closing to children
-		defer closeChannels(children)
+		defer CloseChannels(children)
 
 		var i uint64 = 0
 
@@ -38,7 +38,7 @@ func ChannelDispatcher[T any](stream <-chan T, count int, channelBufferCap int, 
 	return roChildren
 }
 
-func createChannels[T any](count int, channelBufferCap int) []chan T {
+func CreateChannels[T any](count int, channelBufferCap int) []chan T {
 	children := make([]chan T, 0, count)
 
 	for i := 0; i < count; i++ {
@@ -48,7 +48,7 @@ func createChannels[T any](count int, channelBufferCap int) []chan T {
 	return children
 }
 
-func channelsToReadOnly[T any](children []chan T) []<-chan T {
+func ChannelsToReadOnly[T any](children []chan T) []<-chan T {
 	roChildren := make([]<-chan T, 0, len(children))
 
 	for i := range children {
@@ -58,7 +58,7 @@ func channelsToReadOnly[T any](children []chan T) []<-chan T {
 	return roChildren
 }
 
-func closeChannels[T any](children []chan T) {
+func CloseChannels[T any](children []chan T) {
 	for i := 0; i < len(children); i++ {
 		close(children[i])
 	}
@@ -290,7 +290,7 @@ func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 // When upstream channel reach EOF, downstream channels close. If any downstream
 // channels is full, broadcasting is paused.
 func FanOut[T any](count int, channelsBufferCap int, upstream <-chan T) []<-chan T {
-	downstreams := createChannels[T](count, channelsBufferCap)
+	downstreams := CreateChannels[T](count, channelsBufferCap)
 
 	go func() {
 		for msg := range upstream {
@@ -305,5 +305,5 @@ func FanOut[T any](count int, channelsBufferCap int, upstream <-chan T) []<-chan
 		}
 	}()
 
-	return channelsToReadOnly(downstreams)
+	return ChannelsToReadOnly(downstreams)
 }

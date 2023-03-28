@@ -1,13 +1,15 @@
 //go:build !race
 // +build !race
 
-package lo
+package lo_test
 
 import (
 	"fmt"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/samber/lo"
 )
 
 func ExampleNewDebounce() {
@@ -15,7 +17,7 @@ func ExampleNewDebounce() {
 	calls := []int32{}
 	mu := sync.Mutex{}
 
-	debounce, cancel := NewDebounce(time.Millisecond, func() {
+	debounce, cancel := lo.NewDebounce(time.Millisecond, func() {
 		mu.Lock()
 		defer mu.Unlock()
 		calls = append(calls, atomic.LoadInt32(&i))
@@ -47,7 +49,7 @@ func ExampleNewDebounceBy() {
 	calls := map[string][]int{}
 	mu := sync.Mutex{}
 
-	debounce, cancel := NewDebounceBy(time.Millisecond, func(userID string, count int) {
+	debounce, cancel := lo.NewDebounceBy(time.Millisecond, func(userID string, count int) {
 		mu.Lock()
 		defer mu.Unlock()
 
@@ -83,7 +85,7 @@ func ExampleNewDebounceBy() {
 }
 
 func ExampleAttempt() {
-	count1, err1 := Attempt(2, func(i int) error {
+	count1, err1 := lo.Attempt(2, func(i int) error {
 		if i == 0 {
 			return fmt.Errorf("error")
 		}
@@ -91,7 +93,7 @@ func ExampleAttempt() {
 		return nil
 	})
 
-	count2, err2 := Attempt(2, func(i int) error {
+	count2, err2 := lo.Attempt(2, func(i int) error {
 		if i < 10 {
 			return fmt.Errorf("error")
 		}
@@ -107,7 +109,7 @@ func ExampleAttempt() {
 }
 
 func ExampleAttemptWithDelay() {
-	count1, time1, err1 := AttemptWithDelay(2, time.Millisecond, func(i int, _ time.Duration) error {
+	count1, time1, err1 := lo.AttemptWithDelay(2, time.Millisecond, func(i int, _ time.Duration) error {
 		if i == 0 {
 			return fmt.Errorf("error")
 		}
@@ -115,7 +117,7 @@ func ExampleAttemptWithDelay() {
 		return nil
 	})
 
-	count2, time2, err2 := AttemptWithDelay(2, time.Millisecond, func(i int, _ time.Duration) error {
+	count2, time2, err2 := lo.AttemptWithDelay(2, time.Millisecond, func(i int, _ time.Duration) error {
 		if i < 10 {
 			return fmt.Errorf("error")
 		}
@@ -131,7 +133,7 @@ func ExampleAttemptWithDelay() {
 }
 
 func ExampleTransaction() {
-	transaction := NewTransaction[int]().
+	transaction := lo.NewTransaction[int]().
 		Then(
 			func(state int) (int, error) {
 				fmt.Println("step 1")
@@ -179,7 +181,7 @@ func ExampleTransaction() {
 }
 
 func ExampleTransaction_ok() {
-	transaction := NewTransaction[int]().
+	transaction := lo.NewTransaction[int]().
 		Then(
 			func(state int) (int, error) {
 				return state + 10, nil
@@ -215,7 +217,7 @@ func ExampleTransaction_ok() {
 }
 
 func ExampleTransaction_error() {
-	transaction := NewTransaction[int]().
+	transaction := lo.NewTransaction[int]().
 		Then(
 			func(state int) (int, error) {
 				return state + 10, nil

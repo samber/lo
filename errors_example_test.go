@@ -1,14 +1,16 @@
-package lo
+package lo_test
 
 import (
 	"fmt"
+
+	"github.com/samber/lo"
 )
 
 func ExampleValidate() {
 	i := 42
 
-	err1 := Validate(i < 0, "expected %d < 0", i)
-	err2 := Validate(i > 0, "expected %d > 0", i)
+	err1 := lo.Validate(i < 0, "expected %d < 0", i)
+	err2 := lo.Validate(i > 0, "expected %d > 0", i)
 
 	fmt.Printf("%v\n%v", err1, err2)
 	// Output:
@@ -22,19 +24,19 @@ func ExampleMust() {
 	}()
 
 	// won't panic
-	Must(42, nil)
+	lo.Must(42, nil)
 
 	// won't panic
 	cb := func() (int, error) {
 		return 42, nil
 	}
-	Must(cb())
+	lo.Must(cb())
 
 	// will panic
-	Must(42, fmt.Errorf("my error"))
+	lo.Must(42, fmt.Errorf("my error"))
 
 	// will panic with error message
-	Must(42, fmt.Errorf("world"), "hello")
+	lo.Must(42, fmt.Errorf("world"), "hello")
 }
 
 func ExampleMust0() {
@@ -43,13 +45,13 @@ func ExampleMust0() {
 	}()
 
 	// won't panic
-	Must0(nil)
+	lo.Must0(nil)
 
 	// will panic
-	Must0(fmt.Errorf("my error"))
+	lo.Must0(fmt.Errorf("my error"))
 
 	// will panic with error message
-	Must0(fmt.Errorf("world"), "hello")
+	lo.Must0(fmt.Errorf("world"), "hello")
 }
 
 func ExampleMust1() {
@@ -58,19 +60,19 @@ func ExampleMust1() {
 	}()
 
 	// won't panic
-	Must1(42, nil)
+	lo.Must1(42, nil)
 
 	// won't panic
 	cb := func() (int, error) {
 		return 42, nil
 	}
-	Must1(cb())
+	lo.Must1(cb())
 
 	// will panic
-	Must1(42, fmt.Errorf("my error"))
+	lo.Must1(42, fmt.Errorf("my error"))
 
 	// will panic with error message
-	Must1(42, fmt.Errorf("world"), "hello")
+	lo.Must1(42, fmt.Errorf("world"), "hello")
 }
 
 func ExampleMust2() {
@@ -79,13 +81,13 @@ func ExampleMust2() {
 	}()
 
 	// won't panic
-	Must2(42, "hello", nil)
+	lo.Must2(42, "hello", nil)
 
 	// will panic
-	Must2(42, "hello", fmt.Errorf("my error"))
+	lo.Must2(42, "hello", fmt.Errorf("my error"))
 
 	// will panic with error message
-	Must2(42, "hello", fmt.Errorf("world"), "hello")
+	lo.Must2(42, "hello", fmt.Errorf("world"), "hello")
 }
 
 func ExampleMust3() {
@@ -94,13 +96,13 @@ func ExampleMust3() {
 	}()
 
 	// won't panic
-	Must3(42, "hello", 4.2, nil)
+	lo.Must3(42, "hello", 4.2, nil)
 
 	// will panic
-	Must3(42, "hello", 4.2, fmt.Errorf("my error"))
+	lo.Must3(42, "hello", 4.2, fmt.Errorf("my error"))
 
 	// will panic with error message
-	Must3(42, "hello", 4.2, fmt.Errorf("world"), "hello")
+	lo.Must3(42, "hello", 4.2, fmt.Errorf("world"), "hello")
 }
 
 func ExampleMust4() {
@@ -109,13 +111,13 @@ func ExampleMust4() {
 	}()
 
 	// won't panic
-	Must4(42, "hello", 4.2, true, nil)
+	lo.Must4(42, "hello", 4.2, true, nil)
 
 	// will panic
-	Must4(42, "hello", 4.2, true, fmt.Errorf("my error"))
+	lo.Must4(42, "hello", 4.2, true, fmt.Errorf("my error"))
 
 	// will panic with error message
-	Must4(42, "hello", 4.2, true, fmt.Errorf("world"), "hello")
+	lo.Must4(42, "hello", 4.2, true, fmt.Errorf("world"), "hello")
 }
 
 func ExampleMust5() {
@@ -124,13 +126,13 @@ func ExampleMust5() {
 	}()
 
 	// won't panic
-	Must5(42, "hello", 4.2, true, foo{}, nil)
+	lo.Must5(42, "hello", 4.2, true, foo{}, nil)
 
 	// will panic
-	Must5(42, "hello", 4.2, true, foo{}, fmt.Errorf("my error"))
+	lo.Must5(42, "hello", 4.2, true, foo{}, fmt.Errorf("my error"))
 
 	// will panic with error message
-	Must5(42, "hello", 4.2, true, foo{}, fmt.Errorf("world"), "hello")
+	lo.Must5(42, "hello", 4.2, true, foo{}, fmt.Errorf("world"), "hello")
 }
 
 func ExampleMust6() {
@@ -139,23 +141,23 @@ func ExampleMust6() {
 	}()
 
 	// won't panic
-	Must5(42, "hello", 4.2, true, foo{}, "foobar", nil)
+	lo.Must5(42, "hello", 4.2, true, foo{}, "foobar", nil)
 
 	// will panic
-	Must5(42, "hello", 4.2, true, foo{}, "foobar", fmt.Errorf("my error"))
+	lo.Must5(42, "hello", 4.2, true, foo{}, "foobar", fmt.Errorf("my error"))
 
 	// will panic with error message
-	Must5(42, "hello", 4.2, true, foo{}, "foobar", fmt.Errorf("world"), "hello")
+	lo.Must5(42, "hello", 4.2, true, foo{}, "foobar", fmt.Errorf("world"), "hello")
 }
 
 func ExampleTry() {
-	ok1 := Try(func() error {
+	ok1 := lo.Try(func() error {
 		return nil
 	})
-	ok2 := Try(func() error {
+	ok2 := lo.Try(func() error {
 		return fmt.Errorf("my error")
 	})
-	ok3 := Try(func() error {
+	ok3 := lo.Try(func() error {
 		panic("my error")
 	})
 
@@ -169,13 +171,13 @@ func ExampleTry() {
 }
 
 func ExampleTry1() {
-	ok1 := Try1(func() error {
+	ok1 := lo.Try1(func() error {
 		return nil
 	})
-	ok2 := Try1(func() error {
+	ok2 := lo.Try1(func() error {
 		return fmt.Errorf("my error")
 	})
-	ok3 := Try1(func() error {
+	ok3 := lo.Try1(func() error {
 		panic("my error")
 	})
 
@@ -189,13 +191,13 @@ func ExampleTry1() {
 }
 
 func ExampleTry2() {
-	ok1 := Try2(func() (int, error) {
+	ok1 := lo.Try2(func() (int, error) {
 		return 42, nil
 	})
-	ok2 := Try2(func() (int, error) {
+	ok2 := lo.Try2(func() (int, error) {
 		return 42, fmt.Errorf("my error")
 	})
-	ok3 := Try2(func() (int, error) {
+	ok3 := lo.Try2(func() (int, error) {
 		panic("my error")
 	})
 
@@ -209,13 +211,13 @@ func ExampleTry2() {
 }
 
 func ExampleTry3() {
-	ok1 := Try3(func() (int, string, error) {
+	ok1 := lo.Try3(func() (int, string, error) {
 		return 42, "foobar", nil
 	})
-	ok2 := Try3(func() (int, string, error) {
+	ok2 := lo.Try3(func() (int, string, error) {
 		return 42, "foobar", fmt.Errorf("my error")
 	})
-	ok3 := Try3(func() (int, string, error) {
+	ok3 := lo.Try3(func() (int, string, error) {
 		panic("my error")
 	})
 
@@ -229,13 +231,13 @@ func ExampleTry3() {
 }
 
 func ExampleTry4() {
-	ok1 := Try4(func() (int, string, float64, error) {
+	ok1 := lo.Try4(func() (int, string, float64, error) {
 		return 42, "foobar", 4.2, nil
 	})
-	ok2 := Try4(func() (int, string, float64, error) {
+	ok2 := lo.Try4(func() (int, string, float64, error) {
 		return 42, "foobar", 4.2, fmt.Errorf("my error")
 	})
-	ok3 := Try4(func() (int, string, float64, error) {
+	ok3 := lo.Try4(func() (int, string, float64, error) {
 		panic("my error")
 	})
 
@@ -249,13 +251,13 @@ func ExampleTry4() {
 }
 
 func ExampleTry5() {
-	ok1 := Try5(func() (int, string, float64, bool, error) {
+	ok1 := lo.Try5(func() (int, string, float64, bool, error) {
 		return 42, "foobar", 4.2, true, nil
 	})
-	ok2 := Try5(func() (int, string, float64, bool, error) {
+	ok2 := lo.Try5(func() (int, string, float64, bool, error) {
 		return 42, "foobar", 4.2, true, fmt.Errorf("my error")
 	})
-	ok3 := Try5(func() (int, string, float64, bool, error) {
+	ok3 := lo.Try5(func() (int, string, float64, bool, error) {
 		panic("my error")
 	})
 
@@ -269,13 +271,13 @@ func ExampleTry5() {
 }
 
 func ExampleTry6() {
-	ok1 := Try6(func() (int, string, float64, bool, foo, error) {
+	ok1 := lo.Try6(func() (int, string, float64, bool, foo, error) {
 		return 42, "foobar", 4.2, true, foo{}, nil
 	})
-	ok2 := Try6(func() (int, string, float64, bool, foo, error) {
+	ok2 := lo.Try6(func() (int, string, float64, bool, foo, error) {
 		return 42, "foobar", 4.2, true, foo{}, fmt.Errorf("my error")
 	})
-	ok3 := Try6(func() (int, string, float64, bool, foo, error) {
+	ok3 := lo.Try6(func() (int, string, float64, bool, foo, error) {
 		panic("my error")
 	})
 
@@ -289,13 +291,13 @@ func ExampleTry6() {
 }
 
 func ExampleTryOr() {
-	value1, ok1 := TryOr(func() (int, error) {
+	value1, ok1 := lo.TryOr(func() (int, error) {
 		return 42, nil
 	}, 21)
-	value2, ok2 := TryOr(func() (int, error) {
+	value2, ok2 := lo.TryOr(func() (int, error) {
 		return 42, fmt.Errorf("my error")
 	}, 21)
-	value3, ok3 := TryOr(func() (int, error) {
+	value3, ok3 := lo.TryOr(func() (int, error) {
 		panic("my error")
 	}, 21)
 
@@ -309,13 +311,13 @@ func ExampleTryOr() {
 }
 
 func ExampleTryOr1() {
-	value1, ok1 := TryOr1(func() (int, error) {
+	value1, ok1 := lo.TryOr1(func() (int, error) {
 		return 42, nil
 	}, 21)
-	value2, ok2 := TryOr1(func() (int, error) {
+	value2, ok2 := lo.TryOr1(func() (int, error) {
 		return 42, fmt.Errorf("my error")
 	}, 21)
-	value3, ok3 := TryOr1(func() (int, error) {
+	value3, ok3 := lo.TryOr1(func() (int, error) {
 		panic("my error")
 	}, 21)
 
@@ -329,7 +331,7 @@ func ExampleTryOr1() {
 }
 
 func ExampleTryOr2() {
-	value1, value2, ok3 := TryOr2(func() (int, string, error) {
+	value1, value2, ok3 := lo.TryOr2(func() (int, string, error) {
 		panic("my error")
 	}, 21, "hello")
 
@@ -338,7 +340,7 @@ func ExampleTryOr2() {
 }
 
 func ExampleTryOr3() {
-	value1, value2, value3, ok3 := TryOr3(func() (int, string, bool, error) {
+	value1, value2, value3, ok3 := lo.TryOr3(func() (int, string, bool, error) {
 		panic("my error")
 	}, 21, "hello", false)
 
@@ -347,7 +349,7 @@ func ExampleTryOr3() {
 }
 
 func ExampleTryOr4() {
-	value1, value2, value3, value4, ok3 := TryOr4(func() (int, string, bool, foo, error) {
+	value1, value2, value3, value4, ok3 := lo.TryOr4(func() (int, string, bool, foo, error) {
 		panic("my error")
 	}, 21, "hello", false, foo{bar: "bar"})
 
@@ -356,15 +358,16 @@ func ExampleTryOr4() {
 }
 
 func ExampleTryOr5() {
-	value1, value2, value3, value4, value5, ok3 := TryOr5(func() (int, string, bool, foo, float64, error) {
+	value1, value2, value3, value4, value5, ok3 := lo.TryOr5(func() (int, string, bool, foo, float64, error) {
 		panic("my error")
 	}, 21, "hello", false, foo{bar: "bar"}, 4.2)
 
 	fmt.Printf("%v %v %v %v %v %v\n", value1, value2, value3, value4, value5, ok3)
 	// Output: 21 hello false {bar} 4.2 false
 }
+
 func ExampleTryOr6() {
-	value1, value2, value3, value4, value5, value6, ok3 := TryOr6(func() (int, string, bool, foo, float64, string, error) {
+	value1, value2, value3, value4, value5, value6, ok3 := lo.TryOr6(func() (int, string, bool, foo, float64, string, error) {
 		panic("my error")
 	}, 21, "hello", false, foo{bar: "bar"}, 4.2, "world")
 
@@ -373,13 +376,13 @@ func ExampleTryOr6() {
 }
 
 func ExampleTryWithErrorValue() {
-	err1, ok1 := TryWithErrorValue(func() error {
+	err1, ok1 := lo.TryWithErrorValue(func() error {
 		return nil
 	})
-	err2, ok2 := TryWithErrorValue(func() error {
+	err2, ok2 := lo.TryWithErrorValue(func() error {
 		return fmt.Errorf("my error")
 	})
-	err3, ok3 := TryWithErrorValue(func() error {
+	err3, ok3 := lo.TryWithErrorValue(func() error {
 		panic("my error")
 	})
 
@@ -393,7 +396,7 @@ func ExampleTryWithErrorValue() {
 }
 
 func ExampleTryCatchWithErrorValue() {
-	TryCatchWithErrorValue(
+	lo.TryCatchWithErrorValue(
 		func() error {
 			panic("trigger an error")
 		},
@@ -405,8 +408,7 @@ func ExampleTryCatchWithErrorValue() {
 	// Output: catch: trigger an error
 }
 
-type myError struct {
-}
+type myError struct{}
 
 func (e myError) Error() string {
 	return "my error"
@@ -419,7 +421,7 @@ func ExampleErrorsAs() {
 
 	err := doSomething()
 
-	if rateLimitErr, ok := ErrorsAs[*myError](err); ok {
+	if rateLimitErr, ok := lo.ErrorsAs[*myError](err); ok {
 		fmt.Printf("is type myError, err: %s", rateLimitErr.Error())
 	} else {
 		fmt.Printf("is not type myError")

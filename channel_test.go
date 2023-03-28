@@ -1,10 +1,11 @@
-package lo
+package lo_test
 
 import (
 	"math/rand"
 	"testing"
 	"time"
 
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -22,7 +23,7 @@ func TestChannelDispatcher(t *testing.T) {
 
 	is.Equal(4, len(ch))
 
-	children := ChannelDispatcher(ch, 5, 10, DispatchingStrategyRoundRobin[int])
+	children := lo.ChannelDispatcher(ch, 5, 10, lo.DispatchingStrategyRoundRobin[int])
 	time.Sleep(10 * time.Millisecond)
 
 	// check channels allocation
@@ -92,7 +93,7 @@ func TestChannelDispatcher(t *testing.T) {
 	is.Equal(msg4, 0)
 
 	// unbuffered channels
-	children = ChannelDispatcher(ch, 5, 0, DispatchingStrategyRoundRobin[int])
+	children = lo.ChannelDispatcher(ch, 5, 0, lo.DispatchingStrategyRoundRobin[int])
 	is.Equal(0, cap(children[0]))
 }
 
@@ -101,14 +102,14 @@ func TestDispatchingStrategyRoundRobin(t *testing.T) {
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 
-	children := createChannels[int](3, 2)
-	rochildren := channelsToReadOnly(children)
-	defer closeChannels(children)
+	children := lo.CreateChannels[int](3, 2)
+	rochildren := lo.ChannelsToReadOnly(children)
+	defer lo.CloseChannels(children)
 
-	is.Equal(0, DispatchingStrategyRoundRobin(42, 0, rochildren))
-	is.Equal(1, DispatchingStrategyRoundRobin(42, 1, rochildren))
-	is.Equal(2, DispatchingStrategyRoundRobin(42, 2, rochildren))
-	is.Equal(0, DispatchingStrategyRoundRobin(42, 3, rochildren))
+	is.Equal(0, lo.DispatchingStrategyRoundRobin(42, 0, rochildren))
+	is.Equal(1, lo.DispatchingStrategyRoundRobin(42, 1, rochildren))
+	is.Equal(2, lo.DispatchingStrategyRoundRobin(42, 2, rochildren))
+	is.Equal(0, lo.DispatchingStrategyRoundRobin(42, 3, rochildren))
 }
 
 func TestDispatchingStrategyRandom(t *testing.T) {
@@ -118,15 +119,15 @@ func TestDispatchingStrategyRandom(t *testing.T) {
 	// with this seed, the order of random channels are: 1 - 0
 	rand.Seed(14)
 
-	children := createChannels[int](2, 2)
-	rochildren := channelsToReadOnly(children)
-	defer closeChannels(children)
+	children := lo.CreateChannels[int](2, 2)
+	rochildren := lo.ChannelsToReadOnly(children)
+	defer lo.CloseChannels(children)
 
 	for i := 0; i < 2; i++ {
 		children[1] <- i
 	}
 
-	is.Equal(0, DispatchingStrategyRandom(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyRandom(42, 0, rochildren))
 }
 
 func TestDispatchingStrategyWeightedRandom(t *testing.T) {
@@ -134,11 +135,11 @@ func TestDispatchingStrategyWeightedRandom(t *testing.T) {
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 
-	children := createChannels[int](2, 2)
-	rochildren := channelsToReadOnly(children)
-	defer closeChannels(children)
+	children := lo.CreateChannels[int](2, 2)
+	rochildren := lo.ChannelsToReadOnly(children)
+	defer lo.CloseChannels(children)
 
-	dispatcher := DispatchingStrategyWeightedRandom[int]([]int{0, 42})
+	dispatcher := lo.DispatchingStrategyWeightedRandom[int]([]int{0, 42})
 
 	is.Equal(1, dispatcher(42, 0, rochildren))
 	children[0] <- 0
@@ -152,15 +153,15 @@ func TestDispatchingStrategyFirst(t *testing.T) {
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 
-	children := createChannels[int](2, 2)
-	rochildren := channelsToReadOnly(children)
-	defer closeChannels(children)
+	children := lo.CreateChannels[int](2, 2)
+	rochildren := lo.ChannelsToReadOnly(children)
+	defer lo.CloseChannels(children)
 
-	is.Equal(0, DispatchingStrategyFirst(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyFirst(42, 0, rochildren))
 	children[0] <- 0
-	is.Equal(0, DispatchingStrategyFirst(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyFirst(42, 0, rochildren))
 	children[0] <- 1
-	is.Equal(1, DispatchingStrategyFirst(42, 0, rochildren))
+	is.Equal(1, lo.DispatchingStrategyFirst(42, 0, rochildren))
 }
 
 func TestDispatchingStrategyLeast(t *testing.T) {
@@ -168,19 +169,19 @@ func TestDispatchingStrategyLeast(t *testing.T) {
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 
-	children := createChannels[int](2, 2)
-	rochildren := channelsToReadOnly(children)
-	defer closeChannels(children)
+	children := lo.CreateChannels[int](2, 2)
+	rochildren := lo.ChannelsToReadOnly(children)
+	defer lo.CloseChannels(children)
 
-	is.Equal(0, DispatchingStrategyLeast(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyLeast(42, 0, rochildren))
 	children[0] <- 0
-	is.Equal(1, DispatchingStrategyLeast(42, 0, rochildren))
+	is.Equal(1, lo.DispatchingStrategyLeast(42, 0, rochildren))
 	children[1] <- 0
-	is.Equal(0, DispatchingStrategyLeast(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyLeast(42, 0, rochildren))
 	children[0] <- 1
-	is.Equal(1, DispatchingStrategyLeast(42, 0, rochildren))
+	is.Equal(1, lo.DispatchingStrategyLeast(42, 0, rochildren))
 	children[1] <- 1
-	is.Equal(0, DispatchingStrategyLeast(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyLeast(42, 0, rochildren))
 }
 
 func TestDispatchingStrategyMost(t *testing.T) {
@@ -188,19 +189,19 @@ func TestDispatchingStrategyMost(t *testing.T) {
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 
-	children := createChannels[int](2, 2)
-	rochildren := channelsToReadOnly(children)
-	defer closeChannels(children)
+	children := lo.CreateChannels[int](2, 2)
+	rochildren := lo.ChannelsToReadOnly(children)
+	defer lo.CloseChannels(children)
 
-	is.Equal(0, DispatchingStrategyMost(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyMost(42, 0, rochildren))
 	children[0] <- 0
-	is.Equal(0, DispatchingStrategyMost(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyMost(42, 0, rochildren))
 	children[1] <- 0
-	is.Equal(0, DispatchingStrategyMost(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyMost(42, 0, rochildren))
 	children[0] <- 1
-	is.Equal(0, DispatchingStrategyMost(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyMost(42, 0, rochildren))
 	children[1] <- 1
-	is.Equal(0, DispatchingStrategyMost(42, 0, rochildren))
+	is.Equal(0, lo.DispatchingStrategyMost(42, 0, rochildren))
 }
 
 func TestSliceToChannel(t *testing.T) {
@@ -208,7 +209,7 @@ func TestSliceToChannel(t *testing.T) {
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 
-	ch := SliceToChannel(2, []int{1, 2, 3})
+	ch := lo.SliceToChannel(2, []int{1, 2, 3})
 
 	r1, ok1 := <-ch
 	r2, ok2 := <-ch
@@ -229,8 +230,8 @@ func TestChannelToSlice(t *testing.T) {
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 
-	ch := SliceToChannel(2, []int{1, 2, 3})
-	items := ChannelToSlice(ch)
+	ch := lo.SliceToChannel(2, []int{1, 2, 3})
+	items := lo.ChannelToSlice(ch)
 
 	is.Equal([]int{1, 2, 3}, items)
 }
@@ -249,7 +250,7 @@ func TestGenerate(t *testing.T) {
 
 	i := 0
 
-	for v := range Generator(2, generator) {
+	for v := range lo.Generator(2, generator) {
 		is.Equal(i, v)
 		i++
 	}
@@ -262,11 +263,11 @@ func TestBuffer(t *testing.T) {
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 
-	ch := SliceToChannel(2, []int{1, 2, 3})
+	ch := lo.SliceToChannel(2, []int{1, 2, 3})
 
-	items1, length1, _, ok1 := Buffer(ch, 2)
-	items2, length2, _, ok2 := Buffer(ch, 2)
-	items3, length3, _, ok3 := Buffer(ch, 2)
+	items1, length1, _, ok1 := lo.Buffer(ch, 2)
+	items2, length2, _, ok2 := lo.Buffer(ch, 2)
+	items3, length3, _, ok3 := lo.Buffer(ch, 2)
 
 	is.Equal([]int{1, 2}, items1)
 	is.Equal(2, length1)
@@ -290,29 +291,29 @@ func TestBufferWithTimeout(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 		}
 	}
-	ch := Generator(0, generator)
+	ch := lo.Generator(0, generator)
 
-	items1, length1, _, ok1 := BufferWithTimeout(ch, 20, 15*time.Millisecond)
+	items1, length1, _, ok1 := lo.BufferWithTimeout(ch, 20, 15*time.Millisecond)
 	is.Equal([]int{0, 1}, items1)
 	is.Equal(2, length1)
 	is.True(ok1)
 
-	items2, length2, _, ok2 := BufferWithTimeout(ch, 20, 2*time.Millisecond)
+	items2, length2, _, ok2 := lo.BufferWithTimeout(ch, 20, 2*time.Millisecond)
 	is.Equal([]int{}, items2)
 	is.Equal(0, length2)
 	is.True(ok2)
 
-	items3, length3, _, ok3 := BufferWithTimeout(ch, 1, 30*time.Millisecond)
+	items3, length3, _, ok3 := lo.BufferWithTimeout(ch, 1, 30*time.Millisecond)
 	is.Equal([]int{2}, items3)
 	is.Equal(1, length3)
 	is.True(ok3)
 
-	items4, length4, _, ok4 := BufferWithTimeout(ch, 2, 25*time.Millisecond)
+	items4, length4, _, ok4 := lo.BufferWithTimeout(ch, 2, 25*time.Millisecond)
 	is.Equal([]int{3, 4}, items4)
 	is.Equal(2, length4)
 	is.True(ok4)
 
-	items5, length5, _, ok5 := BufferWithTimeout(ch, 3, 25*time.Millisecond)
+	items5, length5, _, ok5 := lo.BufferWithTimeout(ch, 3, 25*time.Millisecond)
 	is.Equal([]int{}, items5)
 	is.Equal(0, length5)
 	is.False(ok5)
@@ -323,8 +324,8 @@ func TestFanIn(t *testing.T) {
 	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
-	upstreams := createChannels[int](3, 10)
-	roupstreams := channelsToReadOnly(upstreams)
+	upstreams := lo.CreateChannels[int](3, 10)
+	roupstreams := lo.ChannelsToReadOnly(upstreams)
 	for i := range roupstreams {
 		go func(i int) {
 			upstreams[i] <- 1
@@ -332,7 +333,7 @@ func TestFanIn(t *testing.T) {
 			close(upstreams[i])
 		}(i)
 	}
-	out := FanIn(10, roupstreams...)
+	out := lo.FanIn(10, roupstreams...)
 	time.Sleep(10 * time.Millisecond)
 
 	// check input channels
@@ -363,8 +364,8 @@ func TestFanOut(t *testing.T) {
 	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
-	upstream := SliceToChannel(10, []int{0, 1, 2, 3, 4, 5})
-	rodownstreams := FanOut(3, 10, upstream)
+	upstream := lo.SliceToChannel(10, []int{0, 1, 2, 3, 4, 5})
+	rodownstreams := lo.FanOut(3, 10, upstream)
 
 	time.Sleep(10 * time.Millisecond)
 
@@ -375,7 +376,7 @@ func TestFanOut(t *testing.T) {
 	for i := range rodownstreams {
 		is.Equal(6, len(rodownstreams[i]))
 		is.Equal(10, cap(rodownstreams[i]))
-		is.Equal([]int{0, 1, 2, 3, 4, 5}, ChannelToSlice(rodownstreams[i]))
+		is.Equal([]int{0, 1, 2, 3, 4, 5}, lo.ChannelToSlice(rodownstreams[i]))
 	}
 
 	// check it is closed

@@ -1,45 +1,47 @@
-package lo
+package lo_test
 
 import (
 	"fmt"
+
+	"github.com/samber/lo"
 )
 
 func ExampleTernary() {
-	result := Ternary(true, "a", "b")
+	result := lo.Ternary(true, "a", "b")
 
 	fmt.Printf("%v", result)
 	// Output: a
 }
 
 func ExampleTernaryF() {
-	result := TernaryF(true, func() string { return "a" }, func() string { return "b" })
+	result := lo.TernaryF(true, func() string { return "a" }, func() string { return "b" })
 
 	fmt.Printf("%v", result)
 	// Output: a
 }
 
 func ExampleIf() {
-	result1 := If(true, 1).
+	result1 := lo.If(true, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result2 := If(false, 1).
+	result2 := lo.If(false, 1).
 		ElseIf(true, 2).
 		Else(3)
 
-	result3 := If(false, 1).
+	result3 := lo.If(false, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result4 := IfF(true, func() int { return 1 }).
+	result4 := lo.IfF(true, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result5 := IfF(false, func() int { return 1 }).
+	result5 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(true, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result6 := IfF(false, func() int { return 1 }).
+	result6 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
@@ -59,27 +61,27 @@ func ExampleIf() {
 }
 
 func ExampleIfF() {
-	result1 := If(true, 1).
+	result1 := lo.If(true, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result2 := If(false, 1).
+	result2 := lo.If(false, 1).
 		ElseIf(true, 2).
 		Else(3)
 
-	result3 := If(false, 1).
+	result3 := lo.If(false, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result4 := IfF(true, func() int { return 1 }).
+	result4 := lo.IfF(true, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result5 := IfF(false, func() int { return 1 }).
+	result5 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(true, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result6 := IfF(false, func() int { return 1 }).
+	result6 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
@@ -99,27 +101,27 @@ func ExampleIfF() {
 }
 
 func ExampleifElse_ElseIf() {
-	result1 := If(true, 1).
+	result1 := lo.If(true, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result2 := If(false, 1).
+	result2 := lo.If(false, 1).
 		ElseIf(true, 2).
 		Else(3)
 
-	result3 := If(false, 1).
+	result3 := lo.If(false, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result4 := IfF(true, func() int { return 1 }).
+	result4 := lo.IfF(true, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result5 := IfF(false, func() int { return 1 }).
+	result5 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(true, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result6 := IfF(false, func() int { return 1 }).
+	result6 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
@@ -139,27 +141,27 @@ func ExampleifElse_ElseIf() {
 }
 
 func ExampleifElse_ElseIfF() {
-	result1 := If(true, 1).
+	result1 := lo.If(true, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result2 := If(false, 1).
+	result2 := lo.If(false, 1).
 		ElseIf(true, 2).
 		Else(3)
 
-	result3 := If(false, 1).
+	result3 := lo.If(false, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result4 := IfF(true, func() int { return 1 }).
+	result4 := lo.IfF(true, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result5 := IfF(false, func() int { return 1 }).
+	result5 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(true, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result6 := IfF(false, func() int { return 1 }).
+	result6 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
@@ -179,27 +181,27 @@ func ExampleifElse_ElseIfF() {
 }
 
 func ExampleifElse_Else() {
-	result1 := If(true, 1).
+	result1 := lo.If(true, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result2 := If(false, 1).
+	result2 := lo.If(false, 1).
 		ElseIf(true, 2).
 		Else(3)
 
-	result3 := If(false, 1).
+	result3 := lo.If(false, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result4 := IfF(true, func() int { return 1 }).
+	result4 := lo.IfF(true, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result5 := IfF(false, func() int { return 1 }).
+	result5 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(true, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result6 := IfF(false, func() int { return 1 }).
+	result6 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
@@ -219,27 +221,27 @@ func ExampleifElse_Else() {
 }
 
 func ExampleifElse_ElseF() {
-	result1 := If(true, 1).
+	result1 := lo.If(true, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result2 := If(false, 1).
+	result2 := lo.If(false, 1).
 		ElseIf(true, 2).
 		Else(3)
 
-	result3 := If(false, 1).
+	result3 := lo.If(false, 1).
 		ElseIf(false, 2).
 		Else(3)
 
-	result4 := IfF(true, func() int { return 1 }).
+	result4 := lo.IfF(true, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result5 := IfF(false, func() int { return 1 }).
+	result5 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(true, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
-	result6 := IfF(false, func() int { return 1 }).
+	result6 := lo.IfF(false, func() int { return 1 }).
 		ElseIfF(false, func() int { return 2 }).
 		ElseF(func() int { return 3 })
 
@@ -259,32 +261,32 @@ func ExampleifElse_ElseF() {
 }
 
 func ExampleSwitch() {
-	result1 := Switch[int, string](1).
+	result1 := lo.Switch[int, string](1).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result2 := Switch[int, string](2).
+	result2 := lo.Switch[int, string](2).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result3 := Switch[int, string](42).
+	result3 := lo.Switch[int, string](42).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result4 := Switch[int, string](1).
+	result4 := lo.Switch[int, string](1).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
 
-	result5 := Switch[int, string](2).
+	result5 := lo.Switch[int, string](2).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
 
-	result6 := Switch[int, string](42).
+	result6 := lo.Switch[int, string](42).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
@@ -305,32 +307,32 @@ func ExampleSwitch() {
 }
 
 func ExampleswitchCase_Case() {
-	result1 := Switch[int, string](1).
+	result1 := lo.Switch[int, string](1).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result2 := Switch[int, string](2).
+	result2 := lo.Switch[int, string](2).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result3 := Switch[int, string](42).
+	result3 := lo.Switch[int, string](42).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result4 := Switch[int, string](1).
+	result4 := lo.Switch[int, string](1).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
 
-	result5 := Switch[int, string](2).
+	result5 := lo.Switch[int, string](2).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
 
-	result6 := Switch[int, string](42).
+	result6 := lo.Switch[int, string](42).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
@@ -351,32 +353,32 @@ func ExampleswitchCase_Case() {
 }
 
 func ExampleswitchCase_CaseF() {
-	result1 := Switch[int, string](1).
+	result1 := lo.Switch[int, string](1).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result2 := Switch[int, string](2).
+	result2 := lo.Switch[int, string](2).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result3 := Switch[int, string](42).
+	result3 := lo.Switch[int, string](42).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result4 := Switch[int, string](1).
+	result4 := lo.Switch[int, string](1).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
 
-	result5 := Switch[int, string](2).
+	result5 := lo.Switch[int, string](2).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
 
-	result6 := Switch[int, string](42).
+	result6 := lo.Switch[int, string](42).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
@@ -397,32 +399,32 @@ func ExampleswitchCase_CaseF() {
 }
 
 func ExampleswitchCase_Default() {
-	result1 := Switch[int, string](1).
+	result1 := lo.Switch[int, string](1).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result2 := Switch[int, string](2).
+	result2 := lo.Switch[int, string](2).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result3 := Switch[int, string](42).
+	result3 := lo.Switch[int, string](42).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result4 := Switch[int, string](1).
+	result4 := lo.Switch[int, string](1).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
 
-	result5 := Switch[int, string](2).
+	result5 := lo.Switch[int, string](2).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
 
-	result6 := Switch[int, string](42).
+	result6 := lo.Switch[int, string](42).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
@@ -443,32 +445,32 @@ func ExampleswitchCase_Default() {
 }
 
 func ExampleswitchCase_DefaultF() {
-	result1 := Switch[int, string](1).
+	result1 := lo.Switch[int, string](1).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result2 := Switch[int, string](2).
+	result2 := lo.Switch[int, string](2).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result3 := Switch[int, string](42).
+	result3 := lo.Switch[int, string](42).
 		Case(1, "1").
 		Case(2, "2").
 		Default("3")
 
-	result4 := Switch[int, string](1).
+	result4 := lo.Switch[int, string](1).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
 
-	result5 := Switch[int, string](2).
+	result5 := lo.Switch[int, string](2).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })
 
-	result6 := Switch[int, string](42).
+	result6 := lo.Switch[int, string](42).
 		CaseF(1, func() string { return "1" }).
 		CaseF(2, func() string { return "2" }).
 		DefaultF(func() string { return "3" })

@@ -1,4 +1,4 @@
-package lo
+package lo_test
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -13,7 +14,7 @@ func TestKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Keys(map[string]int{"foo": 1, "bar": 2})
+	r1 := lo.Keys(map[string]int{"foo": 1, "bar": 2})
 	sort.Strings(r1)
 
 	is.Equal(r1, []string{"bar", "foo"})
@@ -23,7 +24,7 @@ func TestValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Values(map[string]int{"foo": 1, "bar": 2})
+	r1 := lo.Values(map[string]int{"foo": 1, "bar": 2})
 	sort.Ints(r1)
 
 	is.Equal(r1, []int{1, 2})
@@ -33,10 +34,10 @@ func TestValueOr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := ValueOr(map[string]int{"foo": 1}, "bar", 2)
+	r1 := lo.ValueOr(map[string]int{"foo": 1}, "bar", 2)
 	is.Equal(r1, 2)
 
-	r2 := ValueOr(map[string]int{"foo": 1}, "foo", 2)
+	r2 := lo.ValueOr(map[string]int{"foo": 1}, "foo", 2)
 	is.Equal(r2, 1)
 }
 
@@ -44,7 +45,7 @@ func TestPickBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := PickBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+	r1 := lo.PickBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
 		return value%2 == 1
 	})
 
@@ -55,7 +56,7 @@ func TestPickByKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+	r1 := lo.PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
 }
@@ -64,7 +65,7 @@ func TestPickByValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+	r1 := lo.PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
 }
@@ -73,7 +74,7 @@ func TestOmitBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := OmitBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+	r1 := lo.OmitBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
 		return value%2 == 1
 	})
 
@@ -84,7 +85,7 @@ func TestOmitByKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+	r1 := lo.OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
 
 	is.Equal(r1, map[string]int{"bar": 2})
 }
@@ -93,7 +94,7 @@ func TestOmitByValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+	r1 := lo.OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
 	is.Equal(r1, map[string]int{"bar": 2})
 }
@@ -102,12 +103,12 @@ func TestEntries(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Entries(map[string]int{"foo": 1, "bar": 2})
+	r1 := lo.Entries(map[string]int{"foo": 1, "bar": 2})
 
 	sort.Slice(r1, func(i, j int) bool {
 		return r1[i].Value < r1[j].Value
 	})
-	is.EqualValues(r1, []Entry[string, int]{
+	is.EqualValues(r1, []lo.Entry[string, int]{
 		{
 			Key:   "foo",
 			Value: 1,
@@ -123,12 +124,12 @@ func TestToPairs(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := ToPairs(map[string]int{"baz": 3, "qux": 4})
+	r1 := lo.ToPairs(map[string]int{"baz": 3, "qux": 4})
 
 	sort.Slice(r1, func(i, j int) bool {
 		return r1[i].Value < r1[j].Value
 	})
-	is.EqualValues(r1, []Entry[string, int]{
+	is.EqualValues(r1, []lo.Entry[string, int]{
 		{
 			Key:   "baz",
 			Value: 3,
@@ -144,7 +145,7 @@ func TestFromEntries(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := FromEntries([]Entry[string, int]{
+	r1 := lo.FromEntries([]lo.Entry[string, int]{
 		{
 			Key:   "foo",
 			Value: 1,
@@ -164,7 +165,7 @@ func TestFromPairs(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := FromPairs([]Entry[string, int]{
+	r1 := lo.FromPairs([]lo.Entry[string, int]{
 		{
 			Key:   "baz",
 			Value: 3,
@@ -184,8 +185,8 @@ func TestInvert(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Invert(map[string]int{"a": 1, "b": 2})
-	r2 := Invert(map[string]int{"a": 1, "b": 2, "c": 1})
+	r1 := lo.Invert(map[string]int{"a": 1, "b": 2})
+	r2 := lo.Invert(map[string]int{"a": 1, "b": 2, "c": 1})
 
 	is.Len(r1, 2)
 	is.EqualValues(map[int]string{1: "a", 2: "b"}, r1)
@@ -196,7 +197,7 @@ func TestAssign(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Assign(map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4})
+	result1 := lo.Assign(map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4})
 
 	is.Len(result1, 3)
 	is.Equal(result1, map[string]int{"a": 1, "b": 3, "c": 4})
@@ -206,10 +207,10 @@ func TestMapKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	result1 := lo.MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
 		return "Hello"
 	})
-	result2 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
+	result2 := lo.MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
 		return strconv.FormatInt(int64(v), 10)
 	})
 
@@ -222,10 +223,10 @@ func TestMapValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	result1 := lo.MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
 		return "Hello"
 	})
-	result2 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	result2 := lo.MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
 		return strconv.FormatInt(int64(x), 10)
 	})
 
@@ -237,7 +238,7 @@ func TestMapValues(t *testing.T) {
 
 func mapEntriesTest[I any, O any](t *testing.T, in map[string]I, iteratee func(string, I) (string, O), expected map[string]O) {
 	is := assert.New(t)
-	result := MapEntries(in, iteratee)
+	result := lo.MapEntries(in, iteratee)
 	is.Equal(result, expected)
 }
 
@@ -256,7 +257,7 @@ func TestMapEntries(t *testing.T) {
 	{
 		is := assert.New(t)
 		r1 := map[string]int{"foo": 1, "bar": 2}
-		MapEntries(r1, func(k string, v int) (string, string) {
+		lo.MapEntries(r1, func(k string, v int) (string, string) {
 			return k, strconv.Itoa(v) + "!!"
 		})
 		is.Equal(r1, map[string]int{"foo": 1, "bar": 2})
@@ -313,7 +314,8 @@ func TestMapEntries(t *testing.T) {
 		}{"1-11-1": {name: "foo", age: 1}, "2-22-2": {name: "bar", age: 2}}, func(k string, v struct {
 			name string
 			age  int
-		}) (string, string) {
+		},
+		) (string, string) {
 			return v.name, k
 		}, map[string]string{"bar": "2-22-2", "foo": "1-11-1"})
 	}
@@ -323,10 +325,10 @@ func TestMapToSlice(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, v int) string {
+	result1 := lo.MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, v int) string {
 		return fmt.Sprintf("%d_%d", k, v)
 	})
-	result2 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, _ int) string {
+	result2 := lo.MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, _ int) string {
 		return strconv.FormatInt(int64(k), 10)
 	})
 
