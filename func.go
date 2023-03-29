@@ -40,7 +40,7 @@ func Partial5[T1, T2, T3, T4, T5, T6, R any](f func(T1, T2, T3, T4, T5, T6) R, a
 	}
 }
 
-// Partial returns new function that, when called, has its last argument set to the provided value.
+// PartialRight returns new function that, when called, has its last argument set to the provided value.
 func PartialRight[T1, T2, R any](f func(a T1, b T2) R, lastArg T2) func(T1) R {
 	return func(t1 T1) R {
 		return f(t1, lastArg)
