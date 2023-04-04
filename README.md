@@ -947,7 +947,7 @@ values := lo.Values[string, int](map[string]int{"foo": 1, "bar": 2})
 
 ### ValueOr
 
-Creates an array of the map values.
+Returns the value of the given key or the fallback value if the key is not present.
 
 ```go
 value := lo.ValueOr[string, int](map[string]int{"foo": 1, "bar": 2}, "foo", 42)
