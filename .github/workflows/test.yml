@@ -1,4 +1,4 @@
-name: Go
+name: Tests
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
       with:
         go-version: 1.18
         stable: false
-  
+
     - name: Build
       run: make build
 

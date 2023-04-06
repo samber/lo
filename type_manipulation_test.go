@@ -7,6 +7,7 @@ import (
 )
 
 func TestToPtr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := ToPtr([]int{1, 2})
@@ -14,7 +15,26 @@ func TestToPtr(t *testing.T) {
 	is.Equal(*result1, []int{1, 2})
 }
 
+func TestEmptyableToPtr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Nil(EmptyableToPtr(0))
+	is.Nil(EmptyableToPtr(""))
+	is.Nil(EmptyableToPtr[[]int](nil))
+	is.Nil(EmptyableToPtr[map[int]int](nil))
+	is.Nil(EmptyableToPtr[error](nil))
+
+	is.Equal(*EmptyableToPtr(42), 42)
+	is.Equal(*EmptyableToPtr("nonempty"), "nonempty")
+	is.Equal(*EmptyableToPtr([]int{}), []int{})
+	is.Equal(*EmptyableToPtr([]int{1, 2}), []int{1, 2})
+	is.Equal(*EmptyableToPtr(map[int]int{}), map[int]int{})
+	is.Equal(*EmptyableToPtr(assert.AnError), assert.AnError)
+}
+
 func TestFromPtr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
@@ -28,6 +48,7 @@ func TestFromPtr(t *testing.T) {
 }
 
 func TestFromPtrOr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	const fallbackStr = "fallback"
@@ -45,6 +66,7 @@ func TestFromPtrOr(t *testing.T) {
 }
 
 func TestToSlicePtr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
@@ -55,6 +77,7 @@ func TestToSlicePtr(t *testing.T) {
 }
 
 func TestToAnySlice(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	in1 := []int{0, 1, 2, 3}
@@ -67,6 +90,7 @@ func TestToAnySlice(t *testing.T) {
 }
 
 func TestFromAnySlice(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	is.NotPanics(func() {
@@ -81,12 +105,11 @@ func TestFromAnySlice(t *testing.T) {
 }
 
 func TestEmpty(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	//nolint:unused
-	type test struct {
-		foobar string
-	}
+	type test struct{}
 
 	is.Empty(Empty[string]())
 	is.Empty(Empty[int64]())
@@ -95,6 +118,7 @@ func TestEmpty(t *testing.T) {
 }
 
 func TestIsEmpty(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	//nolint:unused
@@ -102,15 +126,16 @@ func TestIsEmpty(t *testing.T) {
 		foobar string
 	}
 
-	is.True(IsEmpty[string](""))
-	is.False(IsEmpty[string]("foo"))
+	is.True(IsEmpty(""))
+	is.False(IsEmpty("foo"))
 	is.True(IsEmpty[int64](0))
 	is.False(IsEmpty[int64](42))
-	is.True(IsEmpty[test](test{foobar: ""}))
-	is.False(IsEmpty[test](test{foobar: "foo"}))
+	is.True(IsEmpty(test{foobar: ""}))
+	is.False(IsEmpty(test{foobar: "foo"}))
 }
 
 func TestIsNotEmpty(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	//nolint:unused
@@ -118,15 +143,16 @@ func TestIsNotEmpty(t *testing.T) {
 		foobar string
 	}
 
-	is.False(IsNotEmpty[string](""))
-	is.True(IsNotEmpty[string]("foo"))
+	is.False(IsNotEmpty(""))
+	is.True(IsNotEmpty("foo"))
 	is.False(IsNotEmpty[int64](0))
 	is.True(IsNotEmpty[int64](42))
-	is.False(IsNotEmpty[test](test{foobar: ""}))
-	is.True(IsNotEmpty[test](test{foobar: "foo"}))
+	is.False(IsNotEmpty(test{foobar: ""}))
+	is.True(IsNotEmpty(test{foobar: "foo"}))
 }
 
 func TestCoalesce(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	newStr := func(v string) *string { return &v }

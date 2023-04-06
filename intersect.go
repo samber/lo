@@ -12,7 +12,7 @@ func Contains[T comparable](collection []T, element T) bool {
 }
 
 // ContainsBy returns true if predicate function return true.
-func ContainsBy[T any](collection []T, predicate func(T) bool) bool {
+func ContainsBy[T any](collection []T, predicate func(item T) bool) bool {
 	for _, item := range collection {
 		if predicate(item) {
 			return true
@@ -34,7 +34,7 @@ func Every[T comparable](collection []T, subset []T) bool {
 }
 
 // EveryBy returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
-func EveryBy[V any](collection []V, predicate func(V) bool) bool {
+func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 	for _, v := range collection {
 		if !predicate(v) {
 			return false
@@ -58,7 +58,7 @@ func Some[T comparable](collection []T, subset []T) bool {
 
 // SomeBy returns true if the predicate returns true for any of the elements in the collection.
 // If the collection is empty SomeBy returns false.
-func SomeBy[V any](collection []V, predicate func(V) bool) bool {
+func SomeBy[T any](collection []T, predicate func(item T) bool) bool {
 	for _, v := range collection {
 		if predicate(v) {
 			return true
@@ -69,7 +69,7 @@ func SomeBy[V any](collection []V, predicate func(V) bool) bool {
 }
 
 // None returns true if no element of a subset are contained into a collection or if the subset is empty.
-func None[V comparable](collection []V, subset []V) bool {
+func None[T comparable](collection []T, subset []T) bool {
 	for _, elem := range subset {
 		if Contains(collection, elem) {
 			return false
@@ -80,7 +80,7 @@ func None[V comparable](collection []V, subset []V) bool {
 }
 
 // NoneBy returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
-func NoneBy[V any](collection []V, predicate func(V) bool) bool {
+func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 	for _, v := range collection {
 		if predicate(v) {
 			return false
@@ -141,35 +141,18 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 	return left, right
 }
 
-// Union returns all distinct elements from both collections.
+// Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
-func Union[T comparable](list1 []T, list2 []T) []T {
+func Union[T comparable](lists ...[]T) []T {
 	result := []T{}
-
 	seen := map[T]struct{}{}
-	hasAdd := map[T]struct{}{}
 
-	for _, e := range list1 {
-		seen[e] = struct{}{}
-	}
-
-	for _, e := range list2 {
-		seen[e] = struct{}{}
-	}
-
-	for _, e := range list1 {
-		if _, ok := seen[e]; ok {
-			result = append(result, e)
-			hasAdd[e] = struct{}{}
-		}
-	}
-
-	for _, e := range list2 {
-		if _, ok := hasAdd[e]; ok {
-			continue
-		}
-		if _, ok := seen[e]; ok {
-			result = append(result, e)
+	for _, list := range lists {
+		for _, e := range list {
+			if _, ok := seen[e]; !ok {
+				seen[e] = struct{}{}
+				result = append(result, e)
+			}
 		}
 	}
 

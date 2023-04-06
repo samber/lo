@@ -2,6 +2,131 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.38.1 (2023-03-20)
+
+Improvement:
+- Async and AsyncX: now returns `<-chan T` instead of `chan T`
+
+## 1.38.0 (2023-03-20)
+
+Adding:
+- lo.ValueOr
+- lo.DebounceBy
+- lo.EmptyableToPtr
+
+Improvement:
+- Substring: add support for non-english chars
+
+Fix:
+- Async: Fix goroutine leak
+
+## 1.37.0 (2022-12-15)
+
+Adding:
+- lo.PartialX
+- lo.Transaction
+
+Improvement:
+- lo.Associate / lo.SliceToMap: faster memory allocation
+
+Chore:
+- Remove *_test.go files from releases, in order to cleanup dev dependencies
+
+## 1.36.0 (2022-11-28)
+
+Adding:
+- lo.AttemptWhile
+- lo.AttemptWhileWithDelay
+
+## 1.35.0 (2022-11-15)
+
+Adding:
+- lo.RandomString
+- lo.BufferWithTimeout (alias to lo.BatchWithTimeout)
+- lo.Buffer (alias to lo.Batch)
+
+Change:
+- lo.Slice: avoid panic caused by out-of-bounds
+
+Deprecation:
+- lo.BatchWithTimeout
+- lo.Batch
+
+## 1.34.0 (2022-11-12)
+
+Improving:
+- lo.Union: faster and can receive more than 2 lists
+
+Adding:
+- lo.FanIn (alias to lo.ChannelMerge)
+- lo.FanOut
+
+Deprecation:
+- lo.ChannelMerge
+
+## 1.33.0 (2022-10-14)
+
+Adding:
+- lo.ChannelMerge
+
+Improving:
+- helpers with callbacks/predicates/iteratee now have named arguments, for easier autocompletion
+
+## 1.32.0 (2022-10-10)
+
+Adding:
+
+- lo.ChannelToSlice
+- lo.CountValues
+- lo.CountValuesBy
+- lo.MapEntries
+- lo.Sum
+- lo.Interleave
+- TupleX.Unpack()
+
+## 1.31.0 (2022-10-06)
+
+Adding:
+
+- lo.SliceToChannel
+- lo.Generator
+- lo.Batch
+- lo.BatchWithTimeout
+
+## 1.30.1 (2022-10-06)
+
+Fix:
+
+- lo.Try1: remove generic type
+- lo.Validate: format error properly
+
+## 1.30.0 (2022-10-04)
+
+Adding:
+
+- lo.TernaryF
+- lo.Validate
+
+## 1.29.0 (2022-10-02)
+
+Adding:
+
+- lo.ErrorAs
+- lo.TryOr
+- lo.TryOrX
+
+## 1.28.0 (2022-09-05)
+
+Adding:
+
+- lo.ChannelDispatcher with 6 dispatching strategies:
+  - lo.DispatchingStrategyRoundRobin
+  - lo.DispatchingStrategyRandom
+  - lo.DispatchingStrategyWeightedRandom
+  - lo.DispatchingStrategyFirst
+  - lo.DispatchingStrategyLeast
+  - lo.DispatchingStrategyMost
+
 ## 1.27.1 (2022-08-15)
 
 Bugfix:

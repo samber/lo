@@ -2,12 +2,37 @@ package lo
 
 import (
 	"math"
+	"math/rand"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
+func TestRandomString(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	rand.Seed(time.Now().UnixNano())
+
+	str1 := RandomString(100, LowerCaseLettersCharset)
+	is.Equal(100, RuneLength(str1))
+	is.Subset(LowerCaseLettersCharset, []rune(str1))
+
+	str2 := RandomString(100, LowerCaseLettersCharset)
+	is.NotEqual(str1, str2)
+
+	noneUtf8Charset := []rune("明1好休2林森")
+	str3 := RandomString(100, noneUtf8Charset)
+	is.Equal(100, RuneLength(str3))
+	is.Subset(noneUtf8Charset, []rune(str3))
+
+	is.PanicsWithValue("lo.RandomString: Charset parameter must not be empty", func() { RandomString(100, []rune{}) })
+	is.PanicsWithValue("lo.RandomString: Size parameter must be greater than 0", func() { RandomString(0, LowerCaseLettersCharset) })
+}
+
 func TestChunkString(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := ChunkString("12345", 2)
@@ -34,6 +59,7 @@ func TestChunkString(t *testing.T) {
 }
 
 func TestSubstring(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := Substring("hello", 0, 0)
@@ -48,6 +74,8 @@ func TestSubstring(t *testing.T) {
 	str10 := Substring("hello", -2, 4)
 	str11 := Substring("hello", -4, 1)
 	str12 := Substring("hello", -4, math.MaxUint)
+	str13 := Substring("🏠🐶🐱", 0, 2)
+	str14 := Substring("你好，世界", 0, 3)
 
 	is.Equal("", str1)
 	is.Equal("", str2)
@@ -61,9 +89,12 @@ func TestSubstring(t *testing.T) {
 	is.Equal("lo", str10)
 	is.Equal("e", str11)
 	is.Equal("ello", str12)
+	is.Equal("🏠🐶", str13)
+	is.Equal("你好，", str14)
 }
 
 func TestRuneLength(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	is.Equal(5, RuneLength("hellô"))

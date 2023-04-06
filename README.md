@@ -1,16 +1,19 @@
-# lo
+# lo - Iterate over slices, maps, channels...
 
 [![tag](https://img.shields.io/github/tag/samber/lo.svg)](https://github.com/samber/lo/releases)
+![Go Version](https://img.shields.io/badge/Go-%3E%3D%201.18-%23007d9c)
 [![GoDoc](https://godoc.org/github.com/samber/lo?status.svg)](https://pkg.go.dev/github.com/samber/lo)
-![Build Status](https://github.com/samber/lo/actions/workflows/go.yml/badge.svg)
+![Build Status](https://github.com/samber/lo/actions/workflows/test.yml/badge.svg)
 [![Go report](https://goreportcard.com/badge/github.com/samber/lo)](https://goreportcard.com/report/github.com/samber/lo)
-[![codecov](https://codecov.io/gh/samber/lo/branch/master/graph/badge.svg)](https://codecov.io/gh/samber/lo)
+[![Coverage](https://img.shields.io/codecov/c/github/samber/lo)](https://codecov.io/gh/samber/lo)
+[![Contributors](https://img.shields.io/github/contributors/samber/lo)](https://github.com/samber/lo/graphs/contributors)
+[![License](https://img.shields.io/github/license/samber/lo)](./LICENSE)
 
 ✨ **`samber/lo` is a Lodash-style Go library based on Go 1.18+ Generics.**
 
 This project started as an experiment with the new generics implementation. It may look like [Lodash](https://github.com/lodash/lodash) in some aspects. I used to code with the fantastic ["go-funk"](https://github.com/thoas/go-funk) package, but "go-funk" uses reflection and therefore is not typesafe.
 
-As expected, benchmarks demonstrate that generics will be much faster than implementations based on the "reflect" package. Benchmarks also show similar performance gains compared to pure `for` loops. [See below](#-benchmark).
+As expected, benchmarks demonstrate that generics are much faster than implementations based on the "reflect" package. Benchmarks also show similar performance gains compared to pure `for` loops. [See below](#-benchmark).
 
 In the future, 5 to 10 helpers will overlap with those coming into the Go standard library (under package names `slices` and `maps`). I feel this library is legitimate and offers many more valuable abstractions.
 
@@ -23,6 +26,8 @@ In the future, 5 to 10 helpers will overlap with those coming into the Go standa
 
 I wanted a **short name**, similar to "Lodash" and no Go package currently uses this name.
 
+![lo](img/logo-full.png)
+
 ## 🚀 Install
 
 ```sh
@@ -32,6 +37,8 @@ go get github.com/samber/lo@v1
 This library is v1 and follows SemVer strictly.
 
 No breaking changes will be made to exported APIs before v2.0.0.
+
+This library has no dependencies outside the Go standard library.
 
 ## 💡 Usage
 
@@ -47,11 +54,23 @@ import (
 Then use one of the helpers below:
 
 ```go
-names := lo.Uniq[string]([]string{"Samuel", "Marc", "Samuel"})
-// []string{"Samuel", "Marc"}
+names := lo.Uniq[string]([]string{"Samuel", "John", "Samuel"})
+// []string{"Samuel", "John"}
 ```
 
 Most of the time, the compiler will be able to infer the type so that you can call: `lo.Uniq([]string{...})`.
+
+### Tips for lazy developers
+
+I cannot recommend it, but in case you are too lazy for repeating `lo.` everywhere, you can import the entire library into the namespace.
+
+```go
+import (
+    . "github.com/samber/lo"
+)
+```
+
+I take no responsibility on this junk. 😁 💩
 
 ## 🤠 Spec
 
@@ -73,6 +92,7 @@ Supported helpers for slices:
 - [Chunk](#chunk)
 - [PartitionBy](#partitionby)
 - [Flatten](#flatten)
+- [Interleave](#interleave)
 - [Shuffle](#shuffle)
 - [Reverse](#reverse)
 - [Fill](#fill)
@@ -87,6 +107,8 @@ Supported helpers for slices:
 - [Reject](#reject)
 - [Count](#count)
 - [CountBy](#countby)
+- [CountValues](#countvalues)
+- [CountValuesBy](#countvaluesby)
 - [Subset](#subset)
 - [Slice](#slice)
 - [Replace](#replace)
@@ -98,6 +120,7 @@ Supported helpers for slices:
 Supported helpers for maps:
 
 - [Keys](#keys)
+- [ValueOr](#valueor)
 - [Values](#values)
 - [PickBy](#pickby)
 - [PickByKeys](#pickbykeys)
@@ -111,16 +134,19 @@ Supported helpers for maps:
 - [Assign (merge of maps)](#assign)
 - [MapKeys](#mapkeys)
 - [MapValues](#mapvalues)
+- [MapEntries](#mapentries)
 - [MapToSlice](#maptoslice)
 
 Supported math helpers:
 
 - [Range / RangeFrom / RangeWithSteps](#range--rangefrom--rangewithsteps)
 - [Clamp](#clamp)
+- [Sum](#sum)
 - [SumBy](#sumby)
 
 Supported helpers for strings:
 
+- [RandomString](#randomstring)
 - [Substring](#substring)
 - [ChunkString](#chunkstring)
 - [RuneLength](#runelength)
@@ -131,6 +157,16 @@ Supported helpers for tuples:
 - [Unpack2 -> Unpack9](#unpack2---unpack9)
 - [Zip2 -> Zip9](#zip2---zip9)
 - [Unzip2 -> Unzip9](#unzip2---unzip9)
+
+Supported helpers for channels:
+
+- [ChannelDispatcher](#channeldispatcher)
+- [SliceToChannel](#slicetochannel)
+- [Generator](#generator)
+- [Buffer](#buffer)
+- [BufferWithTimeout](#bufferwithtimeout)
+- [FanIn](#fanin)
+- [FanOut](#fanout)
 
 Supported intersection helpers:
 
@@ -155,6 +191,7 @@ Supported search helpers:
 - [Find](#find)
 - [FindIndexOf](#findindexof)
 - [FindLastIndexOf](#findlastindexof)
+- [FindOrElse](#findorelse)
 - [FindKey](#findkey)
 - [FindKeyBy](#findkeyby)
 - [FindUniques](#finduniques)
@@ -172,13 +209,15 @@ Supported search helpers:
 
 Conditional helpers:
 
-- [Ternary (1 line if/else statement)](#ternary)
+- [Ternary](#ternary)
+- [TernaryF](#ternaryf)
 - [If / ElseIf / Else](#if--elseif--else)
 - [Switch / Case / Default](#switch--case--default)
 
 Type manipulation helpers:
 
 - [ToPtr](#toptr)
+- [EmptyableToPtr](#emptyabletoptr)
 - [FromPtr](#fromptr)
 - [FromPtrOr](#fromptror)
 - [ToSlicePtr](#tosliceptr)
@@ -192,22 +231,32 @@ Type manipulation helpers:
 Function helpers:
 
 - [Partial](#partial)
+- [Partial2 -> Partial5](#partial2---partial5)
 
 Concurrency helpers:
 
 - [Attempt](#attempt)
+- [AttemptWhile](#attemptwhile)
 - [AttemptWithDelay](#attemptwithdelay)
+- [AttemptWhileWithDelay](#attemptwhilewithdelay)
 - [Debounce](#debounce)
+- [DebounceBy](#debounceby)
 - [Synchronize](#synchronize)
 - [Async](#async)
+- [Transaction](#transaction)
 
 Error handling:
 
+- [Validate](#validate)
 - [Must](#must)
 - [Try](#try)
+- [Try1 -> Try6](#try0-6)
+- [TryOr](#tryor)
+- [TryOr1 -> TryOr6](#tryor0-6)
 - [TryCatch](#trycatch)
 - [TryWithErrorValue](#trywitherrorvalue)
 - [TryCatchWithErrorValue](#trycatchwitherrorvalue)
+- [ErrorsAs](#errorsas)
 
 Constraints:
 
@@ -218,11 +267,13 @@ Constraints:
 Iterates over a collection and returns an array of all the elements the predicate function returns `true` for.
 
 ```go
-even := lo.Filter[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+even := lo.Filter([]int{1, 2, 3, 4}, func(x int, index int) bool {
     return x%2 == 0
 })
 // []int{2, 4}
 ```
+
+[[play](https://go.dev/play/p/Apjg3WeSi7K)]
 
 ### Map
 
@@ -231,18 +282,20 @@ Manipulates a slice of one type and transforms it into a slice of another type:
 ```go
 import "github.com/samber/lo"
 
-lo.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+lo.Map([]int64{1, 2, 3, 4}, func(x int64, index int) string {
     return strconv.FormatInt(x, 10)
 })
 // []string{"1", "2", "3", "4"}
 ```
+
+[[play](https://go.dev/play/p/OkPcYAhBo0D)]
 
 Parallel processing: like `lo.Map()`, but the mapper function is called in a goroutine. Results are returned in the same order.
 
 ```go
 import lop "github.com/samber/lo/parallel"
 
-lop.Map[int64, string]([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+lop.Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
     return strconv.FormatInt(x, 10)
 })
 // []string{"1", "2", "3", "4"}
@@ -255,7 +308,7 @@ Returns a slice which obtained after both filtering and mapping using the given 
 The callback function should return two values: the result of the mapping operation and whether the result element should be included or not.
 
 ```go
-matching := lo.FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+matching := lo.FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
     if strings.HasSuffix(x, "pu") {
         return "xpu", true
     }
@@ -264,41 +317,49 @@ matching := lo.FilterMap[string, string]([]string{"cpu", "gpu", "mouse", "keyboa
 // []string{"xpu", "xpu"}
 ```
 
+[[play](https://go.dev/play/p/-AuYXfy7opz)]
+
 ### FlatMap
 
-Manipulates a slice and transforms and flattens it to a slice of another type.
+Manipulates a slice and transforms and flattens it to a slice of another type. The transform function can either return a slice or a `nil`, and in the `nil` case no value is added to the final slice.
 
 ```go
-lo.FlatMap[int, string]([]int{0, 1, 2}, func(x int, _ int) []string {
-	return []string{
-		strconv.FormatInt(x, 10),
-		strconv.FormatInt(x, 10),
-	}
+lo.FlatMap([]int{0, 1, 2}, func(x int, _ int) []string {
+  return []string{
+    strconv.FormatInt(x, 10),
+    strconv.FormatInt(x, 10),
+  }
 })
 // []string{"0", "0", "1", "1", "2", "2"}
 ```
+
+[[play](https://go.dev/play/p/YSoYmQTA8-U)]
 
 ### Reduce
 
 Reduces a collection to a single value. The value is calculated by accumulating the result of running each element in the collection through an accumulator function. Each successive invocation is supplied with the return value returned by the previous call.
 
 ```go
-sum := lo.Reduce[int, int]([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+sum := lo.Reduce([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
     return agg + item
 }, 0)
 // 10
 ```
+
+[[play](https://go.dev/play/p/R4UHXZNaaUG)]
 
 ### ReduceRight
 
 Like `lo.Reduce` except that it iterates over elements of collection from right to left.
 
 ```go
-result := lo.ReduceRight[[]int, []int]([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {
-	  return append(agg, item...)
-}, []int{}))
+result := lo.ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {
+    return append(agg, item...)
+}, []int{})
 // []int{4, 5, 2, 3, 0, 1}
 ```
+
+[[play](https://go.dev/play/p/Fq3W70l7wXF)]
 
 ### ForEach
 
@@ -307,18 +368,20 @@ Iterates over elements of a collection and invokes the function over each elemen
 ```go
 import "github.com/samber/lo"
 
-lo.ForEach[string]([]string{"hello", "world"}, func(x string, _ int) {
+lo.ForEach([]string{"hello", "world"}, func(x string, _ int) {
     println(x)
 })
 // prints "hello\nworld\n"
 ```
+
+[[play](https://go.dev/play/p/oofyiUPRf8t)]
 
 Parallel processing: like `lo.ForEach()`, but the callback is called as a goroutine.
 
 ```go
 import lop "github.com/samber/lo/parallel"
 
-lop.ForEach[string]([]string{"hello", "world"}, func(x string, _ int) {
+lop.ForEach([]string{"hello", "world"}, func(x string, _ int) {
     println(x)
 })
 // prints "hello\nworld\n" or "world\nhello\n"
@@ -331,18 +394,20 @@ Times invokes the iteratee n times, returning an array of the results of each in
 ```go
 import "github.com/samber/lo"
 
-lo.Times[string](3, func(i int) string {
+lo.Times(3, func(i int) string {
     return strconv.FormatInt(int64(i), 10)
 })
 // []string{"0", "1", "2"}
 ```
+
+[[play](https://go.dev/play/p/vgQj3Glr6lT)]
 
 Parallel processing: like `lo.Times()`, but callback is called in goroutine.
 
 ```go
 import lop "github.com/samber/lo/parallel"
 
-lop.Times[string](3, func(i int) string {
+lop.Times(3, func(i int) string {
     return strconv.FormatInt(int64(i), 10)
 })
 // []string{"0", "1", "2"}
@@ -353,20 +418,24 @@ lop.Times[string](3, func(i int) string {
 Returns a duplicate-free version of an array, in which only the first occurrence of each element is kept. The order of result values is determined by the order they occur in the array.
 
 ```go
-uniqValues := lo.Uniq[int]([]int{1, 2, 2, 1})
+uniqValues := lo.Uniq([]int{1, 2, 2, 1})
 // []int{1, 2}
 ```
+
+[[play](https://go.dev/play/p/DTzbeXZ6iEN)]
 
 ### UniqBy
 
 Returns a duplicate-free version of an array, in which only the first occurrence of each element is kept. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
 
 ```go
-uniqValues := lo.UniqBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+uniqValues := lo.UniqBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
     return i%3
 })
 // []int{0, 1, 2}
 ```
+
+[[play](https://go.dev/play/p/g42Z3QSb53u)]
 
 ### GroupBy
 
@@ -375,18 +444,20 @@ Returns an object composed of keys generated from the results of running each el
 ```go
 import lo "github.com/samber/lo"
 
-groups := lo.GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+groups := lo.GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
     return i%3
 })
 // map[int][]int{0: []int{0, 3}, 1: []int{1, 4}, 2: []int{2, 5}}
 ```
+
+[[play](https://go.dev/play/p/XnQBd_v6brd)]
 
 Parallel processing: like `lo.GroupBy()`, but callback is called in goroutine.
 
 ```go
 import lop "github.com/samber/lo/parallel"
 
-lop.GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+lop.GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
     return i%3
 })
 // map[int][]int{0: []int{0, 3}, 1: []int{1, 4}, 2: []int{2, 5}}
@@ -397,18 +468,20 @@ lop.GroupBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 Returns an array of elements split into groups the length of size. If array can't be split evenly, the final chunk will be the remaining elements.
 
 ```go
-lo.Chunk[int]([]int{0, 1, 2, 3, 4, 5}, 2)
+lo.Chunk([]int{0, 1, 2, 3, 4, 5}, 2)
 // [][]int{{0, 1}, {2, 3}, {4, 5}}
 
-lo.Chunk[int]([]int{0, 1, 2, 3, 4, 5, 6}, 2)
+lo.Chunk([]int{0, 1, 2, 3, 4, 5, 6}, 2)
 // [][]int{{0, 1}, {2, 3}, {4, 5}, {6}}
 
-lo.Chunk[int]([]int{}, 2)
+lo.Chunk([]int{}, 2)
 // [][]int{}
 
-lo.Chunk[int]([]int{0}, 2)
+lo.Chunk([]int{0}, 2)
 // [][]int{{0}}
 ```
+
+[[play](https://go.dev/play/p/EeKl0AuTehH)]
 
 ### PartitionBy
 
@@ -417,7 +490,7 @@ Returns an array of elements split into groups. The order of grouped values is d
 ```go
 import lo "github.com/samber/lo"
 
-partitions := lo.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
+partitions := lo.PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
     if x < 0 {
         return "negative"
     } else if x%2 == 0 {
@@ -428,12 +501,14 @@ partitions := lo.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(
 // [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}}
 ```
 
+[[play](https://go.dev/play/p/NfQ_nGjkgXW)]
+
 Parallel processing: like `lo.PartitionBy()`, but callback is called in goroutine. Results are returned in the same order.
 
 ```go
 import lop "github.com/samber/lo/parallel"
 
-partitions := lop.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
+partitions := lop.PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string {
     if x < 0 {
         return "negative"
     } else if x%2 == 0 {
@@ -449,27 +524,49 @@ partitions := lop.PartitionBy[int, string]([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func
 Returns an array a single level deep.
 
 ```go
-flat := lo.Flatten[int]([][]int{{0, 1}, {2, 3, 4, 5}})
+flat := lo.Flatten([][]int{{0, 1}, {2, 3, 4, 5}})
 // []int{0, 1, 2, 3, 4, 5}
 ```
+
+[[play](https://go.dev/play/p/rbp9ORaMpjw)]
+
+### Interleave
+
+Round-robin alternating input slices and sequentially appending value at index into result.
+
+```go
+interleaved := lo.Interleave([]int{1, 4, 7}, []int{2, 5, 8}, []int{3, 6, 9})
+// []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+interleaved := lo.Interleave([]int{1}, []int{2, 5, 8}, []int{3, 6}, []int{4, 7, 9, 10})
+// []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+```
+
+[[play](https://go.dev/play/p/DDhlwrShbwe)]
 
 ### Shuffle
 
 Returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 
 ```go
-randomOrder := lo.Shuffle[int]([]int{0, 1, 2, 3, 4, 5})
+randomOrder := lo.Shuffle([]int{0, 1, 2, 3, 4, 5})
 // []int{1, 4, 0, 3, 5, 2}
 ```
+
+[[play](https://go.dev/play/p/Qp73bnTDnc7)]
 
 ### Reverse
 
 Reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
 
+⚠️ This helper is **mutable**. This behavior might change in `v2.0.0`. See [#160](https://github.com/samber/lo/issues/160).
+
 ```go
-reverseOrder := lo.Reverse[int]([]int{0, 1, 2, 3, 4, 5})
+reverseOrder := lo.Reverse([]int{0, 1, 2, 3, 4, 5})
 // []int{5, 4, 3, 2, 1, 0}
 ```
+
+[[play](https://go.dev/play/p/fhUMLvZ7vS6)]
 
 ### Fill
 
@@ -477,16 +574,18 @@ Fills elements of array with `initial` value.
 
 ```go
 type foo struct {
-	bar string
+  bar string
 }
 
 func (f foo) Clone() foo {
-	return foo{f.bar}
+  return foo{f.bar}
 }
 
-initializedSlice := lo.Fill[foo]([]foo{foo{"a"}, foo{"a"}}, foo{"b"})
+initializedSlice := lo.Fill([]foo{foo{"a"}, foo{"a"}}, foo{"b"})
 // []foo{foo{"b"}, foo{"b"}}
 ```
+
+[[play](https://go.dev/play/p/VwR34GzqEub)]
 
 ### Repeat
 
@@ -494,56 +593,62 @@ Builds a slice with N copies of initial value.
 
 ```go
 type foo struct {
-	bar string
+  bar string
 }
 
 func (f foo) Clone() foo {
-	return foo{f.bar}
+  return foo{f.bar}
 }
 
-slice := lo.Repeat[foo](2, foo{"a"})
+slice := lo.Repeat(2, foo{"a"})
 // []foo{foo{"a"}, foo{"a"}}
 ```
+
+[[play](https://go.dev/play/p/g3uHXbmc3b6)]
 
 ### RepeatBy
 
 Builds a slice with values returned by N calls of callback.
 
 ```go
-slice := lo.RepeatBy[string](0, func (i int) string {
-    return strconv.FormatInt(math.Pow(i, 2), 10)
+slice := lo.RepeatBy(0, func (i int) string {
+    return strconv.FormatInt(int64(math.Pow(float64(i), 2)), 10)
 })
-// []int{}
+// []string{}
 
-slice := lo.RepeatBy[string](5, func (i int) string {
-    return strconv.FormatInt(math.Pow(i, 2), 10)
+slice := lo.RepeatBy(5, func(i int) string {
+    return strconv.FormatInt(int64(math.Pow(float64(i), 2)), 10)
 })
-// []int{0, 1, 4, 9, 16}
+// []string{"0", "1", "4", "9", "16"}
 ```
+
+[[play](https://go.dev/play/p/ozZLCtX_hNU)]
 
 ### KeyBy
 
 Transforms a slice or an array of structs to a map based on a pivot callback.
 
 ```go
-m := lo.KeyBy[int, string]([]string{"a", "aa", "aaa"}, func(str string) int {
+m := lo.KeyBy([]string{"a", "aa", "aaa"}, func(str string) int {
     return len(str)
 })
 // map[int]string{1: "a", 2: "aa", 3: "aaa"}
 
 type Character struct {
-	dir  string
-	code int
+  dir  string
+  code int
 }
 characters := []Character{
     {dir: "left", code: 97},
     {dir: "right", code: 100},
 }
-result := lo.KeyBy[string, Character](characters, func(char Character) string {
+result := lo.KeyBy(characters, func(char Character) string {
     return string(rune(char.code))
 })
 //map[a:{dir:left code:97} d:{dir:right code:100}]
 ```
+
+[[play](https://go.dev/play/p/mdaClUAT-zZ)]
 
 ### Associate (alias: SliceToMap)
 
@@ -553,84 +658,154 @@ If any of two pairs would have the same key the last one gets added to the map.
 The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 
 ```go
-in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}}
 
-aMap := lo.Associate[*foo, string, int](in, func (f *foo) (string, int) {
-	return f.baz, f.bar
+aMap := lo.Associate(in, func (f *foo) (string, int) {
+    return f.baz, f.bar
 })
 // map[string][int]{ "apple":1, "banana":2 }
 ```
+
+[[play](https://go.dev/play/p/WHa2CfMO3Lr)]
 
 ### Drop
 
 Drops n elements from the beginning of a slice or array.
 
 ```go
-l := lo.Drop[int]([]int{0, 1, 2, 3, 4, 5}, 2)
+l := lo.Drop([]int{0, 1, 2, 3, 4, 5}, 2)
 // []int{2, 3, 4, 5}
 ```
+
+[[play](https://go.dev/play/p/JswS7vXRJP2)]
 
 ### DropRight
 
 Drops n elements from the end of a slice or array.
 
 ```go
-l := lo.DropRight[int]([]int{0, 1, 2, 3, 4, 5}, 2)
+l := lo.DropRight([]int{0, 1, 2, 3, 4, 5}, 2)
 // []int{0, 1, 2, 3}
 ```
+
+[[play](https://go.dev/play/p/GG0nXkSJJa3)]
 
 ### DropWhile
 
 Drop elements from the beginning of a slice or array while the predicate returns true.
 
 ```go
-l := lo.DropWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool {
-	return len(val) <= 2
+l := lo.DropWhile([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool {
+    return len(val) <= 2
 })
 // []string{"aaa", "aa", "aa"}
 ```
+
+[[play](https://go.dev/play/p/7gBPYw2IK16)]
 
 ### DropRightWhile
 
 Drop elements from the end of a slice or array while the predicate returns true.
 
 ```go
-l := lo.DropRightWhile[string]([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool {
-	return len(val) <= 2
+l := lo.DropRightWhile([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) bool {
+    return len(val) <= 2
 })
 // []string{"a", "aa", "aaa"}
 ```
+
+[[play](https://go.dev/play/p/3-n71oEC0Hz)]
 
 ### Reject
 
 The opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
 
 ```go
-odd := lo.Reject[int]([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+odd := lo.Reject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
     return x%2 == 0
 })
 // []int{1, 3}
 ```
+
+[[play](https://go.dev/play/p/YkLMODy1WEL)]
 
 ### Count
 
 Counts the number of elements in the collection that compare equal to value.
 
 ```go
-count := lo.Count[int]([]int{1, 5, 1}, 1)
+count := lo.Count([]int{1, 5, 1}, 1)
 // 2
 ```
+
+[[play](https://go.dev/play/p/Y3FlK54yveC)]
 
 ### CountBy
 
 Counts the number of elements in the collection for which predicate is true.
 
 ```go
-count := lo.CountBy[int]([]int{1, 5, 1}, func(i int) bool {
+count := lo.CountBy([]int{1, 5, 1}, func(i int) bool {
     return i < 4
 })
 // 2
 ```
+
+[[play](https://go.dev/play/p/ByQbNYQQi4X)]
+
+### CountValues
+
+Counts the number of each element in the collection.
+
+```go
+lo.CountValues([]int{})
+// map[int]int{}
+
+lo.CountValues([]int{1, 2})
+// map[int]int{1: 1, 2: 1}
+
+lo.CountValues([]int{1, 2, 2})
+// map[int]int{1: 1, 2: 2}
+
+lo.CountValues([]string{"foo", "bar", ""})
+// map[string]int{"": 1, "foo": 1, "bar": 1}
+
+lo.CountValues([]string{"foo", "bar", "bar"})
+// map[string]int{"foo": 1, "bar": 2}
+```
+
+[[play](https://go.dev/play/p/-p-PyLT4dfy)]
+
+### CountValuesBy
+
+Counts the number of each element in the collection. It ss equivalent to chaining lo.Map and lo.CountValues.
+
+```go
+isEven := func(v int) bool {
+    return v%2==0
+}
+
+lo.CountValuesBy([]int{}, isEven)
+// map[bool]int{}
+
+lo.CountValuesBy([]int{1, 2}, isEven)
+// map[bool]int{false: 1, true: 1}
+
+lo.CountValuesBy([]int{1, 2, 2}, isEven)
+// map[bool]int{false: 1, true: 2}
+
+length := func(v string) int {
+    return len(v)
+}
+
+lo.CountValuesBy([]string{"foo", "bar", ""}, length)
+// map[int]int{0: 1, 3: 2}
+
+lo.CountValuesBy([]string{"foo", "bar", "bar"}, length)
+// map[int]int{3: 3}
+```
+
+[[play](https://go.dev/play/p/2U0dG1SnOmS)]
 
 ### Subset
 
@@ -648,6 +823,8 @@ sub := lo.Subset(in, -4, 3)
 sub := lo.Subset(in, -2, math.MaxUint)
 // []int{3, 4}
 ```
+
+[[play](https://go.dev/play/p/tOQu1GhFcog)]
 
 ### Slice
 
@@ -669,6 +846,8 @@ slice := lo.Slice(in, 4, 3)
 // []int{}
 ```
 
+[[play](https://go.dev/play/p/8XWYhfMMA1h)]
+
 ### Replace
 
 Returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
@@ -689,6 +868,8 @@ slice := lo.Replace(in, 0, 42, -1)
 // []int{42, 1, 42, 1, 2, 3, 42}
 ```
 
+[[play](https://go.dev/play/p/XfPzmf9gql6)]
+
 ### ReplaceAll
 
 Returns a copy of the slice with all non-overlapping instances of old replaced by new.
@@ -703,6 +884,8 @@ slice := lo.ReplaceAll(in, -1, 42)
 // []int{0, 1, 0, 1, 2, 3, 0}
 ```
 
+[[play](https://go.dev/play/p/a9xZFUHfYcV)]
+
 ### Compact
 
 Returns a slice of all non-zero elements.
@@ -714,6 +897,8 @@ slice := lo.Compact[string](in)
 // []string{"foo", "bar"}
 ```
 
+[[play](https://go.dev/play/p/tXiy-iK6PAc)]
+
 ### IsSorted
 
 Checks if a slice is sorted.
@@ -722,6 +907,8 @@ Checks if a slice is sorted.
 slice := lo.IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
 // true
 ```
+
+[[play](https://go.dev/play/p/mc3qR-t4mcx)]
 
 ### IsSortedByKey
 
@@ -734,14 +921,18 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 // true
 ```
 
+[[play](https://go.dev/play/p/wiG6XyBBu49)]
+
 ### Keys
 
 Creates an array of the map keys.
 
 ```go
 keys := lo.Keys[string, int](map[string]int{"foo": 1, "bar": 2})
-// []string{"bar", "foo"}
+// []string{"foo", "bar"}
 ```
+
+[[play](https://go.dev/play/p/Uu11fHASqrU)]
 
 ### Values
 
@@ -752,70 +943,98 @@ values := lo.Values[string, int](map[string]int{"foo": 1, "bar": 2})
 // []int{1, 2}
 ```
 
+[[play](https://go.dev/play/p/nnRTQkzQfF6)]
+
+### ValueOr
+
+Returns the value of the given key or the fallback value if the key is not present.
+
+```go
+value := lo.ValueOr[string, int](map[string]int{"foo": 1, "bar": 2}, "foo", 42)
+// 1
+
+value := lo.ValueOr[string, int](map[string]int{"foo": 1, "bar": 2}, "baz", 42)
+// 42
+```
+
+[[play](https://go.dev/play/p/bAq9mHErB4V)]
+
 ### PickBy
 
 Returns same map type filtered by given predicate.
 
 ```go
-m := lo.PickBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+m := lo.PickBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
     return value%2 == 1
 })
 // map[string]int{"foo": 1, "baz": 3}
 ```
+
+[[play](https://go.dev/play/p/kdg8GR_QMmf)]
 
 ### PickByKeys
 
 Returns same map type filtered by given keys.
 
 ```go
-m := lo.PickByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+m := lo.PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
 // map[string]int{"foo": 1, "baz": 3}
 ```
+
+[[play](https://go.dev/play/p/R1imbuci9qU)]
 
 ### PickByValues
 
 Returns same map type filtered by given values.
 
 ```go
-m := lo.PickByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+m := lo.PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 // map[string]int{"foo": 1, "baz": 3}
 ```
+
+[[play](https://go.dev/play/p/1zdzSvbfsJc)]
 
 ### OmitBy
 
 Returns same map type filtered by given predicate.
 
 ```go
-m := lo.OmitBy[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
+m := lo.OmitBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
     return value%2 == 1
 })
 // map[string]int{"bar": 2}
 ```
+
+[[play](https://go.dev/play/p/EtBsR43bdsd)]
 
 ### OmitByKeys
 
 Returns same map type filtered by given keys.
 
 ```go
-m := lo.OmitByKeys[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+m := lo.OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
 // map[string]int{"bar": 2}
 ```
+
+[[play](https://go.dev/play/p/t1QjCrs-ysk)]
 
 ### OmitByValues
 
 Returns same map type filtered by given values.
 
 ```go
-m := lo.OmitByValues[string, int](map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
+m := lo.OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 // map[string]int{"bar": 2}
 ```
+
+[[play](https://go.dev/play/p/9UYZi-hrs8j)]
 
 ### Entries (alias: ToPairs)
 
 Transforms a map into array of key/value pairs.
 
 ```go
-entries := lo.Entries[string, int](map[string]int{"foo": 1, "bar": 2})
+entries := lo.Entries(map[string]int{"foo": 1, "bar": 2})
 // []lo.Entry[string, int]{
 //     {
 //         Key: "foo",
@@ -828,12 +1047,14 @@ entries := lo.Entries[string, int](map[string]int{"foo": 1, "bar": 2})
 // }
 ```
 
+[[play](https://go.dev/play/p/3Dhgx46gawJ)]
+
 ### FromEntries (alias: FromPairs)
 
 Transforms an array of key/value pairs into a map.
 
 ```go
-m := lo.FromEntries[string, int]([]lo.Entry[string, int]{
+m := lo.FromEntries([]lo.Entry[string, int]{
     {
         Key: "foo",
         Value: 1,
@@ -846,17 +1067,21 @@ m := lo.FromEntries[string, int]([]lo.Entry[string, int]{
 // map[string]int{"foo": 1, "bar": 2}
 ```
 
+[[play](https://go.dev/play/p/oIr5KHFGCEN)]
+
 ### Invert
 
 Creates a map composed of the inverted keys and values. If map contains duplicate values, subsequent values overwrite property assignments of previous values.
 
 ```go
-m1 := lo.Invert[string, int]([map[string]int{"a": 1, "b": 2})
+m1 := lo.Invert(map[string]int{"a": 1, "b": 2})
 // map[int]string{1: "a", 2: "b"}
 
-m2 := lo.Invert[string, int]([map[string]int{"a": 1, "b": 2, "c": 1})
+m2 := lo.Invert(map[string]int{"a": 1, "b": 2, "c": 1})
 // map[int]string{1: "c", 2: "b"}
 ```
+
+[[play](https://go.dev/play/p/rFQ4rak6iA1)]
 
 ### Assign
 
@@ -870,16 +1095,20 @@ mergedMaps := lo.Assign[string, int](
 // map[string]int{"a": 1, "b": 3, "c": 4}
 ```
 
+[[play](https://go.dev/play/p/VhwfJOyxf5o)]
+
 ### MapKeys
 
 Manipulates a map keys and transforms it to a map of another type.
 
 ```go
-m2 := lo.MapKeys[int, int, string](map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
+m2 := lo.MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
     return strconv.FormatInt(int64(v), 10)
 })
 // map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}
 ```
+
+[[play](https://go.dev/play/p/9_4WPIqOetJ)]
 
 ### MapValues
 
@@ -888,11 +1117,28 @@ Manipulates a map values and transforms it to a map of another type.
 ```go
 m1 := map[int]int64{1: 1, 2: 2, 3: 3}
 
-m2 := lo.MapValues[int, int64, string](m1, func(x int64, _ int) string {
-	return strconv.FormatInt(x, 10)
+m2 := lo.MapValues(m1, func(x int64, _ int) string {
+    return strconv.FormatInt(x, 10)
 })
 // map[int]string{1: "1", 2: "2", 3: "3"}
 ```
+
+[[play](https://go.dev/play/p/T_8xAfvcf0W)]
+
+### MapEntries
+
+Manipulates a map entries and transforms it to a map of another type.
+
+```go
+in := map[string]int{"foo": 1, "bar": 2}
+
+out := lo.MapEntries(in, func(k string, v int) (int, string) {
+    return v,k
+})
+// map[int]string{1: "foo", 2: "bar"}
+```
+
+[[play](https://go.dev/play/p/VuvNQzxKimT)]
 
 ### MapToSlice
 
@@ -907,35 +1153,39 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 // []string{"1_4", "2_5", "3_6"}
 ```
 
+[[play](https://go.dev/play/p/ZuiCZpDt6LD)]
+
 ### Range / RangeFrom / RangeWithSteps
 
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
 
 ```go
-result := Range(4)
+result := lo.Range(4)
 // [0, 1, 2, 3]
 
-result := Range(-4);
+result := lo.Range(-4)
 // [0, -1, -2, -3]
 
-result := RangeFrom(1, 5);
-// [1, 2, 3, 4]
+result := lo.RangeFrom(1, 5)
+// [1, 2, 3, 4, 5]
 
-result := RangeFrom[float64](1.0, 5);
-// [1.0, 2.0, 3.0, 4.0]
+result := lo.RangeFrom[float64](1.0, 5)
+// [1.0, 2.0, 3.0, 4.0, 5.0]
 
-result := RangeWithSteps(0, 20, 5);
+result := lo.RangeWithSteps(0, 20, 5)
 // [0, 5, 10, 15]
 
-result := RangeWithSteps[float32](-1.0, -4.0, -1.0);
+result := lo.RangeWithSteps[float32](-1.0, -4.0, -1.0)
 // [-1.0, -2.0, -3.0]
 
-result := RangeWithSteps(1, 4, -1);
+result := lo.RangeWithSteps(1, 4, -1)
 // []
 
-result := Range(0);
+result := lo.Range(0)
 // []
 ```
+
+[[play](https://go.dev/play/p/0r6VimXAi9H)]
 
 ### Clamp
 
@@ -952,9 +1202,26 @@ r3 := lo.Clamp(42, -10, 10)
 // 10
 ```
 
+[[play](https://go.dev/play/p/RU4lJNC2hlI)]
+
+### Sum
+
+Sums the values in a collection.
+
+If collection is empty 0 is returned.
+
+```go
+list := []int{1, 2, 3, 4, 5}
+sum := lo.Sum(list)
+// 15
+```
+
+[[play](https://go.dev/play/p/upfeJVqs4Bt)]
+
 ### SumBy
 
 Summarizes the values in a collection using the given return value from the iteration function.
+
 If collection is empty 0 is returned.
 
 ```go
@@ -964,6 +1231,19 @@ sum := lo.SumBy(strings, func(item string) int {
 })
 // 6
 ```
+
+[[play](https://go.dev/play/p/Dz_a_7jN_ca)]
+
+### RandomString
+
+Returns a random string of the specified length and made of the specified charset.
+
+```go
+str := lo.RandomString(5, lo.LettersCharset)
+// example: "eIGbt"
+```
+
+[[play](https://go.dev/play/p/rRseOQVVum4)]
 
 ### Substring
 
@@ -979,6 +1259,8 @@ sub := lo.Substring("hello", -4, 3)
 sub := lo.Substring("hello", -2, math.MaxUint)
 // "lo"
 ```
+
+[[play](https://go.dev/play/p/TQlxQi82Lu1)]
 
 ### ChunkString
 
@@ -998,6 +1280,8 @@ lo.ChunkString("1", 2)
 // []string{"1"}
 ```
 
+[[play](https://go.dev/play/p/__FLTuJVz54)]
+
 ### RuneLength
 
 An alias to utf8.RuneCountInString which returns the number of runes in string.
@@ -1010,27 +1294,41 @@ sub := len("hellô")
 // 6
 ```
 
+[[play](https://go.dev/play/p/tuhgW_lWY8l)]
+
 ### T2 -> T9
 
 Creates a tuple from a list of values.
 
 ```go
-tuple1 := lo.T2[string, int]("x", 1)
+tuple1 := lo.T2("x", 1)
 // Tuple2[string, int]{A: "x", B: 1}
 
 func example() (string, int) { return "y", 2 }
-tuple2 := lo.T2[string, int](example())
+tuple2 := lo.T2(example())
 // Tuple2[string, int]{A: "y", B: 2}
 ```
+
+[[play](https://go.dev/play/p/IllL3ZO4BQm)]
 
 ### Unpack2 -> Unpack9
 
 Returns values contained in tuple.
 
 ```go
-r1, r2 := lo.Unpack2[string, int](lo.Tuple2[string, int]{"a", 1})
+r1, r2 := lo.Unpack2(lo.Tuple2[string, int]{"a", 1})
 // "a", 1
 ```
+
+Unpack is also available as a method of TupleX.
+
+```go
+tuple2 := lo.T2("a", 1)
+a, b := tuple2.Unpack()
+// "a" 1
+```
+
+[[play](https://go.dev/play/p/xVP_k0kJ96W)]
 
 ### Zip2 -> Zip9
 
@@ -1039,18 +1337,266 @@ Zip creates a slice of grouped elements, the first of which contains the first e
 When collections have different size, the Tuple attributes are filled with zero value.
 
 ```go
-tuples := lo.Zip2[string, int]([]string{"a", "b"}, []int{1, 2})
+tuples := lo.Zip2([]string{"a", "b"}, []int{1, 2})
 // []Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}}
 ```
+
+[[play](https://go.dev/play/p/jujaA6GaJTp)]
 
 ### Unzip2 -> Unzip9
 
 Unzip accepts an array of grouped elements and creates an array regrouping the elements to their pre-zip configuration.
 
 ```go
-a, b := lo.Unzip2[string, int]([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
+a, b := lo.Unzip2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
 // []string{"a", "b"}
 // []int{1, 2}
+```
+
+[[play](https://go.dev/play/p/ciHugugvaAW)]
+
+### ChannelDispatcher
+
+Distributes messages from input channels into N child channels. Close events are propagated to children.
+
+Underlying channels can have a fixed buffer capacity or be unbuffered when cap is 0.
+
+```go
+ch := make(chan int, 42)
+for i := 0; i <= 10; i++ {
+    ch <- i
+}
+
+children := lo.ChannelDispatcher(ch, 5, 10, DispatchingStrategyRoundRobin[int])
+// []<-chan int{...}
+
+consumer := func(c <-chan int) {
+    for {
+        msg, ok := <-c
+        if !ok {
+            println("closed")
+
+            break
+        }
+
+        println(msg)
+    }
+}
+
+for i := range children {
+    go consumer(children[i])
+}
+```
+
+Many distributions strategies are available:
+
+- [lo.DispatchingStrategyRoundRobin](./channel.go): Distributes messages in a rotating sequential manner.
+- [lo.DispatchingStrategyRandom](./channel.go): Distributes messages in a random manner.
+- [lo.DispatchingStrategyWeightedRandom](./channel.go): Distributes messages in a weighted manner.
+- [lo.DispatchingStrategyFirst](./channel.go): Distributes messages in the first non-full channel.
+- [lo.DispatchingStrategyLeast](./channel.go): Distributes messages in the emptiest channel.
+- [lo.DispatchingStrategyMost](./channel.go): Distributes to the fullest channel.
+
+Some strategies bring fallback, in order to favor non-blocking behaviors. See implementations.
+
+For custom strategies, just implement the `lo.DispatchingStrategy` prototype:
+
+```go
+type DispatchingStrategy[T any] func(message T, messageIndex uint64, channels []<-chan T) int
+```
+
+Eg:
+
+```go
+type Message struct {
+    TenantID uuid.UUID
+}
+
+func hash(id uuid.UUID) int {
+    h := fnv.New32a()
+    h.Write([]byte(id.String()))
+    return int(h.Sum32())
+}
+
+// Routes messages per TenantID.
+customStrategy := func(message string, messageIndex uint64, channels []<-chan string) int {
+    destination := hash(message) % len(channels)
+
+    // check if channel is full
+    if len(channels[destination]) < cap(channels[destination]) {
+        return destination
+    }
+
+    // fallback when child channel is full
+    return utils.DispatchingStrategyRoundRobin(message, uint64(destination), channels)
+}
+
+children := lo.ChannelDispatcher(ch, 5, 10, customStrategy)
+...
+```
+
+### SliceToChannel
+
+Returns a read-only channels of collection elements. Channel is closed after last element. Channel capacity can be customized.
+
+```go
+list := []int{1, 2, 3, 4, 5}
+
+for v := range lo.SliceToChannel(2, list) {
+    println(v)
+}
+// prints 1, then 2, then 3, then 4, then 5
+```
+
+### ChannelToSlice
+
+Returns a slice built from channels items. Blocks until channel closes.
+
+```go
+list := []int{1, 2, 3, 4, 5}
+ch := lo.SliceToChannel(2, list)
+
+items := ChannelToSlice(ch)
+// []int{1, 2, 3, 4, 5}
+```
+
+### Generator
+
+Implements the generator design pattern. Channel is closed after last element. Channel capacity can be customized.
+
+```go
+generator := func(yield func(int)) {
+    yield(1)
+    yield(2)
+    yield(3)
+}
+
+for v := range lo.Generator(2, generator) {
+    println(v)
+}
+// prints 1, then 2, then 3
+```
+
+### Buffer
+
+Creates a slice of n elements from a channel. Returns the slice, the slice length, the read time and the channel status (opened/closed).
+
+```go
+ch := lo.SliceToChannel(2, []int{1, 2, 3, 4, 5})
+
+items1, length1, duration1, ok1 := lo.Buffer(ch, 3)
+// []int{1, 2, 3}, 3, 0s, true
+items2, length2, duration2, ok2 := lo.Buffer(ch, 3)
+// []int{4, 5}, 2, 0s, false
+```
+
+Example: RabbitMQ consumer 👇
+
+```go
+ch := readFromQueue()
+
+for {
+    // read 1k items
+    items, length, _, ok := lo.Buffer(ch, 1000)
+
+    // do batching stuff
+
+    if !ok {
+        break
+    }
+}
+```
+
+### BufferWithTimeout
+
+Creates a slice of n elements from a channel, with timeout. Returns the slice, the slice length, the read time and the channel status (opened/closed).
+
+```go
+generator := func(yield func(int)) {
+    for i := 0; i < 5; i++ {
+        yield(i)
+        time.Sleep(35*time.Millisecond)
+    }
+}
+
+ch := lo.Generator(0, generator)
+
+items1, length1, duration1, ok1 := lo.BufferWithTimeout(ch, 3, 100*time.Millisecond)
+// []int{1, 2}, 2, 100ms, true
+items2, length2, duration2, ok2 := lo.BufferWithTimeout(ch, 3, 100*time.Millisecond)
+// []int{3, 4, 5}, 3, 75ms, true
+items3, length3, duration2, ok3 := lo.BufferWithTimeout(ch, 3, 100*time.Millisecond)
+// []int{}, 0, 10ms, false
+```
+
+Example: RabbitMQ consumer 👇
+
+```go
+ch := readFromQueue()
+
+for {
+    // read 1k items
+    // wait up to 1 second
+    items, length, _, ok := lo.BufferWithTimeout(ch, 1000, 1*time.Second)
+
+    // do batching stuff
+
+    if !ok {
+        break
+    }
+}
+```
+
+Example: Multithreaded RabbitMQ consumer 👇
+
+```go
+ch := readFromQueue()
+
+// 5 workers
+// prefetch 1k messages per worker
+children := lo.ChannelDispatcher(ch, 5, 1000, lo.DispatchingStrategyFirst[int])
+
+consumer := func(c <-chan int) {
+    for {
+        // read 1k items
+        // wait up to 1 second
+        items, length, _, ok := lo.BufferWithTimeout(ch, 1000, 1*time.Second)
+
+        // do batching stuff
+
+        if !ok {
+            break
+        }
+    }
+}
+
+for i := range children {
+    go consumer(children[i])
+}
+```
+
+### FanIn
+
+Merge messages from multiple input channels into a single buffered channel. Output messages has no priority. When all upstream channels reach EOF, downstream channel closes.
+
+```go
+stream1 := make(chan int, 42)
+stream2 := make(chan int, 42)
+stream3 := make(chan int, 42)
+
+all := lo.FanIn(100, stream1, stream2, stream3)
+// <-chan int
+```
+
+### FanOut
+
+Broadcasts all the upstream messages to multiple downstream channels. When upstream channel reach EOF, downstream channels close. If any downstream channels is full, broadcasting is paused.
+
+```go
+stream := make(chan int, 42)
+
+all := lo.FanOut(5, 100, stream)
+// [5]<-chan int
 ```
 
 ### Contains
@@ -1058,7 +1604,7 @@ a, b := lo.Unzip2[string, int]([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B:
 Returns true if an element is present in a collection.
 
 ```go
-present := lo.Contains[int]([]int{0, 1, 2, 3, 4, 5}, 5)
+present := lo.Contains([]int{0, 1, 2, 3, 4, 5}, 5)
 // true
 ```
 
@@ -1067,7 +1613,7 @@ present := lo.Contains[int]([]int{0, 1, 2, 3, 4, 5}, 5)
 Returns true if the predicate function returns `true`.
 
 ```go
-present := lo.ContainsBy[int]([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
+present := lo.ContainsBy([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
     return x == 3
 })
 // true
@@ -1078,10 +1624,10 @@ present := lo.ContainsBy[int]([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
 Returns true if all elements of a subset are contained into a collection or if the subset is empty.
 
 ```go
-ok := lo.Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+ok := lo.Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
 // true
 
-ok := lo.Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+ok := lo.Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // false
 ```
 
@@ -1090,7 +1636,7 @@ ok := lo.Every[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 Returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
 
 ```go
-b := EveryBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+b := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
     return x < 5
 })
 // true
@@ -1102,10 +1648,10 @@ Returns true if at least 1 element of a subset is contained into a collection.
 If the subset is empty Some returns false.
 
 ```go
-ok := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
 // true
 
-ok := lo.Some[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // false
 ```
 
@@ -1115,7 +1661,7 @@ Returns true if the predicate returns true for any of the elements in the collec
 If the collection is empty SomeBy returns false.
 
 ```go
-b := SomeBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+b := SomeBy([]int{1, 2, 3, 4}, func(x int) bool {
     return x < 3
 })
 // true
@@ -1126,9 +1672,9 @@ b := SomeBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
 Returns true if no element of a subset are contained into a collection or if the subset is empty.
 
 ```go
-b := None[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+b := None([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
 // false
-b := None[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+b := None([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // true
 ```
 
@@ -1137,7 +1683,7 @@ b := None[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 Returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
 
 ```go
-b := NoneBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
+b := NoneBy([]int{1, 2, 3, 4}, func(x int) bool {
     return x < 0
 })
 // true
@@ -1148,13 +1694,13 @@ b := NoneBy[int]([]int{1, 2, 3, 4}, func(x int) bool {
 Returns the intersection between two collections.
 
 ```go
-result1 := lo.Intersect[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+result1 := lo.Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
 // []int{0, 2}
 
-result2 := lo.Intersect[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 6}
+result2 := lo.Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // []int{0}
 
-result3 := lo.Intersect[int]([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+result3 := lo.Intersect([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // []int{}
 ```
 
@@ -1166,19 +1712,19 @@ Returns the difference between two collections.
 - The second value is the collection of element absent of list1.
 
 ```go
-left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
+left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
 // []int{1, 3, 4, 5}, []int{6}
 
-left, right := lo.Difference[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 // []int{}, []int{}
 ```
 
 ### Union
 
-Returns all distinct elements from both collections. Result will not change the order of elements relatively.
+Returns all distinct elements from given collections. Result will not change the order of elements relatively.
 
 ```go
-union := lo.Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+union := lo.Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2}, []int{0, 10})
 // []int{0, 1, 2, 3, 4, 5, 10}
 ```
 
@@ -1187,10 +1733,10 @@ union := lo.Union[int]([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
 Returns slice excluding all given values.
 
 ```go
-subset := lo.Without[int]([]int{0, 2, 10}, 2)
+subset := lo.Without([]int{0, 2, 10}, 2)
 // []int{0, 10}
 
-subset := lo.Without[int]([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
+subset := lo.Without([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
 // []int{10}
 ```
 
@@ -1199,7 +1745,7 @@ subset := lo.Without[int]([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
 Returns slice excluding empty values.
 
 ```go
-subset := lo.WithoutEmpty[int]([]int{0, 2, 10})
+subset := lo.WithoutEmpty([]int{0, 2, 10})
 // []int{2, 10}
 ```
 
@@ -1208,10 +1754,10 @@ subset := lo.WithoutEmpty[int]([]int{0, 2, 10})
 Returns the index at which the first occurrence of a value is found in an array or return -1 if the value cannot be found.
 
 ```go
-found := lo.IndexOf[int]([]int{0, 1, 2, 1, 2, 3}, 2)
+found := lo.IndexOf([]int{0, 1, 2, 1, 2, 3}, 2)
 // 2
 
-notFound := lo.IndexOf[int]([]int{0, 1, 2, 1, 2, 3}, 6)
+notFound := lo.IndexOf([]int{0, 1, 2, 1, 2, 3}, 6)
 // -1
 ```
 
@@ -1220,10 +1766,10 @@ notFound := lo.IndexOf[int]([]int{0, 1, 2, 1, 2, 3}, 6)
 Returns the index at which the last occurrence of a value is found in an array or return -1 if the value cannot be found.
 
 ```go
-found := lo.LastIndexOf[int]([]int{0, 1, 2, 1, 2, 3}, 2)
+found := lo.LastIndexOf([]int{0, 1, 2, 1, 2, 3}, 2)
 // 4
 
-notFound := lo.LastIndexOf[int]([]int{0, 1, 2, 1, 2, 3}, 6)
+notFound := lo.LastIndexOf([]int{0, 1, 2, 1, 2, 3}, 6)
 // -1
 ```
 
@@ -1232,12 +1778,12 @@ notFound := lo.LastIndexOf[int]([]int{0, 1, 2, 1, 2, 3}, 6)
 Search an element in a slice based on a predicate. It returns element and true if element was found.
 
 ```go
-str, ok := lo.Find[string]([]string{"a", "b", "c", "d"}, func(i string) bool {
+str, ok := lo.Find([]string{"a", "b", "c", "d"}, func(i string) bool {
     return i == "b"
 })
 // "b", true
 
-str, ok := lo.Find[string]([]string{"foobar"}, func(i string) bool {
+str, ok := lo.Find([]string{"foobar"}, func(i string) bool {
     return i == "b"
 })
 // "", false
@@ -1248,12 +1794,12 @@ str, ok := lo.Find[string]([]string{"foobar"}, func(i string) bool {
 FindIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
 
 ```go
-str, index, ok := lo.FindIndexOf[string]([]string{"a", "b", "a", "b"}, func(i string) bool {
+str, index, ok := lo.FindIndexOf([]string{"a", "b", "a", "b"}, func(i string) bool {
     return i == "b"
 })
 // "b", 1, true
 
-str, index, ok := lo.FindIndexOf[string]([]string{"foobar"}, func(i string) bool {
+str, index, ok := lo.FindIndexOf([]string{"foobar"}, func(i string) bool {
     return i == "b"
 })
 // "", -1, false
@@ -1264,15 +1810,31 @@ str, index, ok := lo.FindIndexOf[string]([]string{"foobar"}, func(i string) bool
 FindLastIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
 
 ```go
-str, index, ok := lo.FindLastIndexOf[string]([]string{"a", "b", "a", "b"}, func(i string) bool {
+str, index, ok := lo.FindLastIndexOf([]string{"a", "b", "a", "b"}, func(i string) bool {
     return i == "b"
 })
 // "b", 4, true
 
-str, index, ok := lo.FindLastIndexOf[string]([]string{"foobar"}, func(i string) bool {
+str, index, ok := lo.FindLastIndexOf([]string{"foobar"}, func(i string) bool {
     return i == "b"
 })
 // "", -1, false
+```
+
+### FindOrElse
+
+Search an element in a slice based on a predicate. It returns element and true if element was found.
+
+```go
+str := lo.FindOrElse([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
+    return i == "b"
+})
+// "b"
+
+str := lo.FindOrElse([]string{"foobar"}, "x", func(i string) bool {
+    return i == "b"
+})
+// "x"
 ```
 
 ### FindKey
@@ -1314,7 +1876,7 @@ result2, ok2 := lo.FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(
 Returns a slice with all the unique elements of the collection. The order of result values is determined by the order they occur in the array.
 
 ```go
-uniqueValues := lo.FindUniques[int]([]int{1, 2, 2, 1, 2, 3})
+uniqueValues := lo.FindUniques([]int{1, 2, 2, 1, 2, 3})
 // []int{3}
 ```
 
@@ -1323,7 +1885,7 @@ uniqueValues := lo.FindUniques[int]([]int{1, 2, 2, 1, 2, 3})
 Returns a slice with all the unique elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
 
 ```go
-uniqueValues := lo.FindUniquesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int {
+uniqueValues := lo.FindUniquesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
     return i%3
 })
 // []int{5}
@@ -1331,19 +1893,19 @@ uniqueValues := lo.FindUniquesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int
 
 ### FindDuplicates
 
-Returns a slice with the first occurence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array.
+Returns a slice with the first occurrence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array.
 
 ```go
-duplicatedValues := lo.FindDuplicates[int]([]int{1, 2, 2, 1, 2, 3})
+duplicatedValues := lo.FindDuplicates([]int{1, 2, 2, 1, 2, 3})
 // []int{1, 2}
 ```
 
 ### FindDuplicatesBy
 
-Returns a slice with the first occurence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
+Returns a slice with the first occurrence of each duplicated elements of the collection. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
 
 ```go
-duplicatedValues := lo.FindDuplicatesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int {
+duplicatedValues := lo.FindDuplicatesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
     return i%3
 })
 // []int{3, 4}
@@ -1353,26 +1915,31 @@ duplicatedValues := lo.FindDuplicatesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i i
 
 Search the minimum value of a collection.
 
+Returns zero value when collection is empty.
+
 ```go
-min := lo.Min[int]([]int{1, 2, 3})
+min := lo.Min([]int{1, 2, 3})
 // 1
 
-min := lo.Min[int]([]int{})
+min := lo.Min([]int{})
 // 0
 ```
 
 ### MinBy
 
 Search the minimum value of a collection using the given comparison function.
+
 If several values of the collection are equal to the smallest value, returns the first such value.
 
+Returns zero value when collection is empty.
+
 ```go
-min := lo.MinBy[string]([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
+min := lo.MinBy([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
     return len(item) < len(min)
 })
 // "s1"
 
-min := lo.MinBy[string]([]string{}, func(item string, min string) bool {
+min := lo.MinBy([]string{}, func(item string, min string) bool {
     return len(item) < len(min)
 })
 // ""
@@ -1382,26 +1949,31 @@ min := lo.MinBy[string]([]string{}, func(item string, min string) bool {
 
 Search the maximum value of a collection.
 
+Returns zero value when collection is empty.
+
 ```go
-max := lo.Max[int]([]int{1, 2, 3})
+max := lo.Max([]int{1, 2, 3})
 // 3
 
-max := lo.Max[int]([]int{})
+max := lo.Max([]int{})
 // 0
 ```
 
 ### MaxBy
 
 Search the maximum value of a collection using the given comparison function.
+
 If several values of the collection are equal to the greatest value, returns the first such value.
 
+Returns zero value when collection is empty.
+
 ```go
-max := lo.MaxBy[string]([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
+max := lo.MaxBy([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
     return len(item) > len(max)
 })
 // "string1"
 
-max := lo.MaxBy[string]([]string{}, func(item string, max string) bool {
+max := lo.MaxBy([]string{}, func(item string, max string) bool {
     return len(item) > len(max)
 })
 // ""
@@ -1412,7 +1984,7 @@ max := lo.MaxBy[string]([]string{}, func(item string, max string) bool {
 Returns the last element of a collection or error if empty.
 
 ```go
-last, err := lo.Last[int]([]int{1, 2, 3})
+last, err := lo.Last([]int{1, 2, 3})
 // 3
 ```
 
@@ -1421,10 +1993,10 @@ last, err := lo.Last[int]([]int{1, 2, 3})
 Returns the element at index `nth` of collection. If `nth` is negative, the nth element from the end is returned. An error is returned when nth is out of slice bounds.
 
 ```go
-nth, err := lo.Nth[int]([]int{0, 1, 2, 3}, 2)
+nth, err := lo.Nth([]int{0, 1, 2, 3}, 2)
 // 2
 
-nth, err := lo.Nth[int]([]int{0, 1, 2, 3}, -2)
+nth, err := lo.Nth([]int{0, 1, 2, 3}, -2)
 // 2
 ```
 
@@ -1433,10 +2005,10 @@ nth, err := lo.Nth[int]([]int{0, 1, 2, 3}, -2)
 Returns a random item from collection.
 
 ```go
-lo.Sample[string]([]string{"a", "b", "c"})
+lo.Sample([]string{"a", "b", "c"})
 // a random string from []string{"a", "b", "c"}
 
-lo.Sample[string]([]string{})
+lo.Sample([]string{})
 // ""
 ```
 
@@ -1445,7 +2017,7 @@ lo.Sample[string]([]string{})
 Returns N random unique items from collection.
 
 ```go
-lo.Samples[string]([]string{"a", "b", "c"}, 3)
+lo.Samples([]string{"a", "b", "c"}, 3)
 // []string{"a", "b", "c"} in random order
 ```
 
@@ -1454,27 +2026,52 @@ lo.Samples[string]([]string{"a", "b", "c"}, 3)
 A 1 line if/else statement.
 
 ```go
-result := lo.Ternary[string](true, "a", "b")
+result := lo.Ternary(true, "a", "b")
 // "a"
 
-result := lo.Ternary[string](false, "a", "b")
+result := lo.Ternary(false, "a", "b")
 // "b"
 ```
+
+[[play](https://go.dev/play/p/t-D7WBL44h2)]
+
+### TernaryF
+
+A 1 line if/else statement whose options are functions.
+
+```go
+result := lo.TernaryF(true, func() string { return "a" }, func() string { return "b" })
+// "a"
+
+result := lo.TernaryF(false, func() string { return "a" }, func() string { return "b" })
+// "b"
+```
+
+Useful to avoid nil-pointer dereferencing in intializations, or avoid running unnecessary code
+
+```go
+var s *string
+
+someStr := TernaryF(s == nil, func() string { return uuid.New().String() }, func() string { return *s })
+// ef782193-c30c-4e2e-a7ae-f8ab5e125e02
+```
+
+[[play](https://go.dev/play/p/AO4VW20JoqM)]
 
 ### If / ElseIf / Else
 
 ```go
-result := lo.If[int](true, 1).
+result := lo.If(true, 1).
     ElseIf(false, 2).
     Else(3)
 // 1
 
-result := lo.If[int](false, 1).
+result := lo.If(false, 1).
     ElseIf(true, 2).
     Else(3)
 // 2
 
-result := lo.If[int](false, 1).
+result := lo.If(false, 1).
     ElseIf(false, 2).
     Else(3)
 // 3
@@ -1483,7 +2080,7 @@ result := lo.If[int](false, 1).
 Using callbacks:
 
 ```go
-result := lo.IfF[int](true, func () int {
+result := lo.IfF(true, func () int {
         return 1
     }).
     ElseIfF(false, func () int {
@@ -1498,29 +2095,31 @@ result := lo.IfF[int](true, func () int {
 Mixed:
 
 ```go
-result := lo.IfF[int](true, func () int {
+result := lo.IfF(true, func () int {
         return 1
     }).
     Else(42)
 // 1
 ```
 
+[[play](https://go.dev/play/p/WSw3ApMxhyW)]
+
 ### Switch / Case / Default
 
 ```go
-result := lo.Switch[int, string](1).
+result := lo.Switch(1).
     Case(1, "1").
     Case(2, "2").
     Default("3")
 // "1"
 
-result := lo.Switch[int, string](2).
+result := lo.Switch(2).
     Case(1, "1").
     Case(2, "2").
     Default("3")
 // "2"
 
-result := lo.Switch[int, string](42).
+result := lo.Switch(42).
     Case(1, "1").
     Case(2, "2").
     Default("3")
@@ -1530,7 +2129,7 @@ result := lo.Switch[int, string](42).
 Using callbacks:
 
 ```go
-result := lo.Switch[int, string](1).
+result := lo.Switch(1).
     CaseF(1, func() string {
         return "1"
     }).
@@ -1546,7 +2145,7 @@ result := lo.Switch[int, string](1).
 Mixed:
 
 ```go
-result := lo.Switch[int, string](1).
+result := lo.Switch(1).
     CaseF(1, func() string {
         return "1"
     }).
@@ -1554,12 +2153,33 @@ result := lo.Switch[int, string](1).
 // "1"
 ```
 
+[[play](https://go.dev/play/p/TGbKUMAeRUd)]
+
 ### ToPtr
 
 Returns a pointer copy of value.
 
 ```go
-ptr := lo.ToPtr[string]("hello world")
+ptr := lo.ToPtr("hello world")
+// *string{"hello world"}
+```
+
+### EmptyableToPtr
+
+Returns a pointer copy of value if it's nonzero.
+Otherwise, returns nil pointer.
+
+```go
+ptr := lo.EmptyableToPtr[[]int](nil)
+// nil
+
+ptr := lo.EmptyableToPtr[string]("")
+// nil
+
+ptr := lo.EmptyableToPtr[[]int]([]int{})
+// *[]int{}
+
+ptr := lo.EmptyableToPtr[string]("hello world")
 // *string{"hello world"}
 ```
 
@@ -1569,7 +2189,7 @@ Returns the pointer value or empty.
 
 ```go
 str := "hello world"
-value := lo.FromPtr[string](&str)
+value := lo.FromPtr(&str)
 // "hello world"
 
 value := lo.FromPtr[string](nil)
@@ -1582,7 +2202,7 @@ Returns the pointer value or the fallback value.
 
 ```go
 str := "hello world"
-value := lo.FromPtrOr[string](&str, "empty")
+value := lo.FromPtrOr(&str, "empty")
 // "hello world"
 
 value := lo.FromPtrOr[string](nil, "empty")
@@ -1594,7 +2214,7 @@ value := lo.FromPtrOr[string](nil, "empty")
 Returns a slice of pointer copy of value.
 
 ```go
-ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
+ptr := lo.ToSlicePtr([]string{"hello", "world"})
 // []*string{"hello", "world"}
 ```
 
@@ -1603,7 +2223,7 @@ ptr := lo.ToSlicePtr[string]([]string{"hello", "world"})
 Returns a slice with all elements mapped to `any` type.
 
 ```go
-elements := lo.ToAnySlice[int]([]int{1, 5, 1})
+elements := lo.ToAnySlice([]int{1, 5, 1})
 // []any{1, 5, 1}
 ```
 
@@ -1612,10 +2232,10 @@ elements := lo.ToAnySlice[int]([]int{1, 5, 1})
 Returns an `any` slice with all elements mapped to a type. Returns false in case of type conversion failure.
 
 ```go
-elements, ok := lo.FromAnySlice[string]([]any{"foobar", 42})
+elements, ok := lo.FromAnySlice([]any{"foobar", 42})
 // []string{}, false
 
-elements, ok := lo.FromAnySlice[string]([]any{"foobar", "42"})
+elements, ok := lo.FromAnySlice([]any{"foobar", "42"})
 // []string{"foobar", "42"}, true
 ```
 
@@ -1637,23 +2257,23 @@ lo.Empty[bool]()
 Returns true if argument is a zero value.
 
 ```go
-lo.IsEmpty[int](0)
+lo.IsEmpty(0)
 // true
-lo.IsEmpty[int](42)
+lo.IsEmpty(42)
 // false
 
-lo.IsEmpty[string]("")
+lo.IsEmpty("")
 // true
-lo.IsEmpty[bool]("foobar")
+lo.IsEmpty("foobar")
 // false
 
 type test struct {
     foobar string
 }
 
-lo.IsEmpty[test](test{foobar: ""})
+lo.IsEmpty(test{foobar: ""})
 // true
-lo.IsEmpty[test](test{foobar: "foobar"})
+lo.IsEmpty(test{foobar: "foobar"})
 // false
 ```
 
@@ -1662,23 +2282,23 @@ lo.IsEmpty[test](test{foobar: "foobar"})
 Returns true if argument is a zero value.
 
 ```go
-lo.IsNotEmpty[int](0)
+lo.IsNotEmpty(0)
 // false
-lo.IsNotEmpty[int](42)
+lo.IsNotEmpty(42)
 // true
 
-lo.IsNotEmpty[string]("")
+lo.IsNotEmpty("")
 // false
-lo.IsNotEmpty[bool]("foobar")
+lo.IsNotEmpty("foobar")
 // true
 
 type test struct {
     foobar string
 }
 
-lo.IsNotEmpty[test](test{foobar: ""})
+lo.IsNotEmpty(test{foobar: ""})
 // false
-lo.IsNotEmpty[test](test{foobar: "foobar"})
+lo.IsNotEmpty(test{foobar: "foobar"})
 // true
 ```
 
@@ -1712,6 +2332,21 @@ f(10)
 
 f(42)
 // 47
+```
+
+### Partial2 -> Partial5
+
+Returns new function that, when called, has its first argument set to the provided value.
+
+```go
+add := func(x, y, z int) int { return x + y + z }
+f := lo.Partial2(add, 42)
+
+f(10, 5)
+// 57
+
+f(42, -4)
+// 80
 ```
 
 ### Attempt
@@ -1752,6 +2387,8 @@ iter, err := lo.Attempt(0, func(i int) error {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
+[[play](https://go.dev/play/p/3ggJZ2ZKcMj)]
+
 ### AttemptWithDelay
 
 Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil.
@@ -1773,6 +2410,58 @@ iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duratio
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
+[[play](https://go.dev/play/p/tVs6CygC7m1)]
+
+### AttemptWhile
+
+Invokes a function N times until it returns valid output. Returning either the caught error or nil, and along with a bool value to identifying whether it needs invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
+
+When first argument is less than `1`, the function runs until a successful response is returned.
+
+```go
+count1, err1 := lo.AttemptWhile(5, func(i int) (error, bool) {
+    err := doMockedHTTPRequest(i)
+    if err != nil {
+        if errors.Is(err, ErrBadRequest) { // lets assume ErrBadRequest is a critical error that needs to terminate the invoke
+            return err, false // flag the second return value as false to terminate the invoke
+        }
+
+        return err, true
+    }
+
+    return nil, false
+})
+```
+
+For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+
+[[play](https://go.dev/play/p/M2wVq24PaZM)]
+
+### AttemptWhileWithDelay
+
+Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil, and along with a bool value to identifying whether it needs to invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
+
+When first argument is less than `1`, the function runs until a successful response is returned.
+
+```go
+count1, time1, err1 := lo.AttemptWhileWithDelay(5, time.Millisecond, func(i int, d time.Duration) (error, bool) {
+    err := doMockedHTTPRequest(i)
+    if err != nil {
+        if errors.Is(err, ErrBadRequest) { // lets assume ErrBadRequest is a critical error that needs to terminate the invoke
+            return err, false // flag the second return value as false to terminate the invoke
+        }
+
+        return err, true
+    }
+
+    return nil, false
+})
+```
+
+For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+
+[[play](https://go.dev/play/p/cfcmhvLO-nv)]
+
 ### Debounce
 
 `NewDebounce` creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
@@ -1790,6 +2479,30 @@ for j := 0; j < 10; j++ {
 time.Sleep(1 * time.Second)
 cancel()
 ```
+
+[[play](https://go.dev/play/p/mz32VMK2nqe)]
+
+### DebounceBy
+
+`NewDebounceBy` creates a debounced instance for each distinct key, that delays invoking functions given until after wait milliseconds have elapsed, until `cancel` is called.
+
+```go
+f := func(key string, count int) {
+    println(key + ": Called once after 100ms when debounce stopped invoking!")
+}
+
+debounce, cancel := lo.NewDebounceBy(100 * time.Millisecond, f)
+for j := 0; j < 10; j++ {
+    debounce("first key")
+    debounce("second key")
+}
+
+time.Sleep(1 * time.Second)
+cancel("first key")
+cancel("second key")
+```
+
+[[play](https://go.dev/play/p/d3Vpt6pxhY8)]
 
 ### Synchronize
 
@@ -1850,6 +2563,74 @@ ch := lo.Async2(func() (int, string) {
 // chan lo.Tuple2[int, string] ({42, "Hello"})
 ```
 
+### Transaction
+
+Implements a Saga pattern.
+
+```go
+transaction := NewTransaction[int]().
+    Then(
+        func(state int) (int, error) {
+            fmt.Println("step 1")
+            return state + 10, nil
+        },
+        func(state int) int {
+            fmt.Println("rollback 1")
+            return state - 10
+        },
+    ).
+    Then(
+        func(state int) (int, error) {
+            fmt.Println("step 2")
+            return state + 15, nil
+        },
+        func(state int) int {
+            fmt.Println("rollback 2")
+            return state - 15
+        },
+    ).
+    Then(
+        func(state int) (int, error) {
+            fmt.Println("step 3")
+
+            if true {
+                return state, fmt.Errorf("error")
+            }
+
+            return state + 42, nil
+        },
+        func(state int) int {
+            fmt.Println("rollback 3")
+            return state - 42
+        },
+    )
+
+_, _ = transaction.Process(-5)
+
+// Output:
+// step 1
+// step 2
+// step 3
+// rollback 2
+// rollback 1
+```
+
+### Validate
+
+Helper function that creates an error when a condition is not met.
+
+```go
+slice := []string{"a"}
+val := lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", slice)
+// error("Slice should be empty but contains [a]")
+
+slice := []string{}
+val := lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", slice)
+// nil
+```
+
+[[play](https://go.dev/play/p/vPyh51XpCBt)]
+
 ### Must
 
 Wraps a function call to panics if second argument is `error` or `false`, returns the value otherwise.
@@ -1862,9 +2643,11 @@ val := lo.Must(time.Parse("2006-01-02", "bad-value"))
 // panics
 ```
 
+[[play](https://go.dev/play/p/TMoWrRp3DyC)]
+
 ### Must{0->6}
 
-Must\* has the same behavior than Must, but returns multiple values.
+Must\* has the same behavior as Must, but returns multiple values.
 
 ```go
 func example0() (error)
@@ -1897,16 +2680,18 @@ before, after := lo.Must2(bytes.Cut(s, sep))
 You can give context to the panic message by adding some printf-like arguments.
 
 ```go
-val := lo.Must(lo.Find(myString, func(i string) bool {
+val, ok := lo.Find(myString, func(i string) bool {
     return i == requiredChar
-}), "'%s' must always contain '%s'", myString, requiredChar)
+})
+lo.Must0(ok, "'%s' must always contain '%s'", myString, requiredChar)
 
-// MustX
-lo.Must0(example0(), "'%s' must always contain '%s'", myString, requiredChar)
-val1 := lo.Must1(example1(), "'%s' must always contain '%s'", myString, requiredChar)
-val1, val2 := lo.Must2(example2(), "'%s' must always contain '%s'", myString, requiredChar)
+list := []int{0, 1, 2}
+item := 5
+lo.Must0(lo.Contains[int](list, item), "'%s' must always contain '%s'", list, item)
 ...
 ```
+
+[[play](https://go.dev/play/p/TMoWrRp3DyC)]
 
 ### Try
 
@@ -1930,6 +2715,8 @@ ok := lo.Try(func() error {
 // false
 ```
 
+[[play](https://go.dev/play/p/mTyyWUvn9u4)]
+
 ### Try{0->6}
 
 The same behavior than `Try`, but callback returns 2 variables.
@@ -1942,6 +2729,51 @@ ok := lo.Try2(func() (string, error) {
 // false
 ```
 
+[[play](https://go.dev/play/p/mTyyWUvn9u4)]
+
+### TryOr
+
+Calls the function and return a default value in case of error and on panic.
+
+```go
+str, ok := lo.TryOr(func() (string, error) {
+    panic("error")
+    return "hello", nil
+}, "world")
+// world
+// false
+
+str, ok := lo.TryOr(func() error {
+    return "hello", nil
+}, "world")
+// hello
+// true
+
+str, ok := lo.TryOr(func() error {
+    return "hello", fmt.Errorf("error")
+}, "world")
+// world
+// false
+```
+
+[[play](https://go.dev/play/p/B4F7Wg2Zh9X)]
+
+### TryOr{0->6}
+
+The same behavior than `TryOr`, but callback returns `X` variables.
+
+```go
+str, nbr, ok := lo.TryOr2(func() (string, int, error) {
+    panic("error")
+    return "hello", 42, nil
+}, "world", 21)
+// world
+// 21
+// false
+```
+
+[[play](https://go.dev/play/p/B4F7Wg2Zh9X)]
+
 ### TryWithErrorValue
 
 The same behavior than `Try`, but also returns value passed to panic.
@@ -1953,6 +2785,8 @@ err, ok := lo.TryWithErrorValue(func() error {
 })
 // "error", false
 ```
+
+[[play](https://go.dev/play/p/Kc7afQIT2Fs)]
 
 ### TryCatch
 
@@ -1971,6 +2805,8 @@ ok := lo.TryCatch(func() error {
 // caught == true
 ```
 
+[[play](https://go.dev/play/p/PnOON-EqBiU)]
+
 ### TryCatchWithErrorValue
 
 The same behavior than `TryWithErrorValue`, but calls the catch function in case of error.
@@ -1988,6 +2824,33 @@ ok := lo.TryCatchWithErrorValue(func() error {
 // caught == true
 ```
 
+[[play](https://go.dev/play/p/8Pc9gwX_GZO)]
+
+### ErrorsAs
+
+A shortcut for:
+
+```go
+err := doSomething()
+
+var rateLimitErr *RateLimitError
+if ok := errors.As(err, &rateLimitErr); ok {
+    // retry later
+}
+```
+
+1 line `lo` helper:
+
+```go
+err := doSomething()
+
+if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
+    // retry later
+}
+```
+
+[[play](https://go.dev/play/p/8wk5rH8UfrE)]
+
 ## 🛩 Benchmark
 
 We executed a simple benchmark with the a dead-simple `lo.Map` loop:
@@ -2004,7 +2867,7 @@ _ = lo.Map[int64](arr, func(x int64, i int) string {
 
 Here is a comparison between `lo.Map`, `lop.Map`, `go-funk` library and a simple Go `for` loop.
 
-```
+```shell
 $ go test -benchmem -bench ./...
 goos: linux
 goarch: amd64
@@ -2033,13 +2896,7 @@ ok  	github.com/samber/lo	6.657s
 
 Don't hesitate ;)
 
-### Install go 1.18
-
-```bash
-make go1.18beta1
-```
-
-If your OS currently not default to Go 1.18, replace `BIN=go` by `BIN=go1.18beta1` in the Makefile.
+Helper naming: helpers must be self explanatory and respect standards (other languages, libraries...). Feel free to suggest many names in your contributions.
 
 ### With Docker
 
@@ -2059,9 +2916,9 @@ make test
 make watch-test
 ```
 
-## 👤 Authors
+## 👤 Contributors
 
-- Samuel Berthe
+![Contributors](https://contrib.rocks/image?repo=samber/lo)
 
 ## 💫 Show your support
 

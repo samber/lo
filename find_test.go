@@ -11,6 +11,7 @@ import (
 )
 
 func TestIndexOf(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := IndexOf([]int{0, 1, 2, 1, 2, 3}, 2)
@@ -21,6 +22,7 @@ func TestIndexOf(t *testing.T) {
 }
 
 func TestLastIndexOf(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := LastIndexOf([]int{0, 1, 2, 1, 2, 3}, 2)
@@ -31,13 +33,19 @@ func TestLastIndexOf(t *testing.T) {
 }
 
 func TestFind(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
-	result1, ok1 := Find([]string{"a", "b", "c", "d"}, func(i string) bool {
-		return i == "b"
+	index := 0
+	result1, ok1 := Find([]string{"a", "b", "c", "d"}, func(item string) bool {
+		is.Equal([]string{"a", "b", "c", "d"}[index], item)
+		index++
+		return item == "b"
 	})
-	result2, ok2 := Find([]string{"foobar"}, func(i string) bool {
-		return i == "b"
+
+	result2, ok2 := Find([]string{"foobar"}, func(item string) bool {
+		is.Equal("foobar", item)
+		return item == "b"
 	})
 
 	is.Equal(ok1, true)
@@ -47,13 +55,18 @@ func TestFind(t *testing.T) {
 }
 
 func TestFindIndexOf(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
-	item1, index1, ok1 := FindIndexOf([]string{"a", "b", "c", "d", "b"}, func(i string) bool {
-		return i == "b"
+	index := 0
+	item1, index1, ok1 := FindIndexOf([]string{"a", "b", "c", "d", "b"}, func(item string) bool {
+		is.Equal([]string{"a", "b", "c", "d", "b"}[index], item)
+		index++
+		return item == "b"
 	})
-	item2, index2, ok2 := FindIndexOf([]string{"foobar"}, func(i string) bool {
-		return i == "b"
+	item2, index2, ok2 := FindIndexOf([]string{"foobar"}, func(item string) bool {
+		is.Equal("foobar", item)
+		return item == "b"
 	})
 
 	is.Equal(item1, "b")
@@ -65,13 +78,18 @@ func TestFindIndexOf(t *testing.T) {
 }
 
 func TestFindLastIndexOf(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
-	item1, index1, ok1 := FindLastIndexOf([]string{"a", "b", "c", "d", "b"}, func(i string) bool {
-		return i == "b"
+	index := 0
+	item1, index1, ok1 := FindLastIndexOf([]string{"a", "b", "c", "d", "b"}, func(item string) bool {
+		is.Equal([]string{"b", "d", "c", "b", "a"}[index], item)
+		index++
+		return item == "b"
 	})
-	item2, index2, ok2 := FindLastIndexOf([]string{"foobar"}, func(i string) bool {
-		return i == "b"
+	item2, index2, ok2 := FindLastIndexOf([]string{"foobar"}, func(item string) bool {
+		is.Equal("foobar", item)
+		return item == "b"
 	})
 
 	is.Equal(item1, "b")
@@ -83,13 +101,18 @@ func TestFindLastIndexOf(t *testing.T) {
 }
 
 func TestFindOrElse(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FindOrElse([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
-		return i == "b"
+	index := 0
+	result1 := FindOrElse([]string{"a", "b", "c", "d"}, "x", func(item string) bool {
+		is.Equal([]string{"a", "b", "c", "d"}[index], item)
+		index++
+		return item == "b"
 	})
-	result2 := FindOrElse([]string{"foobar"}, "x", func(i string) bool {
-		return i == "b"
+	result2 := FindOrElse([]string{"foobar"}, "x", func(item string) bool {
+		is.Equal("foobar", item)
+		return item == "b"
 	})
 
 	is.Equal(result1, "b")
@@ -97,6 +120,7 @@ func TestFindOrElse(t *testing.T) {
 }
 
 func TestFindKey(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1, ok1 := FindKey(map[string]int{"foo": 1, "bar": 2, "baz": 3}, 2)
@@ -111,16 +135,17 @@ func TestFindKey(t *testing.T) {
 		foobar string
 	}
 
-	result3, ok3 := FindKey(map[string]test{"foo": test{"foo"}, "bar": test{"bar"}, "baz": test{"baz"}}, test{"foo"})
+	result3, ok3 := FindKey(map[string]test{"foo": {"foo"}, "bar": {"bar"}, "baz": {"baz"}}, test{"foo"})
 	is.Equal("foo", result3)
 	is.True(ok3)
 
-	result4, ok4 := FindKey(map[string]test{"foo": test{"foo"}, "bar": test{"bar"}, "baz": test{"baz"}}, test{"hello world"})
+	result4, ok4 := FindKey(map[string]test{"foo": {"foo"}, "bar": {"bar"}, "baz": {"baz"}}, test{"hello world"})
 	is.Equal("", result4)
 	is.False(ok4)
 }
 
 func TestFindKeyBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1, ok1 := FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
@@ -137,54 +162,56 @@ func TestFindKeyBy(t *testing.T) {
 }
 
 func TestFindUniques(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FindUniques[int]([]int{1, 2, 3})
+	result1 := FindUniques([]int{1, 2, 3})
 
 	is.Equal(3, len(result1))
 	is.Equal([]int{1, 2, 3}, result1)
 
-	result2 := FindUniques[int]([]int{1, 2, 2, 3, 1, 2})
+	result2 := FindUniques([]int{1, 2, 2, 3, 1, 2})
 
 	is.Equal(1, len(result2))
 	is.Equal([]int{3}, result2)
 
-	result3 := FindUniques[int]([]int{1, 2, 2, 1})
+	result3 := FindUniques([]int{1, 2, 2, 1})
 
 	is.Equal(0, len(result3))
 	is.Equal([]int{}, result3)
 
-	result4 := FindUniques[int]([]int{})
+	result4 := FindUniques([]int{})
 
 	is.Equal(0, len(result4))
 	is.Equal([]int{}, result4)
 }
 
 func TestFindUniquesBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FindUniquesBy[int, int]([]int{0, 1, 2}, func(i int) int {
+	result1 := FindUniquesBy([]int{0, 1, 2}, func(i int) int {
 		return i % 3
 	})
 
 	is.Equal(3, len(result1))
 	is.Equal([]int{0, 1, 2}, result1)
 
-	result2 := FindUniquesBy[int, int]([]int{0, 1, 2, 3, 4}, func(i int) int {
+	result2 := FindUniquesBy([]int{0, 1, 2, 3, 4}, func(i int) int {
 		return i % 3
 	})
 
 	is.Equal(1, len(result2))
 	is.Equal([]int{2}, result2)
 
-	result3 := FindUniquesBy[int, int]([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+	result3 := FindUniquesBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
 
 	is.Equal(0, len(result3))
 	is.Equal([]int{}, result3)
 
-	result4 := FindUniquesBy[int, int]([]int{}, func(i int) int {
+	result4 := FindUniquesBy([]int{}, func(i int) int {
 		return i % 3
 	})
 
@@ -193,42 +220,44 @@ func TestFindUniquesBy(t *testing.T) {
 }
 
 func TestFindDuplicates(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FindDuplicates[int]([]int{1, 2, 2, 1, 2, 3})
+	result1 := FindDuplicates([]int{1, 2, 2, 1, 2, 3})
 
 	is.Equal(2, len(result1))
 	is.Equal([]int{1, 2}, result1)
 
-	result2 := FindDuplicates[int]([]int{1, 2, 3})
+	result2 := FindDuplicates([]int{1, 2, 3})
 
 	is.Equal(0, len(result2))
 	is.Equal([]int{}, result2)
 
-	result3 := FindDuplicates[int]([]int{})
+	result3 := FindDuplicates([]int{})
 
 	is.Equal(0, len(result3))
 	is.Equal([]int{}, result3)
 }
 
 func TestFindDuplicatesBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FindDuplicatesBy[int, int]([]int{3, 4, 5, 6, 7}, func(i int) int {
+	result1 := FindDuplicatesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
 		return i % 3
 	})
 
 	is.Equal(2, len(result1))
 	is.Equal([]int{3, 4}, result1)
 
-	result2 := FindDuplicatesBy[int, int]([]int{0, 1, 2, 3, 4}, func(i int) int {
+	result2 := FindDuplicatesBy([]int{0, 1, 2, 3, 4}, func(i int) int {
 		return i % 5
 	})
 
 	is.Equal(0, len(result2))
 	is.Equal([]int{}, result2)
 
-	result3 := FindDuplicatesBy[int, int]([]int{}, func(i int) int {
+	result3 := FindDuplicatesBy([]int{}, func(i int) int {
 		return i % 3
 	})
 
@@ -237,6 +266,7 @@ func TestFindDuplicatesBy(t *testing.T) {
 }
 
 func TestMin(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Min([]int{1, 2, 3})
@@ -249,6 +279,7 @@ func TestMin(t *testing.T) {
 }
 
 func TestMinBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := MinBy([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
@@ -267,6 +298,7 @@ func TestMinBy(t *testing.T) {
 }
 
 func TestMax(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Max([]int{1, 2, 3})
@@ -279,6 +311,7 @@ func TestMax(t *testing.T) {
 }
 
 func TestMaxBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := MaxBy([]string{"s1", "string2", "s3"}, func(item string, max string) bool {
@@ -297,6 +330,7 @@ func TestMaxBy(t *testing.T) {
 }
 
 func TestLast(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1, err1 := Last([]int{1, 2, 3})
@@ -309,6 +343,7 @@ func TestLast(t *testing.T) {
 }
 
 func TestNth(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1, err1 := Nth([]int{0, 1, 2, 3}, 2)
@@ -333,6 +368,7 @@ func TestNth(t *testing.T) {
 }
 
 func TestSample(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	rand.Seed(time.Now().UnixNano())
@@ -345,6 +381,7 @@ func TestSample(t *testing.T) {
 }
 
 func TestSamples(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	rand.Seed(time.Now().UnixNano())

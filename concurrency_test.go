@@ -9,6 +9,8 @@ import (
 )
 
 func TestSynchronize(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	// check that callbacks are not executed concurrently
@@ -60,6 +62,8 @@ func TestSynchronize(t *testing.T) {
 }
 
 func TestAsync(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	sync := make(chan struct{})
@@ -80,6 +84,8 @@ func TestAsync(t *testing.T) {
 }
 
 func TestAsyncX(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	{

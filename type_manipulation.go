@@ -1,7 +1,21 @@
 package lo
 
+import "reflect"
+
 // ToPtr returns a pointer copy of value.
 func ToPtr[T any](x T) *T {
+	return &x
+}
+
+// EmptyableToPtr returns a pointer copy of value if it's nonzero.
+// Otherwise, returns nil pointer.
+func EmptyableToPtr[T any](x T) *T {
+	// 🤮
+	isZero := reflect.ValueOf(&x).Elem().IsZero()
+	if isZero {
+		return nil
+	}
+
 	return &x
 }
 
