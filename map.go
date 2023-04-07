@@ -174,6 +174,28 @@ func Assign[K comparable, V any](maps ...map[K]V) map[K]V {
 	return out
 }
 
+// Merge merges multiple maps of arbitrary depth and structure from left to right.
+func Merge[K comparable, V any](maps ...map[K]V) V {
+	out := map[K]V{}
+
+	for _, m := range maps {
+		for k, w := range m {
+			if v, ok := out[k]; ok {
+				switch v := any(v).(type) {
+				case map[K]V:
+					out[k] = Merge(v, any(w).(map[K]V))
+				default:
+					out[k] = w
+				}
+			} else {
+				out[k] = w
+			}
+		}
+	}
+
+	return any(out).(V)
+}
+
 // MapKeys manipulates a map keys and transforms it to a map of another type.
 // Play: https://go.dev/play/p/9_4WPIqOetJ
 func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value V, key K) R) map[R]V {

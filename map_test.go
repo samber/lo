@@ -202,6 +202,46 @@ func TestAssign(t *testing.T) {
 	is.Equal(result1, map[string]int{"a": 1, "b": 3, "c": 4})
 }
 
+func TestMerge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	m1 := map[string]interface{}{
+		"a": 1,
+		"b": map[string]interface{}{
+			"c": 2,
+			"d": map[string]interface{}{
+				"e": 3,
+				"f": 4,
+			},
+		},
+		"c": 5,
+	}
+	m2 := map[string]interface{}{
+		"a": 1,
+		"b": map[string]interface{}{
+			"c": 2,
+			"d": map[string]interface{}{
+				"e": 3,
+				"f": 5,
+			},
+			"e": map[string]interface{}{
+				"a": 1,
+				"b": 2,
+			},
+		},
+		"c": 6,
+	}
+	m3 := map[string]interface{}{
+		"d": 1,
+		"e": 2,
+	}
+
+	r1 := Merge(m1, m2, m3)
+	is.Len(r1, 5)
+	is.Equal(r1, map[string]interface{}{"a": 1, "b": map[string]interface{}{"c": 2, "d": map[string]interface{}{"e": 3, "f": 5}, "e": map[string]interface{}{"a": 1, "b": 2}}, "c": 6, "d": 1, "e": 2})
+}
+
 func TestMapKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
