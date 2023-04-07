@@ -36,11 +36,16 @@ func TestFind(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1, ok1 := Find([]string{"a", "b", "c", "d"}, func(i string) bool {
-		return i == "b"
+	index := 0
+	result1, ok1 := Find([]string{"a", "b", "c", "d"}, func(item string) bool {
+		is.Equal([]string{"a", "b", "c", "d"}[index], item)
+		index++
+		return item == "b"
 	})
-	result2, ok2 := Find([]string{"foobar"}, func(i string) bool {
-		return i == "b"
+
+	result2, ok2 := Find([]string{"foobar"}, func(item string) bool {
+		is.Equal("foobar", item)
+		return item == "b"
 	})
 
 	is.Equal(ok1, true)
@@ -53,11 +58,15 @@ func TestFindIndexOf(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	item1, index1, ok1 := FindIndexOf([]string{"a", "b", "c", "d", "b"}, func(i string) bool {
-		return i == "b"
+	index := 0
+	item1, index1, ok1 := FindIndexOf([]string{"a", "b", "c", "d", "b"}, func(item string) bool {
+		is.Equal([]string{"a", "b", "c", "d", "b"}[index], item)
+		index++
+		return item == "b"
 	})
-	item2, index2, ok2 := FindIndexOf([]string{"foobar"}, func(i string) bool {
-		return i == "b"
+	item2, index2, ok2 := FindIndexOf([]string{"foobar"}, func(item string) bool {
+		is.Equal("foobar", item)
+		return item == "b"
 	})
 
 	is.Equal(item1, "b")
@@ -72,11 +81,15 @@ func TestFindLastIndexOf(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	item1, index1, ok1 := FindLastIndexOf([]string{"a", "b", "c", "d", "b"}, func(i string) bool {
-		return i == "b"
+	index := 0
+	item1, index1, ok1 := FindLastIndexOf([]string{"a", "b", "c", "d", "b"}, func(item string) bool {
+		is.Equal([]string{"b", "d", "c", "b", "a"}[index], item)
+		index++
+		return item == "b"
 	})
-	item2, index2, ok2 := FindLastIndexOf([]string{"foobar"}, func(i string) bool {
-		return i == "b"
+	item2, index2, ok2 := FindLastIndexOf([]string{"foobar"}, func(item string) bool {
+		is.Equal("foobar", item)
+		return item == "b"
 	})
 
 	is.Equal(item1, "b")
@@ -91,11 +104,15 @@ func TestFindOrElse(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FindOrElse([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
-		return i == "b"
+	index := 0
+	result1 := FindOrElse([]string{"a", "b", "c", "d"}, "x", func(item string) bool {
+		is.Equal([]string{"a", "b", "c", "d"}[index], item)
+		index++
+		return item == "b"
 	})
-	result2 := FindOrElse([]string{"foobar"}, "x", func(i string) bool {
-		return i == "b"
+	result2 := FindOrElse([]string{"foobar"}, "x", func(item string) bool {
+		is.Equal("foobar", item)
+		return item == "b"
 	})
 
 	is.Equal(result1, "b")

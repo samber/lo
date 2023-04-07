@@ -9,14 +9,20 @@ func ExampleSubstring() {
 	result1 := Substring("hello", 2, 3)
 	result2 := Substring("hello", -4, 3)
 	result3 := Substring("hello", -2, math.MaxUint)
+	result4 := Substring("🏠🐶🐱", 0, 2)
+	result5 := Substring("你好，世界", 0, 3)
 
 	fmt.Printf("%v\n", result1)
 	fmt.Printf("%v\n", result2)
 	fmt.Printf("%v\n", result3)
+	fmt.Printf("%v\n", result4)
+	fmt.Printf("%v\n", result5)
 	// Output:
 	// llo
 	// ell
 	// lo
+	// 🏠🐶
+	// 你好，
 }
 
 func ExampleChunkString() {

@@ -29,6 +29,17 @@ func TestValues(t *testing.T) {
 	is.Equal(r1, []int{1, 2})
 }
 
+func TestValueOr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := ValueOr(map[string]int{"foo": 1}, "bar", 2)
+	is.Equal(r1, 2)
+
+	r2 := ValueOr(map[string]int{"foo": 1}, "foo", 2)
+	is.Equal(r2, 1)
+}
+
 func TestPickBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
