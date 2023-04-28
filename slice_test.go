@@ -127,6 +127,15 @@ func TestReduceRight(t *testing.T) {
 	is.Equal(result1, []int{4, 5, 2, 3, 0, 1})
 }
 
+func TestFilterByType(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{1, 2}, FilterByType[int]([]any{1, "foo", 2, true}))
+	is.Equal([]any{1, "foo", 2, true}, FilterByType[any]([]any{1, "foo", 2, true}))
+	is.Equal([]float64{}, FilterByType[float64]([]any{1, "foo", 2, true}))
+}
+
 func TestForEach(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -388,7 +397,7 @@ func TestAssociate(t *testing.T) {
 
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
-	
+
 	type foo struct {
 		baz string
 		bar int
@@ -626,7 +635,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
-	
+
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)

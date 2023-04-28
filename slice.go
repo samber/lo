@@ -85,6 +85,21 @@ func ReduceRight[T any, R any](collection []T, accumulator func(agg R, item T, i
 	return initial
 }
 
+// FilterByType returns the elements of collection that have the type given as the type parameter.
+// Play: https://go.dev/play/p/PPfuC__LoTG
+func FilterByType[R, T any](elems []T) []R {
+	result := []R{}
+
+	for _, elem := range elems {
+		switch v := any(elem).(type) {
+		case R:
+			result = append(result, v)
+		}
+	}
+
+	return result
+}
+
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 // Play: https://go.dev/play/p/oofyiUPRf8t
 func ForEach[T any](collection []T, iteratee func(item T, index int)) {
