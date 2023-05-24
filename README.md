@@ -1945,6 +1945,40 @@ min := lo.MinBy([]string{}, func(item string, min string) bool {
 // ""
 ```
 
+### MinValue
+
+Search the minimum value of a map.
+
+Returns empty Entry when map is empty.
+
+```go
+min := lo.MinValue(map[string]int{"1": 1, "2": 2, "3": 3})
+// Entry{Key: "1", Value: 1}
+
+min := lo.MinValue(map[string]int{})
+// Entry{Key: "", Value: 0}
+```
+
+### MinValueBy
+
+Search the minimum value of a map using the given comparison function.
+
+If several values of the map are equal to the greatest value, returns the any such value.
+
+Returns empty Entry when map is empty.
+
+```go
+min := lo.MinValueBy(map[int]string{1: "s1", 2: "string2", 3: "s3"}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// Entry{Key: 1, Value: "s1"} or Entry{Key: 3, Value: "s3"}
+
+min := lo.MinValueBy(map[int]string{}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// Entry{Key: "", Value: 0}
+```
+
 ### Max
 
 Search the maximum value of a collection.
@@ -1977,6 +2011,49 @@ max := lo.MaxBy([]string{}, func(item string, max string) bool {
     return len(item) > len(max)
 })
 // ""
+```
+
+### MaxValue
+
+Search the maximum value of a map.
+
+Returns empty Entry when map is empty.
+
+```go
+max := lo.MaxValue(map[string]int{"1": 1, "2": 2, "3": 3})
+// Entry{Key: "3", Value: 3}
+
+max := lo.MaxValue(map[string]int{})
+// Entry{Key: "", Value: 0}
+```
+
+### MaxValueBy
+
+Search the maximum value of a map using the given comparison function.
+
+If several values of the map are equal to the greatest value, returns the any such value.
+
+Returns empty Entry when map is empty.
+
+```go
+max := lo.MaxValueBy(map[int]string{1: "string1", 2: "s2", 3: "string3"}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// Entry{Key: 1, Value: "string1"} or Entry{Key: 3, Value: "string3"}
+
+max := lo.MaxValueBy(map[int]string{}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// Entry{Key: "", Value: 0}
+```
+
+### AnyKey
+
+returns the first key on a range of a map or error if empty.
+
+```go
+key, err := lo.AnyKey(map[int]string{1: "s1", 2: "s2"})
+// can be 1, or 2
 ```
 
 ### Last

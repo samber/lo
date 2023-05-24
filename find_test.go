@@ -278,6 +278,19 @@ func TestMin(t *testing.T) {
 	is.Equal(result3, 0)
 }
 
+func TestMinValue(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := MinValue(map[string]int{"1": 1, "2": 2, "3": 3})
+	result2 := MinValue(map[string]int{"3": 3, "2": 2, "1": 1})
+	result3 := MinValue(map[string]int{})
+
+	is.Equal(result1.Value, 1)
+	is.Equal(result2.Value, 1)
+	is.Equal(result3.Value, 0)
+}
+
 func TestMinBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -297,6 +310,26 @@ func TestMinBy(t *testing.T) {
 	is.Equal(result3, "")
 }
 
+func TestMinValueBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := MinValueBy(map[int]string{1: "s1", 2: "string2", 3: "s3"}, func(item string, min string) bool {
+		return len(item) < len(min)
+	})
+	result2 := MinValueBy(map[int]string{1: "string1", 2: "string2", 3: "s3"}, func(item string, min string) bool {
+		return len(item) < len(min)
+	})
+	result3 := MinValueBy(map[int]string{}, func(item string, min string) bool {
+		return len(item) < len(min)
+	})
+
+	// map can't guarantee order
+	is.Contains([]string{"s1", "s3"}, result1.Value)
+	is.Equal(result2.Value, "s3")
+	is.Equal(result3.Value, "")
+}
+
 func TestMax(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -308,6 +341,19 @@ func TestMax(t *testing.T) {
 	is.Equal(result1, 3)
 	is.Equal(result2, 3)
 	is.Equal(result3, 0)
+}
+
+func TestMaxValue(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := MaxValue(map[string]int{"1": 1, "2": 2, "3": 3})
+	result2 := MaxValue(map[string]int{"3": 3, "2": 2, "1": 1})
+	result3 := MaxValue(map[string]int{})
+
+	is.Equal(result1.Value, 3)
+	is.Equal(result2.Value, 3)
+	is.Equal(result3.Value, 0)
 }
 
 func TestMaxBy(t *testing.T) {
@@ -327,6 +373,39 @@ func TestMaxBy(t *testing.T) {
 	is.Equal(result1, "string2")
 	is.Equal(result2, "string1")
 	is.Equal(result3, "")
+}
+
+func TestMaxValueBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := MaxValueBy(map[int]string{1: "s1", 2: "string2", 3: "s3"}, func(item string, max string) bool {
+		return len(item) > len(max)
+	})
+	result2 := MaxValueBy(map[int]string{1: "string1", 2: "string2", 3: "s3"}, func(item string, max string) bool {
+		return len(item) > len(max)
+	})
+	result3 := MaxValueBy(map[int]string{}, func(item string, max string) bool {
+		return len(item) > len(max)
+	})
+
+	is.Equal(result1.Value, "string2")
+	// map can't guarantee order
+	is.Contains([]string{"string2", "string1"}, result2.Value)
+	is.Equal(result3.Value, "")
+}
+
+func TestAnyKey(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1, err1 := AnyKey(map[int]int{1: 1, 2: 2, 3: 3})
+	result2, err2 := AnyKey(map[int]int{})
+
+	is.Contains([]int{1, 2, 3}, result1)
+	is.Equal(err1, nil)
+	is.Equal(result2, 0)
+	is.Equal(err2, fmt.Errorf("AnyKey: cannot extract the first key of an empty map"))
 }
 
 func TestLast(t *testing.T) {
