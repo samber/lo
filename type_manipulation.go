@@ -1,6 +1,8 @@
 package lo
 
-import "reflect"
+import (
+	"unsafe"
+)
 
 // ToPtr returns a pointer copy of value.
 func ToPtr[T any](x T) *T {
@@ -10,13 +12,21 @@ func ToPtr[T any](x T) *T {
 // EmptyableToPtr returns a pointer copy of value if it's nonzero.
 // Otherwise, returns nil pointer.
 func EmptyableToPtr[T any](x T) *T {
-	// 🤮
-	isZero := reflect.ValueOf(&x).Elem().IsZero()
-	if isZero {
-		return nil
-	}
+	// You cannot directly use `==` to determine whether it is a zero value,
+	// because T is not constrained to be `comparable`
+	//   var zero T
+	//   if x == zero { ... } // error: T is not comparable
 
-	return &x
+	// If x is a zero value, all of its memory is 0.
+	// Leveraging this property, you can convert x into []uint8 to implement a zero-value check.
+	size := unsafe.Sizeof(x)
+	bytes := unsafe.Slice((*uint8)(unsafe.Pointer(&x)), size)
+	for _, b := range bytes {
+		if b != 0 {
+			return &x
+		}
+	}
+	return nil
 }
 
 // FromPtr returns the pointer value or empty.
