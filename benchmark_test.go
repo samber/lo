@@ -6,8 +6,9 @@ import (
 	"testing"
 	"time"
 
-	lop "github.com/samber/lo/parallel"
 	"github.com/thoas/go-funk"
+
+	lop "github.com/samber/lo/parallel"
 )
 
 func sliceGenerator(size uint) []int64 {
@@ -56,6 +57,29 @@ func BenchmarkMap(b *testing.B) {
 			for i, item := range arr {
 				result := strconv.FormatInt(item, 10)
 				results[i] = result
+			}
+		}
+	})
+}
+
+func BenchmarkForEach(b *testing.B) {
+	arr := Times(1000, func(index int) time.Location {
+		return time.Location{}
+	})
+
+	b.Run("ForEach", func(b *testing.B) {
+		b.ReportAllocs()
+		for n := 0; n < b.N; n++ {
+			ForEach(arr, func(item time.Location, index int) { _ = item })
+		}
+	})
+
+	b.Run("oldForEach", func(b *testing.B) {
+		b.ReportAllocs()
+		for n := 0; n < b.N; n++ {
+			iteratee := func(item time.Location, index int) { _ = item }
+			for i, item := range arr {
+				iteratee(item, i)
 			}
 		}
 	})
