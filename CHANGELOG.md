@@ -405,6 +405,7 @@ Supported intersection helpers:
 - Some
 - Intersect
 - Difference
+- DifferenceBy
 
 Supported search helpers:
 
