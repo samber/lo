@@ -456,3 +456,21 @@ func ExampleIsSortedByKey() {
 
 	// Output: true
 }
+
+func ExampleRotateLeft() {
+	list := []string{"a", "bb", "ccc", "dddd", "eeeee"}
+
+	result := RotateLeft(list, 3)
+	fmt.Printf("%v", result)
+
+	// Output: [dddd eeeee a bb ccc]
+}
+
+func ExampleRotateRight() {
+	list := []string{"a", "bb", "ccc", "dddd", "eeeee"}
+
+	result := RotateRight(list, 3)
+	fmt.Printf("%v", result)
+
+	// Output: [ccc dddd eeeee a bb]
+}
