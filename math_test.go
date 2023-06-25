@@ -97,3 +97,17 @@ func TestSumBy(t *testing.T) {
 	is.Equal(result4, uint32(0))
 	is.Equal(result5, complex128(6_6))
 }
+
+func TestGCD(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal(2, GCD(0, 2))
+	is.Equal(2, GCD(2, 0))
+	is.Equal(0, GCD(0, 0))
+	is.Equal(1000, GCD(1000, 1000))
+	is.Equal(2, GCD(2, 8))
+	is.Equal(int32(1), GCD(int32(11), int32(17)))
+	is.Equal(uint(7), GCD(uint(14), uint(21)))
+	is.Equal(0, GCD(-4, -8))
+}

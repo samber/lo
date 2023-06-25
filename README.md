@@ -143,6 +143,7 @@ Supported math helpers:
 - [Clamp](#clamp)
 - [Sum](#sum)
 - [SumBy](#sumby)
+- [GCD](#gcd)
 
 Supported helpers for strings:
 
@@ -1233,6 +1234,21 @@ sum := lo.SumBy(strings, func(item string) int {
 ```
 
 [[play](https://go.dev/play/p/Dz_a_7jN_ca)]
+
+### GCD
+
+Find the greatest common divisor(GCD).
+
+if a or b is less than zero, 0 is returned.
+
+If a or b is empty the non-zero argument is returned.
+
+```go
+gcd := lo.GCD(14, 21)
+// 7
+```
+
+[[play](https://go.dev/play/p/eNeuLCdooOg)]
 
 ### RandomString
 
