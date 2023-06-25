@@ -116,6 +116,8 @@ Supported helpers for slices:
 - [Compact](#compact)
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
+- [RotateLeft](#rotateleft)
+- [RotateRight](#rotateright)
 
 Supported helpers for maps:
 
@@ -923,6 +925,28 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 ```
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
+
+### RotateLeft
+
+Rotates a slice from left.
+
+```go
+slice := lo.RotateLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, 2)
+// []string{"c", "d", "e", "f", "g", "a", "b"}
+```
+
+[[play](https://go.dev/play/p/EXL5uu4yv6y)]
+
+### RotateRight
+
+Rotates a slice from right.
+
+```go
+slice := lo.RotateRight([]string{"a", "b", "c", "d", "e", "f", "g"}, 2)
+// []string{"f", "g", "a", "b", "c", "d", "e"}
+```
+
+[[play](https://go.dev/play/p/fghPh9dbM4y)]
 
 ### Keys
 

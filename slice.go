@@ -592,3 +592,46 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+// RotateLeft rotates a slice from the left.
+// Play: https://go.dev/play/p/EXL5uu4yv6y
+func RotateLeft[T any](collection []T, shift int) []T {
+	length := len(collection)
+	if length == 0 || shift < 0 {
+		return collection
+	}
+	shift %= length
+	if shift <= 0 {
+		return collection
+	}
+	cycle := GCD(length, shift)
+	for i := 0; i < cycle; i++ {
+		initPos := i
+		value := collection[initPos]
+		first := initPos
+		next := first + shift
+		for next != initPos {
+			collection[first] = collection[next]
+			first = next
+			next = (next + shift) % length
+		}
+		collection[first] = value
+	}
+
+	return collection
+}
+
+// RotateRight rotates a slice from the right.
+// Play: https://go.dev/play/p/fghPh9dbM4y
+func RotateRight[T any](collection []T, shift int) []T {
+	length := len(collection)
+	if length == 0 || shift < 0 {
+		return collection
+	}
+	shift %= length
+	if shift <= 0 {
+		return collection
+	}
+	shift = -1 * (shift - length)
+	return RotateLeft(collection, shift)
+}

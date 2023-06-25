@@ -388,7 +388,7 @@ func TestAssociate(t *testing.T) {
 
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
-	
+
 	type foo struct {
 		baz string
 		bar int
@@ -626,7 +626,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
-	
+
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
@@ -758,4 +758,36 @@ func TestIsSortedByKey(t *testing.T) {
 		ret, _ := strconv.Atoi(s)
 		return ret
 	}))
+}
+
+func TestRotateLeft(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal(RotateLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, 2), []string{"c", "d", "e", "f", "g", "a", "b"})
+	is.Equal(RotateLeft([]int{1, 2, 3, 4, 5, 6}, 1), []int{2, 3, 4, 5, 6, 1})
+	is.Equal(RotateLeft([]int{1, 2, 3, 4, 5, 6}, 2), []int{3, 4, 5, 6, 1, 2})
+	is.Equal(RotateLeft([]int{1, 2, 3, 4, 5, 6}, 8), []int{3, 4, 5, 6, 1, 2})
+	is.Equal(RotateLeft([]int{1, 2, 3, 4, 5, 6}, 6), []int{1, 2, 3, 4, 5, 6})
+	is.Equal(RotateLeft([]int{1, 2, 3, 4, 5, 6}, 0), []int{1, 2, 3, 4, 5, 6})
+	is.Equal(RotateLeft([]int{1, 2, 3, 4, 5, 6}, -1), []int{1, 2, 3, 4, 5, 6})
+	is.Equal(RotateLeft([]int{}, 100), []int{})
+	var empty []int
+	is.Equal(RotateLeft(empty, 100), []int(nil))
+}
+
+func TestRotateRight(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal(RotateRight([]string{"a", "b", "c", "d", "e", "f", "g"}, 2), []string{"f", "g", "a", "b", "c", "d", "e"})
+	is.Equal(RotateRight([]int{1, 2, 3, 4, 5, 6}, 1), []int{6, 1, 2, 3, 4, 5})
+	is.Equal(RotateRight([]int{1, 2, 3, 4, 5, 6}, 2), []int{5, 6, 1, 2, 3, 4})
+	is.Equal(RotateRight([]int{1, 2, 3, 4, 5, 6}, 8), []int{5, 6, 1, 2, 3, 4})
+	is.Equal(RotateRight([]int{1, 2, 3, 4, 5, 6}, 6), []int{1, 2, 3, 4, 5, 6})
+	is.Equal(RotateRight([]int{1, 2, 3, 4, 5, 6}, 0), []int{1, 2, 3, 4, 5, 6})
+	is.Equal(RotateRight([]int{1, 2, 3, 4, 5, 6}, -1), []int{1, 2, 3, 4, 5, 6})
+	is.Equal(RotateRight([]int{}, 100), []int{})
+	var empty []int
+	is.Equal(RotateRight(empty, 100), []int(nil))
 }
