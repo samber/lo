@@ -9,6 +9,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+
+func TestKeyExists(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := KeyExists(map[string]int{"foo": 1}, "bar")
+	is.Equal(r1, false)
+
+	r2 := KeyExists(map[string]int{"foo": 1}, "foo")
+	is.Equal(r2, true)
+}
+
 func TestKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

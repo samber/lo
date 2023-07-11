@@ -119,6 +119,7 @@ Supported helpers for slices:
 
 Supported helpers for maps:
 
+- [KeyExists](#keyexists)
 - [Keys](#keys)
 - [ValueOr](#valueor)
 - [Values](#values)
@@ -922,6 +923,19 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 ```
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
+
+
+### KeyExists
+
+Returns whether the given key exists.
+
+```go
+keyExists := lo.KeyExists[string, int](map[string]int{"foo": 1, "bar": 2}, "foo")
+// true
+
+keyExists := lo.KeyExists[string, int](map[string]int{"foo": 1, "bar": 2}, "baz")
+// false
+```
 
 ### Keys
 
