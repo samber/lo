@@ -1,7 +1,6 @@
 package lo
 
 // KeyExists returns wheter the given key exists.
-// Play: https://go.dev/play/p/bAq9mHErB4V
 func KeyExists[K comparable, V any](in map[K]V, key K) bool {
 	if _, ok := in[key]; ok {
 		return true
