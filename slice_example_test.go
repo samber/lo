@@ -456,3 +456,15 @@ func ExampleIsSortedByKey() {
 
 	// Output: true
 }
+
+func ExampleMergeSlice() {
+	result1 := MergeSlice[int]([]int{1, 4, 7}, []int{2, 5, 8}, []int{3, 6, 9})
+	result2 := MergeSlice[int]([]int{1}, []int{2, 5, 8}, []int{3, 6}, []int{4, 7, 9, 10})
+
+	fmt.Println(result1)
+
+	fmt.Println(result2)
+	// Output:
+	// [1 4 7 2 5 8 3 6 9]
+	// [1 2 5 8 3 6 4 7 9 10]
+}
