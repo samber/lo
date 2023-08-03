@@ -625,3 +625,15 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+// Play: https://go.dev/play/p/G5_GhkeSUBA
+func Splice[T any](collection []T, i int, elements ...T) []T {
+	if i < 0 || i > len(collection) {
+		panic("index out of bounds")
+	}
+	if len(elements) == 0 {
+		return collection
+	}
+
+	return append(append(collection[:i], elements...), collection[i:]...)
+}

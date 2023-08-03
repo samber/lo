@@ -801,3 +801,16 @@ func TestIsSortedByKey(t *testing.T) {
 		return ret
 	}))
 }
+
+func TestInsertSlice(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	inserts := Splice([]string{"a", "d"}, 1, "b", "c")
+	is.Equal(inserts, []string{"a", "b", "c", "d"})
+	is.True(len(inserts) == 4 && inserts[1] == "b" && inserts[2] == "c")
+
+	inserti := Splice([]int{1, 4}, 1, 2, 3)
+	is.Equal(inserti, []int{1, 2, 3, 4})
+	is.True(len(inserti) == 4 && inserti[1] == 2 && inserti[2] == 3)
+}

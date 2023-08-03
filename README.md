@@ -118,6 +118,7 @@ Supported helpers for slices:
 - [Compact](#compact)
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
+- [Splice](#Splice)
 
 Supported helpers for maps:
 
@@ -979,6 +980,17 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 ```
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
+
+### Splice
+
+Splice multiple elements at index i.
+
+```go
+result := lo.Splice([]string{"a", "d"}, 1, "b", "c")
+// []string{"a", "b", "c", "d"}
+```
+
+[[play](https://go.dev/play/p/8gXdkTovsIC)]
 
 ### Keys
 
