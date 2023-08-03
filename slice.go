@@ -592,3 +592,25 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+// Insert inserts an element at index i.
+// Play: https://go.dev/play/p/Eu3pk6_ODVQ
+func Insert[T any](collection []T, i int, element T) []T {
+	result := make([]T, len(collection)+1)
+	copy(result, collection[:i])
+	result[i] = element
+	copy(result[i+1:], collection[i:])
+
+	return result
+}
+
+// InsertSlice inserts multiple elements at index i.
+// Play: https://go.dev/play/p/8gXdkTovsIC
+func InsertSlice[T any](collection []T, i int, elements []T) []T {
+	result := make([]T, len(collection)+len(elements))
+	copy(result, collection[:i])
+	copy(result[i:], elements)
+	copy(result[i+len(elements):], collection[i:])
+
+	return result
+}

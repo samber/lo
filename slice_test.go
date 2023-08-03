@@ -388,7 +388,7 @@ func TestAssociate(t *testing.T) {
 
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
-	
+
 	type foo struct {
 		baz string
 		bar int
@@ -626,7 +626,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
-	
+
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
@@ -758,4 +758,26 @@ func TestIsSortedByKey(t *testing.T) {
 		ret, _ := strconv.Atoi(s)
 		return ret
 	}))
+}
+
+func TestInsert(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	inserts := Insert([]string{"a", "c", "d"}, 1, "b")
+	is.True(len(inserts) == 4 && inserts[1] == "b")
+
+	inserti := Insert([]int{1, 3, 4}, 1, 2)
+	is.True(len(inserti) == 4 && inserti[1] == 2)
+}
+
+func TestInsertSlice(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	inserts := InsertSlice([]string{"a", "d"}, 1, []string{"b", "c"})
+	is.True(len(inserts) == 4 && inserts[1] == "b" && inserts[2] == "c")
+
+	inserti := InsertSlice([]int{1, 4}, 1, []int{2, 3})
+	is.True(len(inserti) == 4 && inserti[1] == 2 && inserti[2] == 3)
 }
