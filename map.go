@@ -222,3 +222,22 @@ func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key K, val
 
 	return result
 }
+
+type MapMergeFunc[K comparable, T, S any] func(key K, existing T, new S) T
+type MapInitFunc[K comparable, T, S any] func(key K, new S) T
+
+// MergeMaps updates the left map with values from the right maps,
+// using custom merge and initialisation logic.
+func MergeMaps[K comparable, T, S any](mergeFunc MapMergeFunc[K, T, S], initFunc MapInitFunc[K, T, S], left map[K]T, right ...map[K]S) map[K]T {
+	for _, m := range right {
+		for k, v := range m {
+			if existing, ok := left[k]; ok {
+				left[k] = mergeFunc(k, existing, v)
+			} else {
+				left[k] = initFunc(k, v)
+			}
+		}
+	}
+
+	return left
+}

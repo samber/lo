@@ -335,3 +335,118 @@ func TestMapToSlice(t *testing.T) {
 	is.ElementsMatch(result1, []string{"1_5", "2_6", "3_7", "4_8"})
 	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
 }
+
+type mergeTestCase[K comparable, T, S any] struct {
+	name      string
+	left      map[K]T
+	right     []map[K]S
+	mergeFunc MapMergeFunc
+	initFunc  MapInitFunc
+	expected  map[K]T
+}
+
+func TestMergeMaps_IntIntFloat(t *testing.T) {
+	testCases := []mergeTestCase[int, int, float64]{
+		{
+			name: "merge maps",
+			left: map[int]int{
+				1: 1,
+				2: 2,
+			},
+			right: []map[int]float64{
+				{
+					2: 3.0,
+					3: 3.0,
+				},
+			},
+			mergeFunc: func(_ int, existing int, new float64) int {
+				return existing + int(new)
+			},
+			initFunc: func(_ int, new float64) int {
+				return int(new)
+			},
+			expected: map[int]int{
+				1: 1,
+				2: 5,
+				3: 3,
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			merged := MergeMaps(tc.mergeFunc, tc.initFunc, tc.left, tc.right...)
+			require.Equal(t, tc.expected, merged)
+		})
+	}
+}
+
+func TestMergeMaps_StringStruct(t *testing.T) {
+	type testStruct struct {
+		a int
+		b string
+	}
+
+	type testStruct2 struct {
+		d string
+	}
+
+	testCases := []mergeTestCase[string, testStruct, testStruct2]{
+		{
+			name: "merge maps",
+			left: map[string]testStruct{
+				"1": {
+					a: 1,
+					b: "1",
+				},
+				"2": {
+					a: 2,
+					b: "2",
+				},
+			},
+			right: []map[string]testStruct2{
+				{
+					"2": {
+						d: "3",
+					},
+					"3": {
+						d: "3",
+					},
+				},
+			},
+			mergeFunc: func(_ string, existing testStruct, new testStruct2) testStruct {
+				return testStruct{
+					a: existing.a,
+					b: new.d,
+				}
+			},
+			initFunc: func(_ string, new testStruct2) testStruct {
+				return testStruct{
+					a: 0,
+					b: new.d,
+				}
+			},
+			expected: map[string]testStruct{
+				"1": {
+					a: 1,
+					b: "1",
+				},
+				"2": {
+					a: 2,
+					b: "3",
+				},
+				"3": {
+					a: 0,
+					b: "3",
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			merged := MergeMaps(tc.mergeFunc, tc.initFunc, tc.left, tc.right...)
+			require.Equal(t, tc.expected, merged)
+		})
+	}
+}
