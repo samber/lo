@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestKeys(t *testing.T) {
@@ -340,8 +341,8 @@ type mergeTestCase[K comparable, T, S any] struct {
 	name      string
 	left      map[K]T
 	right     []map[K]S
-	mergeFunc MapMergeFunc
-	initFunc  MapInitFunc
+	mergeFunc MapMergeFunc[K, T, S]
+	initFunc  MapInitFunc[K, T, S]
 	expected  map[K]T
 }
 
