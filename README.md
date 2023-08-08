@@ -136,7 +136,7 @@ Supported helpers for maps:
 - [MapValues](#mapvalues)
 - [MapEntries](#mapentries)
 - [MapToSlice](#maptoslice)
-- [MergeMaps] (#mergemaps)
+- [MergeMaps](#mergemaps)
 
 Supported math helpers:
 
