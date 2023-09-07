@@ -78,3 +78,52 @@ func TestPartial5(t *testing.T) {
 	is.Equal("26", f(10, 9, -3, 0, 5))
 	is.Equal("21", f(-5, 8, 7, -1, 7))
 }
+
+func TestCompose(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	filterEven := func(ns []int) []int {
+		return Filter(ns, func(x int, i int) bool { return x%2 == 0 })
+	}
+	sum := func(ns []int) int {
+		return ReduceRight(ns, func(sum int, x int, i int) int { return sum + x }, 0)
+	}
+	result := Compose(filterEven, sum)([]int{1, 2, 3, 4, 5})
+	is.Equal("6", strconv.Itoa(result))
+}
+
+func TestCompose2(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	filterEven := func(ns []int) []int {
+		return Filter(ns, func(x int, i int) bool { return x%2 == 0 })
+	}
+	sum := func(ns []int) int {
+		return ReduceRight(ns, func(sum int, x int, i int) int { return sum + x }, 0)
+	}
+	result := Compose2(filterEven, sum)([]int{1, 2, 3, 4, 5})
+	is.Equal("6", strconv.Itoa(result))
+}
+
+func TestCompose3(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	filterEven := func(ns []int) []int {
+		return Filter(ns, func(x int, i int) bool { return x%2 == 0 })
+	}
+	mulEachBy10 := func(ns []int) []int {
+		return Map(ns, func(x int, i int) int { return x * 10 })
+	}
+	sum := func(ns []int) int {
+		return ReduceRight(ns, func(sum int, x int, i int) int { return sum + x }, 0)
+	}
+	result := Compose3(
+		filterEven,
+		mulEachBy10,
+		sum,
+	)([]int{1, 2, 3, 4, 5})
+	is.Equal("60", strconv.Itoa(result))
+}
