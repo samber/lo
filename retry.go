@@ -239,7 +239,7 @@ type transactionStep[T any] struct {
 	onRollback func(T) T
 }
 
-// NewTransaction instanciate a new transaction.
+// NewTransaction instantiate a new transaction.
 func NewTransaction[T any]() *Transaction[T] {
 	return &Transaction[T]{
 		steps: []transactionStep[T]{},
