@@ -1,7 +1,9 @@
 package lo
 
 import (
+	"context"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -211,4 +213,69 @@ func TestAsyncX(t *testing.T) {
 			is.Fail("Async6 should not block")
 		}
 	}
+}
+
+func TestTimeout(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	err := Timeout(10*time.Millisecond, func(done func()) {
+		done()
+	})
+	is.Nil(err)
+
+	err = Timeout(10*time.Millisecond, func(done func()) {
+		time.Sleep(20 * time.Millisecond)
+		done()
+	})
+	is.Error(err)
+	is.Equal(err, context.DeadlineExceeded)
+}
+
+func TestDeadline(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	err := Deadline(time.Now().Add(10*time.Millisecond), func(done func()) {
+		done()
+	})
+	is.Nil(err)
+
+	err = Deadline(time.Now().Add(10*time.Millisecond), func(done func()) {
+		time.Sleep(20 * time.Millisecond)
+		done()
+	})
+	is.Error(err)
+	is.Equal(err, context.DeadlineExceeded)
+}
+
+func TestRace(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	var wonRace int32
+
+	func1 := func(done func()) {
+		time.Sleep(5 * time.Millisecond)
+		atomic.CompareAndSwapInt32(&wonRace, 0, 1)
+		done()
+	}
+
+	func2 := func(done func()) {
+		time.Sleep(30 * time.Millisecond)
+		atomic.CompareAndSwapInt32(&wonRace, 0, 2)
+		done()
+	}
+
+	func3 := func(done func()) {
+		time.Sleep(50 * time.Millisecond)
+		atomic.CompareAndSwapInt32(&wonRace, 0, 3)
+		done()
+	}
+
+	Race(func1, func2, func3)
+	is.EqualValues(1, atomic.LoadInt32(&wonRace))
 }

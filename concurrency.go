@@ -1,6 +1,10 @@
 package lo
 
-import "sync"
+import (
+	"context"
+	"sync"
+	"time"
+)
 
 type synchronize struct {
 	locker sync.Locker
@@ -92,4 +96,60 @@ func Async6[A any, B any, C any, D any, E any, F any](f func() (A, B, C, D, E, F
 		ch <- T6(f())
 	}()
 	return ch
+}
+
+// Timeout returns an error if `callback` runs longer than `duration`.
+// A return in the callback is equivalent to calling `done()`.
+// Warning: you whould use `context.WithTimeout` when available.
+func Timeout(duration time.Duration, callback func(done func())) error {
+	release := make(chan struct{}) // channel will be closed by garbage collector
+	done := func() { release <- struct{}{} }
+
+	go func() {
+		callback(done)
+		done()
+	}()
+
+	select {
+	case <-release:
+		return nil
+	case <-time.After(duration):
+		return context.DeadlineExceeded
+	}
+}
+
+// Deadline returns an error if `callback` runs longer than `duration`.
+// A return in the callback is equivalent to calling `done()`.
+// Warning: you whould use `context.WithDeadline` when available.
+func Deadline(t time.Time, callback func(done func())) error {
+	release := make(chan struct{}) // channel will be closed by garbage collector
+	done := func() { release <- struct{}{} }
+
+	go func() {
+		callback(done)
+		done()
+	}()
+
+	select {
+	case <-release:
+		return nil
+	case <-time.After(time.Until(t)):
+		return context.DeadlineExceeded
+	}
+}
+
+// Race blocks until a callback is processed.
+// `done()` can be used to unlock race before leaving callback function.
+func Race(callbacks ...func(done func())) {
+	release := make(chan struct{}) // channel will be closed by garbage collector
+	done := func() { release <- struct{}{} }
+
+	for i := range callbacks {
+		go func(index int) {
+			callbacks[index](done)
+			done()
+		}(i)
+	}
+
+	<-release
 }
