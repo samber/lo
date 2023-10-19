@@ -233,6 +233,37 @@ func TestUnion(t *testing.T) {
 	is.Equal(result15, []int{})
 }
 
+func TestUnionBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	testFunc := func(i int) int {
+		return i / 2
+	}
+
+	result1 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+	result2 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7})
+	result3 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{})
+	result4 := UnionBy(testFunc, []int{0, 1, 2}, []int{0, 1, 2})
+	result5 := UnionBy(testFunc, []int{}, []int{})
+	is.Equal(result1, []int{0, 2, 4, 10})
+	is.Equal(result2, []int{0, 2, 4, 6})
+	is.Equal(result3, []int{0, 2, 4})
+	is.Equal(result4, []int{0, 2})
+	is.Equal(result5, []int{})
+
+	result11 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
+	result12 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7}, []int{8, 9})
+	result13 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{}, []int{})
+	result14 := UnionBy(testFunc, []int{0, 1, 2}, []int{0, 1, 2}, []int{0, 1, 2})
+	result15 := UnionBy(testFunc, []int{}, []int{}, []int{})
+	is.Equal(result11, []int{0, 2, 4, 10})
+	is.Equal(result12, []int{0, 2, 4, 6, 8})
+	is.Equal(result13, []int{0, 2, 4})
+	is.Equal(result14, []int{0, 2})
+	is.Equal(result15, []int{})
+}
+
 func TestWithout(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
