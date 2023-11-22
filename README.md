@@ -716,6 +716,18 @@ l := lo.DropRightWhile([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) 
 
 [[play](https://go.dev/play/p/3-n71oEC0Hz)]
 
+### DropByIndex
+
+Drops n elements from the beginning of a slice or array.
+
+```go
+l := lo.Drop([]int{0, 1, 2, 3, 4, 5}, 2)
+// []int{2, 3, 4, 5}
+```
+
+[[play](https://go.dev/play/p/JswS7vXRJP2)]
+
+
 ### Reject
 
 The opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
