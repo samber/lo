@@ -37,6 +37,15 @@ func FromPtrOr[T any](x *T, fallback T) T {
 	return *x
 }
 
+// FromPtrOrF returns the pointer value or the value returned by callback.
+func FromPtrOrF[T any](x *T, callback func() T) T {
+	if x == nil {
+		return callback()
+	}
+
+	return *x
+}
+
 // ToSlicePtr returns a slice of pointer copy of value.
 func ToSlicePtr[T any](collection []T) []*T {
 	return Map(collection, func(x T, _ int) *T {
