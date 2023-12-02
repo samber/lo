@@ -6,15 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestToPtr(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	result1 := ToPtr([]int{1, 2})
-
-	is.Equal(*result1, []int{1, 2})
-}
-
 func TestIsNil(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -36,7 +27,16 @@ func TestIsNil(t *testing.T) {
 
 	var ifaceWithNilValue interface{} = (*string)(nil)
 	is.True(IsNil(ifaceWithNilValue))
-	is.True(ifaceWithNilValue != nil)
+	is.False(ifaceWithNilValue == nil) // nolint:staticcheck
+}
+
+func TestToPtr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := ToPtr([]int{1, 2})
+
+	is.Equal(*result1, []int{1, 2})
 }
 
 func TestEmptyableToPtr(t *testing.T) {
