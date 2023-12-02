@@ -7,6 +7,12 @@ func ToPtr[T any](x T) *T {
 	return &x
 }
 
+// IsNil checks if a value is nil or if it's a reference type with a nil underlying value.
+func IsNil(x any) bool {
+	defer func() { recover() }()
+	return x == nil || reflect.ValueOf(x).IsNil()
+}
+
 // EmptyableToPtr returns a pointer copy of value if it's nonzero.
 // Otherwise, returns nil pointer.
 func EmptyableToPtr[T any](x T) *T {
