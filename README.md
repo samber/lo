@@ -216,6 +216,7 @@ Conditional helpers:
 
 Type manipulation helpers:
 
+- [IsNil](#IsNil)
 - [ToPtr](#toptr)
 - [EmptyableToPtr](#emptyabletoptr)
 - [FromPtr](#fromptr)
@@ -2155,9 +2156,33 @@ result := lo.Switch(1).
 
 [[play](https://go.dev/play/p/TGbKUMAeRUd)]
 
+### IsNil
+
+Checks if a value is nil or if it's a reference type with a nil underlying value.
+
+```go
+var x int
+IsNil(x))
+// false
+
+var k struct{}
+IsNil(k)
+// false
+
+var i *int
+IsNil(i)
+// true
+
+var ifaceWithNilValue any = (*string)(nil)
+IsNil(ifaceWithNilValue)
+// true
+ifaceWithNilValue == nil
+// false
+```
+
 ### ToPtr
 
-Returns a pointer copy of value.
+Returns a pointer copy of the value.
 
 ```go
 ptr := lo.ToPtr("hello world")
