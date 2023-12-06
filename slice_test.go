@@ -28,6 +28,23 @@ func TestFilter(t *testing.T) {
 	is.Equal(r2, []string{"foo", "bar"})
 }
 
+func TestFilterInPlace(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := FilterInPlace([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+		return x%2 == 0
+	})
+
+	is.Equal(r1, []int{2, 4})
+
+	r2 := FilterInPlace([]string{"", "foo", "", "bar", ""}, func(x string, _ int) bool {
+		return len(x) > 0
+	})
+
+	is.Equal(r2, []string{"foo", "bar"})
+}
+
 func TestMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
