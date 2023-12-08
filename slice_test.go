@@ -388,7 +388,7 @@ func TestAssociate(t *testing.T) {
 
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
-	
+
 	type foo struct {
 		baz string
 		bar int
@@ -626,7 +626,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
-	
+
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
@@ -758,4 +758,43 @@ func TestIsSortedByKey(t *testing.T) {
 		ret, _ := strconv.Atoi(s)
 		return ret
 	}))
+}
+
+func TestCircularSelect(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	in := []int{0, 1, 2, 3, 4}
+
+	is.Equal(4, CircularSelect(in, -6))
+	is.Equal(0, CircularSelect(in, -5))
+	is.Equal(1, CircularSelect(in, -4))
+	is.Equal(4, CircularSelect(in, -1))
+	is.Equal(0, CircularSelect(in, -0))
+	is.Equal(0, CircularSelect(in, 0))
+	is.Equal(1, CircularSelect(in, 1))
+	is.Equal(4, CircularSelect(in, 4))
+	is.Equal(0, CircularSelect(in, 5))
+	is.Equal(1, CircularSelect(in, 6))
+}
+
+func TestCircularSelection(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	in := []int{0, 1, 2, 3, 4}
+
+	is.Equal(4, CircularSelection(in, -6))
+	is.Equal(0, CircularSelection(in, -5))
+	is.Equal(1, CircularSelection(in, -4))
+	is.Equal(4, CircularSelection(in, -1))
+	is.Equal(0, CircularSelection(in, -0))
+	is.Equal(0, CircularSelection(in, 0))
+	is.Equal(1, CircularSelection(in, 1))
+	is.Equal(4, CircularSelection(in, 4))
+	is.Equal(0, CircularSelection(in, 5))
+	is.Equal(1, CircularSelection(in, 6))
+
+	in = []int{}
+	is.Equal(0, CircularSelection(in, 0))
 }
