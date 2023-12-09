@@ -116,6 +116,7 @@ Supported helpers for slices:
 - [Compact](#compact)
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
+- [MergeSlice](#MergeSlice)
 
 Supported helpers for maps:
 
@@ -543,7 +544,7 @@ interleaved := lo.Interleave([]int{1}, []int{2, 5, 8}, []int{3, 6}, []int{4, 7, 
 // []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 ```
 
-[[play](https://go.dev/play/p/DDhlwrShbwe)]
+[[play](https://go.dev/play/p/Y_TefECYRWk)]
 
 ### Shuffle
 
@@ -923,6 +924,23 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 ```
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
+
+### MergeSlice
+
+Merges multiple slices without removing duplicates or shuffling the elements
+
+```go
+result1 := lo.MergeSlice[int]([]int{1, 4, 7}, []int{2, 5, 8}, []int{3, 6, 9})
+result2 := lo.MergeSlice[int]([]int{1}, []int{2, 5, 8}, []int{3, 6}, []int{4, 7, 9, 10})
+
+fmt.Println(result1)
+// []int{1 4 7 2 5 8 3 6 9}
+
+fmt.Println(result2)
+// []int{1 2 5 8 3 6 4 7 9 10}
+```
+
+[[play](https://go.dev/play/p/yAdsTYoAyLn)]
 
 ### Keys
 
