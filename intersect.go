@@ -183,3 +183,32 @@ func WithoutEmpty[T comparable](collection []T) []T {
 
 	return result
 }
+
+// SlicesEqualUnordered checks if two slices have same length and same element
+func SlicesEqualUnordered[T comparable](collection1 []T, collection2 []T) bool {
+	if (collection1 == nil) != (collection2 == nil) {
+		return false
+	}
+	if len(collection1) != len(collection2) {
+		return false
+	}
+
+	col := make([]bool, len(collection1))
+	for _, v1 := range collection1 {
+		v1Equal := false
+		for idx, v2 := range collection2 {
+			if col[idx] {
+				continue
+			}
+			if v2 == v1 {
+				col[idx] = true
+				v1Equal = true
+				break
+			}
+		}
+		if !v1Equal {
+			return false
+		}
+	}
+	return true
+}
