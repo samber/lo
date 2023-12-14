@@ -9,6 +9,10 @@ import (
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
 // Play: https://go.dev/play/p/Apjg3WeSi7K
 func Filter[V any](collection []V, predicate func(item V, index int) bool) []V {
+	if collection == nil {
+		return nil
+	}
+
 	result := make([]V, 0, len(collection))
 
 	for i, item := range collection {
@@ -23,6 +27,10 @@ func Filter[V any](collection []V, predicate func(item V, index int) bool) []V {
 // Map manipulates a slice and transforms it to a slice of another type.
 // Play: https://go.dev/play/p/OkPcYAhBo0D
 func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
+	if collection == nil {
+		return nil
+	}
+
 	result := make([]R, len(collection))
 
 	for i, item := range collection {
@@ -39,6 +47,10 @@ func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 //
 // Play: https://go.dev/play/p/-AuYXfy7opz
 func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
+	if collection == nil {
+		return nil
+	}
+
 	result := []R{}
 
 	for i, item := range collection {
@@ -55,6 +67,10 @@ func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R
 // no value is added to the final slice.
 // Play: https://go.dev/play/p/YSoYmQTA8-U
 func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R) []R {
+	if collection == nil {
+		return nil
+	}
+
 	result := make([]R, 0, len(collection))
 
 	for i, item := range collection {
@@ -110,6 +126,10 @@ func Times[T any](count int, iteratee func(index int) T) []T {
 // The order of result values is determined by the order they occur in the array.
 // Play: https://go.dev/play/p/DTzbeXZ6iEN
 func Uniq[T comparable](collection []T) []T {
+	if collection == nil {
+		return nil
+	}
+
 	result := make([]T, 0, len(collection))
 	seen := make(map[T]struct{}, len(collection))
 
@@ -130,6 +150,10 @@ func Uniq[T comparable](collection []T) []T {
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
 // Play: https://go.dev/play/p/g42Z3QSb53u
 func UniqBy[T any, U comparable](collection []T, iteratee func(item T) U) []T {
+	if collection == nil {
+		return nil
+	}
+
 	result := make([]T, 0, len(collection))
 	seen := make(map[U]struct{}, len(collection))
 
@@ -169,6 +193,10 @@ func Chunk[T any](collection []T, size int) [][]T {
 		panic("Second parameter must be greater than 0")
 	}
 
+	if collection == nil {
+		return nil
+	}
+
 	chunksNum := len(collection) / size
 	if len(collection)%size != 0 {
 		chunksNum += 1
@@ -192,6 +220,10 @@ func Chunk[T any](collection []T, size int) [][]T {
 // of running each element of collection through iteratee.
 // Play: https://go.dev/play/p/NfQ_nGjkgXW
 func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [][]T {
+	if collection == nil {
+		return nil
+	}
+
 	result := [][]T{}
 	seen := map[K]int{}
 
@@ -218,6 +250,10 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [
 // Flatten returns an array a single level deep.
 // Play: https://go.dev/play/p/rbp9ORaMpjw
 func Flatten[T any](collection [][]T) []T {
+	if collection == nil {
+		return nil
+	}
+
 	totalLen := 0
 	for i := range collection {
 		totalLen += len(collection[i])
@@ -282,6 +318,10 @@ func Shuffle[T any](collection []T) []T {
 // Reverse reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
 // Play: https://go.dev/play/p/fhUMLvZ7vS6
 func Reverse[T any](collection []T) []T {
+	if collection == nil {
+		return nil
+	}
+
 	length := len(collection)
 	half := length / 2
 
@@ -296,6 +336,10 @@ func Reverse[T any](collection []T) []T {
 // Fill fills elements of array with `initial` value.
 // Play: https://go.dev/play/p/VwR34GzqEub
 func Fill[T Clonable[T]](collection []T, initial T) []T {
+	if collection == nil {
+		return nil
+	}
+
 	result := make([]T, 0, len(collection))
 
 	for range collection {
@@ -369,6 +413,10 @@ func SliceToMap[T any, K comparable, V any](collection []T, transform func(item 
 // Drop drops n elements from the beginning of a slice or array.
 // Play: https://go.dev/play/p/JswS7vXRJP2
 func Drop[T any](collection []T, n int) []T {
+	if collection == nil {
+		return nil
+	}
+
 	if len(collection) <= n {
 		return make([]T, 0)
 	}
@@ -381,6 +429,10 @@ func Drop[T any](collection []T, n int) []T {
 // DropRight drops n elements from the end of a slice or array.
 // Play: https://go.dev/play/p/GG0nXkSJJa3
 func DropRight[T any](collection []T, n int) []T {
+	if collection == nil {
+		return nil
+	}
+
 	if len(collection) <= n {
 		return []T{}
 	}
@@ -392,6 +444,10 @@ func DropRight[T any](collection []T, n int) []T {
 // DropWhile drops elements from the beginning of a slice or array while the predicate returns true.
 // Play: https://go.dev/play/p/7gBPYw2IK16
 func DropWhile[T any](collection []T, predicate func(item T) bool) []T {
+	if collection == nil {
+		return nil
+	}
+
 	i := 0
 	for ; i < len(collection); i++ {
 		if !predicate(collection[i]) {
@@ -406,6 +462,10 @@ func DropWhile[T any](collection []T, predicate func(item T) bool) []T {
 // DropRightWhile drops elements from the end of a slice or array while the predicate returns true.
 // Play: https://go.dev/play/p/3-n71oEC0Hz
 func DropRightWhile[T any](collection []T, predicate func(item T) bool) []T {
+	if collection == nil {
+		return nil
+	}
+
 	i := len(collection) - 1
 	for ; i >= 0; i-- {
 		if !predicate(collection[i]) {
@@ -420,6 +480,10 @@ func DropRightWhile[T any](collection []T, predicate func(item T) bool) []T {
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
 // Play: https://go.dev/play/p/YkLMODy1WEL
 func Reject[V any](collection []V, predicate func(item V, index int) bool) []V {
+	if collection == nil {
+		return nil
+	}
+
 	result := []V{}
 
 	for i, item := range collection {
@@ -483,6 +547,10 @@ func CountValuesBy[T any, U comparable](collection []T, mapper func(item T) U) m
 // Subset returns a copy of a slice from `offset` up to `length` elements. Like `slice[start:start+length]`, but does not panic on overflow.
 // Play: https://go.dev/play/p/tOQu1GhFcog
 func Subset[T any](collection []T, offset int, length uint) []T {
+	if collection == nil {
+		return nil
+	}
+
 	size := len(collection)
 
 	if offset < 0 {
@@ -506,6 +574,10 @@ func Subset[T any](collection []T, offset int, length uint) []T {
 // Slice returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
 // Play: https://go.dev/play/p/8XWYhfMMA1h
 func Slice[T any](collection []T, start int, end int) []T {
+	if collection == nil {
+		return nil
+	}
+
 	size := len(collection)
 
 	if start >= end {
@@ -532,6 +604,10 @@ func Slice[T any](collection []T, start int, end int) []T {
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
 // Play: https://go.dev/play/p/XfPzmf9gql6
 func Replace[T comparable](collection []T, old T, new T, n int) []T {
+	if collection == nil {
+		return nil
+	}
+
 	result := make([]T, len(collection))
 	copy(result, collection)
 
@@ -554,6 +630,10 @@ func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 // Compact returns a slice of all non-zero elements.
 // Play: https://go.dev/play/p/tXiy-iK6PAc
 func Compact[T comparable](collection []T) []T {
+	if collection == nil {
+		return nil
+	}
+
 	var zero T
 
 	result := make([]T, 0, len(collection))
