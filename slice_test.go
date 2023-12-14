@@ -18,12 +18,22 @@ func TestFilter(t *testing.T) {
 	r1 := Filter([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 		return x%2 == 0
 	})
-	is.Equal(r1, []int{2, 4})
+	is.Equal([]int{2, 4}, r1)
 
 	r2 := Filter([]string{"", "foo", "", "bar", ""}, func(x string, _ int) bool {
 		return len(x) > 0
 	})
-	is.Equal(r2, []string{"foo", "bar"})
+	is.Equal([]string{"foo", "bar"}, r2)
+
+	r3 := Filter([]string{}, func(x string, _ int) bool {
+		return true
+	})
+	is.Equal([]string{}, r3)
+
+	r4 := Filter([]string(nil), func(x string, _ int) bool {
+		return true
+	})
+	is.Nil(r4)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -43,11 +53,19 @@ func TestMap(t *testing.T) {
 	result2 := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 		return strconv.FormatInt(x, 10)
 	})
+	result3 := Map([]int64{}, func(x int64, _ int) string {
+		return strconv.FormatInt(x, 10)
+	})
+	result4 := Map(nil, func(x int64, _ int) string {
+		return strconv.FormatInt(x, 10)
+	})
 
-	is.Equal(len(result1), 4)
-	is.Equal(len(result2), 4)
-	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
-	is.Equal(result2, []string{"1", "2", "3", "4"})
+	is.Len(result1, 4)
+	is.Len(result2, 4)
+	is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, result1)
+	is.Equal([]string{"1", "2", "3", "4"}, result2)
+	is.Equal([]string{}, result3)
+	is.Nil(result4)
 }
 
 func TestFilterMap(t *testing.T) {
@@ -66,11 +84,19 @@ func TestFilterMap(t *testing.T) {
 		}
 		return "", false
 	})
+	r3 := FilterMap([]string{}, func(x string, _ int) (string, bool) {
+		return "", false
+	})
+	r4 := FilterMap(nil, func(x string, _ int) (string, bool) {
+		return "", false
+	})
 
-	is.Equal(len(r1), 2)
-	is.Equal(len(r2), 2)
-	is.Equal(r1, []string{"2", "4"})
-	is.Equal(r2, []string{"xpu", "xpu"})
+	is.Len(r1, 2)
+	is.Len(r2, 2)
+	is.Equal([]string{"2", "4"}, r1)
+	is.Equal([]string{"xpu", "xpu"}, r2)
+	is.Equal([]string{}, r3)
+	is.Nil(r4)
 }
 
 func TestFlatMap(t *testing.T) {
@@ -87,11 +113,19 @@ func TestFlatMap(t *testing.T) {
 		}
 		return result
 	})
+	result3 := FlatMap([]int{}, func(x int, _ int) []string {
+		return []string{"Hello"}
+	})
+	result4 := FlatMap(nil, func(x int, _ int) []string {
+		return []string{"Hello"}
+	})
 
-	is.Equal(len(result1), 5)
-	is.Equal(len(result2), 10)
-	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello", "Hello"})
-	is.Equal(result2, []string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"})
+	is.Len(result1, 5)
+	is.Len(result2, 10)
+	is.Equal([]string{"Hello", "Hello", "Hello", "Hello", "Hello"}, result1)
+	is.Equal([]string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"}, result2)
+	is.Equal([]string{}, result3)
+	is.Nil(result4)
 }
 
 func TestTimes(t *testing.T) {
@@ -102,7 +136,7 @@ func TestTimes(t *testing.T) {
 		return strconv.FormatInt(int64(i), 10)
 	})
 
-	is.Equal(len(result1), 3)
+	is.Len(result1, 3)
 	is.Equal(result1, []string{"0", "1", "2"})
 }
 
@@ -162,9 +196,13 @@ func TestUniq(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := Uniq([]int{1, 2, 2, 1})
+	result2 := Uniq([]int{})
+	result3 := Uniq([]int(nil))
 
-	is.Equal(len(result1), 2)
-	is.Equal(result1, []int{1, 2})
+	is.Len(result1, 2)
+	is.Equal([]int{1, 2}, result1)
+	is.Equal([]int{}, result2)
+	is.Nil(result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -179,9 +217,17 @@ func TestUniqBy(t *testing.T) {
 	result1 := UniqBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
+	result2 := UniqBy([]int{}, func(i int) int {
+		return i % 3
+	})
+	result3 := UniqBy([]int(nil), func(i int) int {
+		return i % 3
+	})
 
-	is.Equal(len(result1), 3)
-	is.Equal(result1, []int{0, 1, 2})
+	is.Len(result1, 3)
+	is.Equal([]int{0, 1, 2}, result1)
+	is.Equal([]int{}, result2)
+	is.Nil(result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -199,7 +245,7 @@ func TestGroupBy(t *testing.T) {
 		return i % 3
 	})
 
-	is.Equal(len(result1), 3)
+	is.Len(result1, 3)
 	is.Equal(result1, map[int][]int{
 		0: {0, 3},
 		1: {1, 4},
@@ -222,11 +268,13 @@ func TestChunk(t *testing.T) {
 	result2 := Chunk([]int{0, 1, 2, 3, 4, 5, 6}, 2)
 	result3 := Chunk([]int{}, 2)
 	result4 := Chunk([]int{0}, 2)
+	result5 := Chunk([]int(nil), 2)
 
-	is.Equal(result1, [][]int{{0, 1}, {2, 3}, {4, 5}})
-	is.Equal(result2, [][]int{{0, 1}, {2, 3}, {4, 5}, {6}})
-	is.Equal(result3, [][]int{})
-	is.Equal(result4, [][]int{{0}})
+	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}}, result1)
+	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}, {6}}, result2)
+	is.Equal([][]int{}, result3)
+	is.Equal([][]int{{0}}, result4)
+	is.Nil(result5)
 	is.PanicsWithValue("Second parameter must be greater than 0", func() {
 		Chunk([]int{0}, 0)
 	})
@@ -252,9 +300,11 @@ func TestPartitionBy(t *testing.T) {
 
 	result1 := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
 	result2 := PartitionBy([]int{}, oddEven)
+	result3 := PartitionBy([]int(nil), oddEven)
 
 	is.Equal(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
 	is.Equal(result2, [][]int{})
+	is.Nil(result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -269,8 +319,12 @@ func TestFlatten(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := Flatten([][]int{{0, 1}, {2, 3, 4, 5}})
+	result2 := Flatten([][]int{})
+	result3 := Flatten([][]int(nil))
 
-	is.Equal(result1, []int{0, 1, 2, 3, 4, 5})
+	is.Equal([]int{0, 1, 2, 3, 4, 5}, result1)
+	is.Equal([]int{}, result2)
+	is.Nil(result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -337,9 +391,11 @@ func TestShuffle(t *testing.T) {
 
 	result1 := Shuffle([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 	result2 := Shuffle([]int{})
+	result3 := Shuffle([]int(nil))
 
-	is.NotEqual(result1, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-	is.Equal(result2, []int{})
+	is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result1)
+	is.Equal([]int{}, result2)
+	is.Nil(result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -354,10 +410,12 @@ func TestReverse(t *testing.T) {
 	result1 := Reverse([]int{0, 1, 2, 3, 4, 5})
 	result2 := Reverse([]int{0, 1, 2, 3, 4, 5, 6})
 	result3 := Reverse([]int{})
+	result4 := Reverse([]int(nil))
 
-	is.Equal(result1, []int{5, 4, 3, 2, 1, 0})
-	is.Equal(result2, []int{6, 5, 4, 3, 2, 1, 0})
-	is.Equal(result3, []int{})
+	is.Equal([]int{5, 4, 3, 2, 1, 0}, result1)
+	is.Equal([]int{6, 5, 4, 3, 2, 1, 0}, result2)
+	is.Equal([]int{}, result3)
+	is.Nil(result4)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -371,9 +429,11 @@ func TestFill(t *testing.T) {
 
 	result1 := Fill([]foo{{"a"}, {"a"}}, foo{"b"})
 	result2 := Fill([]foo{}, foo{"a"})
+	result3 := Fill([]foo(nil), foo{"a"})
 
-	is.Equal(result1, []foo{{"b"}, {"b"}})
-	is.Equal(result2, []foo{})
+	is.Equal([]foo{{"b"}, {"b"}}, result1)
+	is.Equal([]foo{}, result2)
+	is.Nil(result3)
 }
 
 func TestRepeat(t *testing.T) {
@@ -412,7 +472,7 @@ func TestKeyBy(t *testing.T) {
 		return len(str)
 	})
 
-	is.Equal(result1, map[int]string{1: "a", 2: "aa", 3: "aaa"})
+	is.Equal(map[int]string{1: "a", 2: "aa", 3: "aaa"}, result1)
 }
 
 func TestAssociate(t *testing.T) {
@@ -495,6 +555,8 @@ func TestDrop(t *testing.T) {
 	is.Equal([]int{4}, Drop([]int{0, 1, 2, 3, 4}, 4))
 	is.Equal([]int{}, Drop([]int{0, 1, 2, 3, 4}, 5))
 	is.Equal([]int{}, Drop([]int{0, 1, 2, 3, 4}, 6))
+	is.Equal([]int{}, Drop([]int{}, 1))
+	is.Nil(Drop([]int(nil), 1))
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -512,6 +574,8 @@ func TestDropRight(t *testing.T) {
 	is.Equal([]int{0}, DropRight([]int{0, 1, 2, 3, 4}, 4))
 	is.Equal([]int{}, DropRight([]int{0, 1, 2, 3, 4}, 5))
 	is.Equal([]int{}, DropRight([]int{0, 1, 2, 3, 4}, 6))
+	is.Equal([]int{}, DropRight([]int{}, 1))
+	is.Nil(DropRight([]int(nil), 1))
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -533,6 +597,14 @@ func TestDropWhile(t *testing.T) {
 
 	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
 		return t == 10
+	}))
+
+	is.Equal([]int{}, DropWhile([]int{}, func(t int) bool {
+		return false
+	}))
+
+	is.Nil(DropWhile([]int(nil), func(t int) bool {
+		return false
 	}))
 
 	type myStrings []string
@@ -561,6 +633,14 @@ func TestDropRightWhile(t *testing.T) {
 
 	is.Equal([]int{}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
 		return t != 10
+	}))
+
+	is.Equal([]int{}, DropRightWhile([]int{}, func(t int) bool {
+		return false
+	}))
+
+	is.Nil(DropRightWhile([]int(nil), func(t int) bool {
+		return false
 	}))
 
 	type myStrings []string
@@ -600,13 +680,21 @@ func TestReject(t *testing.T) {
 		return x%2 == 0
 	})
 
-	is.Equal(r1, []int{1, 3})
+	is.Equal([]int{1, 3}, r1)
 
 	r2 := Reject([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
 		return len(x) > 3
 	})
 
-	is.Equal(r2, []string{"foo", "bar"})
+	is.Equal([]string{"foo", "bar"}, r2)
+
+	is.Equal([]int{}, Reject([]int{}, func(x int, _ int) bool {
+		return false
+	}))
+
+	is.Nil(Reject([]int(nil), func(x int, _ int) bool {
+		return false
+	}))
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -633,8 +721,8 @@ func TestRejectMap(t *testing.T) {
 		return "", true
 	})
 
-	is.Equal(len(r1), 2)
-	is.Equal(len(r2), 2)
+	is.Len(r1, 2)
+	is.Len(r2, 2)
 	is.Equal(r1, []string{"2", "4"})
 	is.Equal(r2, []string{"xpu", "xpu"})
 }
@@ -753,6 +841,8 @@ func TestSubset(t *testing.T) {
 	out10 := Subset(in, -2, 4)
 	out11 := Subset(in, -4, 1)
 	out12 := Subset(in, -4, math.MaxUint)
+	out13 := Subset([]int{}, 0, 0)
+	out14 := Subset([]int(nil), 0, 0)
 
 	is.Equal([]int{}, out1)
 	is.Equal([]int{}, out2)
@@ -766,6 +856,8 @@ func TestSubset(t *testing.T) {
 	is.Equal([]int{3, 4}, out10)
 	is.Equal([]int{1}, out11)
 	is.Equal([]int{1, 2, 3, 4}, out12)
+	is.Equal([]int{}, out13)
+	is.Nil(out14)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -797,6 +889,8 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
+	out19 := Slice([]int{}, 0, 0)
+	out20 := Slice([]int(nil), 0, 0)
 
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
@@ -816,6 +910,8 @@ func TestSlice(t *testing.T) {
 	is.Equal([]int{0}, out16)
 	is.Equal([]int{0, 1, 2}, out17)
 	is.Equal([]int{0, 1, 2, 3, 4}, out18)
+	is.Equal([]int{}, out19)
+	is.Nil(out20)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -839,6 +935,8 @@ func TestReplace(t *testing.T) {
 	out8 := Replace(in, -1, 42, 0)
 	out9 := Replace(in, -1, 42, -1)
 	out10 := Replace(in, -1, 42, -1)
+	out11 := Replace([]int{}, -1, 42, -1)
+	out12 := Replace([]int(nil), -1, 42, -1)
 
 	is.Equal([]int{42, 1, 42, 1, 2, 3, 0}, out1)
 	is.Equal([]int{42, 1, 0, 1, 2, 3, 0}, out2)
@@ -850,6 +948,8 @@ func TestReplace(t *testing.T) {
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out8)
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out9)
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out10)
+	is.Equal([]int{}, out11)
+	is.Nil(out12)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -865,9 +965,13 @@ func TestReplaceAll(t *testing.T) {
 
 	out1 := ReplaceAll(in, 0, 42)
 	out2 := ReplaceAll(in, -1, 42)
+	out3 := ReplaceAll([]int{}, -1, 42)
+	out4 := ReplaceAll([]int(nil), -1, 42)
 
 	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out1)
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out2)
+	is.Equal([]int{}, out3)
+	is.Nil(out4)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -879,17 +983,11 @@ func TestCompact(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Compact([]int{2, 0, 4, 0})
-
-	is.Equal(r1, []int{2, 4})
-
-	r2 := Compact([]string{"", "foo", "", "bar", ""})
-
-	is.Equal(r2, []string{"foo", "bar"})
-
-	r3 := Compact([]bool{true, false, true, false})
-
-	is.Equal(r3, []bool{true, true})
+	is.Equal([]int{2, 4}, Compact([]int{2, 0, 4, 0}))
+	is.Equal([]string{"foo", "bar"}, Compact([]string{"", "foo", "", "bar", ""}))
+	is.Equal([]bool{true, true}, Compact([]bool{true, false, true, false}))
+	is.Equal([]int{}, Compact([]int{}))
+	is.Nil(Compact([]int(nil)))
 
 	type foo struct {
 		bar int
@@ -898,23 +996,17 @@ func TestCompact(t *testing.T) {
 
 	// slice of structs
 	// If all fields of an element are zero values, Compact removes it.
-
-	r4 := Compact([]foo{
+	is.Equal([]foo{{bar: 1, baz: "a"}, {bar: 2, baz: ""}}, Compact([]foo{
 		{bar: 1, baz: "a"}, // all fields are non-zero values
 		{bar: 0, baz: ""},  // all fields are zero values
 		{bar: 2, baz: ""},  // bar is non-zero
-	})
-
-	is.Equal(r4, []foo{{bar: 1, baz: "a"}, {bar: 2, baz: ""}})
+	}))
 
 	// slice of pointers to structs
 	// If an element is nil, Compact removes it.
-
-	e1, e2, e3 := foo{bar: 1, baz: "a"}, foo{bar: 0, baz: ""}, foo{bar: 2, baz: ""}
 	// NOTE: e2 is a zero value of foo, but its pointer &e2 is not a zero value of *foo.
-	r5 := Compact([]*foo{&e1, &e2, nil, &e3})
-
-	is.Equal(r5, []*foo{&e1, &e2, &e3})
+	e1, e2, e3 := foo{bar: 1, baz: "a"}, foo{bar: 0, baz: ""}, foo{bar: 2, baz: ""}
+	is.Equal([]*foo{&e1, &e2, &e3}, Compact([]*foo{&e1, &e2, nil, &e3}))
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
