@@ -1823,7 +1823,7 @@ str, index, ok := lo.FindLastIndexOf([]string{"foobar"}, func(i string) bool {
 
 ### FindOrElse
 
-Search an element in a slice based on a predicate. It returns element or the fallback value if the element was not found.
+Search an element in a slice based on a predicate. It returns the element if found or a given fallback value otherwise.
 
 ```go
 str := lo.FindOrElse([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
