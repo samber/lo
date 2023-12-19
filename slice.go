@@ -232,7 +232,7 @@ func Flatten[T any](collection [][]T) []T {
 }
 
 // Interleave round-robin alternating input slices and sequentially appending value at index into result
-// Play: https://go.dev/play/p/DDhlwrShbwe
+// Play: https://go.dev/play/p/-RJkTLQEDVt
 func Interleave[T any](collections ...[]T) []T {
 	if len(collections) == 0 {
 		return []T{}
