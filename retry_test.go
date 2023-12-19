@@ -404,7 +404,7 @@ func TestDebounceBy(t *testing.T) {
 	mu.Unlock()
 }
 
-func TestTransation(t *testing.T) {
+func TestTransaction(t *testing.T) {
 	is := assert.New(t)
 
 	// no error
