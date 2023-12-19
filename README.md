@@ -2048,7 +2048,7 @@ result := lo.TernaryF(false, func() string { return "a" }, func() string { retur
 // "b"
 ```
 
-Useful to avoid nil-pointer dereferencing in intializations, or avoid running unnecessary code
+Useful to avoid nil-pointer dereferencing in initializations, or avoid running unnecessary code
 
 ```go
 var s *string
