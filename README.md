@@ -180,6 +180,7 @@ Supported intersection helpers:
 - [NoneBy](#noneby)
 - [Intersect](#intersect)
 - [Difference](#difference)
+- [DifferenceBy](#differenceby)
 - [Union](#union)
 - [Without](#without)
 - [WithoutEmpty](#withoutempty)
@@ -1713,12 +1714,32 @@ Returns the difference between two collections.
 - The second value is the collection of element absent of list1.
 
 ```go
-left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
-// []int{1, 3, 4, 5}, []int{6}
+result := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
+// []int{1, 3, 4, 5}
 
-left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
-// []int{}, []int{}
+result := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+// []int{}
 ```
+
+### DifferenceBy
+
+Returns the difference between two collections.
+
+- The first value is the collection of element absent of list2.
+- The second value is the collection of element absent of list1.
+
+```go
+result := lo.DifferenceBy([]float64{3.1, 2.2, 1.3}, []float64{4.4, 2.5}, func(i float64) float64 {
+    return math.Floor(i)
+})
+// []float64{3.1, 1.3}
+
+result := lo.DifferenceBy([]map[string]int{{"x": 2}, {"x": 1}}, []map[string]int{{"x": 1}}, func(i map[string]int) int {
+    return i["x"]
+})
+// []map[string]int{{"x": 2}}
+```
+
 
 ### Union
 

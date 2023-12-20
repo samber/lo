@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -193,17 +194,29 @@ func TestDifference(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	left1, right1 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
+	left1 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
 	is.Equal(left1, []int{1, 3, 4, 5})
-	is.Equal(right1, []int{6})
 
-	left2, right2 := Difference([]int{1, 2, 3, 4, 5}, []int{0, 6})
+	left2 := Difference([]int{1, 2, 3, 4, 5}, []int{0, 6})
 	is.Equal(left2, []int{1, 2, 3, 4, 5})
-	is.Equal(right2, []int{0, 6})
 
-	left3, right3 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+	left3 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 	is.Equal(left3, []int{})
-	is.Equal(right3, []int{})
+}
+
+func TestDifferenceBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	left1 := DifferenceBy([]float64{3.1, 2.2, 1.3}, []float64{4.4, 2.5}, func(i float64) float64 {
+		return math.Floor(i)
+	})
+	is.Equal(left1, []float64{3.1, 1.3})
+
+	left2 := DifferenceBy([]map[string]int{{"x": 2}, {"x": 1}}, []map[string]int{{"x": 1}}, func(i map[string]int) int {
+		return i["x"]
+	})
+	is.Equal(left2, []map[string]int{{"x": 2}})
 }
 
 func TestUnion(t *testing.T) {

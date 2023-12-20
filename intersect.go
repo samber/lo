@@ -109,18 +109,11 @@ func Intersect[T comparable](list1 []T, list2 []T) []T {
 }
 
 // Difference returns the difference between two collections.
-// The first value is the collection of element absent of list2.
-// The second value is the collection of element absent of list1.
-func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
-	left := []T{}
-	right := []T{}
+// the collection of element absent of list2.
+func Difference[T comparable](list1 []T, list2 []T) []T {
+	left := make([]T, 0)
 
-	seenLeft := map[T]struct{}{}
 	seenRight := map[T]struct{}{}
-
-	for _, elem := range list1 {
-		seenLeft[elem] = struct{}{}
-	}
 
 	for _, elem := range list2 {
 		seenRight[elem] = struct{}{}
@@ -132,13 +125,29 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 		}
 	}
 
+	return left
+}
+
+// DifferenceBy
+// This method is like _.difference except that it accepts iteratee which is invoked for each element of
+// collection and values to generate the criterion by which they're compared. The order and references of
+// result values are determined by the first collection.
+func DifferenceBy[T any, U comparable](list1 []T, list2 []T, iteratee func(item T) U) []T {
+	left := make([]T, 0)
+
+	seenRight := map[U]struct{}{}
+
 	for _, elem := range list2 {
-		if _, ok := seenLeft[elem]; !ok {
-			right = append(right, elem)
+		seenRight[iteratee(elem)] = struct{}{}
+	}
+
+	for _, elem := range list1 {
+		if _, ok := seenRight[iteratee(elem)]; !ok {
+			left = append(left, elem)
 		}
 	}
 
-	return left, right
+	return left
 }
 
 // Union returns all distinct elements from given collections.
