@@ -218,6 +218,7 @@ Type manipulation helpers:
 
 - [IsNil](#IsNil)
 - [ToPtr](#toptr)
+- [Nil](#nil)
 - [EmptyableToPtr](#emptyabletoptr)
 - [FromPtr](#fromptr)
 - [FromPtrOr](#fromptror)
@@ -2187,6 +2188,15 @@ Returns a pointer copy of the value.
 ```go
 ptr := lo.ToPtr("hello world")
 // *string{"hello world"}
+```
+
+### Nil
+
+Returns a nil pointer of type.
+
+```go
+ptr := lo.Nil[float64]()
+// nil
 ```
 
 ### EmptyableToPtr
