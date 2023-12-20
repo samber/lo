@@ -136,6 +136,7 @@ Supported helpers for maps:
 - [MapValues](#mapvalues)
 - [MapEntries](#mapentries)
 - [MapToSlice](#maptoslice)
+- [MergeMaps](#mergemaps)
 
 Supported math helpers:
 
@@ -1155,6 +1156,29 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 ```
 
 [[play](https://go.dev/play/p/ZuiCZpDt6LD)]
+
+### MergeMaps
+
+Transforms a map into a slice based on specific iteratee.
+
+```go
+left := map[string]float64{
+    "a": 1,
+    "b": 2.1,
+}
+
+right := map[string]int{
+    "b": 1,
+    "c": 3,
+}
+
+s := lo.MergeMaps(func(_ string, existing float64, new int) float64 {
+    return existing + float64(new)
+}, func(_ string, new int) float64 {
+    return float64(new)
+}, left, right)
+// map[string]float64{"a": 1, "b": 3.1, "c": 3}
+```
 
 ### Range / RangeFrom / RangeWithSteps
 
