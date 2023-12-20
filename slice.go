@@ -592,3 +592,18 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+// Concat returns a new slice containing all the elements in `collection` plus items
+func Concat[T any](collection []T, items ...T) []T {
+	result := make([]T, len(collection)+len(items))
+
+	for i := 0; i < len(collection); i++ {
+		result[i] = collection[i]
+	}
+
+	for i := 0; i < len(items); i++ {
+		result[len(collection)+i] = items[i]
+	}
+
+	return result
+}
