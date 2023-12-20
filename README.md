@@ -116,6 +116,8 @@ Supported helpers for slices:
 - [Compact](#compact)
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
+- [Insert](#insert)
+- [InsertSlice](#insertslice)
 
 Supported helpers for maps:
 
@@ -923,6 +925,28 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 ```
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
+
+### Insert
+
+Inserts an element at index i.
+
+```go
+result := lo.Insert(["a", "c", "d"], 1, "b")
+// []string{"a", "b", "c", "d"}
+```
+
+[[play](https://go.dev/play/p/Eu3pk6_ODVQ)]
+
+### InsertSlice
+
+Inserts multiple elements at index i.
+
+```go
+result := lo.InsertSlice([]string{"a", "d"}, 1, []string{"b", "c"})
+// []string{"a", "b", "c", "d"}
+```
+
+[[play](https://go.dev/play/p/8gXdkTovsIC)]
 
 ### Keys
 
