@@ -116,6 +116,8 @@ Supported helpers for slices:
 - [Compact](#compact)
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
+- [RotateLeft](#rotateleft)
+- [RotateRight](#rotateright)
 
 Supported helpers for maps:
 
@@ -143,6 +145,7 @@ Supported math helpers:
 - [Clamp](#clamp)
 - [Sum](#sum)
 - [SumBy](#sumby)
+- [GCD](#gcd)
 
 Supported helpers for strings:
 
@@ -924,6 +927,28 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
 
+### RotateLeft
+
+Rotates a slice from left.
+
+```go
+slice := lo.RotateLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, 2)
+// []string{"c", "d", "e", "f", "g", "a", "b"}
+```
+
+[[play](https://go.dev/play/p/EXL5uu4yv6y)]
+
+### RotateRight
+
+Rotates a slice from right.
+
+```go
+slice := lo.RotateRight([]string{"a", "b", "c", "d", "e", "f", "g"}, 2)
+// []string{"f", "g", "a", "b", "c", "d", "e"}
+```
+
+[[play](https://go.dev/play/p/fghPh9dbM4y)]
+
 ### Keys
 
 Creates an array of the map keys.
@@ -1234,6 +1259,21 @@ sum := lo.SumBy(strings, func(item string) int {
 ```
 
 [[play](https://go.dev/play/p/Dz_a_7jN_ca)]
+
+### GCD
+
+Find the greatest common divisor(GCD).
+
+if a or b is less than zero, 0 is returned.
+
+If a or b is empty the non-zero argument is returned.
+
+```go
+gcd := lo.GCD(14, 21)
+// 7
+```
+
+[[play](https://go.dev/play/p/eNeuLCdooOg)]
 
 ### RandomString
 

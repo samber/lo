@@ -82,3 +82,18 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 	}
 	return sum
 }
+
+// GCD calculates GCD iteratively using remainder.
+// if a or b is less than zero, 0 is returned.
+// If a or b is empty the non-zero argument is returned.
+// Play: https://go.dev/play/p/eNeuLCdooOg
+func GCD[T constraints.Integer](a, b T) T {
+	if a < 0 || b < 0 {
+		return 0
+	}
+	for b != 0 {
+		a, b = b, a%b
+	}
+
+	return a
+}

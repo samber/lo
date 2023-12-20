@@ -66,3 +66,8 @@ func ExampleSumBy() {
 	fmt.Printf("%v", result)
 	// Output: 6
 }
+
+func ExampleGCD() {
+	fmt.Printf("%v", GCD(6, 21))
+	// Output: 3
+}
