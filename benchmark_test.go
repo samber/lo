@@ -60,3 +60,21 @@ func BenchmarkMap(b *testing.B) {
 		}
 	})
 }
+
+func BenchmarkEmptyableToPtr(b *testing.B) {
+	b.Run("lo.EmptyableToPtr", func(b *testing.B) {
+		b.ReportAllocs()
+		for n := 0; n < b.N; n++ {
+			_ = EmptyableToPtr("foobar")
+		}
+	})
+
+	b.Run("if", func(b *testing.B) {
+		val := "foobar"
+		for n := 0; n < b.N; n++ {
+			if val != "" {
+				_ = &val
+			}
+		}
+	})
+}
