@@ -265,6 +265,47 @@ func MinBy[T any](collection []T, comparison func(a T, b T) bool) T {
 	return min
 }
 
+// MinValue searches the minimum value of a map.
+// Returns empty Entry when map is empty.
+func MinValue[K comparable, V constraints.Ordered](m map[K]V) Entry[K, V] {
+	var min Entry[K, V]
+
+	if k, err := AnyKey(m); err != nil {
+		return Entry[K, V]{}
+	} else {
+		min.Key, min.Value = k, m[k]
+	}
+
+	for k, v := range m {
+		if v < min.Value {
+			min.Key, min.Value = k, v
+		}
+	}
+
+	return min
+}
+
+// MinValueBy search the minimum value of a map using the given comparison function.
+// If several values of the map are equal to the greatest value, returns the any such value.
+// Returns empty Entry when map is empty.
+func MinValueBy[K comparable, V any](m map[K]V, comparison func(a V, b V) bool) Entry[K, V] {
+	var min Entry[K, V]
+
+	if k, err := AnyKey(m); err != nil {
+		return Entry[K, V]{}
+	} else {
+		min.Key, min.Value = k, m[k]
+	}
+
+	for k, v := range m {
+		if comparison(v, min.Value) {
+			min.Key, min.Value = k, v
+		}
+	}
+
+	return min
+}
+
 // Max searches the maximum value of a collection.
 // Returns zero value when collection is empty.
 func Max[T constraints.Ordered](collection []T) T {
@@ -308,6 +349,56 @@ func MaxBy[T any](collection []T, comparison func(a T, b T) bool) T {
 	}
 
 	return max
+}
+
+// MaxValue searches the maximum value of a map.
+// Returns empty Entry when map is empty.
+func MaxValue[K comparable, V constraints.Ordered](m map[K]V) Entry[K, V] {
+	var max Entry[K, V]
+
+	if k, err := AnyKey(m); err != nil {
+		return Entry[K, V]{}
+	} else {
+		max.Key, max.Value = k, m[k]
+	}
+
+	for k, v := range m {
+		if v > max.Value {
+			max.Key, max.Value = k, v
+		}
+	}
+
+	return max
+}
+
+// MaxValueBy search the maximum value of a map using the given comparison function.
+// If several values of the map are equal to the greatest value, returns the any such value.
+// Returns empty Entry when map is empty.
+func MaxValueBy[K comparable, V any](m map[K]V, comparison func(a V, b V) bool) Entry[K, V] {
+	var max Entry[K, V]
+
+	if k, err := AnyKey(m); err != nil {
+		return Entry[K, V]{}
+	} else {
+		max.Key, max.Value = k, m[k]
+	}
+
+	for k, v := range m {
+		if comparison(v, max.Value) {
+			max.Key, max.Value = k, v
+		}
+	}
+
+	return max
+}
+
+// AnyKey returns the first key on a range of a map or error if empty.
+func AnyKey[K comparable, V any](m map[K]V) (K, error) {
+	for key := range m {
+		return key, nil
+	}
+	var result K
+	return result, fmt.Errorf("AnyKey: cannot extract the first key of an empty map")
 }
 
 // Last returns the last element of a collection or error if empty.
