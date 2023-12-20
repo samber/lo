@@ -5,7 +5,7 @@ on:
     inputs:
       semver:
         type: string
-        description: Semver
+        description: 'Semver (eg: v1.2.3)'
         required: true
 
 jobs:
@@ -45,7 +45,7 @@ jobs:
           git config --global user.email "${{ github.triggering_actor}}@users.noreply.github.com"
 
           git add .
-          git commit -m 'bump ${{ inputs.semver }}'
+          git commit --allow-empty -m 'bump ${{ inputs.semver }}'
           git tag ${{ inputs.semver }}
           git push origin ${{ inputs.semver }}
 
