@@ -168,6 +168,44 @@ func TestUniqBy(t *testing.T) {
 	is.Equal(result1, []int{0, 1, 2})
 }
 
+func TestUniqItemBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type student struct {
+		Id   int
+		Name string
+	}
+
+	students := []student{
+		{
+			Id:   1,
+			Name: "student1",
+		},
+		{
+			Id:   2,
+			Name: "student2",
+		},
+		{
+			Id:   1,
+			Name: "student1",
+		},
+	}
+
+	iteratee := func(s student) int {
+		return s.Id
+	}
+
+	extract := func(s student) string {
+		return s.Name
+	}
+
+	result := UniqItemBy(students, iteratee, extract)
+
+	is.Equal(len(result), 2)
+	is.Equal(result, []string{"student1", "student2"})
+}
+
 func TestGroupBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -388,7 +426,7 @@ func TestAssociate(t *testing.T) {
 
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
-	
+
 	type foo struct {
 		baz string
 		bar int
@@ -626,7 +664,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
-	
+
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
