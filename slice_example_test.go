@@ -456,3 +456,17 @@ func ExampleIsSortedByKey() {
 
 	// Output: true
 }
+
+func ExampleToIteratee() {
+	list := []float64{1, -2, 3, -4, math.NaN()}
+
+	result := Map(list, ToIteratee(math.Abs))
+	fmt.Printf("%v", result)
+
+	result = Filter(list, ToIteratee(math.IsNaN))
+	fmt.Printf("\n%v", result)
+
+	// Output:
+	// [1 2 3 4 NaN]
+	// [NaN]
+}

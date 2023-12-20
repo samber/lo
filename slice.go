@@ -592,3 +592,12 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+// ToIteratee takes a unary function and returns a function with the same behavior but accepting an int as the second parameter.
+// This allows one to pass unary functions (e.g. strings.ToUpper) to slice operators which expect a func(T, int)
+// without having to wrap them explicitly
+func ToIteratee[V, R any](f func(V) R) func(V, int) R {
+	return func(v V, _ int) R {
+		return f(v)
+	}
+}
