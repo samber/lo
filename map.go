@@ -1,5 +1,13 @@
 package lo
 
+// KeyExists returns wheter the given key exists.
+func KeyExists[K comparable, V any](in map[K]V, key K) bool {
+	if _, ok := in[key]; ok {
+		return true
+	}
+	return false
+}
+
 // Keys creates an array of the map keys.
 // Play: https://go.dev/play/p/Uu11fHASqrU
 func Keys[K comparable, V any](in map[K]V) []K {
