@@ -110,6 +110,10 @@ func Times[T any](count int, iteratee func(index int) T) []T {
 // The order of result values is determined by the order they occur in the array.
 // Play: https://go.dev/play/p/DTzbeXZ6iEN
 func Uniq[T comparable](collection []T) []T {
+	if collection == nil {
+		return nil
+	}
+
 	result := make([]T, 0, len(collection))
 	seen := make(map[T]struct{}, len(collection))
 
