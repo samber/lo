@@ -1,4 +1,4 @@
-package lo
+package lo_test
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,24 +16,24 @@ func TestAttempt(t *testing.T) {
 
 	err := fmt.Errorf("failed")
 
-	iter1, err1 := Attempt(42, func(i int) error {
+	iter1, err1 := lo.Attempt(42, func(i int) error {
 		return nil
 	})
-	iter2, err2 := Attempt(42, func(i int) error {
+	iter2, err2 := lo.Attempt(42, func(i int) error {
 		if i == 5 {
 			return nil
 		}
 
 		return err
 	})
-	iter3, err3 := Attempt(2, func(i int) error {
+	iter3, err3 := lo.Attempt(2, func(i int) error {
 		if i == 5 {
 			return nil
 		}
 
 		return err
 	})
-	iter4, err4 := Attempt(0, func(i int) error {
+	iter4, err4 := lo.Attempt(0, func(i int) error {
 		if i < 42 {
 			return err
 		}
@@ -56,24 +57,24 @@ func TestAttemptWithDelay(t *testing.T) {
 
 	err := fmt.Errorf("failed")
 
-	iter1, dur1, err1 := AttemptWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) error {
+	iter1, dur1, err1 := lo.AttemptWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) error {
 		return nil
 	})
-	iter2, dur2, err2 := AttemptWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) error {
+	iter2, dur2, err2 := lo.AttemptWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) error {
 		if i == 5 {
 			return nil
 		}
 
 		return err
 	})
-	iter3, dur3, err3 := AttemptWithDelay(2, 10*time.Millisecond, func(i int, d time.Duration) error {
+	iter3, dur3, err3 := lo.AttemptWithDelay(2, 10*time.Millisecond, func(i int, d time.Duration) error {
 		if i == 5 {
 			return nil
 		}
 
 		return err
 	})
-	iter4, dur4, err4 := AttemptWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) error {
+	iter4, dur4, err4 := lo.AttemptWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) error {
 		if i < 10 {
 			return err
 		}
@@ -104,14 +105,14 @@ func TestAttemptWhile(t *testing.T) {
 
 	err := fmt.Errorf("failed")
 
-	iter1, err1 := AttemptWhile(42, func(i int) (error, bool) {
+	iter1, err1 := lo.AttemptWhile(42, func(i int) (error, bool) {
 		return nil, true
 	})
 
 	is.Equal(iter1, 1)
 	is.Nil(err1)
 
-	iter2, err2 := AttemptWhile(42, func(i int) (error, bool) {
+	iter2, err2 := lo.AttemptWhile(42, func(i int) (error, bool) {
 		if i == 5 {
 			return nil, true
 		}
@@ -122,7 +123,7 @@ func TestAttemptWhile(t *testing.T) {
 	is.Equal(iter2, 6)
 	is.Nil(err2)
 
-	iter3, err3 := AttemptWhile(2, func(i int) (error, bool) {
+	iter3, err3 := lo.AttemptWhile(2, func(i int) (error, bool) {
 		if i == 5 {
 			return nil, true
 		}
@@ -133,7 +134,7 @@ func TestAttemptWhile(t *testing.T) {
 	is.Equal(iter3, 2)
 	is.Equal(err3, err)
 
-	iter4, err4 := AttemptWhile(0, func(i int) (error, bool) {
+	iter4, err4 := lo.AttemptWhile(0, func(i int) (error, bool) {
 		if i < 42 {
 			return err, true
 		}
@@ -144,7 +145,7 @@ func TestAttemptWhile(t *testing.T) {
 	is.Equal(iter4, 43)
 	is.Nil(err4)
 
-	iter5, err5 := AttemptWhile(0, func(i int) (error, bool) {
+	iter5, err5 := lo.AttemptWhile(0, func(i int) (error, bool) {
 		if i == 5 {
 			return nil, false
 		}
@@ -155,14 +156,14 @@ func TestAttemptWhile(t *testing.T) {
 	is.Equal(iter5, 6)
 	is.Nil(err5)
 
-	iter6, err6 := AttemptWhile(0, func(i int) (error, bool) {
+	iter6, err6 := lo.AttemptWhile(0, func(i int) (error, bool) {
 		return nil, false
 	})
 
 	is.Equal(iter6, 1)
 	is.Nil(err6)
 
-	iter7, err7 := AttemptWhile(42, func(i int) (error, bool) {
+	iter7, err7 := lo.AttemptWhile(42, func(i int) (error, bool) {
 		if i == 42 {
 			return nil, false
 		}
@@ -182,7 +183,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 
 	err := fmt.Errorf("failed")
 
-	iter1, dur1, err1 := AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
+	iter1, dur1, err1 := lo.AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		return nil, true
 	})
 
@@ -191,7 +192,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	is.Less(dur1, 1*time.Millisecond)
 	is.Nil(err1)
 
-	iter2, dur2, err2 := AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
+	iter2, dur2, err2 := lo.AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		if i == 5 {
 			return nil, true
 		}
@@ -204,7 +205,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	is.Less(dur2, 60*time.Millisecond)
 	is.Nil(err2)
 
-	iter3, dur3, err3 := AttemptWhileWithDelay(2, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
+	iter3, dur3, err3 := lo.AttemptWhileWithDelay(2, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		if i == 5 {
 			return nil, true
 		}
@@ -217,7 +218,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	is.Less(dur3, 20*time.Millisecond)
 	is.Equal(err3, err)
 
-	iter4, dur4, err4 := AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
+	iter4, dur4, err4 := lo.AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		if i < 10 {
 			return err, true
 		}
@@ -230,7 +231,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	is.Less(dur4, 115*time.Millisecond)
 	is.Nil(err4)
 
-	iter5, dur5, err5 := AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
+	iter5, dur5, err5 := lo.AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		if i == 5 {
 			return nil, false
 		}
@@ -243,7 +244,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	is.Less(dur5, 115*time.Millisecond)
 	is.Nil(err5)
 
-	iter6, dur6, err6 := AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
+	iter6, dur6, err6 := lo.AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		return nil, false
 	})
 
@@ -252,7 +253,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	is.Less(dur6, 115*time.Millisecond)
 	is.Nil(err6)
 
-	iter7, dur7, err7 := AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
+	iter7, dur7, err7 := lo.AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		if i == 42 {
 			return nil, false
 		}
@@ -281,7 +282,7 @@ func TestDebounce(t *testing.T) {
 		println("3. Called once after 10ms when func stopped invoking!")
 	}
 
-	d1, _ := NewDebounce(10*time.Millisecond, f1)
+	d1, _ := lo.NewDebounce(10*time.Millisecond, f1)
 
 	// execute 3 times
 	for i := 0; i < 3; i++ {
@@ -291,7 +292,7 @@ func TestDebounce(t *testing.T) {
 		time.Sleep(20 * time.Millisecond)
 	}
 
-	d2, _ := NewDebounce(10*time.Millisecond, f2)
+	d2, _ := lo.NewDebounce(10*time.Millisecond, f2)
 
 	// execute once because it is always invoked and only last invoke is worked after 100ms
 	for i := 0; i < 3; i++ {
@@ -304,7 +305,7 @@ func TestDebounce(t *testing.T) {
 	time.Sleep(10 * time.Millisecond)
 
 	// execute once because it is canceled after 200ms.
-	d3, cancel := NewDebounce(10*time.Millisecond, f3)
+	d3, cancel := lo.NewDebounce(10*time.Millisecond, f3)
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 10; j++ {
 			d3()
@@ -342,7 +343,7 @@ func TestDebounceBy(t *testing.T) {
 		// fmt.Printf("[key=%d] 3. Called once after 10ms when func stopped invoking!\n", key)
 	}
 
-	d1, _ := NewDebounceBy(10*time.Millisecond, f1)
+	d1, _ := lo.NewDebounceBy(10*time.Millisecond, f1)
 
 	// execute 3 times
 	for i := 0; i < 3; i++ {
@@ -360,7 +361,7 @@ func TestDebounceBy(t *testing.T) {
 	is.EqualValues(output[2], 30)
 	mu.Unlock()
 
-	d2, _ := NewDebounceBy(10*time.Millisecond, f2)
+	d2, _ := lo.NewDebounceBy(10*time.Millisecond, f2)
 
 	// execute once because it is always invoked and only last invoke is worked after 100ms
 	for i := 0; i < 3; i++ {
@@ -381,7 +382,7 @@ func TestDebounceBy(t *testing.T) {
 	mu.Unlock()
 
 	// execute once because it is canceled after 200ms.
-	d3, cancel := NewDebounceBy(10*time.Millisecond, f3)
+	d3, cancel := lo.NewDebounceBy(10*time.Millisecond, f3)
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 10; j++ {
 			for k := 0; k < 3; k++ {
@@ -409,7 +410,7 @@ func TestTransaction(t *testing.T) {
 
 	// no error
 	{
-		transaction := NewTransaction[int]().
+		transaction := lo.NewTransaction[int]().
 			Then(
 				func(state int) (int, error) {
 					return state + 100, nil
@@ -434,7 +435,7 @@ func TestTransaction(t *testing.T) {
 
 	// with error
 	{
-		transaction := NewTransaction[int]().
+		transaction := lo.NewTransaction[int]().
 			Then(
 				func(state int) (int, error) {
 					return state + 100, nil
@@ -467,7 +468,7 @@ func TestTransaction(t *testing.T) {
 
 	// with error + update value
 	{
-		transaction := NewTransaction[int]().
+		transaction := lo.NewTransaction[int]().
 			Then(
 				func(state int) (int, error) {
 					return state + 100, nil

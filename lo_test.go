@@ -1,4 +1,4 @@
-package lo
+package lo_test
 
 import (
 	"os"

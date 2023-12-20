@@ -1,4 +1,4 @@
-package lo
+package lo_test
 
 import (
 	"math/rand"
@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/samber/lo"
 	lop "github.com/samber/lo/parallel"
 	"github.com/thoas/go-funk"
 )
@@ -27,7 +28,7 @@ func BenchmarkMap(b *testing.B) {
 
 	b.Run("lo.Map", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			_ = Map(arr, func(x int64, i int) string {
+			_ = lo.Map(arr, func(x int64, i int) string {
 				return strconv.FormatInt(x, 10)
 			})
 		}

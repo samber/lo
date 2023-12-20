@@ -1,15 +1,17 @@
-package lo
+package lo_test
 
 import (
 	"fmt"
 	"math"
 	"strconv"
+
+	"github.com/samber/lo"
 )
 
 func ExampleFilter() {
 	list := []int64{1, 2, 3, 4}
 
-	result := Filter(list, func(nbr int64, index int) bool {
+	result := lo.Filter(list, func(nbr int64, index int) bool {
 		return nbr%2 == 0
 	})
 
@@ -20,7 +22,7 @@ func ExampleFilter() {
 func ExampleMap() {
 	list := []int64{1, 2, 3, 4}
 
-	result := Map(list, func(nbr int64, index int) string {
+	result := lo.Map(list, func(nbr int64, index int) string {
 		return strconv.FormatInt(nbr*2, 10)
 	})
 
@@ -31,7 +33,7 @@ func ExampleMap() {
 func ExampleFilterMap() {
 	list := []int64{1, 2, 3, 4}
 
-	result := FilterMap(list, func(nbr int64, index int) (string, bool) {
+	result := lo.FilterMap(list, func(nbr int64, index int) (string, bool) {
 		return strconv.FormatInt(nbr*2, 10), nbr%2 == 0
 	})
 
@@ -42,7 +44,7 @@ func ExampleFilterMap() {
 func ExampleFlatMap() {
 	list := []int64{1, 2, 3, 4}
 
-	result := FlatMap(list, func(nbr int64, index int) []string {
+	result := lo.FlatMap(list, func(nbr int64, index int) []string {
 		return []string{
 			strconv.FormatInt(nbr, 10), // base 10
 			strconv.FormatInt(nbr, 2),  // base 2
@@ -56,7 +58,7 @@ func ExampleFlatMap() {
 func ExampleReduce() {
 	list := []int64{1, 2, 3, 4}
 
-	result := Reduce(list, func(agg int64, item int64, index int) int64 {
+	result := lo.Reduce(list, func(agg int64, item int64, index int) int64 {
 		return agg + item
 	}, 0)
 
@@ -67,7 +69,7 @@ func ExampleReduce() {
 func ExampleReduceRight() {
 	list := [][]int{{0, 1}, {2, 3}, {4, 5}}
 
-	result := ReduceRight(list, func(agg []int, item []int, index int) []int {
+	result := lo.ReduceRight(list, func(agg []int, item []int, index int) []int {
 		return append(agg, item...)
 	}, []int{})
 
@@ -78,7 +80,7 @@ func ExampleReduceRight() {
 func ExampleForEach() {
 	list := []int64{1, 2, 3, 4}
 
-	ForEach(list, func(x int64, _ int) {
+	lo.ForEach(list, func(x int64, _ int) {
 		fmt.Println(x)
 	})
 
@@ -90,7 +92,7 @@ func ExampleForEach() {
 }
 
 func ExampleTimes() {
-	result := Times(3, func(i int) string {
+	result := lo.Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)
 	})
 
@@ -101,7 +103,7 @@ func ExampleTimes() {
 func ExampleUniq() {
 	list := []int{1, 2, 2, 1}
 
-	result := Uniq(list)
+	result := lo.Uniq(list)
 
 	fmt.Printf("%v", result)
 	// Output: [1 2]
@@ -110,7 +112,7 @@ func ExampleUniq() {
 func ExampleUniqBy() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := UniqBy(list, func(i int) int {
+	result := lo.UniqBy(list, func(i int) int {
 		return i % 3
 	})
 
@@ -121,7 +123,7 @@ func ExampleUniqBy() {
 func ExampleGroupBy() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := GroupBy(list, func(i int) int {
+	result := lo.GroupBy(list, func(i int) int {
 		return i % 3
 	})
 
@@ -137,7 +139,7 @@ func ExampleGroupBy() {
 func ExampleChunk() {
 	list := []int{0, 1, 2, 3, 4}
 
-	result := Chunk(list, 2)
+	result := lo.Chunk(list, 2)
 
 	for _, item := range result {
 		fmt.Printf("%v\n", item)
@@ -151,7 +153,7 @@ func ExampleChunk() {
 func ExamplePartitionBy() {
 	list := []int{-2, -1, 0, 1, 2, 3, 4}
 
-	result := PartitionBy(list, func(x int) string {
+	result := lo.PartitionBy(list, func(x int) string {
 		if x < 0 {
 			return "negative"
 		} else if x%2 == 0 {
@@ -172,7 +174,7 @@ func ExamplePartitionBy() {
 func ExampleFlatten() {
 	list := [][]int{{0, 1, 2}, {3, 4, 5}}
 
-	result := Flatten(list)
+	result := lo.Flatten(list)
 
 	fmt.Printf("%v", result)
 	// Output: [0 1 2 3 4 5]
@@ -182,8 +184,8 @@ func ExampleInterleave() {
 	list1 := [][]int{{1, 4, 7}, {2, 5, 8}, {3, 6, 9}}
 	list2 := [][]int{{1}, {2, 5, 8}, {3, 6}, {4, 7, 9, 10}}
 
-	result1 := Interleave(list1...)
-	result2 := Interleave(list2...)
+	result1 := lo.Interleave(list1...)
+	result2 := lo.Interleave(list2...)
 
 	fmt.Printf("%v\n", result1)
 	fmt.Printf("%v\n", result2)
@@ -195,7 +197,7 @@ func ExampleInterleave() {
 func ExampleShuffle() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := Shuffle(list)
+	result := lo.Shuffle(list)
 
 	fmt.Printf("%v", result)
 }
@@ -203,7 +205,7 @@ func ExampleShuffle() {
 func ExampleReverse() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := Reverse(list)
+	result := lo.Reverse(list)
 
 	fmt.Printf("%v", result)
 	// Output: [5 4 3 2 1 0]
@@ -212,21 +214,21 @@ func ExampleReverse() {
 func ExampleFill() {
 	list := []foo{{"a"}, {"a"}}
 
-	result := Fill(list, foo{"b"})
+	result := lo.Fill(list, foo{"b"})
 
 	fmt.Printf("%v", result)
 	// Output: [{b} {b}]
 }
 
 func ExampleRepeat() {
-	result := Repeat(2, foo{"a"})
+	result := lo.Repeat(2, foo{"a"})
 
 	fmt.Printf("%v", result)
 	// Output: [{a} {a}]
 }
 
 func ExampleRepeatBy() {
-	result := RepeatBy(5, func(i int) string {
+	result := lo.RepeatBy(5, func(i int) string {
 		return strconv.FormatInt(int64(math.Pow(float64(i), 2)), 10)
 	})
 
@@ -237,7 +239,7 @@ func ExampleRepeatBy() {
 func ExampleKeyBy() {
 	list := []string{"a", "aa", "aaa"}
 
-	result := KeyBy(list, func(str string) int {
+	result := lo.KeyBy(list, func(str string) int {
 		return len(str)
 	})
 
@@ -248,7 +250,7 @@ func ExampleKeyBy() {
 func ExampleAssociate() {
 	list := []string{"a", "aa", "aaa"}
 
-	result := Associate(list, func(str string) (string, int) {
+	result := lo.Associate(list, func(str string) (string, int) {
 		return str, len(str)
 	})
 
@@ -259,7 +261,7 @@ func ExampleAssociate() {
 func ExampleDrop() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := Drop(list, 2)
+	result := lo.Drop(list, 2)
 
 	fmt.Printf("%v", result)
 	// Output: [2 3 4 5]
@@ -268,7 +270,7 @@ func ExampleDrop() {
 func ExampleDropRight() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := DropRight(list, 2)
+	result := lo.DropRight(list, 2)
 
 	fmt.Printf("%v", result)
 	// Output: [0 1 2 3]
@@ -277,7 +279,7 @@ func ExampleDropRight() {
 func ExampleDropWhile() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := DropWhile(list, func(val int) bool {
+	result := lo.DropWhile(list, func(val int) bool {
 		return val < 2
 	})
 
@@ -288,7 +290,7 @@ func ExampleDropWhile() {
 func ExampleDropRightWhile() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := DropRightWhile(list, func(val int) bool {
+	result := lo.DropRightWhile(list, func(val int) bool {
 		return val > 2
 	})
 
@@ -299,7 +301,7 @@ func ExampleDropRightWhile() {
 func ExampleReject() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := Reject(list, func(x int, _ int) bool {
+	result := lo.Reject(list, func(x int, _ int) bool {
 		return x%2 == 0
 	})
 
@@ -310,7 +312,7 @@ func ExampleReject() {
 func ExampleCount() {
 	list := []int{0, 1, 2, 3, 4, 5, 0, 1, 2, 3}
 
-	result := Count(list, 2)
+	result := lo.Count(list, 2)
 
 	fmt.Printf("%v", result)
 	// Output: 2
@@ -319,7 +321,7 @@ func ExampleCount() {
 func ExampleCountBy() {
 	list := []int{0, 1, 2, 3, 4, 5, 0, 1, 2, 3}
 
-	result := CountBy(list, func(i int) bool {
+	result := lo.CountBy(list, func(i int) bool {
 		return i < 4
 	})
 
@@ -328,11 +330,11 @@ func ExampleCountBy() {
 }
 
 func ExampleCountValues() {
-	result1 := CountValues([]int{})
-	result2 := CountValues([]int{1, 2})
-	result3 := CountValues([]int{1, 2, 2})
-	result4 := CountValues([]string{"foo", "bar", ""})
-	result5 := CountValues([]string{"foo", "bar", "bar"})
+	result1 := lo.CountValues([]int{})
+	result2 := lo.CountValues([]int{1, 2})
+	result3 := lo.CountValues([]int{1, 2, 2})
+	result4 := lo.CountValues([]string{"foo", "bar", ""})
+	result5 := lo.CountValues([]string{"foo", "bar", "bar"})
 
 	fmt.Printf("%v\n", result1)
 	fmt.Printf("%v\n", result2)
@@ -352,16 +354,16 @@ func ExampleCountValuesBy() {
 		return v%2 == 0
 	}
 
-	result1 := CountValuesBy([]int{}, isEven)
-	result2 := CountValuesBy([]int{1, 2}, isEven)
-	result3 := CountValuesBy([]int{1, 2, 2}, isEven)
+	result1 := lo.CountValuesBy([]int{}, isEven)
+	result2 := lo.CountValuesBy([]int{1, 2}, isEven)
+	result3 := lo.CountValuesBy([]int{1, 2, 2}, isEven)
 
 	length := func(v string) int {
 		return len(v)
 	}
 
-	result4 := CountValuesBy([]string{"foo", "bar", ""}, length)
-	result5 := CountValuesBy([]string{"foo", "bar", "bar"}, length)
+	result4 := lo.CountValuesBy([]string{"foo", "bar", ""}, length)
+	result5 := lo.CountValuesBy([]string{"foo", "bar", "bar"}, length)
 
 	fmt.Printf("%v\n", result1)
 	fmt.Printf("%v\n", result2)
@@ -379,7 +381,7 @@ func ExampleCountValuesBy() {
 func ExampleSubset() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := Subset(list, 2, 3)
+	result := lo.Subset(list, 2, 3)
 
 	fmt.Printf("%v", result)
 	// Output: [2 3 4]
@@ -388,13 +390,13 @@ func ExampleSubset() {
 func ExampleSlice() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := Slice(list, 1, 4)
+	result := lo.Slice(list, 1, 4)
 	fmt.Printf("%v\n", result)
 
-	result = Slice(list, 4, 1)
+	result = lo.Slice(list, 4, 1)
 	fmt.Printf("%v\n", result)
 
-	result = Slice(list, 4, 5)
+	result = lo.Slice(list, 4, 5)
 	fmt.Printf("%v\n", result)
 
 	// Output:
@@ -406,16 +408,16 @@ func ExampleSlice() {
 func ExampleReplace() {
 	list := []int{0, 1, 0, 1, 2, 3, 0}
 
-	result := Replace(list, 0, 42, 1)
+	result := lo.Replace(list, 0, 42, 1)
 	fmt.Printf("%v\n", result)
 
-	result = Replace(list, -1, 42, 1)
+	result = lo.Replace(list, -1, 42, 1)
 	fmt.Printf("%v\n", result)
 
-	result = Replace(list, 0, 42, 2)
+	result = lo.Replace(list, 0, 42, 2)
 	fmt.Printf("%v\n", result)
 
-	result = Replace(list, 0, 42, -1)
+	result = lo.Replace(list, 0, 42, -1)
 	fmt.Printf("%v\n", result)
 
 	// Output:
@@ -428,7 +430,7 @@ func ExampleReplace() {
 func ExampleReplaceAll() {
 	list := []string{"", "foo", "", "bar", ""}
 
-	result := Compact(list)
+	result := lo.Compact(list)
 
 	fmt.Printf("%v", result)
 
@@ -438,7 +440,7 @@ func ExampleReplaceAll() {
 func ExampleIsSorted() {
 	list := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 
-	result := IsSorted(list)
+	result := lo.IsSorted(list)
 
 	fmt.Printf("%v", result)
 
@@ -448,7 +450,7 @@ func ExampleIsSorted() {
 func ExampleIsSortedByKey() {
 	list := []string{"a", "bb", "ccc"}
 
-	result := IsSortedByKey(list, func(s string) int {
+	result := lo.IsSortedByKey(list, func(s string) int {
 		return len(s)
 	})
 

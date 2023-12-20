@@ -1,10 +1,11 @@
-package lo
+package lo_test
 
 import (
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,7 +21,7 @@ func TestSynchronize(t *testing.T) {
 		wg := sync.WaitGroup{}
 		wg.Add(10)
 
-		s := Synchronize()
+		s := lo.Synchronize()
 
 		for i := 0; i < 10; i++ {
 			go s.Do(func() {
@@ -40,14 +41,14 @@ func TestSynchronize(t *testing.T) {
 	// check locker is locked
 	{
 		mu := &sync.Mutex{}
-		s := Synchronize(mu)
+		s := lo.Synchronize(mu)
 
 		s.Do(func() {
 			is.False(mu.TryLock())
 		})
 		is.True(mu.TryLock())
 
-		Try0(func() {
+		lo.Try0(func() {
 			mu.Unlock()
 		})
 	}
@@ -56,7 +57,7 @@ func TestSynchronize(t *testing.T) {
 	{
 		is.PanicsWithValue("unexpected arguments", func() {
 			mu := &sync.Mutex{}
-			Synchronize(mu, mu, mu)
+			lo.Synchronize(mu, mu, mu)
 		})
 	}
 }
@@ -68,7 +69,7 @@ func TestAsync(t *testing.T) {
 
 	sync := make(chan struct{})
 
-	ch := Async(func() int {
+	ch := lo.Async(func() int {
 		<-sync
 		return 10
 	})
@@ -91,7 +92,7 @@ func TestAsyncX(t *testing.T) {
 	{
 		sync := make(chan struct{})
 
-		ch := Async0(func() {
+		ch := lo.Async0(func() {
 			<-sync
 		})
 
@@ -107,7 +108,7 @@ func TestAsyncX(t *testing.T) {
 	{
 		sync := make(chan struct{})
 
-		ch := Async1(func() int {
+		ch := lo.Async1(func() int {
 			<-sync
 			return 10
 		})
@@ -125,7 +126,7 @@ func TestAsyncX(t *testing.T) {
 	{
 		sync := make(chan struct{})
 
-		ch := Async2(func() (int, string) {
+		ch := lo.Async2(func() (int, string) {
 			<-sync
 			return 10, "Hello"
 		})
@@ -134,7 +135,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, Tuple2[int, string]{10, "Hello"})
+			is.Equal(result, lo.Tuple2[int, string]{10, "Hello"})
 		case <-time.After(time.Millisecond):
 			is.Fail("Async2 should not block")
 		}
@@ -143,7 +144,7 @@ func TestAsyncX(t *testing.T) {
 	{
 		sync := make(chan struct{})
 
-		ch := Async3(func() (int, string, bool) {
+		ch := lo.Async3(func() (int, string, bool) {
 			<-sync
 			return 10, "Hello", true
 		})
@@ -152,7 +153,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, Tuple3[int, string, bool]{10, "Hello", true})
+			is.Equal(result, lo.Tuple3[int, string, bool]{10, "Hello", true})
 		case <-time.After(time.Millisecond):
 			is.Fail("Async3 should not block")
 		}
@@ -161,7 +162,7 @@ func TestAsyncX(t *testing.T) {
 	{
 		sync := make(chan struct{})
 
-		ch := Async4(func() (int, string, bool, float64) {
+		ch := lo.Async4(func() (int, string, bool, float64) {
 			<-sync
 			return 10, "Hello", true, 3.14
 		})
@@ -170,7 +171,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, Tuple4[int, string, bool, float64]{10, "Hello", true, 3.14})
+			is.Equal(result, lo.Tuple4[int, string, bool, float64]{10, "Hello", true, 3.14})
 		case <-time.After(time.Millisecond):
 			is.Fail("Async4 should not block")
 		}
@@ -179,7 +180,7 @@ func TestAsyncX(t *testing.T) {
 	{
 		sync := make(chan struct{})
 
-		ch := Async5(func() (int, string, bool, float64, string) {
+		ch := lo.Async5(func() (int, string, bool, float64, string) {
 			<-sync
 			return 10, "Hello", true, 3.14, "World"
 		})
@@ -188,7 +189,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, Tuple5[int, string, bool, float64, string]{10, "Hello", true, 3.14, "World"})
+			is.Equal(result, lo.Tuple5[int, string, bool, float64, string]{10, "Hello", true, 3.14, "World"})
 		case <-time.After(time.Millisecond):
 			is.Fail("Async5 should not block")
 		}
@@ -197,7 +198,7 @@ func TestAsyncX(t *testing.T) {
 	{
 		sync := make(chan struct{})
 
-		ch := Async6(func() (int, string, bool, float64, string, int) {
+		ch := lo.Async6(func() (int, string, bool, float64, string, int) {
 			<-sync
 			return 10, "Hello", true, 3.14, "World", 100
 		})
@@ -206,7 +207,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, Tuple6[int, string, bool, float64, string, int]{10, "Hello", true, 3.14, "World", 100})
+			is.Equal(result, lo.Tuple6[int, string, bool, float64, string, int]{10, "Hello", true, 3.14, "World", 100})
 		case <-time.After(time.Millisecond):
 			is.Fail("Async6 should not block")
 		}

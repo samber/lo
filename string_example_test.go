@@ -1,16 +1,18 @@
-package lo
+package lo_test
 
 import (
 	"fmt"
 	"math"
+
+	"github.com/samber/lo"
 )
 
 func ExampleSubstring() {
-	result1 := Substring("hello", 2, 3)
-	result2 := Substring("hello", -4, 3)
-	result3 := Substring("hello", -2, math.MaxUint)
-	result4 := Substring("🏠🐶🐱", 0, 2)
-	result5 := Substring("你好，世界", 0, 3)
+	result1 := lo.Substring("hello", 2, 3)
+	result2 := lo.Substring("hello", -4, 3)
+	result3 := lo.Substring("hello", -2, math.MaxUint)
+	result4 := lo.Substring("🏠🐶🐱", 0, 2)
+	result5 := lo.Substring("你好，世界", 0, 3)
 
 	fmt.Printf("%v\n", result1)
 	fmt.Printf("%v\n", result2)
@@ -26,10 +28,10 @@ func ExampleSubstring() {
 }
 
 func ExampleChunkString() {
-	result1 := ChunkString("123456", 2)
-	result2 := ChunkString("1234567", 2)
-	result3 := ChunkString("", 2)
-	result4 := ChunkString("1", 2)
+	result1 := lo.ChunkString("123456", 2)
+	result2 := lo.ChunkString("1234567", 2)
+	result3 := lo.ChunkString("", 2)
+	result4 := lo.ChunkString("1", 2)
 
 	fmt.Printf("%v\n", result1)
 	fmt.Printf("%v\n", result2)
@@ -43,8 +45,8 @@ func ExampleChunkString() {
 }
 
 func ExampleRuneLength() {
-	result1, chars1 := RuneLength("hellô"), len("hellô")
-	result2, chars2 := RuneLength("🤘"), len("🤘")
+	result1, chars1 := lo.RuneLength("hellô"), len("hellô")
+	result2, chars2 := lo.RuneLength("🤘"), len("🤘")
 
 	fmt.Printf("%v %v\n", result1, chars1)
 	fmt.Printf("%v %v\n", result2, chars2)
