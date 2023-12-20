@@ -296,6 +296,15 @@ func ExampleDropRightWhile() {
 	// Output: [0 1 2]
 }
 
+func ExampleDropByIndex() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := DropByIndex(list, 2)
+
+	fmt.Printf("%v", result)
+	// Output: [0 1 3 4 5]
+}
+
 func ExampleReject() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
