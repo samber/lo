@@ -3,6 +3,7 @@ package lo
 import (
 	"math/rand"
 	"strings"
+	"time"
 	"unicode/utf8"
 )
 
@@ -18,6 +19,11 @@ var (
 
 // RandomString return a random string.
 // Play: https://go.dev/play/p/rRseOQVVum4
+
+var (
+	globalRand = rand.New(rand.NewSource(time.Now().UnixNano()))
+)
+
 func RandomString(size int, charset []rune) string {
 	if size <= 0 {
 		panic("lo.RandomString: Size parameter must be greater than 0")
@@ -29,7 +35,7 @@ func RandomString(size int, charset []rune) string {
 	b := make([]rune, size)
 	possibleCharactersCount := len(charset)
 	for i := range b {
-		b[i] = charset[rand.Intn(possibleCharactersCount)]
+		b[i] = charset[globalRand.Intn(possibleCharactersCount)]
 	}
 	return string(b)
 }
