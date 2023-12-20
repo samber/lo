@@ -50,6 +50,22 @@ func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R
 	return result
 }
 
+// FilterInPlace is a generic function that modifies the input slice in-place to contain only the elements
+// that satisfy the provided predicate function. The predicate function takes an element of the slice and its index,
+// and should return true for elements that should be kept and false for elements that should be removed.
+// The function returns the modified slice, which may be shorter than the original if some elements were removed.
+// Note that the order of elements in the original slice is preserved in the output.
+func FilterInPlace[V any](collection []V, predicate func(item V, index int) bool) []V {
+	j := 0
+	for i, item := range collection {
+		if predicate(item, i) {
+			collection[j] = item
+			j++
+		}
+	}
+	return collection[:j]
+}
+
 // FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
 // The transform function can either return a slice or a `nil`, and in the `nil` case
 // no value is added to the final slice.
@@ -592,3 +608,4 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
