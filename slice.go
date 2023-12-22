@@ -272,25 +272,32 @@ func Interleave[T any](collections ...[]T) []T {
 // Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 // Play: https://go.dev/play/p/Qp73bnTDnc7
 func Shuffle[T any](collection []T) []T {
+	result := make([]T, len(collection))
+
 	rand.Shuffle(len(collection), func(i, j int) {
-		collection[i], collection[j] = collection[j], collection[i]
+		result[i], result[j] = collection[j], collection[i]
 	})
 
-	return collection
+	return result
 }
 
 // Reverse reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
 // Play: https://go.dev/play/p/fhUMLvZ7vS6
 func Reverse[T any](collection []T) []T {
+	result := make([]T, len(collection))
+
 	length := len(collection)
 	half := length / 2
 
 	for i := 0; i < half; i = i + 1 {
 		j := length - 1 - i
-		collection[i], collection[j] = collection[j], collection[i]
+		result[i], result[j] = collection[j], collection[i]
+	}
+	if length%2 == 1 {
+		result[half] = collection[half]
 	}
 
-	return collection
+	return result
 }
 
 // Fill fills elements of array with `initial` value.
