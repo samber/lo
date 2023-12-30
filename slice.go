@@ -4,6 +4,7 @@ import (
 	"math/rand"
 
 	"golang.org/x/exp/constraints"
+	"golang.org/x/exp/slices"
 )
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
@@ -591,4 +592,17 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 	}
 
 	return true
+}
+
+// ToSorted return a sorted copy of a slice
+// Play: https://go.dev/play/p/G4-aR2Yxh3M
+func ToSorted[T constraints.Ordered](collection []T) []T {
+	if collection == nil {
+		return nil
+	}
+
+	copied := make([]T, len(collection))
+	copy(copied, collection)
+	slices.Sort(copied)
+	return copied
 }
