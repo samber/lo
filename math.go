@@ -82,3 +82,13 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 	}
 	return sum
 }
+
+// Mean calculates the mean of a collection of numbers.
+func Mean[T constraints.Float | constraints.Integer](collection []T) T {
+	var length T = T(len(collection))
+	if length == 0 {
+		return 0
+	}
+	var sum T = Sum(collection)
+	return sum / length
+}

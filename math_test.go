@@ -97,3 +97,18 @@ func TestSumBy(t *testing.T) {
 	is.Equal(result4, uint32(0))
 	is.Equal(result5, complex128(6_6))
 }
+
+func TestMean(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Mean([]float32{2.3, 3.3, 4, 5.3})
+	result2 := Mean([]int32{2, 3, 4, 5})
+	result3 := Mean([]uint32{2, 3, 4, 5})
+	result4 := Mean([]uint32{})
+
+	is.Equal(result1, float32(3.7250001))
+	is.Equal(result2, int32(3))
+	is.Equal(result3, uint32(3))
+	is.Equal(result4, uint32(0))
+}
