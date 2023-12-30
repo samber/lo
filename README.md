@@ -116,6 +116,7 @@ Supported helpers for slices:
 - [Compact](#compact)
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
+- [ToSorted](#tosorted)
 
 Supported helpers for maps:
 
@@ -923,6 +924,17 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 ```
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
+
+### ToSorted
+
+Return a sorted copy of a slice.
+
+```go
+sorted := lo.ToSorted([]int{0, 1, 4, 3, 2})
+// [0 1 2 3 4]
+```
+
+[[play](https://go.dev/play/p/G4-aR2Yxh3M)]
 
 ### Keys
 

@@ -456,3 +456,13 @@ func ExampleIsSortedByKey() {
 
 	// Output: true
 }
+
+func ExampleToSorted() {
+	list := []int{0, 1, 4, 3, 2}
+
+	result := ToSorted(list)
+
+	fmt.Printf("%v", result)
+
+	// Output: [0 1 2 3 4]
+}

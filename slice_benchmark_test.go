@@ -171,3 +171,22 @@ func BenchmarkReplace(b *testing.B) {
 		})
 	}
 }
+
+func BenchmarkToSorted(b *testing.B) {
+	lengths := []int{1_000, 10_000, 100_000}
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			_ = ToSorted(strs)
+		})
+	}
+
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = ToSorted(ints)
+			}
+		})
+	}
+}
