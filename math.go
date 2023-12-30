@@ -92,3 +92,13 @@ func Mean[T constraints.Float | constraints.Integer](collection []T) T {
 	var sum T = Sum(collection)
 	return sum / length
 }
+
+// MeanBy calculates the mean of a collection of numbers using the given return value from the iteration function.
+func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(item T) R) R {
+	var length R = R(len(collection))
+	if length == 0 {
+		return 0
+	}
+	var sum R = SumBy(collection, iteratee)
+	return sum / length
+}
