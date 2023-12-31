@@ -456,3 +456,15 @@ func ExampleIsSortedByKey() {
 
 	// Output: true
 }
+
+func ExampleDeepCopy() {
+	list := []string{"foo", "bar"}
+
+	result := DeepCopy(list)
+
+	list[0] = "baz"
+
+	fmt.Printf("%v", result)
+
+	// Output: [foo bar]
+}

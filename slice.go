@@ -592,3 +592,12 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+// DeepCopy returns a deep copy of the slice passed in.
+// If the slice passed in contains pointers, these pointers will still point to the same values.
+// Play: https://go.dev/play/p/QhRQrPWjWbR
+func DeepCopy[T any](collection []T) []T {
+	cpy := make([]T, len(collection))
+	copy(cpy, collection)
+	return cpy
+}
