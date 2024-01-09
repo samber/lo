@@ -216,7 +216,7 @@ Conditional helpers:
 
 Type manipulation helpers:
 
-- [IsNil](#IsNil)
+- [IsNil](#isnil)
 - [ToPtr](#toptr)
 - [EmptyableToPtr](#emptyabletoptr)
 - [FromPtr](#fromptr)
