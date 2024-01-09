@@ -90,22 +90,30 @@ func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 	return true
 }
 
-// Intersect returns the intersection between two collections.
-func Intersect[T comparable](list1 []T, list2 []T) []T {
+// Intersect returns the intersection between collections.
+func Intersect[T comparable](lists ...[]T) []T {
 	result := []T{}
+	if len(lists) == 0 {
+		return result
+	}
+	if len(lists) == 1 {
+		return lists[0]
+	}
 	seen := map[T]struct{}{}
 
-	for _, elem := range list1 {
+	for _, elem := range lists[0] {
 		seen[elem] = struct{}{}
 	}
 
-	for _, elem := range list2 {
+	for _, elem := range lists[len(lists)-1] {
 		if _, ok := seen[elem]; ok {
 			result = append(result, elem)
 		}
 	}
 
-	return result
+	lists[0] = result
+
+	return Intersect(lists[:len(lists)-1]...)
 }
 
 // Difference returns the difference between two collections.
