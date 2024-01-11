@@ -149,29 +149,43 @@ func MustE[T any](val T, err error, messageArgs ...any) T {
 	mustE(err, messageArgs...)
 	return val
 }
+
+// MustE0 has the same behavior as Must, but callback returns no variable.
 func MustE0(err error, messageArgs ...any) {
 	mustE(err, messageArgs...)
 }
+
+// MustE1 is an alias to MustE
 func MustE1[T1 any](val1 T1, err error, messageArgs ...any) T1 {
 	mustE(err, messageArgs...)
 	return val1
 }
+
+// MustE2 has the same behavior as MustE, but callback returns 2 variables.
 func MustE2[T1, T2 any](val1 T1, val2 T2, err error, messageArgs ...any) (T1, T2) {
 	mustE(err, messageArgs...)
 	return val1, val2
 }
+
+// MustE3 has the same behavior as MustE, but callback returns 3 variables.
 func MustE3[T1, T2, T3 any](val1 T1, val2 T2, val3 T3, err error, messageArgs ...any) (T1, T2, T3) {
 	mustE(err, messageArgs...)
 	return val1, val2, val3
 }
+
+// MustE4 has the same behavior as MustE, but callback returns 4 variables.
 func MustE4[T1, T2, T3, T4 any](val1 T1, val2 T2, val3 T3, val4 T4, err error, messageArgs ...any) (T1, T2, T3, T4) {
 	mustE(err, messageArgs...)
 	return val1, val2, val3, val4
 }
+
+// MustE5 has the same behavior as MustE, but callback returns 5 variables.
 func MustE5[T1, T2, T3, T4, T5 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, err error, messageArgs ...any) (T1, T2, T3, T4, T5) {
 	mustE(err, messageArgs...)
 	return val1, val2, val3, val4, val5
 }
+
+// MustE6 has the same behavior as MustE, but callback returns 6 variables.
 func MustE6[T1, T2, T3, T4, T5, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err error, messageArgs ...any) (T1, T2, T3, T4, T5, T6) {
 	mustE(err, messageArgs...)
 	return val1, val2, val3, val4, val5, val6

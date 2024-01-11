@@ -599,6 +599,117 @@ func TestErrorsAs(t *testing.T) {
 	is.Nil(nil, err)
 }
 
+func TestMustE(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	{
+		is.Equal("foo", MustE("foo", nil))
+		is.PanicsWithError("something went wrong", func() {
+			MustE("", errors.New("something went wrong"))
+		})
+		is.PanicsWithError("operation shouldn't fail: something went wrong", func() {
+			MustE("", errors.New("something went wrong"), "operation shouldn't fail")
+		})
+		is.PanicsWithError("operation shouldn't fail with foo: something went wrong", func() {
+			MustE("", errors.New("something went wrong"), "operation shouldn't fail with %s", "foo")
+		})
+	}
+
+	{
+		is.PanicsWithError("something went wrong", func() {
+			MustE0(errors.New("something went wrong"))
+		})
+		is.PanicsWithError("operation shouldn't fail with foo: something went wrong", func() {
+			MustE0(errors.New("something went wrong"), "operation shouldn't fail with %s", "foo")
+		})
+		is.NotPanics(func() {
+			MustE0(nil)
+		})
+	}
+
+	{
+		val1 := MustE1(1, nil)
+		is.Equal(1, val1)
+		is.PanicsWithError("something went wrong", func() {
+			MustE1(1, errors.New("something went wrong"))
+		})
+		is.PanicsWithError("operation shouldn't fail with foo: something went wrong", func() {
+			MustE1(1, errors.New("something went wrong"), "operation shouldn't fail with %s", "foo")
+		})
+	}
+
+	{
+		val1, val2 := MustE2(1, 2, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.PanicsWithError("something went wrong", func() {
+			MustE2(1, 2, errors.New("something went wrong"))
+		})
+		is.PanicsWithError("operation shouldn't fail with foo: something went wrong", func() {
+			MustE2(1, 2, errors.New("something went wrong"), "operation shouldn't fail with %s", "foo")
+		})
+	}
+
+	{
+		val1, val2, val3 := MustE3(1, 2, 3, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.PanicsWithError("something went wrong", func() {
+			MustE3(1, 2, 3, errors.New("something went wrong"))
+		})
+		is.PanicsWithError("operation shouldn't fail with foo: something went wrong", func() {
+			MustE3(1, 2, 3, errors.New("something went wrong"), "operation shouldn't fail with %s", "foo")
+		})
+	}
+
+	{
+		val1, val2, val3, val4 := MustE4(1, 2, 3, 4, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.PanicsWithError("something went wrong", func() {
+			MustE4(1, 2, 3, 4, errors.New("something went wrong"))
+		})
+		is.PanicsWithError("operation shouldn't fail with foo: something went wrong", func() {
+			MustE4(1, 2, 3, 4, errors.New("something went wrong"), "operation shouldn't fail with %s", "foo")
+		})
+	}
+
+	{
+		val1, val2, val3, val4, val5 := MustE5(1, 2, 3, 4, 5, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Equal(5, val5)
+		is.PanicsWithError("something went wrong", func() {
+			MustE5(1, 2, 3, 4, 5, errors.New("something went wrong"))
+		})
+		is.PanicsWithError("operation shouldn't fail with foo: something went wrong", func() {
+			MustE5(1, 2, 3, 4, 5, errors.New("something went wrong"), "operation shouldn't fail with %s", "foo")
+		})
+	}
+
+	{
+		val1, val2, val3, val4, val5, val6 := MustE6(1, 2, 3, 4, 5, 6, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Equal(5, val5)
+		is.Equal(6, val6)
+		is.PanicsWithError("something went wrong", func() {
+			MustE6(1, 2, 3, 4, 5, 6, errors.New("something went wrong"))
+		})
+		is.PanicsWithError("operation shouldn't fail with foo: something went wrong", func() {
+			MustE6(1, 2, 3, 4, 5, 6, errors.New("something went wrong"), "operation shouldn't fail with %s", "foo")
+		})
+	}
+}
+
 func TestErrorWrapUnWrap(t *testing.T) {
 
 	t.Run("wrap as", func(t *testing.T) {
@@ -630,16 +741,18 @@ func (e customErr) String() string {
 }
 
 func TestErrorGlobalErrHandler(t *testing.T) {
-	LoPanic = func(e any) {
-		if err, ok := e.(error); ok {
-			e = stackErrors.WithStack(err)
-		}
-		panic(e)
-	}
-
 	t.Run("wrap stack", func(t *testing.T) {
+		LoPanic = func(e any) {
+			if err, ok := e.(error); ok {
+				if err.Error() == "wrap callstack" {
+					e = stackErrors.WithStack(err)
+				}
+			}
+			panic(e)
+		}
+
 		err, ok := TryWithErrorValue(func() error {
-			MustE("foo", errors.New("something went wrong"))
+			MustE("foo", errors.New("wrap callstack"))
 			return nil
 		})
 		assert.False(t, ok)
