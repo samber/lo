@@ -15,7 +15,7 @@ func (s *synchronize) Do(cb func()) {
 // Synchronize wraps the underlying callback in a mutex. It receives an optional mutex.
 func Synchronize(opt ...sync.Locker) *synchronize {
 	if len(opt) > 1 {
-		panic("unexpected arguments")
+		LoPanic("unexpected arguments")
 	} else if len(opt) == 0 {
 		opt = append(opt, &sync.Mutex{})
 	}

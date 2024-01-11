@@ -3,6 +3,7 @@ package lo
 import (
 	"errors"
 	"fmt"
+	stackErrors "github.com/pkg/errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -596,4 +597,53 @@ func TestErrorsAs(t *testing.T) {
 	err, ok = ErrorsAs[*internalError](nil)
 	is.False(ok)
 	is.Nil(nil, err)
+}
+
+func TestErrorWrapUnWrap(t *testing.T) {
+
+	t.Run("wrap as", func(t *testing.T) {
+		e, ok := TryWithErrorValue(func() error {
+			MustE("foo", customErr{A: 11, B: 22})
+			return nil
+		})
+		assert.False(t, ok)
+		err, ok := e.(error)
+		assert.True(t, ok)
+		te, ok := ErrorsAs[customErr](err)
+		assert.True(t, ok)
+		assert.Equal(t, te.A, 11)
+		assert.Equal(t, te.B, 22)
+
+	})
+}
+
+type customErr struct {
+	A int
+	B int
+}
+
+func (e customErr) Error() string {
+	return fmt.Sprintf("customErr(%d,%d)", e.A, e.B)
+}
+func (e customErr) String() string {
+	return e.Error()
+}
+
+func TestErrorGlobalErrHandler(t *testing.T) {
+	LoPanic = func(e any) {
+		if err, ok := e.(error); ok {
+			e = stackErrors.WithStack(err)
+		}
+		panic(e)
+	}
+
+	t.Run("wrap stack", func(t *testing.T) {
+		err, ok := TryWithErrorValue(func() error {
+			MustE("foo", errors.New("something went wrong"))
+			return nil
+		})
+		assert.False(t, ok)
+		fullErrStr := fmt.Sprintf("%+v", err)
+		assert.Contains(t, fullErrStr, "/errors_test.go:", fullErrStr)
+	})
 }

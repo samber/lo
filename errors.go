@@ -6,11 +6,17 @@ import (
 	"reflect"
 )
 
+// LoPanic is user custom panic. example wrap error stack.
+var LoPanic = func(e any) { panic(e) }
+
+// LoErrorF is user custom error. example wrap error stack.
+var LoErrorF = fmt.Errorf
+
 // Validate is a helper that creates an error when a condition is not met.
 // Play: https://go.dev/play/p/vPyh51XpCBt
 func Validate(ok bool, format string, args ...any) error {
 	if !ok {
-		return fmt.Errorf(fmt.Sprintf(format, args...))
+		return LoErrorF(fmt.Sprintf(format, args...))
 	}
 	return nil
 }
@@ -42,19 +48,19 @@ func must(err any, messageArgs ...interface{}) {
 				message = "not ok"
 			}
 
-			panic(message)
+			LoPanic(message)
 		}
 
 	case error:
 		message := messageFromMsgAndArgs(messageArgs...)
 		if message != "" {
-			panic(message + ": " + e.Error())
+			LoPanic(message + ": " + e.Error())
 		} else {
-			panic(e.Error())
+			LoPanic(e.Error())
 		}
 
 	default:
-		panic("must: invalid err type '" + reflect.TypeOf(err).Name() + "', should either be a bool or an error")
+		LoPanic("must: invalid err type '" + reflect.TypeOf(err).Name() + "', should either be a bool or an error")
 	}
 }
 
@@ -110,6 +116,64 @@ func Must5[T1 any, T2 any, T3 any, T4 any, T5 any](val1 T1, val2 T2, val3 T3, va
 // Play: https://go.dev/play/p/TMoWrRp3DyC
 func Must6[T1 any, T2 any, T3 any, T4 any, T5 any, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err any, messageArgs ...interface{}) (T1, T2, T3, T4, T5, T6) {
 	must(err, messageArgs...)
+	return val1, val2, val3, val4, val5, val6
+}
+
+type wrapErrPrefixMsg struct {
+	Base   error
+	Attach string
+}
+
+func (err wrapErrPrefixMsg) Error() string {
+	if err.Attach != "" {
+		return err.Attach + ": " + err.Base.Error()
+	}
+	return err.Base.Error()
+}
+func (err wrapErrPrefixMsg) String() string {
+	return err.Error()
+}
+func (err wrapErrPrefixMsg) Unwrap() error {
+	return err.Base
+}
+
+func mustE(err error, messageArgs ...any) {
+	if err == nil {
+		return
+	}
+	message := messageFromMsgAndArgs(messageArgs...)
+	LoPanic(wrapErrPrefixMsg{Base: err, Attach: message})
+}
+
+func MustE[T any](val T, err error, messageArgs ...any) T {
+	mustE(err, messageArgs...)
+	return val
+}
+func MustE0(err error, messageArgs ...any) {
+	mustE(err, messageArgs...)
+}
+func MustE1[T1 any](val1 T1, err error, messageArgs ...any) T1 {
+	mustE(err, messageArgs...)
+	return val1
+}
+func MustE2[T1, T2 any](val1 T1, val2 T2, err error, messageArgs ...any) (T1, T2) {
+	mustE(err, messageArgs...)
+	return val1, val2
+}
+func MustE3[T1, T2, T3 any](val1 T1, val2 T2, val3 T3, err error, messageArgs ...any) (T1, T2, T3) {
+	mustE(err, messageArgs...)
+	return val1, val2, val3
+}
+func MustE4[T1, T2, T3, T4 any](val1 T1, val2 T2, val3 T3, val4 T4, err error, messageArgs ...any) (T1, T2, T3, T4) {
+	mustE(err, messageArgs...)
+	return val1, val2, val3, val4
+}
+func MustE5[T1, T2, T3, T4, T5 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, err error, messageArgs ...any) (T1, T2, T3, T4, T5) {
+	mustE(err, messageArgs...)
+	return val1, val2, val3, val4, val5
+}
+func MustE6[T1, T2, T3, T4, T5, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err error, messageArgs ...any) (T1, T2, T3, T4, T5, T6) {
+	mustE(err, messageArgs...)
 	return val1, val2, val3, val4, val5, val6
 }
 
