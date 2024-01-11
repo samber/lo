@@ -1,7 +1,6 @@
 package lo
 
 import (
-	"fmt"
 	"math/rand"
 
 	"golang.org/x/exp/constraints"
@@ -316,7 +315,7 @@ func Last[T any](collection []T) (T, error) {
 
 	if length == 0 {
 		var t T
-		return t, fmt.Errorf("last: cannot extract the last element of an empty slice")
+		return t, LoErrorF("last: cannot extract the last element of an empty slice")
 	}
 
 	return collection[length-1], nil
@@ -329,7 +328,7 @@ func Nth[T any, N constraints.Integer](collection []T, nth N) (T, error) {
 	l := len(collection)
 	if n >= l || -n > l {
 		var t T
-		return t, fmt.Errorf("nth: %d out of slice bounds", n)
+		return t, LoErrorF("nth: %d out of slice bounds", n)
 	}
 
 	if n >= 0 {

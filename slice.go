@@ -166,7 +166,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(item T) U) map[U
 // Play: https://go.dev/play/p/EeKl0AuTehH
 func Chunk[T any](collection []T, size int) [][]T {
 	if size <= 0 {
-		panic("Second parameter must be greater than 0")
+		LoPanic("Second parameter must be greater than 0")
 	}
 
 	chunksNum := len(collection) / size

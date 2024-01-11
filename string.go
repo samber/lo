@@ -20,10 +20,10 @@ var (
 // Play: https://go.dev/play/p/rRseOQVVum4
 func RandomString(size int, charset []rune) string {
 	if size <= 0 {
-		panic("lo.RandomString: Size parameter must be greater than 0")
+		LoPanic("lo.RandomString: Size parameter must be greater than 0")
 	}
 	if len(charset) <= 0 {
-		panic("lo.RandomString: Charset parameter must not be empty")
+		LoPanic("lo.RandomString: Charset parameter must not be empty")
 	}
 
 	b := make([]rune, size)
@@ -63,7 +63,7 @@ func Substring[T ~string](str T, offset int, length uint) T {
 // Play: https://go.dev/play/p/__FLTuJVz54
 func ChunkString[T ~string](str T, size int) []T {
 	if size <= 0 {
-		panic("lo.ChunkString: Size parameter must be greater than 0")
+		LoPanic("lo.ChunkString: Size parameter must be greater than 0")
 	}
 
 	if len(str) == 0 {
