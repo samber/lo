@@ -233,3 +233,23 @@ func TestCoalesce(t *testing.T) {
 	is.Equal(result10, struct1)
 	is.True(ok10)
 }
+
+func TestIdentity(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal(Identity[int](42), 42)
+	is.Equal(Identity[string]("foobar"), "foobar")
+	is.Equal(Identity[bool](true), true)
+	is.Equal(Identity[bool](false), false)
+	is.Equal(Identity[error](assert.AnError), assert.AnError)
+	is.Equal(Identity[interface{}]("foobar"), "foobar")
+	is.Equal(Identity[interface{}](42), 42)
+	is.Equal(Identity[interface{}](true), true)
+	is.Equal(Identity[interface{}](false), false)
+	is.Equal(Identity[interface{}](assert.AnError), assert.AnError)
+	is.Equal(Identity[interface{}](nil), nil)
+	is.Equal(Identity[interface{}]([]int{1, 2, 3}), []int{1, 2, 3})
+	is.Equal(Identity[interface{}](map[int]string{1: "foo", 2: "bar"}), map[int]string{1: "foo", 2: "bar"})
+	is.Equal(Identity[interface{}](struct{ foo string }{foo: "bar"}), struct{ foo string }{foo: "bar"})
+}
