@@ -206,6 +206,21 @@ func TestDifference(t *testing.T) {
 	is.Equal(right3, []int{})
 }
 
+func TestSymmetricDifference(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	diff1 := SymmetricDifference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
+	is.ElementsMatch(diff1, []int{1, 3, 4, 5, 6})
+
+	diff2 := SymmetricDifference([]int{1, 2, 3, 4, 5}, []int{0, 6})
+	is.ElementsMatch(diff2, []int{0, 1, 2, 3, 4, 5, 6})
+
+	diff3 := SymmetricDifference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+	is.ElementsMatch(diff3, []int{})
+}
+
+
 func TestUnion(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
