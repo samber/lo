@@ -93,3 +93,30 @@ func Async6[A any, B any, C any, D any, E any, F any](f func() (A, B, C, D, E, F
 	}()
 	return ch
 }
+
+type rpc[T any, R any] struct {
+	C chan Tuple2[T, func(R)]
+}
+
+// NewRPC synchronizes goroutines for a bidirectionnal request-response communication.
+func NewRPC[T any, R any](ch chan<- T) *rpc[T, R] {
+	return &rpc[T, R]{
+		C: make(chan Tuple2[T, func(R)]),
+	}
+}
+
+// Send blocks until response is triggered.
+func (rpc *rpc[T, R]) Send(request T) R {
+	done := make(chan R)
+	defer close(done)
+
+	once := sync.Once{}
+
+	rpc.C <- T2(request, func(response R) {
+		once.Do(func() {
+			done <- response
+		})
+	})
+
+	return <-done
+}
