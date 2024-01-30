@@ -1,6 +1,9 @@
 package parallel
 
-import "sync"
+import (
+	"sync"
+	"golang.org/x/sync/errgroup"
+)
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // `iteratee` is call in parallel. Result keep the same order.
@@ -23,6 +26,24 @@ func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 	wg.Wait()
 
 	return result
+}
+
+// Map manipulates a slice and transforms it to a slice of another type.
+// `iteratee` is call in parallel. Result keep the same order.
+func MapWithErr[T any, R any](collection []T, iteratee func(T, int) (R, error)) ([]R, error) {
+	result := make([]R, len(collection))
+	var g errgroup.Group
+	for i, item := range collection {
+		_item := item
+		_i := i
+		g.Go(func() error {
+			res,err := iteratee(_item, _i)
+			result[_i] = res
+			return err
+		})
+	}
+	err := g.Wait()
+	return result, err
 }
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.
