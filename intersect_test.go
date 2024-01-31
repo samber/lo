@@ -206,6 +206,35 @@ func TestDifference(t *testing.T) {
 	is.Equal(right3, []int{})
 }
 
+func TestDifferenceBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	left1, right1 := DifferenceBy([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6}, func(item int) int {
+		return item
+	})
+	is.Equal(left1, []int{1, 3, 4, 5})
+	is.Equal(right1, []int{6})
+
+	left2, right2 := DifferenceBy([]int{1, 2, 3, 4, 5}, []int{0, 6}, func(item int) int {
+		return item
+	})
+	is.Equal(left2, []int{1, 2, 3, 4, 5})
+	is.Equal(right2, []int{0, 6})
+
+	left3, right3 := DifferenceBy([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5}, func(item int) int {
+		return item
+	})
+	is.Equal(left3, []int{})
+	is.Equal(right3, []int{})
+
+	left4, right4 := DifferenceBy([][]int{{1}, {2}}, [][]int{{0}, {1}}, func(item []int) int {
+		return item[0]
+	})
+	is.Equal(left4, [][]int{{2}})
+	is.Equal(right4, [][]int{{0}})
+}
+
 func TestUnion(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
