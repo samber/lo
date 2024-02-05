@@ -141,6 +141,43 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 	return left, right
 }
 
+func DifferenceBy[T any](
+	list1 []T,
+	list2 []T,
+	cmp func(T, T) bool,
+) ([]T, []T) {
+	left := []T{}
+	right := []T{}
+
+	for _, aValue := range list1 {
+		found := false
+		for _, bValue := range list2 {
+			if cmp(aValue, bValue) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			left = append(left, aValue)
+		}
+	}
+
+	for _, bValue := range list2 {
+		found := false
+		for _, aValue := range list1 {
+			if cmp(bValue, aValue) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			right = append(right, bValue)
+		}
+	}
+
+	return left, right
+}
+
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
 func Union[T comparable](lists ...[]T) []T {
