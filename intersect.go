@@ -141,10 +141,15 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 	return left, right
 }
 
+// DifferenceBy returns the difference between two collections: the elements from list1 that are not present in list2,
+// and the elements from list2 that are not present in list1, based on the provided predicate function.
+// The predicate function is used to compare elements from both lists.
+// It takes two arguments of type T and returns a boolean value indicating whether the elements are considered equal.
+// The returned slices maintain the order of the elements in the original lists.
 func DifferenceBy[T any](
 	list1 []T,
 	list2 []T,
-	cmp func(T, T) bool,
+	predicate func(T, T) bool,
 ) ([]T, []T) {
 	left := []T{}
 	right := []T{}
@@ -152,7 +157,7 @@ func DifferenceBy[T any](
 	for _, aValue := range list1 {
 		found := false
 		for _, bValue := range list2 {
-			if cmp(aValue, bValue) {
+			if predicate(aValue, bValue) {
 				found = true
 				break
 			}
@@ -165,7 +170,7 @@ func DifferenceBy[T any](
 	for _, bValue := range list2 {
 		found := false
 		for _, aValue := range list1 {
-			if cmp(bValue, aValue) {
+			if predicate(bValue, aValue) {
 				found = true
 				break
 			}
