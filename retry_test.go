@@ -498,3 +498,40 @@ func TestTransaction(t *testing.T) {
 		is.Equal(assert.AnError, err)
 	}
 }
+
+func TestNewThrottle(t *testing.T) {
+	is := assert.New(t)
+	callCount := 0
+	f1 := func() { callCount++ }
+	th, purge := NewThrottle(10*time.Millisecond, f1)
+
+	is.Equal(0, callCount)
+	for i := 0; i < 10; i++ {
+		th()
+	}
+	is.Equal(0, callCount)
+
+	time.Sleep(11 * time.Millisecond)
+	is.Equal(1, callCount)
+	for i := 0; i < 10; i++ {
+		th()
+	}
+	is.Equal(1, callCount)
+
+	purge()
+	is.Equal(2, callCount)
+
+	// pause a little bit without calling
+	time.Sleep(11 * time.Millisecond)
+	is.Equal(2, callCount)
+	for i := 0; i < 10; i++ {
+		th()
+	}
+	is.Equal(2, callCount)
+
+	time.Sleep(11 * time.Millisecond)
+	is.Equal(3, callCount)
+	purge()
+	is.Equal(4, callCount)
+
+}

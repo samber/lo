@@ -288,3 +288,67 @@ func (t *Transaction[T]) Process(state T) (T, error) {
 }
 
 // throttle ?
+type throttle struct {
+	mu        *sync.Mutex
+	timer     *time.Timer
+	needPurge bool
+	interval  time.Duration
+	callbacks []func()
+}
+
+func NewThrottle(interval time.Duration, f ...func()) (func(), func()) {
+	th := &throttle{
+		mu:        new(sync.Mutex),
+		interval:  interval,
+		callbacks: f,
+	}
+	return th.throttledFunc, th.forcePurge
+}
+
+func (th *throttle) throttledFunc() {
+	th.mu.Lock()
+	defer th.mu.Unlock()
+	th.needPurge = true
+	if th.timer == nil {
+		th.timer = time.AfterFunc(th.interval, func() {
+			th.purge()
+		})
+	}
+}
+
+func (th *throttle) forcePurge() {
+	th.mu.Lock()
+	defer th.mu.Unlock()
+
+	th.needPurge = false
+	for _, f := range th.callbacks {
+		f()
+	}
+	if th.timer != nil {
+		th.timer.Stop()
+	}
+	th.timer = time.AfterFunc(th.interval, func() {
+		th.purge()
+	})
+}
+
+func (th *throttle) purge() {
+	th.mu.Lock()
+	defer th.mu.Unlock()
+	if !th.needPurge {
+		th.timer = nil
+		return
+	}
+
+	th.needPurge = false
+
+	for _, f := range th.callbacks {
+		f()
+	}
+	if th.timer != nil {
+		th.timer.Stop()
+	}
+	th.timer = time.AfterFunc(th.interval, func() {
+		th.purge()
+	})
+}
