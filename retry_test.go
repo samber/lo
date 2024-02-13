@@ -498,3 +498,66 @@ func TestTransaction(t *testing.T) {
 		is.Equal(assert.AnError, err)
 	}
 }
+
+func TestNewThrottle(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	callCount := 0
+	f1 := func() {
+		callCount++
+	}
+	th, reset := NewThrottle(10*time.Millisecond, f1)
+
+	is.Equal(0, callCount)
+	for i := 0; i < 9; i++ {
+		var wg sync.WaitGroup
+		for j := 0; j < 100; j++ {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				th()
+			}()
+		}
+		wg.Wait()
+		time.Sleep(3 * time.Millisecond)
+	}
+	// 35 ms passed
+	is.Equal(3, callCount)
+
+	// reset counter
+	reset()
+	th()
+	is.Equal(4, callCount)
+
+}
+
+func TestNewThrottleWithCount(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	callCount := 0
+	f1 := func() {
+		callCount++
+	}
+	th, reset := NewThrottleWithCount(10*time.Millisecond, 3, f1)
+
+	// the function does not throttle for initial count number
+	for i := 0; i < 20; i++ {
+		th()
+	}
+	is.Equal(3, callCount)
+
+	time.Sleep(11 * time.Millisecond)
+
+	for i := 0; i < 20; i++ {
+		th()
+	}
+
+	is.Equal(6, callCount)
+
+	reset()
+	for i := 0; i < 20; i++ {
+		th()
+	}
+
+	is.Equal(9, callCount)
+}

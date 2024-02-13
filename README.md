@@ -297,6 +297,7 @@ Concurrency helpers:
 - [AttemptWhileWithDelay](#attemptwhilewithdelay)
 - [Debounce](#debounce)
 - [DebounceBy](#debounceby)
+- [Throttle](#throttle)
 - [Synchronize](#synchronize)
 - [Async](#async)
 - [Transaction](#transaction)
@@ -3416,6 +3417,47 @@ cancel("second key")
 ```
 
 [[play](https://go.dev/play/p/d3Vpt6pxhY8)]
+
+### Throttle
+`NewThrottle` creates a throttled instance that invokes given functions only once in every interval.
+This returns 2 functions, First one is throttled function and Second one is a function to reset interval.
+
+```go
+
+f := func() {
+	println("Called once in every 100ms")
+}
+
+throttle, reset := lo.NewThrottle(100 * time.Millisecond, f)
+
+for j := 0; j < 10; j++ {
+	throttle()
+	time.Sleep(30 * time.Millisecond)
+}
+
+reset()
+throttle()
+
+```
+
+`NewThrottleWithCount` is NewThrottle with count limit, throttled function will be invoked count times in every interval.
+```go
+
+f := func() {
+	println("Called three times in every 100ms")
+}
+
+throttle, reset := lo.NewThrottle(100 * time.Millisecond, f)
+
+for j := 0; j < 10; j++ {
+	throttle()
+	time.Sleep(30 * time.Millisecond)
+}
+
+reset()
+throttle()
+
+```
 
 ### Synchronize
 
