@@ -306,10 +306,6 @@ func (th *throttle) throttledFunc() {
 	}
 }
 
-func (th *throttle) forcePurge() {
-	th.purge(true)
-}
-
 func (th *throttle) purge(forcePurge bool) {
 	th.mu.Lock()
 	defer th.mu.Unlock()
@@ -339,5 +335,7 @@ func NewThrottle(interval time.Duration, f ...func()) (func(), func()) {
 		interval:  interval,
 		callbacks: f,
 	}
-	return th.throttledFunc, th.forcePurge
+	return th.throttledFunc, func() {
+		th.purge(true)
+	}
 }
