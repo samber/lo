@@ -306,21 +306,22 @@ func (th *throttle) throttledFunc() {
 	}
 }
 
+func (th *throttle) invokeFunctions() {
+	for _, f := range th.callbacks {
+		go f()
+	}
+}
+
 func (th *throttle) purge(forcePurge bool) {
 	th.mu.Lock()
 	defer th.mu.Unlock()
-	defer func() {
-		th.needInvoke = false
-	}()
 
 	if th.timer != nil {
 		th.timer.Stop()
 	}
 
 	if th.needInvoke || forcePurge {
-		for _, f := range th.callbacks {
-			f()
-		}
+		th.invokeFunctions()
 		th.timer = time.AfterFunc(th.interval, func() {
 			th.purge(false)
 		})
@@ -328,6 +329,7 @@ func (th *throttle) purge(forcePurge bool) {
 		th.timer = nil
 	}
 
+	th.needInvoke = false
 }
 
 // NewThrottle creates a throttled instance that invokes given functions only once in every interval.
