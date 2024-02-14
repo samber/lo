@@ -287,28 +287,18 @@ func (t *Transaction[T]) Process(state T) (T, error) {
 	return state, err
 }
 
-// throttle ?
 type throttle struct {
-	mu        *sync.Mutex
-	timer     *time.Timer
-	needPurge bool
-	interval  time.Duration
-	callbacks []func()
-}
-
-func NewThrottle(interval time.Duration, f ...func()) (func(), func()) {
-	th := &throttle{
-		mu:        new(sync.Mutex),
-		interval:  interval,
-		callbacks: f,
-	}
-	return th.throttledFunc, th.forcePurge
+	mu         *sync.Mutex
+	timer      *time.Timer
+	needInvoke bool
+	interval   time.Duration
+	callbacks  []func()
 }
 
 func (th *throttle) throttledFunc() {
 	th.mu.Lock()
 	defer th.mu.Unlock()
-	th.needPurge = true
+	th.needInvoke = true
 	if th.timer == nil {
 		th.timer = time.AfterFunc(th.interval, func() {
 			th.purge()
@@ -320,7 +310,7 @@ func (th *throttle) forcePurge() {
 	th.mu.Lock()
 	defer th.mu.Unlock()
 
-	th.needPurge = false
+	th.needInvoke = false
 	for _, f := range th.callbacks {
 		f()
 	}
@@ -335,12 +325,12 @@ func (th *throttle) forcePurge() {
 func (th *throttle) purge() {
 	th.mu.Lock()
 	defer th.mu.Unlock()
-	if !th.needPurge {
+	if !th.needInvoke {
 		th.timer = nil
 		return
 	}
 
-	th.needPurge = false
+	th.needInvoke = false
 
 	for _, f := range th.callbacks {
 		f()
@@ -351,4 +341,15 @@ func (th *throttle) purge() {
 	th.timer = time.AfterFunc(th.interval, func() {
 		th.purge()
 	})
+}
+
+// NewThrottle creates a throttled instance that invokes function once in given interval,
+// returns debounced function and purge function which invokes functions before the interval.
+func NewThrottle(interval time.Duration, f ...func()) (func(), func()) {
+	th := &throttle{
+		mu:        new(sync.Mutex),
+		interval:  interval,
+		callbacks: f,
+	}
+	return th.throttledFunc, th.forcePurge
 }

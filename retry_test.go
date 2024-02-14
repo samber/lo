@@ -500,6 +500,7 @@ func TestTransaction(t *testing.T) {
 }
 
 func TestNewThrottle(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 	callCount := 0
 	f1 := func() { callCount++ }
