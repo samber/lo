@@ -301,45 +301,33 @@ func (th *throttle) throttledFunc() {
 	th.needInvoke = true
 	if th.timer == nil {
 		th.timer = time.AfterFunc(th.interval, func() {
-			th.purge()
+			th.purge(false)
 		})
 	}
 }
 
 func (th *throttle) forcePurge() {
-	th.mu.Lock()
-	defer th.mu.Unlock()
-
-	th.needInvoke = false
-	for _, f := range th.callbacks {
-		f()
-	}
-	if th.timer != nil {
-		th.timer.Stop()
-	}
-	th.timer = time.AfterFunc(th.interval, func() {
-		th.purge()
-	})
+	th.purge(true)
 }
 
-func (th *throttle) purge() {
+func (th *throttle) purge(forcePurge bool) {
 	th.mu.Lock()
 	defer th.mu.Unlock()
-	if !th.needInvoke {
+	if !th.needInvoke && !forcePurge {
 		th.timer = nil
 		return
 	}
 
-	th.needInvoke = false
-
 	for _, f := range th.callbacks {
 		f()
 	}
+	th.needInvoke = false
+
 	if th.timer != nil {
 		th.timer.Stop()
 	}
 	th.timer = time.AfterFunc(th.interval, func() {
-		th.purge()
+		th.purge(false)
 	})
 }
 
