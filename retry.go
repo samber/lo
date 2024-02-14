@@ -330,8 +330,8 @@ func (th *throttle) purge(forcePurge bool) {
 
 }
 
-// NewThrottle creates a throttled instance that invokes function once in given interval,
-// returns throttled function and purge function which invokes functions before the interval.
+// NewThrottle creates a throttled instance that invokes given functions only once in every interval.
+// This returns 2 functions, First one is throttled function and Second one is purge function which invokes given functions immediately and reset interval timer.
 func NewThrottle(interval time.Duration, f ...func()) (func(), func()) {
 	th := &throttle{
 		mu:        new(sync.Mutex),

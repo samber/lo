@@ -2531,7 +2531,8 @@ cancel("second key")
 [[play](https://go.dev/play/p/d3Vpt6pxhY8)]
 
 ### Throttle
-`NewThrottle` creates a throttled instance that invokes function once in given interval, returns throttled function and purge function which invokes functions before the interval.
+`NewThrottle` creates a throttled instance that invokes given functions only once in every interval.
+This returns 2 functions, First one is throttled function and Second one is purge function which invokes given functions immediately and reset interval timer.
 
 ```go
 
