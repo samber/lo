@@ -543,7 +543,7 @@ interleaved := lo.Interleave([]int{1}, []int{2, 5, 8}, []int{3, 6}, []int{4, 7, 
 // []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 ```
 
-[[play](https://go.dev/play/p/DDhlwrShbwe)]
+[[play](https://go.dev/play/p/-RJkTLQEDVt)]
 
 ### Shuffle
 
@@ -1824,7 +1824,7 @@ str, index, ok := lo.FindLastIndexOf([]string{"foobar"}, func(i string) bool {
 
 ### FindOrElse
 
-Search an element in a slice based on a predicate. It returns element and true if element was found.
+Search an element in a slice based on a predicate. It returns the element if found or a given fallback value otherwise.
 
 ```go
 str := lo.FindOrElse([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
@@ -2048,7 +2048,7 @@ result := lo.TernaryF(false, func() string { return "a" }, func() string { retur
 // "b"
 ```
 
-Useful to avoid nil-pointer dereferencing in intializations, or avoid running unnecessary code
+Useful to avoid nil-pointer dereferencing in initializations, or avoid running unnecessary code
 
 ```go
 var s *string
