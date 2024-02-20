@@ -498,3 +498,39 @@ func TestTransaction(t *testing.T) {
 		is.Equal(assert.AnError, err)
 	}
 }
+
+func TestNewThrottle(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	callCount := 0
+	f1 := func() {
+		callCount++
+	}
+	th, purge := NewThrottle(10*time.Millisecond, f1)
+
+	is.Equal(0, callCount)
+	for i := 0; i < 7; i++ {
+		var wg sync.WaitGroup
+		for j := 0; j < 100; j++ {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				th()
+			}()
+		}
+		wg.Wait()
+		time.Sleep(5 * time.Millisecond)
+	}
+	// 35 ms passed
+	is.Equal(3, callCount)
+
+	purge()
+	// awaits go routine which invokes given functions to be scheduled
+	time.Sleep(1 * time.Millisecond)
+	is.Equal(4, callCount)
+
+	// pause a little bit without calling
+	time.Sleep(20 * time.Millisecond)
+	is.Equal(4, callCount)
+
+}
