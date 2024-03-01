@@ -35,6 +35,16 @@ func LastIndexOf[T comparable](collection []T, element T) int {
 	return -1
 }
 
+// In return if element is in collection
+func In[T comparable](collection []T, element T) bool {
+	for _, item := range collection {
+		if item == element {
+			return true
+		}
+	}
+	return false
+}
+
 // Find search an element in a slice based on a predicate. It returns element and true if element was found.
 func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {
 	for _, item := range collection {

@@ -32,6 +32,16 @@ func TestLastIndexOf(t *testing.T) {
 	is.Equal(result2, -1)
 }
 
+func TestIn(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := In([]string{"a", "b", "c", "d"}, "a")
+	result2 := In([]string{"a", "b", "c"}, "d")
+	is.Equal(true, result1)
+	is.Equal(false, result2)
+}
+
 func TestFind(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
