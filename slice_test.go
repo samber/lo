@@ -388,7 +388,7 @@ func TestAssociate(t *testing.T) {
 
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
-	
+
 	type foo struct {
 		baz string
 		bar int
@@ -626,7 +626,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
-	
+
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
@@ -758,4 +758,22 @@ func TestIsSortedByKey(t *testing.T) {
 		ret, _ := strconv.Atoi(s)
 		return ret
 	}))
+}
+
+func TestSplit(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Arrange
+	in := []string{"a", "b", "c", "d", "e", "f", "g"}
+
+	// Act
+	right, left := SplitBy(in, func(_ string, index int) bool {
+		return index%2 == 0
+	})
+
+	// Assert
+	is.Equal(right, []string{"a", "c", "e", "g"})
+	is.Equal(left, []string{"b", "d", "f"})
+	is.ElementsMatch(in, append(right, left...))
 }

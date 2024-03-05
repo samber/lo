@@ -592,3 +592,18 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+// SplitBy splits an input slice into two output slices depending on the predicate function.
+//
+// If the function returns true, then the element is placed in the first output slice.
+// If not, the element is placed in the second output slice.
+func SplitBy[T any](s []T, predicate func(item T, index int) bool) (s1 []T, s2 []T) {
+	for i, e := range s {
+		if predicate(e, i) {
+			s1 = append(s1, e)
+		} else {
+			s2 = append(s2, e)
+		}
+	}
+	return
+}
