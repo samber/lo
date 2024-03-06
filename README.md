@@ -116,6 +116,7 @@ Supported helpers for slices:
 - [Compact](#compact)
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
+- [SplitBy](#splitby)
 
 Supported helpers for maps:
 
@@ -923,6 +924,20 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 ```
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
+
+### SplitBy
+
+Split a slice in two based on a predicate.
+
+```go
+right, left := lo.SplitBy([]string{"a", "bb", "ccc"}, func(_ string, index int) int {
+    return index%2 == 0
+})
+// []string{"a", "ccc"}
+// []string{"bb"}
+```
+
+[[play](https://go.dev/play/p/todo)] <!-- TODO -->
 
 ### Keys
 
