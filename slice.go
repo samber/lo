@@ -20,6 +20,20 @@ func Filter[V any](collection []V, predicate func(item V, index int) bool) []V {
 	return result
 }
 
+// FilterNotNil iterates over elements of collection, returning an array of all elements that are not nil
+// Play: https://go.dev/play/p/qTJ69EgONdU
+func FilterNotNil[V any](collection []V) []V {
+	result := make([]V, 0, len(collection))
+
+	for _, item := range collection {
+		if !IsNil(item) {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
+
 // Map manipulates a slice and transforms it to a slice of another type.
 // Play: https://go.dev/play/p/OkPcYAhBo0D
 func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {

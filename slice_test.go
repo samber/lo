@@ -28,6 +28,18 @@ func TestFilter(t *testing.T) {
 	is.Equal(r2, []string{"foo", "bar"})
 }
 
+func TestFilterNotNil(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	test1 := "123"
+	data := []*string{&test1, nil, nil}
+
+	r1 := FilterNotNil(data)
+
+	is.Equal(r1, []*string{&test1})
+}
+
 func TestMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -388,7 +400,7 @@ func TestAssociate(t *testing.T) {
 
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
-	
+
 	type foo struct {
 		baz string
 		bar int
@@ -626,7 +638,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
-	
+
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)

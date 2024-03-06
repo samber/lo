@@ -79,6 +79,7 @@ GoDoc: [https://godoc.org/github.com/samber/lo](https://godoc.org/github.com/sam
 Supported helpers for slices:
 
 - [Filter](#filter)
+- [FilterNotNil](#filternotnill)
 - [Map](#map)
 - [FilterMap](#filtermap)
 - [FlatMap](#flatmap)
@@ -275,6 +276,21 @@ even := lo.Filter([]int{1, 2, 3, 4}, func(x int, index int) bool {
 ```
 
 [[play](https://go.dev/play/p/Apjg3WeSi7K)]
+
+### FilterNotNil
+
+Iterates over elements of collection, returning an array of all elements that are not nil
+
+```go
+type Test struct {
+  Val int
+}
+
+even := lo.FilterNotNil([]Test{Test{1}, nil, nil, Test{2}})
+// [0xc000110010]
+```
+
+[[play](https://go.dev/play/p/qTJ69EgONdU)]
 
 ### Map
 

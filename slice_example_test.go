@@ -17,6 +17,19 @@ func ExampleFilter() {
 	// Output: [2 4]
 }
 
+func ExampleFilterNotNil() {
+	test1 := "123"
+	data := []*string{&test1, nil, nil}
+
+	result := FilterNotNil(data)
+
+	fmt.Printf("%d\n", len(result))
+	fmt.Printf("%v", *result[0])
+	// Output:
+	// 1
+	// 123
+}
+
 func ExampleMap() {
 	list := []int64{1, 2, 3, 4}
 
