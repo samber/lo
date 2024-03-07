@@ -759,3 +759,20 @@ func TestIsSortedByKey(t *testing.T) {
 		return ret
 	}))
 }
+
+func TestTakeWhile(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := TakeWhile([]string{"a", "bb", "ccc", "dddd"}, func(x string) bool {
+		return x != "ccc"
+	})
+
+	is.Equal(r1, []string{"a", "bb"})
+
+	r2 := TakeWhile([]int{10, 20, 30, 40, 50, 60}, func(x int) bool {
+		return x < 50
+	})
+
+	is.Equal(r2, []int{10, 20, 30, 40})
+}

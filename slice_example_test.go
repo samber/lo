@@ -456,3 +456,33 @@ func ExampleIsSortedByKey() {
 
 	// Output: true
 }
+
+func ExampleTakeWhile() {
+	type User struct {
+		Name   string
+		Active bool
+	}
+
+	list := []User{
+		{
+			Name:   "barney",
+			Active: false,
+		},
+		{
+			Name:   "fred",
+			Active: false,
+		},
+		{
+			Name:   "pebbles",
+			Active: true,
+		},
+	}
+
+	result := TakeWhile(list, func(user User) bool {
+		return !user.Active
+	})
+
+	fmt.Printf("%v", result)
+
+	// Output: [{barney false} {fred false}]
+}
