@@ -29,6 +29,17 @@ func TestValues(t *testing.T) {
 	is.Equal(r1, []int{1, 2})
 }
 
+func TestValueOr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := ValueOr(map[string]int{"foo": 1}, "bar", 2)
+	is.Equal(r1, 2)
+
+	r2 := ValueOr(map[string]int{"foo": 1}, "foo", 2)
+	is.Equal(r2, 1)
+}
+
 func TestPickBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -111,9 +122,9 @@ func TestEntries(t *testing.T) {
 func TestToPairs(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	r1 := ToPairs(map[string]int{"baz": 3, "qux": 4})
-	
+
 	sort.Slice(r1, func(i, j int) bool {
 		return r1[i].Value < r1[j].Value
 	})
@@ -132,7 +143,7 @@ func TestToPairs(t *testing.T) {
 func TestFromEntries(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	r1 := FromEntries([]Entry[string, int]{
 		{
 			Key:   "foo",
@@ -152,7 +163,7 @@ func TestFromEntries(t *testing.T) {
 func TestFromPairs(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	r1 := FromPairs([]Entry[string, int]{
 		{
 			Key:   "baz",
@@ -163,7 +174,7 @@ func TestFromPairs(t *testing.T) {
 			Value: 4,
 		},
 	})
-	
+
 	is.Len(r1, 2)
 	is.Equal(r1["baz"], 3)
 	is.Equal(r1["qux"], 4)
@@ -172,7 +183,7 @@ func TestFromPairs(t *testing.T) {
 func TestInvert(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	r1 := Invert(map[string]int{"a": 1, "b": 2})
 	r2 := Invert(map[string]int{"a": 1, "b": 2, "c": 1})
 

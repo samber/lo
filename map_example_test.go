@@ -27,6 +27,16 @@ func ExampleValues() {
 	// Output: [1 2]
 }
 
+func ExampleValueOr() {
+	kv := map[string]int{"foo": 1, "bar": 2}
+
+	result1 := ValueOr(kv, "foo", 42)
+	result2 := ValueOr(kv, "baz", 42)
+
+	fmt.Printf("%v %v", result1, result2)
+	// Output: 1 42
+}
+
 func ExamplePickBy() {
 	kv := map[string]int{"foo": 1, "bar": 2, "baz": 3}
 

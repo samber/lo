@@ -2,6 +2,7 @@ package lo
 
 import (
 	"math/rand"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -36,7 +37,8 @@ func RandomString(size int, charset []rune) string {
 // Substring return part of a string.
 // Play: https://go.dev/play/p/TQlxQi82Lu1
 func Substring[T ~string](str T, offset int, length uint) T {
-	size := len(str)
+	rs := []rune(str)
+	size := len(rs)
 
 	if offset < 0 {
 		offset = size + offset
@@ -53,7 +55,7 @@ func Substring[T ~string](str T, offset int, length uint) T {
 		length = uint(size - offset)
 	}
 
-	return str[offset : offset+int(length)]
+	return T(strings.Replace(string(rs[offset:offset+int(length)]), "\x00", "", -1))
 }
 
 // ChunkString returns an array of strings split into groups the length of size. If array can't be split evenly,

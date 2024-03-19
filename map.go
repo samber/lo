@@ -24,6 +24,15 @@ func Values[K comparable, V any](in map[K]V) []V {
 	return result
 }
 
+// ValueOr returns the value of the given key or the fallback value if the key is not present.
+// Play: https://go.dev/play/p/bAq9mHErB4V
+func ValueOr[K comparable, V any](in map[K]V, key K, fallback V) V {
+	if v, ok := in[key]; ok {
+		return v
+	}
+	return fallback
+}
+
 // PickBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/kdg8GR_QMmf
 func PickBy[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) map[K]V {
@@ -121,7 +130,7 @@ func ToPairs[K comparable, V any](in map[K]V) []Entry[K, V] {
 // FromEntries transforms an array of key/value pairs into a map.
 // Play: https://go.dev/play/p/oIr5KHFGCEN
 func FromEntries[K comparable, V any](entries []Entry[K, V]) map[K]V {
-	out := map[K]V{}
+	out := make(map[K]V, len(entries))
 
 	for _, v := range entries {
 		out[v.Key] = v.Value
@@ -142,7 +151,7 @@ func FromPairs[K comparable, V any](entries []Entry[K, V]) map[K]V {
 // of previous values.
 // Play: https://go.dev/play/p/rFQ4rak6iA1
 func Invert[K comparable, V comparable](in map[K]V) map[V]K {
-	out := map[V]K{}
+	out := make(map[V]K, len(in))
 
 	for k, v := range in {
 		out[v] = k
@@ -168,7 +177,7 @@ func Assign[K comparable, V any](maps ...map[K]V) map[K]V {
 // MapKeys manipulates a map keys and transforms it to a map of another type.
 // Play: https://go.dev/play/p/9_4WPIqOetJ
 func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value V, key K) R) map[R]V {
-	result := map[R]V{}
+	result := make(map[R]V, len(in))
 
 	for k, v := range in {
 		result[iteratee(v, k)] = v
@@ -180,7 +189,7 @@ func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value 
 // MapValues manipulates a map values and transforms it to a map of another type.
 // Play: https://go.dev/play/p/T_8xAfvcf0W
 func MapValues[K comparable, V any, R any](in map[K]V, iteratee func(value V, key K) R) map[K]R {
-	result := map[K]R{}
+	result := make(map[K]R, len(in))
 
 	for k, v := range in {
 		result[k] = iteratee(v, k)

@@ -6,6 +6,30 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestIsNil(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var x int
+	is.False(IsNil(x))
+
+	var k struct{}
+	is.False(IsNil(k))
+
+	var s *string
+	is.True(IsNil(s))
+
+	var i *int
+	is.True(IsNil(i))
+
+	var b *bool
+	is.True(IsNil(b))
+
+	var ifaceWithNilValue interface{} = (*string)(nil)
+	is.True(IsNil(ifaceWithNilValue))
+	is.False(ifaceWithNilValue == nil) // nolint:staticcheck
+}
+
 func TestToPtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -13,6 +37,24 @@ func TestToPtr(t *testing.T) {
 	result1 := ToPtr([]int{1, 2})
 
 	is.Equal(*result1, []int{1, 2})
+}
+
+func TestEmptyableToPtr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Nil(EmptyableToPtr(0))
+	is.Nil(EmptyableToPtr(""))
+	is.Nil(EmptyableToPtr[[]int](nil))
+	is.Nil(EmptyableToPtr[map[int]int](nil))
+	is.Nil(EmptyableToPtr[error](nil))
+
+	is.Equal(*EmptyableToPtr(42), 42)
+	is.Equal(*EmptyableToPtr("nonempty"), "nonempty")
+	is.Equal(*EmptyableToPtr([]int{}), []int{})
+	is.Equal(*EmptyableToPtr([]int{1, 2}), []int{1, 2})
+	is.Equal(*EmptyableToPtr(map[int]int{}), map[int]int{})
+	is.Equal(*EmptyableToPtr(assert.AnError), assert.AnError)
 }
 
 func TestFromPtr(t *testing.T) {

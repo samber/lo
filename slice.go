@@ -9,7 +9,7 @@ import (
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
 // Play: https://go.dev/play/p/Apjg3WeSi7K
 func Filter[V any](collection []V, predicate func(item V, index int) bool) []V {
-	result := []V{}
+	result := make([]V, 0, len(collection))
 
 	for i, item := range collection {
 		if predicate(item, i) {
@@ -51,9 +51,11 @@ func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R
 }
 
 // FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
+// The transform function can either return a slice or a `nil`, and in the `nil` case
+// no value is added to the final slice.
 // Play: https://go.dev/play/p/YSoYmQTA8-U
 func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R) []R {
-	result := []R{}
+	result := make([]R, 0, len(collection))
 
 	for i, item := range collection {
 		result = append(result, iteratee(item, i)...)
@@ -230,7 +232,7 @@ func Flatten[T any](collection [][]T) []T {
 }
 
 // Interleave round-robin alternating input slices and sequentially appending value at index into result
-// Play: https://go.dev/play/p/DDhlwrShbwe
+// Play: https://go.dev/play/p/-RJkTLQEDVt
 func Interleave[T any](collections ...[]T) []T {
 	if len(collections) == 0 {
 		return []T{}
@@ -554,7 +556,7 @@ func ReplaceAll[T comparable](collection []T, old T, new T) []T {
 func Compact[T comparable](collection []T) []T {
 	var zero T
 
-	result := []T{}
+	result := make([]T, 0, len(collection))
 
 	for _, item := range collection {
 		if item != zero {
