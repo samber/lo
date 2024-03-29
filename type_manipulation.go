@@ -2,6 +2,12 @@ package lo
 
 import "reflect"
 
+// IsNil checks if a value is nil or if it's a reference type with a nil underlying value.
+func IsNil(x any) bool {
+	defer func() { recover() }() // nolint:errcheck
+	return x == nil || reflect.ValueOf(x).IsNil()
+}
+
 // ToPtr returns a pointer copy of value.
 func ToPtr[T any](x T) *T {
 	return &x

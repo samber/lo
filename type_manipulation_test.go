@@ -6,6 +6,30 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestIsNil(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var x int
+	is.False(IsNil(x))
+
+	var k struct{}
+	is.False(IsNil(k))
+
+	var s *string
+	is.True(IsNil(s))
+
+	var i *int
+	is.True(IsNil(i))
+
+	var b *bool
+	is.True(IsNil(b))
+
+	var ifaceWithNilValue interface{} = (*string)(nil)
+	is.True(IsNil(ifaceWithNilValue))
+	is.False(ifaceWithNilValue == nil) // nolint:staticcheck
+}
+
 func TestToPtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

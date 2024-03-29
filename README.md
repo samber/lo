@@ -216,6 +216,7 @@ Conditional helpers:
 
 Type manipulation helpers:
 
+- [IsNil](#IsNil)
 - [ToPtr](#toptr)
 - [EmptyableToPtr](#emptyabletoptr)
 - [FromPtr](#fromptr)
@@ -542,7 +543,7 @@ interleaved := lo.Interleave([]int{1}, []int{2, 5, 8}, []int{3, 6}, []int{4, 7, 
 // []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 ```
 
-[[play](https://go.dev/play/p/DDhlwrShbwe)]
+[[play](https://go.dev/play/p/-RJkTLQEDVt)]
 
 ### Shuffle
 
@@ -1823,7 +1824,7 @@ str, index, ok := lo.FindLastIndexOf([]string{"foobar"}, func(i string) bool {
 
 ### FindOrElse
 
-Search an element in a slice based on a predicate. It returns element and true if element was found.
+Search an element in a slice based on a predicate. It returns the element if found or a given fallback value otherwise.
 
 ```go
 str := lo.FindOrElse([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
@@ -2047,7 +2048,7 @@ result := lo.TernaryF(false, func() string { return "a" }, func() string { retur
 // "b"
 ```
 
-Useful to avoid nil-pointer dereferencing in intializations, or avoid running unnecessary code
+Useful to avoid nil-pointer dereferencing in initializations, or avoid running unnecessary code
 
 ```go
 var s *string
@@ -2155,9 +2156,33 @@ result := lo.Switch(1).
 
 [[play](https://go.dev/play/p/TGbKUMAeRUd)]
 
+### IsNil
+
+Checks if a value is nil or if it's a reference type with a nil underlying value.
+
+```go
+var x int
+IsNil(x))
+// false
+
+var k struct{}
+IsNil(k)
+// false
+
+var i *int
+IsNil(i)
+// true
+
+var ifaceWithNilValue any = (*string)(nil)
+IsNil(ifaceWithNilValue)
+// true
+ifaceWithNilValue == nil
+// false
+```
+
 ### ToPtr
 
-Returns a pointer copy of value.
+Returns a pointer copy of the value.
 
 ```go
 ptr := lo.ToPtr("hello world")
