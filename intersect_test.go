@@ -260,3 +260,27 @@ func TestWithoutEmpty(t *testing.T) {
 	is.Equal(result2, []int{1, 2})
 	is.Equal(result3, []int{})
 }
+
+func TestSame(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	arr1 := []int{0, 1, 2, 3, 4, 5}
+	arr2 := []int{0, 1, 2, 3, 4}
+	arr3 := []int{2, 1, 5, 3, 4, 0}
+	arr4 := []int{1, 2, 3, 4, 5, 1}
+	arr5 := []int{1, 2, 3, 4, 1, 5}
+	arr6 := []int{1, 2, 3, 4, 5}
+
+	isSameResult1 := Same(arr1, arr2)
+	is.Equal(isSameResult1, false)
+
+	isSameResult2 := Same(arr1, arr3)
+	is.Equal(isSameResult2, true)
+
+	isSameResult3 := Same(arr4, arr5)
+	is.Equal(isSameResult3, true)
+
+	isSameResult4 := Same(arr4, arr6)
+	is.Equal(isSameResult4, false)
+}

@@ -183,3 +183,13 @@ func WithoutEmpty[T comparable](collection []T) []T {
 
 	return result
 }
+
+// Same returns boolean, whether the two collections are same or not.
+func Same[T comparable](list1 []T, list2 []T) bool {
+	if len(list1) != len(list2) {
+		return false
+	}
+
+	left, right := Difference(list1, list2)
+	return len(left) == 0 && len(right) == 0
+}
