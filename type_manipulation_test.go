@@ -89,6 +89,17 @@ func TestFromPtrOr(t *testing.T) {
 	is.Equal(fallbackInt, FromPtrOr(nil, fallbackInt))
 }
 
+func TestFromSlicePtr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	str1 := "foo"
+	str2 := "bar"
+	result1 := FromSlicePtr([]*string{&str1, nil, &str2})
+
+	is.Equal(result1, []string{str1, str2})
+}
+
 func TestToSlicePtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

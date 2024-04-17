@@ -43,6 +43,16 @@ func FromPtrOr[T any](x *T, fallback T) T {
 	return *x
 }
 
+// FromSlicePtr returns a slice of value filtering any nil pointers.
+func FromSlicePtr[T any](collection []*T) []T {
+	return FilterMap(collection, func(item *T, _ int) (T, bool) {
+		if item == nil {
+			return Empty[T](), false
+		}
+		return *item, true
+	})
+}
+
 // ToSlicePtr returns a slice of pointer copy of value.
 func ToSlicePtr[T any](collection []T) []*T {
 	return Map(collection, func(x T, _ int) *T {
