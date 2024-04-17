@@ -592,3 +592,14 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+func Avg[T int](collection []T) int {
+	length := len(numbers)
+	total := 0
+
+	for _, num := range numbers {
+		total += num
+	}
+
+	return total / length
+}
