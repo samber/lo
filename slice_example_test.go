@@ -456,3 +456,13 @@ func ExampleIsSortedByKey() {
 
 	// Output: true
 }
+
+func ExampleAvg() {
+	numbers := []int{1, 2, 3, 4, 5}
+
+	result := Avg(numbers)
+
+	fmt.Printf("%v", result)
+
+	// Output: 3
+}

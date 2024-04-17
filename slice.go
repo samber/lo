@@ -592,3 +592,16 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
+
+// Avg returns the average value of given numbers
+// Play: https://go.dev/play/p/2sRbBlcYSHK
+func Avg(collection []int) int {
+	length := len(collection)
+	total := 0
+
+	for _, num := range collection {
+		total += num
+	}
+
+	return total / length
+}
