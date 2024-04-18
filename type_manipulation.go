@@ -106,3 +106,14 @@ func Coalesce[T comparable](v ...T) (result T, ok bool) {
 
 	return
 }
+
+// CoalescePtr returns the first non-nil argument or nil otherwise
+func CoalescePtr[T any](v ...*T) *T {
+	for _, e := range v {
+		if e != nil {
+			return e
+		}
+	}
+
+	return nil
+}

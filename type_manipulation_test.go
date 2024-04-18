@@ -233,3 +233,28 @@ func TestCoalesce(t *testing.T) {
 	is.Equal(result10, struct1)
 	is.True(ok10)
 }
+
+func TestCoalescePtr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var (
+		one   = 1
+		two   = 2
+		three = 3
+	)
+
+	result1 := CoalescePtr[int]()
+	result2 := CoalescePtr(&one)
+	result3 := CoalescePtr(&one, nil, &two)
+	result4 := CoalescePtr(nil, &two, &three)
+	result5 := CoalescePtr[string](nil, nil, nil)
+	result6 := CoalescePtr(nil, nil, nil, &three)
+
+	is.Nil(result1)
+	is.Equal(&one, result2)
+	is.Equal(&one, result3)
+	is.Equal(&two, result4)
+	is.Nil(result5)
+	is.Equal(&three, result6)
+}
