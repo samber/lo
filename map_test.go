@@ -55,7 +55,7 @@ func TestPickByKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+	r1 := PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz", "qux"})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
 }
@@ -84,7 +84,7 @@ func TestOmitByKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+	r1 := OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz", "qux"})
 
 	is.Equal(r1, map[string]int{"bar": 2})
 }

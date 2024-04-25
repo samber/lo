@@ -49,8 +49,8 @@ func PickBy[K comparable, V any](in map[K]V, predicate func(key K, value V) bool
 // Play: https://go.dev/play/p/R1imbuci9qU
 func PickByKeys[K comparable, V any](in map[K]V, keys []K) map[K]V {
 	r := map[K]V{}
-	for k, v := range in {
-		if Contains(keys, k) {
+	for _, k := range keys {
+		if v, ok := in[k]; ok {
 			r[k] = v
 		}
 	}
@@ -86,9 +86,10 @@ func OmitBy[K comparable, V any](in map[K]V, predicate func(key K, value V) bool
 func OmitByKeys[K comparable, V any](in map[K]V, keys []K) map[K]V {
 	r := map[K]V{}
 	for k, v := range in {
-		if !Contains(keys, k) {
-			r[k] = v
-		}
+		r[k] = v
+	}
+	for _, k := range keys {
+		delete(r, k)
 	}
 	return r
 }
