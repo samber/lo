@@ -328,6 +328,178 @@ func Zip9[A any, B any, C any, D any, E any, F any, G any, H any, I any](a []A, 
 	return result
 }
 
+// ZipBy2 creates a slice of transformed elements, the first of which contains the first elements
+// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// When collections have different size, the Tuple attributes are filled with zero value.
+func ZipBy2[A any, B any, Out any](a []A, b []B, iteratee func(a A, b B) Out) []Out {
+	size := Max([]int{len(a), len(b)})
+
+	result := make([]Out, 0, size)
+
+	for index := 0; index < size; index++ {
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+
+		result = append(result, iteratee(_a, _b))
+	}
+
+	return result
+}
+
+// ZipBy3 creates a slice of transformed elements, the first of which contains the first elements
+// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// When collections have different size, the Tuple attributes are filled with zero value.
+func ZipBy3[A any, B any, C any, Out any](a []A, b []B, c []C, iteratee func(a A, b B, c C) Out) []Out {
+	size := Max([]int{len(a), len(b), len(c)})
+
+	result := make([]Out, 0, size)
+
+	for index := 0; index < size; index++ {
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+
+		result = append(result, iteratee(_a, _b, _c))
+	}
+
+	return result
+}
+
+// ZipBy4 creates a slice of transformed elements, the first of which contains the first elements
+// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// When collections have different size, the Tuple attributes are filled with zero value.
+func ZipBy4[A any, B any, C any, D any, Out any](a []A, b []B, c []C, d []D, iteratee func(a A, b B, c C, d D) Out) []Out {
+	size := Max([]int{len(a), len(b), len(c), len(d)})
+
+	result := make([]Out, 0, size)
+
+	for index := 0; index < size; index++ {
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+
+		result = append(result, iteratee(_a, _b, _c, _d))
+	}
+
+	return result
+}
+
+// ZipBy5 creates a slice of transformed elements, the first of which contains the first elements
+// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// When collections have different size, the Tuple attributes are filled with zero value.
+func ZipBy5[A any, B any, C any, D any, E any, Out any](a []A, b []B, c []C, d []D, e []E, iteratee func(a A, b B, c C, d D, e E) Out) []Out {
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e)})
+
+	result := make([]Out, 0, size)
+
+	for index := 0; index < size; index++ {
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+		_e, _ := Nth(e, index)
+
+		result = append(result, iteratee(_a, _b, _c, _d, _e))
+	}
+
+	return result
+}
+
+// ZipBy6 creates a slice of transformed elements, the first of which contains the first elements
+// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// When collections have different size, the Tuple attributes are filled with zero value.
+func ZipBy6[A any, B any, C any, D any, E any, F any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, iteratee func(a A, b B, c C, d D, e E, f F) Out) []Out {
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f)})
+
+	result := make([]Out, 0, size)
+
+	for index := 0; index < size; index++ {
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+		_e, _ := Nth(e, index)
+		_f, _ := Nth(f, index)
+
+		result = append(result, iteratee(_a, _b, _c, _d, _e, _f))
+	}
+
+	return result
+}
+
+// ZipBy7 creates a slice of transformed elements, the first of which contains the first elements
+// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// When collections have different size, the Tuple attributes are filled with zero value.
+func ZipBy7[A any, B any, C any, D any, E any, F any, G any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, iteratee func(a A, b B, c C, d D, e E, f F, g G) Out) []Out {
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f)})
+
+	result := make([]Out, 0, size)
+
+	for index := 0; index < size; index++ {
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+		_e, _ := Nth(e, index)
+		_f, _ := Nth(f, index)
+		_g, _ := Nth(g, index)
+
+		result = append(result, iteratee(_a, _b, _c, _d, _e, _f, _g))
+	}
+
+	return result
+}
+
+// ZipBy8 creates a slice of transformed elements, the first of which contains the first elements
+// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// When collections have different size, the Tuple attributes are filled with zero value.
+func ZipBy8[A any, B any, C any, D any, E any, F any, G any, H any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, iteratee func(a A, b B, c C, d D, e E, f F, g G, h H) Out) []Out {
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g)})
+
+	result := make([]Out, 0, size)
+
+	for index := 0; index < size; index++ {
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+		_e, _ := Nth(e, index)
+		_f, _ := Nth(f, index)
+		_g, _ := Nth(g, index)
+		_h, _ := Nth(h, index)
+
+		result = append(result, iteratee(_a, _b, _c, _d, _e, _f, _g, _h))
+	}
+
+	return result
+}
+
+// ZipBy9 creates a slice of transformed elements, the first of which contains the first elements
+// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// When collections have different size, the Tuple attributes are filled with zero value.
+func ZipBy9[A any, B any, C any, D any, E any, F any, G any, H any, I any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, i []I, iteratee func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) []Out {
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h), len(i)})
+
+	result := make([]Out, 0, size)
+
+	for index := 0; index < size; index++ {
+		_a, _ := Nth(a, index)
+		_b, _ := Nth(b, index)
+		_c, _ := Nth(c, index)
+		_d, _ := Nth(d, index)
+		_e, _ := Nth(e, index)
+		_f, _ := Nth(f, index)
+		_g, _ := Nth(g, index)
+		_h, _ := Nth(h, index)
+		_i, _ := Nth(i, index)
+
+		result = append(result, iteratee(_a, _b, _c, _d, _e, _f, _g, _h, _i))
+	}
+
+	return result
+}
+
 // Unzip2 accepts an array of grouped elements and creates an array regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/ciHugugvaAW
@@ -507,6 +679,190 @@ func Unzip9[A any, B any, C any, D any, E any, F any, G any, H any, I any](tuple
 		r7 = append(r7, tuple.G)
 		r8 = append(r8, tuple.H)
 		r9 = append(r9, tuple.I)
+	}
+
+	return r1, r2, r3, r4, r5, r6, r7, r8, r9
+}
+
+// UnzipBy2 iterates over a collection and creates an array regrouping the elements
+// to their pre-zip configuration.
+func UnzipBy2[In any, A any, B any](items []In, iteratee func(In) (a A, b B)) ([]A, []B) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+
+	for _, item := range items {
+		a, b := iteratee(item)
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+	}
+
+	return r1, r2
+}
+
+// UnzipBy3 iterates over a collection and creates an array regrouping the elements
+// to their pre-zip configuration.
+func UnzipBy3[In any, A any, B any, C any](items []In, iteratee func(In) (a A, b B, c C)) ([]A, []B, []C) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+
+	for _, item := range items {
+		a, b, c := iteratee(item)
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+	}
+
+	return r1, r2, r3
+}
+
+// UnzipBy4 iterates over a collection and creates an array regrouping the elements
+// to their pre-zip configuration.
+func UnzipBy4[In any, A any, B any, C any, D any](items []In, iteratee func(In) (a A, b B, c C, d D)) ([]A, []B, []C, []D) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+
+	for _, item := range items {
+		a, b, c, d := iteratee(item)
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+	}
+
+	return r1, r2, r3, r4
+}
+
+// UnzipBy5 iterates over a collection and creates an array regrouping the elements
+// to their pre-zip configuration.
+func UnzipBy5[In any, A any, B any, C any, D any, E any](items []In, iteratee func(In) (a A, b B, c C, d D, e E)) ([]A, []B, []C, []D, []E) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+	r5 := make([]E, 0, size)
+
+	for _, item := range items {
+		a, b, c, d, e := iteratee(item)
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+		r5 = append(r5, e)
+	}
+
+	return r1, r2, r3, r4, r5
+}
+
+// UnzipBy6 iterates over a collection and creates an array regrouping the elements
+// to their pre-zip configuration.
+func UnzipBy6[In any, A any, B any, C any, D any, E any, F any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F)) ([]A, []B, []C, []D, []E, []F) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+	r5 := make([]E, 0, size)
+	r6 := make([]F, 0, size)
+
+	for _, item := range items {
+		a, b, c, d, e, f := iteratee(item)
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+		r5 = append(r5, e)
+		r6 = append(r6, f)
+	}
+
+	return r1, r2, r3, r4, r5, r6
+}
+
+// UnzipBy7 iterates over a collection and creates an array regrouping the elements
+// to their pre-zip configuration.
+func UnzipBy7[In any, A any, B any, C any, D any, E any, F any, G any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G)) ([]A, []B, []C, []D, []E, []F, []G) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+	r5 := make([]E, 0, size)
+	r6 := make([]F, 0, size)
+	r7 := make([]G, 0, size)
+
+	for _, item := range items {
+		a, b, c, d, e, f, g := iteratee(item)
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+		r5 = append(r5, e)
+		r6 = append(r6, f)
+		r7 = append(r7, g)
+	}
+
+	return r1, r2, r3, r4, r5, r6, r7
+}
+
+// UnzipBy8 iterates over a collection and creates an array regrouping the elements
+// to their pre-zip configuration.
+func UnzipBy8[In any, A any, B any, C any, D any, E any, F any, G any, H any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G, h H)) ([]A, []B, []C, []D, []E, []F, []G, []H) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+	r5 := make([]E, 0, size)
+	r6 := make([]F, 0, size)
+	r7 := make([]G, 0, size)
+	r8 := make([]H, 0, size)
+
+	for _, item := range items {
+		a, b, c, d, e, f, g, h := iteratee(item)
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+		r5 = append(r5, e)
+		r6 = append(r6, f)
+		r7 = append(r7, g)
+		r8 = append(r8, h)
+	}
+
+	return r1, r2, r3, r4, r5, r6, r7, r8
+}
+
+// UnzipBy9 iterates over a collection and creates an array regrouping the elements
+// to their pre-zip configuration.
+func UnzipBy9[In any, A any, B any, C any, D any, E any, F any, G any, H any, I any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G, h H, i I)) ([]A, []B, []C, []D, []E, []F, []G, []H, []I) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+	r5 := make([]E, 0, size)
+	r6 := make([]F, 0, size)
+	r7 := make([]G, 0, size)
+	r8 := make([]H, 0, size)
+	r9 := make([]I, 0, size)
+
+	for _, item := range items {
+		a, b, c, d, e, f, g, h, i := iteratee(item)
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+		r5 = append(r5, e)
+		r6 = append(r6, f)
+		r7 = append(r7, g)
+		r8 = append(r8, h)
+		r9 = append(r9, i)
 	}
 
 	return r1, r2, r3, r4, r5, r6, r7, r8, r9
