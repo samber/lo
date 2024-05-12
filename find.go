@@ -367,6 +367,30 @@ func Last[T any](collection []T) (T, error) {
 	return collection[length-1], nil
 }
 
+// First returns the first element of a collection or error if empty.
+func First[T any](collection []T) (T, error) {
+	length := len(collection)
+
+	if length == 0 {
+		var t T
+		return t, fmt.Errorf("first: cannot extract the first element of an empty slice")
+	}
+
+	return collection[0], nil
+}
+
+// FirstOrZeroValue returns the first element of a collection or zero value if empty.
+func FirstOrZeroValue[T any](collection []T) T {
+	length := len(collection)
+
+	if length == 0 {
+		var t T
+		return t
+	}
+
+	return collection[0]
+}
+
 // Nth returns the element at index `nth` of collection. If `nth` is negative, the nth element
 // from the end is returned. An error is returned when nth is out of slice bounds.
 func Nth[T any, N constraints.Integer](collection []T, nth N) (T, error) {
