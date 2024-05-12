@@ -223,6 +223,8 @@ Supported search helpers:
 - [MaxBy](#maxby)
 - [Latest](#latest)
 - [Last](#last)
+- [First](#first)
+- [FirstOrZeroValue](#firstorzerovalue)
 - [Nth](#nth)
 - [Sample](#sample)
 - [Samples](#samples)
@@ -2241,6 +2243,25 @@ Returns the last element of a collection or error if empty.
 ```go
 last, err := lo.Last([]int{1, 2, 3})
 // 3
+```
+### First
+
+Returns the first element of a collection or error if empty.
+
+```go
+first, err := lo.First([]int{1, 2, 3})
+// 1
+```
+### FirstOrZeroValue
+
+Returns the first element of a collection or zero value if empty.
+
+```go
+first := lo.FirstOrZeroValue([]int{1, 2, 3})
+// 1
+
+first := lo.FirstOrZeroValue([]int{})
+// 0
 ```
 
 ### Nth
