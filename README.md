@@ -962,7 +962,7 @@ value := lo.ValueOr[string, int](map[string]int{"foo": 1, "bar": 2}, "baz", 42)
 
 ### _GetOrSet_
 
-Returns the value of the given key or the fallback value if the key is not present.
+Returns value of the given key or set the fallback value if not present
 
 ```go
 value := lo.GetOrSet[string, int](map[string]int{"foo": 1, "bar": 2}, "foo", 42)
