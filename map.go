@@ -33,6 +33,16 @@ func ValueOr[K comparable, V any](in map[K]V, key K, fallback V) V {
 	return fallback
 }
 
+// GetOrSet returns value of the given key or set the fallback value if not present
+// Play: https://go.dev/play/p/pvoEPxdiL8m
+func GetOrSet[K comparable, V any](in map[K]V, key K, fallback V) V {
+	if v, ok := in[key]; ok {
+		return v
+	}
+	in[key] = fallback
+	return fallback
+}
+
 // PickBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/kdg8GR_QMmf
 func PickBy[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) map[K]V {
