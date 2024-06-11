@@ -1538,7 +1538,7 @@ ch := readFromQueue()
 for {
     // read 1k items
     // wait up to 1 second
-    items, length, _, ok := lo.BufferWithTimeout(ch, 1000, 1*time.Second)
+    items, length, _, ok := lo.BufferWithTimeout(c, 1000, 1*time.Second)
 
     // do batching stuff
 
@@ -1561,7 +1561,7 @@ consumer := func(c <-chan int) {
     for {
         // read 1k items
         // wait up to 1 second
-        items, length, _, ok := lo.BufferWithTimeout(ch, 1000, 1*time.Second)
+        items, length, _, ok := lo.BufferWithTimeout(c, 1000, 1*time.Second)
 
         // do batching stuff
 
