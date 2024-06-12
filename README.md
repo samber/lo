@@ -136,6 +136,7 @@ Supported helpers for maps:
 - [MapValues](#mapvalues)
 - [MapEntries](#mapentries)
 - [MapToSlice](#maptoslice)
+- [AggregateGroups](#aggregategroups)
 
 Supported math helpers:
 
@@ -1155,6 +1156,22 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 ```
 
 [[play](https://go.dev/play/p/ZuiCZpDt6LD)]
+
+### AggregateGroups
+
+returns an object composed of keys generated from the results of the given aggregator function.
+
+```go
+in := map[string][]string{"phone": {"iphone 14", "iphone 15"}, "os": {"ios 14", "ios 15"}}
+
+out := lo.AggregateGroups(in, func(current string, key string, first bool, accumulator string) string {
+if first {
+return key + " is " + current
+}
+return accumulator + " and " + current
+})
+// map[string]string{"os": "os is ios 14 and ios 15", "phone": "phone is iphone 14 and iphone 15"}
+```
 
 ### Range / RangeFrom / RangeWithSteps
 
