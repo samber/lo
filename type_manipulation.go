@@ -45,9 +45,12 @@ func FromPtrOr[T any](x *T, fallback T) T {
 
 // ToSlicePtr returns a slice of pointer copy of value.
 func ToSlicePtr[T any](collection []T) []*T {
-	return Map(collection, func(x T, _ int) *T {
-		return &x
-	})
+	result := make([]*T, len(collection))
+
+	for i := range collection {
+		result[i] = &collection[i]
+	}
+	return result
 }
 
 // ToAnySlice returns a slice with all elements mapped to `any` type
