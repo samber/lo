@@ -100,3 +100,147 @@ func TestRuneLength(t *testing.T) {
 	is.Equal(5, RuneLength("hellô"))
 	is.Equal(6, len("hellô"))
 }
+
+func TestPascalCase(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{"", "hello_world", "HelloWorld"},
+		{"", "helloWorld", "HelloWorld"},
+		{"", "__hello_world-example string--", "HelloWorldExampleString"},
+		{"", "WITH UPPERCASE LETTERS", "WithUppercaseLetters"},
+		{"", "test123_string", "Test123String"},
+		{"", "test123string", "Test123String"},
+		{"", "", ""},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			actual := PascalCase(test.input)
+			if actual != test.expected {
+				t.Errorf("PascalCase(%q) = %q; expected %q", test.input, actual, test.expected)
+			}
+		})
+	}
+}
+
+func TestCamelCase(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{"", "hello_world", "helloWorld"},
+		{"", "helloWorld", "helloWorld"},
+		{"", "__hello_world-example string--", "helloWorldExampleString"},
+		{"", "WITH UPPERCASE LETTERS", "withUppercaseLetters"},
+		{"", "test123_string", "test123String"},
+		{"", "test123string", "test123String"},
+		{"", "", ""},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			result := CamelCase(test.input)
+			if result != test.expected {
+				t.Errorf("CamelCase(%q) = %q; want %q", test.input, result, test.expected)
+			}
+		})
+	}
+}
+
+func TestKebabCase(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{"", "hello world", "hello-world"},
+		{"", "HelloWorld", "hello-world"},
+		{"", "KebabCase", "kebab-case"},
+		{"", "already-kebab-case", "already-kebab-case"},
+		{"", "Already-Kebab-Case", "already-kebab-case"},
+		{"", "multiple   spaces", "multiple-spaces"},
+		{"", "", ""},
+		{"", "Single", "single"},
+		{"", "123_abs", "123-abs"},
+		{"", "SINGLE", "single"},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			result := KebabCase(test.input)
+			if result != test.expected {
+				t.Errorf("KebabCase(%q) = %q; want %q", test.input, result, test.expected)
+			}
+		})
+	}
+}
+
+func TestSnakeCase(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{"", "CamelCase", "camel_case"},
+		{"", "snakeCase", "snake_case"},
+		{"", "snake-case", "snake_case"},
+		{"", "SnakeCaseTest", "snake_case_test"},
+		{"", "Snake_Case_With_Underscores", "snake_case_with_underscores"},
+		{"", "lowercase", "lowercase"},
+		{"", "UPPERCASE", "uppercase"},
+		{"", "", ""},
+	}
+
+	for _, test := range tests {
+		t.Run(test.input, func(t *testing.T) {
+			got := SnakeCase(test.input)
+			if got != test.expected {
+				t.Errorf("SnakeCase(%q) = %q; want %q", test.input, got, test.expected)
+			}
+		})
+	}
+}
+
+func TestWords(t *testing.T) {
+	type args struct {
+		str string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{"", args{"CamelCase"}, []string{"Camel", "Case"}},
+		{"", args{"snakeCase"}, []string{"snake", "Case"}},
+		{"", args{"snake-case"}, []string{"snake", "case"}},
+		{"", args{"test123string"}, []string{"test", "123", "string"}},
+		{"", args{"UPPERCASE"}, []string{"UPPERCASE"}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equalf(t, tt.want, Words(tt.args.str), "words(%v)", tt.args.str)
+		})
+	}
+}
+
+func TestCapitalize(t *testing.T) {
+	type args struct {
+		word string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{"", args{"hello"}, "Hello"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equalf(t, tt.want, Capitalize(tt.args.word), "Capitalize(%v)", tt.args.word)
+		})
+	}
+}

@@ -2,7 +2,9 @@ package lo
 
 import (
 	"math/rand"
+	"regexp"
 	"strings"
+	"unicode"
 	"unicode/utf8"
 )
 
@@ -93,4 +95,61 @@ func ChunkString[T ~string](str T, size int) []T {
 // Play: https://go.dev/play/p/tuhgW_lWY8l
 func RuneLength(str string) int {
 	return utf8.RuneCountInString(str)
+}
+
+// PascalCase converts string to pascal case.
+func PascalCase(str string) string {
+	items := Words(str)
+	for i, item := range items {
+		items[i] = Capitalize(strings.ToLower(item))
+	}
+	return strings.Join(items, "")
+}
+
+// CamelCase converts string to camel case.
+func CamelCase(str string) string {
+	items := Words(str)
+	for i, item := range items {
+		item = strings.ToLower(item)
+		if i > 0 {
+			item = Capitalize(item)
+		}
+		items[i] = item
+	}
+	return strings.Join(items, "")
+}
+
+// KebabCase converts string to kebab case.
+func KebabCase(str string) string {
+	return strings.Join(Words(str), "-")
+}
+
+// SnakeCase converts string to snake case.
+func SnakeCase(str string) string {
+	return strings.Join(Words(str), "_")
+}
+
+// Words splits string into an array of its words.
+func Words(str string) []string {
+	reg := regexp.MustCompile(`([a-z])([A-Z])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])`)
+	str = reg.ReplaceAllString(str, `$1$3$5 $2$4$6`)
+	var result strings.Builder
+	for _, r := range str {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			result.WriteRune(r)
+		} else {
+			result.WriteRune(' ')
+		}
+	}
+	return strings.Fields(result.String())
+}
+
+// Capitalize converts the first character of string to upper case and the remaining to lower case.
+func Capitalize(word string) string {
+	if len(word) == 0 {
+		return word
+	}
+	runes := []rune(word)
+	runes[0] = unicode.ToUpper(runes[0])
+	return string(runes)
 }
