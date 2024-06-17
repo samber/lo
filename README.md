@@ -1297,6 +1297,72 @@ sub := len("hellô")
 
 [[play](https://go.dev/play/p/tuhgW_lWY8l)]
 
+### PascalCase
+
+Converts string to pascal case.
+
+```go
+str := lo.PascalCase("hello_world")
+// HelloWorld
+```
+
+[[play](https://go.dev/play/p/iZkdeLP9oiB)]
+
+### CamelCase
+
+Converts string to camel case.
+
+```go
+str := lo.CamelCase("hello_world")
+// helloWorld
+```
+
+[[play](https://go.dev/play/p/dtyFB58MBRp)]
+
+### KebabCase
+
+Converts string to kebab case.
+
+```go
+str := lo.KebabCase("helloWorld")
+// hello-world
+```
+
+[[play](https://go.dev/play/p/2YTuPafwECA)]
+
+### SnakeCase
+
+Converts string to snake case.
+
+```go
+str := lo.SnakeCase("HelloWorld")
+// hello_world
+```
+
+[[play](https://go.dev/play/p/QVKJG9nOnDg)]
+
+### Words
+
+Splits string into an array of its words.
+
+```go
+str := lo.Words("helloWorld")
+// []string{"hello", "world"}
+```
+
+[[play](https://go.dev/play/p/2P4zhqqq61g)]
+
+### Capitalize
+
+Converts the first character of string to upper case and the remaining to lower case.
+
+```go
+str := lo.PascalCase("heLLO")
+// Hello
+```
+
+[[play](https://go.dev/play/p/jBIJ_OFtFYp)]
+
 ### T2 -> T9
 
 Creates a tuple from a list of values.
