@@ -214,9 +214,11 @@ func TestWords(t *testing.T) {
 		args args
 		want []string
 	}{
-		{"", args{"CamelCase"}, []string{"Camel", "Case"}},
-		{"", args{"snakeCase"}, []string{"snake", "Case"}},
-		{"", args{"snake-case"}, []string{"snake", "case"}},
+		{"", args{"PascalCase"}, []string{"Pascal", "Case"}},
+		{"", args{"camelCase"}, []string{"camel", "Case"}},
+		{"", args{"snake_case"}, []string{"snake", "case"}},
+		{"", args{"kebab_case"}, []string{"kebab", "case"}},
+		{"", args{"_test text_"}, []string{"test", "text"}},
 		{"", args{"test123string"}, []string{"test", "123", "string"}},
 		{"", args{"UPPERCASE"}, []string{"UPPERCASE"}},
 	}
@@ -237,6 +239,7 @@ func TestCapitalize(t *testing.T) {
 		want string
 	}{
 		{"", args{"hello"}, "Hello"},
+		{"", args{"heLLO"}, "Hello"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
