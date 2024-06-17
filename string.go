@@ -121,12 +121,16 @@ func CamelCase(str string) string {
 
 // KebabCase converts string to kebab case.
 func KebabCase(str string) string {
-	return strings.Join(Words(str), "-")
+	return strings.Join(Map(Words(str), func(item string, index int) string {
+		return strings.ToLower(item)
+	}), "-")
 }
 
 // SnakeCase converts string to snake case.
 func SnakeCase(str string) string {
-	return strings.Join(Words(str), "_")
+	return strings.Join(Map(Words(str), func(item string, index int) string {
+		return strings.ToLower(item)
+	}), "_")
 }
 
 // Words splits string into an array of its words.
@@ -145,11 +149,17 @@ func Words(str string) []string {
 }
 
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
-func Capitalize(word string) string {
-	if len(word) == 0 {
-		return word
+func Capitalize(str string) string {
+	if len(str) == 0 {
+		return str
 	}
-	runes := []rune(word)
-	runes[0] = unicode.ToUpper(runes[0])
+	runes := []rune(str)
+	for i, r := range runes {
+		if i == 0 {
+			runes[i] = unicode.ToUpper(r)
+		} else {
+			runes[i] = unicode.ToLower(r)
+		}
+	}
 	return string(runes)
 }
