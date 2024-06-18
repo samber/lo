@@ -126,16 +126,20 @@ func CamelCase(str string) string {
 
 // KebabCase converts string to kebab case.
 func KebabCase(str string) string {
-	return strings.Join(Map(Words(str), func(item string, index int) string {
-		return strings.ToLower(item)
-	}), "-")
+	items := Words(str)
+	for i, item := range items {
+		items[i] = strings.ToLower(item)
+	}
+	return strings.Join(items, "-")
 }
 
 // SnakeCase converts string to snake case.
 func SnakeCase(str string) string {
-	return strings.Join(Map(Words(str), func(item string, index int) string {
-		return strings.ToLower(item)
-	}), "_")
+	items := Words(str)
+	for i, item := range items {
+		items[i] = strings.ToLower(item)
+	}
+	return strings.Join(items, "_")
 }
 
 // Words splits string into an array of its words.
