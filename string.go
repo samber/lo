@@ -16,6 +16,9 @@ var (
 	AlphanumericCharset     = append(LettersCharset, NumbersCharset...)
 	SpecialCharset          = []rune("!@#$%^&*()_+-=[]{}|;':\",./<>?")
 	AllCharset              = append(AlphanumericCharset, SpecialCharset...)
+
+	splitWordReg         = regexp.MustCompile(`([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`)
+	splitNumberLetterReg = regexp.MustCompile(`([0-9])([a-zA-Z])`)
 )
 
 // RandomString return a random string.
@@ -135,8 +138,9 @@ func SnakeCase(str string) string {
 
 // Words splits string into an array of its words.
 func Words(str string) []string {
-	reg := regexp.MustCompile(`([a-z])([A-Z])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])`)
-	str = reg.ReplaceAllString(str, `$1$3$5 $2$4$6`)
+	str = splitWordReg.ReplaceAllString(str, `$1$3$5$7 $2$4$6$8$9`)
+	// example: Int8Value => Int 8Value => Int 8 Value
+	str = splitNumberLetterReg.ReplaceAllString(str, "$1 $2")
 	var result strings.Builder
 	for _, r := range str {
 		if unicode.IsLetter(r) || unicode.IsDigit(r) {
