@@ -1,6 +1,8 @@
 package lo
 
 import (
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"math/rand"
 	"regexp"
 	"strings"
@@ -104,7 +106,7 @@ func RuneLength(str string) int {
 func PascalCase(str string) string {
 	items := Words(str)
 	for i, item := range items {
-		items[i] = Capitalize(strings.ToLower(item))
+		items[i] = Capitalize(item)
 	}
 	return strings.Join(items, "")
 }
@@ -154,16 +156,5 @@ func Words(str string) []string {
 
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
 func Capitalize(str string) string {
-	if len(str) == 0 {
-		return str
-	}
-	runes := []rune(str)
-	for i, r := range runes {
-		if i == 0 {
-			runes[i] = unicode.ToUpper(r)
-		} else {
-			runes[i] = unicode.ToLower(r)
-		}
-	}
-	return string(runes)
+	return cases.Title(language.English).String(str)
 }
