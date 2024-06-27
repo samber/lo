@@ -359,19 +359,6 @@ func TestLatest(t *testing.T) {
 	is.Equal(result2, time.Time{})
 }
 
-func TestLast(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	result1, err1 := Last([]int{1, 2, 3})
-	result2, err2 := Last([]int{})
-
-	is.Equal(result1, 3)
-	is.Equal(err1, nil)
-	is.Equal(result2, 0)
-	is.Equal(err2, fmt.Errorf("last: cannot extract the last element of an empty slice"))
-}
-
 func TestFirst(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -407,6 +394,45 @@ func TestFirstOr(t *testing.T) {
 	result3 := FirstOr([]string{}, "test")
 
 	is.Equal(result1, 1)
+	is.Equal(result2, 23)
+	is.Equal(result3, "test")
+}
+
+func TestLast(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1, ok1 := Last([]int{1, 2, 3})
+	result2, ok2 := Last([]int{})
+
+	is.Equal(result1, 3)
+	is.True(ok1)
+	is.Equal(result2, 0)
+	is.False(ok2)
+}
+
+func TestLastOrEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := LastOrEmpty([]int{1, 2, 3})
+	result2 := LastOrEmpty([]int{})
+	result3 := LastOrEmpty([]string{})
+
+	is.Equal(result1, 3)
+	is.Equal(result2, 0)
+	is.Equal(result3, "")
+}
+
+func TestLastOr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := LastOr([]int{1, 2, 3}, 63)
+	result2 := LastOr([]int{}, 23)
+	result3 := LastOr([]string{}, "test")
+
+	is.Equal(result1, 3)
 	is.Equal(result2, 23)
 	is.Equal(result3, "test")
 }
