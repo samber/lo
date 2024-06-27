@@ -109,3 +109,9 @@ func Coalesce[T comparable](v ...T) (result T, ok bool) {
 
 	return
 }
+
+// CoalesceOrEmpty returns the first non-empty arguments. Arguments must be comparable.
+func CoalesceOrEmpty[T comparable](v ...T) T {
+	result, _ := Coalesce(v...)
+	return result
+}

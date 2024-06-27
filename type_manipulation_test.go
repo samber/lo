@@ -233,3 +233,43 @@ func TestCoalesce(t *testing.T) {
 	is.Equal(result10, struct1)
 	is.True(ok10)
 }
+
+func TestCoalesceOrEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	newStr := func(v string) *string { return &v }
+	var nilStr *string
+	str1 := newStr("str1")
+	str2 := newStr("str2")
+
+	type structType struct {
+		field1 int
+		field2 float64
+	}
+	var zeroStruct structType
+	struct1 := structType{1, 1.0}
+	struct2 := structType{2, 2.0}
+
+	result1 := CoalesceOrEmpty[int]()
+	result2 := CoalesceOrEmpty(3)
+	result3 := CoalesceOrEmpty(nil, nilStr)
+	result4 := CoalesceOrEmpty(nilStr, str1)
+	result5 := CoalesceOrEmpty(nilStr, str1, str2)
+	result6 := CoalesceOrEmpty(str1, str2, nilStr)
+	result7 := CoalesceOrEmpty(0, 1, 2, 3)
+	result8 := CoalesceOrEmpty(zeroStruct)
+	result9 := CoalesceOrEmpty(zeroStruct, struct1)
+	result10 := CoalesceOrEmpty(zeroStruct, struct1, struct2)
+
+	is.Equal(0, result1)
+	is.Equal(3, result2)
+	is.Nil(result3)
+	is.Equal(str1, result4)
+	is.Equal(str1, result5)
+	is.Equal(str1, result6)
+	is.Equal(result7, 1)
+	is.Equal(result8, zeroStruct)
+	is.Equal(result9, struct1)
+	is.Equal(result10, struct1)
+}

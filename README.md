@@ -230,6 +230,7 @@ Type manipulation helpers:
 - [IsEmpty](#isempty)
 - [IsNotEmpty](#isnotempty)
 - [Coalesce](#coalesce)
+- [CoalesceOrEmpty](#coalesceorempty)
 
 Function helpers:
 
@@ -2477,6 +2478,23 @@ var nilStr *string
 str := "foobar"
 result, ok := lo.Coalesce(nil, nilStr, &str)
 // &"foobar" true
+```
+
+### CoalesceOrEmpty
+
+Returns the first non-empty arguments. Arguments must be comparable.
+
+```go
+result := lo.CoalesceOrEmpty(0, 1, 2, 3)
+// 1
+
+result := lo.CoalesceOrEmpty("")
+// ""
+
+var nilStr *string
+str := "foobar"
+result := lo.CoalesceOrEmpty(nil, nilStr, &str)
+// &"foobar"
 ```
 
 ### Partial
