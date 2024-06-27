@@ -388,7 +388,7 @@ func TestAssociate(t *testing.T) {
 
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
-	
+
 	type foo struct {
 		baz string
 		bar int
@@ -498,6 +498,25 @@ func TestReject(t *testing.T) {
 	})
 
 	is.Equal(r2, []string{"foo", "bar"})
+}
+
+func TestFilterReject(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	left1, right1 := FilterReject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+		return x%2 == 0
+	})
+
+	is.Equal(left1, []int{2, 4})
+	is.Equal(right1, []int{1, 3})
+
+	left2, right2 := FilterReject([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
+		return len(x) > 3
+	})
+
+	is.Equal(left2, []string{"Smith", "Domin", "Olivia"})
+	is.Equal(right2, []string{"foo", "bar"})
 }
 
 func TestCount(t *testing.T) {
@@ -626,7 +645,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
-	
+
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
