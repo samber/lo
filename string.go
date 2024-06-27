@@ -1,8 +1,12 @@
 package lo
 
 import (
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"math/rand"
+	"regexp"
 	"strings"
+	"unicode"
 	"unicode/utf8"
 )
 
@@ -14,6 +18,9 @@ var (
 	AlphanumericCharset     = append(LettersCharset, NumbersCharset...)
 	SpecialCharset          = []rune("!@#$%^&*()_+-=[]{}|;':\",./<>?")
 	AllCharset              = append(AlphanumericCharset, SpecialCharset...)
+
+	splitWordReg         = regexp.MustCompile(`([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`)
+	splitNumberLetterReg = regexp.MustCompile(`([0-9])([a-zA-Z])`)
 )
 
 // RandomString return a random string.
@@ -93,4 +100,65 @@ func ChunkString[T ~string](str T, size int) []T {
 // Play: https://go.dev/play/p/tuhgW_lWY8l
 func RuneLength(str string) int {
 	return utf8.RuneCountInString(str)
+}
+
+// PascalCase converts string to pascal case.
+func PascalCase(str string) string {
+	items := Words(str)
+	for i, item := range items {
+		items[i] = Capitalize(item)
+	}
+	return strings.Join(items, "")
+}
+
+// CamelCase converts string to camel case.
+func CamelCase(str string) string {
+	items := Words(str)
+	for i, item := range items {
+		item = strings.ToLower(item)
+		if i > 0 {
+			item = Capitalize(item)
+		}
+		items[i] = item
+	}
+	return strings.Join(items, "")
+}
+
+// KebabCase converts string to kebab case.
+func KebabCase(str string) string {
+	items := Words(str)
+	for i, item := range items {
+		items[i] = strings.ToLower(item)
+	}
+	return strings.Join(items, "-")
+}
+
+// SnakeCase converts string to snake case.
+func SnakeCase(str string) string {
+	items := Words(str)
+	for i, item := range items {
+		items[i] = strings.ToLower(item)
+	}
+	return strings.Join(items, "_")
+}
+
+// Words splits string into an array of its words.
+func Words(str string) []string {
+	str = splitWordReg.ReplaceAllString(str, `$1$3$5$7 $2$4$6$8$9`)
+	// example: Int8Value => Int 8Value => Int 8 Value
+	str = splitNumberLetterReg.ReplaceAllString(str, "$1 $2")
+	var result strings.Builder
+	for _, r := range str {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			result.WriteRune(r)
+		} else {
+			result.WriteRune(' ')
+		}
+	}
+	return strings.Fields(result.String())
+}
+
+// Capitalize converts the first character of string to upper case and the remaining to lower case.
+func Capitalize(str string) string {
+	return cases.Title(language.English).String(str)
 }
