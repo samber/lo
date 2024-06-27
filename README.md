@@ -143,6 +143,8 @@ Supported math helpers:
 - [Clamp](#clamp)
 - [Sum](#sum)
 - [SumBy](#sumby)
+- [Mean](#mean)
+- [MeanBy](#meanby)
 
 Supported helpers for strings:
 
@@ -1234,6 +1236,42 @@ sum := lo.SumBy(strings, func(item string) int {
 ```
 
 [[play](https://go.dev/play/p/Dz_a_7jN_ca)]
+
+### Mean
+
+Calculates the mean of a collection of numbers.
+
+If collection is empty 0 is returned.
+
+```go
+mean := lo.Mean([]int{2, 3, 4, 5})
+// 3
+
+mean := lo.Mean([]float64{2, 3, 4, 5})
+// 3.5
+
+mean := lo.Mean([]float64{})
+// 0
+```
+
+### MeanBy
+
+Calculates the mean of a collection of numbers using the given return value from the iteration function.
+
+If collection is empty 0 is returned.
+
+```go
+list := []string{"aa", "bbb", "cccc", "ddddd"}
+mapper := func(item string) float64 {
+    return float64(len(item))
+}
+
+mean := lo.MeanBy(list, mapper)
+// 3.5
+
+mean := lo.MeanBy([]float64{}, mapper)
+// 0
+```
 
 ### RandomString
 
