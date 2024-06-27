@@ -171,3 +171,10 @@ func BenchmarkReplace(b *testing.B) {
 		})
 	}
 }
+
+func BenchmarkToSlicePtr(b *testing.B) {
+	preallocated := make([]int, 100000)
+	for i := 0; i < b.N; i++ {
+		_ = ToSlicePtr(preallocated)
+	}
+}
