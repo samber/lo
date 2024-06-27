@@ -942,7 +942,7 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
 Creates an array of the map values.
 
 ```go
-values := lo.Values[string, int](map[string]int{"foo": 1, "bar": 2})
+values := lo.Values(map[string]int{"foo": 1, "bar": 2})
 // []int{1, 2}
 ```
 
@@ -2330,16 +2330,16 @@ Returns a pointer copy of value if it's nonzero.
 Otherwise, returns nil pointer.
 
 ```go
-ptr := lo.EmptyableToPtr[[]int](nil)
+ptr := lo.EmptyableToPtr(nil)
 // nil
 
-ptr := lo.EmptyableToPtr[string]("")
+ptr := lo.EmptyableToPtr("")
 // nil
 
-ptr := lo.EmptyableToPtr[[]int]([]int{})
+ptr := lo.EmptyableToPtr([]int{})
 // *[]int{}
 
-ptr := lo.EmptyableToPtr[string]("hello world")
+ptr := lo.EmptyableToPtr("hello world")
 // *string{"hello world"}
 ```
 
@@ -2352,7 +2352,7 @@ str := "hello world"
 value := lo.FromPtr(&str)
 // "hello world"
 
-value := lo.FromPtr[string](nil)
+value := lo.FromPtr(nil)
 // ""
 ```
 
@@ -2365,7 +2365,7 @@ str := "hello world"
 value := lo.FromPtrOr(&str, "empty")
 // "hello world"
 
-value := lo.FromPtrOr[string](nil, "empty")
+value := lo.FromPtrOr(nil, "empty")
 // "empty"
 ```
 
@@ -2475,7 +2475,7 @@ result, ok := lo.Coalesce("")
 
 var nilStr *string
 str := "foobar"
-result, ok := lo.Coalesce[*string](nil, nilStr, &str)
+result, ok := lo.Coalesce(nil, nilStr, &str)
 // &"foobar" true
 ```
 
@@ -2728,7 +2728,7 @@ ch := lo.Async2(func() (int, string) {
 Implements a Saga pattern.
 
 ```go
-transaction := NewTransaction[int]().
+transaction := NewTransaction().
     Then(
         func(state int) (int, error) {
             fmt.Println("step 1")
@@ -2855,7 +2855,7 @@ lo.Must0(lo.Contains(list, item), "'%s' must always contain '%s'", list, item)
 
 ### Try
 
-Calls the function and return false in case of error and on panic.
+Calls the function and returns false in case of error and panic.
 
 ```go
 ok := lo.Try(func() error {
@@ -2879,7 +2879,7 @@ ok := lo.Try(func() error {
 
 ### Try{0->6}
 
-The same behavior than `Try`, but callback returns 2 variables.
+The same behavior as `Try`, but the callback returns 2 variables.
 
 ```go
 ok := lo.Try2(func() (string, error) {
@@ -2920,7 +2920,7 @@ str, ok := lo.TryOr(func() error {
 
 ### TryOr{0->6}
 
-The same behavior than `TryOr`, but callback returns `X` variables.
+The same behavior as `TryOr`, but the callback returns `X` variables.
 
 ```go
 str, nbr, ok := lo.TryOr2(func() (string, int, error) {
@@ -2936,7 +2936,7 @@ str, nbr, ok := lo.TryOr2(func() (string, int, error) {
 
 ### TryWithErrorValue
 
-The same behavior than `Try`, but also returns value passed to panic.
+The same behavior as `Try`, but also returns the value passed to panic.
 
 ```go
 err, ok := lo.TryWithErrorValue(func() error {
@@ -2950,7 +2950,7 @@ err, ok := lo.TryWithErrorValue(func() error {
 
 ### TryCatch
 
-The same behavior than `Try`, but calls the catch function in case of error.
+The same behavior as `Try`, but calls the catch function in case of error.
 
 ```go
 caught := false
@@ -2969,7 +2969,7 @@ ok := lo.TryCatch(func() error {
 
 ### TryCatchWithErrorValue
 
-The same behavior than `TryWithErrorValue`, but calls the catch function in case of error.
+The same behavior as `TryWithErrorValue`, but calls the catch function in case of error.
 
 ```go
 caught := false
@@ -3013,7 +3013,7 @@ if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
 
 ## 🛩 Benchmark
 
-We executed a simple benchmark with the a dead-simple `lo.Map` loop:
+We executed a simple benchmark with a dead-simple `lo.Map` loop:
 
 See the full implementation [here](./benchmark_test.go).
 
@@ -3050,13 +3050,13 @@ ok  	github.com/samber/lo	6.657s
 
 ## 🤝 Contributing
 
-- Ping me on twitter [@samuelberthe](https://twitter.com/samuelberthe) (DMs, mentions, whatever :))
+- Ping me on Twitter [@samuelberthe](https://twitter.com/samuelberthe) (DMs, mentions, whatever :))
 - Fork the [project](https://github.com/samber/lo)
 - Fix [open issues](https://github.com/samber/lo/issues) or request new features
 
 Don't hesitate ;)
 
-Helper naming: helpers must be self explanatory and respect standards (other languages, libraries...). Feel free to suggest many names in your contributions.
+Helper naming: helpers must be self-explanatory and respect standards (other languages, libraries...). Feel free to suggest many names in your contributions.
 
 ### With Docker
 
@@ -3090,4 +3090,4 @@ Give a ⭐️ if this project helped you!
 
 Copyright © 2022 [Samuel Berthe](https://github.com/samber).
 
-This project is [MIT](./LICENSE) licensed.
+This project is under [MIT](./LICENSE) license.
