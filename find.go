@@ -367,7 +367,7 @@ func Last[T any](collection []T) (T, error) {
 	return collection[length-1], nil
 }
 
-// First returns the first element of a collection or zero if empty.
+// Returns the first element of a collection and check for availability of the first element.
 func First[T any](collection []T) (T, bool) {
 	length := len(collection)
 
@@ -379,13 +379,13 @@ func First[T any](collection []T) (T, bool) {
 	return collection[0], true
 }
 
-// FirstOrEmpty returns the first element of a collection or zero value if empty.
+// Returns the first element of a collection or zero value if empty.
 func FirstOrEmpty[T any](collection []T) T {
 	i, _ := First(collection)
 	return i
 }
 
-// FirstOr returns the first element of a collection or the fallback value that is provided as the second argument.
+// Returns the first element of a collection or the fallback value if empty.
 func FirstOr[T any](collection []T, fallback T) T {
 	i, ok := First(collection)
 	if !ok {
