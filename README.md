@@ -105,6 +105,7 @@ Supported helpers for slices:
 - [DropWhile](#dropwhile)
 - [DropRightWhile](#droprightwhile)
 - [Reject](#reject)
+- [FilterReject](#filterreject)
 - [Count](#count)
 - [CountBy](#countby)
 - [CountValues](#countvalues)
@@ -748,6 +749,18 @@ odd := lo.Reject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 ```
 
 [[play](https://go.dev/play/p/YkLMODy1WEL)]
+
+### FilterReject
+
+FilterReject mixes Filter and Reject, this method returns two slices, one for the elements of collection that predicate returns truthy for and one for the elements that predicate does not return truthy for.
+
+```go
+kept, rejected := lo.FilterReject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+    return x%2 == 0
+})
+// []int{2, 4}
+// []int{1, 3}
+```
 
 ### Count
 

@@ -431,6 +431,23 @@ func Reject[V any](collection []V, predicate func(item V, index int) bool) []V {
 	return result
 }
 
+// FilterReject mixes Filter and Reject, this method returns two slices, one for the elements of collection that
+// predicate returns truthy for and one for the elements that predicate does not return truthy for.
+func FilterReject[V any](collection []V, predicate func(V, int) bool) (kept []V, rejected []V) {
+	kept = make([]V, 0, len(collection))
+	rejected = make([]V, 0, len(collection))
+
+	for i, item := range collection {
+		if predicate(item, i) {
+			kept = append(kept, item)
+		} else {
+			rejected = append(rejected, item)
+		}
+	}
+
+	return kept, rejected
+}
+
 // Count counts the number of elements in the collection that compare equal to value.
 // Play: https://go.dev/play/p/Y3FlK54yveC
 func Count[T comparable](collection []T, value T) (count int) {
