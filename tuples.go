@@ -508,9 +508,9 @@ func Unzip2[A, B any](tuples []Tuple2[A, B]) ([]A, []B) {
 	r1 := make([]A, 0, size)
 	r2 := make([]B, 0, size)
 
-	for _, tuple := range tuples {
-		r1 = append(r1, tuple.A)
-		r2 = append(r2, tuple.B)
+	for i := range tuples {
+		r1 = append(r1, tuples[i].A)
+		r2 = append(r2, tuples[i].B)
 	}
 
 	return r1, r2
@@ -525,10 +525,10 @@ func Unzip3[A, B, C any](tuples []Tuple3[A, B, C]) ([]A, []B, []C) {
 	r2 := make([]B, 0, size)
 	r3 := make([]C, 0, size)
 
-	for _, tuple := range tuples {
-		r1 = append(r1, tuple.A)
-		r2 = append(r2, tuple.B)
-		r3 = append(r3, tuple.C)
+	for i := range tuples {
+		r1 = append(r1, tuples[i].A)
+		r2 = append(r2, tuples[i].B)
+		r3 = append(r3, tuples[i].C)
 	}
 
 	return r1, r2, r3
@@ -544,11 +544,11 @@ func Unzip4[A, B, C, D any](tuples []Tuple4[A, B, C, D]) ([]A, []B, []C, []D) {
 	r3 := make([]C, 0, size)
 	r4 := make([]D, 0, size)
 
-	for _, tuple := range tuples {
-		r1 = append(r1, tuple.A)
-		r2 = append(r2, tuple.B)
-		r3 = append(r3, tuple.C)
-		r4 = append(r4, tuple.D)
+	for i := range tuples {
+		r1 = append(r1, tuples[i].A)
+		r2 = append(r2, tuples[i].B)
+		r3 = append(r3, tuples[i].C)
+		r4 = append(r4, tuples[i].D)
 	}
 
 	return r1, r2, r3, r4
@@ -565,12 +565,12 @@ func Unzip5[A, B, C, D, E any](tuples []Tuple5[A, B, C, D, E]) ([]A, []B, []C, [
 	r4 := make([]D, 0, size)
 	r5 := make([]E, 0, size)
 
-	for _, tuple := range tuples {
-		r1 = append(r1, tuple.A)
-		r2 = append(r2, tuple.B)
-		r3 = append(r3, tuple.C)
-		r4 = append(r4, tuple.D)
-		r5 = append(r5, tuple.E)
+	for i := range tuples {
+		r1 = append(r1, tuples[i].A)
+		r2 = append(r2, tuples[i].B)
+		r3 = append(r3, tuples[i].C)
+		r4 = append(r4, tuples[i].D)
+		r5 = append(r5, tuples[i].E)
 	}
 
 	return r1, r2, r3, r4, r5
@@ -588,13 +588,13 @@ func Unzip6[A, B, C, D, E, F any](tuples []Tuple6[A, B, C, D, E, F]) ([]A, []B, 
 	r5 := make([]E, 0, size)
 	r6 := make([]F, 0, size)
 
-	for _, tuple := range tuples {
-		r1 = append(r1, tuple.A)
-		r2 = append(r2, tuple.B)
-		r3 = append(r3, tuple.C)
-		r4 = append(r4, tuple.D)
-		r5 = append(r5, tuple.E)
-		r6 = append(r6, tuple.F)
+	for i := range tuples {
+		r1 = append(r1, tuples[i].A)
+		r2 = append(r2, tuples[i].B)
+		r3 = append(r3, tuples[i].C)
+		r4 = append(r4, tuples[i].D)
+		r5 = append(r5, tuples[i].E)
+		r6 = append(r6, tuples[i].F)
 	}
 
 	return r1, r2, r3, r4, r5, r6
@@ -613,14 +613,14 @@ func Unzip7[A, B, C, D, E, F, G any](tuples []Tuple7[A, B, C, D, E, F, G]) ([]A,
 	r6 := make([]F, 0, size)
 	r7 := make([]G, 0, size)
 
-	for _, tuple := range tuples {
-		r1 = append(r1, tuple.A)
-		r2 = append(r2, tuple.B)
-		r3 = append(r3, tuple.C)
-		r4 = append(r4, tuple.D)
-		r5 = append(r5, tuple.E)
-		r6 = append(r6, tuple.F)
-		r7 = append(r7, tuple.G)
+	for i := range tuples {
+		r1 = append(r1, tuples[i].A)
+		r2 = append(r2, tuples[i].B)
+		r3 = append(r3, tuples[i].C)
+		r4 = append(r4, tuples[i].D)
+		r5 = append(r5, tuples[i].E)
+		r6 = append(r6, tuples[i].F)
+		r7 = append(r7, tuples[i].G)
 	}
 
 	return r1, r2, r3, r4, r5, r6, r7
@@ -640,15 +640,15 @@ func Unzip8[A, B, C, D, E, F, G, H any](tuples []Tuple8[A, B, C, D, E, F, G, H])
 	r7 := make([]G, 0, size)
 	r8 := make([]H, 0, size)
 
-	for _, tuple := range tuples {
-		r1 = append(r1, tuple.A)
-		r2 = append(r2, tuple.B)
-		r3 = append(r3, tuple.C)
-		r4 = append(r4, tuple.D)
-		r5 = append(r5, tuple.E)
-		r6 = append(r6, tuple.F)
-		r7 = append(r7, tuple.G)
-		r8 = append(r8, tuple.H)
+	for i := range tuples {
+		r1 = append(r1, tuples[i].A)
+		r2 = append(r2, tuples[i].B)
+		r3 = append(r3, tuples[i].C)
+		r4 = append(r4, tuples[i].D)
+		r5 = append(r5, tuples[i].E)
+		r6 = append(r6, tuples[i].F)
+		r7 = append(r7, tuples[i].G)
+		r8 = append(r8, tuples[i].H)
 	}
 
 	return r1, r2, r3, r4, r5, r6, r7, r8
@@ -669,16 +669,16 @@ func Unzip9[A, B, C, D, E, F, G, H, I any](tuples []Tuple9[A, B, C, D, E, F, G, 
 	r8 := make([]H, 0, size)
 	r9 := make([]I, 0, size)
 
-	for _, tuple := range tuples {
-		r1 = append(r1, tuple.A)
-		r2 = append(r2, tuple.B)
-		r3 = append(r3, tuple.C)
-		r4 = append(r4, tuple.D)
-		r5 = append(r5, tuple.E)
-		r6 = append(r6, tuple.F)
-		r7 = append(r7, tuple.G)
-		r8 = append(r8, tuple.H)
-		r9 = append(r9, tuple.I)
+	for i := range tuples {
+		r1 = append(r1, tuples[i].A)
+		r2 = append(r2, tuples[i].B)
+		r3 = append(r3, tuples[i].C)
+		r4 = append(r4, tuples[i].D)
+		r5 = append(r5, tuples[i].E)
+		r6 = append(r6, tuples[i].F)
+		r7 = append(r7, tuples[i].G)
+		r8 = append(r8, tuples[i].H)
+		r9 = append(r9, tuples[i].I)
 	}
 
 	return r1, r2, r3, r4, r5, r6, r7, r8, r9
@@ -691,8 +691,8 @@ func UnzipBy2[In any, A any, B any](items []In, iteratee func(In) (a A, b B)) ([
 	r1 := make([]A, 0, size)
 	r2 := make([]B, 0, size)
 
-	for _, item := range items {
-		a, b := iteratee(item)
+	for i := range items {
+		a, b := iteratee(items[i])
 		r1 = append(r1, a)
 		r2 = append(r2, b)
 	}
@@ -708,8 +708,8 @@ func UnzipBy3[In any, A any, B any, C any](items []In, iteratee func(In) (a A, b
 	r2 := make([]B, 0, size)
 	r3 := make([]C, 0, size)
 
-	for _, item := range items {
-		a, b, c := iteratee(item)
+	for i := range items {
+		a, b, c := iteratee(items[i])
 		r1 = append(r1, a)
 		r2 = append(r2, b)
 		r3 = append(r3, c)
@@ -727,8 +727,8 @@ func UnzipBy4[In any, A any, B any, C any, D any](items []In, iteratee func(In) 
 	r3 := make([]C, 0, size)
 	r4 := make([]D, 0, size)
 
-	for _, item := range items {
-		a, b, c, d := iteratee(item)
+	for i := range items {
+		a, b, c, d := iteratee(items[i])
 		r1 = append(r1, a)
 		r2 = append(r2, b)
 		r3 = append(r3, c)
@@ -748,8 +748,8 @@ func UnzipBy5[In any, A any, B any, C any, D any, E any](items []In, iteratee fu
 	r4 := make([]D, 0, size)
 	r5 := make([]E, 0, size)
 
-	for _, item := range items {
-		a, b, c, d, e := iteratee(item)
+	for i := range items {
+		a, b, c, d, e := iteratee(items[i])
 		r1 = append(r1, a)
 		r2 = append(r2, b)
 		r3 = append(r3, c)
@@ -771,8 +771,8 @@ func UnzipBy6[In any, A any, B any, C any, D any, E any, F any](items []In, iter
 	r5 := make([]E, 0, size)
 	r6 := make([]F, 0, size)
 
-	for _, item := range items {
-		a, b, c, d, e, f := iteratee(item)
+	for i := range items {
+		a, b, c, d, e, f := iteratee(items[i])
 		r1 = append(r1, a)
 		r2 = append(r2, b)
 		r3 = append(r3, c)
@@ -796,8 +796,8 @@ func UnzipBy7[In any, A any, B any, C any, D any, E any, F any, G any](items []I
 	r6 := make([]F, 0, size)
 	r7 := make([]G, 0, size)
 
-	for _, item := range items {
-		a, b, c, d, e, f, g := iteratee(item)
+	for i := range items {
+		a, b, c, d, e, f, g := iteratee(items[i])
 		r1 = append(r1, a)
 		r2 = append(r2, b)
 		r3 = append(r3, c)
@@ -823,8 +823,8 @@ func UnzipBy8[In any, A any, B any, C any, D any, E any, F any, G any, H any](it
 	r7 := make([]G, 0, size)
 	r8 := make([]H, 0, size)
 
-	for _, item := range items {
-		a, b, c, d, e, f, g, h := iteratee(item)
+	for i := range items {
+		a, b, c, d, e, f, g, h := iteratee(items[i])
 		r1 = append(r1, a)
 		r2 = append(r2, b)
 		r3 = append(r3, c)
@@ -852,8 +852,8 @@ func UnzipBy9[In any, A any, B any, C any, D any, E any, F any, G any, H any, I 
 	r8 := make([]H, 0, size)
 	r9 := make([]I, 0, size)
 
-	for _, item := range items {
-		a, b, c, d, e, f, g, h, i := iteratee(item)
+	for i := range items {
+		a, b, c, d, e, f, g, h, i := iteratee(items[i])
 		r1 = append(r1, a)
 		r2 = append(r2, b)
 		r3 = append(r3, c)

@@ -160,8 +160,8 @@ func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 	ch := make(chan T, bufferSize)
 
 	go func() {
-		for _, item := range collection {
-			ch <- item
+		for i := range collection {
+			ch <- collection[i]
 		}
 
 		close(ch)
@@ -265,13 +265,13 @@ func FanIn[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 
 	// Start an output goroutine for each input channel in upstreams.
 	wg.Add(len(upstreams))
-	for _, c := range upstreams {
-		go func(c <-chan T) {
-			for n := range c {
+	for i := range upstreams {
+		go func(index int) {
+			for n := range upstreams[index] {
 				out <- n
 			}
 			wg.Done()
-		}(c)
+		}(i)
 	}
 
 	// Start a goroutine to close out once all the output goroutines are done.
