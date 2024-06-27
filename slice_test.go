@@ -500,6 +500,29 @@ func TestReject(t *testing.T) {
 	is.Equal(r2, []string{"foo", "bar"})
 }
 
+func TestRejectMap(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := RejectMap([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
+		if x%2 == 0 {
+			return strconv.FormatInt(x, 10), false
+		}
+		return "", true
+	})
+	r2 := RejectMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+		if strings.HasSuffix(x, "pu") {
+			return "xpu", false
+		}
+		return "", true
+	})
+
+	is.Equal(len(r1), 2)
+	is.Equal(len(r2), 2)
+	is.Equal(r1, []string{"2", "4"})
+	is.Equal(r2, []string{"xpu", "xpu"})
+}
+
 func TestFilterReject(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

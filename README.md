@@ -105,6 +105,7 @@ Supported helpers for slices:
 - [DropWhile](#dropwhile)
 - [DropRightWhile](#droprightwhile)
 - [Reject](#reject)
+- [RejectMap](#rejectmap)
 - [FilterReject](#filterreject)
 - [Count](#count)
 - [CountBy](#countby)
@@ -750,9 +751,24 @@ odd := lo.Reject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 
 [[play](https://go.dev/play/p/YkLMODy1WEL)]
 
+### RejectMap
+
+The opposite of FilterMap, this method returns a slice which obtained after both filtering and mapping using the given callback function.
+
+The callback function should return two values:
+- the result of the mapping operation and
+- whether the result element should be included or not.
+
+```go
+items := lo.RejectMap([]int{1, 2, 3, 4}, func(x int, _ int) (int, bool) {
+    return x*10, x%2 == 0
+})
+// []int{10, 30}
+```
+
 ### FilterReject
 
-FilterReject mixes Filter and Reject, this method returns two slices, one for the elements of collection that predicate returns truthy for and one for the elements that predicate does not return truthy for.
+Mixes Filter and Reject, this method returns two slices, one for the elements of collection that predicate returns truthy for and one for the elements that predicate does not return truthy for.
 
 ```go
 kept, rejected := lo.FilterReject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
