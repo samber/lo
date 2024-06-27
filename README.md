@@ -165,7 +165,14 @@ Supported helpers for tuples:
 - [T2 -> T9](#t2---t9)
 - [Unpack2 -> Unpack9](#unpack2---unpack9)
 - [Zip2 -> Zip9](#zip2---zip9)
+- [ZipBy2 -> ZipBy9](#zipby2---zipby9)
 - [Unzip2 -> Unzip9](#unzip2---unzip9)
+- [UnzipBy2 -> UnzipBy9](#unzipby2---unzipby9)
+
+Supported helpers for time and duration:
+
+- [Duration](#duration)
+- [Duration0 -> Duration10](#duration0-duration10)
 
 Supported helpers for channels:
 
@@ -1506,6 +1513,44 @@ a, b := lo.UnzipBy2([]string{"hello", "john", "doe"}, func(str string) (string, 
 })
 // []string{"hello", "john", "doe"}
 // []int{5, 4, 3}
+```
+
+### Duration
+
+Returns the time taken to execute a function.
+
+```go
+duration := lo.Duration(func() {
+    // very long job
+})
+// 3s
+```
+
+### Duration0 -> Duration10
+
+Returns the time taken to execute a function.
+
+```go
+duration := lo.Duration0(func() {
+    // very long job
+})
+// 3s
+
+err, duration := lo.Duration1(func() error {
+    // very long job
+    return fmt.Errorf("an error")
+})
+// an error
+// 3s
+
+err, duration := lo.Duration3(func() (string, int, error) {
+    // very long job
+    return "hello", 42, nil
+})
+// hello
+// 42
+// nil
+// 3s
 ```
 
 ### ChannelDispatcher
