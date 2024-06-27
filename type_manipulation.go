@@ -13,6 +13,11 @@ func ToPtr[T any](x T) *T {
 	return &x
 }
 
+// Nil returns a nil pointer of type.
+func Nil[T any]() *T {
+	return nil
+}
+
 // EmptyableToPtr returns a pointer copy of value if it's nonzero.
 // Otherwise, returns nil pointer.
 func EmptyableToPtr[T any](x T) *T {

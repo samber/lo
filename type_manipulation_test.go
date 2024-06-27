@@ -39,6 +39,27 @@ func TestToPtr(t *testing.T) {
 	is.Equal(*result1, []int{1, 2})
 }
 
+func TestNil(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	nilFloat64 := Nil[float64]()
+	var expNilFloat64 *float64
+
+	nilString := Nil[string]()
+	var expNilString *string
+
+	is.Equal(expNilFloat64, nilFloat64)
+	is.Nil(nilFloat64)
+	is.NotEqual(nil, nilFloat64)
+
+	is.Equal(expNilString, nilString)
+	is.Nil(nilString)
+	is.NotEqual(nil, nilString)
+
+	is.NotEqual(nilString, nilFloat64)
+}
+
 func TestEmptyableToPtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
