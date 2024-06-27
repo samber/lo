@@ -1495,7 +1495,7 @@ Unpack is also available as a method of TupleX.
 ```go
 tuple2 := lo.T2("a", 1)
 a, b := tuple2.Unpack()
-// "a" 1
+// "a", 1
 ```
 
 [[play](https://go.dev/play/p/xVP_k0kJ96W)]
