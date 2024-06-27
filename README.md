@@ -24,7 +24,7 @@ In the future, 5 to 10 helpers will overlap with those coming into the Go standa
 
 **Why this name?**
 
-I wanted a **short name**, similar to "Lodash" and no Go package currently uses this name.
+I wanted a **short name**, similar to "Lodash" and no Go package uses this name.
 
 ![lo](img/logo-full.png)
 
@@ -54,7 +54,7 @@ import (
 Then use one of the helpers below:
 
 ```go
-names := lo.Uniq[string]([]string{"Samuel", "John", "Samuel"})
+names := lo.Uniq([]string{"Samuel", "John", "Samuel"})
 // []string{"Samuel", "John"}
 ```
 
@@ -894,7 +894,7 @@ Returns a slice of all non-zero elements.
 ```go
 in := []string{"", "foo", "", "bar", ""}
 
-slice := lo.Compact[string](in)
+slice := lo.Compact(in)
 // []string{"foo", "bar"}
 ```
 
@@ -929,7 +929,7 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 Creates an array of the map keys.
 
 ```go
-keys := lo.Keys[string, int](map[string]int{"foo": 1, "bar": 2})
+keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
 // []string{"foo", "bar"}
 ```
 
@@ -951,10 +951,10 @@ values := lo.Values[string, int](map[string]int{"foo": 1, "bar": 2})
 Returns the value of the given key or the fallback value if the key is not present.
 
 ```go
-value := lo.ValueOr[string, int](map[string]int{"foo": 1, "bar": 2}, "foo", 42)
+value := lo.ValueOr(map[string]int{"foo": 1, "bar": 2}, "foo", 42)
 // 1
 
-value := lo.ValueOr[string, int](map[string]int{"foo": 1, "bar": 2}, "baz", 42)
+value := lo.ValueOr(map[string]int{"foo": 1, "bar": 2}, "baz", 42)
 // 42
 ```
 
@@ -1089,7 +1089,7 @@ m2 := lo.Invert(map[string]int{"a": 1, "b": 2, "c": 1})
 Merges multiple maps from left to right.
 
 ```go
-mergedMaps := lo.Assign[string, int](
+mergedMaps := lo.Assign(
     map[string]int{"a": 1, "b": 2},
     map[string]int{"b": 3, "c": 4},
 )
@@ -1344,6 +1344,19 @@ tuples := lo.Zip2([]string{"a", "b"}, []int{1, 2})
 
 [[play](https://go.dev/play/p/jujaA6GaJTp)]
 
+### ZipBy2 -> ZipBy9
+
+ZipBy creates a slice of transformed elements, the first of which contains the first elements of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+
+When collections have different size, the Tuple attributes are filled with zero value.
+
+```go
+items := lo.ZipBy2([]string{"a", "b"}, []int{1, 2}, func(a string, b int) string {
+    return fmt.Sprintf("%s-%d", a, b)
+})
+// []string{"a-1", "b-2"}
+```
+
 ### Unzip2 -> Unzip9
 
 Unzip accepts an array of grouped elements and creates an array regrouping the elements to their pre-zip configuration.
@@ -1355,6 +1368,18 @@ a, b := lo.Unzip2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
 ```
 
 [[play](https://go.dev/play/p/ciHugugvaAW)]
+
+### UnzipBy2 -> UnzipBy9
+
+UnzipBy2 iterates over a collection and creates an array regrouping the elements to their pre-zip configuration.
+
+```go
+a, b := lo.UnzipBy2([]string{"hello", "john", "doe"}, func(str string) (string, int) {
+    return str, len(str)
+})
+// []string{"hello", "john", "doe"}
+// []int{5, 4, 3}
+```
 
 ### ChannelDispatcher
 
@@ -1924,6 +1949,9 @@ min := lo.Min([]int{1, 2, 3})
 
 min := lo.Min([]int{})
 // 0
+
+min := lo.Min([]time.Duration{time.Second, time.Hour})
+// 1s
 ```
 
 ### MinBy
@@ -1958,6 +1986,9 @@ max := lo.Max([]int{1, 2, 3})
 
 max := lo.Max([]int{})
 // 0
+
+max := lo.Max([]time.Duration{time.Second, time.Hour})
+// 1h
 ```
 
 ### MaxBy
@@ -2712,7 +2743,7 @@ lo.Must0(ok, "'%s' must always contain '%s'", myString, requiredChar)
 
 list := []int{0, 1, 2}
 item := 5
-lo.Must0(lo.Contains[int](list, item), "'%s' must always contain '%s'", list, item)
+lo.Must0(lo.Contains(list, item), "'%s' must always contain '%s'", list, item)
 ...
 ```
 
@@ -2949,7 +2980,7 @@ make watch-test
 
 Give a ⭐️ if this project helped you!
 
-[![support us](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/samber)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/samber?style=for-the-badge)](https://github.com/sponsors/samber)
 
 ## 📝 License
 
