@@ -228,6 +228,7 @@ Type manipulation helpers:
 - [IsEmpty](#isempty)
 - [IsNotEmpty](#isnotempty)
 - [Coalesce](#coalesce)
+- [Identity](#identity)
 
 Function helpers:
 
@@ -2439,6 +2440,17 @@ var nilStr *string
 str := "foobar"
 result, ok := lo.Coalesce[*string](nil, nilStr, &str)
 // &"foobar" true
+```
+
+### Identity
+
+Returns the argument itself.
+```go
+lo.Identity(42)
+// 42
+
+lo.Identity("foobar")
+// "foobar"
 ```
 
 ### Partial

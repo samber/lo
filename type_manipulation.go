@@ -109,3 +109,8 @@ func Coalesce[T comparable](v ...T) (result T, ok bool) {
 
 	return
 }
+
+// Identity returns the argument itself.
+func Identity[T any](v T) T {
+	return v
+}
