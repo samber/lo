@@ -367,6 +367,34 @@ func Last[T any](collection []T) (T, error) {
 	return collection[length-1], nil
 }
 
+// Returns the first element of a collection and check for availability of the first element.
+func First[T any](collection []T) (T, bool) {
+	length := len(collection)
+
+	if length == 0 {
+		var t T
+		return t, false
+	}
+
+	return collection[0], true
+}
+
+// Returns the first element of a collection or zero value if empty.
+func FirstOrEmpty[T any](collection []T) T {
+	i, _ := First(collection)
+	return i
+}
+
+// Returns the first element of a collection or the fallback value if empty.
+func FirstOr[T any](collection []T, fallback T) T {
+	i, ok := First(collection)
+	if !ok {
+		return fallback
+	}
+
+	return i
+}
+
 // Nth returns the element at index `nth` of collection. If `nth` is negative, the nth element
 // from the end is returned. An error is returned when nth is out of slice bounds.
 func Nth[T any, N constraints.Integer](collection []T, nth N) (T, error) {

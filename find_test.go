@@ -372,6 +372,45 @@ func TestLast(t *testing.T) {
 	is.Equal(err2, fmt.Errorf("last: cannot extract the last element of an empty slice"))
 }
 
+func TestFirst(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1, ok1 := First([]int{1, 2, 3})
+	result2, ok2 := First([]int{})
+
+	is.Equal(result1, 1)
+	is.Equal(ok1, true)
+	is.Equal(result2, 0)
+	is.Equal(ok2, false)
+}
+
+func TestFirstOrEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := FirstOrEmpty([]int{1, 2, 3})
+	result2 := FirstOrEmpty([]int{})
+	result3 := FirstOrEmpty([]string{})
+
+	is.Equal(result1, 1)
+	is.Equal(result2, 0)
+	is.Equal(result3, "")
+}
+
+func TestFirstOr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := FirstOr([]int{1, 2, 3}, 63)
+	result2 := FirstOr([]int{}, 23)
+	result3 := FirstOr([]string{}, "test")
+
+	is.Equal(result1, 1)
+	is.Equal(result2, 23)
+	is.Equal(result3, "test")
+}
+
 func TestNth(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
