@@ -390,6 +390,8 @@ func Sample[T any](collection []T) T {
 		return Empty[T]()
 	}
 
+	// @TODO: Upgrade to math/rand/v2 as soon as we set the minimum Go version to 1.22.
+	// bearer:disable go_gosec_crypto_weak_random
 	return collection[rand.Intn(size)]
 }
 
@@ -404,6 +406,8 @@ func Samples[T any](collection []T, count int) []T {
 	for i := 0; i < size && i < count; i++ {
 		copyLength := size - i
 
+		// @TODO: Upgrade to math/rand/v2 as soon as we set the minimum Go version to 1.22.
+		// bearer:disable go_gosec_crypto_weak_random
 		index := rand.Intn(size - i)
 		results = append(results, copy[index])
 

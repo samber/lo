@@ -20,7 +20,9 @@ var (
 	SpecialCharset          = []rune("!@#$%^&*()_+-=[]{}|;':\",./<>?")
 	AllCharset              = append(AlphanumericCharset, SpecialCharset...)
 
-	splitWordReg         = regexp.MustCompile(`([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`)
+	// bearer:disable go_lang_permissive_regex_validation
+	splitWordReg = regexp.MustCompile(`([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`)
+	// bearer:disable go_lang_permissive_regex_validation
 	splitNumberLetterReg = regexp.MustCompile(`([0-9])([a-zA-Z])`)
 )
 
@@ -37,6 +39,8 @@ func RandomString(size int, charset []rune) string {
 	b := make([]rune, size)
 	possibleCharactersCount := len(charset)
 	for i := range b {
+		// @TODO: Upgrade to math/rand/v2 as soon as we set the minimum Go version to 1.22.
+		// bearer:disable go_gosec_crypto_weak_random
 		b[i] = charset[rand.Intn(possibleCharactersCount)]
 	}
 	return string(b)
