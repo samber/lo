@@ -110,8 +110,8 @@ func RuneLength(str string) int {
 // PascalCase converts string to pascal case.
 func PascalCase(str string) string {
 	items := Words(str)
-	for i, item := range items {
-		items[i] = Capitalize(item)
+	for i := range items {
+		items[i] = Capitalize(items[i])
 	}
 	return strings.Join(items, "")
 }
@@ -132,8 +132,8 @@ func CamelCase(str string) string {
 // KebabCase converts string to kebab case.
 func KebabCase(str string) string {
 	items := Words(str)
-	for i, item := range items {
-		items[i] = strings.ToLower(item)
+	for i := range items {
+		items[i] = strings.ToLower(items[i])
 	}
 	return strings.Join(items, "-")
 }
@@ -141,8 +141,8 @@ func KebabCase(str string) string {
 // SnakeCase converts string to snake case.
 func SnakeCase(str string) string {
 	items := Words(str)
-	for i, item := range items {
-		items[i] = strings.ToLower(item)
+	for i := range items {
+		items[i] = strings.ToLower(items[i])
 	}
 	return strings.Join(items, "_")
 }

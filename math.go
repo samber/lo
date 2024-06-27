@@ -67,8 +67,8 @@ func Clamp[T constraints.Ordered](value T, min T, max T) T {
 // Play: https://go.dev/play/p/upfeJVqs4Bt
 func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
 	var sum T = 0
-	for _, val := range collection {
-		sum += val
+	for i := range collection {
+		sum += collection[i]
 	}
 	return sum
 }
@@ -77,8 +77,8 @@ func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collec
 // Play: https://go.dev/play/p/Dz_a_7jN_ca
 func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) R) R {
 	var sum R = 0
-	for _, item := range collection {
-		sum = sum + iteratee(item)
+	for i := range collection {
+		sum = sum + iteratee(collection[i])
 	}
 	return sum
 }

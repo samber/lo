@@ -11,9 +11,9 @@ import (
 func Filter[V any](collection []V, predicate func(item V, index int) bool) []V {
 	result := make([]V, 0, len(collection))
 
-	for i, item := range collection {
-		if predicate(item, i) {
-			result = append(result, item)
+	for i := range collection {
+		if predicate(collection[i], i) {
+			result = append(result, collection[i])
 		}
 	}
 
@@ -25,8 +25,8 @@ func Filter[V any](collection []V, predicate func(item V, index int) bool) []V {
 func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 	result := make([]R, len(collection))
 
-	for i, item := range collection {
-		result[i] = iteratee(item, i)
+	for i := range collection {
+		result[i] = iteratee(collection[i], i)
 	}
 
 	return result
@@ -41,8 +41,8 @@ func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
 	result := []R{}
 
-	for i, item := range collection {
-		if r, ok := callback(item, i); ok {
+	for i := range collection {
+		if r, ok := callback(collection[i], i); ok {
 			result = append(result, r)
 		}
 	}
@@ -57,8 +57,8 @@ func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R
 func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R) []R {
 	result := make([]R, 0, len(collection))
 
-	for i, item := range collection {
-		result = append(result, iteratee(item, i)...)
+	for i := range collection {
+		result = append(result, iteratee(collection[i], i)...)
 	}
 
 	return result
@@ -68,8 +68,8 @@ func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R)
 // through accumulator, where each successive invocation is supplied the return value of the previous.
 // Play: https://go.dev/play/p/R4UHXZNaaUG
 func Reduce[T any, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R {
-	for i, item := range collection {
-		initial = accumulator(initial, item, i)
+	for i := range collection {
+		initial = accumulator(initial, collection[i], i)
 	}
 
 	return initial
@@ -88,8 +88,8 @@ func ReduceRight[T any, R any](collection []T, accumulator func(agg R, item T, i
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 // Play: https://go.dev/play/p/oofyiUPRf8t
 func ForEach[T any](collection []T, iteratee func(item T, index int)) {
-	for i, item := range collection {
-		iteratee(item, i)
+	for i := range collection {
+		iteratee(collection[i], i)
 	}
 }
 
@@ -113,13 +113,13 @@ func Uniq[T comparable](collection []T) []T {
 	result := make([]T, 0, len(collection))
 	seen := make(map[T]struct{}, len(collection))
 
-	for _, item := range collection {
-		if _, ok := seen[item]; ok {
+	for i := range collection {
+		if _, ok := seen[collection[i]]; ok {
 			continue
 		}
 
-		seen[item] = struct{}{}
-		result = append(result, item)
+		seen[collection[i]] = struct{}{}
+		result = append(result, collection[i])
 	}
 
 	return result
@@ -133,15 +133,15 @@ func UniqBy[T any, U comparable](collection []T, iteratee func(item T) U) []T {
 	result := make([]T, 0, len(collection))
 	seen := make(map[U]struct{}, len(collection))
 
-	for _, item := range collection {
-		key := iteratee(item)
+	for i := range collection {
+		key := iteratee(collection[i])
 
 		if _, ok := seen[key]; ok {
 			continue
 		}
 
 		seen[key] = struct{}{}
-		result = append(result, item)
+		result = append(result, collection[i])
 	}
 
 	return result
@@ -152,10 +152,10 @@ func UniqBy[T any, U comparable](collection []T, iteratee func(item T) U) []T {
 func GroupBy[T any, U comparable](collection []T, iteratee func(item T) U) map[U][]T {
 	result := map[U][]T{}
 
-	for _, item := range collection {
-		key := iteratee(item)
+	for i := range collection {
+		key := iteratee(collection[i])
 
-		result[key] = append(result[key], item)
+		result[key] = append(result[key], collection[i])
 	}
 
 	return result
@@ -195,8 +195,8 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [
 	result := [][]T{}
 	seen := map[K]int{}
 
-	for _, item := range collection {
-		key := iteratee(item)
+	for i := range collection {
+		key := iteratee(collection[i])
 
 		resultIndex, ok := seen[key]
 		if !ok {
@@ -205,7 +205,7 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [
 			result = append(result, []T{})
 		}
 
-		result[resultIndex] = append(result[resultIndex], item)
+		result[resultIndex] = append(result[resultIndex], collection[i])
 	}
 
 	return result
@@ -240,8 +240,8 @@ func Interleave[T any](collections ...[]T) []T {
 
 	maxSize := 0
 	totalSize := 0
-	for _, c := range collections {
-		size := len(c)
+	for i := range collections {
+		size := len(collections[i])
 		totalSize += size
 		if size > maxSize {
 			maxSize = size
@@ -334,9 +334,9 @@ func RepeatBy[T any](count int, predicate func(index int) T) []T {
 func KeyBy[K comparable, V any](collection []V, iteratee func(item V) K) map[K]V {
 	result := make(map[K]V, len(collection))
 
-	for _, v := range collection {
-		k := iteratee(v)
-		result[k] = v
+	for i := range collection {
+		k := iteratee(collection[i])
+		result[k] = collection[i]
 	}
 
 	return result
@@ -349,8 +349,8 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(item V) K) map[K]V
 func Associate[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K]V {
 	result := make(map[K]V, len(collection))
 
-	for _, t := range collection {
-		k, v := transform(t)
+	for i := range collection {
+		k, v := transform(collection[i])
 		result[k] = v
 	}
 
@@ -422,9 +422,9 @@ func DropRightWhile[T any](collection []T, predicate func(item T) bool) []T {
 func Reject[V any](collection []V, predicate func(item V, index int) bool) []V {
 	result := []V{}
 
-	for i, item := range collection {
-		if !predicate(item, i) {
-			result = append(result, item)
+	for i := range collection {
+		if !predicate(collection[i], i) {
+			result = append(result, collection[i])
 		}
 	}
 
@@ -438,8 +438,8 @@ func Reject[V any](collection []V, predicate func(item V, index int) bool) []V {
 func RejectMap[T any, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
 	result := []R{}
 
-	for i, item := range collection {
-		if r, ok := callback(item, i); !ok {
+	for i := range collection {
+		if r, ok := callback(collection[i], i); !ok {
 			result = append(result, r)
 		}
 	}
@@ -453,11 +453,11 @@ func FilterReject[V any](collection []V, predicate func(V, int) bool) (kept []V,
 	kept = make([]V, 0, len(collection))
 	rejected = make([]V, 0, len(collection))
 
-	for i, item := range collection {
-		if predicate(item, i) {
-			kept = append(kept, item)
+	for i := range collection {
+		if predicate(collection[i], i) {
+			kept = append(kept, collection[i])
 		} else {
-			rejected = append(rejected, item)
+			rejected = append(rejected, collection[i])
 		}
 	}
 
@@ -467,8 +467,8 @@ func FilterReject[V any](collection []V, predicate func(V, int) bool) (kept []V,
 // Count counts the number of elements in the collection that compare equal to value.
 // Play: https://go.dev/play/p/Y3FlK54yveC
 func Count[T comparable](collection []T, value T) (count int) {
-	for _, item := range collection {
-		if item == value {
+	for i := range collection {
+		if collection[i] == value {
 			count++
 		}
 	}
@@ -479,8 +479,8 @@ func Count[T comparable](collection []T, value T) (count int) {
 // CountBy counts the number of elements in the collection for which predicate is true.
 // Play: https://go.dev/play/p/ByQbNYQQi4X
 func CountBy[T any](collection []T, predicate func(item T) bool) (count int) {
-	for _, item := range collection {
-		if predicate(item) {
+	for i := range collection {
+		if predicate(collection[i]) {
 			count++
 		}
 	}
@@ -493,8 +493,8 @@ func CountBy[T any](collection []T, predicate func(item T) bool) (count int) {
 func CountValues[T comparable](collection []T) map[T]int {
 	result := make(map[T]int)
 
-	for _, item := range collection {
-		result[item]++
+	for i := range collection {
+		result[collection[i]]++
 	}
 
 	return result
@@ -506,8 +506,8 @@ func CountValues[T comparable](collection []T) map[T]int {
 func CountValuesBy[T any, U comparable](collection []T, mapper func(item T) U) map[U]int {
 	result := make(map[U]int)
 
-	for _, item := range collection {
-		result[mapper(item)]++
+	for i := range collection {
+		result[mapper(collection[i])]++
 	}
 
 	return result
@@ -591,9 +591,9 @@ func Compact[T comparable](collection []T) []T {
 
 	result := make([]T, 0, len(collection))
 
-	for _, item := range collection {
-		if item != zero {
-			result = append(result, item)
+	for i := range collection {
+		if collection[i] != zero {
+			result = append(result, collection[i])
 		}
 	}
 
