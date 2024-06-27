@@ -2289,7 +2289,7 @@ last, ok := lo.Last([]int{})
 // false
 ```
 
-### FirstOrEmpty
+### LastOrEmpty
 
 Returns the first element of a collection or zero value if empty.
 
@@ -2300,7 +2300,7 @@ last := lo.LastOrEmpty([]int{1, 2, 3})
 last := lo.LastOrEmpty([]int{})
 // 0
 ```
-### FirstOr
+### LastOr
 
 Returns the first element of a collection or the fallback value if empty.
 
