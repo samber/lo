@@ -327,11 +327,11 @@ matching := lo.FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x str
 Manipulates a slice and transforms and flattens it to a slice of another type. The transform function can either return a slice or a `nil`, and in the `nil` case no value is added to the final slice.
 
 ```go
-lo.FlatMap([]int{0, 1, 2}, func(x int, _ int) []string {
-  return []string{
-    strconv.FormatInt(x, 10),
-    strconv.FormatInt(x, 10),
-  }
+lo.FlatMap([]int64{0, 1, 2}, func(x int64, _ int) []string {
+    return []string{
+        strconv.FormatInt(x, 10),
+        strconv.FormatInt(x, 10),
+    }
 })
 // []string{"0", "0", "1", "1", "2", "2"}
 ```
