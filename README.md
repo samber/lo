@@ -152,6 +152,13 @@ Supported helpers for strings:
 - [Substring](#substring)
 - [ChunkString](#chunkstring)
 - [RuneLength](#runelength)
+- [PascalCase](#pascalcase)
+- [CamelCase](#camelcase)
+- [KebabCase](#kebabcase)
+- [SnakeCase](#snakecase)
+- [Words](#words)
+- [Capitalize](#capitalize)
+- [Elipse](#elipse)
 
 Supported helpers for tuples:
 
@@ -1395,11 +1402,24 @@ str := lo.Words("helloWorld")
 Converts the first character of string to upper case and the remaining to lower case.
 
 ```go
-str := lo.PascalCase("heLLO")
+str := lo.Capitalize("heLLO")
 // Hello
 ```
 
-[[play](https://go.dev/play/p/jBIJ_OFtFYp)]
+### Elipse
+
+Truncates a string to a specified length and appends an ellipsis if truncated.
+
+```go
+str := lo.Elipse("Lorem Ipsum", 5)
+// Lo...
+
+str := lo.Elipse("Lorem Ipsum", 100)
+// Lorem Ipsum
+
+str := lo.Elipse("Lorem Ipsum", 3)
+// ...
+```
 
 ### T2 -> T9
 

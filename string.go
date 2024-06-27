@@ -1,13 +1,14 @@
 package lo
 
 import (
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 	"math/rand"
 	"regexp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 var (
@@ -161,4 +162,16 @@ func Words(str string) []string {
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
 func Capitalize(str string) string {
 	return cases.Title(language.English).String(str)
+}
+
+// Elipse truncates a string to a specified length and appends an ellipsis if truncated.
+func Elipse(str string, length int) string {
+	if len(str) > length {
+		if len(str) < 3 || length < 3 {
+			return "..."
+		}
+		return str[0:length-3] + "..."
+	}
+
+	return str
 }
