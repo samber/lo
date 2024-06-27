@@ -3,6 +3,7 @@ package lo
 import (
 	"fmt"
 	"math/rand"
+	"time"
 
 	"golang.org/x/exp/constraints"
 )
@@ -221,7 +222,7 @@ func FindDuplicatesBy[T any, U comparable](collection []T, iteratee func(item T)
 }
 
 // Min search the minimum value of a collection.
-// Returns zero value when collection is empty.
+// Returns zero value when the collection is empty.
 func Min[T constraints.Ordered](collection []T) T {
 	var min T
 
@@ -244,7 +245,7 @@ func Min[T constraints.Ordered](collection []T) T {
 
 // MinBy search the minimum value of a collection using the given comparison function.
 // If several values of the collection are equal to the smallest value, returns the first such value.
-// Returns zero value when collection is empty.
+// Returns zero value when the collection is empty.
 func MinBy[T any](collection []T, comparison func(a T, b T) bool) T {
 	var min T
 
@@ -265,8 +266,30 @@ func MinBy[T any](collection []T, comparison func(a T, b T) bool) T {
 	return min
 }
 
+// Earliest search the minimum time.Time of a collection.
+// Returns zero value when the collection is empty.
+func Earliest(times ...time.Time) time.Time {
+	var min time.Time
+
+	if len(times) == 0 {
+		return min
+	}
+
+	min = times[0]
+
+	for i := 1; i < len(times); i++ {
+		item := times[i]
+
+		if item.Before(min) {
+			min = item
+		}
+	}
+
+	return min
+}
+
 // Max searches the maximum value of a collection.
-// Returns zero value when collection is empty.
+// Returns zero value when the collection is empty.
 func Max[T constraints.Ordered](collection []T) T {
 	var max T
 
@@ -289,7 +312,7 @@ func Max[T constraints.Ordered](collection []T) T {
 
 // MaxBy search the maximum value of a collection using the given comparison function.
 // If several values of the collection are equal to the greatest value, returns the first such value.
-// Returns zero value when collection is empty.
+// Returns zero value when the collection is empty.
 func MaxBy[T any](collection []T, comparison func(a T, b T) bool) T {
 	var max T
 
@@ -303,6 +326,28 @@ func MaxBy[T any](collection []T, comparison func(a T, b T) bool) T {
 		item := collection[i]
 
 		if comparison(item, max) {
+			max = item
+		}
+	}
+
+	return max
+}
+
+// Latest search the maximum time.Time of a collection.
+// Returns zero value when the collection is empty.
+func Latest(times ...time.Time) time.Time {
+	var max time.Time
+
+	if len(times) == 0 {
+		return max
+	}
+
+	max = times[0]
+
+	for i := 1; i < len(times); i++ {
+		item := times[i]
+
+		if item.After(max) {
 			max = item
 		}
 	}

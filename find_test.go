@@ -297,6 +297,19 @@ func TestMinBy(t *testing.T) {
 	is.Equal(result3, "")
 }
 
+func TestEarliest(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	a := time.Now()
+	b := a.Add(time.Hour)
+	result1 := Earliest(a, b)
+	result2 := Earliest()
+
+	is.Equal(result1, a)
+	is.Equal(result2, time.Time{})
+}
+
 func TestMax(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -327,6 +340,19 @@ func TestMaxBy(t *testing.T) {
 	is.Equal(result1, "string2")
 	is.Equal(result2, "string1")
 	is.Equal(result3, "")
+}
+
+func TestLatest(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	a := time.Now()
+	b := a.Add(time.Hour)
+	result1 := Latest(a, b)
+	result2 := Latest()
+
+	is.Equal(result1, b)
+	is.Equal(result2, time.Time{})
 }
 
 func TestLast(t *testing.T) {

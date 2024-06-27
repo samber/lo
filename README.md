@@ -202,8 +202,10 @@ Supported search helpers:
 - [FindDuplicatesBy](#findduplicatesby)
 - [Min](#min)
 - [MinBy](#minby)
+- [Earliest](#earliest)
 - [Max](#max)
 - [MaxBy](#maxby)
+- [Latest](#latest)
 - [Last](#last)
 - [Nth](#nth)
 - [Sample](#sample)
@@ -2045,7 +2047,7 @@ duplicatedValues := lo.FindDuplicatesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
 
 Search the minimum value of a collection.
 
-Returns zero value when collection is empty.
+Returns zero value when the collection is empty.
 
 ```go
 min := lo.Min([]int{1, 2, 3})
@@ -2064,7 +2066,7 @@ Search the minimum value of a collection using the given comparison function.
 
 If several values of the collection are equal to the smallest value, returns the first such value.
 
-Returns zero value when collection is empty.
+Returns zero value when the collection is empty.
 
 ```go
 min := lo.MinBy([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
@@ -2078,11 +2080,22 @@ min := lo.MinBy([]string{}, func(item string, min string) bool {
 // ""
 ```
 
+### Earliest
+
+Search the minimum time.Time of a collection.
+
+Returns zero value when the collection is empty.
+
+```go
+earliest := lo.Earliest(time.Now(), time.Time{})
+// 0001-01-01 00:00:00 +0000 UTC
+```
+
 ### Max
 
 Search the maximum value of a collection.
 
-Returns zero value when collection is empty.
+Returns zero value when the collection is empty.
 
 ```go
 max := lo.Max([]int{1, 2, 3})
@@ -2101,7 +2114,7 @@ Search the maximum value of a collection using the given comparison function.
 
 If several values of the collection are equal to the greatest value, returns the first such value.
 
-Returns zero value when collection is empty.
+Returns zero value when the collection is empty.
 
 ```go
 max := lo.MaxBy([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
@@ -2113,6 +2126,17 @@ max := lo.MaxBy([]string{}, func(item string, max string) bool {
     return len(item) > len(max)
 })
 // ""
+```
+
+### Latest
+
+Search the maximum time.Time of a collection.
+
+Returns zero value when the collection is empty.
+
+```go
+latest := lo.Latest([]time.Time{time.Now(), time.Time{}})
+// 2023-04-01 01:02:03 +0000 UTC
 ```
 
 ### Last
