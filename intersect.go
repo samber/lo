@@ -141,6 +141,38 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 	return left, right
 }
 
+// Symmetric difference returns the elements presents in one collection
+// but not in the other
+// Order is not preserved
+func SymmetricDifference[T comparable](list1 []T, list2 []T) []T {
+	diff := []T{}
+
+	seenLeft := map[T]struct{}{}
+	seenRight := map[T]struct{}{}
+
+	for _, elem := range list1 {
+		seenLeft[elem] = struct{}{}
+	}
+
+	for _, elem := range list2 {
+		seenRight[elem] = struct{}{}
+	}
+
+	for _, elem := range list1 {
+		if _, ok := seenRight[elem]; !ok {
+			diff = append(diff, elem)
+		}
+	}
+
+	for _, elem := range list2 {
+		if _, ok := seenLeft[elem]; !ok {
+			diff = append(diff, elem)
+		}
+	}
+
+	return diff
+}
+
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
 func Union[T comparable](lists ...[]T) []T {
