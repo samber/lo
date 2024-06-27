@@ -355,19 +355,7 @@ func Latest(times ...time.Time) time.Time {
 	return max
 }
 
-// Last returns the last element of a collection or error if empty.
-func Last[T any](collection []T) (T, error) {
-	length := len(collection)
-
-	if length == 0 {
-		var t T
-		return t, fmt.Errorf("last: cannot extract the last element of an empty slice")
-	}
-
-	return collection[length-1], nil
-}
-
-// Returns the first element of a collection and check for availability of the first element.
+// First returns the first element of a collection and check for availability of the first element.
 func First[T any](collection []T) (T, bool) {
 	length := len(collection)
 
@@ -379,15 +367,43 @@ func First[T any](collection []T) (T, bool) {
 	return collection[0], true
 }
 
-// Returns the first element of a collection or zero value if empty.
+// FirstOrEmpty returns the first element of a collection or zero value if empty.
 func FirstOrEmpty[T any](collection []T) T {
 	i, _ := First(collection)
 	return i
 }
 
-// Returns the first element of a collection or the fallback value if empty.
+// FirstOr returns the first element of a collection or the fallback value if empty.
 func FirstOr[T any](collection []T, fallback T) T {
 	i, ok := First(collection)
+	if !ok {
+		return fallback
+	}
+
+	return i
+}
+
+// Last returns the last element of a collection or error if empty.
+func Last[T any](collection []T) (T, bool) {
+	length := len(collection)
+
+	if length == 0 {
+		var t T
+		return t, false
+	}
+
+	return collection[length-1], true
+}
+
+// Returns the last element of a collection or zero value if empty.
+func LastOrEmpty[T any](collection []T) T {
+	i, _ := Last(collection)
+	return i
+}
+
+// LastOr returns the last element of a collection or the fallback value if empty.
+func LastOr[T any](collection []T, fallback T) T {
+	i, ok := Last(collection)
 	if !ok {
 		return fallback
 	}

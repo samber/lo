@@ -222,10 +222,12 @@ Supported search helpers:
 - [Max](#max)
 - [MaxBy](#maxby)
 - [Latest](#latest)
-- [Last](#last)
 - [First](#first)
 - [FirstOrEmpty](#FirstOrEmpty)
 - [FirstOr](#FirstOr)
+- [Last](#last)
+- [LastOrEmpty](#LastOrEmpty)
+- [LastOr](#LastOr)
 - [Nth](#nth)
 - [Sample](#sample)
 - [Samples](#samples)
@@ -2238,14 +2240,6 @@ latest := lo.Latest([]time.Time{time.Now(), time.Time{}})
 // 2023-04-01 01:02:03 +0000 UTC
 ```
 
-### Last
-
-Returns the last element of a collection or error if empty.
-
-```go
-last, err := lo.Last([]int{1, 2, 3})
-// 3
-```
 ### First
 
 Returns the first element of a collection and check for availability of the first element.
@@ -2257,6 +2251,7 @@ first, ok := lo.First([]int{1, 2, 3})
 first, ok := lo.First([]int{})
 // 0, false
 ```
+
 ### FirstOrEmpty
 
 Returns the first element of a collection or zero value if empty.
@@ -2277,6 +2272,43 @@ first := lo.FirstOr([]int{1, 2, 3}, 245)
 // 1
 
 first := lo.FirstOr([]int{}, 31)
+// 31
+```
+
+### Last
+
+Returns the last element of a collection or error if empty.
+
+```go
+last, ok := lo.Last([]int{1, 2, 3})
+// 3
+// true
+
+last, ok := lo.Last([]int{})
+// 0
+// false
+```
+
+### FirstOrEmpty
+
+Returns the first element of a collection or zero value if empty.
+
+```go
+last := lo.LastOrEmpty([]int{1, 2, 3})
+// 3
+
+last := lo.LastOrEmpty([]int{})
+// 0
+```
+### FirstOr
+
+Returns the first element of a collection or the fallback value if empty.
+
+```go
+last := lo.LastOr([]int{1, 2, 3}, 245)
+// 3
+
+last := lo.LastOr([]int{}, 31)
 // 31
 ```
 
