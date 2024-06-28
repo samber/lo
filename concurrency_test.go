@@ -225,8 +225,8 @@ func TestWaitFor(t *testing.T) {
 	is.Equal(1, iter)
 	is.Equal(time.Duration(0), duration)
 	is.True(ok)
-	iter, duration, ok = WaitFor(alwaysFalse, 10*time.Millisecond, time.Millisecond)
-	is.Equal(10, iter)
+	iter, duration, ok = WaitFor(alwaysFalse, 10*time.Millisecond, 4*time.Millisecond)
+	is.Equal(3, iter)
 	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
 	is.False(ok)
 
