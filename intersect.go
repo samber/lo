@@ -144,8 +144,14 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
 func Union[T comparable](lists ...[]T) []T {
-	result := []T{}
-	seen := map[T]struct{}{}
+	var capLen int
+
+	for _, list := range lists {
+		capLen += len(list)
+	}
+
+	result := make([]T, 0, capLen)
+	seen := make(map[T]struct{}, capLen)
 
 	for i := range lists {
 		for j := range lists[i] {
