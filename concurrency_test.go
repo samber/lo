@@ -251,7 +251,7 @@ func TestWaitFor(t *testing.T) {
 		return false
 	}
 
-	iter, duration, ok = WaitFor(alwaysFalse, 10*time.Millisecond, time.Millisecond)
+	iter, duration, ok = WaitFor(alwaysFalse, 10*time.Millisecond, 1050*time.Microsecond)
 	is.Equal(10, iter)
 	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
 	is.False(ok)
