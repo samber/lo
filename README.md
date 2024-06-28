@@ -1002,6 +1002,8 @@ exists := lo.HasKey(map[string]int{"foo": 1, "bar": 2}, "baz")
 // false
 ```
 
+[[play](https://go.dev/play/p/aVwubIvECqS)]
+
 ### Values
 
 Creates an array of the map values.
