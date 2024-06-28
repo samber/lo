@@ -801,3 +801,18 @@ func TestIsSortedByKey(t *testing.T) {
 		return ret
 	}))
 }
+
+func TestJoin(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := Join([]int{1, 2, 3}, "-")
+	r2 := Join([]float64{1.1, 2.2, 3.3}, "-")
+	r3 := Join([]bool{true, false}, "-")
+	r4 := Join([]string{"a", "b", "c"}, "-")
+
+	is.Equal(r1, "1-2-3")
+	is.Equal(r2, "1.1-2.2-3.3")
+	is.Equal(r3, "true-false")
+	is.Equal(r4, "a-b-c")
+}

@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"fmt"
 	"math/rand"
 
 	"golang.org/x/exp/constraints"
@@ -624,4 +625,20 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 	}
 
 	return true
+}
+
+// Join converts all elements in array into a string separated by separator.
+func Join[T any](collection []T, separator string) string {
+	size := len(collection)
+	result := ""
+
+	for i := 0; i < size; i++ {
+		if i == size-1 {
+			result += fmt.Sprintf("%v", collection[i])
+		} else {
+			result += fmt.Sprintf("%v%v", collection[i], separator)
+		}
+	}
+
+	return result
 }
