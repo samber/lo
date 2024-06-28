@@ -13,6 +13,7 @@ func Keys[K comparable, V any](in map[K]V) []K {
 }
 
 // HasKey returns whether the given key exists.
+// Play: https://go.dev/play/p/aVwubIvECqS
 func HasKey[K comparable, V any](in map[K]V, key K) bool {
 	_, ok := in[key]
 	return ok
