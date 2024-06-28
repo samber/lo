@@ -122,6 +122,7 @@ Supported helpers for slices:
 Supported helpers for maps:
 
 - [Keys](#keys)
+- [HasKey](#HasKey)
 - [ValueOr](#valueor)
 - [Values](#values)
 - [PickBy](#pickby)
@@ -988,6 +989,20 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
 ```
 
 [[play](https://go.dev/play/p/Uu11fHASqrU)]
+
+### HasKey
+
+Returns whether the given key exists.
+
+```go
+exists := lo.HasKey(map[string]int{"foo": 1, "bar": 2}, "foo")
+// true
+
+exists := lo.HasKey(map[string]int{"foo": 1, "bar": 2}, "baz")
+// false
+```
+
+[[play](https://go.dev/play/p/aVwubIvECqS)]
 
 ### Values
 

@@ -12,6 +12,13 @@ func Keys[K comparable, V any](in map[K]V) []K {
 	return result
 }
 
+// HasKey returns whether the given key exists.
+// Play: https://go.dev/play/p/aVwubIvECqS
+func HasKey[K comparable, V any](in map[K]V, key K) bool {
+	_, ok := in[key]
+	return ok
+}
+
 // Values creates an array of the map values.
 // Play: https://go.dev/play/p/nnRTQkzQfF6
 func Values[K comparable, V any](in map[K]V) []V {
