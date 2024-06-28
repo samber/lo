@@ -625,36 +625,3 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 
 	return true
 }
-
-// CircularSelection returns one element per index of a slice as if it were a circular linked list. Returns empty element if the slice is empty.
-// Play: https://go.dev/play/p/0IafnCqCVTu
-func CircularSelection[T any](collection []T, index int) T {
-	size := len(collection)
-	if size == 0 {
-		var zero T
-		return zero
-	}
-
-	index = index % size
-	if index < 0 {
-		index += size
-	}
-
-	return collection[index]
-}
-
-// CircularSelect returns one element per index of a slice as if it were a circular linked list. Panics if the slice is empty.
-// Play: https://go.dev/play/p/kbCF9f0TtvI
-func CircularSelect[T any](collection []T, index int) T {
-	size := len(collection)
-	if size == 0 {
-		panic("Collection is empty")
-	}
-
-	index = index % size
-	if index < 0 {
-		index += size
-	}
-
-	return collection[index]
-}

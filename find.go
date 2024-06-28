@@ -463,3 +463,19 @@ func Samples[T any](collection []T, count int) []T {
 
 	return results
 }
+
+// Circular returns the element at index of a slice as if it were a circular linked list. Returns error if the slice is empty.
+func Circular[T any](collection []T, index int) (T, error) {
+	length := len(collection)
+	if length == 0 {
+		var zero T
+		return zero, fmt.Errorf("circular: empty slice")
+	}
+
+	index = index % length
+	if index < 0 {
+		index += length
+	}
+
+	return collection[index], nil
+}
