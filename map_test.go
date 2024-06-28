@@ -19,6 +19,17 @@ func TestKeys(t *testing.T) {
 	is.Equal(r1, []string{"bar", "foo"})
 }
 
+func TestHasKey(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := HasKey(map[string]int{"foo": 1}, "bar")
+	is.False(r1)
+
+	r2 := HasKey(map[string]int{"foo": 1}, "foo")
+	is.True(r2)
+}
+
 func TestValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
