@@ -2854,17 +2854,17 @@ iterations, duration, ok := lo.WaitFor(alwaysTrue, 10*time.Millisecond, time.Mil
 // 0ms
 // true
 
-ok := lo.WaitFor(alwaysFalse, 10*time.Millisecond, time.Millisecond)
+iterations, duration, ok := lo.WaitFor(alwaysFalse, 10*time.Millisecond, time.Millisecond)
 // 10
 // 10ms
 // false
 
-ok := lo.WaitFor(laterTrue, 10*time.Millisecond, time.Millisecond)
+iterations, duration, ok := lo.WaitFor(laterTrue, 10*time.Millisecond, time.Millisecond)
 // 7
 // 7ms
 // true
 
-ok := lo.WaitFor(laterTrue, 10*time.Millisecond, 5*time.Millisecond)
+iterations, duration, ok := lo.WaitFor(laterTrue, 10*time.Millisecond, 5*time.Millisecond)
 // 2
 // 10ms
 // false
