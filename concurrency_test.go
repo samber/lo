@@ -212,3 +212,47 @@ func TestAsyncX(t *testing.T) {
 		}
 	}
 }
+
+func TestWaitFor(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	alwaysTrue := func(i int) bool { return true }
+	alwaysFalse := func(i int) bool { return false }
+
+	iter, duration, ok := WaitFor(alwaysTrue, 10*time.Millisecond, time.Millisecond)
+	is.Equal(1, iter)
+	is.Equal(time.Duration(0), duration)
+	is.True(ok)
+	iter, duration, ok = WaitFor(alwaysFalse, 10*time.Millisecond, 4*time.Millisecond)
+	is.Equal(3, iter)
+	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
+	is.False(ok)
+
+	laterTrue := func(i int) bool {
+		return i >= 5
+	}
+
+	iter, duration, ok = WaitFor(laterTrue, 10*time.Millisecond, time.Millisecond)
+	is.Equal(6, iter)
+	is.InEpsilon(6*time.Millisecond, duration, float64(500*time.Microsecond))
+	is.True(ok)
+	iter, duration, ok = WaitFor(laterTrue, 10*time.Millisecond, 5*time.Millisecond)
+	is.Equal(2, iter)
+	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
+	is.False(ok)
+
+	counter := 0
+
+	alwaysFalse = func(i int) bool {
+		is.Equal(counter, i)
+		counter++
+		return false
+	}
+
+	iter, duration, ok = WaitFor(alwaysFalse, 10*time.Millisecond, time.Millisecond)
+	is.Equal(10, iter)
+	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
+	is.False(ok)
+}
