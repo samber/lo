@@ -983,11 +983,19 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 
 ### Splice
 
-Insert multiple elements at index i.
+Splice inserts multiple elements at index i. A negative index counts back from the end of the slice. The helper is protected against overflow errors.
 
 ```go
-result := lo.Splice([]string{"a", "d"}, 1, "b", "c")
-// []string{"a", "b", "c", "d"}
+result := lo.Splice([]string{"a", "b"}, 1, "1", "2")
+// []string{"a", "1", "2", "b"}
+
+// negative
+result = lo.Splice([]string{"a", "b"}, -1, "1", "2")
+// []string{"a", "1", "2", "b"}
+
+// overflow
+result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
+// []string{"a", "b", "1", "2"}
 ```
 
 [[play](https://go.dev/play/p/G5_GhkeSUBA)]
