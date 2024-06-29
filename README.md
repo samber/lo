@@ -983,14 +983,14 @@ slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
 
 ### Splice
 
-Splice multiple elements at index i.
+Insert multiple elements at index i.
 
 ```go
 result := lo.Splice([]string{"a", "d"}, 1, "b", "c")
 // []string{"a", "b", "c", "d"}
 ```
 
-[[play](https://go.dev/play/p/8gXdkTovsIC)]
+[[play](https://go.dev/play/p/G5_GhkeSUBA)]
 
 ### Keys
 
