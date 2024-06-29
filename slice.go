@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"sort"
 	"math/rand"
 
 	"golang.org/x/exp/constraints"
