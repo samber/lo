@@ -91,8 +91,8 @@ func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 }
 
 // Intersect returns the intersection between two collections.
-func Intersect[T comparable](list1 []T, list2 []T) []T {
-	result := []T{}
+func Intersect[T comparable, Slice ~[]T](list1 Slice, list2 Slice) Slice {
+	result := Slice{}
 	seen := map[T]struct{}{}
 
 	for i := range list1 {
@@ -111,9 +111,9 @@ func Intersect[T comparable](list1 []T, list2 []T) []T {
 // Difference returns the difference between two collections.
 // The first value is the collection of element absent of list2.
 // The second value is the collection of element absent of list1.
-func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
-	left := []T{}
-	right := []T{}
+func Difference[T comparable, Slice ~[]T](list1 Slice, list2 Slice) (Slice, Slice) {
+	left := Slice{}
+	right := Slice{}
 
 	seenLeft := map[T]struct{}{}
 	seenRight := map[T]struct{}{}
@@ -143,14 +143,14 @@ func Difference[T comparable](list1 []T, list2 []T) ([]T, []T) {
 
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
-func Union[T comparable](lists ...[]T) []T {
+func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	var capLen int
 
 	for _, list := range lists {
 		capLen += len(list)
 	}
 
-	result := make([]T, 0, capLen)
+	result := make(Slice, 0, capLen)
 	seen := make(map[T]struct{}, capLen)
 
 	for i := range lists {
@@ -166,8 +166,8 @@ func Union[T comparable](lists ...[]T) []T {
 }
 
 // Without returns slice excluding all given values.
-func Without[T comparable](collection []T, exclude ...T) []T {
-	result := make([]T, 0, len(collection))
+func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
+	result := make(Slice, 0, len(collection))
 	for i := range collection {
 		if !Contains(exclude, collection[i]) {
 			result = append(result, collection[i])
@@ -177,15 +177,8 @@ func Without[T comparable](collection []T, exclude ...T) []T {
 }
 
 // WithoutEmpty returns slice excluding empty values.
-func WithoutEmpty[T comparable](collection []T) []T {
-	var empty T
-
-	result := make([]T, 0, len(collection))
-	for i := range collection {
-		if collection[i] != empty {
-			result = append(result, collection[i])
-		}
-	}
-
-	return result
+//
+// Deprecated: Use lo.Compact instead.
+func WithoutEmpty[T comparable, Slice ~[]T](collection Slice) Slice {
+	return Compact(collection)
 }

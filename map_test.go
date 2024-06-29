@@ -60,6 +60,11 @@ func TestPickBy(t *testing.T) {
 	})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := PickBy(before, func(key string, value int) bool { return true })
+	is.IsType(after, before, "type preserved")
 }
 
 func TestPickByKeys(t *testing.T) {
@@ -69,6 +74,11 @@ func TestPickByKeys(t *testing.T) {
 	r1 := PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz", "qux"})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := PickByKeys(before, []string{"foobar", "baz"})
+	is.IsType(after, before, "type preserved")
 }
 
 func TestPickByValues(t *testing.T) {
@@ -78,6 +88,11 @@ func TestPickByValues(t *testing.T) {
 	r1 := PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := PickByValues(before, []int{0, 3})
+	is.IsType(after, before, "type preserved")
 }
 
 func TestOmitBy(t *testing.T) {
@@ -89,6 +104,11 @@ func TestOmitBy(t *testing.T) {
 	})
 
 	is.Equal(r1, map[string]int{"bar": 2})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := PickBy(before, func(key string, value int) bool { return true })
+	is.IsType(after, before, "type preserved")
 }
 
 func TestOmitByKeys(t *testing.T) {
@@ -98,6 +118,11 @@ func TestOmitByKeys(t *testing.T) {
 	r1 := OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz", "qux"})
 
 	is.Equal(r1, map[string]int{"bar": 2})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := OmitByKeys(before, []string{"foobar", "baz"})
+	is.IsType(after, before, "type preserved")
 }
 
 func TestOmitByValues(t *testing.T) {
@@ -107,6 +132,11 @@ func TestOmitByValues(t *testing.T) {
 	r1 := OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
 	is.Equal(r1, map[string]int{"bar": 2})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := OmitByValues(before, []int{0, 3})
+	is.IsType(after, before, "type preserved")
 }
 
 func TestEntries(t *testing.T) {
@@ -211,6 +241,11 @@ func TestAssign(t *testing.T) {
 
 	is.Len(result1, 3)
 	is.Equal(result1, map[string]int{"a": 1, "b": 3, "c": 4})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := Assign(before, before)
+	is.IsType(after, before, "type preserved")
 }
 
 func TestMapKeys(t *testing.T) {

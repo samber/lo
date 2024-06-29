@@ -42,8 +42,8 @@ func ValueOr[K comparable, V any](in map[K]V, key K, fallback V) V {
 
 // PickBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/kdg8GR_QMmf
-func PickBy[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) map[K]V {
-	r := map[K]V{}
+func PickBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) bool) Map {
+	r := Map{}
 	for k := range in {
 		if predicate(k, in[k]) {
 			r[k] = in[k]
@@ -54,8 +54,8 @@ func PickBy[K comparable, V any](in map[K]V, predicate func(key K, value V) bool
 
 // PickByKeys returns same map type filtered by given keys.
 // Play: https://go.dev/play/p/R1imbuci9qU
-func PickByKeys[K comparable, V any](in map[K]V, keys []K) map[K]V {
-	r := map[K]V{}
+func PickByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
+	r := Map{}
 	for i := range keys {
 		if v, ok := in[keys[i]]; ok {
 			r[keys[i]] = v
@@ -66,8 +66,8 @@ func PickByKeys[K comparable, V any](in map[K]V, keys []K) map[K]V {
 
 // PickByValues returns same map type filtered by given values.
 // Play: https://go.dev/play/p/1zdzSvbfsJc
-func PickByValues[K comparable, V comparable](in map[K]V, values []V) map[K]V {
-	r := map[K]V{}
+func PickByValues[K comparable, V comparable, Map ~map[K]V](in Map, values []V) Map {
+	r := Map{}
 	for k := range in {
 		if Contains(values, in[k]) {
 			r[k] = in[k]
@@ -78,8 +78,8 @@ func PickByValues[K comparable, V comparable](in map[K]V, values []V) map[K]V {
 
 // OmitBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/EtBsR43bdsd
-func OmitBy[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) map[K]V {
-	r := map[K]V{}
+func OmitBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) bool) Map {
+	r := Map{}
 	for k := range in {
 		if !predicate(k, in[k]) {
 			r[k] = in[k]
@@ -90,8 +90,8 @@ func OmitBy[K comparable, V any](in map[K]V, predicate func(key K, value V) bool
 
 // OmitByKeys returns same map type filtered by given keys.
 // Play: https://go.dev/play/p/t1QjCrs-ysk
-func OmitByKeys[K comparable, V any](in map[K]V, keys []K) map[K]V {
-	r := map[K]V{}
+func OmitByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
+	r := Map{}
 	for k := range in {
 		r[k] = in[k]
 	}
@@ -103,8 +103,8 @@ func OmitByKeys[K comparable, V any](in map[K]V, keys []K) map[K]V {
 
 // OmitByValues returns same map type filtered by given values.
 // Play: https://go.dev/play/p/9UYZi-hrs8j
-func OmitByValues[K comparable, V comparable](in map[K]V, values []V) map[K]V {
-	r := map[K]V{}
+func OmitByValues[K comparable, V comparable, Map ~map[K]V](in Map, values []V) Map {
+	r := Map{}
 	for k := range in {
 		if !Contains(values, in[k]) {
 			r[k] = in[k]
@@ -170,8 +170,8 @@ func Invert[K comparable, V comparable](in map[K]V) map[V]K {
 
 // Assign merges multiple maps from left to right.
 // Play: https://go.dev/play/p/VhwfJOyxf5o
-func Assign[K comparable, V any](maps ...map[K]V) map[K]V {
-	out := map[K]V{}
+func Assign[K comparable, V any, Map ~map[K]V](maps ...Map) Map {
+	out := Map{}
 
 	for i := range maps {
 		for k := range maps[i] {

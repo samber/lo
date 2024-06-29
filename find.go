@@ -109,7 +109,7 @@ func FindKeyBy[K comparable, V any](object map[K]V, predicate func(key K, value 
 
 // FindUniques returns a slice with all the unique elements of the collection.
 // The order of result values is determined by the order they occur in the collection.
-func FindUniques[T comparable](collection []T) []T {
+func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
 	isDupl := make(map[T]bool, len(collection))
 
 	for i := range collection {
@@ -121,7 +121,7 @@ func FindUniques[T comparable](collection []T) []T {
 		}
 	}
 
-	result := make([]T, 0, len(collection)-len(isDupl))
+	result := make(Slice, 0, len(collection)-len(isDupl))
 
 	for i := range collection {
 		if duplicated := isDupl[collection[i]]; !duplicated {
@@ -135,7 +135,7 @@ func FindUniques[T comparable](collection []T) []T {
 // FindUniquesBy returns a slice with all the unique elements of the collection.
 // The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
-func FindUniquesBy[T any, U comparable](collection []T, iteratee func(item T) U) []T {
+func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
 	for i := range collection {
@@ -149,7 +149,7 @@ func FindUniquesBy[T any, U comparable](collection []T, iteratee func(item T) U)
 		}
 	}
 
-	result := make([]T, 0, len(collection)-len(isDupl))
+	result := make(Slice, 0, len(collection)-len(isDupl))
 
 	for i := range collection {
 		key := iteratee(collection[i])
@@ -164,7 +164,7 @@ func FindUniquesBy[T any, U comparable](collection []T, iteratee func(item T) U)
 
 // FindDuplicates returns a slice with the first occurrence of each duplicated elements of the collection.
 // The order of result values is determined by the order they occur in the collection.
-func FindDuplicates[T comparable](collection []T) []T {
+func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
 	isDupl := make(map[T]bool, len(collection))
 
 	for i := range collection {
@@ -176,7 +176,7 @@ func FindDuplicates[T comparable](collection []T) []T {
 		}
 	}
 
-	result := make([]T, 0, len(collection)-len(isDupl))
+	result := make(Slice, 0, len(collection)-len(isDupl))
 
 	for i := range collection {
 		if duplicated := isDupl[collection[i]]; duplicated {
@@ -191,7 +191,7 @@ func FindDuplicates[T comparable](collection []T) []T {
 // FindDuplicatesBy returns a slice with the first occurrence of each duplicated elements of the collection.
 // The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
-func FindDuplicatesBy[T any, U comparable](collection []T, iteratee func(item T) U) []T {
+func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
 	for i := range collection {
@@ -205,7 +205,7 @@ func FindDuplicatesBy[T any, U comparable](collection []T, iteratee func(item T)
 		}
 	}
 
-	result := make([]T, 0, len(collection)-len(isDupl))
+	result := make(Slice, 0, len(collection)-len(isDupl))
 
 	for i := range collection {
 		key := iteratee(collection[i])
@@ -438,12 +438,12 @@ func Sample[T any](collection []T) T {
 }
 
 // Samples returns N random unique items from collection.
-func Samples[T any](collection []T, count int) []T {
+func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
 	size := len(collection)
 
-	copy := append([]T{}, collection...)
+	copy := append(Slice{}, collection...)
 
-	results := []T{}
+	results := Slice{}
 
 	for i := 0; i < size && i < count; i++ {
 		copyLength := size - i

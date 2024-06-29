@@ -184,6 +184,11 @@ func TestFindUniques(t *testing.T) {
 
 	is.Equal(0, len(result4))
 	is.Equal([]int{}, result4)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := FindUniques(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestFindUniquesBy(t *testing.T) {
@@ -217,6 +222,13 @@ func TestFindUniquesBy(t *testing.T) {
 
 	is.Equal(0, len(result4))
 	is.Equal([]int{}, result4)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := FindUniquesBy(allStrings, func(i string) string {
+		return i
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestFindDuplicates(t *testing.T) {
@@ -237,6 +249,11 @@ func TestFindDuplicates(t *testing.T) {
 
 	is.Equal(0, len(result3))
 	is.Equal([]int{}, result3)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := FindDuplicates(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestFindDuplicatesBy(t *testing.T) {
@@ -263,6 +280,13 @@ func TestFindDuplicatesBy(t *testing.T) {
 
 	is.Equal(0, len(result3))
 	is.Equal([]int{}, result3)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := FindDuplicatesBy(allStrings, func(i string) string {
+		return i
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestMin(t *testing.T) {
@@ -488,4 +512,9 @@ func TestSamples(t *testing.T) {
 
 	is.Equal(result1, []string{"a", "b", "c"})
 	is.Equal(result2, []string{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Samples(allStrings, 2)
+	is.IsType(nonempty, allStrings, "type preserved")
 }

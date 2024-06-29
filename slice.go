@@ -8,8 +8,8 @@ import (
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
 // Play: https://go.dev/play/p/Apjg3WeSi7K
-func Filter[V any, VC ~[]V](collection VC, predicate func(item V, index int) bool) VC {
-	result := make(VC, 0, len(collection))
+func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
+	result := make(Slice, 0, len(collection))
 
 	for i := range collection {
 		if predicate(collection[i], i) {
@@ -109,8 +109,8 @@ func Times[T any](count int, iteratee func(index int) T) []T {
 // Uniq returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the array.
 // Play: https://go.dev/play/p/DTzbeXZ6iEN
-func Uniq[T comparable](collection []T) []T {
-	result := make([]T, 0, len(collection))
+func Uniq[T comparable, Slice ~[]T](collection Slice) Slice {
+	result := make(Slice, 0, len(collection))
 	seen := make(map[T]struct{}, len(collection))
 
 	for i := range collection {
@@ -129,8 +129,8 @@ func Uniq[T comparable](collection []T) []T {
 // The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
 // Play: https://go.dev/play/p/g42Z3QSb53u
-func UniqBy[T any, U comparable](collection []T, iteratee func(item T) U) []T {
-	result := make([]T, 0, len(collection))
+func UniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	result := make(Slice, 0, len(collection))
 	seen := make(map[U]struct{}, len(collection))
 
 	for i := range collection {
@@ -149,8 +149,8 @@ func UniqBy[T any, U comparable](collection []T, iteratee func(item T) U) []T {
 
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // Play: https://go.dev/play/p/XnQBd_v6brd
-func GroupBy[T any, U comparable](collection []T, iteratee func(item T) U) map[U][]T {
-	result := map[U][]T{}
+func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) map[U]Slice {
+	result := map[U]Slice{}
 
 	for i := range collection {
 		key := iteratee(collection[i])
@@ -164,7 +164,7 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(item T) U) map[U
 // Chunk returns an array of elements split into groups the length of size. If array can't be split evenly,
 // the final chunk will be the remaining elements.
 // Play: https://go.dev/play/p/EeKl0AuTehH
-func Chunk[T any](collection []T, size int) [][]T {
+func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
 	if size <= 0 {
 		panic("Second parameter must be greater than 0")
 	}
@@ -174,7 +174,7 @@ func Chunk[T any](collection []T, size int) [][]T {
 		chunksNum += 1
 	}
 
-	result := make([][]T, 0, chunksNum)
+	result := make([]Slice, 0, chunksNum)
 
 	for i := 0; i < chunksNum; i++ {
 		last := (i + 1) * size
@@ -191,8 +191,8 @@ func Chunk[T any](collection []T, size int) [][]T {
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through iteratee.
 // Play: https://go.dev/play/p/NfQ_nGjkgXW
-func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [][]T {
-	result := [][]T{}
+func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K) []Slice {
+	result := []Slice{}
 	seen := map[K]int{}
 
 	for i := range collection {
@@ -202,7 +202,7 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [
 		if !ok {
 			resultIndex = len(result)
 			seen[key] = resultIndex
-			result = append(result, []T{})
+			result = append(result, Slice{})
 		}
 
 		result[resultIndex] = append(result[resultIndex], collection[i])
@@ -217,13 +217,13 @@ func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [
 
 // Flatten returns an array a single level deep.
 // Play: https://go.dev/play/p/rbp9ORaMpjw
-func Flatten[T any](collection [][]T) []T {
+func Flatten[T any, Slice ~[]T](collection []Slice) Slice {
 	totalLen := 0
 	for i := range collection {
 		totalLen += len(collection[i])
 	}
 
-	result := make([]T, 0, totalLen)
+	result := make(Slice, 0, totalLen)
 	for i := range collection {
 		result = append(result, collection[i]...)
 	}
@@ -233,9 +233,9 @@ func Flatten[T any](collection [][]T) []T {
 
 // Interleave round-robin alternating input slices and sequentially appending value at index into result
 // Play: https://go.dev/play/p/-RJkTLQEDVt
-func Interleave[T any](collections ...[]T) []T {
+func Interleave[T any, Slice ~[]T](collections ...Slice) Slice {
 	if len(collections) == 0 {
-		return []T{}
+		return Slice{}
 	}
 
 	maxSize := 0
@@ -249,10 +249,10 @@ func Interleave[T any](collections ...[]T) []T {
 	}
 
 	if maxSize == 0 {
-		return []T{}
+		return Slice{}
 	}
 
-	result := make([]T, totalSize)
+	result := make(Slice, totalSize)
 
 	resultIdx := 0
 	for i := 0; i < maxSize; i++ {
@@ -271,7 +271,7 @@ func Interleave[T any](collections ...[]T) []T {
 
 // Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 // Play: https://go.dev/play/p/Qp73bnTDnc7
-func Shuffle[T any](collection []T) []T {
+func Shuffle[T any, Slice ~[]T](collection Slice) Slice {
 	rand.Shuffle(len(collection), func(i, j int) {
 		collection[i], collection[j] = collection[j], collection[i]
 	})
@@ -281,7 +281,7 @@ func Shuffle[T any](collection []T) []T {
 
 // Reverse reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
 // Play: https://go.dev/play/p/fhUMLvZ7vS6
-func Reverse[T any](collection []T) []T {
+func Reverse[T any, Slice ~[]T](collection Slice) Slice {
 	length := len(collection)
 	half := length / 2
 
@@ -368,30 +368,30 @@ func SliceToMap[T any, K comparable, V any](collection []T, transform func(item 
 
 // Drop drops n elements from the beginning of a slice or array.
 // Play: https://go.dev/play/p/JswS7vXRJP2
-func Drop[T any](collection []T, n int) []T {
+func Drop[T any, Slice ~[]T](collection Slice, n int) Slice {
 	if len(collection) <= n {
-		return make([]T, 0)
+		return make(Slice, 0)
 	}
 
-	result := make([]T, 0, len(collection)-n)
+	result := make(Slice, 0, len(collection)-n)
 
 	return append(result, collection[n:]...)
 }
 
 // DropRight drops n elements from the end of a slice or array.
 // Play: https://go.dev/play/p/GG0nXkSJJa3
-func DropRight[T any](collection []T, n int) []T {
+func DropRight[T any, Slice ~[]T](collection Slice, n int) Slice {
 	if len(collection) <= n {
-		return []T{}
+		return Slice{}
 	}
 
-	result := make([]T, 0, len(collection)-n)
+	result := make(Slice, 0, len(collection)-n)
 	return append(result, collection[:len(collection)-n]...)
 }
 
 // DropWhile drops elements from the beginning of a slice or array while the predicate returns true.
 // Play: https://go.dev/play/p/7gBPYw2IK16
-func DropWhile[T any](collection []T, predicate func(item T) bool) []T {
+func DropWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	i := 0
 	for ; i < len(collection); i++ {
 		if !predicate(collection[i]) {
@@ -399,13 +399,13 @@ func DropWhile[T any](collection []T, predicate func(item T) bool) []T {
 		}
 	}
 
-	result := make([]T, 0, len(collection)-i)
+	result := make(Slice, 0, len(collection)-i)
 	return append(result, collection[i:]...)
 }
 
 // DropRightWhile drops elements from the end of a slice or array while the predicate returns true.
 // Play: https://go.dev/play/p/3-n71oEC0Hz
-func DropRightWhile[T any](collection []T, predicate func(item T) bool) []T {
+func DropRightWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	i := len(collection) - 1
 	for ; i >= 0; i-- {
 		if !predicate(collection[i]) {
@@ -413,14 +413,14 @@ func DropRightWhile[T any](collection []T, predicate func(item T) bool) []T {
 		}
 	}
 
-	result := make([]T, 0, i+1)
+	result := make(Slice, 0, i+1)
 	return append(result, collection[:i+1]...)
 }
 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
 // Play: https://go.dev/play/p/YkLMODy1WEL
-func Reject[V any](collection []V, predicate func(item V, index int) bool) []V {
-	result := []V{}
+func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
+	result := Slice{}
 
 	for i := range collection {
 		if !predicate(collection[i], i) {
@@ -449,9 +449,9 @@ func RejectMap[T any, R any](collection []T, callback func(item T, index int) (R
 
 // FilterReject mixes Filter and Reject, this method returns two slices, one for the elements of collection that
 // predicate returns truthy for and one for the elements that predicate does not return truthy for.
-func FilterReject[V any](collection []V, predicate func(V, int) bool) (kept []V, rejected []V) {
-	kept = make([]V, 0, len(collection))
-	rejected = make([]V, 0, len(collection))
+func FilterReject[T any, Slice ~[]T](collection Slice, predicate func(T, int) bool) (kept Slice, rejected Slice) {
+	kept = make(Slice, 0, len(collection))
+	rejected = make(Slice, 0, len(collection))
 
 	for i := range collection {
 		if predicate(collection[i], i) {
@@ -515,7 +515,7 @@ func CountValuesBy[T any, U comparable](collection []T, mapper func(item T) U) m
 
 // Subset returns a copy of a slice from `offset` up to `length` elements. Like `slice[start:start+length]`, but does not panic on overflow.
 // Play: https://go.dev/play/p/tOQu1GhFcog
-func Subset[T any](collection []T, offset int, length uint) []T {
+func Subset[T any, Slice ~[]T](collection Slice, offset int, length uint) Slice {
 	size := len(collection)
 
 	if offset < 0 {
@@ -526,7 +526,7 @@ func Subset[T any](collection []T, offset int, length uint) []T {
 	}
 
 	if offset > size {
-		return []T{}
+		return Slice{}
 	}
 
 	if length > uint(size)-uint(offset) {
@@ -538,11 +538,11 @@ func Subset[T any](collection []T, offset int, length uint) []T {
 
 // Slice returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
 // Play: https://go.dev/play/p/8XWYhfMMA1h
-func Slice[T any](collection []T, start int, end int) []T {
+func Slice[T any, Slice ~[]T](collection Slice, start int, end int) Slice {
 	size := len(collection)
 
 	if start >= end {
-		return []T{}
+		return Slice{}
 	}
 
 	if start > size {
@@ -564,8 +564,8 @@ func Slice[T any](collection []T, start int, end int) []T {
 
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
 // Play: https://go.dev/play/p/XfPzmf9gql6
-func Replace[T comparable](collection []T, old T, new T, n int) []T {
-	result := make([]T, len(collection))
+func Replace[T comparable, Slice ~[]T](collection Slice, old T, new T, n int) Slice {
+	result := make(Slice, len(collection))
 	copy(result, collection)
 
 	for i := range result {
@@ -580,16 +580,16 @@ func Replace[T comparable](collection []T, old T, new T, n int) []T {
 
 // ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
 // Play: https://go.dev/play/p/a9xZFUHfYcV
-func ReplaceAll[T comparable](collection []T, old T, new T) []T {
+func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old T, new T) Slice {
 	return Replace(collection, old, new, -1)
 }
 
 // Compact returns a slice of all non-zero elements.
 // Play: https://go.dev/play/p/tXiy-iK6PAc
-func Compact[T comparable](collection []T) []T {
+func Compact[T comparable, Slice ~[]T](collection Slice) Slice {
 	var zero T
 
-	result := make([]T, 0, len(collection))
+	result := make(Slice, 0, len(collection))
 
 	for i := range collection {
 		if collection[i] != zero {
@@ -629,10 +629,10 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 // Splice inserts multiple elements at index i. A negative index counts back
 // from the end of the slice. The helper is protected against overflow errors.
 // Play: https://go.dev/play/p/G5_GhkeSUBA
-func Splice[T any](collection []T, i int, elements ...T) []T {
+func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 	sizeCollection := len(collection)
 	sizeElements := len(elements)
-	output := make([]T, 0, sizeCollection+sizeElements) // preallocate memory for the output slice
+	output := make(Slice, 0, sizeCollection+sizeElements) // preallocate memory for the output slice
 
 	if sizeElements == 0 {
 		return append(output, collection...) // simple copy
