@@ -26,6 +26,13 @@ func TestFilter(t *testing.T) {
 	})
 
 	is.Equal(r2, []string{"foo", "bar"})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Filter(allStrings, func(x string, _ int) bool {
+		return len(x) > 0
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestMap(t *testing.T) {
