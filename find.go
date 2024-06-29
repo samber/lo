@@ -5,10 +5,8 @@ import (
 	"math/rand"
 	"time"
 
-	"golang.org/x/exp/constraints"
+	"github.com/samber/lo/internal/constraints"
 )
-
-// import "golang.org/x/exp/constraints"
 
 // IndexOf returns the index at which the first occurrence of a value is found in an array or return -1
 // if the value cannot be found.

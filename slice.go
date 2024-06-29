@@ -3,7 +3,7 @@ package lo
 import (
 	"math/rand"
 
-	"golang.org/x/exp/constraints"
+	"github.com/samber/lo/internal/constraints"
 )
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
