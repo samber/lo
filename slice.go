@@ -626,6 +626,7 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 	return true
 }
 
+// Splice inserts multiple elements at index i.
 // Play: https://go.dev/play/p/G5_GhkeSUBA
 func Splice[T any](collection []T, i int, elements ...T) []T {
 	if i < 0 || i > len(collection) {
