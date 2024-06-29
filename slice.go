@@ -529,6 +529,23 @@ func Slice[T any](collection []T, start int, end int) []T {
 	return collection[start:end]
 }
 
+// Concat returns a new slice containing all the elements in
+// collections. Concat conserves the order of the elements.
+func Concat[T any](collections ...[]T) []T {
+	size := 0
+	for i := range collections {
+		size += len(collections[i])
+	}
+
+	result := make([]T, 0, size) // preallocate memory for the output slice
+	for i := 0; i < len(collections); i++ {
+		// `result` memory address is not expected to change, because we preallocated enough memory
+		result = append(result, collections[i]...)
+	}
+
+	return result
+}
+
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
 // Play: https://go.dev/play/p/XfPzmf9gql6
 func Replace[T comparable](collection []T, old T, new T, n int) []T {
@@ -591,19 +608,4 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 	}
 
 	return true
-}
-
-// Concat returns a new slice containing all the elements in `collection` plus items
-func Concat[T any](collection []T, items ...T) []T {
-	result := make([]T, len(collection)+len(items))
-
-	for i := 0; i < len(collection); i++ {
-		result[i] = collection[i]
-	}
-
-	for i := 0; i < len(items); i++ {
-		result[len(collection)+i] = items[i]
-	}
-
-	return result
 }
