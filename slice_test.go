@@ -571,6 +571,27 @@ func TestDropRightWhile(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestDropByIndex(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 0))
+	is.Equal([]int{3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 0, 1, 2))
+	is.Equal([]int{0, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, -4, -2, -3))
+	is.Equal([]int{0, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, -4, -4))
+	is.Equal([]int{2, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 3, 1, 0))
+	is.Equal([]int{0, 1, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 2))
+	is.Equal([]int{0, 1, 2, 3}, DropByIndex([]int{0, 1, 2, 3, 4}, 4))
+	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 5))
+	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 100))
+	is.Equal([]int{0, 1, 2, 3}, DropByIndex([]int{0, 1, 2, 3, 4}, -1))
+	is.Equal([]int{}, DropByIndex([]int{}, 0, 1))
+	is.Equal([]int{}, DropByIndex([]int{42}, 0, 1))
+	is.Equal([]int{}, DropByIndex([]int{42}, 1, 0))
+	is.Equal([]int{}, DropByIndex([]int{}, 1))
+	is.Equal([]int{}, DropByIndex([]int{1}, 0))
+}
+
 func TestReject(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
