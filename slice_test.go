@@ -652,7 +652,7 @@ func TestConcat(t *testing.T) {
 	is := assert.New(t)
 
 	is.Equal([]int{1, 2, 3, 4}, Concat([]int{1, 2}, []int{3, 4}))
-	is.Equal([]int{1, 2, 3, 4}, Concat([]int{1, 2}, []int{3, 4}))
+	is.Equal([]int{1, 2, 3, 4}, Concat(nil, []int{1, 2}, nil, []int{3, 4}, nil))
 	is.Equal([]int{}, Concat[int](nil, nil))
 	is.Equal([]int{}, Concat[int]())
 }
