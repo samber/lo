@@ -417,20 +417,35 @@ func DropRightWhile[T any](collection []T, predicate func(item T) bool) []T {
 	return append(result, collection[:i+1]...)
 }
 
-// DropByIndex drops element from a slice or array by the index
+// DropByIndex drops elements from a slice or array by the index.
+// A negative index will drop elements from the end of the slice.
 // Play: https://go.dev/play/p/bPIH4npZRxS
-func DropByIndex[T any](collection []T, index int) []T {
-	if len(collection) == 0 {
+func DropByIndex[T any](collection []T, indexes ...int) []T {
+	initialSize := len(collection)
+	if initialSize == 0 {
 		return make([]T, 0)
 	}
 
-	if index < 0 || index >= len(collection) {
-		return append([]T{}, collection...)
+	for i := range indexes {
+		if indexes[i] < 0 {
+			indexes[i] = initialSize + indexes[i]
+		}
 	}
 
-	result := make([]T, 0, len(collection)-1)
-	result = append(result, collection[:index]...)
-	return append(result, collection[index+1:]...)
+	sort.Ints(indexes)
+
+	result := make([]T, 0, initialSize-len(indexes))
+	result = append(result, collection...)
+
+	for i := range indexes {
+		if indexes[i]-i < 0 || indexes[i]-i >= initialSize-i {
+			continue
+		}
+
+		result = append(result[:indexes[i]-i], result[indexes[i]-i+1:]...)
+	}
+
+	return result
 }
 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
