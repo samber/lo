@@ -689,6 +689,16 @@ func TestSlice(t *testing.T) {
 	is.Equal([]int{0, 1, 2, 3, 4}, out18)
 }
 
+func TestConcat(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{1, 2, 3, 4}, Concat([]int{1, 2}, []int{3, 4}))
+	is.Equal([]int{1, 2, 3, 4}, Concat(nil, []int{1, 2}, nil, []int{3, 4}, nil))
+	is.Equal([]int{}, Concat[int](nil, nil))
+	is.Equal([]int{}, Concat[int]())
+}
+
 func TestReplace(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
