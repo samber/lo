@@ -802,15 +802,46 @@ func TestIsSortedByKey(t *testing.T) {
 	}))
 }
 
-func TestInsertSlice(t *testing.T) {
+func TestSplice(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	inserts := Splice([]string{"a", "d"}, 1, "b", "c")
-	is.Equal(inserts, []string{"a", "b", "c", "d"})
-	is.True(len(inserts) == 4 && inserts[1] == "b" && inserts[2] == "c")
+	sample := []string{"a", "b", "c", "d", "e", "f", "g"}
 
-	inserti := Splice([]int{1, 4}, 1, 2, 3)
-	is.Equal(inserti, []int{1, 2, 3, 4})
-	is.True(len(inserti) == 4 && inserti[1] == 2 && inserti[2] == 3)
+	// normal case
+	results := Splice(sample, 1, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal([]string{"a", "1", "2", "b", "c", "d", "e", "f", "g"}, results)
+
+	// check there is no side effect
+	results = Splice(sample, 1)
+	results[0] = "b"
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+
+	// positive overflow
+	results = Splice(sample, 42, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"a", "b", "c", "d", "e", "f", "g", "1", "2"})
+
+	// negative overflow
+	results = Splice(sample, -42, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"})
+
+	// backard
+	results = Splice(sample, -2, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"a", "b", "c", "d", "e", "1", "2", "f", "g"})
+
+	results = Splice(sample, -7, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"})
+
+	// other
+	is.Equal([]string{"1", "2"}, Splice([]string{}, 0, "1", "2"))
+	is.Equal([]string{"1", "2"}, Splice([]string{}, 1, "1", "2"))
+	is.Equal([]string{"1", "2"}, Splice([]string{}, -1, "1", "2"))
+	is.Equal([]string{"1", "2", "0"}, Splice([]string{"0"}, 0, "1", "2"))
+	is.Equal([]string{"0", "1", "2"}, Splice([]string{"0"}, 1, "1", "2"))
+	is.Equal([]string{"1", "2", "0"}, Splice([]string{"0"}, -1, "1", "2"))
 }
