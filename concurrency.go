@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"context"
 	"sync"
 	"time"
 )
@@ -99,6 +100,11 @@ func Async6[A, B, C, D, E, F any](f func() (A, B, C, D, E, F)) <-chan Tuple6[A, 
 
 // WaitFor runs periodically until a condition is validated.
 func WaitFor(condition func(i int) bool, maxDuration time.Duration, tick time.Duration) (int, time.Duration, bool) {
+	return WaitForWithContext(context.Background(), condition, maxDuration, tick)
+}
+
+// WaitForWithContext runs periodically until a condition is validated or context is canceled.
+func WaitForWithContext(ctx context.Context, condition func(i int) bool, maxDuration time.Duration, tick time.Duration) (int, time.Duration, bool) {
 	if condition(0) {
 		return 1, 0, true
 	}
@@ -117,6 +123,8 @@ func WaitFor(condition func(i int) bool, maxDuration time.Duration, tick time.Du
 
 	for {
 		select {
+		case <-ctx.Done():
+			return i, time.Since(start), false
 		case <-timer.C:
 			return i, time.Since(start), false
 		case <-ticker.C:
