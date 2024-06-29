@@ -626,15 +626,26 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 	return true
 }
 
-// Splice inserts multiple elements at index i.
+// Splice inserts multiple elements at index i. A negative index counts back
+// from the end of the slice. The helper is protected against overflow errors.
 // Play: https://go.dev/play/p/G5_GhkeSUBA
 func Splice[T any](collection []T, i int, elements ...T) []T {
-	if i < 0 || i > len(collection) {
-		panic("index out of bounds")
-	}
-	if len(elements) == 0 {
-		return collection
+	sizeCollection := len(collection)
+	sizeElements := len(elements)
+	output := make([]T, 0, sizeCollection+sizeElements) // preallocate memory for the output slice
+
+	if sizeElements == 0 {
+		return append(output, collection...) // simple copy
+	} else if i > sizeCollection {
+		// positive overflow
+		return append(append(output, collection...), elements...)
+	} else if i < -sizeCollection {
+		// negative overflow
+		return append(append(output, elements...), collection...)
+	} else if i < 0 {
+		// backward
+		i = sizeCollection + i
 	}
 
-	return append(append(collection[:i], elements...), collection[i:]...)
+	return append(append(append(output, collection[:i]...), elements...), collection[i:]...)
 }
