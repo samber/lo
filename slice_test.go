@@ -801,3 +801,47 @@ func TestIsSortedByKey(t *testing.T) {
 		return ret
 	}))
 }
+
+func TestSplice(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	sample := []string{"a", "b", "c", "d", "e", "f", "g"}
+
+	// normal case
+	results := Splice(sample, 1, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal([]string{"a", "1", "2", "b", "c", "d", "e", "f", "g"}, results)
+
+	// check there is no side effect
+	results = Splice(sample, 1)
+	results[0] = "b"
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+
+	// positive overflow
+	results = Splice(sample, 42, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"a", "b", "c", "d", "e", "f", "g", "1", "2"})
+
+	// negative overflow
+	results = Splice(sample, -42, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"})
+
+	// backard
+	results = Splice(sample, -2, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"a", "b", "c", "d", "e", "1", "2", "f", "g"})
+
+	results = Splice(sample, -7, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"})
+
+	// other
+	is.Equal([]string{"1", "2"}, Splice([]string{}, 0, "1", "2"))
+	is.Equal([]string{"1", "2"}, Splice([]string{}, 1, "1", "2"))
+	is.Equal([]string{"1", "2"}, Splice([]string{}, -1, "1", "2"))
+	is.Equal([]string{"1", "2", "0"}, Splice([]string{"0"}, 0, "1", "2"))
+	is.Equal([]string{"0", "1", "2"}, Splice([]string{"0"}, 1, "1", "2"))
+	is.Equal([]string{"1", "2", "0"}, Splice([]string{"0"}, -1, "1", "2"))
+}
