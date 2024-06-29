@@ -433,9 +433,10 @@ func DropByIndex[T any](collection []T, indexes ...int) []T {
 		}
 	}
 
+	indexes = Uniq(indexes)
 	sort.Ints(indexes)
 
-	result := make([]T, 0, initialSize-len(indexes))
+	result := make([]T, 0, initialSize)
 	result = append(result, collection...)
 
 	for i := range indexes {
