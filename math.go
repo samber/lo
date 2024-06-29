@@ -1,8 +1,6 @@
 package lo
 
 import (
-	"cmp"
-
 	"github.com/samber/lo/internal/constraints"
 )
 
@@ -58,7 +56,7 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 
 // Clamp clamps number within the inclusive lower and upper bounds.
 // Play: https://go.dev/play/p/RU4lJNC2hlI
-func Clamp[T cmp.Ordered](value T, min T, max T) T {
+func Clamp[T constraints.Ordered](value T, min T, max T) T {
 	if value < min {
 		return min
 	} else if value > max {

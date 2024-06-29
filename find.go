@@ -1,7 +1,6 @@
 package lo
 
 import (
-	"cmp"
 	"fmt"
 	"math/rand"
 	"time"
@@ -289,7 +288,7 @@ func Earliest(times ...time.Time) time.Time {
 
 // Max searches the maximum value of a collection.
 // Returns zero value when the collection is empty.
-func Max[T cmp.Ordered](collection []T) T {
+func Max[T constraints.Ordered](collection []T) T {
 	var max T
 
 	if len(collection) == 0 {
