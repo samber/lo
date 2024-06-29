@@ -113,7 +113,6 @@ Supported helpers for slices:
 - [CountValuesBy](#countvaluesby)
 - [Subset](#subset)
 - [Slice](#slice)
-- [Concat](#concat)
 - [Replace](#replace)
 - [ReplaceAll](#replaceall)
 - [Compact](#compact)
@@ -906,21 +905,6 @@ slice := lo.Slice(in, 4, 3)
 ```
 
 [[play](https://go.dev/play/p/8XWYhfMMA1h)]
-
-### Concat
-
-Returns a new slice containing all the elements in collections. Concat conserves the order of the elements.
-
-```go
-slice := lo.Concat([]int{1, 2}, []int{3, 4})
-// []int{1, 2, 3, 4}
-
-slice := lo.Concat(nil, []int{1, 2}, nil, []int{3, 4}, nil)
-// []int{1, 2, 3, 4}
-
-slice := lo.Concat[int]()
-// []int{}
-```
 
 ### Replace
 
