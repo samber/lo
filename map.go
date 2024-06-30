@@ -171,8 +171,12 @@ func Invert[K comparable, V comparable](in map[K]V) map[V]K {
 // Assign merges multiple maps from left to right.
 // Play: https://go.dev/play/p/VhwfJOyxf5o
 func Assign[K comparable, V any, Map ~map[K]V](maps ...Map) Map {
-	out := Map{}
+	count := 0
+	for i := range maps {
+		count += len(maps[i])
+	}
 
+	out := make(Map, count)
 	for i := range maps {
 		for k := range maps[i] {
 			out[k] = maps[i][k]
