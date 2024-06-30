@@ -2,10 +2,10 @@ package lo
 
 import (
 	"fmt"
-	"math/rand"
 	"time"
 
 	"github.com/samber/lo/internal/constraints"
+	"github.com/samber/lo/internal/rand"
 )
 
 // IndexOf returns the index at which the first occurrence of a value is found in an array or return -1
@@ -432,9 +432,7 @@ func Sample[T any](collection []T) T {
 		return Empty[T]()
 	}
 
-	// @TODO: Upgrade to math/rand/v2 as soon as we set the minimum Go version to 1.22.
-	// bearer:disable go_gosec_crypto_weak_random
-	return collection[rand.Intn(size)]
+	return collection[rand.IntN(size)]
 }
 
 // Samples returns N random unique items from collection.
@@ -448,9 +446,7 @@ func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
 	for i := 0; i < size && i < count; i++ {
 		copyLength := size - i
 
-		// @TODO: Upgrade to math/rand/v2 as soon as we set the minimum Go version to 1.22.
-		// bearer:disable go_gosec_crypto_weak_random
-		index := rand.Intn(size - i)
+		index := rand.IntN(size - i)
 		results = append(results, copy[index])
 
 		// Removes element.

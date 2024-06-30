@@ -1,11 +1,12 @@
 package lo
 
 import (
-	"math/rand"
 	"regexp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/samber/lo/internal/rand"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -39,9 +40,7 @@ func RandomString(size int, charset []rune) string {
 	b := make([]rune, size)
 	possibleCharactersCount := len(charset)
 	for i := range b {
-		// @TODO: Upgrade to math/rand/v2 as soon as we set the minimum Go version to 1.22.
-		// bearer:disable go_gosec_crypto_weak_random
-		b[i] = charset[rand.Intn(possibleCharactersCount)]
+		b[i] = charset[rand.IntN(possibleCharactersCount)]
 	}
 	return string(b)
 }
