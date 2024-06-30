@@ -9,5 +9,6 @@ func Shuffle(n int, swap func(i, j int)) {
 }
 
 func IntN(n int) int {
+	// bearer:disable go_gosec_crypto_weak_random
 	return rand.Intn(n)
 }
