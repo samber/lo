@@ -3093,7 +3093,7 @@ iterations, duration, ok := lo.WaitForWithContext(laterTrue, 10*time.Millisecond
 // false
 
 expiringCtx, cancel := context.WithTimeout(ctx, 5*time.Millisecond)
-iterations, duration, ok := lo.WaitForWithContext(alwaysFalse, 100*time.Millisecond, time.Millisecond)
+iterations, duration, ok := lo.WaitForWithContext(expiringCtx, alwaysFalse, 100*time.Millisecond, time.Millisecond)
 // 5
 // 5.1ms
 // false
