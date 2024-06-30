@@ -3072,22 +3072,22 @@ laterTrue := func(i int) bool {
     return i > 5
 }
 
-iterations, duration, ok := lo.WaitForWithContext(alwaysTrue, 10*time.Millisecond, time.Millisecond)
+iterations, duration, ok := lo.WaitForWithContext(ctx, alwaysTrue, 10*time.Millisecond, time.Millisecond)
 // 1
 // 0ms
 // true
 
-iterations, duration, ok := lo.WaitForWithContext(alwaysFalse, 10*time.Millisecond, time.Millisecond)
+iterations, duration, ok := lo.WaitForWithContext(ctx, alwaysFalse, 10*time.Millisecond, time.Millisecond)
 // 10
 // 10ms
 // false
 
-iterations, duration, ok := lo.WaitForWithContext(laterTrue, 10*time.Millisecond, time.Millisecond)
+iterations, duration, ok := lo.WaitForWithContext(ctx, laterTrue, 10*time.Millisecond, time.Millisecond)
 // 7
 // 7ms
 // true
 
-iterations, duration, ok := lo.WaitForWithContext(laterTrue, 10*time.Millisecond, 5*time.Millisecond)
+iterations, duration, ok := lo.WaitForWithContext(ctx, laterTrue, 10*time.Millisecond, 5*time.Millisecond)
 // 2
 // 10ms
 // false
