@@ -263,8 +263,8 @@ func TestWaitForWithContext(t *testing.T) {
 	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
-	alwaysTrue := func(i int) bool { return true }
-	alwaysFalse := func(i int) bool { return false }
+	alwaysTrue := func(_ context.Context, _ int) bool { return true }
+	alwaysFalse := func(_ context.Context, _ int) bool { return false }
 
 	ctx := context.Background()
 
@@ -277,7 +277,7 @@ func TestWaitForWithContext(t *testing.T) {
 	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
 	is.False(ok)
 
-	laterTrue := func(i int) bool {
+	laterTrue := func(_ context.Context, i int) bool {
 		return i >= 5
 	}
 
@@ -291,7 +291,7 @@ func TestWaitForWithContext(t *testing.T) {
 	is.False(ok)
 
 	counter := 0
-	alwaysFalse = func(i int) bool {
+	alwaysFalse = func(_ context.Context, i int) bool {
 		is.Equal(counter, i)
 		counter++
 		return false
