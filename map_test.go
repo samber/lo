@@ -359,7 +359,8 @@ func TestMapEntries(t *testing.T) {
 		}{"1-11-1": {name: "foo", age: 1}, "2-22-2": {name: "bar", age: 2}}, func(k string, v struct {
 			name string
 			age  int
-		}) (string, string) {
+		},
+		) (string, string) {
 			return v.name, k
 		}, map[string]string{"bar": "2-22-2", "foo": "1-11-1"})
 	}
@@ -380,4 +381,68 @@ func TestMapToSlice(t *testing.T) {
 	is.Equal(len(result2), 4)
 	is.ElementsMatch(result1, []string{"1_5", "2_6", "3_7", "4_8"})
 	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
+}
+
+func BenchmarkAssign(b *testing.B) {
+	counts := []int{32768, 1024, 128, 32, 2}
+
+	allDifferentMap := func(b *testing.B, n int) []map[string]int {
+		defer b.ResetTimer()
+		m := make([]map[string]int, 0)
+		for i := 0; i < n; i++ {
+			m = append(m, map[string]int{
+				strconv.Itoa(i): i,
+				strconv.Itoa(i): i,
+				strconv.Itoa(i): i,
+				strconv.Itoa(i): i,
+				strconv.Itoa(i): i,
+				strconv.Itoa(i): i,
+			},
+			)
+		}
+		return m
+	}
+
+	allTheSameMap := func(b *testing.B, n int) []map[string]int {
+		defer b.ResetTimer()
+		m := make([]map[string]int, 0)
+		for i := 0; i < n; i++ {
+			m = append(m, map[string]int{
+				"a": 1,
+				"b": 2,
+				"c": 3,
+				"d": 4,
+				"e": 5,
+				"f": 6,
+			},
+			)
+		}
+		return m
+	}
+
+	for _, count := range counts {
+		differentMap := allDifferentMap(b, count)
+		sameMap := allTheSameMap(b, count)
+
+		b.Run(fmt.Sprintf("%d", count), func(b *testing.B) {
+			testcase := []struct {
+				name string
+				maps []map[string]int
+			}{
+				{"different", differentMap},
+				{"same", sameMap},
+			}
+
+			for _, tc := range testcase {
+				b.Run(tc.name, func(b *testing.B) {
+					b.ResetTimer()
+					for n := 0; n < b.N; n++ {
+						result := Assign(tc.maps...)
+						_ = result
+					}
+				})
+			}
+		})
+
+	}
 }
