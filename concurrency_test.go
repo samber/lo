@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"context"
 	"sync"
 	"testing"
 	"time"
@@ -253,6 +254,62 @@ func TestWaitFor(t *testing.T) {
 
 	iter, duration, ok = WaitFor(alwaysFalse, 10*time.Millisecond, 1050*time.Microsecond)
 	is.Equal(10, iter)
+	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
+	is.False(ok)
+}
+
+func TestWaitForWithContext(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	alwaysTrue := func(_ context.Context, _ int) bool { return true }
+	alwaysFalse := func(_ context.Context, _ int) bool { return false }
+
+	ctx := context.Background()
+
+	iter, duration, ok := WaitForWithContext(ctx, alwaysTrue, 10*time.Millisecond, time.Millisecond)
+	is.Equal(1, iter)
+	is.Equal(time.Duration(0), duration)
+	is.True(ok)
+	iter, duration, ok = WaitForWithContext(ctx, alwaysFalse, 10*time.Millisecond, 4*time.Millisecond)
+	is.Equal(3, iter)
+	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
+	is.False(ok)
+
+	laterTrue := func(_ context.Context, i int) bool {
+		return i >= 5
+	}
+
+	iter, duration, ok = WaitForWithContext(ctx, laterTrue, 10*time.Millisecond, time.Millisecond)
+	is.Equal(6, iter)
+	is.InEpsilon(6*time.Millisecond, duration, float64(500*time.Microsecond))
+	is.True(ok)
+	iter, duration, ok = WaitForWithContext(ctx, laterTrue, 10*time.Millisecond, 5*time.Millisecond)
+	is.Equal(2, iter)
+	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
+	is.False(ok)
+
+	counter := 0
+	alwaysFalse = func(_ context.Context, i int) bool {
+		is.Equal(counter, i)
+		counter++
+		return false
+	}
+
+	iter, duration, ok = WaitForWithContext(ctx, alwaysFalse, 10*time.Millisecond, 1050*time.Microsecond)
+	is.Equal(counter, iter)
+	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
+	is.False(ok)
+
+	expiringCtx, cancel := context.WithTimeout(ctx, 5*time.Millisecond)
+	t.Cleanup(func() {
+		cancel()
+	})
+
+	counter = 0
+	iter, duration, ok = WaitForWithContext(expiringCtx, alwaysFalse, 100*time.Millisecond, 1050*time.Microsecond)
+	is.Equal(iter, counter)
 	is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
 	is.False(ok)
 }
