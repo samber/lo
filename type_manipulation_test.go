@@ -25,7 +25,7 @@ func TestIsNil(t *testing.T) {
 	var b *bool
 	is.True(IsNil(b))
 
-	var ifaceWithNilValue interface{} = (*string)(nil)
+	var ifaceWithNilValue any = (*string)(nil)
 	is.True(IsNil(ifaceWithNilValue))
 	is.False(ifaceWithNilValue == nil) // nolint:staticcheck
 }
