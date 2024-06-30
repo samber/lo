@@ -1,9 +1,10 @@
 package lo
 
 import (
-	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/samber/lo/internal/rand"
 )
 
 type DispatchingStrategy[T any] func(msg T, index uint64, channels []<-chan T) int
@@ -86,9 +87,7 @@ func DispatchingStrategyRoundRobin[T any](msg T, index uint64, channels []<-chan
 // If the channel capacity is exceeded, another random channel will be selected and so on.
 func DispatchingStrategyRandom[T any](msg T, index uint64, channels []<-chan T) int {
 	for {
-		// @TODO: Upgrade to math/rand/v2 as soon as we set the minimum Go version to 1.22.
-		// bearer:disable go_gosec_crypto_weak_random
-		i := rand.Intn(len(channels))
+		i := rand.IntN(len(channels))
 		if channelIsNotFull(channels[i]) {
 			return i
 		}
@@ -110,9 +109,7 @@ func DispatchingStrategyWeightedRandom[T any](weights []int) DispatchingStrategy
 
 	return func(msg T, index uint64, channels []<-chan T) int {
 		for {
-			// @TODO: Upgrade to math/rand/v2 as soon as we set the minimum Go version to 1.22.
-			// bearer:disable go_gosec_crypto_weak_random
-			i := seq[rand.Intn(len(seq))]
+			i := seq[rand.IntN(len(seq))]
 			if channelIsNotFull(channels[i]) {
 				return i
 			}

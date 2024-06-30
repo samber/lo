@@ -2,9 +2,9 @@ package lo
 
 import (
 	"sort"
-	"math/rand"
 
 	"github.com/samber/lo/internal/constraints"
+	"github.com/samber/lo/internal/rand"
 )
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
