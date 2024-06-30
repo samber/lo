@@ -1,8 +1,8 @@
 package lo
 
 import (
-	"sort"
 	"math/rand"
+	"sort"
 
 	"github.com/samber/lo/internal/constraints"
 )
@@ -273,15 +273,21 @@ func Interleave[T any, Slice ~[]T](collections ...Slice) Slice {
 // Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 // Play: https://go.dev/play/p/Qp73bnTDnc7
 func Shuffle[T any, Slice ~[]T](collection Slice) Slice {
-	rand.Shuffle(len(collection), func(i, j int) {
-		collection[i], collection[j] = collection[j], collection[i]
+	size := len(collection)
+	output := make(Slice, size)
+	copy(output, collection)
+
+	rand.Shuffle(size, func(i, j int) {
+		output[i], output[j] = output[j], output[i]
 	})
 
-	return collection
+	return output
 }
 
 // Reverse reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
 // Play: https://go.dev/play/p/fhUMLvZ7vS6
+//
+// Deprecated: Use lom.Reverse instead.
 func Reverse[T any, Slice ~[]T](collection Slice) Slice {
 	length := len(collection)
 	half := length / 2

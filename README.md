@@ -48,6 +48,7 @@ You can import `lo` using:
 import (
     "github.com/samber/lo"
     lop "github.com/samber/lo/parallel"
+    lom "github.com/samber/lo/mutable"
 )
 ```
 
