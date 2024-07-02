@@ -85,6 +85,7 @@ Supported helpers for slices:
 - [Reduce](#reduce)
 - [ReduceRight](#reduceright)
 - [ForEach](#foreach)
+- [ForEachWhile](#foreachwhile)
 - [Times](#times)
 - [Uniq](#uniq)
 - [UniqBy](#uniqby)
@@ -416,6 +417,25 @@ lop.ForEach([]string{"hello", "world"}, func(x string, _ int) {
     println(x)
 })
 // prints "hello\nworld\n" or "world\nhello\n"
+```
+
+### ForEachWhile
+
+Iterates over collection elements and invokes iteratee for each element collection return value decide to continue or break, like do while().
+
+```go
+list := []int64{1, 2, -42, 4}
+
+ForEachWhile(list, func(x int64, _ int) bool {
+    if x < 0 {
+        return false
+    }
+    fmt.Println(x)
+    return true
+})
+
+// 1
+// 2
 ```
 
 ### Times
