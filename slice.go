@@ -94,9 +94,9 @@ func ForEach[T any](collection []T, iteratee func(item T, index int)) {
 	}
 }
 
-// ForEachCondition iterates over elements of collection and invokes iteratee for each element
-// collection  return value  decide to continue or break.
-func ForEachCondition[T any](collection []T, iteratee func(item T, index int) (goon bool)) {
+// ForEachWhile iterates over elements of collection and invokes iteratee for each element
+// collection  return value  decide to continue or break ,just like do while()
+func ForEachWhile[T any](collection []T, iteratee func(item T, index int) (goon bool)) {
 	for i := range collection {
 		if !iteratee(collection[i], i) {
 			break
