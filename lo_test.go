@@ -1,7 +1,6 @@
 package lo
 
 import (
-	"os"
 	"testing"
 	"time"
 )
@@ -18,7 +17,7 @@ func testWithTimeout(t *testing.T, timeout time.Duration) {
 		case <-testFinished:
 		case <-time.After(timeout):
 			t.Errorf("test timed out after %s", timeout)
-			os.Exit(1)
+			t.FailNow()
 		}
 	}()
 }
