@@ -99,24 +99,23 @@ func Async6[A, B, C, D, E, F any](f func() (A, B, C, D, E, F)) <-chan Tuple6[A, 
 }
 
 // WaitFor runs periodically until a condition is validated.
-func WaitFor(condition func(i int) bool, maxDuration time.Duration, tick time.Duration) (int, time.Duration, bool) {
-	conditionWithContext := func(_ context.Context, i int) bool {
-		return condition(i)
+func WaitFor(condition func(i int) bool, timeout time.Duration, heartbeatDelay time.Duration) (totalIterations int, elapsed time.Duration, conditionFound bool) {
+	conditionWithContext := func(_ context.Context, currentIteration int) bool {
+		return condition(currentIteration)
 	}
-	return WaitForWithContext(context.Background(), conditionWithContext, maxDuration, tick)
+	return WaitForWithContext(context.Background(), conditionWithContext, timeout, heartbeatDelay)
 }
 
 // WaitForWithContext runs periodically until a condition is validated or context is canceled.
-func WaitForWithContext(ctx context.Context, condition func(ctx context.Context, i int) bool, maxDuration time.Duration, tick time.Duration) (int, time.Duration, bool) {
+func WaitForWithContext(ctx context.Context, condition func(ctx context.Context, currentIteration int) bool, timeout time.Duration, heartbeatDelay time.Duration) (totalIterations int, elapsed time.Duration, conditionFound bool) {
 	start := time.Now()
 
-	i := 0
 	if ctx.Err() != nil {
-		return i, time.Since(start), false
+		return totalIterations, time.Since(start), false
 	}
 
-	ctx, cleanCtx := context.WithTimeout(ctx, maxDuration)
-	ticker := time.NewTicker(tick)
+	ctx, cleanCtx := context.WithTimeout(ctx, timeout)
+	ticker := time.NewTicker(heartbeatDelay)
 
 	defer func() {
 		cleanCtx()
@@ -126,11 +125,11 @@ func WaitForWithContext(ctx context.Context, condition func(ctx context.Context,
 	for {
 		select {
 		case <-ctx.Done():
-			return i, time.Since(start), false
+			return totalIterations, time.Since(start), false
 		case <-ticker.C:
-			i++
-			if condition(ctx, i-1) {
-				return i, time.Since(start), true
+			totalIterations++
+			if condition(ctx, totalIterations-1) {
+				return totalIterations, time.Since(start), true
 			}
 		}
 	}
