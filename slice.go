@@ -94,6 +94,16 @@ func ForEach[T any](collection []T, iteratee func(item T, index int)) {
 	}
 }
 
+// ForEachWhile iterates over elements of collection and invokes iteratee for each element
+// collection  return value  decide to continue or break ,just like do while()
+func ForEachWhile[T any](collection []T, iteratee func(item T, index int) (goon bool)) {
+	for i := range collection {
+		if !iteratee(collection[i], i) {
+			break
+		}
+	}
+}
+
 // Times invokes the iteratee n times, returning an array of the results of each invocation.
 // The iteratee is invoked with index as argument.
 // Play: https://go.dev/play/p/vgQj3Glr6lT
