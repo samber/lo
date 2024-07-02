@@ -99,10 +99,6 @@ func Async6[A, B, C, D, E, F any](f func() (A, B, C, D, E, F)) <-chan Tuple6[A, 
 
 // WaitFor runs periodically until a condition is validated.
 func WaitFor(condition func(i int) bool, maxDuration time.Duration, tick time.Duration) (int, time.Duration, bool) {
-	if condition(0) {
-		return 1, 0, true
-	}
-
 	start := time.Now()
 
 	timer := time.NewTimer(maxDuration)
@@ -113,7 +109,7 @@ func WaitFor(condition func(i int) bool, maxDuration time.Duration, tick time.Du
 		ticker.Stop()
 	}()
 
-	i := 1
+	i := 0
 
 	for {
 		select {

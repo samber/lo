@@ -3068,9 +3068,9 @@ laterTrue := func(i int) bool {
     return i > 5
 }
 
-iterations, duration, ok := lo.WaitFor(alwaysTrue, 10*time.Millisecond, time.Millisecond)
+iterations, duration, ok := lo.WaitFor(alwaysTrue, 10*time.Millisecond, 2 * time.Millisecond)
 // 1
-// 0ms
+// 1ms
 // true
 
 iterations, duration, ok := lo.WaitFor(alwaysFalse, 10*time.Millisecond, time.Millisecond)

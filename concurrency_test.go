@@ -265,7 +265,7 @@ func TestWaitFor(t *testing.T) {
 		is := assert.New(t)
 
 		iter, duration, ok := WaitFor(alwaysFalse, shortTimeout, 10*time.Millisecond)
-		is.Equal(1, iter, "unexpected iteration count")
+		is.Equal(0, iter, "unexpected iteration count")
 		is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
 		is.False(ok)
 	})
@@ -278,7 +278,7 @@ func TestWaitFor(t *testing.T) {
 
 		shortTimeout := 4 * time.Millisecond
 		iter, duration, ok := WaitFor(alwaysFalse, shortTimeout, 10*time.Millisecond)
-		is.Equal(1, iter, "unexpected iteration count")
+		is.Equal(0, iter, "unexpected iteration count")
 		is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
 		is.False(ok)
 	})
@@ -291,7 +291,7 @@ func TestWaitFor(t *testing.T) {
 
 		iter, duration, ok := WaitFor(alwaysTrue, 10*time.Millisecond, time.Millisecond)
 		is.Equal(1, iter, "unexpected iteration count")
-		is.Zero(duration)
+		is.InEpsilon(time.Millisecond, duration, float64(5*time.Microsecond))
 		is.True(ok)
 	})
 }
