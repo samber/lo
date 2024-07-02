@@ -157,7 +157,7 @@ func TestForEach(t *testing.T) {
 	is.IsIncreasing(callParams2)
 }
 
-func TestForEachCondition(t *testing.T) {
+func TestForEachWhile(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -166,7 +166,7 @@ func TestForEachCondition(t *testing.T) {
 	var callParams1 []string
 	var callParams2 []int
 
-	ForEachCondition([]string{"a", "b", "c"}, func(item string, i int) bool {
+	ForEachWhile([]string{"a", "b", "c"}, func(item string, i int) bool {
 		if item == "c" {
 			return false
 		}
