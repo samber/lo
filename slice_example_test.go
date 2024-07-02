@@ -88,7 +88,7 @@ func ExampleForEach() {
 	// 3
 	// 4
 }
-func ExampleForForEachWhile() {
+func ExampleForEachWhile() {
 	list := []int64{1, 2, -math.MaxInt, 4}
 
 	ForEachWhile(list, func(x int64, _ int) bool {
