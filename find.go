@@ -286,6 +286,30 @@ func Earliest(times ...time.Time) time.Time {
 	return min
 }
 
+// EarliestBy search the minimum time.Time of a collection using the given iteratee function.
+// Returns zero value when the collection is empty.
+func EarliestBy[T any](collection []T, iteratee func(item T) time.Time) T {
+	var earliest T
+
+	if len(collection) == 0 {
+		return earliest
+	}
+
+	earliest = collection[0]
+	earliestTime := iteratee(collection[0])
+
+	for i := 1; i < len(collection); i++ {
+		itemTime := iteratee(collection[i])
+
+		if itemTime.Before(earliestTime) {
+			earliest = collection[i]
+			earliestTime = itemTime
+		}
+	}
+
+	return earliest
+}
+
 // Max searches the maximum value of a collection.
 // Returns zero value when the collection is empty.
 func Max[T constraints.Ordered](collection []T) T {
@@ -351,6 +375,30 @@ func Latest(times ...time.Time) time.Time {
 	}
 
 	return max
+}
+
+// LatestBy search the maximum time.Time of a collection using the given iteratee function.
+// Returns zero value when the collection is empty.
+func LatestBy[T any](collection []T, iteratee func(item T) time.Time) T {
+	var latest T
+
+	if len(collection) == 0 {
+		return latest
+	}
+
+	latest = collection[0]
+	latestTime := iteratee(collection[0])
+
+	for i := 1; i < len(collection); i++ {
+		itemTime := iteratee(collection[i])
+
+		if itemTime.After(latestTime) {
+			latest = collection[i]
+			latestTime = itemTime
+		}
+	}
+
+	return latest
 }
 
 // First returns the first element of a collection and check for availability of the first element.

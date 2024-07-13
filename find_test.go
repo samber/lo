@@ -336,6 +336,32 @@ func TestEarliest(t *testing.T) {
 	is.Equal(result2, time.Time{})
 }
 
+func TestEarliestBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type foo struct {
+		bar time.Time
+	}
+
+	t1 := time.Now()
+	t2 := t1.Add(time.Hour)
+	t3 := t1.Add(-time.Hour)
+	result1 := EarliestBy([]foo{{t1}, {t2}, {t3}}, func(i foo) time.Time {
+		return i.bar
+	})
+	result2 := EarliestBy([]foo{{t1}}, func(i foo) time.Time {
+		return i.bar
+	})
+	result3 := EarliestBy([]foo{}, func(i foo) time.Time {
+		return i.bar
+	})
+
+	is.Equal(result1, foo{t3})
+	is.Equal(result2, foo{t1})
+	is.Equal(result3, foo{})
+}
+
 func TestMax(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -381,6 +407,32 @@ func TestLatest(t *testing.T) {
 
 	is.Equal(result1, b)
 	is.Equal(result2, time.Time{})
+}
+
+func TestLatestBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type foo struct {
+		bar time.Time
+	}
+
+	t1 := time.Now()
+	t2 := t1.Add(time.Hour)
+	t3 := t1.Add(-time.Hour)
+	result1 := LatestBy([]foo{{t1}, {t2}, {t3}}, func(i foo) time.Time {
+		return i.bar
+	})
+	result2 := LatestBy([]foo{{t1}}, func(i foo) time.Time {
+		return i.bar
+	})
+	result3 := LatestBy([]foo{}, func(i foo) time.Time {
+		return i.bar
+	})
+
+	is.Equal(result1, foo{t2})
+	is.Equal(result2, foo{t1})
+	is.Equal(result3, foo{})
 }
 
 func TestFirst(t *testing.T) {
