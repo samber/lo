@@ -235,6 +235,12 @@ func TestChunk(t *testing.T) {
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Chunk(allStrings, 2)
 	is.IsType(nonempty[0], allStrings, "type preserved")
+
+	// appending to a chunk should not affect original array
+	originalArray := []int{0, 1, 2, 3, 4, 5}
+	result5 := Chunk(originalArray, 2)
+	result5[0] = append(result5[0], 6)
+	is.Equal(originalArray, []int{0, 1, 2, 3, 4, 5})
 }
 
 func TestPartitionBy(t *testing.T) {
