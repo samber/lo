@@ -278,6 +278,7 @@ Concurrency helpers:
 - [Async](#async)
 - [Transaction](#transaction)
 - [WaitFor](#waitfor)
+- [WaitForWithContext](#waitforwithcontext)
 
 Error handling:
 
@@ -3104,9 +3105,9 @@ laterTrue := func(i int) bool {
     return i > 5
 }
 
-iterations, duration, ok := lo.WaitFor(alwaysTrue, 10*time.Millisecond, time.Millisecond)
+iterations, duration, ok := lo.WaitFor(alwaysTrue, 10*time.Millisecond, 2 * time.Millisecond)
 // 1
-// 0ms
+// 1ms
 // true
 
 iterations, duration, ok := lo.WaitFor(alwaysFalse, 10*time.Millisecond, time.Millisecond)
@@ -3122,6 +3123,49 @@ iterations, duration, ok := lo.WaitFor(laterTrue, 10*time.Millisecond, time.Mill
 iterations, duration, ok := lo.WaitFor(laterTrue, 10*time.Millisecond, 5*time.Millisecond)
 // 2
 // 10ms
+// false
+```
+
+
+### WaitForWithContext
+
+Runs periodically until a condition is validated or context is invalid.
+
+The condition receives also the context, so it can invalidate the process in the condition checker
+
+```go
+ctx := context.Background()
+
+alwaysTrue := func(_ context.Context, i int) bool { return true }
+alwaysFalse := func(_ context.Context, i int) bool { return false }
+laterTrue := func(_ context.Context, i int) bool {
+    return i >= 5
+}
+
+iterations, duration, ok := lo.WaitForWithContext(ctx, alwaysTrue, 10*time.Millisecond, 2 * time.Millisecond)
+// 1
+// 1ms
+// true
+
+iterations, duration, ok := lo.WaitForWithContext(ctx, alwaysFalse, 10*time.Millisecond, time.Millisecond)
+// 10
+// 10ms
+// false
+
+iterations, duration, ok := lo.WaitForWithContext(ctx, laterTrue, 10*time.Millisecond, time.Millisecond)
+// 5
+// 5ms
+// true
+
+iterations, duration, ok := lo.WaitForWithContext(ctx, laterTrue, 10*time.Millisecond, 5*time.Millisecond)
+// 2
+// 10ms
+// false
+
+expiringCtx, cancel := context.WithTimeout(ctx, 5*time.Millisecond)
+iterations, duration, ok := lo.WaitForWithContext(expiringCtx, alwaysFalse, 100*time.Millisecond, time.Millisecond)
+// 5
+// 5.1ms
 // false
 ```
 
