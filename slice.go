@@ -182,7 +182,7 @@ func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
 		if last > len(collection) {
 			last = len(collection)
 		}
-		result = append(result, collection[i*size:last])
+		result = append(result, collection[i*size:last:last])
 	}
 
 	return result

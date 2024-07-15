@@ -222,9 +222,11 @@ Supported search helpers:
 - [Min](#min)
 - [MinBy](#minby)
 - [Earliest](#earliest)
+- [EarliestBy](#earliestby)
 - [Max](#max)
 - [MaxBy](#maxby)
 - [Latest](#latest)
+- [LatestBy](#latestby)
 - [First](#first)
 - [FirstOrEmpty](#FirstOrEmpty)
 - [FirstOr](#FirstOr)
@@ -2260,6 +2262,23 @@ earliest := lo.Earliest(time.Now(), time.Time{})
 // 0001-01-01 00:00:00 +0000 UTC
 ```
 
+### EarliestBy
+
+Search the minimum time.Time of a collection using the given iteratee function.
+
+Returns zero value when the collection is empty.
+
+```go
+type foo struct {
+    bar time.Time
+}
+
+earliest := lo.EarliestBy([]foo{{time.Now()}, {}}, func(i foo) time.Time {
+    return i.bar
+})
+// {bar:{2023-04-01 01:02:03 +0000 UTC}}
+```
+
 ### Max
 
 Search the maximum value of a collection.
@@ -2306,6 +2325,23 @@ Returns zero value when the collection is empty.
 ```go
 latest := lo.Latest([]time.Time{time.Now(), time.Time{}})
 // 2023-04-01 01:02:03 +0000 UTC
+```
+
+### LatestBy
+
+Search the maximum time.Time of a collection using the given iteratee function.
+
+Returns zero value when the collection is empty.
+
+```go
+type foo struct {
+    bar time.Time
+}
+
+latest := lo.LatestBy([]foo{{time.Now()}, {}}, func(i foo) time.Time {
+    return i.bar
+})
+// {bar:{2023-04-01 01:02:03 +0000 UTC}}
 ```
 
 ### First
