@@ -12,12 +12,12 @@ func testWithTimeout(t *testing.T, timeout time.Duration) {
 	testFinished := make(chan struct{})
 	t.Cleanup(func() { close(testFinished) })
 
-	go func() {
+	go func() { //nolint:staticcheck
 		select {
 		case <-testFinished:
 		case <-time.After(timeout):
 			t.Errorf("test timed out after %s", timeout)
-			t.FailNow()
+			t.FailNow() //nolint:govet,staticcheck
 		}
 	}()
 }
