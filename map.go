@@ -77,6 +77,7 @@ func PickByValues[K comparable, V comparable, Map ~map[K]V](in Map, values []V) 
 }
 
 // ValuesByKeys returns an array of values in the same order as the given keys.
+// Play: https://go.dev/play/p/PmmPDo1AqWl
 func ValuesByKeys[K comparable, V any](in map[K]V, keys []K) []V {
 	out := make([]V, 0, len(keys))
 	for i := range keys {
