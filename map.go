@@ -76,6 +76,17 @@ func PickByValues[K comparable, V comparable, Map ~map[K]V](in Map, values []V) 
 	return r
 }
 
+// ValuesByKeys returns an array of values in the same order as the given keys.
+func ValuesByKeys[K comparable, V any](in map[K]V, keys []K) []V {
+	out := make([]V, 0, len(keys))
+	for i := range keys {
+		if v, ok := in[keys[i]]; ok {
+			out = append(out, v)
+		}
+	}
+	return out
+}
+
 // OmitBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/EtBsR43bdsd
 func OmitBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) bool) Map {

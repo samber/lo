@@ -66,6 +66,15 @@ func ExamplePickByValues() {
 	// Output: 2 1 3
 }
 
+func ExampleValuesByKeys() {
+	kv := map[string]int{"foo": 1, "bar": 2, "baz": 3}
+
+	result := ValuesByKeys(kv, []string{"baz", "foo", "bar"})
+
+	fmt.Printf("%v %v %v", len(result), result[0], result[1])
+	// Output: 3 3 1
+}
+
 func ExampleOmitBy() {
 	kv := map[string]int{"foo": 1, "bar": 2, "baz": 3}
 

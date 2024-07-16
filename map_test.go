@@ -95,6 +95,19 @@ func TestPickByValues(t *testing.T) {
 	is.IsType(after, before, "type preserved")
 }
 
+func TestValuesByKeys(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := ValuesByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"baz", "foo", "bar"})
+	result2 := ValuesByKeys(map[string]int{"": 0, "foobar": 6, "baz": 3}, []string{"baz", "foobar"})
+
+	is.Equal(len(result1), 3)
+	is.Equal(len(result2), 2)
+	is.ElementsMatch(result1, []int{3, 1, 2})
+	is.ElementsMatch(result2, []int{3, 6})
+}
+
 func TestOmitBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
