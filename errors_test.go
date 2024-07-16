@@ -53,7 +53,7 @@ func TestMust(t *testing.T) {
 	is.PanicsWithValue("operation should fail: assert.AnError general error for testing", func() {
 		Must0(cb(), "operation should fail")
 	})
-	
+
 	is.PanicsWithValue("must: invalid err type 'int', should either be a bool or an error", func() {
 		Must0(0)
 	})
@@ -253,6 +253,180 @@ func TestMustX(t *testing.T) {
 	}
 }
 
+func TestJust(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal("foo", Just("foo", nil))
+	is.Zero(Just("whatever", errors.New("something went wrong")))
+
+	is.Equal(1, Just(1, true))
+	is.Zero(Just(999, false))
+	is.Zero(Just(999, errors.New("something went wrong")))
+
+	cb := func() (string, error) {
+		return "whatever", assert.AnError
+	}
+	is.Zero(Just(cb()))
+}
+
+func TestJustX(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	{
+		val1 := Just1(1, nil)
+		is.Equal(1, val1)
+		is.Zero(Just1(1, errors.New("something went wrong")))
+	}
+
+	{
+		val1, val2 := Just2(1, 2, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+
+		val1, val2 = Just2(1, 2, errors.New("something went wrong"))
+		is.Zero(val1)
+		is.Zero(val2)
+	}
+
+	{
+		val1, val2, val3 := Just3(1, 2, 3, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+
+		val1, val2, val3 = Just3(1, 2, 3, errors.New("something went wrong"))
+		is.Zero(val1)
+		is.Zero(val2)
+		is.Zero(val3)
+	}
+
+	{
+		val1, val2, val3, val4 := Just4(1, 2, 3, 4, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+
+		val1, val2, val3, val4 = Just4(1, 2, 3, 4, errors.New("something went wrong"))
+		is.Zero(val1)
+		is.Zero(val2)
+		is.Zero(val3)
+		is.Zero(val4)
+	}
+
+	{
+		val1, val2, val3, val4, val5 := Just5(1, 2, 3, 4, 5, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Equal(5, val5)
+
+		val1, val2, val3, val4, val5 = Just5(1, 2, 3, 4, 5, errors.New("something went wrong"))
+		is.Zero(val1)
+		is.Zero(val2)
+		is.Zero(val3)
+		is.Zero(val4)
+		is.Zero(val5)
+	}
+
+	{
+		val1, val2, val3, val4, val5, val6 := Just6(1, 2, 3, 4, 5, 6, nil)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Equal(5, val5)
+		is.Equal(6, val6)
+
+		val1, val2, val3, val4, val5, val6 = Just6(1, 2, 3, 4, 5, 6, errors.New("something went wrong"))
+		is.Zero(val1)
+		is.Zero(val2)
+		is.Zero(val3)
+		is.Zero(val4)
+		is.Zero(val5)
+		is.Zero(val6)
+	}
+
+	{
+		val1 := Just(1, true)
+		is.Equal(1, val1)
+		is.Zero(Just(1, false))
+	}
+
+	{
+		val1, val2 := Just2(1, 2, true)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+
+		val1, val2 = Just2(1, 2, false)
+		is.Zero(val1)
+		is.Zero(val2)
+	}
+
+	{
+		val1, val2, val3 := Just3(1, 2, 3, true)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+
+		val1, val2, val3 = Just3(1, 2, 3, false)
+		is.Zero(val1)
+		is.Zero(val2)
+		is.Zero(val3)
+	}
+
+	{
+		val1, val2, val3, val4 := Just4(1, 2, 3, 4, true)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+
+		val1, val2, val3, val4 = Just4(1, 2, 3, 4, false)
+		is.Zero(val1)
+		is.Zero(val2)
+		is.Zero(val3)
+		is.Zero(val4)
+	}
+
+	{
+		val1, val2, val3, val4, val5 := Just5(1, 2, 3, 4, 5, true)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Equal(5, val5)
+
+		val1, val2, val3, val4, val5 = Just5(1, 2, 3, 4, 5, false)
+		is.Zero(val1)
+		is.Zero(val2)
+		is.Zero(val3)
+		is.Zero(val4)
+		is.Zero(val5)
+	}
+
+	{
+		val1, val2, val3, val4, val5, val6 := Just6(1, 2, 3, 4, 5, 6, true)
+		is.Equal(1, val1)
+		is.Equal(2, val2)
+		is.Equal(3, val3)
+		is.Equal(4, val4)
+		is.Equal(5, val5)
+		is.Equal(6, val6)
+
+		val1, val2, val3, val4, val5, val6 = Just6(1, 2, 3, 4, 5, 6, false)
+		is.Zero(val1)
+		is.Zero(val2)
+		is.Zero(val3)
+		is.Zero(val4)
+		is.Zero(val5)
+		is.Zero(val6)
+	}
+}
+
 func TestTry(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -271,11 +445,11 @@ func TestTry(t *testing.T) {
 func TestTryX(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	is.True(Try1(func() error {
 		return nil
 	}))
-	
+
 	is.True(Try2(func() (string, error) {
 		return "", nil
 	}))
@@ -295,11 +469,11 @@ func TestTryX(t *testing.T) {
 	is.True(Try6(func() (string, string, string, string, string, error) {
 		return "", "", "", "", "", nil
 	}))
-	
+
 	is.False(Try1(func() error {
 		panic("error")
 	}))
-	
+
 	is.False(Try2(func() (string, error) {
 		panic("error")
 	}))
@@ -319,11 +493,11 @@ func TestTryX(t *testing.T) {
 	is.False(Try6(func() (string, string, string, string, string, error) {
 		panic("error")
 	}))
-	
+
 	is.False(Try1(func() error {
 		return errors.New("foo")
 	}))
-	
+
 	is.False(Try2(func() (string, error) {
 		return "", errors.New("foo")
 	}))
@@ -513,13 +687,13 @@ func TestTryWithErrorValue(t *testing.T) {
 	})
 	is.False(ok)
 	is.Equal("error", err)
-	
+
 	err, ok = TryWithErrorValue(func() error {
 		return errors.New("foo")
 	})
 	is.False(ok)
 	is.EqualError(err.(error), "foo")
-	
+
 	err, ok = TryWithErrorValue(func() error {
 		return nil
 	})
