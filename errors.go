@@ -113,7 +113,7 @@ func Must6[T1, T2, T3, T4, T5, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 
 	return val1, val2, val3, val4, val5, val6
 }
 
-// just assume fine if err is nil or true.
+// fine assume ok if err is nil or true.
 func fine(err any) bool {
 	if err == nil {
 		return true
@@ -129,54 +129,54 @@ func fine(err any) bool {
 	}
 }
 
-// Just is a helper that wraps a call to a function returning just a value
+// Fine is a helper that wraps a call to a function returning just a value
 // and return zero value if err is nil or true.
-func Just[T any](val T, err any) T {
+func Fine[T any](val T, err any) T {
 	if fine(err) {
 		return val
 	}
 	return Empty[T]()
 }
 
-// Just1 is an alias to Just
-func Just1[T any](val T, err any) T {
-	return Just(val, err)
+// Fine1 is an alias to Fine
+func Fine1[T any](val T, err any) T {
+	return Fine(val, err)
 }
 
-// Just2 has the same behavior as Just, but callback returns 2 variables.
-func Just2[T1, T2 any](val1 T1, val2 T2, err any) (T1, T2) {
+// Fine2 has the same behavior as Fine, but callback returns 2 variables.
+func Fine2[T1, T2 any](val1 T1, val2 T2, err any) (T1, T2) {
 	if fine(err) {
 		return val1, val2
 	}
 	return Empty[T1](), Empty[T2]()
 }
 
-// Just3 has the same behavior as Just, but callback returns 3 variables.
-func Just3[T1, T2, T3 any](val1 T1, val2 T2, val3 T3, err any) (T1, T2, T3) {
+// Fine3 has the same behavior as Fine, but callback returns 3 variables.
+func Fine3[T1, T2, T3 any](val1 T1, val2 T2, val3 T3, err any) (T1, T2, T3) {
 	if fine(err) {
 		return val1, val2, val3
 	}
 	return Empty[T1](), Empty[T2](), Empty[T3]()
 }
 
-// Just4 has the same behavior as Just, but callback returns 4 variables.
-func Just4[T1, T2, T3, T4 any](val1 T1, val2 T2, val3 T3, val4 T4, err any) (T1, T2, T3, T4) {
+// Fine4 has the same behavior as Fine, but callback returns 4 variables.
+func Fine4[T1, T2, T3, T4 any](val1 T1, val2 T2, val3 T3, val4 T4, err any) (T1, T2, T3, T4) {
 	if fine(err) {
 		return val1, val2, val3, val4
 	}
 	return Empty[T1](), Empty[T2](), Empty[T3](), Empty[T4]()
 }
 
-// Just5 has the same behavior as Just, but callback returns 5 variables.
-func Just5[T1, T2, T3, T4, T5 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, err any) (T1, T2, T3, T4, T5) {
+// Fine5 has the same behavior as Fine, but callback returns 5 variables.
+func Fine5[T1, T2, T3, T4, T5 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, err any) (T1, T2, T3, T4, T5) {
 	if fine(err) {
 		return val1, val2, val3, val4, val5
 	}
 	return Empty[T1](), Empty[T2](), Empty[T3](), Empty[T4](), Empty[T5]()
 }
 
-// Just6 has the same behavior as Just, but callback returns 6 variables.
-func Just6[T1, T2, T3, T4, T5, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err any) (T1, T2, T3, T4, T5, T6) {
+// Fine6 has the same behavior as Fine, but callback returns 6 variables.
+func Fine6[T1, T2, T3, T4, T5, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err any) (T1, T2, T3, T4, T5, T6) {
 	if fine(err) {
 		return val1, val2, val3, val4, val5, val6
 	}
