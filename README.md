@@ -105,6 +105,7 @@ Supported helpers for slices:
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
 - [DropRightWhile](#droprightwhile)
+- [DropByIndex](#DropByIndex)
 - [Reject](#reject)
 - [RejectMap](#rejectmap)
 - [FilterReject](#filterreject)
@@ -775,8 +776,8 @@ l := lo.DropRightWhile([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) 
 Drops elements from a slice or array by the index. A negative index will drop elements from the end of the slice.
 
 ```go
-l := lo.Drop([]int{0, 1, 2, 3, 4, 5}, 2, 4, -1)
-// []int{2, 3}
+l := lo.DropByIndex([]int{0, 1, 2, 3, 4, 5}, 2, 4, -1)
+// []int{0, 1, 3}
 ```
 
 [[play](https://go.dev/play/p/JswS7vXRJP2)]
