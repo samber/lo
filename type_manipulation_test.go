@@ -294,3 +294,37 @@ func TestCoalesceOrEmpty(t *testing.T) {
 	is.Equal(result9, struct1)
 	is.Equal(result10, struct1)
 }
+
+func TestNillable(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal(Nil[string](), Nillable(nil, func(_ *string) *string {
+		t.Log("unexpected call")
+		t.FailNow()
+		return nil
+	}))
+
+	is.Equal("foo_suffix", *Nillable(ToPtr("foo"), func(t *string) *string {
+		return ToPtr("foo_suffix")
+	}))
+
+	type type1 struct {
+		field1 string
+	}
+	type type2 struct {
+		field2 string
+	}
+
+	is.Equal(Nil[type1](), Nillable(nil, func(_ *type1) *type2 {
+		t.Log("unexpected call")
+		t.FailNow()
+		return nil
+	}))
+
+	input := &type1{field1: "field-value"}
+	want := &type2{field2: "field-value"}
+	is.Equal(want, *Nillable(input, func(t *type1) *type2 {
+		return &type2{field2: input.field1}
+	}))
+}

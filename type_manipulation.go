@@ -120,3 +120,11 @@ func CoalesceOrEmpty[T comparable](v ...T) T {
 	result, _ := Coalesce(v...)
 	return result
 }
+
+// Nillable return [nil] if [v] is nil, otherwise returns [fn] call result.
+func Nillable[T, RT any](v *T, fn func(*T) *RT) *RT {
+	if IsNil(v) {
+		return Nil[RT]()
+	}
+	return fn(v)
+}
