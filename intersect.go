@@ -44,6 +44,28 @@ func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 	return true
 }
 
+// Equivalent Returns true if the subset has the same elements and the same number of each element as the collection.
+func Equivalent[T comparable](collection, subset []T) bool {
+	l := len(collection)
+	if l != len(subset) {
+		return false
+	}
+
+	var m = make(map[T]int, l)
+	for i := range collection {
+		m[collection[i]] += 1
+	}
+	for i := range subset {
+		m[subset[i]] -= 1
+	}
+	for _, v := range m {
+		if v != 0 {
+			return false
+		}
+	}
+	return true
+}
+
 // Some returns true if at least 1 element of a subset is contained into a collection.
 // If the subset is empty Some returns false.
 func Some[T comparable](collection []T, subset []T) bool {
