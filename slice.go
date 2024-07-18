@@ -226,6 +226,26 @@ func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee fun
 	// return Values[K, []T](groups)
 }
 
+// PartitionIn2By returns two array of elements. The first returned array always contains the elements of
+// the collection for which the iteratee function returned true, and the second the rest. This function is
+// similar to PartitionBy, but guarantees that the output is going to contain two groups, though one may be
+// with no elements. This is useful because removes the need to check if more than one group was returned, and
+// also guarantees the order of the returned groups.
+func PartitionIn2By[T any, Slice ~[]T](collection Slice, iteratee func(item T) bool) (Slice, Slice) {
+	trueSlice := Slice{}
+	falseSlice := Slice{}
+
+	for _, item := range collection {
+		if iteratee(item) {
+			trueSlice = append(trueSlice, item)
+		} else {
+			falseSlice = append(falseSlice, item)
+		}
+	}
+
+	return trueSlice, falseSlice
+}
+
 // Flatten returns an array a single level deep.
 // Play: https://go.dev/play/p/rbp9ORaMpjw
 func Flatten[T any, Slice ~[]T](collection []Slice) Slice {
