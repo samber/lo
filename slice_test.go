@@ -292,6 +292,26 @@ func TestPartitionBy(t *testing.T) {
 	})
 	is.IsType(nonempty[0], allStrings, "type preserved")
 }
+func TestPartitionIn2By(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	isNegative := func(x int) bool { return x < 0 }
+
+	negative1, positive1 := PartitionIn2By([]int{-2, -1, 0, 1, 2}, isNegative)
+	negative2, positive2 := PartitionIn2By([]int{}, isNegative)
+
+	is.Equal(negative1, []int{-2, -1})
+	is.Equal(positive1, []int{0, 1, 2})
+
+	is.Equal(negative2, []int{})
+	is.Equal(positive2, []int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty, _ := PartitionIn2By(allStrings, func(item string) bool { return len(item) != 0 })
+	is.IsType(nonempty, allStrings, "type preserved")
+}
 
 func TestFlatten(t *testing.T) {
 	t.Parallel()

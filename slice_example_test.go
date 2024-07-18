@@ -183,6 +183,18 @@ func ExamplePartitionBy() {
 	// [1 3]
 }
 
+func ExamplePartitionIn2By() {
+	list := []int{-2, -1, 0, 1, 2}
+
+	negative, positive := PartitionIn2By(list, func(x int) bool { return x < 0 })
+
+	fmt.Printf("%v\n", negative)
+	fmt.Printf("%v\n", positive)
+	// Output:
+	// [-2 -1]
+	// [0 1 2]
+}
+
 func ExampleFlatten() {
 	list := [][]int{{0, 1, 2}, {3, 4, 5}}
 
