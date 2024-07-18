@@ -58,7 +58,7 @@ func Substring[T ~string](str T, offset int, length uint) T {
 		}
 	}
 
-	if offset > size {
+	if offset >= size {
 		return Empty[T]()
 	}
 

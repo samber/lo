@@ -1,7 +1,6 @@
 package lo
 
 import (
-	"os"
 	"testing"
 	"time"
 )
@@ -13,12 +12,12 @@ func testWithTimeout(t *testing.T, timeout time.Duration) {
 	testFinished := make(chan struct{})
 	t.Cleanup(func() { close(testFinished) })
 
-	go func() {
+	go func() { //nolint:staticcheck
 		select {
 		case <-testFinished:
 		case <-time.After(timeout):
 			t.Errorf("test timed out after %s", timeout)
-			os.Exit(1)
+			t.FailNow() //nolint:govet,staticcheck
 		}
 	}()
 }

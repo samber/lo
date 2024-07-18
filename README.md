@@ -105,6 +105,7 @@ Supported helpers for slices:
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
 - [DropRightWhile](#droprightwhile)
+- [DropByIndex](#DropByIndex)
 - [Reject](#reject)
 - [RejectMap](#rejectmap)
 - [FilterReject](#filterreject)
@@ -222,9 +223,11 @@ Supported search helpers:
 - [Min](#min)
 - [MinBy](#minby)
 - [Earliest](#earliest)
+- [EarliestBy](#earliestby)
 - [Max](#max)
 - [MaxBy](#maxby)
 - [Latest](#latest)
+- [LatestBy](#latestby)
 - [First](#first)
 - [FirstOrEmpty](#FirstOrEmpty)
 - [FirstOr](#FirstOr)
@@ -276,6 +279,7 @@ Concurrency helpers:
 - [Async](#async)
 - [Transaction](#transaction)
 - [WaitFor](#waitfor)
+- [WaitForWithContext](#waitforwithcontext)
 
 Error handling:
 
@@ -772,8 +776,8 @@ l := lo.DropRightWhile([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) 
 Drops elements from a slice or array by the index. A negative index will drop elements from the end of the slice.
 
 ```go
-l := lo.Drop([]int{0, 1, 2, 3, 4, 5}, 2, 4, -1)
-// []int{2, 3}
+l := lo.DropByIndex([]int{0, 1, 2, 3, 4, 5}, 2, 4, -1)
+// []int{0, 1, 3}
 ```
 
 [[play](https://go.dev/play/p/JswS7vXRJP2)]
@@ -2260,6 +2264,23 @@ earliest := lo.Earliest(time.Now(), time.Time{})
 // 0001-01-01 00:00:00 +0000 UTC
 ```
 
+### EarliestBy
+
+Search the minimum time.Time of a collection using the given iteratee function.
+
+Returns zero value when the collection is empty.
+
+```go
+type foo struct {
+    bar time.Time
+}
+
+earliest := lo.EarliestBy([]foo{{time.Now()}, {}}, func(i foo) time.Time {
+    return i.bar
+})
+// {bar:{2023-04-01 01:02:03 +0000 UTC}}
+```
+
 ### Max
 
 Search the maximum value of a collection.
@@ -2306,6 +2327,23 @@ Returns zero value when the collection is empty.
 ```go
 latest := lo.Latest([]time.Time{time.Now(), time.Time{}})
 // 2023-04-01 01:02:03 +0000 UTC
+```
+
+### LatestBy
+
+Search the maximum time.Time of a collection using the given iteratee function.
+
+Returns zero value when the collection is empty.
+
+```go
+type foo struct {
+    bar time.Time
+}
+
+latest := lo.LatestBy([]foo{{time.Now()}, {}}, func(i foo) time.Time {
+    return i.bar
+})
+// {bar:{2023-04-01 01:02:03 +0000 UTC}}
 ```
 
 ### First
@@ -3068,9 +3106,9 @@ laterTrue := func(i int) bool {
     return i > 5
 }
 
-iterations, duration, ok := lo.WaitFor(alwaysTrue, 10*time.Millisecond, time.Millisecond)
+iterations, duration, ok := lo.WaitFor(alwaysTrue, 10*time.Millisecond, 2 * time.Millisecond)
 // 1
-// 0ms
+// 1ms
 // true
 
 iterations, duration, ok := lo.WaitFor(alwaysFalse, 10*time.Millisecond, time.Millisecond)
@@ -3086,6 +3124,49 @@ iterations, duration, ok := lo.WaitFor(laterTrue, 10*time.Millisecond, time.Mill
 iterations, duration, ok := lo.WaitFor(laterTrue, 10*time.Millisecond, 5*time.Millisecond)
 // 2
 // 10ms
+// false
+```
+
+
+### WaitForWithContext
+
+Runs periodically until a condition is validated or context is invalid.
+
+The condition receives also the context, so it can invalidate the process in the condition checker
+
+```go
+ctx := context.Background()
+
+alwaysTrue := func(_ context.Context, i int) bool { return true }
+alwaysFalse := func(_ context.Context, i int) bool { return false }
+laterTrue := func(_ context.Context, i int) bool {
+    return i >= 5
+}
+
+iterations, duration, ok := lo.WaitForWithContext(ctx, alwaysTrue, 10*time.Millisecond, 2 * time.Millisecond)
+// 1
+// 1ms
+// true
+
+iterations, duration, ok := lo.WaitForWithContext(ctx, alwaysFalse, 10*time.Millisecond, time.Millisecond)
+// 10
+// 10ms
+// false
+
+iterations, duration, ok := lo.WaitForWithContext(ctx, laterTrue, 10*time.Millisecond, time.Millisecond)
+// 5
+// 5ms
+// true
+
+iterations, duration, ok := lo.WaitForWithContext(ctx, laterTrue, 10*time.Millisecond, 5*time.Millisecond)
+// 2
+// 10ms
+// false
+
+expiringCtx, cancel := context.WithTimeout(ctx, 5*time.Millisecond)
+iterations, duration, ok := lo.WaitForWithContext(expiringCtx, alwaysFalse, 100*time.Millisecond, time.Millisecond)
+// 5
+// 5.1ms
 // false
 ```
 
