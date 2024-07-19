@@ -157,6 +157,29 @@ func TestForEach(t *testing.T) {
 	is.IsIncreasing(callParams2)
 }
 
+func TestForEachWhile(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// check of callback is called for every element and in proper order
+
+	var callParams1 []string
+	var callParams2 []int
+
+	ForEachWhile([]string{"a", "b", "c"}, func(item string, i int) bool {
+		if item == "c" {
+			return false
+		}
+		callParams1 = append(callParams1, item)
+		callParams2 = append(callParams2, i)
+		return true
+	})
+
+	is.ElementsMatch([]string{"a", "b"}, callParams1)
+	is.ElementsMatch([]int{0, 1}, callParams2)
+	is.IsIncreasing(callParams2)
+}
+
 func TestUniq(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -235,6 +258,12 @@ func TestChunk(t *testing.T) {
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Chunk(allStrings, 2)
 	is.IsType(nonempty[0], allStrings, "type preserved")
+
+	// appending to a chunk should not affect original array
+	originalArray := []int{0, 1, 2, 3, 4, 5}
+	result5 := Chunk(originalArray, 2)
+	result5[0] = append(result5[0], 6)
+	is.Equal(originalArray, []int{0, 1, 2, 3, 4, 5})
 }
 
 func TestPartitionBy(t *testing.T) {

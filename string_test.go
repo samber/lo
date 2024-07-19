@@ -76,6 +76,7 @@ func TestSubstring(t *testing.T) {
 	str12 := Substring("hello", -4, math.MaxUint)
 	str13 := Substring("🏠🐶🐱", 0, 2)
 	str14 := Substring("你好，世界", 0, 3)
+	str15 := Substring("hello", 5, 1)
 
 	is.Equal("", str1)
 	is.Equal("", str2)
@@ -91,6 +92,7 @@ func TestSubstring(t *testing.T) {
 	is.Equal("ello", str12)
 	is.Equal("🏠🐶", str13)
 	is.Equal("你好，", str14)
+	is.Equal("", str15)
 }
 
 func TestRuneLength(t *testing.T) {
