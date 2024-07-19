@@ -1124,7 +1124,7 @@ m := lo.PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 ### ValuesByKeys
 
 Returns an array of values in the same order as the given keys.
-
+If the key in keys slice but not in the map, return error
 ```go
 
 m := lo.ValuesByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"baz", "foo", "bar"})

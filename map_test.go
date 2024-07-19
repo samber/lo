@@ -99,13 +99,18 @@ func TestValuesByKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := ValuesByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"baz", "foo", "bar"})
-	result2 := ValuesByKeys(map[string]int{"": 0, "foobar": 6, "baz": 3}, []string{"baz", "foobar"})
-
+	result1, err1 := ValuesByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"baz", "foo", "bar"})
+	is.NoError(err1)
 	is.Equal(len(result1), 3)
-	is.Equal(len(result2), 2)
 	is.ElementsMatch(result1, []int{3, 1, 2})
+
+	result2, err2 := ValuesByKeys(map[string]int{"": 0, "foobar": 6, "baz": 3}, []string{"baz", "foobar"})
+	is.NoError(err2)
+	is.Equal(len(result2), 2)
 	is.ElementsMatch(result2, []int{3, 6})
+
+	_, err3 := ValuesByKeys(map[string]int{"foo": 1, "baz": 3}, []string{"baz", "foo", "bar"})
+	is.Errorf(err3, "ValuesByKeys: bar is not in the map")
 }
 
 func TestOmitBy(t *testing.T) {
