@@ -53,10 +53,8 @@ func Equivalent[T comparable, Slice ~[]T](collection, subset Slice) bool {
 	}
 
 	var m = make(map[T]int, l)
-	for i := range collection {
+	for i := 0; i < l; i++ {
 		m[collection[i]] += 1
-	}
-	for i := range subset {
 		m[subset[i]] -= 1
 	}
 	for _, v := range m {
