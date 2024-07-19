@@ -195,6 +195,7 @@ Supported intersection helpers:
 - [ContainsBy](#containsby)
 - [Every](#every)
 - [EveryBy](#everyby)
+- [Equivalent](#equivalent)
 - [Some](#some)
 - [SomeBy](#someby)
 - [None](#none)
@@ -1940,6 +1941,15 @@ Returns true if the predicate returns true for all of the elements in the collec
 b := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
     return x < 5
 })
+// true
+```
+
+### Equivalent
+
+Returns true if the subset has the same elements and the same number of each element as the collection.
+
+```go
+b := Equivalent([]int{0, 1, 1, 3, 0, 0}, []int{0, 1, 3, 0, 1, 0})
 // true
 ```
 
