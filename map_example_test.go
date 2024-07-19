@@ -9,12 +9,12 @@ import (
 
 func ExampleKeys() {
 	kv := map[string]int{"foo": 1, "bar": 2}
+	kv2 := map[string]int{"baz": 3}
 
-	result := Keys(kv)
-
-	sort.StringSlice(result).Sort()
+	result := Keys(kv, kv2)
 	fmt.Printf("%v", result)
-	// Output: [bar foo]
+	// Output: [foo bar baz]
+
 }
 
 func ExampleValues() {

@@ -1043,6 +1043,9 @@ Creates an array of the map keys.
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
 // []string{"foo", "bar"}
+
+keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+// []string{"foo", "bar", "baz"}
 ```
 
 [[play](https://go.dev/play/p/Uu11fHASqrU)]

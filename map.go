@@ -2,13 +2,13 @@ package lo
 
 // Keys creates an array of the map keys.
 // Play: https://go.dev/play/p/Uu11fHASqrU
-func Keys[K comparable, V any](in map[K]V) []K {
-	result := make([]K, 0, len(in))
-
-	for k := range in {
-		result = append(result, k)
+func Keys[K comparable, V any](in ...map[K]V) []K {
+	result := make([]K, 0)
+	for i := range in {
+		for k := range in[i] {
+			result = append(result, k)
+		}
 	}
-
 	return result
 }
 
