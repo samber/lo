@@ -14,19 +14,22 @@ func TestKeys(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := Keys(map[string]int{"foo": 1, "bar": 2})
-	is.Equal(r1, []string{"foo", "bar"})
+	sort.Strings(r1)
+	is.Equal(r1, []string{"bar", "foo"})
 
 	r2 := Keys(map[string]int{})
 	is.Empty(r2)
 
 	r3 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
-	is.Equal(r3, []string{"foo", "bar", "baz"})
+	sort.Strings(r3)
+	is.Equal(r3, []string{"bar", "baz", "foo"})
 
-	r4 := Keys[string, int]()
-	is.Equal(r4, []string{})
+	r4 := Keys[int, int]()
+	is.Equal(r4, []int{})
 
 	r5 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
-	is.Equal(r5, []string{"foo", "bar", "bar"})
+	sort.Strings(r5)
+	is.Equal(r5, []string{"bar", "bar", "foo"})
 }
 
 func TestHasKey(t *testing.T) {
