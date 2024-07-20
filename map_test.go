@@ -24,12 +24,12 @@ func TestKeys(t *testing.T) {
 	sort.Strings(r3)
 	is.Equal(r3, []string{"bar", "baz", "foo"})
 
-	r4 := Keys[int, int]()
-	is.Equal(r4, []int{})
+	r4 := Keys[string, int]()
+	is.Equal(r4, []string{})
 
 	r5 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 	sort.Strings(r5)
-	is.Equal(r5, []string{"bar", "bar", "foo"})
+	is.Equal(r5, []string{"bar", "foo"})
 }
 
 func TestHasKey(t *testing.T) {

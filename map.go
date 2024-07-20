@@ -3,12 +3,18 @@ package lo
 // Keys creates an array of the map keys.
 // Play: https://go.dev/play/p/Uu11fHASqrU
 func Keys[K comparable, V any](in ...map[K]V) []K {
+	seen := make(map[K]bool)
 	result := make([]K, 0)
+
 	for i := range in {
 		for k := range in[i] {
-			result = append(result, k)
+			if _, exists := seen[k]; !exists {
+				seen[k] = true
+				result = append(result, k)
+			}
 		}
 	}
+
 	return result
 }
 
