@@ -21,6 +21,12 @@ func TestKeys(t *testing.T) {
 
 	r3 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
 	is.Equal(r3, []string{"foo", "bar", "baz"})
+
+	r4 := Keys[string, int]()
+	is.Equal(r4, []string{})
+
+	r5 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
+	is.Equal(r5, []string{"foo", "bar", "bar"})
 }
 
 func TestHasKey(t *testing.T) {
