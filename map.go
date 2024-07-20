@@ -82,7 +82,7 @@ func PickByValues[K comparable, V comparable, Map ~map[K]V](in Map, values []V) 
 
 // ValuesByKeys returns an array of values in the same order as the given keys.
 // if the key in keys slice but not in the map, return error
-// Play: https://go.dev/play/p/PmmPDo1AqWl
+// Play: https://go.dev/play/p/J0SvRMzPJo_s
 func ValuesByKeys[K comparable, V any](in map[K]V, keys []K) ([]V, error) {
 	out := make([]V, 0, len(keys))
 	for i := range keys {
