@@ -86,11 +86,11 @@ func PickByValues[K comparable, V comparable, Map ~map[K]V](in Map, values []V) 
 func ValuesByKeys[K comparable, V any](in map[K]V, keys []K) ([]V, error) {
 	out := make([]V, 0, len(keys))
 	for i := range keys {
-		if v, ok := in[keys[i]]; ok {
-			out = append(out, v)
-		} else {
+		v, ok := in[keys[i]]
+		if !ok {
 			return nil, fmt.Errorf("ValuesByKeys: %v is not in the map", keys[i])
 		}
+		out = append(out, v)
 	}
 	return out, nil
 }
