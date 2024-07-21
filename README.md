@@ -1650,7 +1650,7 @@ err, duration := lo.Duration1(func() error {
 // an error
 // 3s
 
-err, duration := lo.Duration3(func() (string, int, error) {
+str, nbr, err, duration := lo.Duration3(func() (string, int, error) {
     // very long job
     return "hello", 42, nil
 })
