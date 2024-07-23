@@ -1040,7 +1040,7 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 
 ### Keys
 
-Creates an array of the map keys.
+Creates an array of the map keys. <br />
 (Note: The order of the keys is not guaranteed to be the same as the order returned by the map, so can sort them if needed.)
 
 ```go
@@ -1058,7 +1058,7 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 
 ### UniqKeys
 
-Creates an array of the unique map keys.
+Creates an array of the unique map keys. <br />
 (Note: The order of the keys is not guaranteed to be the same as the order returned by the map, so can sort them if needed.)
 
 ```go
