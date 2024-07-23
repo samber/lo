@@ -1040,10 +1040,9 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 
 ### Keys
 
-Creates an array of the map keys.
-<br />
-(Note: The order of the keys is not guaranteed to be the same as the order returned by the map,
-so can sort them if needed.)
+Creates a slice of the map keys.
+> [!NOTE]
+> The order of the keys is not guaranteed to be the same as the order returned by the map, so can sort them if needed.
 
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
@@ -1061,8 +1060,8 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 ### UniqKeys
 
 Creates an array of the unique map keys. 
-<br />
-(Note: The order of the keys is not guaranteed to be the same as the order returned by the map, so can sort them if needed.)
+> [!NOTE]
+> The order of the keys is not guaranteed to be the same as the order returned by the map, so can sort them if needed.
 
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
@@ -1072,7 +1071,7 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 // []string{"foo", "bar"}
 ```
 
-[[play]()]
+[[play](https://go.dev/play/p/RyIE6Pb5dVS)]
 
 ### HasKey
 
@@ -1091,8 +1090,8 @@ exists := lo.HasKey(map[string]int{"foo": 1, "bar": 2}, "baz")
 ### Values
 
 Creates an array of the map values.
-<br />
-(Note: The order of the values is not guaranteed to be the same as the order returned by the map, so can sort them if needed.)
+> [!NOTE]
+> The order of the values is not guaranteed to be the same as the order returned by the map, so can sort them if needed.
 
 ```go
 values := lo.Values(map[string]int{"foo": 1, "bar": 2})
@@ -1110,8 +1109,8 @@ values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2}
 ### UniqValues
 
 Creates an array of the unique map values.
-<br />
-(Note: The order of the values is not guaranteed to be the same as the order returned by the map, so can sort them if needed.)
+> [!NOTE]
+> The order of the values is not guaranteed to be the same as the order returned by the map, so can sort them if needed.
 
 ```go
 values := lo.Values(map[string]int{"foo": 1, "bar": 2})
@@ -1124,7 +1123,7 @@ values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2}
 // []int{1, 2}
 ```
 
-[[play]()]
+[[play](https://go.dev/play/p/RxsJbnaJn3I)]
 
 ### ValueOr
 

@@ -12,7 +12,7 @@ func ExampleKeys() {
 	kv2 := map[string]int{"baz": 3}
 
 	result := Keys(kv, kv2)
-	sort.StringSlice(result).Sort()
+	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [bar baz foo]
 
@@ -23,7 +23,7 @@ func ExampleUniqKeys() {
 	kv2 := map[string]int{"bar": 3}
 
 	result := UniqKeys(kv, kv2)
-	sort.StringSlice(result).Sort()
+	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [bar foo]
 
@@ -35,7 +35,7 @@ func ExampleValues() {
 
 	result := Values(kv, kv2)
 
-	sort.IntSlice(result).Sort()
+	sort.Ints(result)
 	fmt.Printf("%v", result)
 	// Output: [1 2 3]
 }
@@ -46,7 +46,7 @@ func ExampleUniqValues() {
 
 	result := UniqValues(kv, kv2)
 
-	sort.IntSlice(result).Sort()
+	sort.Ints(result)
 	fmt.Printf("%v", result)
 	// Output: [1 2]
 }

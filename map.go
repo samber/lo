@@ -15,15 +15,15 @@ func Keys[K comparable, V any](in ...map[K]V) []K {
 }
 
 // UniqKeys creates an array of unique keys in the map.
-// Play:
+// Play: https://go.dev/play/p/RyIE6Pb5dVS
 func UniqKeys[K comparable, V any](in ...map[K]V) []K {
-	seen := make(map[K]bool)
+	seen := make(map[K]struct{})
 	result := make([]K, 0)
 
 	for i := range in {
 		for k := range in[i] {
 			if _, exists := seen[k]; !exists {
-				seen[k] = true
+				seen[k] = struct{}{}
 				result = append(result, k)
 			}
 		}
@@ -54,18 +54,20 @@ func Values[K comparable, V any](in ...map[K]V) []V {
 }
 
 // UniqValues creates an array of unique values in the map.
-// Play:
+// Play: https://go.dev/play/p/RxsJbnaJn3I
 func UniqValues[K comparable, V comparable](in ...map[K]V) []V {
-	seen := make(map[V]bool)
+	seen := make(map[V]struct{})
 	result := make([]V, 0)
 
 	for i := range in {
 		for k := range in[i] {
-			if _, exists := seen[in[i][k]]; !exists {
-				seen[in[i][k]] = true
-				result = append(result, in[i][k])
+			val := in[i][k]
+			if _, exists := seen[val]; !exists {
+				seen[val] = struct{}{}
+				result = append(result, val)
 			}
 		}
+
 	}
 
 	return result
