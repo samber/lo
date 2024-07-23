@@ -1042,7 +1042,7 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 
 Creates a slice of the map keys.
 > [!NOTE]
-> The order of the keys isn't guaranteed to be sorted, so sort the output slice if needed.
+> The order of the keys isn't guaranteed to be sorted for performance reason, so sort the output slice if needed.
 
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
@@ -1061,7 +1061,7 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 
 Creates an array of the unique map keys. 
 > [!NOTE]
-> The order of the keys isn't guaranteed to be sorted, so sort the output slice if needed.
+> The order of the keys isn't guaranteed to be sorted for performance reason, so sort the output slice if needed.
 
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
@@ -1091,7 +1091,7 @@ exists := lo.HasKey(map[string]int{"foo": 1, "bar": 2}, "baz")
 
 Creates an array of the map values.
 > [!NOTE]
-> The order of the values isn't guaranteed to be sorted, so sort the output slice if needed.
+> The order of the values isn't guaranteed to be sorted for performance reason, so sort the output slice if needed.
 
 ```go
 values := lo.Values(map[string]int{"foo": 1, "bar": 2})
@@ -1110,7 +1110,7 @@ values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2}
 
 Creates an array of the unique map values.
 > [!NOTE]
-> The order of the values isn't guaranteed to be sorted, so sort the output slice if needed.
+> The order of the values isn't guaranteed to be sorted for performance reason, so sort the output slice if needed.
 
 ```go
 values := lo.Values(map[string]int{"foo": 1, "bar": 2})
