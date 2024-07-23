@@ -102,6 +102,7 @@ func Intersect[T comparable, Slice ~[]T](list1 Slice, list2 Slice) Slice {
 	for i := range list2 {
 		if _, ok := seen[list2[i]]; ok {
 			result = append(result, list2[i])
+			delete(seen, list2[i])
 		}
 	}
 
