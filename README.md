@@ -125,11 +125,11 @@ Supported helpers for slices:
 Supported helpers for maps:
 
 - [Keys](#keys)
-- [UniqKeys](#keys)
+- [UniqKeys](#uniqkeys)
 - [HasKey](#HasKey)
 - [ValueOr](#valueor)
 - [Values](#values)
-- [UniqValues](#keys)
+- [UniqValues](#uniqvalues)
 - [PickBy](#pickby)
 - [PickByKeys](#pickbykeys)
 - [PickByValues](#pickbyvalues)
