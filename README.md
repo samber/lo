@@ -125,11 +125,11 @@ Supported helpers for slices:
 Supported helpers for maps:
 
 - [Keys](#keys)
-- [UniqKeys](#uniqkeys)
+- [UniqKeys](#UniqKeys)
 - [HasKey](#HasKey)
 - [ValueOr](#valueor)
 - [Values](#values)
-- [UniqValues](#uniqvalues)
+- [UniqValues](#UniqValues)
 - [PickBy](#pickby)
 - [PickByKeys](#pickbykeys)
 - [PickByValues](#pickbyvalues)
@@ -1040,8 +1040,10 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 
 ### Keys
 
-Creates an array of the map keys. <br />
-(Note: The order of the keys is not guaranteed to be the same as the order returned by the map, so can sort them if needed.)
+Creates an array of the map keys.
+<br />
+(Note: The order of the keys is not guaranteed to be the same as the order returned by the map,
+so can sort them if needed.)
 
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
@@ -1058,7 +1060,8 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 
 ### UniqKeys
 
-Creates an array of the unique map keys. <br />
+Creates an array of the unique map keys. 
+<br />
 (Note: The order of the keys is not guaranteed to be the same as the order returned by the map, so can sort them if needed.)
 
 ```go
@@ -1088,6 +1091,7 @@ exists := lo.HasKey(map[string]int{"foo": 1, "bar": 2}, "baz")
 ### Values
 
 Creates an array of the map values.
+<br />
 (Note: The order of the values is not guaranteed to be the same as the order returned by the map, so can sort them if needed.)
 
 ```go
@@ -1106,6 +1110,7 @@ values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2}
 ### UniqValues
 
 Creates an array of the unique map values.
+<br />
 (Note: The order of the values is not guaranteed to be the same as the order returned by the map, so can sort them if needed.)
 
 ```go
