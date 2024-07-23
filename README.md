@@ -1948,13 +1948,13 @@ b := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
 // true
 ```
 
-### Equivalent
+### EqualUnordered
 
 Returns true if the subset has the same elements and the same number of each element as the collection.
 Unlike slices.Equal(), which returns effected by order, Equivalent does not care about the order of the elements.
 
 ```go
-b := Equivalent([]int{0, 1, 1, 3, 0, 0}, []int{0, 1, 3, 0, 1, 0})
+b := EqualUnordered([]int{0, 1, 1, 3, 0, 0}, []int{0, 1, 3, 0, 1, 0})
 // true
 ```
 

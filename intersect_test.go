@@ -84,26 +84,26 @@ func TestEveryBy(t *testing.T) {
 	is.True(result4)
 }
 
-func TestEquivalent(t *testing.T) {
+func TestEqualUnordered(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Equivalent([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+	result1 := EqualUnordered([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 	is.True(result1)
 
-	result2 := Equivalent([]int{2, 3, 4, 5, 0, 1}, []int{0, 1, 2, 3, 4, 5})
+	result2 := EqualUnordered([]int{2, 3, 4, 5, 0, 1}, []int{0, 1, 2, 3, 4, 5})
 	is.True(result2)
 
-	result3 := Equivalent([]int{0, 1, 1, 3, 0, 0}, []int{0, 1, 3, 0, 1, 0})
+	result3 := EqualUnordered([]int{0, 1, 1, 3, 0, 0}, []int{0, 1, 3, 0, 1, 0})
 	is.True(result3)
 
-	result4 := Equivalent([]int{0, 1, 2, 3, 4}, []int{0, 1, 2, 3, 4, 5})
+	result4 := EqualUnordered([]int{0, 1, 2, 3, 4}, []int{0, 1, 2, 3, 4, 5})
 	is.False(result4)
 
-	result5 := Equivalent([]int{0, 1, 2, 3, 4, 6}, []int{0, 1, 2, 3, 4, 5})
+	result5 := EqualUnordered([]int{0, 1, 2, 3, 4, 6}, []int{0, 1, 2, 3, 4, 5})
 	is.False(result5)
 
-	result6 := Equivalent([]int{0, 1, 1, 1, 1, 1}, []int{0, 0, 1, 1, 1, 1})
+	result6 := EqualUnordered([]int{0, 1, 1, 1, 1, 1}, []int{0, 0, 1, 1, 1, 1})
 	is.False(result6)
 }
 

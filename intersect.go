@@ -44,9 +44,9 @@ func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 	return true
 }
 
-// Equivalent Returns true if the subset has the same elements and the same number of each element as the collection.
-// Unlike slices.Equal(), which returns effected by order, Equivalent does not care about the order of the elements.
-func Equivalent[T comparable, Slice ~[]T](collection, subset Slice) bool {
+// EqualUnordered returns true if the subset has the same elements and the same number of each element as the collection.
+// Unlike slices.Equal(), which returns effected by order, EqualUnordered does not care about the order of the elements.
+func EqualUnordered[T comparable, Slice ~[]T](collection, subset Slice) bool {
 	l := len(collection)
 	if l != len(subset) {
 		return false
