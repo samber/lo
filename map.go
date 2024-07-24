@@ -22,10 +22,11 @@ func UniqKeys[K comparable, V any](in ...map[K]V) []K {
 
 	for i := range in {
 		for k := range in[i] {
-			if _, exists := seen[k]; !exists {
-				seen[k] = struct{}{}
-				result = append(result, k)
+			if _, exists := seen[k]; exists {
+				continue
 			}
+			seen[k] = struct{}{}
+			result = append(result, k)
 		}
 	}
 
@@ -62,12 +63,12 @@ func UniqValues[K comparable, V comparable](in ...map[K]V) []V {
 	for i := range in {
 		for k := range in[i] {
 			val := in[i][k]
-			if _, exists := seen[val]; !exists {
-				seen[val] = struct{}{}
-				result = append(result, val)
+			if _, exists := seen[val]; exists {
+				continue
 			}
+			seen[val] = struct{}{}
+			result = append(result, val)
 		}
-
 	}
 
 	return result
