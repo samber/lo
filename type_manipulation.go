@@ -69,6 +69,16 @@ func FromSlicePtr[T any](collection []*T) []T {
 	})
 }
 
+// FromSlicePtr returns a slice with the pointer values or the fallback value.
+func FromSlicePtrOr[T any](collection []*T, fallback T) []T {
+	return Map(collection, func(x *T, _ int) T {
+		if x == nil {
+			return fallback
+		}
+		return *x
+	})
+}
+
 // ToAnySlice returns a slice with all elements mapped to `any` type
 func ToAnySlice[T any](collection []T) []any {
 	result := make([]any, len(collection))
