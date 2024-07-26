@@ -256,6 +256,7 @@ Type manipulation helpers:
 - [ToSlicePtr](#tosliceptr)
 - [FromSlicePtr](#fromsliceptr)
 - [FromSlicePtrOr](#fromsliceptror)
+- [FromSlicePtrNotNil](#fromsliceptrnotnil)
 - [ToAnySlice](#toanyslice)
 - [FromAnySlice](#fromanyslice)
 - [Empty](#empty)
@@ -2709,8 +2710,20 @@ Returns a slice with the pointer values or the fallback value.
 str1 := "hello"
 str2 := "world"
 
-ptr := lo.FromSlicePtrOr[string]([]*string{&str1, &str2, "fallback value"})
+ptr := lo.FromSlicePtrOr[string]([]*string{&str1, &str2, nil}, "fallback value")
 // []string{"hello", "world", "fallback value"}
+```
+
+### FromSlicePtrNotNil
+
+Returns a slice with the pointer values without nil elements.
+
+```go
+str1 := "hello"
+str2 := "world"
+
+ptr := lo.FromSlicePtrNotNil[string]([]*string{&str1, &str2, nil})
+// []string{"hello", "world"}
 ```
 
 ### ToAnySlice
