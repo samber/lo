@@ -1041,8 +1041,8 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 ### Keys
 
 Creates a slice of the map keys.
-> [!NOTE]
-> The order of the keys isn't guaranteed to be sorted for performance reason, so sort the output slice if needed.
+
+Use the UniqKeys variant to deduplicate common keys.
 
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
@@ -1060,8 +1060,6 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 ### UniqKeys
 
 Creates an array of the unique map keys. 
-> [!NOTE]
-> The order of the keys isn't guaranteed to be sorted for performance reason, so sort the output slice if needed.
 
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
@@ -1108,9 +1106,9 @@ values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2}
 
 ### UniqValues
 
-Creates an array of the unique map values.
-> [!NOTE]
-> The order of the values isn't guaranteed to be sorted for performance reason, so sort the output slice if needed.
+Creates an array of unique map values.
+
+Use the UniqValues variant to deduplicate common values.
 
 ```go
 values := lo.Values(map[string]int{"foo": 1, "bar": 2})
