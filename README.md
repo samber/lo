@@ -256,6 +256,8 @@ Type manipulation helpers:
 - [FromPtr](#fromptr)
 - [FromPtrOr](#fromptror)
 - [ToSlicePtr](#tosliceptr)
+- [FromSlicePtr](#fromsliceptr)
+- [FromSlicePtrOr](#fromsliceptror)
 - [ToAnySlice](#toanyslice)
 - [FromAnySlice](#fromanyslice)
 - [Empty](#empty)
@@ -2730,6 +2732,36 @@ Returns a slice of pointer copy of value.
 ```go
 ptr := lo.ToSlicePtr([]string{"hello", "world"})
 // []*string{"hello", "world"}
+```
+
+### FromSlicePtr
+
+Returns a slice with the pointer values.
+Returns a zero value in case of a nil pointer element.
+
+```go
+str1 := "hello"
+str2 := "world"
+
+ptr := lo.FromSlicePtr[string]([]*string{&str1, &str2, nil})
+// []string{"hello", "world", ""}
+
+ptr := lo.Compact(
+    lo.FromSlicePtr[string]([]*string{&str1, &str2, nil}),
+)
+// []string{"hello", "world"}
+```
+
+### FromSlicePtrOr
+
+Returns a slice with the pointer values or the fallback value.
+
+```go
+str1 := "hello"
+str2 := "world"
+
+ptr := lo.FromSlicePtrOr[string]([]*string{&str1, &str2, "fallback value"})
+// []string{"hello", "world", "fallback value"}
 ```
 
 ### ToAnySlice
