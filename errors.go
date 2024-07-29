@@ -113,6 +113,76 @@ func Must6[T1, T2, T3, T4, T5, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 
 	return val1, val2, val3, val4, val5, val6
 }
 
+// fine assume ok if err is nil or true.
+func fine(err any) bool {
+	if err == nil {
+		return true
+	}
+
+	switch e := err.(type) {
+	case bool:
+		return e
+	case error:
+		return false
+	default:
+		return false
+	}
+}
+
+// Fine is a helper that wraps a call to a function returning just a value
+// and return zero value if err is nil or true.
+func Fine[T any](val T, err any) T {
+	if fine(err) {
+		return val
+	}
+	return Empty[T]()
+}
+
+// Fine1 is an alias to Fine
+func Fine1[T any](val T, err any) T {
+	return Fine(val, err)
+}
+
+// Fine2 has the same behavior as Fine, but callback returns 2 variables.
+func Fine2[T1, T2 any](val1 T1, val2 T2, err any) (T1, T2) {
+	if fine(err) {
+		return val1, val2
+	}
+	return Empty[T1](), Empty[T2]()
+}
+
+// Fine3 has the same behavior as Fine, but callback returns 3 variables.
+func Fine3[T1, T2, T3 any](val1 T1, val2 T2, val3 T3, err any) (T1, T2, T3) {
+	if fine(err) {
+		return val1, val2, val3
+	}
+	return Empty[T1](), Empty[T2](), Empty[T3]()
+}
+
+// Fine4 has the same behavior as Fine, but callback returns 4 variables.
+func Fine4[T1, T2, T3, T4 any](val1 T1, val2 T2, val3 T3, val4 T4, err any) (T1, T2, T3, T4) {
+	if fine(err) {
+		return val1, val2, val3, val4
+	}
+	return Empty[T1](), Empty[T2](), Empty[T3](), Empty[T4]()
+}
+
+// Fine5 has the same behavior as Fine, but callback returns 5 variables.
+func Fine5[T1, T2, T3, T4, T5 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, err any) (T1, T2, T3, T4, T5) {
+	if fine(err) {
+		return val1, val2, val3, val4, val5
+	}
+	return Empty[T1](), Empty[T2](), Empty[T3](), Empty[T4](), Empty[T5]()
+}
+
+// Fine6 has the same behavior as Fine, but callback returns 6 variables.
+func Fine6[T1, T2, T3, T4, T5, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err any) (T1, T2, T3, T4, T5, T6) {
+	if fine(err) {
+		return val1, val2, val3, val4, val5, val6
+	}
+	return Empty[T1](), Empty[T2](), Empty[T3](), Empty[T4](), Empty[T5](), Empty[T6]()
+}
+
 // Try calls the function and return false in case of error.
 func Try(callback func() error) (ok bool) {
 	ok = true
