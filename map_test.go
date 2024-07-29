@@ -101,7 +101,7 @@ func TestUniqValues(t *testing.T) {
 	is.Empty(r2)
 
 	r3 := UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
-	sort.Ints(r1)
+	sort.Ints(r3)
 	is.Equal(r3, []int{1, 2, 3})
 
 	r4 := UniqValues[string, int]()
