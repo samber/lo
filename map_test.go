@@ -15,8 +15,44 @@ func TestKeys(t *testing.T) {
 
 	r1 := Keys(map[string]int{"foo": 1, "bar": 2})
 	sort.Strings(r1)
-
 	is.Equal(r1, []string{"bar", "foo"})
+
+	r2 := Keys(map[string]int{})
+	is.Empty(r2)
+
+	r3 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+	sort.Strings(r3)
+	is.Equal(r3, []string{"bar", "baz", "foo"})
+
+	r4 := Keys[string, int]()
+	is.Equal(r4, []string{})
+
+	r5 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
+	sort.Strings(r5)
+	is.Equal(r5, []string{"bar", "bar", "foo"})
+}
+
+func TestUniqKeys(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := UniqKeys(map[string]int{"foo": 1, "bar": 2})
+	sort.Strings(r1)
+	is.Equal(r1, []string{"bar", "foo"})
+
+	r2 := UniqKeys(map[string]int{})
+	is.Empty(r2)
+
+	r3 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+	sort.Strings(r3)
+	is.Equal(r3, []string{"bar", "baz", "foo"})
+
+	r4 := UniqKeys[string, int]()
+	is.Equal(r4, []string{})
+
+	r5 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
+	sort.Strings(r5)
+	is.Equal(r5, []string{"bar", "foo"})
 }
 
 func TestHasKey(t *testing.T) {
@@ -36,8 +72,48 @@ func TestValues(t *testing.T) {
 
 	r1 := Values(map[string]int{"foo": 1, "bar": 2})
 	sort.Ints(r1)
-
 	is.Equal(r1, []int{1, 2})
+
+	r2 := Values(map[string]int{})
+	is.Empty(r2)
+
+	r3 := Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+	sort.Ints(r3)
+	is.Equal(r3, []int{1, 2, 3})
+
+	r4 := Values[string, int]()
+	is.Equal(r4, []int{})
+
+	r5 := Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
+	sort.Ints(r5)
+	is.Equal(r5, []int{1, 1, 2, 3})
+}
+
+func TestUniqValues(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := UniqValues(map[string]int{"foo": 1, "bar": 2})
+	sort.Ints(r1)
+	is.Equal(r1, []int{1, 2})
+
+	r2 := UniqValues(map[string]int{})
+	is.Empty(r2)
+
+	r3 := UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+	sort.Ints(r3)
+	is.Equal(r3, []int{1, 2, 3})
+
+	r4 := UniqValues[string, int]()
+	is.Equal(r4, []int{})
+
+	r5 := UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
+	sort.Ints(r5)
+	is.Equal(r5, []int{1, 2, 3})
+
+	r6 := UniqValues(map[string]int{"foo": 1, "bar": 1}, map[string]int{"foo": 1, "bar": 3})
+	sort.Ints(r6)
+	is.Equal(r6, []int{1, 3})
 }
 
 func TestValueOr(t *testing.T) {

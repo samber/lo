@@ -125,9 +125,11 @@ Supported helpers for slices:
 Supported helpers for maps:
 
 - [Keys](#keys)
-- [HasKey](#HasKey)
+- [UniqKeys](#uniqkeys)
+- [HasKey](#haskey)
 - [ValueOr](#valueor)
 - [Values](#values)
+- [UniqValues](#uniqvalues)
 - [PickBy](#pickby)
 - [PickByKeys](#pickbykeys)
 - [PickByValues](#pickbyvalues)
@@ -1040,14 +1042,36 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 
 ### Keys
 
-Creates an array of the map keys.
+Creates a slice of the map keys.
+
+Use the UniqKeys variant to deduplicate common keys.
 
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
 // []string{"foo", "bar"}
+
+keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+// []string{"foo", "bar", "baz"}
+
+keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
+// []string{"foo", "bar", "bar"}
 ```
 
 [[play](https://go.dev/play/p/Uu11fHASqrU)]
+
+### UniqKeys
+
+Creates an array of unique map keys. 
+
+```go
+keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+// []string{"foo", "bar", "baz"}
+
+keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
+// []string{"foo", "bar"}
+```
+
+[[play](https://go.dev/play/p/TPKAb6ILdHk)]
 
 ### HasKey
 
@@ -1067,12 +1091,37 @@ exists := lo.HasKey(map[string]int{"foo": 1, "bar": 2}, "baz")
 
 Creates an array of the map values.
 
+Use the UniqValues variant to deduplicate common values.
+
 ```go
 values := lo.Values(map[string]int{"foo": 1, "bar": 2})
 // []int{1, 2}
+
+values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+// []int{1, 2, 3}
+
+values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2})
+// []int{1, 2, 2}
 ```
 
 [[play](https://go.dev/play/p/nnRTQkzQfF6)]
+
+### UniqValues
+
+Creates an array of unique map values.
+
+```go
+values := lo.UniqValues(map[string]int{"foo": 1, "bar": 2})
+// []int{1, 2}
+
+values := lo.UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+// []int{1, 2, 3}
+
+values := lo.UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2})
+// []int{1, 2}
+```
+
+[[play](https://go.dev/play/p/nf6bXMh7rM3)]
 
 ### ValueOr
 

@@ -2,11 +2,32 @@ package lo
 
 // Keys creates an array of the map keys.
 // Play: https://go.dev/play/p/Uu11fHASqrU
-func Keys[K comparable, V any](in map[K]V) []K {
-	result := make([]K, 0, len(in))
+func Keys[K comparable, V any](in ...map[K]V) []K {
+	result := make([]K, 0)
 
-	for k := range in {
-		result = append(result, k)
+	for i := range in {
+		for k := range in[i] {
+			result = append(result, k)
+		}
+	}
+
+	return result
+}
+
+// UniqKeys creates an array of unique keys in the map.
+// Play: https://go.dev/play/p/TPKAb6ILdHk
+func UniqKeys[K comparable, V any](in ...map[K]V) []K {
+	seen := make(map[K]struct{})
+	result := make([]K, 0)
+
+	for i := range in {
+		for k := range in[i] {
+			if _, exists := seen[k]; exists {
+				continue
+			}
+			seen[k] = struct{}{}
+			result = append(result, k)
+		}
 	}
 
 	return result
@@ -21,11 +42,33 @@ func HasKey[K comparable, V any](in map[K]V, key K) bool {
 
 // Values creates an array of the map values.
 // Play: https://go.dev/play/p/nnRTQkzQfF6
-func Values[K comparable, V any](in map[K]V) []V {
+func Values[K comparable, V any](in ...map[K]V) []V {
 	result := make([]V, 0, len(in))
 
-	for k := range in {
-		result = append(result, in[k])
+	for i := range in {
+		for k := range in[i] {
+			result = append(result, in[i][k])
+		}
+	}
+
+	return result
+}
+
+// UniqValues creates an array of unique values in the map.
+// Play: https://go.dev/play/p/nf6bXMh7rM3
+func UniqValues[K comparable, V comparable](in ...map[K]V) []V {
+	seen := make(map[V]struct{})
+	result := make([]V, 0)
+
+	for i := range in {
+		for k := range in[i] {
+			val := in[i][k]
+			if _, exists := seen[val]; exists {
+				continue
+			}
+			seen[val] = struct{}{}
+			result = append(result, val)
+		}
 	}
 
 	return result
