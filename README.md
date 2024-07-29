@@ -1061,7 +1061,7 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 
 ### UniqKeys
 
-Creates an array of the unique map keys. 
+Creates an array of unique map keys. 
 
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
@@ -1071,7 +1071,7 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 // []string{"foo", "bar"}
 ```
 
-[[play](https://go.dev/play/p/RyIE6Pb5dVS)]
+[[play](https://go.dev/play/p/TPKAb6ILdHk)]
 
 ### HasKey
 
@@ -1111,17 +1111,17 @@ values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2}
 Creates an array of unique map values.
 
 ```go
-values := lo.Values(map[string]int{"foo": 1, "bar": 2})
+values := lo.UniqValues(map[string]int{"foo": 1, "bar": 2})
 // []int{1, 2}
 
-values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+values := lo.UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
 // []int{1, 2, 3}
 
-values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2})
+values := lo.UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2})
 // []int{1, 2}
 ```
 
-[[play](https://go.dev/play/p/RxsJbnaJn3I)]
+[[play](https://go.dev/play/p/nf6bXMh7rM3)]
 
 ### ValueOr
 
