@@ -84,6 +84,7 @@ Supported helpers for slices:
 - [FlatMap](#flatmap)
 - [Reduce](#reduce)
 - [ReduceRight](#reduceright)
+- [FilterByType](#filterbytype)
 - [ForEach](#foreach)
 - [ForEachWhile](#foreachwhile)
 - [Times](#times)
@@ -400,6 +401,17 @@ result := lo.ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item [
 ```
 
 [[play](https://go.dev/play/p/Fq3W70l7wXF)]
+
+### FilterByType
+
+Returns the elements of collection that have the type given as the type parameter.
+
+```go
+result := lo.FilterByType[int]([]any{1, "foo", 2, true})
+// []int{1, 2}
+```
+
+[[play](https://go.dev/play/p/PPfuC__LoTG)]
 
 ### ForEach
 
