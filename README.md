@@ -1090,8 +1090,8 @@ exists := lo.HasKey(map[string]int{"foo": 1, "bar": 2}, "baz")
 ### Values
 
 Creates an array of the map values.
-> [!NOTE]
-> The order of the values isn't guaranteed to be sorted for performance reason, so sort the output slice if needed.
+
+Use the UniqValues variant to deduplicate common values.
 
 ```go
 values := lo.Values(map[string]int{"foo": 1, "bar": 2})
@@ -1109,8 +1109,6 @@ values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2}
 ### UniqValues
 
 Creates an array of unique map values.
-
-Use the UniqValues variant to deduplicate common values.
 
 ```go
 values := lo.Values(map[string]int{"foo": 1, "bar": 2})
