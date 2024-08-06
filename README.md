@@ -445,8 +445,6 @@ lo.ForEachWhile(list, func(x int64, _ int) bool {
 	return true
 })
 
-
-
 // 1
 // 2
 ```
