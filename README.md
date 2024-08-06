@@ -447,7 +447,7 @@ lo.ForEachWhile(list, func(x int64, _ int) bool {
 // 1
 // 2
 ```
-[[play]](https://go.dev/play/p/QnLGt35tnow)
+[[play](https://go.dev/play/p/QnLGt35tnow)]
 ### Times
 
 Times invokes the iteratee n times, returning an array of the results of each invocation. The iteratee is invoked with index as argument.
