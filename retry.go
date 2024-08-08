@@ -287,4 +287,55 @@ func (t *Transaction[T]) Process(state T) (T, error) {
 	return state, err
 }
 
-// throttle ?
+type throttle struct {
+	mu         *sync.Mutex
+	timer      *time.Timer
+	needInvoke bool
+	interval   time.Duration
+	callbacks  []func()
+}
+
+func (th *throttle) throttledFunc() {
+	th.mu.Lock()
+	defer th.mu.Unlock()
+	th.needInvoke = true
+	if th.timer == nil {
+		th.timer = time.AfterFunc(th.interval, func() {
+			th.purge(false)
+		})
+	}
+}
+
+func (th *throttle) purge(forcePurge bool) {
+	th.mu.Lock()
+	defer th.mu.Unlock()
+
+	if th.timer != nil {
+		th.timer.Stop()
+	}
+
+	if th.needInvoke || forcePurge {
+		for _, f := range th.callbacks {
+			go f()
+		}
+		th.needInvoke = false
+		th.timer = time.AfterFunc(th.interval, func() {
+			th.purge(false)
+		})
+	} else {
+		th.timer = nil
+	}
+}
+
+// NewThrottle creates a throttled instance that invokes given functions only once in every interval.
+// This returns 2 functions, First one is throttled function and Second one is purge function which invokes given functions immediately and reset interval timer.
+func NewThrottle(interval time.Duration, f ...func()) (func(), func()) {
+	th := &throttle{
+		mu:        new(sync.Mutex),
+		interval:  interval,
+		callbacks: f,
+	}
+	return th.throttledFunc, func() {
+		th.purge(true)
+	}
+}
