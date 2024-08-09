@@ -432,8 +432,6 @@ lop.ForEach([]string{"hello", "world"}, func(x string, _ int) {
 Iterates over collection elements and invokes iteratee for each element collection return value decide to continue or break, like do while().
 
 ```go
-import 	"github.com/samber/lo"
-
 list := []int64{1, 2, -42, 4}
 
 lo.ForEachWhile(list, func(x int64, _ int) bool {
