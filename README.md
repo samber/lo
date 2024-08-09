@@ -432,7 +432,6 @@ lop.ForEach([]string{"hello", "world"}, func(x string, _ int) {
 Iterates over collection elements and invokes iteratee for each element collection return value decide to continue or break, like do while().
 
 ```go
-
 import 	"github.com/samber/lo"
 
 list := []int64{1, 2, -42, 4}
@@ -447,7 +446,9 @@ lo.ForEachWhile(list, func(x int64, _ int) bool {
 // 1
 // 2
 ```
+
 [[play](https://go.dev/play/p/QnLGt35tnow)]
+
 ### Times
 
 Times invokes the iteratee n times, returning an array of the results of each invocation. The iteratee is invoked with index as argument.
