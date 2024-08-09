@@ -4,10 +4,10 @@ package lo
 // Play: https://go.dev/play/p/t-D7WBL44h2
 func Ternary[T any](condition bool, ifOutput T, elseOutput T) T {
 	if condition {
-		return ifOutput
+		return func() T { return ifOutput }()
 	}
 
-	return elseOutput
+	return func() T { return elseOutput }()
 }
 
 // TernaryF is a 1 line if/else statement whose options are functions
