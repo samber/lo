@@ -434,17 +434,18 @@ Iterates over collection elements and invokes iteratee for each element collecti
 ```go
 list := []int64{1, 2, -42, 4}
 
-ForEachWhile(list, func(x int64, _ int) bool {
-    if x < 0 {
-        return false
-    }
-    fmt.Println(x)
-    return true
+lo.ForEachWhile(list, func(x int64, _ int) bool {
+	if x < 0 {
+		return false
+	}
+	fmt.Println(x)
+	return true
 })
-
 // 1
 // 2
 ```
+
+[[play](https://go.dev/play/p/QnLGt35tnow)]
 
 ### Times
 
