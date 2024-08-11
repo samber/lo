@@ -89,6 +89,7 @@ Supported helpers for slices:
 - [Times](#times)
 - [Uniq](#uniq)
 - [UniqBy](#uniqby)
+- [UniqByMap](#uniqbymap)
 - [GroupBy](#groupby)
 - [Chunk](#chunk)
 - [PartitionBy](#partitionby)
@@ -496,6 +497,25 @@ uniqValues := lo.UniqBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 ```
 
 [[play](https://go.dev/play/p/g42Z3QSb53u)]
+
+### UniqByMap
+
+Returns a duplicate-free version of an given array datatype, in which only the first occurrence of each element is kept. The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed. It accepts `extract` which is invoked for each element in array to return the value of a given datatype.
+
+```go
+type student struct {
+    Id   int
+    Name string
+}
+students := []student{
+    {Id:   1, Name: "student1"},
+    {Id:   2, Name: "student2"},
+    {Id:   1, Name: "student1"}}
+iteratee := func(s student) int {return s.Id}
+extract := func(s student) string {return s.Name}
+result := lo.UniqByMap(students, iteratee, extract)
+// []string{"student1", "student2"}
+```
 
 ### GroupBy
 
