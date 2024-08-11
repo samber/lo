@@ -207,6 +207,7 @@ Supported intersection helpers:
 - [Union](#union)
 - [Without](#without)
 - [WithoutEmpty](#withoutempty)
+- [WithoutBy](#withoutby)
 
 Supported search helpers:
 
@@ -2104,6 +2105,22 @@ Returns slice excluding empty values.
 ```go
 subset := lo.WithoutEmpty([]int{0, 2, 10})
 // []int{2, 10}
+```
+
+### WithoutBy
+
+Returns slice excluding all values that satisfy the predicate.
+
+```go
+subset := lo.WithoutBy([]int{0, 2, 10}, func(x int) bool {
+	return x < 5
+})
+// []int{10}
+
+subset := lo.WithoutBy([]string{"a", "b", "c"}, func(x string) bool {
+	return x == "a"
+})
+// []string{"b", "c"}
 ```
 
 ### IndexOf
