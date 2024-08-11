@@ -93,7 +93,7 @@ func BenchmarkUniqKeys(b *testing.B) {
 						continue
 					}
 					seen[k] = struct{}{}
-					result = append(result, k)
+					result = append(result, k) //nolint:staticcheck
 				}
 			}
 		}
@@ -117,7 +117,7 @@ func BenchmarkUniqKeys(b *testing.B) {
 			result := make([]int64, 0, len(seen))
 
 			for k := range seen {
-				result = append(result, k)
+				result = append(result, k) //nolint:staticcheck
 			}
 		}
 	})
