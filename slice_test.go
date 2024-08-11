@@ -214,7 +214,7 @@ func TestUniqBy(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-func TestUniqItemBy(t *testing.T) {
+func TestUniqByMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -246,7 +246,7 @@ func TestUniqItemBy(t *testing.T) {
 		return s.Name
 	}
 
-	result := UniqItemBy(students, iteratee, extract)
+	result := UniqByMap(students, iteratee, extract)
 
 	is.Equal(len(result), 2)
 	is.Equal(result, []string{"student1", "student2"})

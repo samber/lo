@@ -159,11 +159,11 @@ func UniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(ite
 	return result
 }
 
-// UniqItemBy returns a duplicate-free version of an given array datatype, in which only the first occurrence of each
+// UniqByMap returns a duplicate-free version of an given array datatype, in which only the first occurrence of each
 // element is kept. The order of result values is determined by the order they occur in the array. It accepts
 // `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
 // It accepts `extract` which is invoked for each element in array to return the value of a given datatype.
-func UniqItemBy[T any, V any, U comparable](collection []T, iteratee func(item T) U, extract func(item T) V) []V {
+func UniqByMap[T any, V any, U comparable](collection []T, iteratee func(item T) U, extract func(item T) V) []V {
 	result := make([]V, 0, len(collection))
 	seen := make(map[U]struct{}, len(collection))
 
