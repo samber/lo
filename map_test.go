@@ -53,6 +53,10 @@ func TestUniqKeys(t *testing.T) {
 	r5 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
 	sort.Strings(r5)
 	is.Equal(r5, []string{"bar", "foo"})
+
+	// check order
+	r6 := UniqKeys(map[string]int{"foo": 1}, map[string]int{"bar": 3})
+	is.Equal(r6, []string{"foo", "bar"})
 }
 
 func TestHasKey(t *testing.T) {
@@ -114,6 +118,10 @@ func TestUniqValues(t *testing.T) {
 	r6 := UniqValues(map[string]int{"foo": 1, "bar": 1}, map[string]int{"foo": 1, "bar": 3})
 	sort.Ints(r6)
 	is.Equal(r6, []int{1, 3})
+
+	// check order
+	r7 := UniqValues(map[string]int{"foo": 1}, map[string]int{"bar": 3})
+	is.Equal(r7, []int{1, 3})
 }
 
 func TestValueOr(t *testing.T) {
