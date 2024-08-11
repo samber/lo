@@ -270,6 +270,45 @@ func TestWithout(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestWithoutBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	// Suite of tests to ensure that the WithoutBy function works as expected
+	// Tests will cover different types of slices and different types of elements
+	// to be removed from the slice
+
+	result1 := WithoutBy([]int{0, 1, 2, 3, 4, 5}, func(i int) bool { return i < 3 })
+	result2 := WithoutBy([]int{0, 1, 2, 3, 4, 5}, func(i int) bool { return i > 3 })
+	result3 := WithoutBy([]int{0, 1, 2, 3, 4, 5}, func(i int) bool { return i == 3 })
+
+	result4 := WithoutBy([]string{"foo", "bar", "baz"}, func(s string) bool { return s == "foo" })
+	result5 := WithoutBy([]string{"foo", "bar", "baz"}, func(s string) bool { return s == "bar" })
+	result6 := WithoutBy([]string{"foo", "bar", "baz"}, func(s string) bool { return s == "baz" })
+
+	result7 := WithoutBy([]bool{true, false, true}, func(b bool) bool { return b })
+	result8 := WithoutBy([]bool{true, false, true}, func(b bool) bool { return !b })
+
+	result9 := WithoutBy([]float64{1.1, 2.2, 3.3}, func(f float64) bool { return f == 1.1 })
+	result10 := WithoutBy([]float64{1.1, 2.2, 3.3}, func(f float64) bool { return f == 2.2 })
+	result11 := WithoutBy([]float64{1.1, 2.2, 3.3}, func(f float64) bool { return f == 3.3 })
+
+	is.Equal(result1, []int{3, 4, 5})
+	is.Equal(result2, []int{0, 1, 2, 3})
+	is.Equal(result3, []int{0, 1, 2, 4, 5})
+
+	is.Equal(result4, []string{"bar", "baz"})
+	is.Equal(result5, []string{"foo", "baz"})
+	is.Equal(result6, []string{"foo", "bar"})
+
+	is.Equal(result7, []bool{false})
+	is.Equal(result8, []bool{true, true})
+
+	is.Equal(result9, []float64{2.2, 3.3})
+	is.Equal(result10, []float64{1.1, 3.3})
+	is.Equal(result11, []float64{1.1, 2.2})
+
+}
+
 func TestWithoutEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

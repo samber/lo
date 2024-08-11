@@ -176,6 +176,18 @@ func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
 	return result
 }
 
+// WithoutBy returns slice excluding all values that satisfy the predicate.
+// The predicate function should return true if the item should be excluded.
+func WithoutBy[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
+	result := make(Slice, 0, len(collection))
+	for i := range collection {
+		if !predicate(collection[i]) {
+			result = append(result, collection[i])
+		}
+	}
+	return result
+}
+
 // WithoutEmpty returns slice excluding empty values.
 //
 // Deprecated: Use lo.Compact instead.
