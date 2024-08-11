@@ -26,8 +26,8 @@ func (d *debounce) reset() {
 	}
 
 	d.timer = time.AfterFunc(d.after, func() {
-		for _, f := range d.callbacks {
-			f()
+		for i := range d.callbacks {
+			d.callbacks[i]()
 		}
 	})
 }
@@ -101,8 +101,8 @@ func (d *debounceBy[T]) reset(key T) {
 		item.count = 0
 		item.mu.Unlock()
 
-		for _, f := range d.callbacks {
-			f(key, count)
+		for i := range d.callbacks {
+			d.callbacks[i](key, count)
 		}
 
 	})
@@ -239,7 +239,7 @@ type transactionStep[T any] struct {
 	onRollback func(T) T
 }
 
-// NewTransaction instanciate a new transaction.
+// NewTransaction instantiate a new transaction.
 func NewTransaction[T any]() *Transaction[T] {
 	return &Transaction[T]{
 		steps: []transactionStep[T]{},

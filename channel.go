@@ -1,9 +1,10 @@
 package lo
 
 import (
-	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/samber/lo/internal/rand"
 )
 
 type DispatchingStrategy[T any] func(msg T, index uint64, channels []<-chan T) int
@@ -86,7 +87,7 @@ func DispatchingStrategyRoundRobin[T any](msg T, index uint64, channels []<-chan
 // If the channel capacity is exceeded, another random channel will be selected and so on.
 func DispatchingStrategyRandom[T any](msg T, index uint64, channels []<-chan T) int {
 	for {
-		i := rand.Intn(len(channels))
+		i := rand.IntN(len(channels))
 		if channelIsNotFull(channels[i]) {
 			return i
 		}
@@ -108,7 +109,7 @@ func DispatchingStrategyWeightedRandom[T any](weights []int) DispatchingStrategy
 
 	return func(msg T, index uint64, channels []<-chan T) int {
 		for {
-			i := seq[rand.Intn(len(seq))]
+			i := seq[rand.IntN(len(seq))]
 			if channelIsNotFull(channels[i]) {
 				return i
 			}
@@ -156,8 +157,8 @@ func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 	ch := make(chan T, bufferSize)
 
 	go func() {
-		for _, item := range collection {
-			ch <- item
+		for i := range collection {
+			ch <- collection[i]
 		}
 
 		close(ch)
@@ -261,13 +262,13 @@ func FanIn[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 
 	// Start an output goroutine for each input channel in upstreams.
 	wg.Add(len(upstreams))
-	for _, c := range upstreams {
-		go func(c <-chan T) {
-			for n := range c {
+	for i := range upstreams {
+		go func(index int) {
+			for n := range upstreams[index] {
 				out <- n
 			}
 			wg.Done()
-		}(c)
+		}(i)
 	}
 
 	// Start a goroutine to close out once all the output goroutines are done.

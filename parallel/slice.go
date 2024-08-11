@@ -67,8 +67,8 @@ func Times[T any](count int, iteratee func(index int) T) []T {
 
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // `iteratee` is call in parallel.
-func GroupBy[T any, U comparable](collection []T, iteratee func(item T) U) map[U][]T {
-	result := map[U][]T{}
+func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) map[U]Slice {
+	result := map[U]Slice{}
 
 	var mu sync.Mutex
 	var wg sync.WaitGroup
@@ -96,8 +96,8 @@ func GroupBy[T any, U comparable](collection []T, iteratee func(item T) U) map[U
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through iteratee.
 // `iteratee` is call in parallel.
-func PartitionBy[T any, K comparable](collection []T, iteratee func(item T) K) [][]T {
-	result := [][]T{}
+func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K) []Slice {
+	result := []Slice{}
 	seen := map[K]int{}
 
 	var mu sync.Mutex

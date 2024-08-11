@@ -1,9 +1,15 @@
 package lo
 
 import (
-	"math/rand"
+	"regexp"
 	"strings"
+	"unicode"
 	"unicode/utf8"
+
+	"github.com/samber/lo/internal/rand"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 var (
@@ -14,6 +20,11 @@ var (
 	AlphanumericCharset     = append(LettersCharset, NumbersCharset...)
 	SpecialCharset          = []rune("!@#$%^&*()_+-=[]{}|;':\",./<>?")
 	AllCharset              = append(AlphanumericCharset, SpecialCharset...)
+
+	// bearer:disable go_lang_permissive_regex_validation
+	splitWordReg = regexp.MustCompile(`([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`)
+	// bearer:disable go_lang_permissive_regex_validation
+	splitNumberLetterReg = regexp.MustCompile(`([0-9])([a-zA-Z])`)
 )
 
 // RandomString return a random string.
@@ -29,7 +40,7 @@ func RandomString(size int, charset []rune) string {
 	b := make([]rune, size)
 	possibleCharactersCount := len(charset)
 	for i := range b {
-		b[i] = charset[rand.Intn(possibleCharactersCount)]
+		b[i] = charset[rand.IntN(possibleCharactersCount)]
 	}
 	return string(b)
 }
@@ -47,7 +58,7 @@ func Substring[T ~string](str T, offset int, length uint) T {
 		}
 	}
 
-	if offset > size {
+	if offset >= size {
 		return Empty[T]()
 	}
 
@@ -93,4 +104,77 @@ func ChunkString[T ~string](str T, size int) []T {
 // Play: https://go.dev/play/p/tuhgW_lWY8l
 func RuneLength(str string) int {
 	return utf8.RuneCountInString(str)
+}
+
+// PascalCase converts string to pascal case.
+func PascalCase(str string) string {
+	items := Words(str)
+	for i := range items {
+		items[i] = Capitalize(items[i])
+	}
+	return strings.Join(items, "")
+}
+
+// CamelCase converts string to camel case.
+func CamelCase(str string) string {
+	items := Words(str)
+	for i, item := range items {
+		item = strings.ToLower(item)
+		if i > 0 {
+			item = Capitalize(item)
+		}
+		items[i] = item
+	}
+	return strings.Join(items, "")
+}
+
+// KebabCase converts string to kebab case.
+func KebabCase(str string) string {
+	items := Words(str)
+	for i := range items {
+		items[i] = strings.ToLower(items[i])
+	}
+	return strings.Join(items, "-")
+}
+
+// SnakeCase converts string to snake case.
+func SnakeCase(str string) string {
+	items := Words(str)
+	for i := range items {
+		items[i] = strings.ToLower(items[i])
+	}
+	return strings.Join(items, "_")
+}
+
+// Words splits string into an array of its words.
+func Words(str string) []string {
+	str = splitWordReg.ReplaceAllString(str, `$1$3$5$7 $2$4$6$8$9`)
+	// example: Int8Value => Int 8Value => Int 8 Value
+	str = splitNumberLetterReg.ReplaceAllString(str, "$1 $2")
+	var result strings.Builder
+	for _, r := range str {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			result.WriteRune(r)
+		} else {
+			result.WriteRune(' ')
+		}
+	}
+	return strings.Fields(result.String())
+}
+
+// Capitalize converts the first character of string to upper case and the remaining to lower case.
+func Capitalize(str string) string {
+	return cases.Title(language.English).String(str)
+}
+
+// Elipse truncates a string to a specified length and appends an ellipsis if truncated.
+func Elipse(str string, length int) string {
+	if len(str) > length {
+		if len(str) < 3 || length < 3 {
+			return "..."
+		}
+		return str[0:length-3] + "..."
+	}
+
+	return str
 }

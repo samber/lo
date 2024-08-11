@@ -18,3 +18,6 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           args: --timeout 120s --max-same-issues 50
+
+      - name: Bearer
+        uses: bearer/bearer-action@v2

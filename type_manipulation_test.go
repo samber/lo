@@ -6,6 +6,30 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestIsNil(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var x int
+	is.False(IsNil(x))
+
+	var k struct{}
+	is.False(IsNil(k))
+
+	var s *string
+	is.True(IsNil(s))
+
+	var i *int
+	is.True(IsNil(i))
+
+	var b *bool
+	is.True(IsNil(b))
+
+	var ifaceWithNilValue any = (*string)(nil)
+	is.True(IsNil(ifaceWithNilValue))
+	is.False(ifaceWithNilValue == nil) // nolint:staticcheck
+}
+
 func TestToPtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -13,6 +37,27 @@ func TestToPtr(t *testing.T) {
 	result1 := ToPtr([]int{1, 2})
 
 	is.Equal(*result1, []int{1, 2})
+}
+
+func TestNil(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	nilFloat64 := Nil[float64]()
+	var expNilFloat64 *float64
+
+	nilString := Nil[string]()
+	var expNilString *string
+
+	is.Equal(expNilFloat64, nilFloat64)
+	is.Nil(nilFloat64)
+	is.NotEqual(nil, nilFloat64)
+
+	is.Equal(expNilString, nilString)
+	is.Nil(nilString)
+	is.NotEqual(nil, nilString)
+
+	is.NotEqual(nilString, nilFloat64)
 }
 
 func TestEmptyableToPtr(t *testing.T) {
@@ -74,6 +119,26 @@ func TestToSlicePtr(t *testing.T) {
 	result1 := ToSlicePtr([]string{str1, str2})
 
 	is.Equal(result1, []*string{&str1, &str2})
+}
+
+func TestFromSlicePtr(t *testing.T) {
+	is := assert.New(t)
+
+	str1 := "foo"
+	str2 := "bar"
+	result1 := FromSlicePtr([]*string{&str1, &str2, nil})
+
+	is.Equal(result1, []string{str1, str2, ""})
+}
+
+func TestFromSlicePtrOr(t *testing.T) {
+	is := assert.New(t)
+
+	str1 := "foo"
+	str2 := "bar"
+	result1 := FromSlicePtrOr([]*string{&str1, &str2, nil}, "fallback")
+
+	is.Equal(result1, []string{str1, str2, "fallback"})
 }
 
 func TestToAnySlice(t *testing.T) {
@@ -208,4 +273,44 @@ func TestCoalesce(t *testing.T) {
 
 	is.Equal(result10, struct1)
 	is.True(ok10)
+}
+
+func TestCoalesceOrEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	newStr := func(v string) *string { return &v }
+	var nilStr *string
+	str1 := newStr("str1")
+	str2 := newStr("str2")
+
+	type structType struct {
+		field1 int
+		field2 float64
+	}
+	var zeroStruct structType
+	struct1 := structType{1, 1.0}
+	struct2 := structType{2, 2.0}
+
+	result1 := CoalesceOrEmpty[int]()
+	result2 := CoalesceOrEmpty(3)
+	result3 := CoalesceOrEmpty(nil, nilStr)
+	result4 := CoalesceOrEmpty(nilStr, str1)
+	result5 := CoalesceOrEmpty(nilStr, str1, str2)
+	result6 := CoalesceOrEmpty(str1, str2, nilStr)
+	result7 := CoalesceOrEmpty(0, 1, 2, 3)
+	result8 := CoalesceOrEmpty(zeroStruct)
+	result9 := CoalesceOrEmpty(zeroStruct, struct1)
+	result10 := CoalesceOrEmpty(zeroStruct, struct1, struct2)
+
+	is.Equal(0, result1)
+	is.Equal(3, result2)
+	is.Nil(result3)
+	is.Equal(str1, result4)
+	is.Equal(str1, result5)
+	is.Equal(str1, result6)
+	is.Equal(result7, 1)
+	is.Equal(result8, zeroStruct)
+	is.Equal(result9, struct1)
+	is.Equal(result10, struct1)
 }

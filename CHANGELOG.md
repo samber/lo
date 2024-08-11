@@ -2,6 +2,11 @@
 
 @samber: I sometimes forget to update this file. Ping me on [Twitter](https://twitter.com/samuelberthe) or open an issue in case of error. We need to keep a clear changelog for easier lib upgrade.
 
+## 1.39.0 (2023-12-01)
+
+Improvement:
+- Adding IsNil
+
 ## 1.38.1 (2023-03-20)
 
 Improvement:
@@ -15,7 +20,7 @@ Adding:
 - lo.EmptyableToPtr
 
 Improvement:
-- Substring: add support for non-english chars
+- Substring: add support for non-English chars
 
 Fix:
 - Async: Fix goroutine leak
