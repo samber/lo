@@ -531,6 +531,14 @@ func TestSliceToMap(t *testing.T) {
 	}
 }
 
+func TestSliceToSet(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := SliceToSet([]int{1, 2, 3, 4})
+	is.Equal(result1, map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}})
+}
+
 func TestDrop(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
