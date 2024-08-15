@@ -270,6 +270,26 @@ func TestWithout(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestWithoutBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type user struct {
+		name string
+		age  int
+	}
+
+	result1 := WithoutBy([]user{{name: "nick"}, {name: "peter"}},
+		func(item user) string {
+			return item.name
+		}, "nick", "lily")
+	result2 := WithoutBy([]user{}, func(item user) int { return item.age }, 1, 2, 3)
+	result3 := WithoutBy([]user{}, func(item user) string { return item.name })
+	is.Equal(result1, []user{{name: "peter"}})
+	is.Equal(result2, []user{})
+	is.Equal(result3, []user{})
+}
+
 func TestWithoutEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
