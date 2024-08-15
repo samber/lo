@@ -238,7 +238,9 @@ Supported search helpers:
 - [LastOr](#LastOr)
 - [Nth](#nth)
 - [Sample](#sample)
+- [SampleBy](#sampleby)
 - [Samples](#samples)
+- [SamplesBy](#samplesby)
 
 Conditional helpers:
 
