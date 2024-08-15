@@ -551,6 +551,17 @@ func TestSample(t *testing.T) {
 	is.Equal(result2, "")
 }
 
+func TestSampleBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := SampleBy([]string{"a", "b", "c"}, rand.Intn)
+	result2 := SampleBy([]string{}, rand.Intn)
+
+	is.True(Contains([]string{"a", "b", "c"}, result1))
+	is.Equal(result2, "")
+}
+
 func TestSamples(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -559,6 +570,24 @@ func TestSamples(t *testing.T) {
 
 	result1 := Samples([]string{"a", "b", "c"}, 3)
 	result2 := Samples([]string{}, 3)
+
+	sort.Strings(result1)
+
+	is.Equal(result1, []string{"a", "b", "c"})
+	is.Equal(result2, []string{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Samples(allStrings, 2)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestSamplesBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := SamplesBy([]string{"a", "b", "c"}, 3, rand.Intn)
+	result2 := SamplesBy([]string{}, 3, rand.Intn)
 
 	sort.Strings(result1)
 
