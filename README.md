@@ -2494,6 +2494,21 @@ lo.Sample([]string{})
 // ""
 ```
 
+### SampleBy
+
+Sample returns a seeded random item from collection, using a given random integer generator.
+
+```go
+import "math/rand"
+
+r := rand.New(rand.NewSource(42))
+lo.SampleBy([]string{"a", "b", "c"}, r.Intn)
+// a random string from []string{"a", "b", "c"}, using a seeded random generator
+
+lo.SampleBy([]string{}, r.Intn)
+// ""
+```
+
 ### Samples
 
 Returns N random unique items from collection.
@@ -2501,6 +2516,16 @@ Returns N random unique items from collection.
 ```go
 lo.Samples([]string{"a", "b", "c"}, 3)
 // []string{"a", "b", "c"} in random order
+```
+
+### SamplesBy
+
+Returns N random unique items from collection, using a given random integer generator.
+
+```go
+r := rand.New(rand.NewSource(42))
+lo.SamplesBy([]string{"a", "b", "c"}, 3, r.Intn)
+// []string{"a", "b", "c"} in random order, using a seeded random generator
 ```
 
 ### Ternary
