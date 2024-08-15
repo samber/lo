@@ -1990,7 +1990,7 @@ ok := lo.Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 
 ### EveryBy
 
-Returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
+Returns true if the predicate returns true for all elements in the collection or if the collection is empty.
 
 ```go
 b := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
@@ -2913,7 +2913,9 @@ f(42, -4)
 
 ### Attempt
 
-Invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a successful response is returned.
+Invokes a function N times until it returns valid output. Returns either the caught error or nil.
+
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 iter, err := lo.Attempt(42, func(i int) error {
@@ -2953,9 +2955,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWithDelay
 
-Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil.
+Invokes a function N times until it returns valid output, with a pause between each call. Returns either the caught error or nil.
 
-When first argument is less than `1`, the function runs until a successful response is returned.
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duration time.Duration) error {
@@ -2976,9 +2978,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWhile
 
-Invokes a function N times until it returns valid output. Returning either the caught error or nil, and along with a bool value to identifying whether it needs invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
+Invokes a function N times until it returns valid output. Returns either the caught error or nil, along with a bool value to determine whether the function should be invoked again. It will terminate the invoke immediately if the second return value is false.
 
-When first argument is less than `1`, the function runs until a successful response is returned.
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 count1, err1 := lo.AttemptWhile(5, func(i int) (error, bool) {
@@ -3001,9 +3003,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWhileWithDelay
 
-Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil, and along with a bool value to identifying whether it needs to invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
+Invokes a function N times until it returns valid output, with a pause between each call. Returns either the caught error or nil, along with a bool value to determine whether the function should be invoked again. It will terminate the invoke immediately if the second return value is false.
 
-When first argument is less than `1`, the function runs until a successful response is returned.
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 count1, time1, err1 := lo.AttemptWhileWithDelay(5, time.Millisecond, func(i int, d time.Duration) (error, bool) {
@@ -3492,7 +3494,7 @@ if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
 
 We executed a simple benchmark with a dead-simple `lo.Map` loop:
 
-See the full implementation [here](./benchmark_test.go).
+See the full implementation [here](./map_benchmark_test.go).
 
 ```go
 _ = lo.Map[int64](arr, func(x int64, i int) string {

@@ -85,7 +85,7 @@ func ChunkString[T ~string](str T, size int) []T {
 		return []T{str}
 	}
 
-	var chunks []T = make([]T, 0, ((len(str)-1)/size)+1)
+	var chunks = make([]T, 0, ((len(str)-1)/size)+1)
 	currentLen := 0
 	currentStart := 0
 	for i := range str {
@@ -181,7 +181,7 @@ func Ellipsis(str string, length int) string {
 	return str
 }
 
-// Elipse trims truncates a string to a specified length and appends an ellipsis if truncated.
+// Elipse trims and truncates a string to a specified length and appends an ellipsis if truncated.
 //
 // Deprecated: Use Ellipsis instead.
 func Elipse(str string, length int) string {
