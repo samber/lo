@@ -2498,7 +2498,7 @@ lo.Sample([]string{})
 
 ### SampleBy
 
-Sample returns a seeded random item from collection, using a given random integer generator.
+Returns a random item from collection, using a given random integer generator.
 
 ```go
 import "math/rand"
