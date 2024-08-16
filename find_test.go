@@ -555,7 +555,9 @@ func TestSampleBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := SampleBy([]string{"a", "b", "c"}, rand.Intn)
+	r := rand.New(rand.NewSource(42))
+
+	result1 := SampleBy([]string{"a", "b", "c"}, r.Intn)
 	result2 := SampleBy([]string{}, rand.Intn)
 
 	is.True(Contains([]string{"a", "b", "c"}, result1))
@@ -586,8 +588,10 @@ func TestSamplesBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := SamplesBy([]string{"a", "b", "c"}, 3, rand.Intn)
-	result2 := SamplesBy([]string{}, 3, rand.Intn)
+	r := rand.New(rand.NewSource(42))
+
+	result1 := SamplesBy([]string{"a", "b", "c"}, 3, r.Intn)
+	result2 := SamplesBy([]string{}, 3, r.Intn)
 
 	sort.Strings(result1)
 
