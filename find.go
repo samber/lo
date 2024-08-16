@@ -479,7 +479,7 @@ func Sample[T any](collection []T) T {
 	return result
 }
 
-// Sample returns a seeded random item from collection, using intFunc as the random index generator.
+// SampleBy returns a random item from collection, using intFunc as the random index generator.
 func SampleBy[T any](collection []T, intFunc func(int) int) T {
 	size := len(collection)
 	if size == 0 {
@@ -494,7 +494,7 @@ func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
 	return results
 }
 
-// Samples returns N seeded random unique items from collection, using intFunc as the random index generator.
+// SamplesBy returns N random unique items from collection, using intFunc as the random index generator.
 func SamplesBy[T any, Slice ~[]T](collection Slice, count int, intFunc func(int) int) Slice {
 	size := len(collection)
 
