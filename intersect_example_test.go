@@ -9,25 +9,25 @@ func ExampleWithoutBy() {
 		id   int
 		name string
 	}
-	// Example usage
+	// original users
 	users := []user{
 		{id: 1, name: "Alice"},
 		{id: 2, name: "Bob"},
 		{id: 3, name: "Charlie"},
 	}
 
-	// Exclude users with IDs 2 and 3
+	// exclude users with IDs 2 and 3
 	excludedIDs := []int{2, 3}
 
-	// Extract function to get the user ID
+	// extract function to get the user ID
 	extractID := func(user user) int {
 		return user.id
 	}
 
-	// Filtering users
+	// filtering users
 	filteredUsers := WithoutBy(users, extractID, excludedIDs...)
 
-	// Output the filtered users
+	// output the filtered users
 	fmt.Printf("%v\n", filteredUsers)
 	// Output:
 	// [{1 Alice}]
