@@ -536,7 +536,11 @@ func TestSliceToSet(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := SliceToSet([]int{1, 2, 3, 4})
+	result2 := SliceToSet([]int{1, 1, 1, 2})
+	result3 := SliceToSet([]int{})
 	is.Equal(result1, map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}})
+	is.Equal(result2, map[int]struct{}{1: {}, 2: {}})
+	is.Equal(result3, map[int]struct{}{})
 }
 
 func TestDrop(t *testing.T) {
