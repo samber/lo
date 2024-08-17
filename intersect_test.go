@@ -187,6 +187,11 @@ func TestIntersect(t *testing.T) {
 	is.Equal(result3, []int{})
 	is.Equal(result4, []int{0})
 	is.Equal(result5, []int{0})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Intersect(allStrings, allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestDifference(t *testing.T) {
@@ -204,6 +209,12 @@ func TestDifference(t *testing.T) {
 	left3, right3 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 	is.Equal(left3, []int{})
 	is.Equal(right3, []int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	a, b := Difference(allStrings, allStrings)
+	is.IsType(a, allStrings, "type preserved")
+	is.IsType(b, allStrings, "type preserved")
 }
 
 func TestUnion(t *testing.T) {
@@ -231,6 +242,11 @@ func TestUnion(t *testing.T) {
 	is.Equal(result13, []int{0, 1, 2, 3, 4, 5})
 	is.Equal(result14, []int{0, 1, 2})
 	is.Equal(result15, []int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Union(allStrings, allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestWithout(t *testing.T) {
@@ -247,6 +263,11 @@ func TestWithout(t *testing.T) {
 	is.Equal(result3, []int{})
 	is.Equal(result4, []int{})
 	is.Equal(result5, []int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Without(allStrings, "")
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestWithoutEmpty(t *testing.T) {
@@ -259,4 +280,9 @@ func TestWithoutEmpty(t *testing.T) {
 	is.Equal(result1, []int{1, 2})
 	is.Equal(result2, []int{1, 2})
 	is.Equal(result3, []int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := WithoutEmpty(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }

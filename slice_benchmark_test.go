@@ -151,6 +151,26 @@ func BenchmarkDropRightWhile(b *testing.B) {
 	}
 }
 
+func BenchmarkDropByIndex(b *testing.B) {
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = DropByIndex(strs, n/4)
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = DropByIndex(ints, n/4)
+			}
+		})
+	}
+}
+
 func BenchmarkReplace(b *testing.B) {
 	lengths := []int{1_000, 10_000, 100_000}
 	for _, n := range lengths {
@@ -169,5 +189,12 @@ func BenchmarkReplace(b *testing.B) {
 				_ = Replace(ints, ints[n/4], 123123, 10)
 			}
 		})
+	}
+}
+
+func BenchmarkToSlicePtr(b *testing.B) {
+	preallocated := make([]int, 100000)
+	for i := 0; i < b.N; i++ {
+		_ = ToSlicePtr(preallocated)
 	}
 }

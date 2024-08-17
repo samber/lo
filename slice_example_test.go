@@ -88,7 +88,21 @@ func ExampleForEach() {
 	// 3
 	// 4
 }
+func ExampleForEachWhile() {
+	list := []int64{1, 2, -math.MaxInt, 4}
 
+	ForEachWhile(list, func(x int64, _ int) bool {
+		if x < 0 {
+			return false
+		}
+		fmt.Println(x)
+		return true
+	})
+
+	// Output:
+	// 1
+	// 2
+}
 func ExampleTimes() {
 	result := Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)
@@ -294,6 +308,15 @@ func ExampleDropRightWhile() {
 
 	fmt.Printf("%v", result)
 	// Output: [0 1 2]
+}
+
+func ExampleDropByIndex() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := DropByIndex(list, 2)
+
+	fmt.Printf("%v", result)
+	// Output: [0 1 3 4 5]
 }
 
 func ExampleReject() {
