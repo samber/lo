@@ -102,6 +102,7 @@ Supported helpers for slices:
 - [RepeatBy](#repeatby)
 - [KeyBy](#keyby)
 - [Associate / SliceToMap](#associate-alias-slicetomap)
+- [SliceToSet](#slicetoset)
 - [Drop](#drop)
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
@@ -762,6 +763,15 @@ aMap := lo.Associate(in, func (f *foo) (string, int) {
 ```
 
 [[play](https://go.dev/play/p/WHa2CfMO3Lr)]
+
+### SliceToSet
+
+Returns a map with each unique element of the slice as a key.
+
+```go
+set := lo.SliceToSet([]int{1, 1, 2, 3, 4})
+// map[int]struct{}{1:{}, 2:{}, 3:{}, 4:{}}
+```
 
 ### Drop
 
