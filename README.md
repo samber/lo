@@ -206,6 +206,7 @@ Supported intersection helpers:
 - [Difference](#difference)
 - [Union](#union)
 - [Without](#without)
+- [WithoutBy](#withoutby)
 - [WithoutEmpty](#withoutempty)
 
 Supported search helpers:
@@ -2095,6 +2096,38 @@ subset := lo.Without([]int{0, 2, 10}, 2)
 
 subset := lo.Without([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
 // []int{10}
+```
+
+### WithoutBy
+
+WithoutBy filters a slice by excluding elements whose extracted keys match any in the exclude list.
+It returns a new slice containing only the elements whose keys are not in the exclude list.
+
+
+```go
+type user {
+    id int
+    name string
+}
+
+// original users
+users := []user{
+    {id: 1, name: "Alice"},
+    {id: 2, name: "Bob"},
+    {id: 3, name: "Charlie"},
+}
+
+// exclude users with IDs 2 and 3
+excludedIDs := []int{2, 3}
+
+// extract function to get the user ID
+extractID := func(user user) int {
+    return user.id
+}
+
+// filtering users
+filteredUsers := WithoutBy(users, extractID, excludedIDs...)
+// []user[{id: 1, name: "Alice"}]
 ```
 
 ### WithoutEmpty
