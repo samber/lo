@@ -166,7 +166,7 @@ Supported helpers for strings:
 - [SnakeCase](#snakecase)
 - [Words](#words)
 - [Capitalize](#capitalize)
-- [Elipse](#elipse)
+- [Ellipsis](#ellipsis)
 
 Supported helpers for tuples:
 
@@ -1575,18 +1575,18 @@ str := lo.Capitalize("heLLO")
 // Hello
 ```
 
-### Elipse
+### Ellipsis
 
 Truncates a string to a specified length and appends an ellipsis if truncated.
 
 ```go
-str := lo.Elipse("Lorem Ipsum", 5)
+str := lo.Ellipsis("Lorem Ipsum", 5)
 // Lo...
 
-str := lo.Elipse("Lorem Ipsum", 100)
+str := lo.Ellipsis("Lorem Ipsum", 100)
 // Lorem Ipsum
 
-str := lo.Elipse("Lorem Ipsum", 3)
+str := lo.Ellipsis("Lorem Ipsum", 3)
 // ...
 ```
 
