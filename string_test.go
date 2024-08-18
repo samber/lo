@@ -499,4 +499,5 @@ func TestEllipsis(t *testing.T) {
 	is.Equal("...", Ellipsis("12345", 3))
 	is.Equal("...", Ellipsis("12345", 2))
 	is.Equal("...", Ellipsis("12345", -1))
+	is.Equal("hello...", Ellipsis(" hello   world ", 9))
 }

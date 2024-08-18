@@ -175,7 +175,7 @@ func Ellipsis(str string, length int) string {
 		if len(str) < 3 || length < 3 {
 			return "..."
 		}
-		return str[0:length-3] + "..."
+		return strings.TrimSpace(str[0:length-3]) + "..."
 	}
 
 	return str
