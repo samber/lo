@@ -167,8 +167,10 @@ func Capitalize(str string) string {
 	return cases.Title(language.English).String(str)
 }
 
-// Ellipsis truncates a string to a specified length and appends an ellipsis if truncated.
+// Ellipsis trims and truncates a string to a specified length and appends an ellipsis if truncated.
 func Ellipsis(str string, length int) string {
+	str = strings.TrimSpace(str)
+
 	if len(str) > length {
 		if len(str) < 3 || length < 3 {
 			return "..."
@@ -179,7 +181,7 @@ func Ellipsis(str string, length int) string {
 	return str
 }
 
-// Elipse truncates a string to a specified length and appends an ellipsis if truncated.
+// Elipse trims truncates a string to a specified length and appends an ellipsis if truncated.
 //
 // Deprecated: Use Ellipsis instead.
 func Elipse(str string, length int) string {

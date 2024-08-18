@@ -1577,10 +1577,10 @@ str := lo.Capitalize("heLLO")
 
 ### Ellipsis
 
-Truncates a string to a specified length and appends an ellipsis if truncated.
+Trims and truncates a string to a specified length and appends an ellipsis if truncated.
 
 ```go
-str := lo.Ellipsis("Lorem Ipsum", 5)
+str := lo.Ellipsis("  Lorem Ipsum  ", 5)
 // Lo...
 
 str := lo.Ellipsis("Lorem Ipsum", 100)
