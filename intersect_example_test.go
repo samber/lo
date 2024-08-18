@@ -5,23 +5,23 @@ import (
 )
 
 func ExampleWithoutBy() {
-	type user struct {
-		id   int
-		name string
+	type User struct {
+		ID   int
+		Name string
 	}
 	// original users
-	users := []user{
-		{id: 1, name: "Alice"},
-		{id: 2, name: "Bob"},
-		{id: 3, name: "Charlie"},
+	users := []User{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+		{ID: 3, Name: "Charlie"},
 	}
 
 	// exclude users with IDs 2 and 3
 	excludedIDs := []int{2, 3}
 
 	// extract function to get the user ID
-	extractID := func(user user) int {
-		return user.id
+	extractID := func(user User) int {
+		return user.ID
 	}
 
 	// filtering users
