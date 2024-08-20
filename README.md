@@ -180,7 +180,7 @@ Supported helpers for tuples:
 Supported helpers for time and duration:
 
 - [Duration](#duration)
-- [Duration0 -> Duration10](#duration0-duration10)
+- [Duration0 -> Duration10](#duration0---duration10)
 
 Supported helpers for channels:
 
