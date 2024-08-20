@@ -2643,19 +2643,19 @@ Checks if a value is nil or if it's a reference type with a nil underlying value
 
 ```go
 var x int
-IsNil(x)
+lo.IsNil(x)
 // false
 
 var k struct{}
-IsNil(k)
+lo.IsNil(k)
 // false
 
 var i *int
-IsNil(i)
+lo.IsNil(i)
 // true
 
 var ifaceWithNilValue any = (*string)(nil)
-IsNil(ifaceWithNilValue)
+lo.IsNil(ifaceWithNilValue)
 // true
 ifaceWithNilValue == nil
 // false
