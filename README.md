@@ -2643,7 +2643,7 @@ Checks if a value is nil or if it's a reference type with a nil underlying value
 
 ```go
 var x int
-IsNil(x))
+IsNil(x)
 // false
 
 var k struct{}
