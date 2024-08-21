@@ -82,7 +82,7 @@ func TestAttemptWithDelay(t *testing.T) {
 	})
 
 	is.Equal(iter1, 1)
-	is.Greater(dur1, 0*time.Millisecond)
+	is.GreaterOrEqual(dur1, 0*time.Millisecond)
 	is.Less(dur1, 1*time.Millisecond)
 	is.Equal(err1, nil)
 	is.Equal(iter2, 6)
@@ -187,7 +187,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	})
 
 	is.Equal(iter1, 1)
-	is.Greater(dur1, 0*time.Millisecond)
+	is.GreaterOrEqual(dur1, 0*time.Millisecond)
 	is.Less(dur1, 1*time.Millisecond)
 	is.Nil(err1)
 

@@ -104,7 +104,6 @@ func (d *debounceBy[T]) reset(key T) {
 		for i := range d.callbacks {
 			d.callbacks[i](key, count)
 		}
-
 	})
 }
 
@@ -141,7 +140,8 @@ func NewDebounceBy[T comparable](duration time.Duration, f ...func(key T, count 
 	}, d.cancel
 }
 
-// Attempt invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a successful response is returned.
+// Attempt invokes a function N times until it returns valid output. Returns either the caught error or nil.
+// When the first argument is less than `1`, the function runs until a successful response is returned.
 // Play: https://go.dev/play/p/3ggJZ2ZKcMj
 func Attempt(maxIteration int, f func(index int) error) (int, error) {
 	var err error
@@ -158,8 +158,8 @@ func Attempt(maxIteration int, f func(index int) error) (int, error) {
 }
 
 // AttemptWithDelay invokes a function N times until it returns valid output,
-// with a pause between each call. Returning either the caught error or nil.
-// When first argument is less than `1`, the function runs until a successful
+// with a pause between each call. Returns either the caught error or nil.
+// When the first argument is less than `1`, the function runs until a successful
 // response is returned.
 // Play: https://go.dev/play/p/tVs6CygC7m1
 func AttemptWithDelay(maxIteration int, delay time.Duration, f func(index int, duration time.Duration) error) (int, time.Duration, error) {
@@ -182,9 +182,9 @@ func AttemptWithDelay(maxIteration int, delay time.Duration, f func(index int, d
 }
 
 // AttemptWhile invokes a function N times until it returns valid output.
-// Returning either the caught error or nil, and along with a bool value to identify
-// whether it needs invoke function continuously. It will terminate the invoke
-// immediately if second bool value is returned with falsy value. When first
+// Returns either the caught error or nil, along with a bool value to determine
+// whether the function should be invoked again. It will terminate the invoke
+// immediately if the second return value is false. When the first
 // argument is less than `1`, the function runs until a successful response is
 // returned.
 func AttemptWhile(maxIteration int, f func(int) (error, bool)) (int, error) {
@@ -206,10 +206,10 @@ func AttemptWhile(maxIteration int, f func(int) (error, bool)) (int, error) {
 }
 
 // AttemptWhileWithDelay invokes a function N times until it returns valid output,
-// with a pause between each call. Returning either the caught error or nil, and along
-// with a bool value to identify whether it needs to invoke function continuously.
-// It will terminate the invoke immediately if second bool value is returned with falsy
-// value. When first argument is less than `1`, the function runs until a successful
+// with a pause between each call. Returns either the caught error or nil, along
+// with a bool value to determine whether the function should be invoked again.
+// It will terminate the invoke immediately if the second return value is false.
+// When the first argument is less than `1`, the function runs until a successful
 // response is returned.
 func AttemptWhileWithDelay(maxIteration int, delay time.Duration, f func(int, time.Duration) (error, bool)) (int, time.Duration, error) {
 	var err error
