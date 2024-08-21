@@ -25,9 +25,9 @@ func TestIsNil(t *testing.T) {
 	var b *bool
 	is.True(IsNil(b))
 
-	var ifaceWithNilValue any = (*string)(nil)
+	var ifaceWithNilValue any = (*string)(nil) //nolint:staticcheck
 	is.True(IsNil(ifaceWithNilValue))
-	is.False(ifaceWithNilValue == nil) // nolint:staticcheck
+	is.False(ifaceWithNilValue == nil) //nolint:staticcheck
 }
 
 func TestToPtr(t *testing.T) {

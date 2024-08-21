@@ -166,7 +166,7 @@ Supported helpers for strings:
 - [SnakeCase](#snakecase)
 - [Words](#words)
 - [Capitalize](#capitalize)
-- [Elipse](#elipse)
+- [Ellipsis](#ellipsis)
 
 Supported helpers for tuples:
 
@@ -180,7 +180,7 @@ Supported helpers for tuples:
 Supported helpers for time and duration:
 
 - [Duration](#duration)
-- [Duration0 -> Duration10](#duration0-duration10)
+- [Duration0 -> Duration10](#duration0---duration10)
 
 Supported helpers for channels:
 
@@ -1577,18 +1577,18 @@ str := lo.Capitalize("heLLO")
 // Hello
 ```
 
-### Elipse
+### Ellipsis
 
-Truncates a string to a specified length and appends an ellipsis if truncated.
+Trims and truncates a string to a specified length and appends an ellipsis if truncated.
 
 ```go
-str := lo.Elipse("Lorem Ipsum", 5)
+str := lo.Ellipsis("  Lorem Ipsum  ", 5)
 // Lo...
 
-str := lo.Elipse("Lorem Ipsum", 100)
+str := lo.Ellipsis("Lorem Ipsum", 100)
 // Lorem Ipsum
 
-str := lo.Elipse("Lorem Ipsum", 3)
+str := lo.Ellipsis("Lorem Ipsum", 3)
 // ...
 ```
 
@@ -2670,19 +2670,19 @@ Checks if a value is nil or if it's a reference type with a nil underlying value
 
 ```go
 var x int
-IsNil(x))
+lo.IsNil(x)
 // false
 
 var k struct{}
-IsNil(k)
+lo.IsNil(k)
 // false
 
 var i *int
-IsNil(i)
+lo.IsNil(i)
 // true
 
 var ifaceWithNilValue any = (*string)(nil)
-IsNil(ifaceWithNilValue)
+lo.IsNil(ifaceWithNilValue)
 // true
 ifaceWithNilValue == nil
 // false

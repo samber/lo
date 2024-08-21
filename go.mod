@@ -3,7 +3,7 @@ module github.com/samber/lo
 go 1.18
 
 //
-// Dependencies are excluded from releases. Please check CI.
+// Dev dependencies are excluded from releases. Please check CI.
 //
 
 require (
