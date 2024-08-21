@@ -600,6 +600,6 @@ func TestSamplesBy(t *testing.T) {
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := Samples(allStrings, 2)
+	nonempty := SamplesBy(allStrings, 2, r.Intn)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
