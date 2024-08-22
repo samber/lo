@@ -475,7 +475,7 @@ func Nth[T any, N constraints.Integer](collection []T, nth N) (T, error) {
 
 type randomIntGenerator func(int) int
 
-// SampleBy returns a random item from collection, using intFunc as the random index generator.
+// SampleBy returns a random item from collection, using randomIntGenerator as the random index generator.
 func SampleBy[T any](collection []T, randomIntGenerator randomIntGenerator) T {
 	size := len(collection)
 	if size == 0 {
@@ -490,8 +490,8 @@ func Sample[T any](collection []T) T {
 	return result
 }
 
-// SamplesBy returns N random unique items from collection, using intFunc as the random index generator.
-func SamplesBy[T any, Slice ~[]T](collection Slice, count int, intFunc randomIntGenerator) Slice {
+// SamplesBy returns N random unique items from collection, using randomIntGenerator as the random index generator.
+func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerator randomIntGenerator) Slice {
 	size := len(collection)
 
 	copy := append(Slice{}, collection...)
@@ -501,7 +501,7 @@ func SamplesBy[T any, Slice ~[]T](collection Slice, count int, intFunc randomInt
 	for i := 0; i < size && i < count; i++ {
 		copyLength := size - i
 
-		index := intFunc(size - i)
+		index := randomIntGenerator(size - i)
 		results = append(results, copy[index])
 
 		// Removes element.
