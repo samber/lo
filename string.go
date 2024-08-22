@@ -1,12 +1,13 @@
 package lo
 
 import (
+	"math"
+	"math/rand"
 	"regexp"
 	"strings"
+	"time"
 	"unicode"
 	"unicode/utf8"
-
-	"github.com/samber/lo/internal/rand"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -25,6 +26,8 @@ var (
 	splitWordReg = regexp.MustCompile(`([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`)
 	// bearer:disable go_lang_permissive_regex_validation
 	splitNumberLetterReg = regexp.MustCompile(`([0-9])([a-zA-Z])`)
+	MaximumCapacity      = math.MaxInt>>1 + 1
+	random               = rand.NewSource(time.Now().UnixNano())
 )
 
 // RandomString return a random string.
@@ -37,12 +40,39 @@ func RandomString(size int, charset []rune) string {
 		panic("lo.RandomString: Charset parameter must not be empty")
 	}
 
-	b := make([]rune, size)
-	possibleCharactersCount := len(charset)
-	for i := range b {
-		b[i] = charset[rand.IntN(possibleCharactersCount)]
+	sb := strings.Builder{}
+	sb.Grow(size)
+	letterIdBits := int(math.Log2(float64(nearestPowerOfTwo(len(charset)))))
+	var letterIdMask int64 = 1<<letterIdBits - 1
+	letterIdMax := 63 / letterIdBits
+	for i, cache, remain := size-1, random.Int63(), letterIdMax; i >= 0; {
+		if remain == 0 {
+			cache, remain = random.Int63(), letterIdMax
+		}
+		if idx := int(cache & letterIdMask); idx < len(charset) {
+			sb.WriteRune(charset[idx])
+			i--
+		}
+		cache >>= letterIdBits
+		remain--
 	}
-	return string(b)
+	return sb.String()
+}
+
+// nearestPowerOfTwo returns the nearest power of two.
+func nearestPowerOfTwo(cap int) int {
+	n := cap - 1
+	n |= n >> 1
+	n |= n >> 2
+	n |= n >> 4
+	n |= n >> 8
+	n |= n >> 16
+	if n < 0 {
+		return 1
+	} else if n >= MaximumCapacity {
+		return MaximumCapacity
+	}
+	return n + 1
 }
 
 // Substring return part of a string.
