@@ -33,7 +33,7 @@ func Every[T comparable](collection []T, subset []T) bool {
 	return true
 }
 
-// EveryBy returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
+// EveryBy returns true if the predicate returns true for all elements in the collection or if the collection is empty.
 func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 	for i := range collection {
 		if !predicate(collection[i]) {
