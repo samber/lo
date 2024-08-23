@@ -2105,7 +2105,7 @@ It returns a new slice containing only the elements whose keys are not in the ex
 
 
 ```go
-type User {
+type struct User {
     ID int
     Name string
 }
