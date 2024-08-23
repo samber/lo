@@ -15,7 +15,6 @@ func ExampleKeys() {
 	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [bar baz foo]
-
 }
 
 func ExampleUniqKeys() {
@@ -26,7 +25,6 @@ func ExampleUniqKeys() {
 	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [bar foo]
-
 }
 
 func ExampleValues() {

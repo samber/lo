@@ -363,6 +363,7 @@ func ExampleTryOr5() {
 	fmt.Printf("%v %v %v %v %v %v\n", value1, value2, value3, value4, value5, ok3)
 	// Output: 21 hello false {bar} 4.2 false
 }
+
 func ExampleTryOr6() {
 	value1, value2, value3, value4, value5, value6, ok3 := TryOr6(func() (int, string, bool, foo, float64, string, error) {
 		panic("my error")
@@ -405,8 +406,7 @@ func ExampleTryCatchWithErrorValue() {
 	// Output: catch: trigger an error
 }
 
-type myError struct {
-}
+type myError struct{}
 
 func (e myError) Error() string {
 	return "my error"

@@ -53,7 +53,7 @@ func TestMust(t *testing.T) {
 	is.PanicsWithValue("operation should fail: assert.AnError general error for testing", func() {
 		Must0(cb(), "operation should fail")
 	})
-	
+
 	is.PanicsWithValue("must: invalid err type 'int', should either be a bool or an error", func() {
 		Must0(0)
 	})
@@ -271,11 +271,11 @@ func TestTry(t *testing.T) {
 func TestTryX(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	is.True(Try1(func() error {
 		return nil
 	}))
-	
+
 	is.True(Try2(func() (string, error) {
 		return "", nil
 	}))
@@ -295,11 +295,11 @@ func TestTryX(t *testing.T) {
 	is.True(Try6(func() (string, string, string, string, string, error) {
 		return "", "", "", "", "", nil
 	}))
-	
+
 	is.False(Try1(func() error {
 		panic("error")
 	}))
-	
+
 	is.False(Try2(func() (string, error) {
 		panic("error")
 	}))
@@ -319,11 +319,11 @@ func TestTryX(t *testing.T) {
 	is.False(Try6(func() (string, string, string, string, string, error) {
 		panic("error")
 	}))
-	
+
 	is.False(Try1(func() error {
 		return errors.New("foo")
 	}))
-	
+
 	is.False(Try2(func() (string, error) {
 		return "", errors.New("foo")
 	}))
@@ -513,13 +513,13 @@ func TestTryWithErrorValue(t *testing.T) {
 	})
 	is.False(ok)
 	is.Equal("error", err)
-	
+
 	err, ok = TryWithErrorValue(func() error {
 		return errors.New("foo")
 	})
 	is.False(ok)
 	is.EqualError(err.(error), "foo")
-	
+
 	err, ok = TryWithErrorValue(func() error {
 		return nil
 	})
@@ -535,7 +535,7 @@ func TestTryCatch(t *testing.T) {
 	TryCatch(func() error {
 		panic("error")
 	}, func() {
-		//error was caught
+		// error was caught
 		caught = true
 	})
 	is.True(caught)
@@ -544,7 +544,7 @@ func TestTryCatch(t *testing.T) {
 	TryCatch(func() error {
 		return nil
 	}, func() {
-		//no error to be caught
+		// no error to be caught
 		caught = true
 	})
 	is.False(caught)
@@ -558,7 +558,7 @@ func TestTryCatchWithErrorValue(t *testing.T) {
 	TryCatchWithErrorValue(func() error {
 		panic("error")
 	}, func(val any) {
-		//error was caught
+		// error was caught
 		caught = val == "error"
 	})
 	is.True(caught)
@@ -567,7 +567,7 @@ func TestTryCatchWithErrorValue(t *testing.T) {
 	TryCatchWithErrorValue(func() error {
 		return nil
 	}, func(val any) {
-		//no error to be caught
+		// no error to be caught
 		caught = true
 	})
 	is.False(caught)
