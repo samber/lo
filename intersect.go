@@ -179,9 +179,14 @@ func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
 // WithoutBy filters a slice by excluding elements whose extracted keys match any in the exclude list.
 // It returns a new slice containing only the elements whose keys are not in the exclude list.
 func WithoutBy[T any, K comparable](collection []T, extract func(item T) K, exclude ...K) []T {
+	blacklist := make(map[K]struct{}, len(exclude))
+	for _, e := range exclude {
+		blacklist[e] = struct{}{}
+	}
+
 	result := make([]T, 0, len(collection))
 	for _, item := range collection {
-		if !Contains(exclude, extract(item)) {
+		if _, ok := blacklist[extract(item)]; !ok {
 			result = append(result, item)
 		}
 	}
