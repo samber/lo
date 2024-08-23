@@ -473,7 +473,7 @@ func Nth[T any, N constraints.Integer](collection []T, nth N) (T, error) {
 	return collection[l+n], nil
 }
 
-// randomIntGenerator is a function that should return a random integer in the range [0, n)
+// randomIntGenerator is a function that should return a random integer in the range [0, n-1]
 // where n is the parameter passed to the randomIntGenerator.
 type randomIntGenerator func(int) int
 
