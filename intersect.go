@@ -167,13 +167,7 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 
 // Without returns slice excluding all given values.
 func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
-	result := make(Slice, 0, len(collection))
-	for i := range collection {
-		if !Contains(exclude, collection[i]) {
-			result = append(result, collection[i])
-		}
-	}
-	return result
+	return WithoutBy(collection, func(item T) T { return item }, exclude...)
 }
 
 // WithoutBy filters a slice by excluding elements whose extracted keys match any in the exclude list.
