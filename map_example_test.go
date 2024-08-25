@@ -15,7 +15,6 @@ func ExampleKeys() {
 	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [bar baz foo]
-
 }
 
 func ExampleUniqKeys() {
@@ -26,7 +25,6 @@ func ExampleUniqKeys() {
 	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [bar foo]
-
 }
 
 func ExampleValues() {
@@ -173,8 +171,8 @@ func ExampleAssign() {
 func ExampleMapKeys() {
 	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
 
-	result := MapKeys(kv, func(_ int, v int) string {
-		return strconv.FormatInt(int64(v), 10)
+	result := MapKeys(kv, func(_ int, k int) string {
+		return strconv.FormatInt(int64(k), 10)
 	})
 
 	fmt.Printf("%v %v %v %v %v", len(result), result["1"], result["2"], result["3"], result["4"])
@@ -184,12 +182,12 @@ func ExampleMapKeys() {
 func ExampleMapValues() {
 	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
 
-	result := MapValues(kv, func(_ int, v int) string {
+	result := MapValues(kv, func(v int, _ int) string {
 		return strconv.FormatInt(int64(v), 10)
 	})
 
-	fmt.Printf("%v %v %v %v %v", len(result), result[1], result[2], result[3], result[4])
-	// Output: 4 1 2 3 4
+	fmt.Printf("%v %q %q %q %q", len(result), result[1], result[2], result[3], result[4])
+	// Output: 4 "1" "2" "3" "4"
 }
 
 func ExampleMapEntries() {

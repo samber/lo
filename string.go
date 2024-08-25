@@ -85,7 +85,7 @@ func ChunkString[T ~string](str T, size int) []T {
 		return []T{str}
 	}
 
-	var chunks []T = make([]T, 0, ((len(str)-1)/size)+1)
+	var chunks = make([]T, 0, ((len(str)-1)/size)+1)
 	currentLen := 0
 	currentStart := 0
 	for i := range str {
@@ -167,14 +167,23 @@ func Capitalize(str string) string {
 	return cases.Title(language.English).String(str)
 }
 
-// Elipse truncates a string to a specified length and appends an ellipsis if truncated.
-func Elipse(str string, length int) string {
+// Ellipsis trims and truncates a string to a specified length and appends an ellipsis if truncated.
+func Ellipsis(str string, length int) string {
+	str = strings.TrimSpace(str)
+
 	if len(str) > length {
 		if len(str) < 3 || length < 3 {
 			return "..."
 		}
-		return str[0:length-3] + "..."
+		return strings.TrimSpace(str[0:length-3]) + "..."
 	}
 
 	return str
+}
+
+// Elipse trims and truncates a string to a specified length and appends an ellipsis if truncated.
+//
+// Deprecated: Use Ellipsis instead.
+func Elipse(str string, length int) string {
+	return Ellipsis(str, length)
 }

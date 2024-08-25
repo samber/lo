@@ -441,7 +441,7 @@ func Last[T any](collection []T) (T, bool) {
 	return collection[length-1], true
 }
 
-// Returns the last element of a collection or zero value if empty.
+// LastOrEmpty returns the last element of a collection or zero value if empty.
 func LastOrEmpty[T any](collection []T) T {
 	i, _ := Last(collection)
 	return i
