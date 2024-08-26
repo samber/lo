@@ -253,63 +253,63 @@ func TestMustX(t *testing.T) {
 	}
 }
 
-func TestFine(t *testing.T) {
+func TestEmptyOnError(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal("foo", Fine("foo", nil))
-	is.Zero(Fine("whatever", errors.New("something went wrong")))
+	is.Equal("foo", EmptyOnError("foo", nil))
+	is.Zero(EmptyOnError("whatever", errors.New("something went wrong")))
 
-	is.Equal(1, Fine(1, true))
-	is.Zero(Fine(999, false))
-	is.Zero(Fine(999, errors.New("something went wrong")))
+	is.Equal(1, EmptyOnError(1, true))
+	is.Zero(EmptyOnError(999, false))
+	is.Zero(EmptyOnError(999, errors.New("something went wrong")))
 
 	cb := func() (string, error) {
 		return "whatever", assert.AnError
 	}
-	is.Zero(Fine(cb()))
+	is.Zero(EmptyOnError(cb()))
 }
 
-func TestFineX(t *testing.T) {
+func TestEmptyOnErrorX(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
 	{
-		val1 := Fine1(1, nil)
+		val1 := EmptyOnError1(1, nil)
 		is.Equal(1, val1)
-		is.Zero(Fine1(1, errors.New("something went wrong")))
+		is.Zero(EmptyOnError1(1, errors.New("something went wrong")))
 	}
 
 	{
-		val1, val2 := Fine2(1, 2, nil)
+		val1, val2 := EmptyOnError2(1, 2, nil)
 		is.Equal(1, val1)
 		is.Equal(2, val2)
 
-		val1, val2 = Fine2(1, 2, errors.New("something went wrong"))
+		val1, val2 = EmptyOnError2(1, 2, errors.New("something went wrong"))
 		is.Zero(val1)
 		is.Zero(val2)
 	}
 
 	{
-		val1, val2, val3 := Fine3(1, 2, 3, nil)
+		val1, val2, val3 := EmptyOnError3(1, 2, 3, nil)
 		is.Equal(1, val1)
 		is.Equal(2, val2)
 		is.Equal(3, val3)
 
-		val1, val2, val3 = Fine3(1, 2, 3, errors.New("something went wrong"))
+		val1, val2, val3 = EmptyOnError3(1, 2, 3, errors.New("something went wrong"))
 		is.Zero(val1)
 		is.Zero(val2)
 		is.Zero(val3)
 	}
 
 	{
-		val1, val2, val3, val4 := Fine4(1, 2, 3, 4, nil)
+		val1, val2, val3, val4 := EmptyOnError4(1, 2, 3, 4, nil)
 		is.Equal(1, val1)
 		is.Equal(2, val2)
 		is.Equal(3, val3)
 		is.Equal(4, val4)
 
-		val1, val2, val3, val4 = Fine4(1, 2, 3, 4, errors.New("something went wrong"))
+		val1, val2, val3, val4 = EmptyOnError4(1, 2, 3, 4, errors.New("something went wrong"))
 		is.Zero(val1)
 		is.Zero(val2)
 		is.Zero(val3)
@@ -317,14 +317,14 @@ func TestFineX(t *testing.T) {
 	}
 
 	{
-		val1, val2, val3, val4, val5 := Fine5(1, 2, 3, 4, 5, nil)
+		val1, val2, val3, val4, val5 := EmptyOnError5(1, 2, 3, 4, 5, nil)
 		is.Equal(1, val1)
 		is.Equal(2, val2)
 		is.Equal(3, val3)
 		is.Equal(4, val4)
 		is.Equal(5, val5)
 
-		val1, val2, val3, val4, val5 = Fine5(1, 2, 3, 4, 5, errors.New("something went wrong"))
+		val1, val2, val3, val4, val5 = EmptyOnError5(1, 2, 3, 4, 5, errors.New("something went wrong"))
 		is.Zero(val1)
 		is.Zero(val2)
 		is.Zero(val3)
@@ -333,7 +333,7 @@ func TestFineX(t *testing.T) {
 	}
 
 	{
-		val1, val2, val3, val4, val5, val6 := Fine6(1, 2, 3, 4, 5, 6, nil)
+		val1, val2, val3, val4, val5, val6 := EmptyOnError6(1, 2, 3, 4, 5, 6, nil)
 		is.Equal(1, val1)
 		is.Equal(2, val2)
 		is.Equal(3, val3)
@@ -341,7 +341,7 @@ func TestFineX(t *testing.T) {
 		is.Equal(5, val5)
 		is.Equal(6, val6)
 
-		val1, val2, val3, val4, val5, val6 = Fine6(1, 2, 3, 4, 5, 6, errors.New("something went wrong"))
+		val1, val2, val3, val4, val5, val6 = EmptyOnError6(1, 2, 3, 4, 5, 6, errors.New("something went wrong"))
 		is.Zero(val1)
 		is.Zero(val2)
 		is.Zero(val3)
@@ -351,41 +351,41 @@ func TestFineX(t *testing.T) {
 	}
 
 	{
-		val1 := Fine(1, true)
+		val1 := EmptyOnError(1, true)
 		is.Equal(1, val1)
-		is.Zero(Fine(1, false))
+		is.Zero(EmptyOnError(1, false))
 	}
 
 	{
-		val1, val2 := Fine2(1, 2, true)
+		val1, val2 := EmptyOnError2(1, 2, true)
 		is.Equal(1, val1)
 		is.Equal(2, val2)
 
-		val1, val2 = Fine2(1, 2, false)
+		val1, val2 = EmptyOnError2(1, 2, false)
 		is.Zero(val1)
 		is.Zero(val2)
 	}
 
 	{
-		val1, val2, val3 := Fine3(1, 2, 3, true)
+		val1, val2, val3 := EmptyOnError3(1, 2, 3, true)
 		is.Equal(1, val1)
 		is.Equal(2, val2)
 		is.Equal(3, val3)
 
-		val1, val2, val3 = Fine3(1, 2, 3, false)
+		val1, val2, val3 = EmptyOnError3(1, 2, 3, false)
 		is.Zero(val1)
 		is.Zero(val2)
 		is.Zero(val3)
 	}
 
 	{
-		val1, val2, val3, val4 := Fine4(1, 2, 3, 4, true)
+		val1, val2, val3, val4 := EmptyOnError4(1, 2, 3, 4, true)
 		is.Equal(1, val1)
 		is.Equal(2, val2)
 		is.Equal(3, val3)
 		is.Equal(4, val4)
 
-		val1, val2, val3, val4 = Fine4(1, 2, 3, 4, false)
+		val1, val2, val3, val4 = EmptyOnError4(1, 2, 3, 4, false)
 		is.Zero(val1)
 		is.Zero(val2)
 		is.Zero(val3)
@@ -393,14 +393,14 @@ func TestFineX(t *testing.T) {
 	}
 
 	{
-		val1, val2, val3, val4, val5 := Fine5(1, 2, 3, 4, 5, true)
+		val1, val2, val3, val4, val5 := EmptyOnError5(1, 2, 3, 4, 5, true)
 		is.Equal(1, val1)
 		is.Equal(2, val2)
 		is.Equal(3, val3)
 		is.Equal(4, val4)
 		is.Equal(5, val5)
 
-		val1, val2, val3, val4, val5 = Fine5(1, 2, 3, 4, 5, false)
+		val1, val2, val3, val4, val5 = EmptyOnError5(1, 2, 3, 4, 5, false)
 		is.Zero(val1)
 		is.Zero(val2)
 		is.Zero(val3)
@@ -409,7 +409,7 @@ func TestFineX(t *testing.T) {
 	}
 
 	{
-		val1, val2, val3, val4, val5, val6 := Fine6(1, 2, 3, 4, 5, 6, true)
+		val1, val2, val3, val4, val5, val6 := EmptyOnError6(1, 2, 3, 4, 5, 6, true)
 		is.Equal(1, val1)
 		is.Equal(2, val2)
 		is.Equal(3, val3)
@@ -417,7 +417,7 @@ func TestFineX(t *testing.T) {
 		is.Equal(5, val5)
 		is.Equal(6, val6)
 
-		val1, val2, val3, val4, val5, val6 = Fine6(1, 2, 3, 4, 5, 6, false)
+		val1, val2, val3, val4, val5, val6 = EmptyOnError6(1, 2, 3, 4, 5, 6, false)
 		is.Zero(val1)
 		is.Zero(val2)
 		is.Zero(val3)
