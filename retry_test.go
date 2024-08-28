@@ -509,25 +509,23 @@ func TestNewThrottle(t *testing.T) {
 	th, reset := NewThrottle(10*time.Millisecond, f1)
 
 	is.Equal(0, callCount)
-	for i := 0; i < 9; i++ {
-		var wg sync.WaitGroup
-		for j := 0; j < 100; j++ {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				th()
-			}()
-		}
-		wg.Wait()
-		time.Sleep(3 * time.Millisecond)
+	for j := 0; j < 100; j++ {
+		th()
 	}
-	// 35 ms passed
-	is.Equal(3, callCount)
+	is.Equal(1, callCount)
+
+	time.Sleep(15 * time.Millisecond)
+
+	for j := 0; j < 100; j++ {
+		th()
+	}
+
+	is.Equal(2, callCount)
 
 	// reset counter
 	reset()
 	th()
-	is.Equal(4, callCount)
+	is.Equal(3, callCount)
 
 }
 
