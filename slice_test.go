@@ -50,6 +50,23 @@ func TestMap(t *testing.T) {
 	is.Equal(result2, []string{"1", "2", "3", "4"})
 }
 
+func TestUniqMap(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type User struct {
+		Name string
+		age  int
+	}
+
+	users := []User{{Name: "Alice", age: 20}, {Name: "Alex", age: 21}, {Name: "Alex", age: 22}}
+	result := UniqMap(users, func(item User, index int) string {
+		return item.Name
+	})
+
+	is.Equal(result, []string{"Alice", "Alex"})
+}
+
 func TestFilterMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
