@@ -1080,17 +1080,17 @@ func TestPullAllBy(t *testing.T) {
 	result2 := PullAllBy([]string{"apple", "banana", "pear", "kiwi"}, []int{5, 4}, func(s string) int {
 		return len(s)
 	})
-	is.Equal(result2, []string{"banana"}) // "apple" и "kiwi" удалены, так как их длина равна 5
+	is.Equal(result2, []string{"banana"})
 
 	result3 := PullAllBy([]int{1, 2, 3, 4, 5}, []int{1, 9, 25}, func(n int) int {
 		return n * n
 	})
-	is.Equal(result3, []int{2, 4}) // 1, 3 и 5 удалены, так как их квадраты совпадают с элементами для удаления
+	is.Equal(result3, []int{2, 4})
 
 	result4 := PullAllBy([]string{"hello", "hi", "world", "welcome"}, []byte{'h'}, func(s string) byte {
 		return s[0]
 	})
-	is.Equal(result4, []string{"world", "welcome"}) // "hello" и "hi" удалены, так как их первая буква 'h'
+	is.Equal(result4, []string{"world", "welcome"})
 }
 
 func TestPullAt(t *testing.T) {
