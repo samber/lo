@@ -693,3 +693,93 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 
 	return append(append(append(output, collection[:i]...), elements...), collection[i:]...)
 }
+
+// Pull removes all given values from splice using SameValueZero for equality comparisons.
+func Pull[T comparable, Slice ~[]T](collection Slice, elements ...T) Slice {
+	output := make(Slice, 0, len(collection))
+
+	for _, item := range collection {
+		shouldRemove := false
+		for _, element := range elements {
+			if item == element {
+				shouldRemove = true
+				break
+			}
+		}
+
+		if !shouldRemove {
+			output = append(output, item)
+		}
+	}
+
+	return output
+}
+
+// This method is like Pull except that it accepts an array of values to remove
+func PullAll[T comparable, Slice ~[]T](collection Slice, elements []T) Slice {
+	output := make(Slice, 0, len(collection))
+
+	for _, item := range collection {
+		shouldRemove := false
+		for _, element := range elements {
+			if item == element {
+				shouldRemove = true
+				break
+			}
+		}
+
+		if !shouldRemove {
+			output = append(output, item)
+		}
+	}
+
+	return output
+}
+
+// This method is like PullAll except that it accepts iteratee which is invoked
+// for each element of slice and values to generate the criterion by which they're compared
+func PullAllBy[T any, U comparable, Slice ~[]T](collection Slice, elements []U, iteratee func(T) U) Slice {
+	elementCriteria := make(map[U]struct{}, len(elements))
+	for _, element := range elements {
+		elementCriteria[element] = struct{}{}
+	}
+
+	var output Slice
+	for _, item := range collection {
+		if _, shouldRemove := elementCriteria[iteratee(item)]; !shouldRemove {
+			output = append(output, item)
+		}
+	}
+
+	return output
+}
+
+// This method removes elements from slice corresponding to indexes and returns
+// an array of removed elements
+func PullAt[T any](slice []T, indexes []int) ([]T, []T) {
+	if len(slice) == 0 || len(indexes) == 0 {
+		return nil, slice
+	}
+
+	sort.Sort(sort.Reverse(sort.IntSlice(indexes)))
+
+	indexMap := make(map[int]struct{}, len(indexes))
+	for _, index := range indexes {
+		if index >= 0 && index < len(slice) {
+			indexMap[index] = struct{}{}
+		}
+	}
+
+	var removed []T
+	var output []T
+
+	for i, v := range slice {
+		if _, ok := indexMap[i]; ok {
+			removed = append(removed, v)
+		} else {
+			output = append(output, v)
+		}
+	}
+
+	return removed, output
+}
