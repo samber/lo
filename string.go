@@ -2,10 +2,9 @@ package lo
 
 import (
 	"math"
-	"math/rand"
+	rand2 "math/rand/v2"
 	"regexp"
 	"strings"
-	"time"
 	"unicode"
 	"unicode/utf8"
 
@@ -27,7 +26,6 @@ var (
 	// bearer:disable go_lang_permissive_regex_validation
 	splitNumberLetterReg = regexp.MustCompile(`([0-9])([a-zA-Z])`)
 	MaximumCapacity      = math.MaxInt>>1 + 1
-	random               = rand.NewSource(time.Now().UnixNano())
 )
 
 // RandomString return a random string.
@@ -45,9 +43,9 @@ func RandomString(size int, charset []rune) string {
 	letterIdBits := int(math.Log2(float64(nearestPowerOfTwo(len(charset)))))
 	var letterIdMask int64 = 1<<letterIdBits - 1
 	letterIdMax := 63 / letterIdBits
-	for i, cache, remain := size-1, random.Int63(), letterIdMax; i >= 0; {
+	for i, cache, remain := size-1, rand2.Int64(), letterIdMax; i >= 0; {
 		if remain == 0 {
-			cache, remain = random.Int63(), letterIdMax
+			cache, remain = rand2.Int64(), letterIdMax
 		}
 		if idx := int(cache & letterIdMask); idx < len(charset) {
 			sb.WriteRune(charset[idx])
