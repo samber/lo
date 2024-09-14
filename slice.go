@@ -8,12 +8,12 @@ import (
 )
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
-// Play: https://go.dev/play/p/Apjg3WeSi7K
-func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
+// Play: https://go.dev/play/p/iz6z5ugFGOU
+func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	result := make(Slice, 0, len(collection))
 
 	for i := range collection {
-		if predicate(collection[i], i) {
+		if predicate(collection[i]) {
 			result = append(result, collection[i])
 		}
 	}
@@ -22,12 +22,12 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 }
 
 // Map manipulates a slice and transforms it to a slice of another type.
-// Play: https://go.dev/play/p/OkPcYAhBo0D
-func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
+// Play: https://go.dev/play/p/WAbWdruxOX7
+func Map[T any, R any](collection []T, iteratee func(item T) R) []R {
 	result := make([]R, len(collection))
 
 	for i := range collection {
-		result[i] = iteratee(collection[i], i)
+		result[i] = iteratee(collection[i])
 	}
 
 	return result
@@ -38,12 +38,12 @@ func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 //   - the result of the mapping operation and
 //   - whether the result element should be included or not.
 //
-// Play: https://go.dev/play/p/-AuYXfy7opz
-func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
+// Play: https://go.dev/play/p/KUc8OqUYIyI
+func FilterMap[T any, R any](collection []T, callback func(item T) (R, bool)) []R {
 	result := []R{}
 
 	for i := range collection {
-		if r, ok := callback(collection[i], i); ok {
+		if r, ok := callback(collection[i]); ok {
 			result = append(result, r)
 		}
 	}
@@ -54,12 +54,12 @@ func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R
 // FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
 // The transform function can either return a slice or a `nil`, and in the `nil` case
 // no value is added to the final slice.
-// Play: https://go.dev/play/p/YSoYmQTA8-U
-func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R) []R {
+// https://go.dev/play/p/NZ1V0KfQuJA
+func FlatMap[T any, R any](collection []T, iteratee func(item T) []R) []R {
 	result := make([]R, 0, len(collection))
 
 	for i := range collection {
-		result = append(result, iteratee(collection[i], i)...)
+		result = append(result, iteratee(collection[i])...)
 	}
 
 	return result

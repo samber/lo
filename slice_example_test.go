@@ -9,7 +9,7 @@ import (
 func ExampleFilter() {
 	list := []int64{1, 2, 3, 4}
 
-	result := Filter(list, func(nbr int64, index int) bool {
+	result := Filter(list, func(nbr int64) bool {
 		return nbr%2 == 0
 	})
 
@@ -20,7 +20,7 @@ func ExampleFilter() {
 func ExampleMap() {
 	list := []int64{1, 2, 3, 4}
 
-	result := Map(list, func(nbr int64, index int) string {
+	result := Map(list, func(nbr int64) string {
 		return strconv.FormatInt(nbr*2, 10)
 	})
 
@@ -31,7 +31,7 @@ func ExampleMap() {
 func ExampleFilterMap() {
 	list := []int64{1, 2, 3, 4}
 
-	result := FilterMap(list, func(nbr int64, index int) (string, bool) {
+	result := FilterMap(list, func(nbr int64) (string, bool) {
 		return strconv.FormatInt(nbr*2, 10), nbr%2 == 0
 	})
 
@@ -42,7 +42,7 @@ func ExampleFilterMap() {
 func ExampleFlatMap() {
 	list := []int64{1, 2, 3, 4}
 
-	result := FlatMap(list, func(nbr int64, index int) []string {
+	result := FlatMap(list, func(nbr int64) []string {
 		return []string{
 			strconv.FormatInt(nbr, 10), // base 10
 			strconv.FormatInt(nbr, 2),  // base 2

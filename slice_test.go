@@ -15,19 +15,19 @@ func TestFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Filter([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+	r1 := Filter([]int{1, 2, 3, 4}, func(x int) bool {
 		return x%2 == 0
 	})
 	is.Equal(r1, []int{2, 4})
 
-	r2 := Filter([]string{"", "foo", "", "bar", ""}, func(x string, _ int) bool {
+	r2 := Filter([]string{"", "foo", "", "bar", ""}, func(x string) bool {
 		return len(x) > 0
 	})
 	is.Equal(r2, []string{"foo", "bar"})
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := Filter(allStrings, func(x string, _ int) bool {
+	nonempty := Filter(allStrings, func(x string) bool {
 		return len(x) > 0
 	})
 	is.IsType(nonempty, allStrings, "type preserved")
@@ -37,10 +37,10 @@ func TestMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Map([]int{1, 2, 3, 4}, func(x int, _ int) string {
+	result1 := Map([]int{1, 2, 3, 4}, func(x int) string {
 		return "Hello"
 	})
-	result2 := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+	result2 := Map([]int64{1, 2, 3, 4}, func(x int64) string {
 		return strconv.FormatInt(x, 10)
 	})
 
@@ -54,13 +54,13 @@ func TestFilterMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := FilterMap([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
+	r1 := FilterMap([]int64{1, 2, 3, 4}, func(x int64) (string, bool) {
 		if x%2 == 0 {
 			return strconv.FormatInt(x, 10), true
 		}
 		return "", false
 	})
-	r2 := FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+	r2 := FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string) (string, bool) {
 		if strings.HasSuffix(x, "pu") {
 			return "xpu", true
 		}
@@ -77,10 +77,10 @@ func TestFlatMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FlatMap([]int{0, 1, 2, 3, 4}, func(x int, _ int) []string {
+	result1 := FlatMap([]int{0, 1, 2, 3, 4}, func(x int) []string {
 		return []string{"Hello"}
 	})
-	result2 := FlatMap([]int64{0, 1, 2, 3, 4}, func(x int64, _ int) []string {
+	result2 := FlatMap([]int64{0, 1, 2, 3, 4}, func(x int64) []string {
 		result := make([]string, 0, x)
 		for i := int64(0); i < x; i++ {
 			result = append(result, strconv.FormatInt(x, 10))

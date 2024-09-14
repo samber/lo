@@ -6,8 +6,9 @@ import (
 	"testing"
 	"time"
 
-	lop "github.com/samber/lo/parallel"
 	"github.com/thoas/go-funk"
+
+	lop "github.com/samber/lo/parallel"
 )
 
 func sliceGenerator(size uint) []int64 {
@@ -39,7 +40,7 @@ func BenchmarkMap(b *testing.B) {
 
 	b.Run("lo.Map", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			_ = Map(arr, func(x int64, i int) string {
+			_ = Map(arr, func(x int64) string {
 				return strconv.FormatInt(x, 10)
 			})
 		}
