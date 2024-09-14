@@ -79,7 +79,8 @@ func nearestPowerOfTwo(cap int) int {
 	n |= n >> 16
 	if n < 0 {
 		return 1
-	} else if n >= MaximumCapacity {
+	}
+	if n >= MaximumCapacity {
 		return MaximumCapacity
 	}
 	return n + 1
