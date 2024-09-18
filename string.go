@@ -1,8 +1,8 @@
 package lo
 
 import (
+	"github.com/samber/lo/internal/rand"
 	"math"
-	rand2 "math/rand/v2"
 	"regexp"
 	"strings"
 	"unicode"
@@ -38,7 +38,7 @@ func RandomString(size int, charset []rune) string {
 		panic("lo.RandomString: Charset parameter must not be empty")
 	}
 
-        // see https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
+	// see https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
 	sb := strings.Builder{}
 	sb.Grow(size)
 	// Calculate the number of bits required to represent the charset,
@@ -51,10 +51,10 @@ func RandomString(size int, charset []rune) string {
 	// e.g., for 62 characters, this value is 10 (63 / 6).
 	letterIdMax := 63 / letterIdBits
 	// Generate the random string in a loop.
-	for i, cache, remain := size-1, rand2.Int64(), letterIdMax; i >= 0; {
+	for i, cache, remain := size-1, rand.Int64(), letterIdMax; i >= 0; {
 		// Regenerate the random number if all available bits have been used
 		if remain == 0 {
-			cache, remain = rand2.Int64(), letterIdMax
+			cache, remain = rand.Int64(), letterIdMax
 		}
 		// Select a character from the charset
 		if idx := int(cache & letterIdMask); idx < len(charset) {
