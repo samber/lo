@@ -2005,7 +2005,7 @@ Returns true if at least 1 element of a subset is contained into a collection.
 If the subset is empty Some returns false.
 
 ```go
-ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // true
 
 ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
