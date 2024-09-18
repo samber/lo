@@ -38,6 +38,7 @@ func RandomString(size int, charset []rune) string {
 		panic("lo.RandomString: Charset parameter must not be empty")
 	}
 
+        // see https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
 	sb := strings.Builder{}
 	sb.Grow(size)
 	// Calculate the number of bits required to represent the charset,
