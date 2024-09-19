@@ -11,3 +11,7 @@ func Shuffle(n int, swap func(i, j int)) {
 func IntN(n int) int {
 	return rand.IntN(n)
 }
+
+func Int64() int64 {
+	return rand.Int64()
+}
