@@ -25,7 +25,7 @@ var (
 	splitWordReg = regexp.MustCompile(`([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`)
 	// bearer:disable go_lang_permissive_regex_validation
 	splitNumberLetterReg = regexp.MustCompile(`([0-9])([a-zA-Z])`)
-	MaximumCapacity      = math.MaxInt>>1 + 1
+	maximumCapacity      = math.MaxInt>>1 + 1
 )
 
 // RandomString return a random string.
@@ -81,8 +81,8 @@ func nearestPowerOfTwo(cap int) int {
 	if n < 0 {
 		return 1
 	}
-	if n >= MaximumCapacity {
-		return MaximumCapacity
+	if n >= maximumCapacity {
+		return maximumCapacity
 	}
 	return n + 1
 }
