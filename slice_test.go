@@ -1049,47 +1049,28 @@ func TestPull(t *testing.T) {
 	is.Equal(result6, []string{"h", "e", "l", "l", "o"})
 }
 
-func TestPullAll(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	result1 := PullAll([]int{0, 1, 1, 2, 2, 2, 3, 3, 3}, 1)
-	result2 := PullAll([]int{0, 1, 1, 2, 2, 2, 3, 3, 3}, 5)
-	result3 := PullAll([]int{}, 1)
-	result4 := PullAll([]int{0}, 0)
-	result5 := PullAll([]string{"a", "b", "c", "a", "b", "c"}, "a", "c")
-	result6 := PullAll([]string{"h", "e", "l", "l", "o"}, "a", "c")
-
-	is.Equal(result1, []int{0, 2, 2, 2, 3, 3, 3})
-	is.Equal(result2, []int{0, 1, 1, 2, 2, 2, 3, 3, 3})
-	is.Equal(result3, []int{})
-	is.Equal(result4, []int{})
-	is.Equal(result5, []string{"b", "b"})
-	is.Equal(result6, []string{"h", "e", "l", "l", "o"})
-}
-
 func TestPullAllBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := PullAllBy([]int{1, 2, 3, 4, 5}, []int{2, 4}, func(n int) int {
+	result1 := PullAllBy([]int{1, 2, 3, 4, 5}, func(n int) int {
 		return n
-	})
+	}, 2, 4)
 	is.Equal(result1, []int{1, 3, 5})
 
-	result2 := PullAllBy([]string{"apple", "banana", "pear", "kiwi"}, []int{5, 4}, func(s string) int {
+	result2 := PullAllBy([]string{"apple", "banana", "pear", "kiwi"}, func(s string) int {
 		return len(s)
-	})
+	}, 5, 4)
 	is.Equal(result2, []string{"banana"})
 
-	result3 := PullAllBy([]int{1, 2, 3, 4, 5}, []int{1, 9, 25}, func(n int) int {
+	result3 := PullAllBy([]int{1, 2, 3, 4, 5}, func(n int) int {
 		return n * n
-	})
+	}, 1, 9, 25)
 	is.Equal(result3, []int{2, 4})
 
-	result4 := PullAllBy([]string{"hello", "hi", "world", "welcome"}, []byte{'h'}, func(s string) byte {
+	result4 := PullAllBy([]string{"hello", "hi", "world", "welcome"}, func(s string) byte {
 		return s[0]
-	})
+	}, 'h')
 	is.Equal(result4, []string{"world", "welcome"})
 }
 
@@ -1135,7 +1116,7 @@ func TestPullAt(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			removed, remaining := PullAt(tt.slice, tt.indexes)
+			removed, remaining := PullAt(tt.slice, tt.indexes...)
 			assert.ElementsMatch(tt.expectedRemoved, removed, "Removed elements do not match")
 			assert.ElementsMatch(tt.expectedRemaining, remaining, "Remaining elements do not match")
 		})
