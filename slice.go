@@ -755,7 +755,7 @@ func PullAllBy[T any, U comparable, Slice ~[]T](collection Slice, elements []U, 
 	return output
 }
 
-// This method removes elements from slice corresponding to indexes and returns
+// PullAt removes elements from slice corresponding to indexes and returns
 // an array of removed elements
 func PullAt[T any](slice []T, indexes []int) ([]T, []T) {
 	if len(slice) == 0 || len(indexes) == 0 {
