@@ -1112,6 +1112,27 @@ func TestPullAt(t *testing.T) {
 			expectedRemoved:   []int{1, 2, 3},
 			expectedRemaining: []int{},
 		},
+		{
+			name:              "Passing negative indexes",
+			slice:             []int{1, 2, 3},
+			indexes:           []int{-1, -2},
+			expectedRemoved:   []int{},
+			expectedRemaining: []int{1, 2, 3},
+		},
+		{
+			name:              "Passing more indexes than slice contains",
+			slice:             []int{1},
+			indexes:           []int{0, 1, 2},
+			expectedRemoved:   []int{1},
+			expectedRemaining: []int{},
+		},
+		{
+			name:              "Passing same indexes",
+			slice:             []int{1},
+			indexes:           []int{0, 0, 0},
+			expectedRemoved:   []int{1},
+			expectedRemaining: []int{},
+		},
 	}
 
 	for _, tt := range tests {
