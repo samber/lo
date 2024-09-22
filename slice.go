@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"slices"
 	"sort"
 
 	"github.com/samber/lo/internal/constraints"
@@ -699,15 +700,7 @@ func Pull[T comparable, Slice ~[]T](collection Slice, elements ...T) Slice {
 	output := make(Slice, 0, len(collection))
 
 	for _, item := range collection {
-		shouldRemove := false
-		for _, element := range elements {
-			if item == element {
-				shouldRemove = true
-				break
-			}
-		}
-
-		if !shouldRemove {
+		if !slices.Contains(elements, item) {
 			output = append(output, item)
 		}
 	}
@@ -716,20 +709,11 @@ func Pull[T comparable, Slice ~[]T](collection Slice, elements ...T) Slice {
 }
 
 // PullAll is like [Pull] except that it accepts an array of values to remove
-func PullAll[T comparable, Slice ~[]T](collection Slice, 
-...elements T) Slice {
+func PullAll[T comparable, Slice ~[]T](collection Slice, elements ...T) Slice {
 	output := make(Slice, 0, len(collection))
 
 	for _, item := range collection {
-		shouldRemove := false
-		for _, element := range elements {
-			if item == element {
-				shouldRemove = true
-				break
-			}
-		}
-
-		if !shouldRemove {
+		if !slices.Contains(elements, item) {
 			output = append(output, item)
 		}
 	}
@@ -737,7 +721,7 @@ func PullAll[T comparable, Slice ~[]T](collection Slice,
 	return output
 }
 
-// This method is like PullAll except that it accepts iteratee which is invoked
+// PullAllBy is like [PullAll] except that it accepts iteratee which is invoked
 // for each element of slice and values to generate the criterion by which they're compared
 func PullAllBy[T any, U comparable, Slice ~[]T](collection Slice, elements []U, iteratee func(T) U) Slice {
 	elementCriteria := make(map[U]struct{}, len(elements))

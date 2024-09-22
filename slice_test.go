@@ -1053,12 +1053,12 @@ func TestPullAll(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := PullAll([]int{0, 1, 1, 2, 2, 2, 3, 3, 3}, []int{1})
-	result2 := PullAll([]int{0, 1, 1, 2, 2, 2, 3, 3, 3}, []int{5})
-	result3 := PullAll([]int{}, []int{1})
-	result4 := PullAll([]int{0}, []int{0})
-	result5 := PullAll([]string{"a", "b", "c", "a", "b", "c"}, []string{"a", "c"})
-	result6 := PullAll([]string{"h", "e", "l", "l", "o"}, []string{"a", "c"})
+	result1 := PullAll([]int{0, 1, 1, 2, 2, 2, 3, 3, 3}, 1)
+	result2 := PullAll([]int{0, 1, 1, 2, 2, 2, 3, 3, 3}, 5)
+	result3 := PullAll([]int{}, 1)
+	result4 := PullAll([]int{0}, 0)
+	result5 := PullAll([]string{"a", "b", "c", "a", "b", "c"}, "a", "c")
+	result6 := PullAll([]string{"h", "e", "l", "l", "o"}, "a", "c")
 
 	is.Equal(result1, []int{0, 2, 2, 2, 3, 3, 3})
 	is.Equal(result2, []int{0, 1, 1, 2, 2, 2, 3, 3, 3})
