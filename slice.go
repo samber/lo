@@ -694,7 +694,7 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 	return append(append(append(output, collection[:i]...), elements...), collection[i:]...)
 }
 
-// Pull removes all given values from splice using SameValueZero for equality comparisons.
+// Pull removes all given values from slice using SameValueZero for equality comparisons.
 func Pull[T comparable, Slice ~[]T](collection Slice, elements ...T) Slice {
 	output := make(Slice, 0, len(collection))
 
