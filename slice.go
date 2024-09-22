@@ -716,7 +716,8 @@ func Pull[T comparable, Slice ~[]T](collection Slice, elements ...T) Slice {
 }
 
 // PullAll is like [Pull] except that it accepts an array of values to remove
-func PullAll[T comparable, Slice ~[]T](collection Slice, elements []T) Slice {
+func PullAll[T comparable, Slice ~[]T](collection Slice, 
+...elements T) Slice {
 	output := make(Slice, 0, len(collection))
 
 	for _, item := range collection {
