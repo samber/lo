@@ -296,6 +296,10 @@ Error handling:
 - [TryCatch](#trycatch)
 - [TryWithErrorValue](#trywitherrorvalue)
 - [TryCatchWithErrorValue](#trycatchwitherrorvalue)
+- [Recover0 -> Recover6](#recover0-6)
+- [Recover0Error -> Recover6Error](#recover0-6error)
+- [Recover0Typed -> Recover6Typed](#recover0-6typed)
+- [Recover0ErrorTyped -> Recover6ErrorTyped](#recover0-6errortyped)
 - [ErrorsAs](#errorsas)
 
 Constraints:
@@ -3464,6 +3468,92 @@ ok := lo.TryCatchWithErrorValue(func() error {
 ```
 
 [[play](https://go.dev/play/p/8Pc9gwX_GZO)]
+
+### Recover{0->6}
+
+The `Recover{0->6}` functions are designed to encapsulate panicking functions, redirecting panic `error` interfaces and `string` types to golang's idiomatic return signature. This is helpful with library functions where an error types has to be returned in addition to the existing return types.
+
+```go
+// Example of a library function
+func errorOrNil[T any](callback func(string) T) (T, error) {
+    return lo.Recover1(callback("test"))
+}
+
+errorOrNil(func(param string) string {
+    panic("panicking")
+})
+// Output: "", "panicking"
+
+errorOrNil(func(param string) string {
+    return param
+})
+// Output: "test", nil
+```
+
+### Recover{0->6}Error
+
+These functions merge both `Recover{0->6}` and callback error return types into a unified error type. This can be helpful in situations where non-error inline functions are passed to library functions that come with their own error return, making panic the only workaround to pass errors from the callback function to the encapsulating code.
+
+```go
+// This could be a library function
+// Example of a library function
+func externalLibraryFunction(callback func(string) string) (string, error) {
+    _ = callback("test")
+    return "", errors.New("final error")
+}
+
+lo.Recover1Error(externalLibraryFunction(func(param string) string {
+    panic("panicking")
+}))
+// Output: "", "panicking"
+
+lo.Recover1Error(externalLibraryFunction(func(param string) string {
+    return param
+}))
+// Output: "", "final error"
+```
+
+### Recover{0->6}Typed
+
+The `Recover{0->6}Typed` functions extend the `Recover{0->6}` with an additional type parameter to define the panic error type to be cought, and an optional (variadic) flag to define whether to catch strings as well.
+
+```go
+// Example of a library function
+func errorOrNil[T any](callback func(string) T) (T, error) {
+    return lo.Recover1Typed[myError](callback("test"), false)
+}
+
+errorOrNil(func(param string) string {
+    panic("no recovery")
+})
+// Panic: "no recovery"
+
+errorOrNil(func(param string) string {
+    panic(erros.New("no recovery"))
+})
+// Panic: "no recovery"
+```
+
+### Recover{0->6}ErrorTyped
+
+The `Recover{0->6}ErrorTyped` functions combine the callback error redirect from `Recover{0->6}Error` and the catch type specification from `Recover{0->6}Typed`.
+
+```go
+// Example of a library function
+func errorOrNil[T any](callback func() T) (T, error) {
+    return lo.Recover0ErrorTyped[myError](callback(), true)
+}
+
+errorOrNil(func() string {
+    panic("recovery")
+})
+// Output: "", "recovery"
+
+errorOrNil(func() string {
+    return "test"
+})
+// Output: "test", nil
+```
 
 ### ErrorsAs
 
