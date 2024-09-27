@@ -3485,7 +3485,7 @@ func ExampleTypedRecover() (err error) {
 
 ### Recover{0->6}
 
-The `Recover{0->6}` functions are designed to encapsulate panicking functions, redirecting panic `error` interfaces and `string` types to golang's idiomatic return signature. This is helpful with library functions where an error types has to be returned in addition to the existing return types.
+The `Recover{0->6}` functions are designed to encapsulate panicking functions, redirecting panic `error` interfaces and `string` types to golang's idiomatic return signature. This is helpful with library functions where an error type has to be returned in addition to the existing return types.
 
 ```go
 // Example of a library function
@@ -3506,11 +3506,10 @@ errorOrNil(func(param string) string {
 
 ### Recover{0->6}Error
 
-These functions merge both `Recover{0->6}` and callback error return types into a unified error type. This can be helpful in situations where non-error inline functions are passed to library functions that come with their own error return, making panic the only workaround to pass errors from the callback function to the encapsulating code.
+These functions merge both `Recover{0->6}` and callback error return types into a unified error type. This can be helpful in situations where non-error callback functions are passed to library functions that come with their own error return, making panic the only workaround to pass errors from the callback function to the encapsulating scope.
 
 ```go
-// This could be a library function
-// Example of a library function
+// A library function with its own error return and a callback without error handling
 func externalLibraryFunction(callback func(string) string) (string, error) {
     _ = callback("test")
     return "", errors.New("final error")
