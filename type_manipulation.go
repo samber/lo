@@ -79,6 +79,16 @@ func FromSlicePtrOr[T any](collection []*T, fallback T) []T {
 	})
 }
 
+// FromSlicePtrNotNil returns a slice with the pointer values without nil elements.
+func FromSlicePtrNotNil[T any](collection []*T) []T {
+	return FilterMap(collection, func(x *T, _ int) (T, bool) {
+		if x == nil {
+			return Empty[T](), false
+		}
+		return *x, true
+	})
+}
+
 // ToAnySlice returns a slice with all elements mapped to `any` type
 func ToAnySlice[T any](collection []T) []any {
 	result := make([]any, len(collection))
