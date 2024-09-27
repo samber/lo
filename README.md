@@ -296,6 +296,7 @@ Error handling:
 - [TryCatch](#trycatch)
 - [TryWithErrorValue](#trywitherrorvalue)
 - [TryCatchWithErrorValue](#trycatchwitherrorvalue)
+- [TypedRecover](#typedrecover)
 - [Recover0 -> Recover6](#recover0-6)
 - [Recover0Error -> Recover6Error](#recover0-6error)
 - [Recover0Typed -> Recover6Typed](#recover0-6typed)
@@ -3468,6 +3469,19 @@ ok := lo.TryCatchWithErrorValue(func() error {
 ```
 
 [[play](https://go.dev/play/p/8Pc9gwX_GZO)]
+
+### TypedRecover
+
+`TypedRecover` is a helper function that allows a deferred panic recovery as a one-liner with a type parameter for the error interface and the optional inclusion of string panics via the second parameter flag.
+
+```go
+func ExampleTypedRecover() (err error) {
+    defer TypedRecover[error](&err, true)
+
+    // Simulating a panic to be returned as error
+    panic("Unexpected error occurred")
+}
+```
 
 ### Recover{0->6}
 
