@@ -2759,9 +2759,11 @@ Returns a slice with the pointer values or the fallback value.
 str1 := "hello"
 str2 := "world"
 
-ptr := lo.FromSlicePtrOr[string]([]*string{&str1, &str2, "fallback value"})
+ptr := lo.FromSlicePtrOr([]*string{&str1, nil, &str2}, "fallback value")
 // []string{"hello", "world", "fallback value"}
 ```
+
+[[play](https://go.dev/play/p/lbunFvzlUDX)]
 
 ### ToAnySlice
 
