@@ -70,6 +70,7 @@ func FromSlicePtr[T any](collection []*T) []T {
 }
 
 // FromSlicePtrOr returns a slice with the pointer values or the fallback value.
+// Play: https://go.dev/play/p/lbunFvzlUDX
 func FromSlicePtrOr[T any](collection []*T, fallback T) []T {
 	return Map(collection, func(x *T, _ int) T {
 		if x == nil {
