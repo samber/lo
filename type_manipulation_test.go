@@ -316,3 +316,50 @@ func TestCoalesceOrEmpty(t *testing.T) {
 	is.Equal(result9, struct1)
 	is.Equal(result10, struct1)
 }
+
+func TestCoalesceOrEmptySlice(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var sliceNil []int
+	slice0 := []int{}
+	slice1 := []int{1}
+	slice2 := []int{1, 2}
+
+	result1 := CoalesceOrEmptySlice[int]()
+	result2 := CoalesceOrEmptySlice[int](nil)
+	result3 := CoalesceOrEmptySlice(sliceNil)
+	result4 := CoalesceOrEmptySlice(slice0)
+	result5 := CoalesceOrEmptySlice(nil, sliceNil, slice0)
+	result6 := CoalesceOrEmptySlice(slice2)
+	result7 := CoalesceOrEmptySlice(slice1)
+	result8 := CoalesceOrEmptySlice(slice1, slice2)
+	result9 := CoalesceOrEmptySlice(slice2, slice1)
+	result10 := CoalesceOrEmptySlice(sliceNil, slice0, slice1, slice2)
+
+	is.NotNil(result1)
+	is.Empty(result1)
+	is.Equal([]int{}, result1)
+	is.NotNil(result2)
+	is.Empty(result2)
+	is.Equal([]int{}, result2)
+	is.NotNil(result3)
+	is.Empty(result3)
+	is.Equal([]int{}, result3)
+	is.NotNil(result4)
+	is.Empty(result4)
+	is.Equal([]int{}, result4)
+	is.NotNil(result5)
+	is.Empty(result5)
+	is.Equal([]int{}, result5)
+	is.NotNil(result6)
+	is.Equal(slice2, result6)
+	is.NotNil(result7)
+	is.Equal(slice1, result7)
+	is.NotNil(result8)
+	is.Equal(slice1, result8)
+	is.NotNil(result9)
+	is.Equal(slice2, result9)
+	is.NotNil(result10)
+	is.Equal(slice1, result10)
+}
