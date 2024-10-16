@@ -1006,7 +1006,7 @@ func TestSplice(t *testing.T) {
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
 	is.Equal(results, []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"})
 
-	// backard
+	// backward
 	results = Splice(sample, -2, "1", "2")
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
 	is.Equal(results, []string{"a", "b", "c", "d", "e", "1", "2", "f", "g"})

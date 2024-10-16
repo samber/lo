@@ -25,9 +25,9 @@ func TestIsNil(t *testing.T) {
 	var b *bool
 	is.True(IsNil(b))
 
-	var ifaceWithNilValue any = (*string)(nil)
+	var ifaceWithNilValue any = (*string)(nil) //nolint:staticcheck
 	is.True(IsNil(ifaceWithNilValue))
-	is.False(ifaceWithNilValue == nil) // nolint:staticcheck
+	is.False(ifaceWithNilValue == nil) //nolint:staticcheck
 }
 
 func TestToPtr(t *testing.T) {
@@ -119,6 +119,26 @@ func TestToSlicePtr(t *testing.T) {
 	result1 := ToSlicePtr([]string{str1, str2})
 
 	is.Equal(result1, []*string{&str1, &str2})
+}
+
+func TestFromSlicePtr(t *testing.T) {
+	is := assert.New(t)
+
+	str1 := "foo"
+	str2 := "bar"
+	result1 := FromSlicePtr([]*string{&str1, &str2, nil})
+
+	is.Equal(result1, []string{str1, str2, ""})
+}
+
+func TestFromSlicePtrOr(t *testing.T) {
+	is := assert.New(t)
+
+	str1 := "foo"
+	str2 := "bar"
+	result1 := FromSlicePtrOr([]*string{&str1, &str2, nil}, "fallback")
+
+	is.Equal(result1, []string{str1, str2, "fallback"})
 }
 
 func TestToAnySlice(t *testing.T) {

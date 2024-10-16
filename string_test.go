@@ -76,6 +76,7 @@ func TestSubstring(t *testing.T) {
 	str12 := Substring("hello", -4, math.MaxUint)
 	str13 := Substring("🏠🐶🐱", 0, 2)
 	str14 := Substring("你好，世界", 0, 3)
+	str15 := Substring("hello", 5, 1)
 
 	is.Equal("", str1)
 	is.Equal("", str2)
@@ -91,6 +92,7 @@ func TestSubstring(t *testing.T) {
 	is.Equal("ello", str12)
 	is.Equal("🏠🐶", str13)
 	is.Equal("你好，", str14)
+	is.Equal("", str15)
 }
 
 func TestRuneLength(t *testing.T) {
@@ -484,15 +486,18 @@ func TestCapitalize(t *testing.T) {
 	}
 }
 
-func TestElipse(t *testing.T) {
+func TestEllipsis(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal("12345", Elipse("12345", 5))
-	is.Equal("1...", Elipse("12345", 4))
-	is.Equal("12345", Elipse("12345", 6))
-	is.Equal("12345", Elipse("12345", 10))
-	is.Equal("...", Elipse("12345", 3))
-	is.Equal("...", Elipse("12345", 2))
-	is.Equal("...", Elipse("12345", -1))
+	is.Equal("12345", Ellipsis("12345", 5))
+	is.Equal("1...", Ellipsis("12345", 4))
+	is.Equal("1...", Ellipsis("	12345  ", 4))
+	is.Equal("12345", Ellipsis("12345", 6))
+	is.Equal("12345", Ellipsis("12345", 10))
+	is.Equal("12345", Ellipsis("  12345  ", 10))
+	is.Equal("...", Ellipsis("12345", 3))
+	is.Equal("...", Ellipsis("12345", 2))
+	is.Equal("...", Ellipsis("12345", -1))
+	is.Equal("hello...", Ellipsis(" hello   world ", 9))
 }

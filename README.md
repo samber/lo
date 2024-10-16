@@ -105,6 +105,7 @@ Supported helpers for slices:
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
 - [DropRightWhile](#droprightwhile)
+- [DropByIndex](#DropByIndex)
 - [Reject](#reject)
 - [RejectMap](#rejectmap)
 - [FilterReject](#filterreject)
@@ -124,9 +125,11 @@ Supported helpers for slices:
 Supported helpers for maps:
 
 - [Keys](#keys)
-- [HasKey](#HasKey)
+- [UniqKeys](#uniqkeys)
+- [HasKey](#haskey)
 - [ValueOr](#valueor)
 - [Values](#values)
+- [UniqValues](#uniqvalues)
 - [PickBy](#pickby)
 - [PickByKeys](#pickbykeys)
 - [PickByValues](#pickbyvalues)
@@ -164,7 +167,7 @@ Supported helpers for strings:
 - [SnakeCase](#snakecase)
 - [Words](#words)
 - [Capitalize](#capitalize)
-- [Elipse](#elipse)
+- [Ellipsis](#ellipsis)
 
 Supported helpers for tuples:
 
@@ -178,7 +181,7 @@ Supported helpers for tuples:
 Supported helpers for time and duration:
 
 - [Duration](#duration)
-- [Duration0 -> Duration10](#duration0-duration10)
+- [Duration0 -> Duration10](#duration0---duration10)
 
 Supported helpers for channels:
 
@@ -254,6 +257,8 @@ Type manipulation helpers:
 - [FromPtr](#fromptr)
 - [FromPtrOr](#fromptror)
 - [ToSlicePtr](#tosliceptr)
+- [FromSlicePtr](#fromsliceptr)
+- [FromSlicePtrOr](#fromsliceptror)
 - [ToAnySlice](#toanyslice)
 - [FromAnySlice](#fromanyslice)
 - [Empty](#empty)
@@ -430,17 +435,18 @@ Iterates over collection elements and invokes iteratee for each element collecti
 ```go
 list := []int64{1, 2, -42, 4}
 
-ForEachWhile(list, func(x int64, _ int) bool {
-    if x < 0 {
-        return false
-    }
-    fmt.Println(x)
-    return true
+lo.ForEachWhile(list, func(x int64, _ int) bool {
+	if x < 0 {
+		return false
+	}
+	fmt.Println(x)
+	return true
 })
-
 // 1
 // 2
 ```
+
+[[play](https://go.dev/play/p/QnLGt35tnow)]
 
 ### Times
 
@@ -776,8 +782,8 @@ l := lo.DropRightWhile([]string{"a", "aa", "aaa", "aa", "aa"}, func(val string) 
 Drops elements from a slice or array by the index. A negative index will drop elements from the end of the slice.
 
 ```go
-l := lo.Drop([]int{0, 1, 2, 3, 4, 5}, 2, 4, -1)
-// []int{2, 3}
+l := lo.DropByIndex([]int{0, 1, 2, 3, 4, 5}, 2, 4, -1)
+// []int{0, 1, 3}
 ```
 
 [[play](https://go.dev/play/p/JswS7vXRJP2)]
@@ -1038,14 +1044,36 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 
 ### Keys
 
-Creates an array of the map keys.
+Creates a slice of the map keys.
+
+Use the UniqKeys variant to deduplicate common keys.
 
 ```go
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
 // []string{"foo", "bar"}
+
+keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+// []string{"foo", "bar", "baz"}
+
+keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
+// []string{"foo", "bar", "bar"}
 ```
 
 [[play](https://go.dev/play/p/Uu11fHASqrU)]
+
+### UniqKeys
+
+Creates an array of unique map keys. 
+
+```go
+keys := lo.UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+// []string{"foo", "bar", "baz"}
+
+keys := lo.UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
+// []string{"foo", "bar"}
+```
+
+[[play](https://go.dev/play/p/TPKAb6ILdHk)]
 
 ### HasKey
 
@@ -1065,12 +1093,37 @@ exists := lo.HasKey(map[string]int{"foo": 1, "bar": 2}, "baz")
 
 Creates an array of the map values.
 
+Use the UniqValues variant to deduplicate common values.
+
 ```go
 values := lo.Values(map[string]int{"foo": 1, "bar": 2})
 // []int{1, 2}
+
+values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+// []int{1, 2, 3}
+
+values := lo.Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2})
+// []int{1, 2, 2}
 ```
 
 [[play](https://go.dev/play/p/nnRTQkzQfF6)]
+
+### UniqValues
+
+Creates an array of unique map values.
+
+```go
+values := lo.UniqValues(map[string]int{"foo": 1, "bar": 2})
+// []int{1, 2}
+
+values := lo.UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+// []int{1, 2, 3}
+
+values := lo.UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 2})
+// []int{1, 2}
+```
+
+[[play](https://go.dev/play/p/nf6bXMh7rM3)]
 
 ### ValueOr
 
@@ -1535,18 +1588,18 @@ str := lo.Capitalize("heLLO")
 // Hello
 ```
 
-### Elipse
+### Ellipsis
 
-Truncates a string to a specified length and appends an ellipsis if truncated.
+Trims and truncates a string to a specified length and appends an ellipsis if truncated.
 
 ```go
-str := lo.Elipse("Lorem Ipsum", 5)
+str := lo.Ellipsis("  Lorem Ipsum  ", 5)
 // Lo...
 
-str := lo.Elipse("Lorem Ipsum", 100)
+str := lo.Ellipsis("Lorem Ipsum", 100)
 // Lorem Ipsum
 
-str := lo.Elipse("Lorem Ipsum", 3)
+str := lo.Ellipsis("Lorem Ipsum", 3)
 // ...
 ```
 
@@ -1662,7 +1715,7 @@ err, duration := lo.Duration1(func() error {
 // an error
 // 3s
 
-err, duration := lo.Duration3(func() (string, int, error) {
+str, nbr, err, duration := lo.Duration3(func() (string, int, error) {
     // very long job
     return "hello", 42, nil
 })
@@ -1950,7 +2003,7 @@ ok := lo.Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 
 ### EveryBy
 
-Returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
+Returns true if the predicate returns true for all elements in the collection or if the collection is empty.
 
 ```go
 b := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
@@ -1965,7 +2018,7 @@ Returns true if at least 1 element of a subset is contained into a collection.
 If the subset is empty Some returns false.
 
 ```go
-ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // true
 
 ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
@@ -2603,19 +2656,19 @@ Checks if a value is nil or if it's a reference type with a nil underlying value
 
 ```go
 var x int
-IsNil(x))
+lo.IsNil(x)
 // false
 
 var k struct{}
-IsNil(k)
+lo.IsNil(k)
 // false
 
 var i *int
-IsNil(i)
+lo.IsNil(i)
 // true
 
 var ifaceWithNilValue any = (*string)(nil)
-IsNil(ifaceWithNilValue)
+lo.IsNil(ifaceWithNilValue)
 // true
 ifaceWithNilValue == nil
 // false
@@ -2692,6 +2745,38 @@ Returns a slice of pointer copy of value.
 ptr := lo.ToSlicePtr([]string{"hello", "world"})
 // []*string{"hello", "world"}
 ```
+
+### FromSlicePtr
+
+Returns a slice with the pointer values.
+Returns a zero value in case of a nil pointer element.
+
+```go
+str1 := "hello"
+str2 := "world"
+
+ptr := lo.FromSlicePtr[string]([]*string{&str1, &str2, nil})
+// []string{"hello", "world", ""}
+
+ptr := lo.Compact(
+    lo.FromSlicePtr[string]([]*string{&str1, &str2, nil}),
+)
+// []string{"hello", "world"}
+```
+
+### FromSlicePtrOr
+
+Returns a slice with the pointer values or the fallback value.
+
+```go
+str1 := "hello"
+str2 := "world"
+
+ptr := lo.FromSlicePtrOr([]*string{&str1, nil, &str2}, "fallback value")
+// []string{"hello", "world", "fallback value"}
+```
+
+[[play](https://go.dev/play/p/lbunFvzlUDX)]
 
 ### ToAnySlice
 
@@ -2843,7 +2928,9 @@ f(42, -4)
 
 ### Attempt
 
-Invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a successful response is returned.
+Invokes a function N times until it returns valid output. Returns either the caught error or nil.
+
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 iter, err := lo.Attempt(42, func(i int) error {
@@ -2883,9 +2970,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWithDelay
 
-Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil.
+Invokes a function N times until it returns valid output, with a pause between each call. Returns either the caught error or nil.
 
-When first argument is less than `1`, the function runs until a successful response is returned.
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duration time.Duration) error {
@@ -2906,9 +2993,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWhile
 
-Invokes a function N times until it returns valid output. Returning either the caught error or nil, and along with a bool value to identifying whether it needs invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
+Invokes a function N times until it returns valid output. Returns either the caught error or nil, along with a bool value to determine whether the function should be invoked again. It will terminate the invoke immediately if the second return value is false.
 
-When first argument is less than `1`, the function runs until a successful response is returned.
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 count1, err1 := lo.AttemptWhile(5, func(i int) (error, bool) {
@@ -2931,9 +3018,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWhileWithDelay
 
-Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil, and along with a bool value to identifying whether it needs to invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
+Invokes a function N times until it returns valid output, with a pause between each call. Returns either the caught error or nil, along with a bool value to determine whether the function should be invoked again. It will terminate the invoke immediately if the second return value is false.
 
-When first argument is less than `1`, the function runs until a successful response is returned.
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 count1, time1, err1 := lo.AttemptWhileWithDelay(5, time.Millisecond, func(i int, d time.Duration) (error, bool) {
@@ -3422,7 +3509,7 @@ if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
 
 We executed a simple benchmark with a dead-simple `lo.Map` loop:
 
-See the full implementation [here](./benchmark_test.go).
+See the full implementation [here](./map_benchmark_test.go).
 
 ```go
 _ = lo.Map[int64](arr, func(x int64, i int) string {
