@@ -176,7 +176,7 @@ func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
 	return result
 }
 
-// WithoutEmpty returns slice excluding empty values.
+// WithoutEmpty returns slice excluding zero values.
 //
 // Deprecated: Use lo.Compact instead.
 func WithoutEmpty[T comparable, Slice ~[]T](collection Slice) Slice {
