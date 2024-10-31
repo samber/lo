@@ -693,3 +693,16 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 
 	return append(append(append(output, collection[:i]...), elements...), collection[i:]...)
 }
+
+// In checks if an element (needle) exists in the collection.
+// It returns true if the needle is found; otherwise, false.
+// Play: https://go.dev/play/p/h2sv3kXnucy
+func In[T comparable, Slice ~[]T](collection Slice, needle T) bool {
+	for _, element := range collection {
+		if element == needle {
+			return true
+		}
+	}
+
+	return false
+}

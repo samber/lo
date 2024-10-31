@@ -1029,3 +1029,26 @@ func TestSplice(t *testing.T) {
 	nonempty := Splice(allStrings, 1, "1", "2")
 	is.IsType(nonempty, allStrings, "type preserved")
 }
+
+func TestIn(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := In([]int{0, 1, 2, 3, 4, 5}, 3)
+	is.True(result1)
+
+	result2 := In([]int{0, 1, 2, 3, 4, 5}, 6)
+	is.False(result2)
+
+	result3 := In([]float32{0.1, 1.1, 2.4, 3.6, 4.9}, 4.9)
+	is.True(result3)
+
+	result4 := In([]float32{0.1, 1.1, 2.4, 3.6, 4.9}, 7.9)
+	is.False(result4)
+
+	result5 := In([]string{"a", "b", "c"}, "b")
+	is.True(result5)
+
+	result6 := In([]string{"a", "b", "c"}, "d")
+	is.False(result6)
+}

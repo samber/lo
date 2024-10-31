@@ -121,6 +121,7 @@ Supported helpers for slices:
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
 - [Splice](#Splice)
+- [In](#In)
 
 Supported helpers for maps:
 
@@ -1040,6 +1041,21 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 ```
 
 [[play](https://go.dev/play/p/G5_GhkeSUBA)]
+
+### In
+
+Checks if an element exists in the collection. It returns true if the element is found; otherwise, false.
+
+```go
+result := lo.In([]int{1, 2, 3, 4, 5}, 4)
+// true
+
+result = lo.In([]string{"a", "b"}, "c")
+// false
+
+```
+
+[[play](https://go.dev/play/p/h2sv3kXnucy)]
 
 ### Keys
 
