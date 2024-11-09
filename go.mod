@@ -10,7 +10,7 @@ require (
 	github.com/stretchr/testify v1.8.0
 	github.com/thoas/go-funk v0.9.1
 	go.uber.org/goleak v1.2.1
-	golang.org/x/text v0.16.0
+	golang.org/x/text v0.20.0
 )
 
 require (
