@@ -30,6 +30,30 @@ func TestIsNil(t *testing.T) {
 	is.False(ifaceWithNilValue == nil) //nolint:staticcheck
 }
 
+func TestIsNotNil(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var x int
+	is.True(IsNotNil(x))
+
+	var k struct{}
+	is.True(IsNotNil(k))
+
+	var s *string
+	is.False(IsNotNil(s))
+
+	var i *int
+	is.False(IsNotNil(i))
+
+	var b *bool
+	is.False(IsNotNil(b))
+
+	var ifaceWithNilValue any = (*string)(nil) //nolint:staticcheck
+	is.False(IsNotNil(ifaceWithNilValue))
+	is.True(ifaceWithNilValue != nil) //nolint:staticcheck
+}
+
 func TestToPtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
