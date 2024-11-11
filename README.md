@@ -153,6 +153,8 @@ Supported math helpers:
 - [SumBy](#sumby)
 - [Mean](#mean)
 - [MeanBy](#meanby)
+- [Round](#round)
+- [Truncate](#truncate)
 
 Supported helpers for strings:
 
@@ -1449,6 +1451,39 @@ mean := lo.MeanBy([]float64{}, mapper)
 // 0
 ```
 
+### Round
+
+Round returns the float32/float64 of rounding half away from the specified precision.
+
+Precision must be between 0 and 15, if it is empty or exceeds the range, default value is 3
+
+```go
+f := Truncate(1.23456)
+// 1.235
+
+f := Truncate(1.23456, 4)
+// 1.2346
+
+f := Truncate(1.23456, 7)
+// 1.23456
+```
+
+### Truncate
+
+Truncate returns the float32/float64 of the specified precision.
+
+Precision must be between 0 and 15, if it is empty or exceeds the range, default value is 3
+
+```go
+f := Truncate(1.23456)
+// 1.234
+
+f := Truncate(1.23456, 4)
+// 1.2345
+
+f := Truncate(1.23456, 7)
+// 1.23456
+```
 ### RandomString
 
 Returns a random string of the specified length and made of the specified charset.
