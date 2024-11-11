@@ -2099,7 +2099,7 @@ subset := lo.Without([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
 
 ### WithoutEmpty
 
-Returns slice excluding empty values.
+Returns slice excluding zero values.
 
 ```go
 subset := lo.WithoutEmpty([]int{0, 2, 10})
@@ -2788,7 +2788,7 @@ elements, ok := lo.FromAnySlice([]any{"foobar", "42"})
 
 ### Empty
 
-Returns an empty value.
+Returns the [zero value](https://go.dev/ref/spec#The_zero_value).
 
 ```go
 lo.Empty[int]()

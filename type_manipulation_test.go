@@ -180,6 +180,8 @@ func TestEmpty(t *testing.T) {
 	is.Empty(Empty[int64]())
 	is.Empty(Empty[test]())
 	is.Empty(Empty[chan string]())
+	is.Nil(Empty[[]int]())
+	is.Nil(Empty[map[string]int]())
 }
 
 func TestIsEmpty(t *testing.T) {

@@ -106,7 +106,7 @@ func FromAnySlice[T any](in []any) (out []T, ok bool) {
 	return result, true
 }
 
-// Empty returns an empty value.
+// Empty returns the zero value (https://go.dev/ref/spec#The_zero_value).
 func Empty[T any]() T {
 	var zero T
 	return zero
