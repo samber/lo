@@ -223,10 +223,12 @@ Supported search helpers:
 - [FindDuplicates](#findduplicates)
 - [FindDuplicatesBy](#findduplicatesby)
 - [Min](#min)
+- [MinN](#minn)
 - [MinBy](#minby)
 - [Earliest](#earliest)
 - [EarliestBy](#earliestby)
 - [Max](#max)
+- [MaxN](#maxn)
 - [MaxBy](#maxby)
 - [Latest](#latest)
 - [LatestBy](#latestby)
@@ -2285,6 +2287,23 @@ min := lo.Min([]time.Duration{time.Second, time.Hour})
 // 1s
 ```
 
+### MinN
+
+Search the minimum value of arbitrary number params.
+
+Returns zero value when the no param are given.
+
+```go
+min := lo.MinN(1, 2, 3)
+// 1
+
+min := lo.Min([]int{}...)
+// 0
+
+min := lo.Min(time.Second, time.Hour...)
+// 1s
+```
+
 ### MinBy
 
 Search the minimum value of a collection using the given comparison function.
@@ -2349,6 +2368,25 @@ max := lo.Max([]int{})
 max := lo.Max([]time.Duration{time.Second, time.Hour})
 // 1h
 ```
+
+### MaxN
+
+Search the maximum value of arbitrary number params.
+
+Returns zero value when the no param are given.
+
+```go
+max := lo.MaxN(1, 2, 3)
+// 3
+
+max := lo.MaxN([]int{}...)
+// 0
+
+max := lo.MaxN(time.Second, time.Hour)
+// 1h
+```
+
+
 
 ### MaxBy
 
