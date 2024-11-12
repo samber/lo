@@ -241,8 +241,8 @@ func Min[T constraints.Ordered](collection []T) T {
 	return min
 }
 
-// MinN searches the minimum value from varidical items.
-// Returns zero value when the no items are given.
+// MinN search the minimum value of arbitrary number params.
+// returns zero value when the no param are given.
 func MinN[T constraints.Ordered](items ...T) T {
 	return Min(items)
 }
@@ -338,8 +338,8 @@ func Max[T constraints.Ordered](collection []T) T {
 	return max
 }
 
-// MaxN searches the maximum value from varidical items.
-// Returns zero value when the no items are given.
+// MinN searches the maximum value of arbitrary number params.
+// returns zero value when the no param are given.
 func MaxN[T constraints.Ordered](items ...T) T {
 	return Max(items)
 }
