@@ -1085,10 +1085,10 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 Creates an array of unique map keys. 
 
 ```go
-keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+keys := lo.UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
 // []string{"foo", "bar", "baz"}
 
-keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
+keys := lo.UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 // []string{"foo", "bar"}
 ```
 
@@ -2025,7 +2025,7 @@ Returns true if at least 1 element of a subset is contained into a collection.
 If the subset is empty Some returns false.
 
 ```go
-ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // true
 
 ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
@@ -2779,9 +2779,11 @@ Returns a slice with the pointer values or the fallback value.
 str1 := "hello"
 str2 := "world"
 
-ptr := lo.FromSlicePtrOr[string]([]*string{&str1, &str2, "fallback value"})
+ptr := lo.FromSlicePtrOr([]*string{&str1, nil, &str2}, "fallback value")
 // []string{"hello", "world", "fallback value"}
 ```
+
+[[play](https://go.dev/play/p/lbunFvzlUDX)]
 
 ### ToAnySlice
 

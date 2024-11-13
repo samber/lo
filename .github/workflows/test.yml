@@ -20,10 +20,10 @@ jobs:
           - '1.22'
           - '1.x'
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Set up Go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v5
       with:
         go-version: ${{ matrix.go }}
         stable: false
@@ -38,7 +38,7 @@ jobs:
       run: make coverage
 
     - name: Codecov
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./cover.out
