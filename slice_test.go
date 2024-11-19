@@ -1029,3 +1029,38 @@ func TestSplice(t *testing.T) {
 	nonempty := Splice(allStrings, 1, "1", "2")
 	is.IsType(nonempty, allStrings, "type preserved")
 }
+
+func TestForAll(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := ForAll([]int{2, 4, 6, 8}, func(x int) bool {
+		return x%2 == 0
+	})
+	is.True(r1)
+
+	r2 := ForAll([]int{}, func(x int) bool {
+		return x%2 == 0
+	})
+	is.True(r2)
+
+	r3 := ForAll([]int{2, 4, 6, 8, 9}, func(x int) bool {
+		return x%2 == 0
+	})
+	is.False(r3)
+}
+
+func TestExists(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := Exists([]string{"one", "two", "three"}, func(x string) bool {
+		return x == "two"
+	})
+	is.True(r1)
+
+	r2 := Exists([]int{2, 4, 6, 8, 9}, func(x int) bool {
+		return x == 10
+	})
+	is.False(r2)
+}

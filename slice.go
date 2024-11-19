@@ -693,3 +693,27 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 
 	return append(append(append(output, collection[:i]...), elements...), collection[i:]...)
 }
+
+// ForAll returns true if all a slice items satisfy the predicate.
+// Play: https://go.dev/play/p/K9Jt5gZ0HW4
+func ForAll[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) bool {
+	for i := range collection {
+		if !predicate(collection[i]) {
+			return false
+		}
+	}
+
+	return true
+}
+
+// Exists returns true if at least one element satisfies the predicate.
+// Play: https://go.dev/play/p/2lCKJ_hFUWV
+func Exists[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) bool {
+	for i := range collection {
+		if predicate(collection[i]) {
+			return true
+		}
+	}
+
+	return false
+}
