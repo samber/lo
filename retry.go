@@ -287,4 +287,62 @@ func (t *Transaction[T]) Process(state T) (T, error) {
 	return state, err
 }
 
-// throttle ?
+type throttle struct {
+	mu         *sync.Mutex
+	timer      *time.Timer
+	interval   time.Duration
+	callbacks  []func()
+	countLimit int
+	count      int
+}
+
+func (th *throttle) throttledFunc() {
+	th.mu.Lock()
+	defer th.mu.Unlock()
+	if th.count < th.countLimit {
+		th.count++
+
+		for _, f := range th.callbacks {
+			f()
+		}
+
+	}
+	if th.timer == nil {
+		th.timer = time.AfterFunc(th.interval, func() {
+			th.reset()
+		})
+	}
+}
+
+func (th *throttle) reset() {
+	th.mu.Lock()
+	defer th.mu.Unlock()
+
+	if th.timer != nil {
+		th.timer.Stop()
+	}
+
+	th.count = 0
+	th.timer = nil
+
+}
+
+// NewThrottle creates a throttled instance that invokes given functions only once in every interval.
+// This returns 2 functions, First one is throttled function and Second one is a function to reset interval
+func NewThrottle(interval time.Duration, f ...func()) (func(), func()) {
+	return NewThrottleWithCount(interval, 1, f...)
+}
+
+// NewThrottleWithCount is NewThrottle with count limit, throttled function will be invoked count times in every interval.
+func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (func(), func()) {
+	if count <= 0 {
+		count = 1
+	}
+	th := &throttle{
+		mu:         new(sync.Mutex),
+		interval:   interval,
+		callbacks:  f,
+		countLimit: count,
+	}
+	return th.throttledFunc, th.reset
+}
