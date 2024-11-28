@@ -302,6 +302,16 @@ func TestMin(t *testing.T) {
 	is.Equal(result2, 1)
 	is.Equal(result3, time.Second)
 	is.Equal(result4, 0)
+
+	result1 = MinN(1, 2, 3)
+	result2 = MinN(3, 2, 1)
+	result3 = MinN(time.Second, time.Minute, time.Hour)
+	result4 = MinN([]int{}...)
+
+	is.Equal(result1, 1)
+	is.Equal(result2, 1)
+	is.Equal(result3, time.Second)
+	is.Equal(result4, 0)
 }
 
 func TestMinBy(t *testing.T) {
@@ -370,6 +380,16 @@ func TestMax(t *testing.T) {
 	result2 := Max([]int{3, 2, 1})
 	result3 := Max([]time.Duration{time.Second, time.Minute, time.Hour})
 	result4 := Max([]int{})
+
+	is.Equal(result1, 3)
+	is.Equal(result2, 3)
+	is.Equal(result3, time.Hour)
+	is.Equal(result4, 0)
+
+	result1 = MaxN(1, 2, 3)
+	result2 = MaxN(3, 2, 1)
+	result3 = MaxN(time.Second, time.Minute, time.Hour)
+	result4 = MaxN([]int{}...)
 
 	is.Equal(result1, 3)
 	is.Equal(result2, 3)

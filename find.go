@@ -241,6 +241,12 @@ func Min[T constraints.Ordered](collection []T) T {
 	return min
 }
 
+// MinN search the minimum value of arbitrary number params.
+// returns zero value when the no param are given.
+func MinN[T constraints.Ordered](items ...T) T {
+	return Min(items)
+}
+
 // MinBy search the minimum value of a collection using the given comparison function.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns zero value when the collection is empty.
@@ -330,6 +336,12 @@ func Max[T constraints.Ordered](collection []T) T {
 	}
 
 	return max
+}
+
+// MinN searches the maximum value of arbitrary number params.
+// returns zero value when the no param are given.
+func MaxN[T constraints.Ordered](items ...T) T {
+	return Max(items)
 }
 
 // MaxBy search the maximum value of a collection using the given comparison function.
