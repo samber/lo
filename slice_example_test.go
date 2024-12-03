@@ -28,6 +28,21 @@ func ExampleMap() {
 	// Output: [2 4 6 8]
 }
 
+func ExampleUniqMap() {
+	type User struct {
+		Name string
+		Age  int
+	}
+	users := []User{{Name: "Alex", Age: 10}, {Name: "Alex", Age: 12}, {Name: "Bob", Age: 11}, {Name: "Alice", Age: 20}}
+
+	result := UniqMap(users, func(u User, index int) string {
+		return u.Name
+	})
+
+	fmt.Printf("%v", result)
+	// Output: [Alex Bob Alice]
+}
+
 func ExampleFilterMap() {
 	list := []int64{1, 2, 3, 4}
 
