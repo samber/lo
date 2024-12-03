@@ -98,6 +98,46 @@ func TestSumBy(t *testing.T) {
 	is.Equal(result5, complex128(6_6))
 }
 
+func TestProduct(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := Product([]float32{2.3, 3.3, 4, 5.3})
+	result2 := Product([]int32{2, 3, 4, 5})
+	result3 := Product([]int32{7, 8, 9, 0})
+	result4 := Product([]int32{7, -1, 9, 2})
+	result5 := Product([]uint32{2, 3, 4, 5})
+	result6 := Product([]uint32{})
+	result7 := Product([]complex128{4_4, 2_2})
+
+	is.Equal(result1, float32(160.908))
+	is.Equal(result2, int32(120))
+	is.Equal(result3, int32(0))
+	is.Equal(result4, int32(-126))
+	is.Equal(result5, uint32(120))
+	is.Equal(result6, uint32(0))
+	is.Equal(result7, complex128(96_8))
+}
+
+func TestProductBy(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := ProductBy([]float32{2.3, 3.3, 4, 5.3}, func(n float32) float32 { return n })
+	result2 := ProductBy([]int32{2, 3, 4, 5}, func(n int32) int32 { return n })
+	result3 := ProductBy([]int32{7, 8, 9, 0}, func(n int32) int32 { return n })
+	result4 := ProductBy([]int32{7, -1, 9, 2}, func(n int32) int32 { return n })
+	result5 := ProductBy([]uint32{2, 3, 4, 5}, func(n uint32) uint32 { return n })
+	result6 := ProductBy([]uint32{}, func(n uint32) uint32 { return n })
+	result7 := ProductBy([]complex128{4_4, 2_2}, func(n complex128) complex128 { return n })
+
+	is.Equal(result1, float32(160.908))
+	is.Equal(result2, int32(120))
+	is.Equal(result3, int32(0))
+	is.Equal(result4, int32(-126))
+	is.Equal(result5, uint32(120))
+	is.Equal(result6, uint32(0))
+	is.Equal(result7, complex128(96_8))
+}
+
 func TestMean(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
