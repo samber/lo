@@ -8,6 +8,11 @@ func IsNil(x any) bool {
 	return x == nil || reflect.ValueOf(x).IsNil()
 }
 
+// IsNotNil checks if a value is not nil or if it's not a reference type with a nil underlying value.
+func IsNotNil(x any) bool {
+	return !IsNil(x)
+}
+
 // ToPtr returns a pointer copy of value.
 func ToPtr[T any](x T) *T {
 	return &x
