@@ -1,7 +1,10 @@
 package lo
 
 import (
+	"fmt"
 	"github.com/samber/lo/internal/constraints"
+	"math"
+	"strconv"
 )
 
 // Range creates an array of numbers (positive and/or negative) with given length.
@@ -103,4 +106,31 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, it
 	}
 	var sum = SumBy(collection, iteratee)
 	return sum / length
+}
+
+// Round returns the float32/float64 of rounding half away from the specified precision
+func Round[T float64 | float32](f T, n ...int) T {
+	var nn = 3
+	if len(n) > 0 {
+		if n[0] >= 0 && n[0] <= 15 {
+			nn = n[0]
+		}
+	}
+	r, _ := strconv.ParseFloat(fmt.Sprintf("%.*f", nn, f), 64)
+	return T(r)
+}
+
+// Truncate returns the float32/float64 of the specified precision
+func Truncate[T float64 | float32](f T, n ...int) T {
+	var nn = 3
+	if len(n) > 0 {
+		nn = n[0]
+		if n[0] >= 0 && n[0] <= 15 {
+			nn = n[0]
+		}
+	}
+	pow10N := math.Pow10(nn)
+	integer, fractional := math.Modf(float64(f))
+	r, _ := strconv.ParseFloat(fmt.Sprintf("%.*f", nn, integer+math.Trunc(fractional*pow10N)/pow10N), 64)
+	return T(r)
 }
