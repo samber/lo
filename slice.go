@@ -693,3 +693,27 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 
 	return append(append(append(output, collection[:i]...), elements...), collection[i:]...)
 }
+
+// CrossJoin calculates the cartesian product of two lists. It returns a list of
+// tuples where the first element includes the elements of the first parameter, and
+// the second element contains the elements of the second parameter.
+
+// It returns an empty list if either, or both parameters are empty
+
+// Play: https://go.dev/play/p/2-DOGciKvAB
+func CrossJoin[T, U any](listOne []T, listTwo []U) [][2]interface{} {
+
+	if len(listOne) == 0 || len(listTwo) == 0 {
+		return make([][2]interface{}, 0)
+	}
+
+	cartesianProduct := make([][2]interface{}, 0, len(listOne)*len(listTwo))
+
+	for _, a := range listOne {
+		for _, b := range listTwo {
+			cartesianProduct = append(cartesianProduct, [2]interface{}{a, b})
+		}
+	}
+
+	return cartesianProduct
+}
