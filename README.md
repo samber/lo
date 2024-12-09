@@ -121,6 +121,8 @@ Supported helpers for slices:
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
 - [Splice](#Splice)
+- [ForAll](#ForAll)
+- [Exists](#Exists)
 
 Supported helpers for maps:
 
@@ -1041,6 +1043,32 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 
 [[play](https://go.dev/play/p/G5_GhkeSUBA)]
 
+### ForAll
+
+ForAll returns true if all a slice items satisfy the predicate.
+
+```go
+result := ForAll([]int{2, 4, 6, 8}, func(x int) bool {
+	return x%2 == 0
+})
+    // true
+```
+
+[[play](https://go.dev/play/p/K9Jt5gZ0HW4)]
+
+### Exists
+
+Exists returns true if at least one element satisfies the predicate.
+
+```go
+result := Exists([]int{2, 4, 6, 8, 9}, func(x int) bool {
+	return x == 8
+})
+    // true
+```
+
+[[play](https://go.dev/play/p/2lCKJ_hFUWV)]
+
 ### Keys
 
 Creates a slice of the map keys.
@@ -1062,7 +1090,7 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 
 ### UniqKeys
 
-Creates an array of unique map keys. 
+Creates an array of unique map keys.
 
 ```go
 keys := lo.UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
