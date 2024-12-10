@@ -481,3 +481,19 @@ func ExampleIsSortedByKey() {
 
 	// Output: true
 }
+
+func ExampleSliceToSet() {
+	list := []string{"a", "a", "b", "b", "d"}
+
+	set := SliceToSet(list)
+	_, ok1 := set["a"]
+	_, ok2 := set["c"]
+	fmt.Printf("%v\n", ok1)
+	fmt.Printf("%v\n", ok2)
+	fmt.Printf("%v\n", set)
+
+	// Output:
+	// true
+	// false
+	// map[a:{} b:{} d:{}]
+}
