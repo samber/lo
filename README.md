@@ -121,6 +121,7 @@ Supported helpers for slices:
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
 - [Splice](#Splice)
+- [CrossJoin](#CrossJoin)
 
 Supported helpers for maps:
 
@@ -1039,7 +1040,20 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 // []string{"a", "b", "1", "2"}
 ```
 
-[[play](https://go.dev/play/p/G5_GhkeSUBA)]
+[[play](https://go.dev/play/p/wiG6XyBBu49)]
+
+### CrossJoin
+
+CrossJoin calculates the cartesian product of two lists. It returns a list of tuples where the first element includes the elements of the first parameter, and the second element contains the elements of the second parameter.
+
+It returns an empty list if either, or both parameters are empty
+
+```go
+result := lo.CrossJoin([]string{"a", "b", "c"}, []int{1, 2, 3})
+// [][2]interface{}{{"a", 1}, {"a", 2}, {"a", 3}, {"b", 1}, {"b", 2}, {"b", 3}, {"c", 1}, {"c", 2}, {"c", 3}
+```
+
+[[play](https://go.dev/play/p/2-DOGciKvAB)]
 
 ### Keys
 

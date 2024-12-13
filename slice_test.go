@@ -1029,3 +1029,34 @@ func TestSplice(t *testing.T) {
 	nonempty := Splice(allStrings, 1, "1", "2")
 	is.IsType(nonempty, allStrings, "type preserved")
 }
+
+func TestCrossJoin(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	listOne := []string{"a", "b", "c"}
+	listTwo := []int{1, 2, 3}
+	emptyList := make([][2]any, 0)
+	mixedList := []any{9.6, 4, "foobar"}
+
+	results := CrossJoin(emptyList, listTwo)
+	is.Equal(emptyList, results)
+
+	results = CrossJoin(listOne, emptyList)
+	is.Equal(emptyList, results)
+
+	results = CrossJoin(emptyList, emptyList)
+	is.Equal(emptyList, results)
+
+	results = CrossJoin([]string{"a"}, listTwo)
+	is.Equal([][2]any{{"a", 1}, {"a", 2}, {"a", 3}}, results)
+
+	results = CrossJoin(listOne, []int{1})
+	is.Equal([][2]any{{"a", 1}, {"b", 1}, {"c", 1}}, results)
+
+	results = CrossJoin(listOne, listTwo)
+	is.Equal([][2]any{{"a", 1}, {"a", 2}, {"a", 3}, {"b", 1}, {"b", 2}, {"b", 3}, {"c", 1}, {"c", 2}, {"c", 3}}, results)
+
+	results = CrossJoin(listOne, mixedList)
+	is.Equal([][2]any{{"a", 9.6}, {"a", 4}, {"a", "foobar"}, {"b", 9.6}, {"b", 4}, {"b", "foobar"}, {"c", 9.6}, {"c", 4}, {"c", "foobar"}}, results)
+}
