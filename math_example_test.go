@@ -84,3 +84,53 @@ func ExampleMeanBy() {
 
 	fmt.Printf("%v", result)
 }
+
+func ExampleRound() {
+	result1 := Round(1.23456)
+	result2 := Round(1.23456, 2)
+	result3 := Round(1.23456, 3)
+	result4 := Round(1.23456, 7)
+	result5 := Round(1.234999999999999, 15)
+	result6 := Round(1.234999999999999, 7)
+	result7 := Round(1.235, 14)
+
+	fmt.Printf("%v\n", result1)
+	fmt.Printf("%v\n", result2)
+	fmt.Printf("%v\n", result3)
+	fmt.Printf("%v\n", result4)
+	fmt.Printf("%v\n", result5)
+	fmt.Printf("%v\n", result6)
+	fmt.Printf("%v\n", result7)
+
+	// Output:
+	// 1.235
+	// 1.23
+	// 1.235
+	// 1.23456
+	// 1.234999999999999
+	// 1.235
+	// 1.235
+}
+
+func ExampleTruncate() {
+	result1 := Truncate(1.23456)
+	result2 := Truncate(1.23456, 2)
+	result3 := Truncate(1.23456, 4)
+	result4 := Truncate(1.23456, 7)
+	result5 := Truncate(1.2349999999999999, 15)
+	result6 := Truncate(1.2349999999999999, 7)
+
+	fmt.Printf("%v\n", result1)
+	fmt.Printf("%v\n", result2)
+	fmt.Printf("%v\n", result3)
+	fmt.Printf("%v\n", result4)
+	fmt.Printf("%v\n", result5)
+	fmt.Printf("%v\n", result6)
+	// Output:
+	// 1.234
+	// 1.23
+	// 1.2345
+	// 1.23456
+	// 1.234999999999999
+	// 1.2349999
+}
