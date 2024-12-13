@@ -142,3 +142,13 @@ func CoalesceOrEmpty[T comparable](v ...T) T {
 	result, _ := Coalesce(v...)
 	return result
 }
+
+// CoalesceOrEmptySlice returns the first non-zero slice.
+func CoalesceOrEmptySlice[T any](v ...[]T) []T {
+	for i := range v {
+		if v[i] != nil && len(v[i]) > 0 {
+			return v[i]
+		}
+	}
+	return []T{}
+}
