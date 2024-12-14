@@ -33,6 +33,21 @@ func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 	return result
 }
 
+// UniqMap manipulates a slice and transforms it to a slice of another type with unique values.
+func UniqMap[T any, R comparable](collection []T, iteratee func(item T, index int) R) []R {
+	result := make([]R, 0, len(collection))
+	seen := make(map[R]struct{}, len(collection))
+
+	for i, item := range collection {
+		r := iteratee(item, i)
+		if _, ok := seen[r]; !ok {
+			result = append(result, r)
+			seen[r] = struct{}{}
+		}
+	}
+	return result
+}
+
 // FilterMap returns a slice which obtained after both filtering and mapping using the given callback function.
 // The callback function should return two values:
 //   - the result of the mapping operation and
