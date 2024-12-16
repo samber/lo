@@ -133,6 +133,7 @@ Supported helpers for maps:
 - [PickBy](#pickby)
 - [PickByKeys](#pickbykeys)
 - [PickByValues](#pickbyvalues)
+- [ValuesByKeys](#ValuesByKeys)
 - [OmitBy](#omitby)
 - [OmitByKeys](#omitbykeys)
 - [OmitByValues](#omitbyvalues)
@@ -1172,6 +1173,18 @@ m := lo.PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 ```
 
 [[play](https://go.dev/play/p/1zdzSvbfsJc)]
+
+### ValuesByKeys
+
+Returns an array of values in the same order as the given keys.
+If the key in keys slice but not in the map, return error
+```go
+
+m, err := lo.ValuesByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"baz", "foo", "bar"})
+// []int{3，1，2}
+```
+
+[[play](https://go.dev/play/p/PmmPDo1AqWl)]
 
 ### OmitBy
 
