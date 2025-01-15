@@ -2,6 +2,8 @@ package lo
 
 import (
 	"github.com/samber/lo/internal/constraints"
+	"math"
+	"strconv"
 )
 
 // Range creates an array of numbers (positive and/or negative) with given length.
@@ -103,4 +105,48 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, it
 	}
 	var sum = SumBy(collection, iteratee)
 	return sum / length
+}
+
+// Round returns the float32/float64 of the specified precision from rounding half away
+func Round[T float64 | float32](f T, n ...int) T {
+	var nn = 3
+	if len(n) > 0 {
+		if n[0] >= 0 {
+			nn = n[0]
+			if nn > 15 {
+				nn = 15
+			}
+		}
+	}
+	pow10N := math.Pow10(nn)
+	_f := float64(f)
+	if _f >= math.MaxFloat64/pow10N {
+		r, _ := strconv.ParseFloat(strconv.FormatFloat(_f, 'f', nn, 64), 64)
+		return T(r)
+	} else {
+		return T(math.Round(_f*pow10N) / pow10N)
+	}
+}
+
+// Truncate returns the float32/float64 of the specified precision from truncated
+func Truncate[T float64 | float32](f T, n ...int) T {
+	var nn = 3
+	if len(n) > 0 {
+		nn = n[0]
+		if n[0] >= 0 {
+			nn = n[0]
+			if nn > 15 {
+				nn = 15
+			}
+		}
+	}
+	pow10N := math.Pow10(nn)
+	_f := float64(f)
+	if _f >= math.MaxFloat64/pow10N {
+		integer, fractional := math.Modf(_f)
+		v, _ := strconv.ParseFloat(strconv.FormatFloat(integer+math.Trunc(fractional*pow10N)/pow10N, 'f', -1, 64), 64)
+		return T(v)
+	} else {
+		return T(math.Trunc(_f*pow10N) / pow10N)
+	}
 }

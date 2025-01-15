@@ -127,3 +127,53 @@ func TestMeanBy(t *testing.T) {
 	is.Equal(result3, uint32(3))
 	is.Equal(result4, uint32(0))
 }
+
+func TestRound(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Round(0.086990000031, 5)
+	result2 := Round(1.23456)
+	result3 := Round(1.23456, 2)
+	result4 := Round(1.23456, 3)
+	result5 := Round(1.23456, 7)
+	result6 := Round(1.23456, 15)
+	result7 := Round(1.23456789, 7)
+	result8 := Round(1.23456, 0)
+	result9 := Round(1.00000000001, 5)
+
+	is.Equal(result1, 0.08699)
+	is.Equal(result2, 1.235)
+	is.Equal(result3, 1.23)
+	is.Equal(result4, 1.235)
+	is.Equal(result5, 1.23456)
+	is.Equal(result6, 1.23456)
+	is.Equal(result7, 1.2345679)
+	is.Equal(result8, 1.0)
+	is.Equal(result9, 1.0)
+}
+
+func TestTruncate(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Truncate(0.086990000031, 5)
+	result2 := Truncate(1.23456)
+	result3 := Truncate(1.23456, 2)
+	result4 := Truncate(1.23456, 3)
+	result5 := Truncate(1.23456, 7)
+	result6 := Truncate(1.23456, 15)
+	result7 := Truncate(1.23456789, 7)
+	result8 := Truncate(1.23456, 0)
+	result9 := Truncate(1.00000000001, 5)
+
+	is.Equal(result1, 0.08699)
+	is.Equal(result2, 1.234)
+	is.Equal(result3, 1.23)
+	is.Equal(result4, 1.234)
+	is.Equal(result5, 1.23456)
+	is.Equal(result6, 1.23456)
+	is.Equal(result7, 1.2345678)
+	is.Equal(result8, 1.0)
+	is.Equal(result9, 1.0)
+}
