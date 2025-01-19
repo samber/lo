@@ -288,3 +288,75 @@ func (t *Transaction[T]) Process(state T) (T, error) {
 }
 
 // throttle ?
+
+// DoInAttemptWithDelay invokes a function N times with the delay between calls until it returns without error.
+func DoInAttemptWithDelay[T any](maxIteration int, duration time.Duration, f func() (T, error)) (T, error) {
+	var t T
+	var err error
+	_, _, _ = AttemptWithDelay(maxIteration, duration, func(_ int, _ time.Duration) error {
+		t, err = f()
+		return err
+	})
+	return t, err
+}
+
+// DoInAttemptWithDelay2 invokes a function N times with the delay between calls until it returns without error.
+func DoInAttemptWithDelay2[T any, B any](maxIteration int, duration time.Duration, f func() (T, B, error)) (T, B, error) {
+	var t T
+	var b B
+	var err error
+	_, _, _ = AttemptWithDelay(maxIteration, duration, func(_ int, _ time.Duration) error {
+		t, b, err = f()
+		return err
+	})
+	return t, b, err
+}
+
+// DoInAttemptWithDelay3 invokes a function N times with the delay between calls until it returns without error.
+func DoInAttemptWithDelay3[T any, B any, C any](maxIteration int, duration time.Duration, f func() (T, B, C, error)) (T, B, C, error) {
+	var t T
+	var b B
+	var c C
+	var err error
+	_, _, _ = AttemptWithDelay(maxIteration, duration, func(_ int, _ time.Duration) error {
+		t, b, c, err = f()
+		return err
+	})
+	return t, b, c, err
+}
+
+// DoInAttempt invokes a function N times until it returns without error.
+func DoInAttempt[T any](maxIteration int, duration time.Duration, f func() (T, error)) (T, error) {
+	var t T
+	var err error
+	_, _ = Attempt(maxIteration, func(_ int) error {
+		t, err = f()
+		return err
+	})
+	return t, err
+}
+
+// DoInAttempt2 invokes a function N times until it returns without error.
+func DoInAttempt2[T any, B any](maxIteration int, duration time.Duration, f func() (T, B, error)) (T, B, error) {
+	var t T
+	var b B
+	var err error
+	_, _ = Attempt(maxIteration, func(_ int) error {
+		t, b, err = f()
+		return err
+	})
+	return t, b, err
+}
+
+// DoInAttempt3 invokes a function N times until it returns without error.
+func DoInAttempt3[T any, B any, C any](maxIteration int, duration time.Duration, f func() (T, B, C, error)) (T, B, C, error) {
+	var t T
+	var b B
+	var c C
+	var err error
+	_, _ = Attempt(maxIteration, func(_ int) error {
+		t, b, c, err = f()
+		return err
+	})
+	return t, b, c, err
+}
