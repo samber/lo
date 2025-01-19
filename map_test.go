@@ -332,6 +332,32 @@ func TestAssign(t *testing.T) {
 	is.IsType(after, before, "type preserved")
 }
 
+func TestAssignByPartition(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	oddEvenValue := func(key string, value int) string {
+		if value%2 == 0 {
+			return "even"
+		}
+		return "odd"
+	}
+
+	result1 := AssignByPartition(
+		oddEvenValue,
+		map[string]int{"a": 1, "b": 2},
+		map[string]int{"b": 3, "c": 4},
+	)
+	result2 := AssignByPartition(
+		oddEvenValue,
+	)
+
+	is.Len(result1, 2)
+	is.Equal(result1["even"], map[string]int{"b": 2, "c": 4})
+	is.Equal(result1["odd"], map[string]int{"a": 1, "b": 3})
+	is.Len(result2, 0)
+}
+
 func TestMapKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
