@@ -529,3 +529,65 @@ func TestUnzipBy(t *testing.T) {
 	is.Equal(r1, []string{"aa", "bb"})
 	is.Equal(r2, []int{2, 4})
 }
+
+func TestCrossJoin(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	listOne := []string{"a", "b", "c"}
+	listTwo := []int{1, 2, 3}
+	emptyList := []any{}
+	mixedList := []any{9.6, 4, "foobar"}
+
+	results1 := CrossJoin2(emptyList, listTwo)
+	is.Len(results1, 0)
+
+	results2 := CrossJoin2(listOne, emptyList)
+	is.Len(results2, 0)
+
+	results3 := CrossJoin2(emptyList, emptyList)
+	is.Len(results3, 0)
+
+	results4 := CrossJoin2([]string{"a"}, listTwo)
+	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3)}, results4)
+
+	results5 := CrossJoin2(listOne, []int{1})
+	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("b", 1), T2("c", 1)}, results5)
+
+	results6 := CrossJoin2(listOne, listTwo)
+	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3), T2("b", 1), T2("b", 2), T2("b", 3), T2("c", 1), T2("c", 2), T2("c", 3)}, results6)
+
+	results7 := CrossJoin2(listOne, mixedList)
+	is.Equal([]Tuple2[string, any]{T2[string, any]("a", 9.6), T2[string, any]("a", 4), T2[string, any]("a", "foobar"), T2[string, any]("b", 9.6), T2[string, any]("b", 4), T2[string, any]("b", "foobar"), T2[string, any]("c", 9.6), T2[string, any]("c", 4), T2[string, any]("c", "foobar")}, results7)
+}
+
+func TestCrossJoinBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	listOne := []string{"a", "b", "c"}
+	listTwo := []int{1, 2, 3}
+	emptyList := []any{}
+	mixedList := []any{9.6, 4, "foobar"}
+
+	results1 := CrossJoinBy2(emptyList, listTwo, T2[any, int])
+	is.Len(results1, 0)
+
+	results2 := CrossJoinBy2(listOne, emptyList, T2[string, any])
+	is.Len(results2, 0)
+
+	results3 := CrossJoinBy2(emptyList, emptyList, T2[any, any])
+	is.Len(results3, 0)
+
+	results4 := CrossJoinBy2([]string{"a"}, listTwo, T2[string, int])
+	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3)}, results4)
+
+	results5 := CrossJoinBy2(listOne, []int{1}, T2[string, int])
+	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("b", 1), T2("c", 1)}, results5)
+
+	results6 := CrossJoinBy2(listOne, listTwo, T2[string, int])
+	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3), T2("b", 1), T2("b", 2), T2("b", 3), T2("c", 1), T2("c", 2), T2("c", 3)}, results6)
+
+	results7 := CrossJoinBy2(listOne, mixedList, T2[string, any])
+	is.Equal([]Tuple2[string, any]{T2[string, any]("a", 9.6), T2[string, any]("a", 4), T2[string, any]("a", "foobar"), T2[string, any]("b", 9.6), T2[string, any]("b", 4), T2[string, any]("b", "foobar"), T2[string, any]("c", 9.6), T2[string, any]("c", 4), T2[string, any]("c", "foobar")}, results7)
+}

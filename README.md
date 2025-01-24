@@ -177,6 +177,8 @@ Supported helpers for tuples:
 - [ZipBy2 -> ZipBy9](#zipby2---zipby9)
 - [Unzip2 -> Unzip9](#unzip2---unzip9)
 - [UnzipBy2 -> UnzipBy9](#unzipby2---unzipby9)
+- [CrossJoin2 -> CrossJoin2](#crossjoin2---crossjoin9)
+- [CrossJoinBy2 -> CrossJoinBy2](#crossjoinby2---crossjoinby9)
 
 Supported helpers for time and duration:
 
@@ -1061,7 +1063,7 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 // []string{"a", "b", "1", "2"}
 ```
 
-[[play](https://go.dev/play/p/G5_GhkeSUBA)]
+[[play](https://go.dev/play/p/wiG6XyBBu49)]
 
 ### Keys
 
@@ -1694,6 +1696,36 @@ a, b := lo.UnzipBy2([]string{"hello", "john", "doe"}, func(str string) (string, 
 })
 // []string{"hello", "john", "doe"}
 // []int{5, 4, 3}
+```
+
+### CrossJoin2 -> CrossJoin9
+
+Combines every items from one list with every items from others. It is the cartesian product of lists received as arguments. It returns an empty list if a list is empty.
+
+```go
+result := lo.CrossJoin2([]string{"hello", "john", "doe"}, []int{1, 2})
+// lo.Tuple2{"hello", 1}
+// lo.Tuple2{"hello", 2}
+// lo.Tuple2{"john", 1}
+// lo.Tuple2{"john", 2}
+// lo.Tuple2{"doe", 1}
+// lo.Tuple2{"doe", 2}
+```
+
+### CrossJoinBy2 -> CrossJoinBy9
+
+Combines every items from one list with every items from others. It is the cartesian product of lists received as arguments. The project function is used to create the output values. It returns an empty list if a list is empty.
+
+```go
+result := lo.CrossJoinBy2([]string{"hello", "john", "doe"}, []int{1, 2}, func(a A, b B) string {
+    return fmt.Sprintf("%s - %d", a, b)
+})
+// "hello - 1"
+// "hello - 2"
+// "john - 1"
+// "john - 2"
+// "doe - 1"
+// "doe - 2"
 ```
 
 ### Duration
