@@ -80,6 +80,7 @@ Supported helpers for slices:
 
 - [Filter](#filter)
 - [Map](#map)
+- [UniqMap](#uniqmap)
 - [FilterMap](#filtermap)
 - [FlatMap](#flatmap)
 - [Reduce](#reduce)
@@ -343,6 +344,23 @@ lop.Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
     return strconv.FormatInt(x, 10)
 })
 // []string{"1", "2", "3", "4"}
+```
+
+### UniqMap
+
+UniqMap manipulates a slice and transforms it to a slice of another type with unique values.
+
+```go
+type User struct {
+    Name string
+    Age  int
+}
+users := []User{{Name: "Alex", Age: 10}, {Name: "Alex", Age: 12}, {Name: "Bob", Age: 11}, {Name: "Alice", Age: 20}}
+
+names := UniqMap(users, func(u User, index int) string {
+    return u.Name
+})
+// []string{"Alex", "Bob", "Alice"}
 ```
 
 ### FilterMap
