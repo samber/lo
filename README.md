@@ -224,11 +224,15 @@ Supported search helpers:
 - [FindDuplicates](#findduplicates)
 - [FindDuplicatesBy](#findduplicatesby)
 - [Min](#min)
+- [MinIndex](#minindex)
 - [MinBy](#minby)
+- [MinIndexBy](#minindexby)
 - [Earliest](#earliest)
 - [EarliestBy](#earliestby)
 - [Max](#max)
+- [MaxIndex](#maxindex)
 - [MaxBy](#maxby)
+- [MaxIndexBy](#maxindexby)
 - [Latest](#latest)
 - [LatestBy](#latestby)
 - [First](#first)
@@ -2299,6 +2303,23 @@ min := lo.Min([]time.Duration{time.Second, time.Hour})
 // 1s
 ```
 
+### MinIndex
+
+Search the minimum value of a collection and the index of the minimum value.
+
+Returns (zero value, -1) when the collection is empty.
+
+```go
+min, index := lo.MinIndex([]int{1, 2, 3})
+// 1, 0
+
+min, index := lo.MinIndex([]int{})
+// 0, -1
+
+min, index := lo.MinIndex([]time.Duration{time.Second, time.Hour})
+// 1s, 0
+```
+
 ### MinBy
 
 Search the minimum value of a collection using the given comparison function.
@@ -2317,6 +2338,26 @@ min := lo.MinBy([]string{}, func(item string, min string) bool {
     return len(item) < len(min)
 })
 // ""
+```
+
+### MinIndexBy
+
+Search the minimum value of a collection using the given comparison function and the index of the minimum value.
+
+If several values of the collection are equal to the smallest value, returns the first such value.
+
+Returns (zero value, -1) when the collection is empty.
+
+```go
+min, index := lo.MinIndexBy([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// "s1", 0
+
+min, index := lo.MinIndexBy([]string{}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// "", -1
 ```
 
 ### Earliest
@@ -2364,6 +2405,23 @@ max := lo.Max([]time.Duration{time.Second, time.Hour})
 // 1h
 ```
 
+### MaxIndex
+
+Search the maximum value of a collection and the index of the maximum value.
+
+Returns (zero value, -1) when the collection is empty.
+
+```go
+max, index := lo.MaxIndex([]int{1, 2, 3})
+// 3, 2
+
+max, index := lo.MaxIndex([]int{})
+// 0, -1
+
+max, index := lo.MaxIndex([]time.Duration{time.Second, time.Hour})
+// 1h, 1
+```
+
 ### MaxBy
 
 Search the maximum value of a collection using the given comparison function.
@@ -2382,6 +2440,26 @@ max := lo.MaxBy([]string{}, func(item string, max string) bool {
     return len(item) > len(max)
 })
 // ""
+```
+
+### MaxIndexBy
+
+Search the maximum value of a collection using the given comparison function and the index of the maximum value.
+
+If several values of the collection are equal to the greatest value, returns the first such value.
+
+Returns (zero value, -1) when the collection is empty.
+
+```go
+max, index := lo.MaxIndexBy([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// "string1", 0
+
+max, index := lo.MaxIndexBy([]string{}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// "", -1
 ```
 
 ### Latest
