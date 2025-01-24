@@ -2852,10 +2852,10 @@ str1 := "hello"
 str2 := "world"
 
 ptr := lo.FromSlicePtrOr([]*string{&str1, nil, &str2}, "fallback value")
-// []string{"hello", "world", "fallback value"}
+// []string{"hello", "fallback value", "world"}
 ```
 
-[[play](https://go.dev/play/p/lbunFvzlUDX)]
+[[play](https://go.dev/play/p/CuXGVzo9G65)]
 
 ### ToAnySlice
 
