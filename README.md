@@ -210,6 +210,7 @@ Supported intersection helpers:
 - [Union](#union)
 - [Without](#without)
 - [WithoutEmpty](#withoutempty)
+- [WithoutNth](#withoutnth)
 
 Supported search helpers:
 
@@ -2162,6 +2163,15 @@ Returns slice excluding zero values.
 ```go
 subset := lo.WithoutEmpty([]int{0, 2, 10})
 // []int{2, 10}
+```
+
+### WithoutNth
+
+Returns slice excluding nth value.
+
+```go
+subset := lo.WithoutNth([]int{-2, -1, 0, 1, 2}, 3, -42, 1)
+// []int{-2, 0, 2}
 ```
 
 ### IndexOf

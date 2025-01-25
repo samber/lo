@@ -167,9 +167,14 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 
 // Without returns slice excluding all given values.
 func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
+	excludeMap := make(map[T]struct{}, len(exclude))
+	for i := range exclude {
+		excludeMap[exclude[i]] = struct{}{}
+	}
+
 	result := make(Slice, 0, len(collection))
 	for i := range collection {
-		if !Contains(exclude, collection[i]) {
+		if _, ok := excludeMap[collection[i]]; !ok {
 			result = append(result, collection[i])
 		}
 	}
@@ -181,4 +186,25 @@ func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
 // Deprecated: Use lo.Compact instead.
 func WithoutEmpty[T comparable, Slice ~[]T](collection Slice) Slice {
 	return Compact(collection)
+}
+
+// WithoutNth returns slice excluding nth value.
+func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice {
+	length := len(collection)
+
+	toRemove := make(map[int]struct{}, len(nths))
+	for i := range nths {
+		if nths[i] >= 0 && nths[i] <= length-1 {
+			toRemove[nths[i]] = struct{}{}
+		}
+	}
+
+	result := make(Slice, 0, len(collection))
+	for i := range collection {
+		if _, ok := toRemove[i]; !ok {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result
 }

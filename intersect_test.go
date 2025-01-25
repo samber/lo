@@ -286,3 +286,25 @@ func TestWithoutEmpty(t *testing.T) {
 	nonempty := WithoutEmpty(allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
+
+func TestWithoutNth(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := WithoutNth([]int{5, 6, 7}, 1, 0)
+	is.Equal([]int{7}, result1)
+
+	result2 := WithoutNth([]int{1, 2})
+	is.Equal([]int{1, 2}, result2)
+
+	result3 := WithoutNth([]int{})
+	is.Equal([]int{}, result3)
+
+	result4 := WithoutNth([]int{0, 1, 2, 3}, -1, 4)
+	is.Equal([]int{0, 1, 2, 3}, result4)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := WithoutNth(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
