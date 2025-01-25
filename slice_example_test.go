@@ -287,6 +287,22 @@ func ExampleAssociate() {
 	// Output: map[a:1 aa:2 aaa:3]
 }
 
+func ExampleKeyify() {
+	list := []string{"a", "a", "b", "b", "d"}
+
+	set := Keyify(list)
+	_, ok1 := set["a"]
+	_, ok2 := set["c"]
+	fmt.Printf("%v\n", ok1)
+	fmt.Printf("%v\n", ok2)
+	fmt.Printf("%v\n", set)
+
+	// Output:
+	// true
+	// false
+	// map[a:{} b:{} d:{}]
+}
+
 func ExampleDrop() {
 	list := []int{0, 1, 2, 3, 4, 5}
 

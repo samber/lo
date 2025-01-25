@@ -388,6 +388,17 @@ func SliceToMap[T any, K comparable, V any](collection []T, transform func(item 
 	return Associate(collection, transform)
 }
 
+// Keyify returns a map with each unique element of the slice as a key.
+func Keyify[T comparable, Slice ~[]T](collection Slice) map[T]struct{} {
+	result := make(map[T]struct{}, len(collection))
+
+	for _, item := range collection {
+		result[item] = struct{}{}
+	}
+
+	return result
+}
+
 // Drop drops n elements from the beginning of a slice or array.
 // Play: https://go.dev/play/p/JswS7vXRJP2
 func Drop[T any, Slice ~[]T](collection Slice, n int) Slice {

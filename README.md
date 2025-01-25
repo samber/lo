@@ -102,6 +102,7 @@ Supported helpers for slices:
 - [RepeatBy](#repeatby)
 - [KeyBy](#keyby)
 - [Associate / SliceToMap](#associate-alias-slicetomap)
+- [Keyify](#keyify)
 - [Drop](#drop)
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
@@ -191,6 +192,7 @@ Supported helpers for channels:
 - [SliceToChannel](#slicetochannel)
 - [Generator](#generator)
 - [Buffer](#buffer)
+- [BufferWithContext](#bufferwithcontext)
 - [BufferWithTimeout](#bufferwithtimeout)
 - [FanIn](#fanin)
 - [FanOut](#fanout)
@@ -761,6 +763,15 @@ aMap := lo.Associate(in, func (f *foo) (string, int) {
 ```
 
 [[play](https://go.dev/play/p/WHa2CfMO3Lr)]
+
+### Keyify
+
+Returns a map with each unique element of the slice as a key.
+
+```go
+set := lo.Keyify([]int{1, 1, 2, 3, 4})
+// map[int]struct{}{1:{}, 2:{}, 3:{}, 4:{}}
+```
 
 ### Drop
 
@@ -1926,6 +1937,32 @@ for {
         break
     }
 }
+```
+
+### BufferWithContext
+
+Creates a slice of n elements from a channel, with timeout. Returns the slice, the slice length, the read time and the channel status (opened/closed).
+
+```go
+ctx, cancel := context.WithCancel(context.TODO())
+go func() {
+    ch <- 0
+    time.Sleep(10*time.Millisecond)
+    ch <- 1
+    time.Sleep(10*time.Millisecond)
+    ch <- 2
+    time.Sleep(10*time.Millisecond)
+    ch <- 3
+    time.Sleep(10*time.Millisecond)
+    ch <- 4
+    time.Sleep(10*time.Millisecond)
+    cancel()
+}()
+
+items1, length1, duration1, ok1 := lo.BufferWithContext(ctx, ch, 3)
+// []int{0, 1, 2}, 3, 20ms, true
+items2, length2, duration2, ok2 := lo.BufferWithContext(ctx, ch, 3)
+// []int{3, 4}, 2, 30ms, false
 ```
 
 ### BufferWithTimeout

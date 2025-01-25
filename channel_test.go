@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"context"
 	"math/rand"
 	"testing"
 	"time"
@@ -277,6 +278,42 @@ func TestBuffer(t *testing.T) {
 	is.Equal([]int{}, items3)
 	is.Equal(0, length3)
 	is.False(ok3)
+}
+
+func TestBufferWithContext(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 200*time.Millisecond)
+	is := assert.New(t)
+
+	ch1 := make(chan int, 10)
+	ctx, cancel := context.WithCancel(context.Background())
+	go func() {
+		ch1 <- 0
+		ch1 <- 1
+		ch1 <- 2
+		time.Sleep(5 * time.Millisecond)
+		cancel()
+		ch1 <- 3
+		ch1 <- 4
+		ch1 <- 5
+		close(ch1)
+	}()
+	items1, length1, _, ok1 := BufferWithContext(ctx, ch1, 20)
+	is.Equal([]int{0, 1, 2}, items1)
+	is.Equal(3, length1)
+	is.True(ok1)
+
+	ch2 := make(chan int, 10)
+	ctx, cancel = context.WithCancel(context.Background())
+	defer cancel()
+	defer close(ch2)
+	for i := 0; i < 10; i++ {
+		ch2 <- i
+	}
+	items2, length2, _, ok2 := BufferWithContext(ctx, ch2, 5)
+	is.Equal([]int{0, 1, 2, 3, 4}, items2)
+	is.Equal(5, length2)
+	is.True(ok2)
 }
 
 func TestBufferWithTimeout(t *testing.T) {
