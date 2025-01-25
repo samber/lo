@@ -317,7 +317,7 @@ func TestCoalesceOrEmpty(t *testing.T) {
 	is.Equal(result10, struct1)
 }
 
-func TestCoalesceOrEmptySlice(t *testing.T) {
+func TestCoalesceSlice(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -326,16 +326,82 @@ func TestCoalesceOrEmptySlice(t *testing.T) {
 	slice1 := []int{1}
 	slice2 := []int{1, 2}
 
-	result1 := CoalesceOrEmptySlice[int]()
-	result2 := CoalesceOrEmptySlice[int](nil)
-	result3 := CoalesceOrEmptySlice(sliceNil)
-	result4 := CoalesceOrEmptySlice(slice0)
-	result5 := CoalesceOrEmptySlice(nil, sliceNil, slice0)
-	result6 := CoalesceOrEmptySlice(slice2)
-	result7 := CoalesceOrEmptySlice(slice1)
-	result8 := CoalesceOrEmptySlice(slice1, slice2)
-	result9 := CoalesceOrEmptySlice(slice2, slice1)
-	result10 := CoalesceOrEmptySlice(sliceNil, slice0, slice1, slice2)
+	result1, ok1 := CoalesceSlice[int]()
+	result2, ok2 := CoalesceSlice[int](nil)
+	result3, ok3 := CoalesceSlice(sliceNil)
+	result4, ok4 := CoalesceSlice(slice0)
+	result5, ok5 := CoalesceSlice(nil, sliceNil, slice0)
+	result6, ok6 := CoalesceSlice(slice2)
+	result7, ok7 := CoalesceSlice(slice1)
+	result8, ok8 := CoalesceSlice(slice1, slice2)
+	result9, ok9 := CoalesceSlice(slice2, slice1)
+	result10, ok10 := CoalesceSlice(sliceNil, slice0, slice1, slice2)
+
+	is.NotNil(result1)
+	is.Empty(result1)
+	is.Equal([]int{}, result1)
+	is.False(ok1)
+
+	is.NotNil(result2)
+	is.Empty(result2)
+	is.Equal([]int{}, result2)
+	is.False(ok2)
+
+	is.NotNil(result3)
+	is.Empty(result3)
+	is.Equal([]int{}, result3)
+	is.False(ok3)
+
+	is.NotNil(result4)
+	is.Empty(result4)
+	is.Equal([]int{}, result4)
+	is.False(ok4)
+
+	is.NotNil(result5)
+	is.Empty(result5)
+	is.Equal([]int{}, result5)
+	is.False(ok5)
+
+	is.NotNil(result6)
+	is.Equal(slice2, result6)
+	is.True(ok6)
+
+	is.NotNil(result7)
+	is.Equal(slice1, result7)
+	is.True(ok7)
+
+	is.NotNil(result8)
+	is.Equal(slice1, result8)
+	is.True(ok8)
+
+	is.NotNil(result9)
+	is.Equal(slice2, result9)
+	is.True(ok9)
+
+	is.NotNil(result10)
+	is.Equal(slice1, result10)
+	is.True(ok10)
+}
+
+func TestCoalesceSliceOrEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var sliceNil []int
+	slice0 := []int{}
+	slice1 := []int{1}
+	slice2 := []int{1, 2}
+
+	result1 := CoalesceSliceOrEmpty[int]()
+	result2 := CoalesceSliceOrEmpty[int](nil)
+	result3 := CoalesceSliceOrEmpty(sliceNil)
+	result4 := CoalesceSliceOrEmpty(slice0)
+	result5 := CoalesceSliceOrEmpty(nil, sliceNil, slice0)
+	result6 := CoalesceSliceOrEmpty(slice2)
+	result7 := CoalesceSliceOrEmpty(slice1)
+	result8 := CoalesceSliceOrEmpty(slice1, slice2)
+	result9 := CoalesceSliceOrEmpty(slice2, slice1)
+	result10 := CoalesceSliceOrEmpty(sliceNil, slice0, slice1, slice2)
 
 	is.NotNil(result1)
 	is.Empty(result1)
@@ -362,4 +428,117 @@ func TestCoalesceOrEmptySlice(t *testing.T) {
 	is.Equal(slice2, result9)
 	is.NotNil(result10)
 	is.Equal(slice1, result10)
+}
+
+func TestCoalesceMap(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var mapNil map[int]int
+	map0 := map[int]int{}
+	map1 := map[int]int{1: 1}
+	map2 := map[int]int{1: 1, 2: 2}
+
+	result1, ok1 := CoalesceMap[int, int]()
+	result2, ok2 := CoalesceMap[int, int](nil)
+	result3, ok3 := CoalesceMap(mapNil)
+	result4, ok4 := CoalesceMap(map0)
+	result5, ok5 := CoalesceMap(nil, mapNil, map0)
+	result6, ok6 := CoalesceMap(map2)
+	result7, ok7 := CoalesceMap(map1)
+	result8, ok8 := CoalesceMap(map1, map2)
+	result9, ok9 := CoalesceMap(map2, map1)
+	result10, ok10 := CoalesceMap(mapNil, map0, map1, map2)
+
+	is.NotNil(result1)
+	is.Empty(result1)
+	is.Equal(map[int]int{}, result1)
+	is.False(ok1)
+
+	is.NotNil(result2)
+	is.Empty(result2)
+	is.Equal(map[int]int{}, result2)
+	is.False(ok2)
+
+	is.NotNil(result3)
+	is.Empty(result3)
+	is.Equal(map[int]int{}, result3)
+	is.False(ok3)
+
+	is.NotNil(result4)
+	is.Empty(result4)
+	is.Equal(map[int]int{}, result4)
+	is.False(ok4)
+
+	is.NotNil(result5)
+	is.Empty(result5)
+	is.Equal(map[int]int{}, result5)
+	is.False(ok5)
+
+	is.NotNil(result6)
+	is.Equal(map2, result6)
+	is.True(ok6)
+
+	is.NotNil(result7)
+	is.Equal(map1, result7)
+	is.True(ok7)
+
+	is.NotNil(result8)
+	is.Equal(map1, result8)
+	is.True(ok8)
+
+	is.NotNil(result9)
+	is.Equal(map2, result9)
+	is.True(ok9)
+
+	is.NotNil(result10)
+	is.Equal(map1, result10)
+	is.True(ok10)
+}
+
+func TestCoalesceMapOrEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var mapNil map[int]int
+	map0 := map[int]int{}
+	map1 := map[int]int{1: 1}
+	map2 := map[int]int{1: 1, 2: 2}
+
+	result1 := CoalesceMapOrEmpty[int, int]()
+	result2 := CoalesceMapOrEmpty[int, int](nil)
+	result3 := CoalesceMapOrEmpty(mapNil)
+	result4 := CoalesceMapOrEmpty(map0)
+	result5 := CoalesceMapOrEmpty(nil, mapNil, map0)
+	result6 := CoalesceMapOrEmpty(map2)
+	result7 := CoalesceMapOrEmpty(map1)
+	result8 := CoalesceMapOrEmpty(map1, map2)
+	result9 := CoalesceMapOrEmpty(map2, map1)
+	result10 := CoalesceMapOrEmpty(mapNil, map0, map1, map2)
+
+	is.NotNil(result1)
+	is.Empty(result1)
+	is.Equal(map[int]int{}, result1)
+	is.NotNil(result2)
+	is.Empty(result2)
+	is.Equal(map[int]int{}, result2)
+	is.NotNil(result3)
+	is.Empty(result3)
+	is.Equal(map[int]int{}, result3)
+	is.NotNil(result4)
+	is.Empty(result4)
+	is.Equal(map[int]int{}, result4)
+	is.NotNil(result5)
+	is.Empty(result5)
+	is.Equal(map[int]int{}, result5)
+	is.NotNil(result6)
+	is.Equal(map2, result6)
+	is.NotNil(result7)
+	is.Equal(map1, result7)
+	is.NotNil(result8)
+	is.Equal(map1, result8)
+	is.NotNil(result9)
+	is.Equal(map2, result9)
+	is.NotNil(result10)
+	is.Equal(map1, result10)
 }
