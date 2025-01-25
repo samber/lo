@@ -2201,7 +2201,8 @@ subset := lo.Without([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
 
 ### WithoutBy
 
-WithoutBy filters a slice by excluding elements whose extracted keys match any in the exclude list.
+Filters a slice by excluding elements whose extracted keys match any in the exclude list.
+
 It returns a new slice containing only the elements whose keys are not in the exclude list.
 
 
@@ -2218,16 +2219,16 @@ users := []User{
     {ID: 3, Name: "Charlie"},
 }
 
-// exclude users with IDs 2 and 3
-excludedIDs := []int{2, 3}
-
 // extract function to get the user ID
-extractID := func(user User) int {
+getID := func(user User) int {
     return user.ID
 }
 
+// exclude users with IDs 2 and 3
+excludedIDs := []int{2, 3}
+
 // filtering users
-filteredUsers := WithoutBy(users, extractID, excludedIDs...)
+filteredUsers := lo.WithoutBy(users, getID, excludedIDs...)
 // []User[{ID: 1, Name: "Alice"}]
 ```
 
