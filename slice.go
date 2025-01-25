@@ -5,6 +5,7 @@ import (
 
 	"github.com/samber/lo/internal/constraints"
 	"github.com/samber/lo/internal/rand"
+	"github.com/samber/lo/mutable"
 )
 
 // Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
@@ -308,22 +309,16 @@ func Shuffle[T any, Slice ~[]T](collection Slice) Slice {
 
 // Reverse reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
 // Play: https://go.dev/play/p/fhUMLvZ7vS6
+// Deprecated: use mutable.Reverse() instead.
 func Reverse[T any, Slice ~[]T](collection Slice) Slice {
-	length := len(collection)
-	half := length / 2
-
-	for i := 0; i < half; i = i + 1 {
-		j := length - 1 - i
-		collection[i], collection[j] = collection[j], collection[i]
-	}
-
+	mutable.Reverse(collection)
 	return collection
 }
 
 // Fill fills elements of array with `initial` value.
 // Play: https://go.dev/play/p/VwR34GzqEub
-func Fill[T Clonable[T]](collection []T, initial T) []T {
-	result := make([]T, 0, len(collection))
+func Fill[T Clonable[T], Slice ~[]T](collection Slice, initial T) Slice {
+	result := make(Slice, 0, len(collection))
 
 	for range collection {
 		result = append(result, initial.Clone())
