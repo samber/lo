@@ -272,6 +272,10 @@ Type manipulation helpers:
 - [IsNotEmpty](#isnotempty)
 - [Coalesce](#coalesce)
 - [CoalesceOrEmpty](#coalesceorempty)
+- [CoalesceSlice](#coalesceslice)
+- [CoalesceSliceOrEmpty](#coalescesliceorempty)
+- [CoalesceMap](#coalescemap)
+- [CoalesceMapOrEmpty](#coalescemaporempty)
 
 Function helpers:
 
@@ -3009,6 +3013,58 @@ var nilStr *string
 str := "foobar"
 result := lo.CoalesceOrEmpty(nil, nilStr, &str)
 // &"foobar"
+```
+
+### CoalesceSlice
+
+Returns the first non-zero slice.
+
+```go
+result, ok := lo.CoalesceSlice([]int{1, 2, 3}, []int{4, 5, 6})
+// [1, 2, 3]
+// true
+
+result, ok := lo.CoalesceSlice(nil, []int{})
+// []
+// true
+```
+
+### CoalesceSliceOrEmpty
+
+Returns the first non-zero slice.
+
+```go
+result := lo.CoalesceSliceOrEmpty([]int{1, 2, 3}, []int{4, 5, 6})
+// [1, 2, 3]
+
+result := lo.CoalesceSliceOrEmpty(nil, []int{})
+// []
+```
+
+### CoalesceMap
+
+Returns the first non-zero map.
+
+```go
+result, ok := lo.CoalesceMap(map[string]int{"1": 1, "2": 2, "3": 3}, map[string]int{"4": 4, "5": 5, "6": 6})
+// [1, 2, 3]
+// true
+
+result, ok := lo.CoalesceMap(nil, map[string]int{})
+// []
+// true
+```
+
+### CoalesceMapOrEmpty
+
+Returns the first non-zero map.
+
+```go
+result := lo.CoalesceMapOrEmpty(map[string]int{"1": 1, "2": 2, "3": 3}, map[string]int{"4": 4, "5": 5, "6": 6})
+// {"1": 1, "2": 2, "3": 3}
+
+result := lo.CoalesceMapOrEmpty(nil, map[string]int{})
+// {}
 ```
 
 ### Partial

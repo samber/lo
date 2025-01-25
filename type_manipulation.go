@@ -142,3 +142,43 @@ func CoalesceOrEmpty[T comparable](v ...T) T {
 	result, _ := Coalesce(v...)
 	return result
 }
+
+// CoalesceSlice returns the first non-zero slice.
+func CoalesceSlice[T any](v ...[]T) ([]T, bool) {
+	for i := range v {
+		if v[i] != nil && len(v[i]) > 0 {
+			return v[i], true
+		}
+	}
+	return []T{}, false
+}
+
+// CoalesceSliceOrEmpty returns the first non-zero slice.
+func CoalesceSliceOrEmpty[T any](v ...[]T) []T {
+	for i := range v {
+		if v[i] != nil && len(v[i]) > 0 {
+			return v[i]
+		}
+	}
+	return []T{}
+}
+
+// CoalesceMap returns the first non-zero map.
+func CoalesceMap[K comparable, V any](v ...map[K]V) (map[K]V, bool) {
+	for i := range v {
+		if v[i] != nil && len(v[i]) > 0 {
+			return v[i], true
+		}
+	}
+	return map[K]V{}, false
+}
+
+// CoalesceMapOrEmpty returns the first non-zero map.
+func CoalesceMapOrEmpty[K comparable, V any](v ...map[K]V) map[K]V {
+	for i := range v {
+		if v[i] != nil && len(v[i]) > 0 {
+			return v[i]
+		}
+	}
+	return map[K]V{}
+}
