@@ -191,6 +191,7 @@ Supported helpers for channels:
 - [SliceToChannel](#slicetochannel)
 - [Generator](#generator)
 - [Buffer](#buffer)
+- [BufferWithContext](#bufferwithcontext)
 - [BufferWithTimeout](#bufferwithtimeout)
 - [FanIn](#fanin)
 - [FanOut](#fanout)
