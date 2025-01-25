@@ -28,6 +28,21 @@ func ExampleMap() {
 	// Output: [2 4 6 8]
 }
 
+func ExampleUniqMap() {
+	type User struct {
+		Name string
+		Age  int
+	}
+	users := []User{{Name: "Alex", Age: 10}, {Name: "Alex", Age: 12}, {Name: "Bob", Age: 11}, {Name: "Alice", Age: 20}}
+
+	result := UniqMap(users, func(u User, index int) string {
+		return u.Name
+	})
+
+	fmt.Printf("%v", result)
+	// Output: [Alex Bob Alice]
+}
+
 func ExampleFilterMap() {
 	list := []int64{1, 2, 3, 4}
 
@@ -88,6 +103,7 @@ func ExampleForEach() {
 	// 3
 	// 4
 }
+
 func ExampleForEachWhile() {
 	list := []int64{1, 2, -math.MaxInt, 4}
 
@@ -103,6 +119,7 @@ func ExampleForEachWhile() {
 	// 1
 	// 2
 }
+
 func ExampleTimes() {
 	result := Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)
@@ -268,6 +285,22 @@ func ExampleAssociate() {
 
 	fmt.Printf("%v", result)
 	// Output: map[a:1 aa:2 aaa:3]
+}
+
+func ExampleKeyify() {
+	list := []string{"a", "a", "b", "b", "d"}
+
+	set := Keyify(list)
+	_, ok1 := set["a"]
+	_, ok2 := set["c"]
+	fmt.Printf("%v\n", ok1)
+	fmt.Printf("%v\n", ok2)
+	fmt.Printf("%v\n", set)
+
+	// Output:
+	// true
+	// false
+	// map[a:{} b:{} d:{}]
 }
 
 func ExampleDrop() {

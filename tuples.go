@@ -867,3 +867,283 @@ func UnzipBy9[In any, A any, B any, C any, D any, E any, F any, G any, H any, I 
 
 	return r1, r2, r3, r4, r5, r6, r7, r8, r9
 }
+
+// CrossJoin2 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments.
+// It returns an empty list if a list is empty.
+func CrossJoin2[A, B any](listA []A, listB []B) []Tuple2[A, B] {
+	return CrossJoinBy2(listA, listB, T2[A, B])
+}
+
+// CrossJoin3 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments.
+// It returns an empty list if a list is empty.
+func CrossJoin3[A, B, C any](listA []A, listB []B, listC []C) []Tuple3[A, B, C] {
+	return CrossJoinBy3(listA, listB, listC, T3[A, B, C])
+}
+
+// CrossJoin4 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments.
+// It returns an empty list if a list is empty.
+func CrossJoin4[A, B, C, D any](listA []A, listB []B, listC []C, listD []D) []Tuple4[A, B, C, D] {
+	return CrossJoinBy4(listA, listB, listC, listD, T4[A, B, C, D])
+}
+
+// CrossJoin5 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments.
+// It returns an empty list if a list is empty.
+func CrossJoin5[A, B, C, D, E any](listA []A, listB []B, listC []C, listD []D, listE []E) []Tuple5[A, B, C, D, E] {
+	return CrossJoinBy5(listA, listB, listC, listD, listE, T5[A, B, C, D, E])
+}
+
+// CrossJoin6 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments.
+// It returns an empty list if a list is empty.
+func CrossJoin6[A, B, C, D, E, F any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F) []Tuple6[A, B, C, D, E, F] {
+	return CrossJoinBy6(listA, listB, listC, listD, listE, listF, T6[A, B, C, D, E, F])
+}
+
+// CrossJoin7 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments.
+// It returns an empty list if a list is empty.
+func CrossJoin7[A, B, C, D, E, F, G any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G) []Tuple7[A, B, C, D, E, F, G] {
+	return CrossJoinBy7(listA, listB, listC, listD, listE, listF, listG, T7[A, B, C, D, E, F, G])
+}
+
+// CrossJoin8 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments.
+// It returns an empty list if a list is empty.
+func CrossJoin8[A, B, C, D, E, F, G, H any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H) []Tuple8[A, B, C, D, E, F, G, H] {
+	return CrossJoinBy8(listA, listB, listC, listD, listE, listF, listG, listH, T8[A, B, C, D, E, F, G, H])
+}
+
+// CrossJoin9 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments.
+// It returns an empty list if a list is empty.
+func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, listI []I) []Tuple9[A, B, C, D, E, F, G, H, I] {
+	return CrossJoinBy9(listA, listB, listC, listD, listE, listF, listG, listH, listI, T9[A, B, C, D, E, F, G, H, I])
+}
+
+// CrossJoinBy2 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments. The project function
+// is used to create the output values.
+// It returns an empty list if a list is empty.
+func CrossJoinBy2[A, B, Out any](listA []A, listB []B, project func(a A, b B) Out) []Out {
+	size := len(listA) * len(listB)
+	if size == 0 {
+		return []Out{}
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			result = append(result, project(a, b))
+		}
+	}
+
+	return result
+}
+
+// CrossJoinBy3 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments. The project function
+// is used to create the output values.
+// It returns an empty list if a list is empty.
+func CrossJoinBy3[A, B, C, Out any](listA []A, listB []B, listC []C, project func(a A, b B, c C) Out) []Out {
+	size := len(listA) * len(listB) * len(listC)
+	if size == 0 {
+		return []Out{}
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				result = append(result, project(a, b, c))
+			}
+		}
+	}
+
+	return result
+}
+
+// CrossJoinBy4 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments. The project function
+// is used to create the output values.
+// It returns an empty list if a list is empty.
+func CrossJoinBy4[A, B, C, D, Out any](listA []A, listB []B, listC []C, listD []D, project func(a A, b B, c C, d D) Out) []Out {
+	size := len(listA) * len(listB) * len(listC) * len(listD)
+	if size == 0 {
+		return []Out{}
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					result = append(result, project(a, b, c, d))
+				}
+			}
+		}
+	}
+
+	return result
+}
+
+// CrossJoinBy5 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments. The project function
+// is used to create the output values.
+// It returns an empty list if a list is empty.
+func CrossJoinBy5[A, B, C, D, E, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, project func(a A, b B, c C, d D, e E) Out) []Out {
+	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE)
+	if size == 0 {
+		return []Out{}
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					for _, e := range listE {
+						result = append(result, project(a, b, c, d, e))
+					}
+				}
+			}
+		}
+	}
+
+	return result
+}
+
+// CrossJoinBy6 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments. The project function
+// is used to create the output values.
+// It returns an empty list if a list is empty.
+func CrossJoinBy6[A, B, C, D, E, F, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, project func(a A, b B, c C, d D, e E, f F) Out) []Out {
+	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF)
+	if size == 0 {
+		return []Out{}
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					for _, e := range listE {
+						for _, f := range listF {
+							result = append(result, project(a, b, c, d, e, f))
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return result
+}
+
+// CrossJoinBy7 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments. The project function
+// is used to create the output values.
+// It returns an empty list if a list is empty.
+func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, project func(a A, b B, c C, d D, e E, f F, g G) Out) []Out {
+	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG)
+	if size == 0 {
+		return []Out{}
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					for _, e := range listE {
+						for _, f := range listF {
+							for _, g := range listG {
+								result = append(result, project(a, b, c, d, e, f, g))
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return result
+}
+
+// CrossJoinBy8 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments. The project function
+// is used to create the output values.
+// It returns an empty list if a list is empty.
+func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, project func(a A, b B, c C, d D, e E, f F, g G, h H) Out) []Out {
+	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG) * len(listH)
+	if size == 0 {
+		return []Out{}
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					for _, e := range listE {
+						for _, f := range listF {
+							for _, g := range listG {
+								for _, h := range listH {
+									result = append(result, project(a, b, c, d, e, f, g, h))
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return result
+}
+
+// CrossJoinBy9 combines every items from one list with every items from others.
+// It is the cartesian product of lists received as arguments. The project function
+// is used to create the output values.
+// It returns an empty list if a list is empty.
+func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, listI []I, project func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) []Out {
+	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG) * len(listH) * len(listI)
+	if size == 0 {
+		return []Out{}
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					for _, e := range listE {
+						for _, f := range listF {
+							for _, g := range listG {
+								for _, h := range listH {
+									for _, i := range listI {
+										result = append(result, project(a, b, c, d, e, f, g, h, i))
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return result
+}

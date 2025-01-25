@@ -33,7 +33,7 @@ func Every[T comparable](collection []T, subset []T) bool {
 	return true
 }
 
-// EveryBy returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
+// EveryBy returns true if the predicate returns true for all elements in the collection or if the collection is empty.
 func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 	for i := range collection {
 		if !predicate(collection[i]) {
@@ -167,29 +167,61 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 
 // Without returns slice excluding all given values.
 func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
-	return WithoutBy(collection, func(item T) T { return item }, exclude...)
+	excludeMap := make(map[T]struct{}, len(exclude))
+	for i := range exclude {
+		excludeMap[exclude[i]] = struct{}{}
+	}
+
+	result := make(Slice, 0, len(collection))
+	for i := range collection {
+		if _, ok := excludeMap[collection[i]]; !ok {
+			result = append(result, collection[i])
+		}
+	}
+	return result
 }
 
 // WithoutBy filters a slice by excluding elements whose extracted keys match any in the exclude list.
 // It returns a new slice containing only the elements whose keys are not in the exclude list.
-func WithoutBy[T any, K comparable](collection []T, extract func(item T) K, exclude ...K) []T {
-	blacklist := make(map[K]struct{}, len(exclude))
+func WithoutBy[T any, K comparable](collection []T, iteratee func(item T) K, exclude ...K) []T {
+	excludeMap := make(map[K]struct{}, len(exclude))
 	for _, e := range exclude {
-		blacklist[e] = struct{}{}
+		excludeMap[e] = struct{}{}
 	}
 
 	result := make([]T, 0, len(collection))
 	for _, item := range collection {
-		if _, ok := blacklist[extract(item)]; !ok {
+		if _, ok := excludeMap[iteratee(item)]; !ok {
 			result = append(result, item)
 		}
 	}
 	return result
 }
 
-// WithoutEmpty returns slice excluding empty values.
+// WithoutEmpty returns slice excluding zero values.
 //
 // Deprecated: Use lo.Compact instead.
 func WithoutEmpty[T comparable, Slice ~[]T](collection Slice) Slice {
 	return Compact(collection)
+}
+
+// WithoutNth returns slice excluding nth value.
+func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice {
+	length := len(collection)
+
+	toRemove := make(map[int]struct{}, len(nths))
+	for i := range nths {
+		if nths[i] >= 0 && nths[i] <= length-1 {
+			toRemove[nths[i]] = struct{}{}
+		}
+	}
+
+	result := make(Slice, 0, len(collection))
+	for i := range collection {
+		if _, ok := toRemove[i]; !ok {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result
 }

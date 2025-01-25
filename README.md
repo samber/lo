@@ -80,6 +80,7 @@ Supported helpers for slices:
 
 - [Filter](#filter)
 - [Map](#map)
+- [UniqMap](#uniqmap)
 - [FilterMap](#filtermap)
 - [FlatMap](#flatmap)
 - [Reduce](#reduce)
@@ -101,6 +102,7 @@ Supported helpers for slices:
 - [RepeatBy](#repeatby)
 - [KeyBy](#keyby)
 - [Associate / SliceToMap](#associate-alias-slicetomap)
+- [Keyify](#keyify)
 - [Drop](#drop)
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
@@ -166,7 +168,7 @@ Supported helpers for strings:
 - [SnakeCase](#snakecase)
 - [Words](#words)
 - [Capitalize](#capitalize)
-- [Elipse](#elipse)
+- [Ellipsis](#ellipsis)
 
 Supported helpers for tuples:
 
@@ -176,11 +178,13 @@ Supported helpers for tuples:
 - [ZipBy2 -> ZipBy9](#zipby2---zipby9)
 - [Unzip2 -> Unzip9](#unzip2---unzip9)
 - [UnzipBy2 -> UnzipBy9](#unzipby2---unzipby9)
+- [CrossJoin2 -> CrossJoin2](#crossjoin2---crossjoin9)
+- [CrossJoinBy2 -> CrossJoinBy2](#crossjoinby2---crossjoinby9)
 
 Supported helpers for time and duration:
 
 - [Duration](#duration)
-- [Duration0 -> Duration10](#duration0-duration10)
+- [Duration0 -> Duration10](#duration0---duration10)
 
 Supported helpers for channels:
 
@@ -188,6 +192,7 @@ Supported helpers for channels:
 - [SliceToChannel](#slicetochannel)
 - [Generator](#generator)
 - [Buffer](#buffer)
+- [BufferWithContext](#bufferwithcontext)
 - [BufferWithTimeout](#bufferwithtimeout)
 - [FanIn](#fanin)
 - [FanOut](#fanout)
@@ -208,6 +213,7 @@ Supported intersection helpers:
 - [Without](#without)
 - [WithoutBy](#withoutby)
 - [WithoutEmpty](#withoutempty)
+- [WithoutNth](#withoutnth)
 
 Supported search helpers:
 
@@ -224,11 +230,15 @@ Supported search helpers:
 - [FindDuplicates](#findduplicates)
 - [FindDuplicatesBy](#findduplicatesby)
 - [Min](#min)
+- [MinIndex](#minindex)
 - [MinBy](#minby)
+- [MinIndexBy](#minindexby)
 - [Earliest](#earliest)
 - [EarliestBy](#earliestby)
 - [Max](#max)
+- [MaxIndex](#maxindex)
 - [MaxBy](#maxby)
+- [MaxIndexBy](#maxindexby)
 - [Latest](#latest)
 - [LatestBy](#latestby)
 - [First](#first)
@@ -266,6 +276,10 @@ Type manipulation helpers:
 - [IsNotEmpty](#isnotempty)
 - [Coalesce](#coalesce)
 - [CoalesceOrEmpty](#coalesceorempty)
+- [CoalesceSlice](#coalesceslice)
+- [CoalesceSliceOrEmpty](#coalescesliceorempty)
+- [CoalesceMap](#coalescemap)
+- [CoalesceMapOrEmpty](#coalescemaporempty)
 
 Function helpers:
 
@@ -340,6 +354,23 @@ lop.Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
     return strconv.FormatInt(x, 10)
 })
 // []string{"1", "2", "3", "4"}
+```
+
+### UniqMap
+
+Manipulates a slice and transforms it to a slice of another type with unique values.
+
+```go
+type User struct {
+    Name string
+    Age  int
+}
+users := []User{{Name: "Alex", Age: 10}, {Name: "Alex", Age: 12}, {Name: "Bob", Age: 11}, {Name: "Alice", Age: 20}}
+
+names := lo.UniqMap(users, func(u User, index int) string {
+    return u.Name
+})
+// []string{"Alex", "Bob", "Alice"}
 ```
 
 ### FilterMap
@@ -623,7 +654,12 @@ Reverses array so that the first element becomes the last, the second element be
 ⚠️ This helper is **mutable**. This behavior might change in `v2.0.0`. See [#160](https://github.com/samber/lo/issues/160).
 
 ```go
-reverseOrder := lo.Reverse([]int{0, 1, 2, 3, 4, 5})
+import lom "github.com/samber/lo/mutable"
+
+list := []int{0, 1, 2, 3, 4, 5}
+lom.Reverse(list)
+
+list
 // []int{5, 4, 3, 2, 1, 0}
 ```
 
@@ -728,6 +764,15 @@ aMap := lo.Associate(in, func (f *foo) (string, int) {
 ```
 
 [[play](https://go.dev/play/p/WHa2CfMO3Lr)]
+
+### Keyify
+
+Returns a map with each unique element of the slice as a key.
+
+```go
+set := lo.Keyify([]int{1, 1, 2, 3, 4})
+// map[int]struct{}{1:{}, 2:{}, 3:{}, 4:{}}
+```
 
 ### Drop
 
@@ -1040,7 +1085,7 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 // []string{"a", "b", "1", "2"}
 ```
 
-[[play](https://go.dev/play/p/G5_GhkeSUBA)]
+[[play](https://go.dev/play/p/wiG6XyBBu49)]
 
 ### Keys
 
@@ -1066,10 +1111,10 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 Creates an array of unique map keys. 
 
 ```go
-keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+keys := lo.UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
 // []string{"foo", "bar", "baz"}
 
-keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
+keys := lo.UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 // []string{"foo", "bar"}
 ```
 
@@ -1576,18 +1621,18 @@ str := lo.Capitalize("heLLO")
 // Hello
 ```
 
-### Elipse
+### Ellipsis
 
-Truncates a string to a specified length and appends an ellipsis if truncated.
+Trims and truncates a string to a specified length and appends an ellipsis if truncated.
 
 ```go
-str := lo.Elipse("Lorem Ipsum", 5)
+str := lo.Ellipsis("  Lorem Ipsum  ", 5)
 // Lo...
 
-str := lo.Elipse("Lorem Ipsum", 100)
+str := lo.Ellipsis("Lorem Ipsum", 100)
 // Lorem Ipsum
 
-str := lo.Elipse("Lorem Ipsum", 3)
+str := lo.Ellipsis("Lorem Ipsum", 3)
 // ...
 ```
 
@@ -1673,6 +1718,36 @@ a, b := lo.UnzipBy2([]string{"hello", "john", "doe"}, func(str string) (string, 
 })
 // []string{"hello", "john", "doe"}
 // []int{5, 4, 3}
+```
+
+### CrossJoin2 -> CrossJoin9
+
+Combines every items from one list with every items from others. It is the cartesian product of lists received as arguments. It returns an empty list if a list is empty.
+
+```go
+result := lo.CrossJoin2([]string{"hello", "john", "doe"}, []int{1, 2})
+// lo.Tuple2{"hello", 1}
+// lo.Tuple2{"hello", 2}
+// lo.Tuple2{"john", 1}
+// lo.Tuple2{"john", 2}
+// lo.Tuple2{"doe", 1}
+// lo.Tuple2{"doe", 2}
+```
+
+### CrossJoinBy2 -> CrossJoinBy9
+
+Combines every items from one list with every items from others. It is the cartesian product of lists received as arguments. The project function is used to create the output values. It returns an empty list if a list is empty.
+
+```go
+result := lo.CrossJoinBy2([]string{"hello", "john", "doe"}, []int{1, 2}, func(a A, b B) string {
+    return fmt.Sprintf("%s - %d", a, b)
+})
+// "hello - 1"
+// "hello - 2"
+// "john - 1"
+// "john - 2"
+// "doe - 1"
+// "doe - 2"
 ```
 
 ### Duration
@@ -1865,6 +1940,32 @@ for {
 }
 ```
 
+### BufferWithContext
+
+Creates a slice of n elements from a channel, with timeout. Returns the slice, the slice length, the read time and the channel status (opened/closed).
+
+```go
+ctx, cancel := context.WithCancel(context.TODO())
+go func() {
+    ch <- 0
+    time.Sleep(10*time.Millisecond)
+    ch <- 1
+    time.Sleep(10*time.Millisecond)
+    ch <- 2
+    time.Sleep(10*time.Millisecond)
+    ch <- 3
+    time.Sleep(10*time.Millisecond)
+    ch <- 4
+    time.Sleep(10*time.Millisecond)
+    cancel()
+}()
+
+items1, length1, duration1, ok1 := lo.BufferWithContext(ctx, ch, 3)
+// []int{0, 1, 2}, 3, 20ms, true
+items2, length2, duration2, ok2 := lo.BufferWithContext(ctx, ch, 3)
+// []int{3, 4}, 2, 30ms, false
+```
+
 ### BufferWithTimeout
 
 Creates a slice of n elements from a channel, with timeout. Returns the slice, the slice length, the read time and the channel status (opened/closed).
@@ -1991,7 +2092,7 @@ ok := lo.Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 
 ### EveryBy
 
-Returns true if the predicate returns true for all of the elements in the collection or if the collection is empty.
+Returns true if the predicate returns true for all elements in the collection or if the collection is empty.
 
 ```go
 b := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
@@ -2006,7 +2107,7 @@ Returns true if at least 1 element of a subset is contained into a collection.
 If the subset is empty Some returns false.
 
 ```go
-ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // true
 
 ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
@@ -2132,11 +2233,20 @@ filteredUsers := WithoutBy(users, extractID, excludedIDs...)
 
 ### WithoutEmpty
 
-Returns slice excluding empty values.
+Returns slice excluding zero values.
 
 ```go
 subset := lo.WithoutEmpty([]int{0, 2, 10})
 // []int{2, 10}
+```
+
+### WithoutNth
+
+Returns slice excluding nth value.
+
+```go
+subset := lo.WithoutNth([]int{-2, -1, 0, 1, 2}, 3, -42, 1)
+// []int{-2, 0, 2}
 ```
 
 ### IndexOf
@@ -2318,6 +2428,23 @@ min := lo.Min([]time.Duration{time.Second, time.Hour})
 // 1s
 ```
 
+### MinIndex
+
+Search the minimum value of a collection and the index of the minimum value.
+
+Returns (zero value, -1) when the collection is empty.
+
+```go
+min, index := lo.MinIndex([]int{1, 2, 3})
+// 1, 0
+
+min, index := lo.MinIndex([]int{})
+// 0, -1
+
+min, index := lo.MinIndex([]time.Duration{time.Second, time.Hour})
+// 1s, 0
+```
+
 ### MinBy
 
 Search the minimum value of a collection using the given comparison function.
@@ -2336,6 +2463,26 @@ min := lo.MinBy([]string{}, func(item string, min string) bool {
     return len(item) < len(min)
 })
 // ""
+```
+
+### MinIndexBy
+
+Search the minimum value of a collection using the given comparison function and the index of the minimum value.
+
+If several values of the collection are equal to the smallest value, returns the first such value.
+
+Returns (zero value, -1) when the collection is empty.
+
+```go
+min, index := lo.MinIndexBy([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// "s1", 0
+
+min, index := lo.MinIndexBy([]string{}, func(item string, min string) bool {
+    return len(item) < len(min)
+})
+// "", -1
 ```
 
 ### Earliest
@@ -2383,6 +2530,23 @@ max := lo.Max([]time.Duration{time.Second, time.Hour})
 // 1h
 ```
 
+### MaxIndex
+
+Search the maximum value of a collection and the index of the maximum value.
+
+Returns (zero value, -1) when the collection is empty.
+
+```go
+max, index := lo.MaxIndex([]int{1, 2, 3})
+// 3, 2
+
+max, index := lo.MaxIndex([]int{})
+// 0, -1
+
+max, index := lo.MaxIndex([]time.Duration{time.Second, time.Hour})
+// 1h, 1
+```
+
 ### MaxBy
 
 Search the maximum value of a collection using the given comparison function.
@@ -2401,6 +2565,26 @@ max := lo.MaxBy([]string{}, func(item string, max string) bool {
     return len(item) > len(max)
 })
 // ""
+```
+
+### MaxIndexBy
+
+Search the maximum value of a collection using the given comparison function and the index of the maximum value.
+
+If several values of the collection are equal to the greatest value, returns the first such value.
+
+Returns (zero value, -1) when the collection is empty.
+
+```go
+max, index := lo.MaxIndexBy([]string{"string1", "s2", "string3"}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// "string1", 0
+
+max, index := lo.MaxIndexBy([]string{}, func(item string, max string) bool {
+    return len(item) > len(max)
+})
+// "", -1
 ```
 
 ### Latest
@@ -2676,19 +2860,19 @@ Checks if a value is nil or if it's a reference type with a nil underlying value
 
 ```go
 var x int
-IsNil(x))
+lo.IsNil(x)
 // false
 
 var k struct{}
-IsNil(k)
+lo.IsNil(k)
 // false
 
 var i *int
-IsNil(i)
+lo.IsNil(i)
 // true
 
 var ifaceWithNilValue any = (*string)(nil)
-IsNil(ifaceWithNilValue)
+lo.IsNil(ifaceWithNilValue)
 // true
 ifaceWithNilValue == nil
 // false
@@ -2792,9 +2976,11 @@ Returns a slice with the pointer values or the fallback value.
 str1 := "hello"
 str2 := "world"
 
-ptr := lo.FromSlicePtrOr[string]([]*string{&str1, &str2, "fallback value"})
-// []string{"hello", "world", "fallback value"}
+ptr := lo.FromSlicePtrOr([]*string{&str1, nil, &str2}, "fallback value")
+// []string{"hello", "fallback value", "world"}
 ```
+
+[[play](https://go.dev/play/p/CuXGVzo9G65)]
 
 ### ToAnySlice
 
@@ -2819,7 +3005,7 @@ elements, ok := lo.FromAnySlice([]any{"foobar", "42"})
 
 ### Empty
 
-Returns an empty value.
+Returns the [zero value](https://go.dev/ref/spec#The_zero_value).
 
 ```go
 lo.Empty[int]()
@@ -2914,6 +3100,58 @@ result := lo.CoalesceOrEmpty(nil, nilStr, &str)
 // &"foobar"
 ```
 
+### CoalesceSlice
+
+Returns the first non-zero slice.
+
+```go
+result, ok := lo.CoalesceSlice([]int{1, 2, 3}, []int{4, 5, 6})
+// [1, 2, 3]
+// true
+
+result, ok := lo.CoalesceSlice(nil, []int{})
+// []
+// true
+```
+
+### CoalesceSliceOrEmpty
+
+Returns the first non-zero slice.
+
+```go
+result := lo.CoalesceSliceOrEmpty([]int{1, 2, 3}, []int{4, 5, 6})
+// [1, 2, 3]
+
+result := lo.CoalesceSliceOrEmpty(nil, []int{})
+// []
+```
+
+### CoalesceMap
+
+Returns the first non-zero map.
+
+```go
+result, ok := lo.CoalesceMap(map[string]int{"1": 1, "2": 2, "3": 3}, map[string]int{"4": 4, "5": 5, "6": 6})
+// [1, 2, 3]
+// true
+
+result, ok := lo.CoalesceMap(nil, map[string]int{})
+// []
+// true
+```
+
+### CoalesceMapOrEmpty
+
+Returns the first non-zero map.
+
+```go
+result := lo.CoalesceMapOrEmpty(map[string]int{"1": 1, "2": 2, "3": 3}, map[string]int{"4": 4, "5": 5, "6": 6})
+// {"1": 1, "2": 2, "3": 3}
+
+result := lo.CoalesceMapOrEmpty(nil, map[string]int{})
+// {}
+```
+
 ### Partial
 
 Returns new function that, when called, has its first argument set to the provided value.
@@ -2946,7 +3184,9 @@ f(42, -4)
 
 ### Attempt
 
-Invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a successful response is returned.
+Invokes a function N times until it returns valid output. Returns either the caught error or nil.
+
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 iter, err := lo.Attempt(42, func(i int) error {
@@ -2986,9 +3226,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWithDelay
 
-Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil.
+Invokes a function N times until it returns valid output, with a pause between each call. Returns either the caught error or nil.
 
-When first argument is less than `1`, the function runs until a successful response is returned.
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duration time.Duration) error {
@@ -3009,9 +3249,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWhile
 
-Invokes a function N times until it returns valid output. Returning either the caught error or nil, and along with a bool value to identifying whether it needs invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
+Invokes a function N times until it returns valid output. Returns either the caught error or nil, along with a bool value to determine whether the function should be invoked again. It will terminate the invoke immediately if the second return value is false.
 
-When first argument is less than `1`, the function runs until a successful response is returned.
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 count1, err1 := lo.AttemptWhile(5, func(i int) (error, bool) {
@@ -3034,9 +3274,9 @@ For more advanced retry strategies (delay, exponential backoff...), please take 
 
 ### AttemptWhileWithDelay
 
-Invokes a function N times until it returns valid output, with a pause between each call. Returning either the caught error or nil, and along with a bool value to identifying whether it needs to invoke function continuously. It will terminate the invoke immediately if second bool value is returned with falsy value.
+Invokes a function N times until it returns valid output, with a pause between each call. Returns either the caught error or nil, along with a bool value to determine whether the function should be invoked again. It will terminate the invoke immediately if the second return value is false.
 
-When first argument is less than `1`, the function runs until a successful response is returned.
+When the first argument is less than `1`, the function runs until a successful response is returned.
 
 ```go
 count1, time1, err1 := lo.AttemptWhileWithDelay(5, time.Millisecond, func(i int, d time.Duration) (error, bool) {
@@ -3525,7 +3765,7 @@ if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
 
 We executed a simple benchmark with a dead-simple `lo.Map` loop:
 
-See the full implementation [here](./benchmark_test.go).
+See the full implementation [here](./map_benchmark_test.go).
 
 ```go
 _ = lo.Map[int64](arr, func(x int64, i int) string {

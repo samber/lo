@@ -10,7 +10,7 @@ import (
 // Play: https://go.dev/play/p/vPyh51XpCBt
 func Validate(ok bool, format string, args ...any) error {
 	if !ok {
-		return fmt.Errorf(fmt.Sprintf(format, args...))
+		return fmt.Errorf(format, args...)
 	}
 	return nil
 }

@@ -50,6 +50,23 @@ func TestMap(t *testing.T) {
 	is.Equal(result2, []string{"1", "2", "3", "4"})
 }
 
+func TestUniqMap(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type User struct {
+		Name string
+		age  int
+	}
+
+	users := []User{{Name: "Alice", age: 20}, {Name: "Alex", age: 21}, {Name: "Alex", age: 22}}
+	result := UniqMap(users, func(item User, index int) string {
+		return item.Name
+	})
+
+	is.Equal(result, []string{"Alice", "Alex"})
+}
+
 func TestFilterMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -512,6 +529,18 @@ func TestSliceToMap(t *testing.T) {
 			is.Equal(SliceToMap(testCase.in, transform), testCase.expect)
 		})
 	}
+}
+
+func TestKeyify(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Keyify([]int{1, 2, 3, 4})
+	result2 := Keyify([]int{1, 1, 1, 2})
+	result3 := Keyify([]int{})
+	is.Equal(result1, map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}})
+	is.Equal(result2, map[int]struct{}{1: {}, 2: {}})
+	is.Equal(result3, map[int]struct{}{})
 }
 
 func TestDrop(t *testing.T) {
@@ -1006,7 +1035,7 @@ func TestSplice(t *testing.T) {
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
 	is.Equal(results, []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"})
 
-	// backard
+	// backward
 	results = Splice(sample, -2, "1", "2")
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
 	is.Equal(results, []string{"a", "b", "c", "d", "e", "1", "2", "f", "g"})

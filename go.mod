@@ -3,14 +3,14 @@ module github.com/samber/lo
 go 1.18
 
 //
-// Dependencies are excluded from releases. Please check CI.
+// Dev dependencies are excluded from releases. Please check CI.
 //
 
 require (
-	github.com/stretchr/testify v1.8.0
-	github.com/thoas/go-funk v0.9.1
+	github.com/stretchr/testify v1.10.0
+	github.com/thoas/go-funk v0.9.3
 	go.uber.org/goleak v1.2.1
-	golang.org/x/text v0.16.0
+	golang.org/x/text v0.21.0
 )
 
 require (
