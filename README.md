@@ -48,6 +48,7 @@ You can import `lo` using:
 import (
     "github.com/samber/lo"
     lop "github.com/samber/lo/parallel"
+    lom "github.com/samber/lo/mutable"
 )
 ```
 
@@ -351,6 +352,18 @@ lop.Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
     return strconv.FormatInt(x, 10)
 })
 // []string{"1", "2", "3", "4"}
+```
+
+Mutable: like `lo.Map()`, but the slice is updated in place.
+
+```go
+import lom "github.com/samber/lo/mutable"
+
+list := []int{1, 2, 3, 4}
+lom.Map(list, func(x int) int {
+    return i*2
+})
+// []int{2, 4, 6, 8}
 ```
 
 ### UniqMap

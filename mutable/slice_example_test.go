@@ -2,6 +2,28 @@ package mutable
 
 import "fmt"
 
+func ExampleMap() {
+	list := []int{1, 2, 3, 4}
+
+	Map(list, func(nbr int) int {
+		return nbr * 2
+	})
+
+	fmt.Printf("%v", list)
+	// Output: [2 4 6 8]
+}
+
+func ExampleMapI() {
+	list := []int{1, 2, 3, 4}
+
+	MapI(list, func(nbr int, index int) int {
+		return nbr * index
+	})
+
+	fmt.Printf("%v", list)
+	// Output: [0 2 6 12]
+}
+
 func ExampleReverse() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
