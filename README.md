@@ -640,18 +640,22 @@ interleaved := lo.Interleave([]int{1}, []int{2, 5, 8}, []int{3, 6}, []int{4, 7, 
 
 Returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 
+⚠️ This helper is **mutable**.
+
 ```go
-randomOrder := lo.Shuffle([]int{0, 1, 2, 3, 4, 5})
+import lom "github.com/samber/lo/mutable"
+
+randomOrder := lom.Shuffle([]int{0, 1, 2, 3, 4, 5})
 // []int{1, 4, 0, 3, 5, 2}
 ```
 
-[[play](https://go.dev/play/p/Qp73bnTDnc7)]
+[[play](https://go.dev/play/p/ZTGG7OUCdnp)]
 
 ### Reverse
 
 Reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
 
-⚠️ This helper is **mutable**. This behavior might change in `v2.0.0`. See [#160](https://github.com/samber/lo/issues/160).
+⚠️ This helper is **mutable**.
 
 ```go
 import lom "github.com/samber/lo/mutable"
@@ -663,7 +667,7 @@ list
 // []int{5, 4, 3, 2, 1, 0}
 ```
 
-[[play](https://go.dev/play/p/fhUMLvZ7vS6)]
+[[play](https://go.dev/play/p/iv2e9jslfBM)]
 
 ### Fill
 

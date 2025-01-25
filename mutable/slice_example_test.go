@@ -2,6 +2,14 @@ package mutable
 
 import "fmt"
 
+func ExampleShuffle() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	Shuffle(list)
+
+	fmt.Printf("%v", list)
+}
+
 func ExampleReverse() {
 	list := []int{0, 1, 2, 3, 4, 5}
 

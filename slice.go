@@ -4,7 +4,6 @@ import (
 	"sort"
 
 	"github.com/samber/lo/internal/constraints"
-	"github.com/samber/lo/internal/rand"
 	"github.com/samber/lo/mutable"
 )
 
@@ -298,17 +297,17 @@ func Interleave[T any, Slice ~[]T](collections ...Slice) Slice {
 }
 
 // Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
-// Play: https://go.dev/play/p/Qp73bnTDnc7
+// Play: https://go.dev/play/p/ZTGG7OUCdnp
+//
+// Deprecated: use mutable.Shuffle() instead.
 func Shuffle[T any, Slice ~[]T](collection Slice) Slice {
-	rand.Shuffle(len(collection), func(i, j int) {
-		collection[i], collection[j] = collection[j], collection[i]
-	})
-
+	mutable.Shuffle(collection)
 	return collection
 }
 
 // Reverse reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
-// Play: https://go.dev/play/p/fhUMLvZ7vS6
+// Play: https://go.dev/play/p/iv2e9jslfBM
+//
 // Deprecated: use mutable.Reverse() instead.
 func Reverse[T any, Slice ~[]T](collection Slice) Slice {
 	mutable.Reverse(collection)

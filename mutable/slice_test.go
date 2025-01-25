@@ -6,6 +6,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestShuffle(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	list := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	Shuffle(list)
+	is.NotEqual(list, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+
+	list = []int{}
+	Shuffle(list)
+	is.Equal(list, []int{})
+}
+
 func TestReverse(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
