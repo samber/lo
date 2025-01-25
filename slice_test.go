@@ -531,13 +531,13 @@ func TestSliceToMap(t *testing.T) {
 	}
 }
 
-func TestSliceToSet(t *testing.T) {
+func TestKeyify(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := SliceToSet([]int{1, 2, 3, 4})
-	result2 := SliceToSet([]int{1, 1, 1, 2})
-	result3 := SliceToSet([]int{})
+	result1 := Keyify([]int{1, 2, 3, 4})
+	result2 := Keyify([]int{1, 1, 1, 2})
+	result3 := Keyify([]int{})
 	is.Equal(result1, map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}})
 	is.Equal(result2, map[int]struct{}{1: {}, 2: {}})
 	is.Equal(result3, map[int]struct{}{})

@@ -388,8 +388,8 @@ func SliceToMap[T any, K comparable, V any](collection []T, transform func(item 
 	return Associate(collection, transform)
 }
 
-// SliceToSet returns a map with each unique element of the slice as a key.
-func SliceToSet[T comparable, Slice ~[]T](collection Slice) map[T]struct{} {
+// Keyify returns a map with each unique element of the slice as a key.
+func Keyify[T comparable, Slice ~[]T](collection Slice) map[T]struct{} {
 	result := make(map[T]struct{}, len(collection))
 
 	for _, item := range collection {
