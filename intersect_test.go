@@ -297,9 +297,11 @@ func TestWithoutEmpty(t *testing.T) {
 	result1 := WithoutEmpty([]int{0, 1, 2})
 	result2 := WithoutEmpty([]int{1, 2})
 	result3 := WithoutEmpty([]int{})
+	result4 := WithoutEmpty([]*int{ToPtr(0), ToPtr(1), nil, ToPtr(2)})
 	is.Equal(result1, []int{1, 2})
 	is.Equal(result2, []int{1, 2})
 	is.Equal(result3, []int{})
+	is.Equal(result4, []*int{ToPtr(0), ToPtr(1), ToPtr(2)})
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
