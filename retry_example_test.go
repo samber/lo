@@ -249,3 +249,92 @@ func ExampleTransaction_error() {
 	// -5
 	// error
 }
+
+func ExampleNewThrottle() {
+	throttle, reset := NewThrottle(100*time.Millisecond, func() {
+		fmt.Println("Called once in every 100ms")
+	})
+
+	for j := 0; j < 10; j++ {
+		throttle()
+		time.Sleep(30 * time.Millisecond)
+	}
+
+	reset()
+
+	// Output:
+	// Called once in every 100ms
+	// Called once in every 100ms
+	// Called once in every 100ms
+}
+
+func ExampleNewThrottleWithCount() {
+	throttle, reset := NewThrottleWithCount(100*time.Millisecond, 2, func() {
+		fmt.Println("Called once in every 100ms")
+	})
+
+	for j := 0; j < 10; j++ {
+		throttle()
+		time.Sleep(30 * time.Millisecond)
+	}
+
+	reset()
+
+	// Output:
+	// Called once in every 100ms
+	// Called once in every 100ms
+	// Called once in every 100ms
+	// Called once in every 100ms
+	// Called once in every 100ms
+	// Called once in every 100ms
+}
+
+func ExampleNewThrottleBy() {
+	throttle, reset := NewThrottleBy(100*time.Millisecond, func(key string) {
+		fmt.Println(key, "Called once in every 100ms")
+	})
+
+	for j := 0; j < 10; j++ {
+		throttle("foo")
+		throttle("bar")
+		time.Sleep(30 * time.Millisecond)
+	}
+
+	reset()
+
+	// Output:
+	// foo Called once in every 100ms
+	// bar Called once in every 100ms
+	// foo Called once in every 100ms
+	// bar Called once in every 100ms
+	// foo Called once in every 100ms
+	// bar Called once in every 100ms
+}
+
+func ExampleNewThrottleByWithCount() {
+	throttle, reset := NewThrottleByWithCount(100*time.Millisecond, 2, func(key string) {
+		fmt.Println(key, "Called once in every 100ms")
+	})
+
+	for j := 0; j < 10; j++ {
+		throttle("foo")
+		throttle("bar")
+		time.Sleep(30 * time.Millisecond)
+	}
+
+	reset()
+
+	// Output:
+	// foo Called once in every 100ms
+	// bar Called once in every 100ms
+	// foo Called once in every 100ms
+	// bar Called once in every 100ms
+	// foo Called once in every 100ms
+	// bar Called once in every 100ms
+	// foo Called once in every 100ms
+	// bar Called once in every 100ms
+	// foo Called once in every 100ms
+	// bar Called once in every 100ms
+	// foo Called once in every 100ms
+	// bar Called once in every 100ms
+}
