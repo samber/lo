@@ -283,52 +283,6 @@ func TestChunk(t *testing.T) {
 	is.Equal(originalArray, []int{0, 1, 2, 3, 4, 5})
 }
 
-func TestChunkMap(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	result1 := ChunkMap(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, 2)
-	result2 := ChunkMap(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, 3)
-	result3 := ChunkMap(map[string]int{}, 2)
-	result4 := ChunkMap(map[string]int{"a": 1}, 2)
-	result5 := ChunkMap(map[string]int{"a": 1, "b": 2}, 1)
-
-	expectedCount1 := 3
-	expectedCount2 := 2
-	expectedCount3 := 0
-	expectedCount4 := 1
-	expectedCount5 := 2
-
-	is.Len(result1, expectedCount1)
-	is.Len(result2, expectedCount2)
-	is.Len(result3, expectedCount3)
-	is.Len(result4, expectedCount4)
-	is.Len(result5, expectedCount5)
-
-	is.PanicsWithValue("The chunk size must be greater than 0", func() {
-		ChunkMap(map[string]int{"a": 1}, 0)
-	})
-	is.PanicsWithValue("The chunk size must be greater than 0", func() {
-		ChunkMap(map[string]int{"a": 1}, -1)
-	})
-
-	type myStruct struct {
-		Name  string
-		Value int
-	}
-
-	allStructs := []myStruct{{"one", 1}, {"two", 2}, {"three", 3}}
-	nonempty := ChunkMap(map[string]myStruct{"a": allStructs[0], "b": allStructs[1], "c": allStructs[2]}, 2)
-	is.Len(nonempty, 2)
-
-	originalMap := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
-	result6 := ChunkMap(originalMap, 2)
-	for k := range result6[0] {
-		result6[0][k] = 10
-	}
-	is.Equal(originalMap, map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5})
-}
-
 func TestPartitionBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

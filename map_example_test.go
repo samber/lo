@@ -168,6 +168,26 @@ func ExampleAssign() {
 	// Output: 3 1 3 4
 }
 
+func ExampleChunkEntries() {
+	result := ChunkEntries(
+		map[string]int{
+			"a": 1,
+			"b": 2,
+			"c": 3,
+			"d": 4,
+			"e": 5,
+		},
+		3,
+	)
+
+	for i := range result {
+		fmt.Printf("%d\n", len(result[i]))
+	}
+	// Output:
+	// 3
+	// 2
+}
+
 func ExampleMapKeys() {
 	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
 
