@@ -188,6 +188,21 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 	return result
 }
 
+
+
+// GroupByMapValues returns an object composed of keys generated from the results of running each element of collection through iterateeKey and values running each element through iterateeValue.
+func GroupByMapValues[K comparable, T any, V any](arr []T, iterateeKey func(T) K, iterateeValue func(T) V) map[K][]V {
+	result := map[K][]V{}
+
+	for _, item := range arr {
+		k := iterateeKey(item)
+		v := iterateeValue(item)
+
+		result[k] = append(result[k], v)
+	}
+	return result
+}
+
 // Chunk returns an array of elements split into groups the length of size. If array can't be split evenly,
 // the final chunk will be the remaining elements.
 // Play: https://go.dev/play/p/EeKl0AuTehH
