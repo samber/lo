@@ -263,6 +263,7 @@ Conditional helpers:
 Type manipulation helpers:
 
 - [IsNil](#isnil)
+- [IsNotNil](#isnotnil)
 - [ToPtr](#toptr)
 - [Nil](#nil)
 - [EmptyableToPtr](#emptyabletoptr)
@@ -1114,7 +1115,7 @@ keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 
 ### UniqKeys
 
-Creates an array of unique map keys. 
+Creates an array of unique map keys.
 
 ```go
 keys := lo.UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
@@ -2908,6 +2909,30 @@ lo.IsNil(ifaceWithNilValue)
 // true
 ifaceWithNilValue == nil
 // false
+```
+
+### IsNotNil
+
+Checks if a value is not nil or if it's not a reference type with a nil underlying value.
+
+```go
+var x int
+lo.IsNotNil(x)
+// true
+
+var k struct{}
+lo.IsNotNil(k)
+// true
+
+var i *int
+lo.IsNotNil(i)
+// false
+
+var ifaceWithNilValue any = (*string)(nil)
+lo.IsNotNil(ifaceWithNilValue)
+// false
+ifaceWithNilValue == nil
+// true
 ```
 
 ### ToPtr
