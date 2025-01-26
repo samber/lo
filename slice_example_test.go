@@ -276,15 +276,26 @@ func ExampleKeyBy() {
 	// Output: map[1:a 2:aa 3:aaa]
 }
 
-func ExampleAssociate() {
+func ExampleSliceToMap() {
 	list := []string{"a", "aa", "aaa"}
 
-	result := Associate(list, func(str string) (string, int) {
+	result := SliceToMap(list, func(str string) (string, int) {
 		return str, len(str)
 	})
 
 	fmt.Printf("%v", result)
 	// Output: map[a:1 aa:2 aaa:3]
+}
+
+func ExampleFilterSliceToMap() {
+	list := []string{"a", "aa", "aaa"}
+
+	result := FilterSliceToMap(list, func(str string) (string, int, bool) {
+		return str, len(str), len(str) > 1
+	})
+
+	fmt.Printf("%v", result)
+	// Output: map[aa:2 aaa:3]
 }
 
 func ExampleKeyify() {

@@ -387,6 +387,23 @@ func SliceToMap[T any, K comparable, V any](collection []T, transform func(item 
 	return Associate(collection, transform)
 }
 
+// FilterSliceToMap returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// If any of two pairs would have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+// The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
+func FilterSliceToMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V, bool)) map[K]V {
+	result := make(map[K]V, len(collection))
+
+	for i := range collection {
+		k, v, ok := transform(collection[i])
+		if ok {
+			result[k] = v
+		}
+	}
+
+	return result
+}
+
 // Keyify returns a map with each unique element of the slice as a key.
 func Keyify[T comparable, Slice ~[]T](collection Slice) map[T]struct{} {
 	result := make(map[T]struct{}, len(collection))

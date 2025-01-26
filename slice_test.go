@@ -531,6 +531,41 @@ func TestSliceToMap(t *testing.T) {
 	}
 }
 
+func TestFilterSliceToMap(t *testing.T) {
+	t.Parallel()
+
+	type foo struct {
+		baz string
+		bar int
+	}
+	transform := func(f *foo) (string, int, bool) {
+		return f.baz, f.bar, f.bar > 1
+	}
+	testCases := []struct {
+		in     []*foo
+		expect map[string]int
+	}{
+		{
+			in:     []*foo{{baz: "apple", bar: 1}},
+			expect: map[string]int{},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			expect: map[string]int{"banana": 2},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			expect: map[string]int{"apple": 2},
+		},
+	}
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
+			is := assert.New(t)
+			is.Equal(FilterSliceToMap(testCase.in, transform), testCase.expect)
+		})
+	}
+}
+
 func TestKeyify(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
