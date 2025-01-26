@@ -287,23 +287,29 @@ func (t *Transaction[T]) Process(state T) (T, error) {
 	return state, err
 }
 
-type throttle struct {
+// @TODO: single mutex per key ?
+type throttleBy[T comparable] struct {
 	mu         *sync.Mutex
 	timer      *time.Timer
 	interval   time.Duration
-	callbacks  []func()
+	callbacks  []func(key T)
 	countLimit int
-	count      int
+	count      map[T]int
 }
 
-func (th *throttle) throttledFunc() {
+func (th *throttleBy[T]) throttledFunc(key T) {
 	th.mu.Lock()
 	defer th.mu.Unlock()
-	if th.count < th.countLimit {
-		th.count++
+
+	if _, ok := th.count[key]; !ok {
+		th.count[key] = 0
+	}
+
+	if th.count[key] < th.countLimit {
+		th.count[key]++
 
 		for _, f := range th.callbacks {
-			f()
+			f(key)
 		}
 
 	}
@@ -314,7 +320,7 @@ func (th *throttle) throttledFunc() {
 	}
 }
 
-func (th *throttle) reset() {
+func (th *throttleBy[T]) reset() {
 	th.mu.Lock()
 	defer th.mu.Unlock()
 
@@ -322,27 +328,48 @@ func (th *throttle) reset() {
 		th.timer.Stop()
 	}
 
-	th.count = 0
+	th.count = map[T]int{}
 	th.timer = nil
-
 }
 
 // NewThrottle creates a throttled instance that invokes given functions only once in every interval.
 // This returns 2 functions, First one is throttled function and Second one is a function to reset interval
-func NewThrottle(interval time.Duration, f ...func()) (func(), func()) {
+func NewThrottle(interval time.Duration, f ...func()) (throttle func(), reset func()) {
 	return NewThrottleWithCount(interval, 1, f...)
 }
 
 // NewThrottleWithCount is NewThrottle with count limit, throttled function will be invoked count times in every interval.
-func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (func(), func()) {
+func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (throttle func(), reset func()) {
+	callbacks := Map(f, func(item func(), _ int) func(struct{}) {
+		return func(struct{}) {
+			item()
+		}
+	})
+
+	throttleFn, reset := NewThrottleByWithCount[struct{}](interval, count, callbacks...)
+	return func() {
+		throttleFn(struct{}{})
+	}, reset
+}
+
+// NewThrottleBy creates a throttled instance that invokes given functions only once in every interval.
+// This returns 2 functions, First one is throttled function and Second one is a function to reset interval
+func NewThrottleBy[T comparable](interval time.Duration, f ...func(key T)) (throttle func(key T), reset func()) {
+	return NewThrottleByWithCount[T](interval, 1, f...)
+}
+
+// NewThrottleByWithCount is NewThrottleBy with count limit, throttled function will be invoked count times in every interval.
+func NewThrottleByWithCount[T comparable](interval time.Duration, count int, f ...func(key T)) (throttle func(key T), reset func()) {
 	if count <= 0 {
 		count = 1
 	}
-	th := &throttle{
+
+	th := &throttleBy[T]{
 		mu:         new(sync.Mutex),
 		interval:   interval,
 		callbacks:  f,
 		countLimit: count,
+		count:      map[T]int{},
 	}
 	return th.throttledFunc, th.reset
 }

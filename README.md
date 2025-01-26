@@ -1,3 +1,4 @@
+
 # lo - Iterate over slices, maps, channels...
 
 [![tag](https://img.shields.io/github/tag/samber/lo.svg)](https://github.com/samber/lo/releases)
@@ -3419,11 +3420,12 @@ cancel("second key")
 [[play](https://go.dev/play/p/d3Vpt6pxhY8)]
 
 ### Throttle
-`NewThrottle` creates a throttled instance that invokes given functions only once in every interval.
+
+Creates a throttled instance that invokes given functions only once in every interval.
+
 This returns 2 functions, First one is throttled function and Second one is a function to reset interval.
 
 ```go
-
 f := func() {
 	println("Called once in every 100ms")
 }
@@ -3437,17 +3439,16 @@ for j := 0; j < 10; j++ {
 
 reset()
 throttle()
-
 ```
 
 `NewThrottleWithCount` is NewThrottle with count limit, throttled function will be invoked count times in every interval.
-```go
 
+```go
 f := func() {
 	println("Called three times in every 100ms")
 }
 
-throttle, reset := lo.NewThrottle(100 * time.Millisecond, f)
+throttle, reset := lo.NewThrottleWithCount(100 * time.Millisecond, f)
 
 for j := 0; j < 10; j++ {
 	throttle()
@@ -3456,7 +3457,24 @@ for j := 0; j < 10; j++ {
 
 reset()
 throttle()
+```
 
+`NewThrottleBy` and `NewThrottleByWithCount` are NewThrottle with sharding key, throttled function will be invoked count times in every interval.
+
+```go
+f := func(key string) {
+	println(key, "Called three times in every 100ms")
+}
+
+throttle, reset := lo.NewThrottleByWithCount(100 * time.Millisecond, f)
+
+for j := 0; j < 10; j++ {
+	throttle("foo")
+	time.Sleep(30 * time.Millisecond)
+}
+
+reset()
+throttle()
 ```
 
 ### Synchronize
