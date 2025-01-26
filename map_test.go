@@ -332,6 +332,52 @@ func TestAssign(t *testing.T) {
 	is.IsType(after, before, "type preserved")
 }
 
+func TestChunkEntries(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := ChunkEntries(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, 2)
+	result2 := ChunkEntries(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, 3)
+	result3 := ChunkEntries(map[string]int{}, 2)
+	result4 := ChunkEntries(map[string]int{"a": 1}, 2)
+	result5 := ChunkEntries(map[string]int{"a": 1, "b": 2}, 1)
+
+	expectedCount1 := 3
+	expectedCount2 := 2
+	expectedCount3 := 0
+	expectedCount4 := 1
+	expectedCount5 := 2
+
+	is.Len(result1, expectedCount1)
+	is.Len(result2, expectedCount2)
+	is.Len(result3, expectedCount3)
+	is.Len(result4, expectedCount4)
+	is.Len(result5, expectedCount5)
+
+	is.PanicsWithValue("The chunk size must be greater than 0", func() {
+		ChunkEntries(map[string]int{"a": 1}, 0)
+	})
+	is.PanicsWithValue("The chunk size must be greater than 0", func() {
+		ChunkEntries(map[string]int{"a": 1}, -1)
+	})
+
+	type myStruct struct {
+		Name  string
+		Value int
+	}
+
+	allStructs := []myStruct{{"one", 1}, {"two", 2}, {"three", 3}}
+	nonempty := ChunkEntries(map[string]myStruct{"a": allStructs[0], "b": allStructs[1], "c": allStructs[2]}, 2)
+	is.Len(nonempty, 2)
+
+	originalMap := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
+	result6 := ChunkEntries(originalMap, 2)
+	for k := range result6[0] {
+		result6[0][k] = 10
+	}
+	is.Equal(originalMap, map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5})
+}
+
 func TestMapKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

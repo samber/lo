@@ -1329,6 +1329,27 @@ mergedMaps := lo.Assign(
 
 [[play](https://go.dev/play/p/VhwfJOyxf5o)]
 
+### ChunkEntries
+
+Splits a map into an array of elements in groups of a length equal to its size. If the map cannot be split evenly, the final chunk will contain the remaining elements.
+
+```go
+maps := lo.ChunkEntries(
+    map[string]int{
+        "a": 1,
+        "b": 2,
+        "c": 3,
+        "d": 4,
+        "e": 5,
+    },
+    3,
+)
+// []map[string]int{
+//    {"a": 1, "b": 2, "c": 3},
+//    {"d": 4, "e": 5},
+// }
+```
+
 ### MapKeys
 
 Manipulates a map keys and transforms it to a map of another type.
