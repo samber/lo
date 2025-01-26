@@ -254,34 +254,24 @@ func ChunkEntries[K comparable, V any](m map[K]V, size int) []map[K]V {
 		panic("The chunk size must be greater than 0")
 	}
 
-	keys := make([]K, 0, len(m))
-	for key := range m {
-		keys = append(keys, key)
-	}
-
-	if len(keys) == 0 {
+	count := len(m)
+	if count == 0 {
 		return []map[K]V{}
 	}
 
-	chunksNum := len(keys) / size
-	if len(keys)%size != 0 {
+	chunksNum := count / size
+	if count%size != 0 {
 		chunksNum += 1
 	}
 
 	result := make([]map[K]V, 0, chunksNum)
 
-	for i := 0; i < chunksNum; i++ {
-		start := i * size
-		end := (i + 1) * size
-		if end > len(keys) {
-			end = len(keys)
+	for k, v := range m {
+		if len(result) == 0 || len(result[len(result)-1]) == size {
+			result = append(result, make(map[K]V, size))
 		}
 
-		chunk := make(map[K]V)
-		for _, key := range keys[start:end] {
-			chunk[key] = m[key]
-		}
-		result = append(result, chunk)
+		result[len(result)-1][k] = v
 	}
 
 	return result
