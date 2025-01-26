@@ -102,7 +102,8 @@ Supported helpers for slices:
 - [Repeat](#repeat)
 - [RepeatBy](#repeatby)
 - [KeyBy](#keyby)
-- [Associate / SliceToMap](#associate-alias-slicetomap)
+- [SliceToMap / Associate](#slicetomap-alias-associate)
+- [FilterSliceToMap](#filterslicetomap)
 - [Keyify](#keyify)
 - [Drop](#drop)
 - [DropRight](#dropright)
@@ -299,6 +300,9 @@ Concurrency helpers:
 - [Debounce](#debounce)
 - [DebounceBy](#debounceby)
 - [Throttle](#throttle)
+- [ThrottleWithCount](#throttle)
+- [ThrottleBy](#throttle)
+- [ThrottleByWithCount](#throttle)
 - [Synchronize](#synchronize)
 - [Async](#async)
 - [Transaction](#transaction)
@@ -756,7 +760,7 @@ result := lo.KeyBy(characters, func(char Character) string {
 
 [[play](https://go.dev/play/p/mdaClUAT-zZ)]
 
-### Associate (alias: SliceToMap)
+### SliceToMap (alias: Associate)
 
 Returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 If any of two pairs would have the same key the last one gets added to the map.
@@ -766,13 +770,33 @@ The order of keys in returned map is not specified and is not guaranteed to be t
 ```go
 in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}}
 
-aMap := lo.Associate(in, func (f *foo) (string, int) {
+aMap := lo.SliceToMap(in, func (f *foo) (string, int) {
     return f.baz, f.bar
 })
 // map[string][int]{ "apple":1, "banana":2 }
 ```
 
 [[play](https://go.dev/play/p/WHa2CfMO3Lr)]
+
+### FilterSliceToMap
+
+Returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+
+If any of two pairs would have the same key the last one gets added to the map.
+
+The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+
+The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
+
+
+```go
+list := []string{"a", "aa", "aaa"}
+
+result := lo.FilterSliceToMap(list, func(str string) (string, int, bool) {
+    return str, len(str), len(str) > 1
+})
+// map[string][int]{"aa":2 "aaa":3}
+```
 
 ### Keyify
 
