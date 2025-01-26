@@ -2668,19 +2668,19 @@ Checks if a value is not nil or if it's not a reference type with a nil underlyi
 
 ```go
 var x int
-IsNotNil(x)
+lo.IsNotNil(x)
 // true
 
 var k struct{}
-IsNotNil(k)
+lo.IsNotNil(k)
 // true
 
 var i *int
-IsNotNil(i)
+lo.IsNotNil(i)
 // false
 
 var ifaceWithNilValue any = (*string)(nil)
-IsNotNil(ifaceWithNilValue)
+lo.IsNotNil(ifaceWithNilValue)
 // false
 ifaceWithNilValue == nil
 // true
