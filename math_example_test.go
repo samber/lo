@@ -67,12 +67,33 @@ func ExampleSumBy() {
 	// Output: 6
 }
 
+func ExampleProduct() {
+	list := []int{1, 2, 3, 4, 5}
+
+	result := Product(list)
+
+	fmt.Printf("%v", result)
+	// Output: 120
+}
+
+func ExampleProductBy() {
+	list := []string{"foo", "bar"}
+
+	result := ProductBy(list, func(item string) int {
+		return len(item)
+	})
+
+	fmt.Printf("%v", result)
+	// Output: 9
+}
+
 func ExampleMean() {
 	list := []int{1, 2, 3, 4, 5}
 
 	result := Mean(list)
 
 	fmt.Printf("%v", result)
+	// Output: 3
 }
 
 func ExampleMeanBy() {
@@ -83,4 +104,5 @@ func ExampleMeanBy() {
 	})
 
 	fmt.Printf("%v", result)
+	// Output: 3
 }
