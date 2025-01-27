@@ -155,6 +155,8 @@ Supported math helpers:
 - [Clamp](#clamp)
 - [Sum](#sum)
 - [SumBy](#sumby)
+- [Product](#product)
+- [ProductBy](#productby)
 - [Mean](#mean)
 - [MeanBy](#meanby)
 
@@ -866,7 +868,6 @@ l := lo.DropByIndex([]int{0, 1, 2, 3, 4, 5}, 2, 4, -1)
 
 [[play](https://go.dev/play/p/JswS7vXRJP2)]
 
-
 ### Reject
 
 The opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
@@ -885,6 +886,7 @@ odd := lo.Reject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 The opposite of FilterMap, this method returns a slice which obtained after both filtering and mapping using the given callback function.
 
 The callback function should return two values:
+
 - the result of the mapping operation and
 - whether the result element should be included or not.
 
@@ -1511,7 +1513,35 @@ sum := lo.SumBy(strings, func(item string) int {
 // 6
 ```
 
-[[play](https://go.dev/play/p/Dz_a_7jN_ca)]
+### Product
+
+Calculates the product of the values in a collection.
+
+If collection is empty 0 is returned.
+
+```go
+list := []int{1, 2, 3, 4, 5}
+product := lo.Product(list)
+// 120
+```
+
+[[play](https://go.dev/play/p/2_kjM_smtAH)]
+
+### ProductBy
+
+Calculates the product of the values in a collection using the given return value from the iteration function.
+
+If collection is empty 0 is returned.
+
+```go
+strings := []string{"foo", "bar"}
+product := lo.ProductBy(strings, func(item string) int {
+    return len(item)
+})
+// 9
+```
+
+[[play](https://go.dev/play/p/wadzrWr9Aer)]
 
 ### Mean
 
@@ -2693,6 +2723,7 @@ first := lo.FirstOrEmpty([]int{1, 2, 3})
 first := lo.FirstOrEmpty([]int{})
 // 0
 ```
+
 ### FirstOr
 
 Returns the first element of a collection or the fallback value if empty.
@@ -2730,6 +2761,7 @@ last := lo.LastOrEmpty([]int{1, 2, 3})
 last := lo.LastOrEmpty([]int{})
 // 0
 ```
+
 ### LastOr
 
 Returns the first element of a collection or the fallback value if empty.
@@ -3643,7 +3675,6 @@ iterations, duration, ok := lo.WaitFor(laterTrue, 10*time.Millisecond, 5*time.Mi
 // 10ms
 // false
 ```
-
 
 ### WaitForWithContext
 
