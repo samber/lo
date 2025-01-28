@@ -92,6 +92,7 @@ Supported helpers for slices:
 - [Uniq](#uniq)
 - [UniqBy](#uniqby)
 - [GroupBy](#groupby)
+- [GroupByMap](#groupbymap)
 - [Chunk](#chunk)
 - [PartitionBy](#partitionby)
 - [Flatten](#flatten)
@@ -564,6 +565,19 @@ lop.GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
     return i%3
 })
 // map[int][]int{0: []int{0, 3}, 1: []int{1, 4}, 2: []int{2, 5}}
+```
+
+### GroupByMap
+
+Returns an object composed of keys generated from the results of running each element of collection through iteratee.
+
+```go
+import lo "github.com/samber/lo"
+
+groups := lo.GroupByMap([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, int) {
+    return i%3, i*2
+})
+// map[int][]int{0: []int{0, 6}, 1: []int{2, 8}, 2: []int{4, 10}}
 ```
 
 ### Chunk
