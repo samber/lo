@@ -188,18 +188,15 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 	return result
 }
 
-
-
-// GroupByMapValues returns an object composed of keys generated from the results of running each element of collection through iterateeKey and values running each element through iterateeValue.
-func GroupByMapValues[K comparable, T any, V any](arr []T, iterateeKey func(T) K, iterateeValue func(T) V) map[K][]V {
+// GroupByMap returns an object composed of keys generated from the results of running each element of collection through iteratee.
+func GroupByMap[T any, K comparable, V any](arr []T, iteratee func(item T) (K, V)) map[K][]V {
 	result := map[K][]V{}
 
 	for _, item := range arr {
-		k := iterateeKey(item)
-		v := iterateeValue(item)
-
+		k, v := iteratee(item)
 		result[k] = append(result[k], v)
 	}
+
 	return result
 }
 

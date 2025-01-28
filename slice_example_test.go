@@ -165,6 +165,22 @@ func ExampleGroupBy() {
 	// [2 5]
 }
 
+func ExampleGroupByMap() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := GroupByMap(list, func(i int) (int, int) {
+		return i % 3, i * 2
+	})
+
+	fmt.Printf("%v\n", result[0])
+	fmt.Printf("%v\n", result[1])
+	fmt.Printf("%v\n", result[2])
+	// Output:
+	// [0 6]
+	// [2 8]
+	// [4 10]
+}
+
 func ExampleChunk() {
 	list := []int{0, 1, 2, 3, 4}
 

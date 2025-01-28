@@ -254,6 +254,22 @@ func TestGroupBy(t *testing.T) {
 	is.IsType(nonempty[42], allStrings, "type preserved")
 }
 
+func TestGroupByMap(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := GroupByMap([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, string) {
+		return i % 3, strconv.Itoa(i)
+	})
+
+	is.Equal(len(result1), 3)
+	is.Equal(result1, map[int][]string{
+		0: {"0", "3"},
+		1: {"1", "4"},
+		2: {"2", "5"},
+	})
+}
+
 func TestChunk(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
