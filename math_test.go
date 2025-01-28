@@ -108,14 +108,16 @@ func TestProduct(t *testing.T) {
 	result5 := Product([]uint32{2, 3, 4, 5})
 	result6 := Product([]uint32{})
 	result7 := Product([]complex128{4_4, 2_2})
+	result8 := Product[uint32](nil)
 
 	is.Equal(result1, float32(160.908))
 	is.Equal(result2, int32(120))
 	is.Equal(result3, int32(0))
 	is.Equal(result4, int32(-126))
 	is.Equal(result5, uint32(120))
-	is.Equal(result6, uint32(0))
+	is.Equal(result6, uint32(1))
 	is.Equal(result7, complex128(96_8))
+	is.Equal(result8, uint32(1))
 }
 
 func TestProductBy(t *testing.T) {
@@ -128,14 +130,16 @@ func TestProductBy(t *testing.T) {
 	result5 := ProductBy([]uint32{2, 3, 4, 5}, func(n uint32) uint32 { return n })
 	result6 := ProductBy([]uint32{}, func(n uint32) uint32 { return n })
 	result7 := ProductBy([]complex128{4_4, 2_2}, func(n complex128) complex128 { return n })
+	result8 := ProductBy(nil, func(n uint32) uint32 { return n })
 
 	is.Equal(result1, float32(160.908))
 	is.Equal(result2, int32(120))
 	is.Equal(result3, int32(0))
 	is.Equal(result4, int32(-126))
 	is.Equal(result5, uint32(120))
-	is.Equal(result6, uint32(0))
+	is.Equal(result6, uint32(1))
 	is.Equal(result7, complex128(96_8))
+	is.Equal(result8, uint32(1))
 }
 
 func TestMean(t *testing.T) {
