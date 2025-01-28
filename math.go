@@ -89,11 +89,11 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 // Play: https://go.dev/play/p/2_kjM_smtAH
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
 	if collection == nil {
-		return 0
+		return 1
 	}
 
 	if len(collection) == 0 {
-		return 0
+		return 1
 	}
 
 	var product T = 1
@@ -107,11 +107,11 @@ func Product[T constraints.Float | constraints.Integer | constraints.Complex](co
 // Play: https://go.dev/play/p/wadzrWr9Aer
 func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) R) R {
 	if collection == nil {
-		return 0
+		return 1
 	}
 
 	if len(collection) == 0 {
-		return 0
+		return 1
 	}
 
 	var product R = 1
