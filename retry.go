@@ -26,8 +26,8 @@ func (d *debounce) reset() {
 	}
 
 	d.timer = time.AfterFunc(d.after, func() {
-		for _, f := range d.callbacks {
-			f()
+		for i := range d.callbacks {
+			d.callbacks[i]()
 		}
 	})
 }
@@ -101,10 +101,9 @@ func (d *debounceBy[T]) reset(key T) {
 		item.count = 0
 		item.mu.Unlock()
 
-		for _, f := range d.callbacks {
-			f(key, count)
+		for i := range d.callbacks {
+			d.callbacks[i](key, count)
 		}
-
 	})
 }
 
@@ -141,7 +140,8 @@ func NewDebounceBy[T comparable](duration time.Duration, f ...func(key T, count 
 	}, d.cancel
 }
 
-// Attempt invokes a function N times until it returns valid output. Returning either the caught error or nil. When first argument is less than `1`, the function runs until a successful response is returned.
+// Attempt invokes a function N times until it returns valid output. Returns either the caught error or nil.
+// When the first argument is less than `1`, the function runs until a successful response is returned.
 // Play: https://go.dev/play/p/3ggJZ2ZKcMj
 func Attempt(maxIteration int, f func(index int) error) (int, error) {
 	var err error
@@ -158,8 +158,8 @@ func Attempt(maxIteration int, f func(index int) error) (int, error) {
 }
 
 // AttemptWithDelay invokes a function N times until it returns valid output,
-// with a pause between each call. Returning either the caught error or nil.
-// When first argument is less than `1`, the function runs until a successful
+// with a pause between each call. Returns either the caught error or nil.
+// When the first argument is less than `1`, the function runs until a successful
 // response is returned.
 // Play: https://go.dev/play/p/tVs6CygC7m1
 func AttemptWithDelay(maxIteration int, delay time.Duration, f func(index int, duration time.Duration) error) (int, time.Duration, error) {
@@ -182,9 +182,9 @@ func AttemptWithDelay(maxIteration int, delay time.Duration, f func(index int, d
 }
 
 // AttemptWhile invokes a function N times until it returns valid output.
-// Returning either the caught error or nil, and along with a bool value to identify
-// whether it needs invoke function continuously. It will terminate the invoke
-// immediately if second bool value is returned with falsy value. When first
+// Returns either the caught error or nil, along with a bool value to determine
+// whether the function should be invoked again. It will terminate the invoke
+// immediately if the second return value is false. When the first
 // argument is less than `1`, the function runs until a successful response is
 // returned.
 func AttemptWhile(maxIteration int, f func(int) (error, bool)) (int, error) {
@@ -206,10 +206,10 @@ func AttemptWhile(maxIteration int, f func(int) (error, bool)) (int, error) {
 }
 
 // AttemptWhileWithDelay invokes a function N times until it returns valid output,
-// with a pause between each call. Returning either the caught error or nil, and along
-// with a bool value to identify whether it needs to invoke function continuously.
-// It will terminate the invoke immediately if second bool value is returned with falsy
-// value. When first argument is less than `1`, the function runs until a successful
+// with a pause between each call. Returns either the caught error or nil, along
+// with a bool value to determine whether the function should be invoked again.
+// It will terminate the invoke immediately if the second return value is false.
+// When the first argument is less than `1`, the function runs until a successful
 // response is returned.
 func AttemptWhileWithDelay(maxIteration int, delay time.Duration, f func(int, time.Duration) (error, bool)) (int, time.Duration, error) {
 	var err error
@@ -287,4 +287,89 @@ func (t *Transaction[T]) Process(state T) (T, error) {
 	return state, err
 }
 
-// throttle ?
+// @TODO: single mutex per key ?
+type throttleBy[T comparable] struct {
+	mu         *sync.Mutex
+	timer      *time.Timer
+	interval   time.Duration
+	callbacks  []func(key T)
+	countLimit int
+	count      map[T]int
+}
+
+func (th *throttleBy[T]) throttledFunc(key T) {
+	th.mu.Lock()
+	defer th.mu.Unlock()
+
+	if _, ok := th.count[key]; !ok {
+		th.count[key] = 0
+	}
+
+	if th.count[key] < th.countLimit {
+		th.count[key]++
+
+		for _, f := range th.callbacks {
+			f(key)
+		}
+
+	}
+	if th.timer == nil {
+		th.timer = time.AfterFunc(th.interval, func() {
+			th.reset()
+		})
+	}
+}
+
+func (th *throttleBy[T]) reset() {
+	th.mu.Lock()
+	defer th.mu.Unlock()
+
+	if th.timer != nil {
+		th.timer.Stop()
+	}
+
+	th.count = map[T]int{}
+	th.timer = nil
+}
+
+// NewThrottle creates a throttled instance that invokes given functions only once in every interval.
+// This returns 2 functions, First one is throttled function and Second one is a function to reset interval
+func NewThrottle(interval time.Duration, f ...func()) (throttle func(), reset func()) {
+	return NewThrottleWithCount(interval, 1, f...)
+}
+
+// NewThrottleWithCount is NewThrottle with count limit, throttled function will be invoked count times in every interval.
+func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (throttle func(), reset func()) {
+	callbacks := Map(f, func(item func(), _ int) func(struct{}) {
+		return func(struct{}) {
+			item()
+		}
+	})
+
+	throttleFn, reset := NewThrottleByWithCount[struct{}](interval, count, callbacks...)
+	return func() {
+		throttleFn(struct{}{})
+	}, reset
+}
+
+// NewThrottleBy creates a throttled instance that invokes given functions only once in every interval.
+// This returns 2 functions, First one is throttled function and Second one is a function to reset interval
+func NewThrottleBy[T comparable](interval time.Duration, f ...func(key T)) (throttle func(key T), reset func()) {
+	return NewThrottleByWithCount[T](interval, 1, f...)
+}
+
+// NewThrottleByWithCount is NewThrottleBy with count limit, throttled function will be invoked count times in every interval.
+func NewThrottleByWithCount[T comparable](interval time.Duration, count int, f ...func(key T)) (throttle func(key T), reset func()) {
+	if count <= 0 {
+		count = 1
+	}
+
+	th := &throttleBy[T]{
+		mu:         new(sync.Mutex),
+		interval:   interval,
+		callbacks:  f,
+		countLimit: count,
+		count:      map[T]int{},
+	}
+	return th.throttledFunc, th.reset
+}

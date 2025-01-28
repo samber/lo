@@ -9,20 +9,42 @@ import (
 
 func ExampleKeys() {
 	kv := map[string]int{"foo": 1, "bar": 2}
+	kv2 := map[string]int{"baz": 3}
 
-	result := Keys(kv)
+	result := Keys(kv, kv2)
+	sort.Strings(result)
+	fmt.Printf("%v", result)
+	// Output: [bar baz foo]
+}
 
-	sort.StringSlice(result).Sort()
+func ExampleUniqKeys() {
+	kv := map[string]int{"foo": 1, "bar": 2}
+	kv2 := map[string]int{"bar": 3}
+
+	result := UniqKeys(kv, kv2)
+	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [bar foo]
 }
 
 func ExampleValues() {
 	kv := map[string]int{"foo": 1, "bar": 2}
+	kv2 := map[string]int{"baz": 3}
 
-	result := Values(kv)
+	result := Values(kv, kv2)
 
-	sort.IntSlice(result).Sort()
+	sort.Ints(result)
+	fmt.Printf("%v", result)
+	// Output: [1 2 3]
+}
+
+func ExampleUniqValues() {
+	kv := map[string]int{"foo": 1, "bar": 2}
+	kv2 := map[string]int{"baz": 2}
+
+	result := UniqValues(kv, kv2)
+
+	sort.Ints(result)
 	fmt.Printf("%v", result)
 	// Output: [1 2]
 }
@@ -146,11 +168,31 @@ func ExampleAssign() {
 	// Output: 3 1 3 4
 }
 
+func ExampleChunkEntries() {
+	result := ChunkEntries(
+		map[string]int{
+			"a": 1,
+			"b": 2,
+			"c": 3,
+			"d": 4,
+			"e": 5,
+		},
+		3,
+	)
+
+	for i := range result {
+		fmt.Printf("%d\n", len(result[i]))
+	}
+	// Output:
+	// 3
+	// 2
+}
+
 func ExampleMapKeys() {
 	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
 
-	result := MapKeys(kv, func(_ int, v int) string {
-		return strconv.FormatInt(int64(v), 10)
+	result := MapKeys(kv, func(_ int, k int) string {
+		return strconv.FormatInt(int64(k), 10)
 	})
 
 	fmt.Printf("%v %v %v %v %v", len(result), result["1"], result["2"], result["3"], result["4"])
@@ -160,12 +202,12 @@ func ExampleMapKeys() {
 func ExampleMapValues() {
 	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
 
-	result := MapValues(kv, func(_ int, v int) string {
+	result := MapValues(kv, func(v int, _ int) string {
 		return strconv.FormatInt(int64(v), 10)
 	})
 
-	fmt.Printf("%v %v %v %v %v", len(result), result[1], result[2], result[3], result[4])
-	// Output: 4 1 2 3 4
+	fmt.Printf("%v %q %q %q %q", len(result), result[1], result[2], result[3], result[4])
+	// Output: 4 "1" "2" "3" "4"
 }
 
 func ExampleMapEntries() {

@@ -9,12 +9,15 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v2
+      - uses: actions/setup-go@v5
         with:
           go-version: 1.18
           stable: false
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v6
         with:
           args: --timeout 120s --max-same-issues 50
+
+      - name: Bearer
+        uses: bearer/bearer-action@v2

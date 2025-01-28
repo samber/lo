@@ -18,14 +18,19 @@ func TestFilter(t *testing.T) {
 	r1 := Filter([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 		return x%2 == 0
 	})
-
 	is.Equal(r1, []int{2, 4})
 
 	r2 := Filter([]string{"", "foo", "", "bar", ""}, func(x string, _ int) bool {
 		return len(x) > 0
 	})
-
 	is.Equal(r2, []string{"foo", "bar"})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Filter(allStrings, func(x string, _ int) bool {
+		return len(x) > 0
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestMap(t *testing.T) {
@@ -43,6 +48,23 @@ func TestMap(t *testing.T) {
 	is.Equal(len(result2), 4)
 	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
 	is.Equal(result2, []string{"1", "2", "3", "4"})
+}
+
+func TestUniqMap(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type User struct {
+		Name string
+		age  int
+	}
+
+	users := []User{{Name: "Alice", age: 20}, {Name: "Alex", age: 21}, {Name: "Alex", age: 22}}
+	result := UniqMap(users, func(item User, index int) string {
+		return item.Name
+	})
+
+	is.Equal(result, []string{"Alice", "Alex"})
 }
 
 func TestFilterMap(t *testing.T) {
@@ -125,6 +147,12 @@ func TestReduceRight(t *testing.T) {
 	}, []int{})
 
 	is.Equal(result1, []int{4, 5, 2, 3, 0, 1})
+
+	type collection []int
+	result3 := ReduceRight(collection{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+		return agg + item
+	}, 10)
+	is.Equal(result3, 20)
 }
 
 func TestForEach(t *testing.T) {
@@ -146,6 +174,29 @@ func TestForEach(t *testing.T) {
 	is.IsIncreasing(callParams2)
 }
 
+func TestForEachWhile(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// check of callback is called for every element and in proper order
+
+	var callParams1 []string
+	var callParams2 []int
+
+	ForEachWhile([]string{"a", "b", "c"}, func(item string, i int) bool {
+		if item == "c" {
+			return false
+		}
+		callParams1 = append(callParams1, item)
+		callParams2 = append(callParams2, i)
+		return true
+	})
+
+	is.ElementsMatch([]string{"a", "b"}, callParams1)
+	is.ElementsMatch([]int{0, 1}, callParams2)
+	is.IsIncreasing(callParams2)
+}
+
 func TestUniq(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -154,6 +205,11 @@ func TestUniq(t *testing.T) {
 
 	is.Equal(len(result1), 2)
 	is.Equal(result1, []int{1, 2})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Uniq(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestUniqBy(t *testing.T) {
@@ -166,6 +222,13 @@ func TestUniqBy(t *testing.T) {
 
 	is.Equal(len(result1), 3)
 	is.Equal(result1, []int{0, 1, 2})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := UniqBy(allStrings, func(i string) string {
+		return i
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestGroupBy(t *testing.T) {
@@ -182,6 +245,13 @@ func TestGroupBy(t *testing.T) {
 		1: {1, 4},
 		2: {2, 5},
 	})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := GroupBy(allStrings, func(i string) int {
+		return 42
+	})
+	is.IsType(nonempty[42], allStrings, "type preserved")
 }
 
 func TestChunk(t *testing.T) {
@@ -200,6 +270,17 @@ func TestChunk(t *testing.T) {
 	is.PanicsWithValue("Second parameter must be greater than 0", func() {
 		Chunk([]int{0}, 0)
 	})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Chunk(allStrings, 2)
+	is.IsType(nonempty[0], allStrings, "type preserved")
+
+	// appending to a chunk should not affect original array
+	originalArray := []int{0, 1, 2, 3, 4, 5}
+	result5 := Chunk(originalArray, 2)
+	result5[0] = append(result5[0], 6)
+	is.Equal(originalArray, []int{0, 1, 2, 3, 4, 5})
 }
 
 func TestPartitionBy(t *testing.T) {
@@ -220,6 +301,13 @@ func TestPartitionBy(t *testing.T) {
 
 	is.Equal(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
 	is.Equal(result2, [][]int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := PartitionBy(allStrings, func(item string) int {
+		return len(item)
+	})
+	is.IsType(nonempty[0], allStrings, "type preserved")
 }
 
 func TestFlatten(t *testing.T) {
@@ -229,9 +317,16 @@ func TestFlatten(t *testing.T) {
 	result1 := Flatten([][]int{{0, 1}, {2, 3, 4, 5}})
 
 	is.Equal(result1, []int{0, 1, 2, 3, 4, 5})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Flatten([]myStrings{allStrings})
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestInterleave(t *testing.T) {
+	is := assert.New(t)
+
 	tests := []struct {
 		name        string
 		collections [][]int
@@ -275,6 +370,11 @@ func TestInterleave(t *testing.T) {
 			}
 		})
 	}
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Interleave(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestShuffle(t *testing.T) {
@@ -286,6 +386,11 @@ func TestShuffle(t *testing.T) {
 
 	is.NotEqual(result1, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 	is.Equal(result2, []int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Shuffle(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestReverse(t *testing.T) {
@@ -299,6 +404,11 @@ func TestReverse(t *testing.T) {
 	is.Equal(result1, []int{5, 4, 3, 2, 1, 0})
 	is.Equal(result2, []int{6, 5, 4, 3, 2, 1, 0})
 	is.Equal(result3, []int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Reverse(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestFill(t *testing.T) {
@@ -388,7 +498,7 @@ func TestAssociate(t *testing.T) {
 
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
-	
+
 	type foo struct {
 		baz string
 		bar int
@@ -421,6 +531,53 @@ func TestSliceToMap(t *testing.T) {
 	}
 }
 
+func TestFilterSliceToMap(t *testing.T) {
+	t.Parallel()
+
+	type foo struct {
+		baz string
+		bar int
+	}
+	transform := func(f *foo) (string, int, bool) {
+		return f.baz, f.bar, f.bar > 1
+	}
+	testCases := []struct {
+		in     []*foo
+		expect map[string]int
+	}{
+		{
+			in:     []*foo{{baz: "apple", bar: 1}},
+			expect: map[string]int{},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			expect: map[string]int{"banana": 2},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			expect: map[string]int{"apple": 2},
+		},
+	}
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
+			is := assert.New(t)
+			is.Equal(FilterSliceToMap(testCase.in, transform), testCase.expect)
+		})
+	}
+}
+
+func TestKeyify(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Keyify([]int{1, 2, 3, 4})
+	result2 := Keyify([]int{1, 1, 1, 2})
+	result3 := Keyify([]int{})
+	is.Equal(result1, map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}})
+	is.Equal(result2, map[int]struct{}{1: {}, 2: {}})
+	is.Equal(result3, map[int]struct{}{})
+}
+
 func TestDrop(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -431,6 +588,11 @@ func TestDrop(t *testing.T) {
 	is.Equal([]int{4}, Drop([]int{0, 1, 2, 3, 4}, 4))
 	is.Equal([]int{}, Drop([]int{0, 1, 2, 3, 4}, 5))
 	is.Equal([]int{}, Drop([]int{0, 1, 2, 3, 4}, 6))
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Drop(allStrings, 2)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestDropRight(t *testing.T) {
@@ -443,6 +605,11 @@ func TestDropRight(t *testing.T) {
 	is.Equal([]int{0}, DropRight([]int{0, 1, 2, 3, 4}, 4))
 	is.Equal([]int{}, DropRight([]int{0, 1, 2, 3, 4}, 5))
 	is.Equal([]int{}, DropRight([]int{0, 1, 2, 3, 4}, 6))
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := DropRight(allStrings, 2)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestDropWhile(t *testing.T) {
@@ -460,6 +627,13 @@ func TestDropWhile(t *testing.T) {
 	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
 		return t == 10
 	}))
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := DropWhile(allStrings, func(t string) bool {
+		return t != "foo"
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestDropRightWhile(t *testing.T) {
@@ -481,6 +655,34 @@ func TestDropRightWhile(t *testing.T) {
 	is.Equal([]int{}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
 		return t != 10
 	}))
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := DropRightWhile(allStrings, func(t string) bool {
+		return t != "foo"
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestDropByIndex(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 0))
+	is.Equal([]int{3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 0, 1, 2))
+	is.Equal([]int{0, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, -4, -2, -3))
+	is.Equal([]int{0, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, -4, -4))
+	is.Equal([]int{2, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 3, 1, 0))
+	is.Equal([]int{0, 1, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 2))
+	is.Equal([]int{0, 1, 2, 3}, DropByIndex([]int{0, 1, 2, 3, 4}, 4))
+	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 5))
+	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 100))
+	is.Equal([]int{0, 1, 2, 3}, DropByIndex([]int{0, 1, 2, 3, 4}, -1))
+	is.Equal([]int{}, DropByIndex([]int{}, 0, 1))
+	is.Equal([]int{}, DropByIndex([]int{42}, 0, 1))
+	is.Equal([]int{}, DropByIndex([]int{42}, 1, 0))
+	is.Equal([]int{}, DropByIndex([]int{}, 1))
+	is.Equal([]int{}, DropByIndex([]int{1}, 0))
 }
 
 func TestReject(t *testing.T) {
@@ -498,6 +700,63 @@ func TestReject(t *testing.T) {
 	})
 
 	is.Equal(r2, []string{"foo", "bar"})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Reject(allStrings, func(x string, _ int) bool {
+		return len(x) > 0
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestRejectMap(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := RejectMap([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
+		if x%2 == 0 {
+			return strconv.FormatInt(x, 10), false
+		}
+		return "", true
+	})
+	r2 := RejectMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+		if strings.HasSuffix(x, "pu") {
+			return "xpu", false
+		}
+		return "", true
+	})
+
+	is.Equal(len(r1), 2)
+	is.Equal(len(r2), 2)
+	is.Equal(r1, []string{"2", "4"})
+	is.Equal(r2, []string{"xpu", "xpu"})
+}
+
+func TestFilterReject(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	left1, right1 := FilterReject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+		return x%2 == 0
+	})
+
+	is.Equal(left1, []int{2, 4})
+	is.Equal(right1, []int{1, 3})
+
+	left2, right2 := FilterReject([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
+		return len(x) > 3
+	})
+
+	is.Equal(left2, []string{"Smith", "Domin", "Olivia"})
+	is.Equal(right2, []string{"foo", "bar"})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	a, b := FilterReject(allStrings, func(x string, _ int) bool {
+		return len(x) > 0
+	})
+	is.IsType(a, allStrings, "type preserved")
+	is.IsType(b, allStrings, "type preserved")
 }
 
 func TestCount(t *testing.T) {
@@ -600,6 +859,11 @@ func TestSubset(t *testing.T) {
 	is.Equal([]int{3, 4}, out10)
 	is.Equal([]int{1}, out11)
 	is.Equal([]int{1, 2, 3, 4}, out12)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Subset(allStrings, 0, 2)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestSlice(t *testing.T) {
@@ -626,7 +890,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
-	
+
 	is.Equal([]int{}, out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
@@ -645,6 +909,11 @@ func TestSlice(t *testing.T) {
 	is.Equal([]int{0}, out16)
 	is.Equal([]int{0, 1, 2}, out17)
 	is.Equal([]int{0, 1, 2, 3, 4}, out18)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Slice(allStrings, 0, 2)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestReplace(t *testing.T) {
@@ -674,6 +943,11 @@ func TestReplace(t *testing.T) {
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out8)
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out9)
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out10)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Replace(allStrings, "0", "2", 1)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestReplaceAll(t *testing.T) {
@@ -687,6 +961,11 @@ func TestReplaceAll(t *testing.T) {
 
 	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out1)
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out2)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := ReplaceAll(allStrings, "0", "2")
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestCompact(t *testing.T) {
@@ -729,6 +1008,11 @@ func TestCompact(t *testing.T) {
 	r5 := Compact([]*foo{&e1, &e2, nil, &e3})
 
 	is.Equal(r5, []*foo{&e1, &e2, &e3})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Compact(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestIsSorted(t *testing.T) {
@@ -758,4 +1042,54 @@ func TestIsSortedByKey(t *testing.T) {
 		ret, _ := strconv.Atoi(s)
 		return ret
 	}))
+}
+
+func TestSplice(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	sample := []string{"a", "b", "c", "d", "e", "f", "g"}
+
+	// normal case
+	results := Splice(sample, 1, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal([]string{"a", "1", "2", "b", "c", "d", "e", "f", "g"}, results)
+
+	// check there is no side effect
+	results = Splice(sample, 1)
+	results[0] = "b"
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+
+	// positive overflow
+	results = Splice(sample, 42, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"a", "b", "c", "d", "e", "f", "g", "1", "2"})
+
+	// negative overflow
+	results = Splice(sample, -42, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"})
+
+	// backward
+	results = Splice(sample, -2, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"a", "b", "c", "d", "e", "1", "2", "f", "g"})
+
+	results = Splice(sample, -7, "1", "2")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	is.Equal(results, []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"})
+
+	// other
+	is.Equal([]string{"1", "2"}, Splice([]string{}, 0, "1", "2"))
+	is.Equal([]string{"1", "2"}, Splice([]string{}, 1, "1", "2"))
+	is.Equal([]string{"1", "2"}, Splice([]string{}, -1, "1", "2"))
+	is.Equal([]string{"1", "2", "0"}, Splice([]string{"0"}, 0, "1", "2"))
+	is.Equal([]string{"0", "1", "2"}, Splice([]string{"0"}, 1, "1", "2"))
+	is.Equal([]string{"1", "2", "0"}, Splice([]string{"0"}, -1, "1", "2"))
+
+	// type preserved
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Splice(allStrings, 1, "1", "2")
+	is.IsType(nonempty, allStrings, "type preserved")
 }

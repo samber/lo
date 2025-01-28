@@ -184,6 +184,11 @@ func TestFindUniques(t *testing.T) {
 
 	is.Equal(0, len(result4))
 	is.Equal([]int{}, result4)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := FindUniques(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestFindUniquesBy(t *testing.T) {
@@ -217,6 +222,13 @@ func TestFindUniquesBy(t *testing.T) {
 
 	is.Equal(0, len(result4))
 	is.Equal([]int{}, result4)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := FindUniquesBy(allStrings, func(i string) string {
+		return i
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestFindDuplicates(t *testing.T) {
@@ -237,6 +249,11 @@ func TestFindDuplicates(t *testing.T) {
 
 	is.Equal(0, len(result3))
 	is.Equal([]int{}, result3)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := FindDuplicates(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestFindDuplicatesBy(t *testing.T) {
@@ -263,6 +280,13 @@ func TestFindDuplicatesBy(t *testing.T) {
 
 	is.Equal(0, len(result3))
 	is.Equal([]int{}, result3)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := FindDuplicatesBy(allStrings, func(i string) string {
+		return i
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestMin(t *testing.T) {
@@ -271,11 +295,35 @@ func TestMin(t *testing.T) {
 
 	result1 := Min([]int{1, 2, 3})
 	result2 := Min([]int{3, 2, 1})
-	result3 := Min([]int{})
+	result3 := Min([]time.Duration{time.Second, time.Minute, time.Hour})
+	result4 := Min([]int{})
 
 	is.Equal(result1, 1)
 	is.Equal(result2, 1)
-	is.Equal(result3, 0)
+	is.Equal(result3, time.Second)
+	is.Equal(result4, 0)
+}
+
+func TestMinIndex(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1, index1 := MinIndex([]int{1, 2, 3})
+	result2, index2 := MinIndex([]int{3, 2, 1})
+	result3, index3 := MinIndex([]time.Duration{time.Second, time.Minute, time.Hour})
+	result4, index4 := MinIndex([]int{})
+
+	is.Equal(result1, 1)
+	is.Equal(index1, 0)
+
+	is.Equal(result2, 1)
+	is.Equal(index2, 2)
+
+	is.Equal(result3, time.Second)
+	is.Equal(index3, 0)
+
+	is.Equal(result4, 0)
+	is.Equal(index4, -1)
 }
 
 func TestMinBy(t *testing.T) {
@@ -297,17 +345,104 @@ func TestMinBy(t *testing.T) {
 	is.Equal(result3, "")
 }
 
+func TestMinIndexBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1, index1 := MinIndexBy([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
+		return len(item) < len(min)
+	})
+	result2, index2 := MinIndexBy([]string{"string1", "string2", "s3"}, func(item string, min string) bool {
+		return len(item) < len(min)
+	})
+	result3, index3 := MinIndexBy([]string{}, func(item string, min string) bool {
+		return len(item) < len(min)
+	})
+
+	is.Equal(result1, "s1")
+	is.Equal(index1, 0)
+
+	is.Equal(result2, "s3")
+	is.Equal(index2, 2)
+
+	is.Equal(result3, "")
+	is.Equal(index3, -1)
+}
+
+func TestEarliest(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	a := time.Now()
+	b := a.Add(time.Hour)
+	result1 := Earliest(a, b)
+	result2 := Earliest()
+
+	is.Equal(result1, a)
+	is.Equal(result2, time.Time{})
+}
+
+func TestEarliestBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type foo struct {
+		bar time.Time
+	}
+
+	t1 := time.Now()
+	t2 := t1.Add(time.Hour)
+	t3 := t1.Add(-time.Hour)
+	result1 := EarliestBy([]foo{{t1}, {t2}, {t3}}, func(i foo) time.Time {
+		return i.bar
+	})
+	result2 := EarliestBy([]foo{{t1}}, func(i foo) time.Time {
+		return i.bar
+	})
+	result3 := EarliestBy([]foo{}, func(i foo) time.Time {
+		return i.bar
+	})
+
+	is.Equal(result1, foo{t3})
+	is.Equal(result2, foo{t1})
+	is.Equal(result3, foo{})
+}
+
 func TestMax(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Max([]int{1, 2, 3})
 	result2 := Max([]int{3, 2, 1})
-	result3 := Max([]int{})
+	result3 := Max([]time.Duration{time.Second, time.Minute, time.Hour})
+	result4 := Max([]int{})
 
 	is.Equal(result1, 3)
 	is.Equal(result2, 3)
-	is.Equal(result3, 0)
+	is.Equal(result3, time.Hour)
+	is.Equal(result4, 0)
+}
+
+func TestMaxIndex(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1, index1 := MaxIndex([]int{1, 2, 3})
+	result2, index2 := MaxIndex([]int{3, 2, 1})
+	result3, index3 := MaxIndex([]time.Duration{time.Second, time.Minute, time.Hour})
+	result4, index4 := MaxIndex([]int{})
+
+	is.Equal(result1, 3)
+	is.Equal(index1, 2)
+
+	is.Equal(result2, 3)
+	is.Equal(index2, 0)
+
+	is.Equal(result3, time.Hour)
+	is.Equal(index3, 2)
+
+	is.Equal(result4, 0)
+	is.Equal(index4, -1)
 }
 
 func TestMaxBy(t *testing.T) {
@@ -329,17 +464,145 @@ func TestMaxBy(t *testing.T) {
 	is.Equal(result3, "")
 }
 
+func TestMaxIndexBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1, index1 := MaxIndexBy([]string{"s1", "string2", "s3"}, func(item string, max string) bool {
+		return len(item) > len(max)
+	})
+	result2, index2 := MaxIndexBy([]string{"string1", "string2", "s3"}, func(item string, max string) bool {
+		return len(item) > len(max)
+	})
+	result3, index3 := MaxIndexBy([]string{}, func(item string, max string) bool {
+		return len(item) > len(max)
+	})
+
+	is.Equal(result1, "string2")
+	is.Equal(index1, 1)
+
+	is.Equal(result2, "string1")
+	is.Equal(index2, 0)
+
+	is.Equal(result3, "")
+	is.Equal(index3, -1)
+}
+
+func TestLatest(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	a := time.Now()
+	b := a.Add(time.Hour)
+	result1 := Latest(a, b)
+	result2 := Latest()
+
+	is.Equal(result1, b)
+	is.Equal(result2, time.Time{})
+}
+
+func TestLatestBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type foo struct {
+		bar time.Time
+	}
+
+	t1 := time.Now()
+	t2 := t1.Add(time.Hour)
+	t3 := t1.Add(-time.Hour)
+	result1 := LatestBy([]foo{{t1}, {t2}, {t3}}, func(i foo) time.Time {
+		return i.bar
+	})
+	result2 := LatestBy([]foo{{t1}}, func(i foo) time.Time {
+		return i.bar
+	})
+	result3 := LatestBy([]foo{}, func(i foo) time.Time {
+		return i.bar
+	})
+
+	is.Equal(result1, foo{t2})
+	is.Equal(result2, foo{t1})
+	is.Equal(result3, foo{})
+}
+
+func TestFirst(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1, ok1 := First([]int{1, 2, 3})
+	result2, ok2 := First([]int{})
+
+	is.Equal(result1, 1)
+	is.Equal(ok1, true)
+	is.Equal(result2, 0)
+	is.Equal(ok2, false)
+}
+
+func TestFirstOrEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := FirstOrEmpty([]int{1, 2, 3})
+	result2 := FirstOrEmpty([]int{})
+	result3 := FirstOrEmpty([]string{})
+
+	is.Equal(result1, 1)
+	is.Equal(result2, 0)
+	is.Equal(result3, "")
+}
+
+func TestFirstOr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := FirstOr([]int{1, 2, 3}, 63)
+	result2 := FirstOr([]int{}, 23)
+	result3 := FirstOr([]string{}, "test")
+
+	is.Equal(result1, 1)
+	is.Equal(result2, 23)
+	is.Equal(result3, "test")
+}
+
 func TestLast(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1, err1 := Last([]int{1, 2, 3})
-	result2, err2 := Last([]int{})
+	result1, ok1 := Last([]int{1, 2, 3})
+	result2, ok2 := Last([]int{})
 
 	is.Equal(result1, 3)
-	is.Equal(err1, nil)
+	is.True(ok1)
 	is.Equal(result2, 0)
-	is.Equal(err2, fmt.Errorf("last: cannot extract the last element of an empty slice"))
+	is.False(ok2)
+}
+
+func TestLastOrEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := LastOrEmpty([]int{1, 2, 3})
+	result2 := LastOrEmpty([]int{})
+	result3 := LastOrEmpty([]string{})
+
+	is.Equal(result1, 3)
+	is.Equal(result2, 0)
+	is.Equal(result3, "")
+}
+
+func TestLastOr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := LastOr([]int{1, 2, 3}, 63)
+	result2 := LastOr([]int{}, 23)
+	result3 := LastOr([]string{}, "test")
+
+	is.Equal(result1, 3)
+	is.Equal(result2, 23)
+	is.Equal(result3, "test")
 }
 
 func TestNth(t *testing.T) {
@@ -380,6 +643,19 @@ func TestSample(t *testing.T) {
 	is.Equal(result2, "")
 }
 
+func TestSampleBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r := rand.New(rand.NewSource(42))
+
+	result1 := SampleBy([]string{"a", "b", "c"}, r.Intn)
+	result2 := SampleBy([]string{}, rand.Intn)
+
+	is.True(Contains([]string{"a", "b", "c"}, result1))
+	is.Equal(result2, "")
+}
+
 func TestSamples(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -393,4 +669,29 @@ func TestSamples(t *testing.T) {
 
 	is.Equal(result1, []string{"a", "b", "c"})
 	is.Equal(result2, []string{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Samples(allStrings, 2)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestSamplesBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r := rand.New(rand.NewSource(42))
+
+	result1 := SamplesBy([]string{"a", "b", "c"}, 3, r.Intn)
+	result2 := SamplesBy([]string{}, 3, r.Intn)
+
+	sort.Strings(result1)
+
+	is.Equal(result1, []string{"a", "b", "c"})
+	is.Equal(result2, []string{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := SamplesBy(allStrings, 2, r.Intn)
+	is.IsType(nonempty, allStrings, "type preserved")
 }

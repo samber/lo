@@ -187,6 +187,11 @@ func TestIntersect(t *testing.T) {
 	is.Equal(result3, []int{})
 	is.Equal(result4, []int{0})
 	is.Equal(result5, []int{0})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Intersect(allStrings, allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestDifference(t *testing.T) {
@@ -204,6 +209,12 @@ func TestDifference(t *testing.T) {
 	left3, right3 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 	is.Equal(left3, []int{})
 	is.Equal(right3, []int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	a, b := Difference(allStrings, allStrings)
+	is.IsType(a, allStrings, "type preserved")
+	is.IsType(b, allStrings, "type preserved")
 }
 
 func TestSymmetricDifference(t *testing.T) {
@@ -246,6 +257,11 @@ func TestUnion(t *testing.T) {
 	is.Equal(result13, []int{0, 1, 2, 3, 4, 5})
 	is.Equal(result14, []int{0, 1, 2})
 	is.Equal(result15, []int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Union(allStrings, allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestWithout(t *testing.T) {
@@ -262,6 +278,31 @@ func TestWithout(t *testing.T) {
 	is.Equal(result3, []int{})
 	is.Equal(result4, []int{})
 	is.Equal(result5, []int{})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Without(allStrings, "")
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestWithoutBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	result1 := WithoutBy([]User{{Name: "nick"}, {Name: "peter"}},
+		func(item User) string {
+			return item.Name
+		}, "nick", "lily")
+	result2 := WithoutBy([]User{}, func(item User) int { return item.Age }, 1, 2, 3)
+	result3 := WithoutBy([]User{}, func(item User) string { return item.Name })
+	is.Equal(result1, []User{{Name: "peter"}})
+	is.Equal(result2, []User{})
+	is.Equal(result3, []User{})
 }
 
 func TestWithoutEmpty(t *testing.T) {
@@ -271,7 +312,36 @@ func TestWithoutEmpty(t *testing.T) {
 	result1 := WithoutEmpty([]int{0, 1, 2})
 	result2 := WithoutEmpty([]int{1, 2})
 	result3 := WithoutEmpty([]int{})
+	result4 := WithoutEmpty([]*int{ToPtr(0), ToPtr(1), nil, ToPtr(2)})
 	is.Equal(result1, []int{1, 2})
 	is.Equal(result2, []int{1, 2})
 	is.Equal(result3, []int{})
+	is.Equal(result4, []*int{ToPtr(0), ToPtr(1), ToPtr(2)})
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := WithoutEmpty(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestWithoutNth(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := WithoutNth([]int{5, 6, 7}, 1, 0)
+	is.Equal([]int{7}, result1)
+
+	result2 := WithoutNth([]int{1, 2})
+	is.Equal([]int{1, 2}, result2)
+
+	result3 := WithoutNth([]int{})
+	is.Equal([]int{}, result3)
+
+	result4 := WithoutNth([]int{0, 1, 2, 3}, -1, 4)
+	is.Equal([]int{0, 1, 2, 3}, result4)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := WithoutNth(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }

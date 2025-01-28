@@ -15,8 +15,59 @@ func TestKeys(t *testing.T) {
 
 	r1 := Keys(map[string]int{"foo": 1, "bar": 2})
 	sort.Strings(r1)
-
 	is.Equal(r1, []string{"bar", "foo"})
+
+	r2 := Keys(map[string]int{})
+	is.Empty(r2)
+
+	r3 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+	sort.Strings(r3)
+	is.Equal(r3, []string{"bar", "baz", "foo"})
+
+	r4 := Keys[string, int]()
+	is.Equal(r4, []string{})
+
+	r5 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
+	sort.Strings(r5)
+	is.Equal(r5, []string{"bar", "bar", "foo"})
+}
+
+func TestUniqKeys(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := UniqKeys(map[string]int{"foo": 1, "bar": 2})
+	sort.Strings(r1)
+	is.Equal(r1, []string{"bar", "foo"})
+
+	r2 := UniqKeys(map[string]int{})
+	is.Empty(r2)
+
+	r3 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+	sort.Strings(r3)
+	is.Equal(r3, []string{"bar", "baz", "foo"})
+
+	r4 := UniqKeys[string, int]()
+	is.Equal(r4, []string{})
+
+	r5 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
+	sort.Strings(r5)
+	is.Equal(r5, []string{"bar", "foo"})
+
+	// check order
+	r6 := UniqKeys(map[string]int{"foo": 1}, map[string]int{"bar": 3})
+	is.Equal(r6, []string{"foo", "bar"})
+}
+
+func TestHasKey(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := HasKey(map[string]int{"foo": 1}, "bar")
+	is.False(r1)
+
+	r2 := HasKey(map[string]int{"foo": 1}, "foo")
+	is.True(r2)
 }
 
 func TestValues(t *testing.T) {
@@ -25,8 +76,52 @@ func TestValues(t *testing.T) {
 
 	r1 := Values(map[string]int{"foo": 1, "bar": 2})
 	sort.Ints(r1)
-
 	is.Equal(r1, []int{1, 2})
+
+	r2 := Values(map[string]int{})
+	is.Empty(r2)
+
+	r3 := Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+	sort.Ints(r3)
+	is.Equal(r3, []int{1, 2, 3})
+
+	r4 := Values[string, int]()
+	is.Equal(r4, []int{})
+
+	r5 := Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
+	sort.Ints(r5)
+	is.Equal(r5, []int{1, 1, 2, 3})
+}
+
+func TestUniqValues(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := UniqValues(map[string]int{"foo": 1, "bar": 2})
+	sort.Ints(r1)
+	is.Equal(r1, []int{1, 2})
+
+	r2 := UniqValues(map[string]int{})
+	is.Empty(r2)
+
+	r3 := UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+	sort.Ints(r3)
+	is.Equal(r3, []int{1, 2, 3})
+
+	r4 := UniqValues[string, int]()
+	is.Equal(r4, []int{})
+
+	r5 := UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
+	sort.Ints(r5)
+	is.Equal(r5, []int{1, 2, 3})
+
+	r6 := UniqValues(map[string]int{"foo": 1, "bar": 1}, map[string]int{"foo": 1, "bar": 3})
+	sort.Ints(r6)
+	is.Equal(r6, []int{1, 3})
+
+	// check order
+	r7 := UniqValues(map[string]int{"foo": 1}, map[string]int{"bar": 3})
+	is.Equal(r7, []int{1, 3})
 }
 
 func TestValueOr(t *testing.T) {
@@ -49,15 +144,25 @@ func TestPickBy(t *testing.T) {
 	})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := PickBy(before, func(key string, value int) bool { return true })
+	is.IsType(after, before, "type preserved")
 }
 
 func TestPickByKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+	r1 := PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz", "qux"})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := PickByKeys(before, []string{"foobar", "baz"})
+	is.IsType(after, before, "type preserved")
 }
 
 func TestPickByValues(t *testing.T) {
@@ -67,6 +172,11 @@ func TestPickByValues(t *testing.T) {
 	r1 := PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
 	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := PickByValues(before, []int{0, 3})
+	is.IsType(after, before, "type preserved")
 }
 
 func TestOmitBy(t *testing.T) {
@@ -78,15 +188,25 @@ func TestOmitBy(t *testing.T) {
 	})
 
 	is.Equal(r1, map[string]int{"bar": 2})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := PickBy(before, func(key string, value int) bool { return true })
+	is.IsType(after, before, "type preserved")
 }
 
 func TestOmitByKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+	r1 := OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz", "qux"})
 
 	is.Equal(r1, map[string]int{"bar": 2})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := OmitByKeys(before, []string{"foobar", "baz"})
+	is.IsType(after, before, "type preserved")
 }
 
 func TestOmitByValues(t *testing.T) {
@@ -96,6 +216,11 @@ func TestOmitByValues(t *testing.T) {
 	r1 := OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
 	is.Equal(r1, map[string]int{"bar": 2})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := OmitByValues(before, []int{0, 3})
+	is.IsType(after, before, "type preserved")
 }
 
 func TestEntries(t *testing.T) {
@@ -200,6 +325,57 @@ func TestAssign(t *testing.T) {
 
 	is.Len(result1, 3)
 	is.Equal(result1, map[string]int{"a": 1, "b": 3, "c": 4})
+
+	type myMap map[string]int
+	before := myMap{"": 0, "foobar": 6, "baz": 3}
+	after := Assign(before, before)
+	is.IsType(after, before, "type preserved")
+}
+
+func TestChunkEntries(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := ChunkEntries(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, 2)
+	result2 := ChunkEntries(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, 3)
+	result3 := ChunkEntries(map[string]int{}, 2)
+	result4 := ChunkEntries(map[string]int{"a": 1}, 2)
+	result5 := ChunkEntries(map[string]int{"a": 1, "b": 2}, 1)
+
+	expectedCount1 := 3
+	expectedCount2 := 2
+	expectedCount3 := 0
+	expectedCount4 := 1
+	expectedCount5 := 2
+
+	is.Len(result1, expectedCount1)
+	is.Len(result2, expectedCount2)
+	is.Len(result3, expectedCount3)
+	is.Len(result4, expectedCount4)
+	is.Len(result5, expectedCount5)
+
+	is.PanicsWithValue("The chunk size must be greater than 0", func() {
+		ChunkEntries(map[string]int{"a": 1}, 0)
+	})
+	is.PanicsWithValue("The chunk size must be greater than 0", func() {
+		ChunkEntries(map[string]int{"a": 1}, -1)
+	})
+
+	type myStruct struct {
+		Name  string
+		Value int
+	}
+
+	allStructs := []myStruct{{"one", 1}, {"two", 2}, {"three", 3}}
+	nonempty := ChunkEntries(map[string]myStruct{"a": allStructs[0], "b": allStructs[1], "c": allStructs[2]}, 2)
+	is.Len(nonempty, 2)
+
+	originalMap := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
+	result6 := ChunkEntries(originalMap, 2)
+	for k := range result6[0] {
+		result6[0][k] = 10
+	}
+	is.Equal(originalMap, map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5})
 }
 
 func TestMapKeys(t *testing.T) {
@@ -313,7 +489,8 @@ func TestMapEntries(t *testing.T) {
 		}{"1-11-1": {name: "foo", age: 1}, "2-22-2": {name: "bar", age: 2}}, func(k string, v struct {
 			name string
 			age  int
-		}) (string, string) {
+		},
+		) (string, string) {
 			return v.name, k
 		}, map[string]string{"bar": "2-22-2", "foo": "1-11-1"})
 	}
@@ -334,4 +511,68 @@ func TestMapToSlice(t *testing.T) {
 	is.Equal(len(result2), 4)
 	is.ElementsMatch(result1, []string{"1_5", "2_6", "3_7", "4_8"})
 	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
+}
+
+func BenchmarkAssign(b *testing.B) {
+	counts := []int{32768, 1024, 128, 32, 2}
+
+	allDifferentMap := func(b *testing.B, n int) []map[string]int {
+		defer b.ResetTimer()
+		m := make([]map[string]int, 0)
+		for i := 0; i < n; i++ {
+			m = append(m, map[string]int{
+				strconv.Itoa(i): i,
+				strconv.Itoa(i): i,
+				strconv.Itoa(i): i,
+				strconv.Itoa(i): i,
+				strconv.Itoa(i): i,
+				strconv.Itoa(i): i,
+			},
+			)
+		}
+		return m
+	}
+
+	allTheSameMap := func(b *testing.B, n int) []map[string]int {
+		defer b.ResetTimer()
+		m := make([]map[string]int, 0)
+		for i := 0; i < n; i++ {
+			m = append(m, map[string]int{
+				"a": 1,
+				"b": 2,
+				"c": 3,
+				"d": 4,
+				"e": 5,
+				"f": 6,
+			},
+			)
+		}
+		return m
+	}
+
+	for _, count := range counts {
+		differentMap := allDifferentMap(b, count)
+		sameMap := allTheSameMap(b, count)
+
+		b.Run(fmt.Sprintf("%d", count), func(b *testing.B) {
+			testcase := []struct {
+				name string
+				maps []map[string]int
+			}{
+				{"different", differentMap},
+				{"same", sameMap},
+			}
+
+			for _, tc := range testcase {
+				b.Run(tc.name, func(b *testing.B) {
+					b.ResetTimer()
+					for n := 0; n < b.N; n++ {
+						result := Assign(tc.maps...)
+						_ = result
+					}
+				})
+			}
+		})
+
+	}
 }

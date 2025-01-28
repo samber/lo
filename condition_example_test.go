@@ -98,7 +98,7 @@ func ExampleIfF() {
 	// 3
 }
 
-func ExampleifElse_ElseIf() {
+func Example_ifElse_ElseIf() {
 	result1 := If(true, 1).
 		ElseIf(false, 2).
 		Else(3)
@@ -138,7 +138,7 @@ func ExampleifElse_ElseIf() {
 	// 3
 }
 
-func ExampleifElse_ElseIfF() {
+func Example_ifElse_ElseIfF() {
 	result1 := If(true, 1).
 		ElseIf(false, 2).
 		Else(3)
@@ -178,7 +178,7 @@ func ExampleifElse_ElseIfF() {
 	// 3
 }
 
-func ExampleifElse_Else() {
+func Example_ifElse_Else() {
 	result1 := If(true, 1).
 		ElseIf(false, 2).
 		Else(3)
@@ -218,7 +218,7 @@ func ExampleifElse_Else() {
 	// 3
 }
 
-func ExampleifElse_ElseF() {
+func Example_ifElse_ElseF() {
 	result1 := If(true, 1).
 		ElseIf(false, 2).
 		Else(3)
@@ -304,7 +304,7 @@ func ExampleSwitch() {
 	// 3
 }
 
-func ExampleswitchCase_Case() {
+func Example_switchCase_Case() {
 	result1 := Switch[int, string](1).
 		Case(1, "1").
 		Case(2, "2").
@@ -350,7 +350,7 @@ func ExampleswitchCase_Case() {
 	// 3
 }
 
-func ExampleswitchCase_CaseF() {
+func Example_switchCase_CaseF() {
 	result1 := Switch[int, string](1).
 		Case(1, "1").
 		Case(2, "2").
@@ -396,7 +396,7 @@ func ExampleswitchCase_CaseF() {
 	// 3
 }
 
-func ExampleswitchCase_Default() {
+func Example_switchCase_Default() {
 	result1 := Switch[int, string](1).
 		Case(1, "1").
 		Case(2, "2").
@@ -442,7 +442,7 @@ func ExampleswitchCase_Default() {
 	// 3
 }
 
-func ExampleswitchCase_DefaultF() {
+func Example_switchCase_DefaultF() {
 	result1 := Switch[int, string](1).
 		Case(1, "1").
 		Case(2, "2").

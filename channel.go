@@ -1,9 +1,11 @@
 package lo
 
 import (
-	"math/rand"
+	"context"
 	"sync"
 	"time"
+
+	"github.com/samber/lo/internal/rand"
 )
 
 type DispatchingStrategy[T any] func(msg T, index uint64, channels []<-chan T) int
@@ -86,7 +88,7 @@ func DispatchingStrategyRoundRobin[T any](msg T, index uint64, channels []<-chan
 // If the channel capacity is exceeded, another random channel will be selected and so on.
 func DispatchingStrategyRandom[T any](msg T, index uint64, channels []<-chan T) int {
 	for {
-		i := rand.Intn(len(channels))
+		i := rand.IntN(len(channels))
 		if channelIsNotFull(channels[i]) {
 			return i
 		}
@@ -108,7 +110,7 @@ func DispatchingStrategyWeightedRandom[T any](weights []int) DispatchingStrategy
 
 	return func(msg T, index uint64, channels []<-chan T) int {
 		for {
-			i := seq[rand.Intn(len(seq))]
+			i := seq[rand.IntN(len(seq))]
 			if channelIsNotFull(channels[i]) {
 				return i
 			}
@@ -156,8 +158,8 @@ func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 	ch := make(chan T, bufferSize)
 
 	go func() {
-		for _, item := range collection {
-			ch <- item
+		for i := range collection {
+			ch <- collection[i]
 		}
 
 		close(ch)
@@ -219,17 +221,13 @@ func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime t
 	return Buffer(ch, size)
 }
 
-// BufferWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
+// BufferWithContext creates a slice of n elements from a channel, with context. Returns the slice and the slice length.
 // @TODO: we should probably provide an helper that reuse the same buffer.
-func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
-	expire := time.NewTimer(timeout)
-	defer expire.Stop()
-
+func BufferWithContext[T any](ctx context.Context, ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
 	buffer := make([]T, 0, size)
-	index := 0
 	now := time.Now()
 
-	for ; index < size; index++ {
+	for index := 0; index < size; index++ {
 		select {
 		case item, ok := <-ch:
 			if !ok {
@@ -238,12 +236,19 @@ func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (col
 
 			buffer = append(buffer, item)
 
-		case <-expire.C:
+		case <-ctx.Done():
 			return buffer, index, time.Since(now), true
 		}
 	}
 
-	return buffer, index, time.Since(now), true
+	return buffer, size, time.Since(now), true
+}
+
+// BufferWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
+func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	return BufferWithContext(ctx, ch, size)
 }
 
 // BatchWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
@@ -261,13 +266,13 @@ func FanIn[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 
 	// Start an output goroutine for each input channel in upstreams.
 	wg.Add(len(upstreams))
-	for _, c := range upstreams {
-		go func(c <-chan T) {
-			for n := range c {
+	for i := range upstreams {
+		go func(index int) {
+			for n := range upstreams[index] {
 				out <- n
 			}
 			wg.Done()
-		}(c)
+		}(i)
 	}
 
 	// Start a goroutine to close out once all the output goroutines are done.

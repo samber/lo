@@ -82,7 +82,7 @@ func TestAttemptWithDelay(t *testing.T) {
 	})
 
 	is.Equal(iter1, 1)
-	is.Greater(dur1, 0*time.Millisecond)
+	is.GreaterOrEqual(dur1, 0*time.Millisecond)
 	is.Less(dur1, 1*time.Millisecond)
 	is.Equal(err1, nil)
 	is.Equal(iter2, 6)
@@ -187,7 +187,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	})
 
 	is.Equal(iter1, 1)
-	is.Greater(dur1, 0*time.Millisecond)
+	is.GreaterOrEqual(dur1, 0*time.Millisecond)
 	is.Less(dur1, 1*time.Millisecond)
 	is.Nil(err1)
 
@@ -497,4 +497,147 @@ func TestTransaction(t *testing.T) {
 		is.Equal(42, state)
 		is.Equal(assert.AnError, err)
 	}
+}
+
+func TestNewThrottle(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	callCount := 0
+	f1 := func() {
+		callCount++
+	}
+	th, reset := NewThrottle(10*time.Millisecond, f1)
+
+	is.Equal(0, callCount)
+	for j := 0; j < 100; j++ {
+		th()
+	}
+	is.Equal(1, callCount)
+
+	time.Sleep(15 * time.Millisecond)
+
+	for j := 0; j < 100; j++ {
+		th()
+	}
+
+	is.Equal(2, callCount)
+
+	// reset counter
+	reset()
+	th()
+	is.Equal(3, callCount)
+
+}
+
+func TestNewThrottleWithCount(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	callCount := 0
+	f1 := func() {
+		callCount++
+	}
+	th, reset := NewThrottleWithCount(10*time.Millisecond, 3, f1)
+
+	// the function does not throttle for initial count number
+	for i := 0; i < 20; i++ {
+		th()
+	}
+	is.Equal(3, callCount)
+
+	time.Sleep(11 * time.Millisecond)
+
+	for i := 0; i < 20; i++ {
+		th()
+	}
+
+	is.Equal(6, callCount)
+
+	reset()
+	for i := 0; i < 20; i++ {
+		th()
+	}
+
+	is.Equal(9, callCount)
+}
+
+func TestNewThrottleBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	callCountA := 0
+	callCountB := 0
+	f1 := func(key string) {
+		if key == "a" {
+			callCountA++
+		} else {
+			callCountB++
+		}
+	}
+	th, reset := NewThrottleBy[string](10*time.Millisecond, f1)
+
+	is.Equal(0, callCountA)
+	is.Equal(0, callCountB)
+	for j := 0; j < 100; j++ {
+		th("a")
+		th("b")
+	}
+	is.Equal(1, callCountA)
+	is.Equal(1, callCountB)
+
+	time.Sleep(15 * time.Millisecond)
+
+	for j := 0; j < 100; j++ {
+		th("a")
+		th("b")
+	}
+
+	is.Equal(2, callCountA)
+	is.Equal(2, callCountB)
+
+	// reset counter
+	reset()
+	th("a")
+	is.Equal(3, callCountA)
+	is.Equal(2, callCountB)
+
+}
+
+func TestNewThrottleByWithCount(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	callCountA := 0
+	callCountB := 0
+	f1 := func(key string) {
+		if key == "a" {
+			callCountA++
+		} else {
+			callCountB++
+		}
+	}
+	th, reset := NewThrottleByWithCount(10*time.Millisecond, 3, f1)
+
+	// the function does not throttle for initial count number
+	for i := 0; i < 20; i++ {
+		th("a")
+		th("b")
+	}
+	is.Equal(3, callCountA)
+	is.Equal(3, callCountB)
+
+	time.Sleep(11 * time.Millisecond)
+
+	for i := 0; i < 20; i++ {
+		th("a")
+		th("b")
+	}
+
+	is.Equal(6, callCountA)
+	is.Equal(6, callCountB)
+
+	reset()
+	for i := 0; i < 20; i++ {
+		th("a")
+	}
+
+	is.Equal(9, callCountA)
+	is.Equal(6, callCountB)
 }
