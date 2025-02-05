@@ -268,6 +268,41 @@ func TestGroupByMap(t *testing.T) {
 		1: {"1", "4"},
 		2: {"2", "5"},
 	})
+
+	type myInt int
+	type myInts []myInt
+	result2 := GroupByMap(myInts{1, 0, 2, 3, 4, 5}, func(i myInt) (int, string) {
+		return int(i % 3), strconv.Itoa(int(i))
+	})
+
+	is.Equal(len(result2), 3)
+	is.Equal(result2, map[int][]string{
+		0: {"0", "3"},
+		1: {"1", "4"},
+		2: {"2", "5"},
+	})
+
+	type product struct {
+		ID         int64
+		CategoryID int64
+	}
+	products := []product{
+		{ID: 1, CategoryID: 1},
+		{ID: 2, CategoryID: 1},
+		{ID: 3, CategoryID: 2},
+		{ID: 4, CategoryID: 3},
+		{ID: 5, CategoryID: 3},
+	}
+	result3 := GroupByMap(products, func(item product) (int64, string) {
+		return item.CategoryID, "Product " + strconv.FormatInt(item.ID, 10)
+	})
+
+	is.Equal(len(result3), 3)
+	is.Equal(result3, map[int64][]string{
+		1: {"Product 1", "Product 2"},
+		2: {"Product 3"},
+		3: {"Product 4", "Product 5"},
+	})
 }
 
 func TestChunk(t *testing.T) {
