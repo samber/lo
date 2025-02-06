@@ -774,6 +774,19 @@ func Pop[T any, Slice ~[]T](collection *Slice) T {
 	return el
 }
 
+// PopOrElse is like Pop, but instead of panicking if the slice is empty,
+// this returns the given fallback.
+func PopOrElse[T any, Slice ~[]T](collection *Slice, fallback T) T {
+	if len(*collection) == 0 {
+		return fallback
+	}
+
+	el := (*collection)[len(*collection)-1]
+	*collection = (*collection)[:len(*collection)-2]
+
+	return el
+}
+
 // Shift removes the slice's first element and returns the removed element.
 // The slice's length decreases by 1.
 //
@@ -783,6 +796,19 @@ func Shift[T any, Slice ~[]T](collection *Slice) T {
 
 	el := (*collection)[0]
 	*collection = (*collection)[1:]
+
+	return el
+}
+
+// ShiftOrElse is like Shift, but instead of panicking if the slice is empty,
+// this returns the given fallback.
+func ShiftOrElse[T any, Slice ~[]T](collection *Slice, fallback T) T {
+	if len(*collection) == 0 {
+		return fallback
+	}
+
+	el := (*collection)[len(*collection)-1]
+	*collection = (*collection)[:len(*collection)-2]
 
 	return el
 }
