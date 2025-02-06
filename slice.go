@@ -742,3 +742,62 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 
 	return append(append(append(output, collection[:i]...), elements...), collection[i:]...)
 }
+
+func verifyNonEmpty[T any](slice []T) {
+	if len(slice) == 0 {
+		panic("Cannot remove element from empty slice!")
+	}
+}
+
+// Push adds the given elements to the end of the slice
+// and returns the slice's new length.
+//
+// Equivalent to, but more concise, than:
+//
+//	collection = append(collection, elements...)
+func Push[T any, Slice ~[]T](collection *Slice, elements ...T) int {
+	*collection = append(*collection, elements...)
+
+	return len(*collection)
+}
+
+// Pop removes the slice's last element and returns the removed element.
+// The slice's length decreases by 1.
+//
+// This panics if the slice is empty.
+func Pop[T any, Slice ~[]T](collection *Slice) T {
+	verifyNonEmpty(*collection)
+
+	el := (*collection)[len(*collection)-1]
+	*collection = (*collection)[:len(*collection)-2]
+
+	return el
+}
+
+// Shift removes the slice's first element and returns the removed element.
+// The slice's length decreases by 1.
+//
+// This panics if the slice is empty.
+func Shift[T any, Slice ~[]T](collection *Slice) T {
+	verifyNonEmpty(*collection)
+
+	el := (*collection)[0]
+	*collection = (*collection)[1:]
+
+	return el
+}
+
+// Unshift adds the given elements to the start of the slice
+// and returns the slice's new length.
+//
+// Equivalent to, but more concise than:
+//
+//	collection = append(elements, collection...)
+func Unshift[T any, Slice ~[]T](collection *Slice, elements ...T) int {
+	*collection = append(
+		elements,
+		*collection...,
+	)
+
+	return len(*collection)
+}
