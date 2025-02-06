@@ -59,6 +59,16 @@ func ExampleValueOr() {
 	// Output: 1 42
 }
 
+func ExampleGetOrSet() {
+	kv := map[string]int{"foo": 1}
+
+	result1 := GetOrSet(kv, "foo", 1)
+	result2 := GetOrSet(kv, "bar", 2)
+
+	fmt.Printf("%v %v %v", result1, result2, kv)
+	// Output: 1 2 map[bar:2 foo:1]
+}
+
 func ExamplePickBy() {
 	kv := map[string]int{"foo": 1, "bar": 2, "baz": 3}
 
