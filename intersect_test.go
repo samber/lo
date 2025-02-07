@@ -330,3 +330,34 @@ func TestWithoutNth(t *testing.T) {
 	nonempty := WithoutNth(allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
+
+func TestElementsMatch(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.False(ElementsMatch([]int{}, []int{1}))
+	is.False(ElementsMatch([]int{1}, []int{2}))
+	is.False(ElementsMatch([]int{1}, []int{1, 2}))
+	is.False(ElementsMatch([]int{1, 1, 2}, []int{2, 2, 1}))
+
+	is.True(ElementsMatch([]int{}, nil))
+	is.True(ElementsMatch([]int{1}, []int{1}))
+	is.True(ElementsMatch([]int{1, 1}, []int{1, 1}))
+	is.True(ElementsMatch([]int{1, 2}, []int{2, 1}))
+	is.True(ElementsMatch([]int{1, 1, 2}, []int{1, 2, 1}))
+}
+
+func TestElementsMatchBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type someType struct {
+		key string
+	}
+
+	is.True(ElementsMatchBy(
+		[]someType{{key: "a"}, {key: "b"}},
+		[]someType{{key: "b"}, {key: "a"}},
+		func(item someType) string { return item.key },
+	))
+}
