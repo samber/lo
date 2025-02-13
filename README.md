@@ -328,6 +328,13 @@ Error handling:
 Constraints:
 
 - Clonable
+- BePrinter
+- BePrintfer
+- BeWriter
+- BeReader
+- BeCloser
+- BeSeeker
+- BeReadWriter
 
 ### Filter
 
