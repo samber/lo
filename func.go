@@ -39,3 +39,15 @@ func Partial5[T1, T2, T3, T4, T5, T6, R any](f func(T1, T2, T3, T4, T5, T6) R, a
 		return f(arg1, t2, t3, t4, t5, t6)
 	}
 }
+
+func FuncWithIndexNoReturn[T any](f func(T)) func(T, int) {
+	return func(v T, _ int) {
+		f(v)
+	}
+}
+
+func FuncWithIndex[T any, U any](f func(T) U) func(T, int) U {
+	return func(v T, _ int) U {
+		return f(v)
+	}
+}
