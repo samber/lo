@@ -2348,6 +2348,36 @@ subset := lo.WithoutNth([]int{-2, -1, 0, 1, 2}, 3, -42, 1)
 // []int{-2, 0, 2}
 ```
 
+### ElementsMatch
+
+ElementsMatch returns true if lists
+contain the same set of elements (including empty set).
+
+If there are duplicate elements,
+the number of appearances of each of them in both lists should match.
+
+```go
+b := lo.ElementsMatch([]int{1, 1, 2}, []int{2, 1, 1})
+// true
+```
+
+### ElementsMatchBy
+
+ElementsMatchBy returns true if lists
+contain the same set of elements' keys (including empty set).
+
+If there are duplicate keys,
+the number of appearances of each of them in both lists should match.
+
+```go
+b := lo.ElementsMatchBy(
+    []someType{a, b},
+    []someType{b, a},
+    func(item someType) string { return item.ID() },
+)
+// true
+```
+
 ### IndexOf
 
 Returns the index at which the first occurrence of a value is found in an array or return -1 if the value cannot be found.
