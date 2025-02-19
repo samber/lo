@@ -3262,6 +3262,10 @@ result, ok := lo.CoalesceSlice([]int{1, 2, 3}, []int{4, 5, 6})
 result, ok := lo.CoalesceSlice(nil, []int{})
 // []
 // true
+
+result, ok := lo.CoalesceSlice([]int(nil))
+// []
+// false
 ```
 
 ### CoalesceSliceOrEmpty
@@ -3282,12 +3286,16 @@ Returns the first non-zero map.
 
 ```go
 result, ok := lo.CoalesceMap(map[string]int{"1": 1, "2": 2, "3": 3}, map[string]int{"4": 4, "5": 5, "6": 6})
-// [1, 2, 3]
+// {"1": 1, "2": 2, "3": 3}
 // true
 
 result, ok := lo.CoalesceMap(nil, map[string]int{})
-// []
+// {}
 // true
+
+result, ok := lo.CoalesceMap(map[string]int(nil))
+// {}
+// false
 ```
 
 ### CoalesceMapOrEmpty
