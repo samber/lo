@@ -670,11 +670,14 @@ Returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 ```go
 import lom "github.com/samber/lo/mutable"
 
-randomOrder := lom.Shuffle([]int{0, 1, 2, 3, 4, 5})
+list := []int{0, 1, 2, 3, 4, 5}
+lom.Shuffle(list)
+
+list
 // []int{1, 4, 0, 3, 5, 2}
 ```
 
-[[play](https://go.dev/play/p/ZTGG7OUCdnp)]
+[[play](https://go.dev/play/p/2xb3WdLjeSJ)]
 
 ### Reverse
 
@@ -692,7 +695,7 @@ list
 // []int{5, 4, 3, 2, 1, 0}
 ```
 
-[[play](https://go.dev/play/p/iv2e9jslfBM)]
+[[play](https://go.dev/play/p/O-M5pmCRgzV)]
 
 ### Fill
 
