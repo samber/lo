@@ -1394,6 +1394,7 @@ maps := lo.ChunkEntries(
 //    {"d": 4, "e": 5},
 // }
 ```
+[[play](https://go.dev/play/p/X_YQL6mmoD-)]
 
 ### MapKeys
 
