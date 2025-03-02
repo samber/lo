@@ -2853,6 +2853,7 @@ lo.SamplesBy([]string{"a", "b", "c"}, 3, r.Intn)
 
 A 1 line if/else statement.
 
+
 ```go
 result := lo.Ternary(true, "a", "b")
 // "a"
@@ -2860,6 +2861,8 @@ result := lo.Ternary(true, "a", "b")
 result := lo.Ternary(false, "a", "b")
 // "b"
 ```
+
+Take care to avoid dereferencing potentially nil pointers in your A/B expressions, because they are both evaluated. See TernaryF to avoid this problem.
 
 [[play](https://go.dev/play/p/t-D7WBL44h2)]
 
