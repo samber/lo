@@ -3805,8 +3805,6 @@ for i := 0; i < 5; i++ {
 errors := wg.Wait()
 ```
 
-[[play](https://go.dev/play/p/xoX1ZpT5Vbj)]
-
 ### Validate
 
 Helper function that creates an error when a condition is not met.
