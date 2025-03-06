@@ -1,4 +1,3 @@
-
 # lo - Iterate over slices, maps, channels...
 
 [![tag](https://img.shields.io/github/tag/samber/lo.svg)](https://github.com/samber/lo/releases)
@@ -311,6 +310,7 @@ Concurrency helpers:
 - [Transaction](#transaction)
 - [WaitFor](#waitfor)
 - [WaitForWithContext](#waitforwithcontext)
+- [WaitGroup](#waitgroup)
 
 Error handling:
 
@@ -3745,6 +3745,67 @@ iterations, duration, ok := lo.WaitForWithContext(expiringCtx, alwaysFalse, 100*
 // 5.1ms
 // false
 ```
+
+### WaitGroup
+
+Provides a safe way to wait for goroutines to complete, capturing any panics that occur.
+
+```go
+wg := lo.WaitGroup()
+
+// Start multiple goroutines
+for i := 0; i < 10; i++ {
+    i := i
+    wg.Go(func() {
+        // Do some work that might panic
+        if i == 5 {
+            panic("something went wrong")
+        }
+        
+        // Normal operation
+        fmt.Println("Processing item", i)
+    })
+}
+
+// Wait for all goroutines to complete and get any panic errors
+errors := wg.Wait()
+if len(errors) > 0 {
+    fmt.Println("Some goroutines panicked:", errors)
+}
+```
+
+You can also use context with goroutines:
+
+```go
+wg := lo.WaitGroup()
+ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+defer cancel()
+
+// Start goroutines with context
+for i := 0; i < 5; i++ {
+    i := i
+    wg.GoWithContext(ctx, func(ctx context.Context) {
+        select {
+        case <-ctx.Done():
+            fmt.Println("Operation cancelled for item", i)
+            return
+        default:
+            // Do some work with context
+            fmt.Println("Processing item", i)
+            
+            // You can check context during long operations
+            if ctx.Err() != nil {
+                return
+            }
+        }
+    })
+}
+
+// Wait for all goroutines to complete
+errors := wg.Wait()
+```
+
+[[play](https://go.dev/play/p/xoX1ZpT5Vbj)]
 
 ### Validate
 

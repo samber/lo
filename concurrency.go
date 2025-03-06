@@ -2,6 +2,8 @@ package lo
 
 import (
 	"context"
+	"fmt"
+	"runtime/debug"
 	"sync"
 	"time"
 )
@@ -133,4 +135,60 @@ func WaitForWithContext(ctx context.Context, condition func(ctx context.Context,
 			}
 		}
 	}
+}
+
+type waitGroup struct {
+	wg     sync.WaitGroup
+	mu     sync.Mutex
+	errors []error
+}
+
+func WaitGroup() *waitGroup {
+	return &waitGroup{}
+}
+
+func (wg *waitGroup) Go(f func()) {
+	wg.GoWithContextError(context.TODO(), func(ctx context.Context) error {
+		f()
+		return nil
+	})
+}
+
+func (wg *waitGroup) GoWithContext(ctx context.Context, f func(ctx context.Context)) {
+	wg.GoWithContextError(ctx, func(ctx context.Context) error {
+		f(ctx)
+		return nil
+	})
+}
+
+func (wg *waitGroup) GoWithError(f func() error) {
+	wg.GoWithContextError(context.TODO(), func(ctx context.Context) error {
+		return f()
+	})
+}
+
+func (wg *waitGroup) GoWithContextError(ctx context.Context, f func(ctx context.Context) error) {
+	wg.wg.Add(1)
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				wg.mu.Lock()
+				wg.errors = append(wg.errors, fmt.Errorf("panic: %v\n%s", r, debug.Stack()))
+				wg.mu.Unlock()
+			}
+			wg.wg.Done()
+		}()
+
+		err := f(ctx)
+		if err != nil {
+			wg.mu.Lock()
+			wg.errors = append(wg.errors, err)
+			wg.mu.Unlock()
+		}
+	}()
+}
+
+func (wg *waitGroup) Wait() []error {
+	wg.wg.Wait()
+	return wg.errors
 }

@@ -2,7 +2,9 @@ package lo
 
 import (
 	"context"
+	"fmt"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -409,5 +411,228 @@ func TestWaitForWithContext(t *testing.T) {
 		is.Equal(0, iter, "unexpected iteration count")
 		is.InEpsilon(1*time.Millisecond, duration, float64(5*time.Microsecond))
 		is.False(ok)
+	})
+}
+
+func TestWaitGroup(t *testing.T) {
+	t.Parallel()
+
+	t.Run("basic functionality", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		wg := WaitGroup()
+		counter := atomic.Int32{}
+		n := 10
+		for i := 0; i < n; i++ {
+			wg.Go(func() {
+				time.Sleep(10 * time.Millisecond)
+				counter.Add(1)
+			})
+		}
+
+		errors := wg.Wait()
+		is.Equal(int32(n), counter.Load())
+		is.Empty(errors)
+	})
+
+	t.Run("panic handling", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		wg := WaitGroup()
+		counter := atomic.Int32{}
+
+		wg.Go(func() {
+			counter.Add(1)
+		})
+
+		wg.Go(func() {
+			panic("test panic")
+		})
+
+		wg.Go(func() {
+			counter.Add(1)
+		})
+
+		errors := wg.Wait()
+
+		is.Equal(int32(2), counter.Load())
+		is.Len(errors, 1)
+		is.Contains(errors[0].Error(), "panic: test panic")
+	})
+
+	t.Run("GoWithContext", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		wg := WaitGroup()
+		counter := atomic.Int32{}
+		ctx := context.Background()
+		n := 5
+
+		for i := 0; i < n; i++ {
+			wg.GoWithContext(ctx, func(ctx context.Context) {
+				time.Sleep(10 * time.Millisecond)
+				counter.Add(1)
+			})
+		}
+
+		errors := wg.Wait()
+		is.Equal(int32(n), counter.Load())
+		is.Empty(errors)
+	})
+
+	t.Run("GoWithContext with canceled context", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		wg := WaitGroup()
+		counter := atomic.Int32{}
+		ctx, cancel := context.WithCancel(context.Background())
+
+		// Cancel context first
+		cancel()
+
+		wg.GoWithContext(ctx, func(ctx context.Context) {
+			// Check if context is already canceled
+			if ctx.Err() != nil {
+				return
+			}
+			counter.Add(1)
+		})
+
+		errors := wg.Wait()
+		is.Equal(int32(0), counter.Load())
+		is.Empty(errors)
+	})
+
+	t.Run("GoWithError", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		wg := WaitGroup()
+		counter := atomic.Int32{}
+
+		wg.GoWithError(func() error {
+			counter.Add(1)
+			return nil
+		})
+
+		wg.GoWithError(func() error {
+			counter.Add(1)
+			return fmt.Errorf("test error")
+		})
+
+		wg.GoWithError(func() error {
+			counter.Add(1)
+			return nil
+		})
+
+		errors := wg.Wait()
+		is.Equal(int32(3), counter.Load())
+		is.Len(errors, 1)
+		is.Equal("test error", errors[0].Error())
+	})
+
+	t.Run("GoWithContextError", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		wg := WaitGroup()
+		counter := atomic.Int32{}
+		ctx := context.Background()
+
+		wg.GoWithContextError(ctx, func(ctx context.Context) error {
+			counter.Add(1)
+			return nil
+		})
+
+		wg.GoWithContextError(ctx, func(ctx context.Context) error {
+			counter.Add(1)
+			return fmt.Errorf("context error")
+		})
+
+		errors := wg.Wait()
+		is.Equal(int32(2), counter.Load())
+		is.Len(errors, 1)
+		is.Equal("context error", errors[0].Error())
+	})
+
+	t.Run("GoWithContextError with canceled context", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		wg := WaitGroup()
+		counter := atomic.Int32{}
+		ctx, cancel := context.WithCancel(context.Background())
+
+		wg.GoWithContextError(ctx, func(ctx context.Context) error {
+			// Simulate a long-running task
+			time.Sleep(50 * time.Millisecond)
+			if ctx.Err() != nil {
+				return ctx.Err()
+			}
+			counter.Add(1)
+			return nil
+		})
+
+		// Cancel context immediately
+		cancel()
+
+		errors := wg.Wait()
+		is.Equal(int32(0), counter.Load())
+		is.Len(errors, 1)
+		is.Equal(context.Canceled.Error(), errors[0].Error())
+	})
+
+	t.Run("mixed Go methods", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		wg := WaitGroup()
+		counter := atomic.Int32{}
+		ctx := context.Background()
+
+		wg.Go(func() {
+			counter.Add(1)
+		})
+
+		wg.GoWithContext(ctx, func(ctx context.Context) {
+			counter.Add(1)
+		})
+
+		wg.GoWithError(func() error {
+			counter.Add(1)
+			return nil
+		})
+
+		wg.GoWithContextError(ctx, func(ctx context.Context) error {
+			counter.Add(1)
+			return nil
+		})
+
+		errors := wg.Wait()
+		is.Equal(int32(4), counter.Load())
+		is.Empty(errors)
+	})
+
+	t.Run("high concurrency", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		wg := WaitGroup()
+		counter := atomic.Int32{}
+		n := 100
+
+		for i := 0; i < n; i++ {
+			wg.Go(func() {
+				counter.Add(1)
+			})
+		}
+
+		errors := wg.Wait()
+		is.Equal(int32(n), counter.Load())
+		is.Empty(errors)
 	})
 }
