@@ -190,6 +190,7 @@ Supported helpers for time and duration:
 
 - [Duration](#duration)
 - [Duration0 -> Duration10](#duration0---duration10)
+- [Time Constants](#time-constants)
 
 Supported helpers for channels:
 
@@ -1888,6 +1889,30 @@ str, nbr, err, duration := lo.Duration3(func() (string, int, error) {
 // nil
 // 3s
 ```
+
+### Time Constants
+
+Predefined time constants for easy, consistent access without repeating calculations like `24 * time.Hour`.
+
+```go
+const (
+    Day   = 24 * time.Hour
+    Week  = 7 * Day
+    Month = 30 * Day
+    Year  = 365 * Day
+)
+```
+
+Example usage:
+```go
+    fmt.Println(lo.Day)   // 24h0m0s
+    fmt.Println(lo.Week)  // 168h0m0s
+    fmt.Println(lo.Month) // 720h0m0s
+    fmt.Println(lo.Year)  // 8760h0m0s
+
+    deadline := time.Now().Add(lo.Week) // Adds 7 days
+```
+Using these constants helps avoid repetition and improves readability.
 
 ### ChannelDispatcher
 
