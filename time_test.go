@@ -7,6 +7,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestTimeConstants(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal(24*time.Hour, Day, "Day constant should be 24 hours")
+	is.Equal(7*Day, Week, "Week constant should be 7 days")
+	is.Equal(30*Day, Month, "Month constant should be 30 days")
+	is.Equal(365*Day, Year, "Year constant should be 365 days")
+}
+
 func TestDuration(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

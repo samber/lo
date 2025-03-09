@@ -2,6 +2,13 @@ package lo
 
 import "time"
 
+const (
+	Day   = 24 * time.Hour
+	Week  = 7 * Day
+	Month = 30 * Day
+	Year  = 365 * Day
+)
+
 // Duration returns the time taken to execute a function.
 func Duration(cb func()) time.Duration {
 	return Duration0(cb)
