@@ -253,6 +253,8 @@ Supported search helpers:
 - [LastOrEmpty](#LastOrEmpty)
 - [LastOr](#LastOr)
 - [Nth](#nth)
+- [NthOr](#nthor)
+- [NthOrEmpty](#nthorempty)
 - [Sample](#sample)
 - [SampleBy](#sampleby)
 - [Samples](#samples)
@@ -2803,6 +2805,40 @@ nth, err := lo.Nth([]int{0, 1, 2, 3}, -2)
 // 2
 ```
 
+### NthOr
+
+Returns the element at index `nth` of the collection. If `nth` is negative, it returns the `nth` element from the end. If `nth` is out of slice bounds, it returns the provided fallback value
+```go	
+nth := lo.NthOr([]int{10, 20, 30, 40, 50}, 2, -1)
+// 30
+
+nth := lo.NthOr([]int{10, 20, 30, 40, 50}, -1, -1)
+// 50
+
+nth := lo.NthOr([]int{10, 20, 30, 40, 50}, 5, -1)
+// -1 (fallback value)
+```
+
+### NthOrEmpty
+
+Returns the element at index `nth` of the collection. If `nth` is negative, it returns the `nth` element from the end. If `nth` is out of slice bounds, it returns the zero value for the element type (e.g., 0 for integers, "" for strings, etc).
+``` go
+nth := lo.NthOrEmpty([]int{10, 20, 30, 40, 50}, 2)
+// 30
+
+nth := lo.NthOrEmpty([]int{10, 20, 30, 40, 50}, -1)
+// 50
+
+nth := lo.NthOrEmpty([]int{10, 20, 30, 40, 50}, 5)
+// 0 (zero value for int)
+
+nth := lo.NthOrEmpty([]string{"apple", "banana", "cherry"}, 2)
+// "cherry"
+
+nth := lo.NthOrEmpty([]string{"apple", "banana", "cherry"}, 5)
+// "" (zero value for string)
+```
+
 ### Sample
 
 Returns a random item from collection.
@@ -2814,6 +2850,8 @@ lo.Sample([]string{"a", "b", "c"})
 lo.Sample([]string{})
 // ""
 ```
+
+
 
 ### SampleBy
 
