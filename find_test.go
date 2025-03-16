@@ -630,6 +630,92 @@ func TestNth(t *testing.T) {
 	is.Equal(err6, nil)
 }
 
+func TestNthOr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	t.Run("Integers", func(t *testing.T) {
+		const defaultValue = -1
+		intSlice := []int{10, 20, 30, 40, 50}
+
+		is.Equal(30, NthOr(intSlice, 2, defaultValue))
+		is.Equal(50, NthOr(intSlice, -1, defaultValue))
+		is.Equal(defaultValue, NthOr(intSlice, 5, defaultValue))
+	})
+
+	t.Run("Strings", func(t *testing.T) {
+		const defaultValue = "none"
+		strSlice := []string{"apple", "banana", "cherry", "date"}
+
+		is.Equal("banana", NthOr(strSlice, 1, defaultValue))      // Index 1, expected "banana"
+		is.Equal("cherry", NthOr(strSlice, -2, defaultValue))     // Negative index -2, expected "cherry"
+		is.Equal(defaultValue, NthOr(strSlice, 10, defaultValue)) // Out of bounds, fallback "none"
+	})
+
+	t.Run("Structs", func(t *testing.T) {
+		type User struct {
+			ID   int
+			Name string
+		}
+		userSlice := []User{
+			{ID: 1, Name: "Alice"},
+			{ID: 2, Name: "Bob"},
+			{ID: 3, Name: "Charlie"},
+		}
+
+		expectedUser := User{ID: 1, Name: "Alice"}
+		is.Equal(expectedUser, NthOr(userSlice, 0, User{ID: 0, Name: "Unknown"}))
+
+		expectedUser = User{ID: 3, Name: "Charlie"}
+		is.Equal(expectedUser, NthOr(userSlice, -1, User{ID: 0, Name: "Unknown"}))
+
+		expectedUser = User{ID: 0, Name: "Unknown"}
+		is.Equal(expectedUser, NthOr(userSlice, 10, User{ID: 0, Name: "Unknown"}))
+	})
+}
+
+func TestNthOrEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+	t.Run("Integers", func(t *testing.T) {
+		const defaultValue = 0
+		intSlice := []int{10, 20, 30, 40, 50}
+
+		is.Equal(30, NthOrEmpty(intSlice, 2))
+		is.Equal(50, NthOrEmpty(intSlice, -1))
+		is.Equal(defaultValue, NthOrEmpty(intSlice, 10))
+	})
+
+	t.Run("Strings", func(t *testing.T) {
+		const defaultValue = ""
+		strSlice := []string{"apple", "banana", "cherry", "date"}
+
+		is.Equal("banana", NthOrEmpty(strSlice, 1))
+		is.Equal("cherry", NthOrEmpty(strSlice, -2))
+		is.Equal(defaultValue, NthOrEmpty(strSlice, 10))
+	})
+
+	t.Run("Structs", func(t *testing.T) {
+		type User struct {
+			ID   int
+			Name string
+		}
+		userSlice := []User{
+			{ID: 1, Name: "Alice"},
+			{ID: 2, Name: "Bob"},
+			{ID: 3, Name: "Charlie"},
+		}
+
+		expectedUser := User{ID: 1, Name: "Alice"}
+		is.Equal(expectedUser, NthOrEmpty(userSlice, 0))
+
+		expectedUser = User{ID: 3, Name: "Charlie"}
+		is.Equal(expectedUser, NthOrEmpty(userSlice, -1))
+
+		expectedUser = User{ID: 0, Name: ""}
+		is.Equal(expectedUser, NthOrEmpty(userSlice, 10))
+	})
+}
+
 func TestSample(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
