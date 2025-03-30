@@ -107,6 +107,19 @@ func FindKeyBy[K comparable, V any](object map[K]V, predicate func(key K, value 
 	return Empty[K](), false
 }
 
+// FindKeysBy returns the values of the elements predicate returns truthy for.
+func FindKeysBy[K comparable, V any](object map[K]V, predicate func(key K, value V) bool) []V {
+	result := make([]V, 0)
+
+	for k := range object {
+		if predicate(k, object[k]) {
+			result = append(result, object[k])
+		}
+	}
+
+	return result
+}
+
 // FindUniques returns a slice with all the unique elements of the collection.
 // The order of result values is determined by the order they occur in the collection.
 func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
