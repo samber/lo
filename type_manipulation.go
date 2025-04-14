@@ -53,6 +53,15 @@ func FromPtrOr[T any](x *T, fallback T) T {
 	return *x
 }
 
+// EnsureNotNilPtr returns a pointer that is not nil.
+// When given a nil pointer, a pointer to the zero value is returned.
+func EnsureNotNilPtr[T any](x *T) *T {
+	if x == nil {
+		return new(T)
+	}
+	return x
+}
+
 // ToSlicePtr returns a slice of pointer copy of value.
 func ToSlicePtr[T any](collection []T) []*T {
 	result := make([]*T, len(collection))
