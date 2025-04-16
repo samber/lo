@@ -253,6 +253,8 @@ Supported search helpers:
 - [LastOrEmpty](#LastOrEmpty)
 - [LastOr](#LastOr)
 - [Nth](#nth)
+- [NthOr](#nthor)
+- [NthOrEmpty](#nthorempty)
 - [Sample](#sample)
 - [SampleBy](#sampleby)
 - [Samples](#samples)
@@ -2804,6 +2806,40 @@ nth, err := lo.Nth([]int{0, 1, 2, 3}, -2)
 // 2
 ```
 
+### NthOr
+
+Returns the element at index `nth` of the collection. If `nth` is negative, it returns the `nth` element from the end. If `nth` is out of slice bounds, it returns the provided fallback value
+```go	
+nth := lo.NthOr([]int{10, 20, 30, 40, 50}, 2, -1)
+// 30
+
+nth := lo.NthOr([]int{10, 20, 30, 40, 50}, -1, -1)
+// 50
+
+nth := lo.NthOr([]int{10, 20, 30, 40, 50}, 5, -1)
+// -1 (fallback value)
+```
+
+### NthOrEmpty
+
+Returns the element at index `nth` of the collection. If `nth` is negative, it returns the `nth` element from the end. If `nth` is out of slice bounds, it returns the zero value for the element type (e.g., 0 for integers, "" for strings, etc).
+``` go
+nth := lo.NthOrEmpty([]int{10, 20, 30, 40, 50}, 2)
+// 30
+
+nth := lo.NthOrEmpty([]int{10, 20, 30, 40, 50}, -1)
+// 50
+
+nth := lo.NthOrEmpty([]int{10, 20, 30, 40, 50}, 5)
+// 0 (zero value for int)
+
+nth := lo.NthOrEmpty([]string{"apple", "banana", "cherry"}, 2)
+// "cherry"
+
+nth := lo.NthOrEmpty([]string{"apple", "banana", "cherry"}, 5)
+// "" (zero value for string)
+```
+
 ### Sample
 
 Returns a random item from collection.
@@ -2815,6 +2851,8 @@ lo.Sample([]string{"a", "b", "c"})
 lo.Sample([]string{})
 // ""
 ```
+
+
 
 ### SampleBy
 
@@ -2854,6 +2892,7 @@ lo.SamplesBy([]string{"a", "b", "c"}, 3, r.Intn)
 
 A 1 line if/else statement.
 
+
 ```go
 result := lo.Ternary(true, "a", "b")
 // "a"
@@ -2861,6 +2900,8 @@ result := lo.Ternary(true, "a", "b")
 result := lo.Ternary(false, "a", "b")
 // "b"
 ```
+
+Take care to avoid dereferencing potentially nil pointers in your A/B expressions, because they are both evaluated. See TernaryF to avoid this problem.
 
 [[play](https://go.dev/play/p/t-D7WBL44h2)]
 
@@ -4012,7 +4053,7 @@ ok  	github.com/samber/lo	6.657s
 ```
 
 - `lo.Map` is way faster (x7) than `go-funk`, a reflection-based Map implementation.
-- `lo.Map` have the same allocation profile than `for`.
+- `lo.Map` has the same allocation profile as `for`.
 - `lo.Map` is 4% slower than `for`.
 - `lop.Map` is slower than `lo.Map` because it implies more memory allocation and locks. `lop.Map` will be useful for long-running callbacks, such as i/o bound processing.
 - `for` beats other implementations for memory and CPU.

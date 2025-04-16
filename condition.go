@@ -1,6 +1,7 @@
 package lo
 
 // Ternary is a 1 line if/else statement.
+// Take care to avoid dereferencing potentially nil pointers in your A/B expressions, because they are both evaluated. See TernaryF to avoid this problem.
 // Play: https://go.dev/play/p/t-D7WBL44h2
 func Ternary[T any](condition bool, ifOutput T, elseOutput T) T {
 	if condition {
