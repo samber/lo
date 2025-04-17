@@ -21,6 +21,17 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 	return result
 }
 
+// SliceConvert converts a slice of one type to a slice of another type.
+func SliceConvert[T any, Slice1 ~[]T, E any, Slice2 ~[]E](collection Slice1, converter func(item T) E) Slice2 {
+	result := make(Slice2, 0, len(collection))
+
+	for i := range collection {
+		result = append(result, converter(collection[i]))
+	}
+
+	return result
+}
+
 // Map manipulates a slice and transforms it to a slice of another type.
 // Play: https://go.dev/play/p/OkPcYAhBo0D
 func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
