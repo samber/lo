@@ -22,8 +22,8 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 }
 
 // SliceConvert converts a slice of one type to a slice of another type.
-func SliceConvert[T any, Slice1 ~[]T, E any, Slice2 ~[]E](collection Slice1, converter func(item T) E) Slice2 {
-	result := make(Slice2, 0, len(collection))
+func SliceConvert[T any, E any](collection []T, converter func(item T) E) []E {
+	result := make([]E, 0, len(collection))
 
 	for i := range collection {
 		result = append(result, converter(collection[i]))

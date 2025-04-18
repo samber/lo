@@ -37,7 +37,7 @@ func TestSliceConvert(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result := SliceConvert[int, []int, string, []string]([]int{1, 2, 3, 4}, func(x int) string {
+	result := SliceConvert([]int{1, 2, 3, 4}, func(x int) string {
 		return strconv.FormatInt(int64(x), 10)
 	})
 
@@ -49,11 +49,11 @@ func TestSliceConvert(t *testing.T) {
 	}
 
 	slice := []sliceConvert{{id: 1, name: "foo"}, {id: 2, name: "bar"}}
-	otherSlice := SliceConvert[sliceConvert, []sliceConvert, int, []int](slice, func(x sliceConvert) int {
+	idList := SliceConvert(slice, func(x sliceConvert) int {
 		return x.id
 	})
 
-	is.Equal(otherSlice, []int{1, 2})
+	is.Equal(idList, []int{1, 2})
 }
 
 func TestMap(t *testing.T) {
