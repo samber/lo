@@ -1456,6 +1456,21 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 
 [[play](https://go.dev/play/p/ZuiCZpDt6LD)]
 
+### FilterMapToSlice
+
+Transforms a map into a slice based on specific iteratee. The iteratee returns a value and a boolean. If the boolean is true, the value is added to the result slice.
+
+If the boolean is false, the value is not added to the result slice. The order of the keys in the input map is not specified and the order of the keys in the output slice is not guaranteed.
+
+```go
+kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
+
+result := lo.FilterMapToSlice(kv, func(k int, v int64) (string, bool) {
+    return fmt.Sprintf("%d_%d", k, v), k%2 == 0
+})
+// []{"2_2", "4_4"}
+```
+
 ### Range / RangeFrom / RangeWithSteps
 
 Creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
