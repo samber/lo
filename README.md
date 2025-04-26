@@ -219,6 +219,8 @@ Supported intersection helpers:
 - [WithoutBy](#withoutby)
 - [WithoutEmpty](#withoutempty)
 - [WithoutNth](#withoutnth)
+- [ElementsMatch](#ElementsMatch)
+- [ElementsMatchBy](#ElementsMatchBy)
 
 Supported search helpers:
 
@@ -2350,11 +2352,11 @@ subset := lo.WithoutNth([]int{-2, -1, 0, 1, 2}, 3, -42, 1)
 
 ### ElementsMatch
 
-ElementsMatch returns true if lists
-contain the same set of elements (including empty set).
+Returns true if lists contain the same set of elements (including empty set).
 
-If there are duplicate elements,
-the number of appearances of each of them in both lists should match.
+If there are duplicate elements, the number of appearances of each of them in both lists should match.
+
+The order of elements is not checked.
 
 ```go
 b := lo.ElementsMatch([]int{1, 1, 2}, []int{2, 1, 1})
@@ -2363,11 +2365,11 @@ b := lo.ElementsMatch([]int{1, 1, 2}, []int{2, 1, 1})
 
 ### ElementsMatchBy
 
-ElementsMatchBy returns true if lists
-contain the same set of elements' keys (including empty set).
+Returns true if lists contain the same set of elements' keys (including empty set).
 
-If there are duplicate keys,
-the number of appearances of each of them in both lists should match.
+If there are duplicate keys, the number of appearances of each of them in both lists should match.
+
+The order of elements is not checked.
 
 ```go
 b := lo.ElementsMatchBy(
