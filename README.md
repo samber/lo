@@ -12,11 +12,9 @@
 
 ✨ **`samber/lo` is a Lodash-style Go library based on Go 1.18+ Generics.**
 
-This project started as an experiment with the new generics implementation. It may look like [Lodash](https://github.com/lodash/lodash) in some aspects. I used to code with the fantastic ["go-funk"](https://github.com/thoas/go-funk) package, but "go-funk" uses reflection and therefore is not typesafe.
+A utility library based on Go 1.18+ generics that makes it easier to work with slices, maps, strings, channels, and functions. It provides dozens of handy methods to simplify common coding tasks and improve code readability. It may look like [Lodash](https://github.com/lodash/lodash) in some aspects.
 
-As expected, benchmarks demonstrate that generics are much faster than implementations based on the "reflect" package. Benchmarks also show similar performance gains compared to pure `for` loops. [See below](#-benchmark).
-
-In the future, 5 to 10 helpers will overlap with those coming into the Go standard library (under package names `slices` and `maps`). I feel this library is legitimate and offers many more valuable abstractions.
+5 to 10 helpers may overlap with those from the Go standard library, in packages `slices` and `maps`. I feel this library is legitimate and offers many more valuable abstractions.
 
 **See also:**
 
@@ -25,7 +23,7 @@ In the future, 5 to 10 helpers will overlap with those coming into the Go standa
 
 **Why this name?**
 
-I wanted a **short name**, similar to "Lodash" and no Go package uses this name.
+I wanted a **short name**, similar to "Lodash", and no Go package uses this name.
 
 ![lo](img/logo-full.png)
 
