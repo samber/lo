@@ -48,6 +48,7 @@ func MapI[T any, Slice ~[]T](collection Slice, fn func(item T, index int) T) {
 	for i := range collection {
 		collection[i] = fn(collection[i], i)
 	}
+}
 
 // Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 // Play: https://go.dev/play/p/2xb3WdLjeSJ
