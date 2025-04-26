@@ -221,6 +221,8 @@ Supported intersection helpers:
 - [WithoutBy](#withoutby)
 - [WithoutEmpty](#withoutempty)
 - [WithoutNth](#withoutnth)
+- [ElementsMatch](#ElementsMatch)
+- [ElementsMatchBy](#ElementsMatchBy)
 
 Supported search helpers:
 
@@ -2398,6 +2400,36 @@ Returns slice excluding nth value.
 ```go
 subset := lo.WithoutNth([]int{-2, -1, 0, 1, 2}, 3, -42, 1)
 // []int{-2, 0, 2}
+```
+
+### ElementsMatch
+
+Returns true if lists contain the same set of elements (including empty set).
+
+If there are duplicate elements, the number of appearances of each of them in both lists should match.
+
+The order of elements is not checked.
+
+```go
+b := lo.ElementsMatch([]int{1, 1, 2}, []int{2, 1, 1})
+// true
+```
+
+### ElementsMatchBy
+
+Returns true if lists contain the same set of elements' keys (including empty set).
+
+If there are duplicate keys, the number of appearances of each of them in both lists should match.
+
+The order of elements is not checked.
+
+```go
+b := lo.ElementsMatchBy(
+    []someType{a, b},
+    []someType{b, a},
+    func(item someType) string { return item.ID() },
+)
+// true
 ```
 
 ### IndexOf

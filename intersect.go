@@ -225,3 +225,41 @@ func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice {
 
 	return result
 }
+
+// ElementsMatch returns true if lists contain the same set of elements (including empty set).
+// If there are duplicate elements, the number of appearances of each of them in both lists should match.
+// The order of elements is not checked.
+func ElementsMatch[T comparable, Slice ~[]T](list1 Slice, list2 Slice) bool {
+	return ElementsMatchBy(list1, list2, func(item T) T { return item })
+}
+
+// ElementsMatchBy returns true if lists contain the same set of elements' keys (including empty set).
+// If there are duplicate keys, the number of appearances of each of them in both lists should match.
+// The order of elements is not checked.
+func ElementsMatchBy[T any, K comparable](list1 []T, list2 []T, iteratee func(item T) K) bool {
+	if len(list1) != len(list2) {
+		return false
+	}
+
+	if len(list1) == 0 {
+		return true
+	}
+
+	counters := make(map[K]int, len(list1))
+
+	for _, el := range list1 {
+		counters[iteratee(el)]++
+	}
+
+	for _, el := range list2 {
+		counters[iteratee(el)]--
+	}
+
+	for _, count := range counters {
+		if count != 0 {
+			return false
+		}
+	}
+
+	return true
+}
