@@ -334,10 +334,15 @@ Mutable: like `lo.Filter()`, but the slice is updated in place.
 import lom "github.com/samber/lo/mutable"
 
 list := []int{1, 2, 3, 4}
-lom.Filter(list, func(x int) bool {
+newList := lom.Filter(list, func(x int) bool {
     return x%2 == 0
 })
-// []int{2, 4, 6, 8}
+
+list
+// []int{2, 4, 3, 4}
+
+newList
+// []int{2, 4}
 ```
 
 ### Map

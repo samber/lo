@@ -2,6 +2,32 @@ package mutable
 
 import "fmt"
 
+func ExampleFilter() {
+	list := []int{1, 2, 3, 4}
+
+	newList := Filter(list, func(nbr int) bool {
+		return nbr%2 == 0
+	})
+
+	fmt.Printf("%v\n%v", list, newList)
+	// Output:
+	// [2 4 3 4]
+	// [2 4]
+}
+
+func ExampleFilterI() {
+	list := []int{1, 2, 3, 4}
+
+	newList := Filter(list, func(nbr int) bool {
+		return nbr%2 == 0
+	})
+
+	fmt.Printf("%v\n%v", list, newList)
+	// Output:
+	// [2 4 3 4]
+	// [2 4]
+}
+
 func ExampleMap() {
 	list := []int{1, 2, 3, 4}
 

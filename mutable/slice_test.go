@@ -10,16 +10,20 @@ func TestFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Filter([]int{1, 2, 3, 4}, func(x int) bool {
+	input1 := []int{1, 2, 3, 4}
+	r1 := Filter(input1, func(x int) bool {
 		return x%2 == 0
 	})
 
+	is.Equal(input1, []int{2, 4, 3, 4})
 	is.Equal(r1, []int{2, 4})
 
-	r2 := Filter([]string{"", "foo", "", "bar", ""}, func(x string) bool {
+	input2 := []string{"", "foo", "", "bar", ""}
+	r2 := Filter(input2, func(x string) bool {
 		return len(x) > 0
 	})
 
+	is.Equal(input2, []string{"foo", "bar", "", "bar", ""})
 	is.Equal(r2, []string{"foo", "bar"})
 }
 
