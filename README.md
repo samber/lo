@@ -328,6 +328,18 @@ even := lo.Filter([]int{1, 2, 3, 4}, func(x int, index int) bool {
 
 [[play](https://go.dev/play/p/Apjg3WeSi7K)]
 
+Mutable: like `lo.Filter()`, but the slice is updated in place.
+
+```go
+import lom "github.com/samber/lo/mutable"
+
+list := []int{1, 2, 3, 4}
+lom.Filter(list, func(x int) bool {
+    return x%2 == 0
+})
+// []int{2, 4, 6, 8}
+```
+
 ### Map
 
 Manipulates a slice of one type and transforms it into a slice of another type:
