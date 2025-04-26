@@ -58,8 +58,6 @@ names := lo.Uniq([]string{"Samuel", "John", "Samuel"})
 // []string{"Samuel", "John"}
 ```
 
-Most of the time, the compiler will be able to infer the type so that you can call: `lo.Uniq([]string{...})`.
-
 ### Tips for lazy developers
 
 I cannot recommend it, but in case you are too lazy for repeating `lo.` everywhere, you can import the entire library into the namespace.
