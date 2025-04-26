@@ -513,6 +513,23 @@ func TestMapToSlice(t *testing.T) {
 	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
 }
 
+func TestFilterMapToSlice(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := FilterMapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, v int) (string, bool) {
+		return fmt.Sprintf("%d_%d", k, v), k%2 == 0
+	})
+	result2 := FilterMapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, _ int) (string, bool) {
+		return strconv.FormatInt(int64(k), 10), k%2 == 0
+	})
+
+	is.Equal(len(result1), 2)
+	is.Equal(len(result2), 2)
+	is.ElementsMatch(result1, []string{"2_6", "4_8"})
+	is.ElementsMatch(result2, []string{"2", "4"})
+}
+
 func BenchmarkAssign(b *testing.B) {
 	counts := []int{32768, 1024, 128, 32, 2}
 
