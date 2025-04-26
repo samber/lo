@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"context"
 	"sync"
 	"time"
 
@@ -220,17 +221,13 @@ func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime t
 	return Buffer(ch, size)
 }
 
-// BufferWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
+// BufferWithContext creates a slice of n elements from a channel, with context. Returns the slice and the slice length.
 // @TODO: we should probably provide an helper that reuse the same buffer.
-func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
-	expire := time.NewTimer(timeout)
-	defer expire.Stop()
-
+func BufferWithContext[T any](ctx context.Context, ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
 	buffer := make([]T, 0, size)
-	index := 0
 	now := time.Now()
 
-	for ; index < size; index++ {
+	for index := 0; index < size; index++ {
 		select {
 		case item, ok := <-ch:
 			if !ok {
@@ -239,12 +236,19 @@ func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (col
 
 			buffer = append(buffer, item)
 
-		case <-expire.C:
+		case <-ctx.Done():
 			return buffer, index, time.Since(now), true
 		}
 	}
 
-	return buffer, index, time.Since(now), true
+	return buffer, size, time.Since(now), true
+}
+
+// BufferWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
+func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	return BufferWithContext(ctx, ch, size)
 }
 
 // BatchWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.

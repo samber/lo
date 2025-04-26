@@ -7,41 +7,42 @@ on:
   pull_request:
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         go:
-          - '1.18'
-          - '1.19'
-          - '1.20'
-          - '1.21'
-          - '1.22'
-          - '1.x'
+          - "1.18"
+          - "1.19"
+          - "1.20"
+          - "1.21"
+          - "1.22"
+          - "1.23"
+          - "1.24"
+          - "1.x"
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: ${{ matrix.go }}
-        stable: false
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+          stable: false
 
-    - name: Build
-      run: make build
+      - name: Build
+        run: make build
 
-    - name: Test
-      run: make test
+      - name: Test
+        run: make test
 
-    - name: Test
-      run: make coverage
+      - name: Test
+        run: make coverage
 
-    - name: Codecov
-      uses: codecov/codecov-action@v5
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./cover.out
-        flags: unittests
-        verbose: true
-      if: matrix.go == '1.18'
+      - name: Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./cover.out
+          flags: unittests
+          verbose: true
+        if: matrix.go == '1.18'

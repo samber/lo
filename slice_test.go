@@ -254,6 +254,57 @@ func TestGroupBy(t *testing.T) {
 	is.IsType(nonempty[42], allStrings, "type preserved")
 }
 
+func TestGroupByMap(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := GroupByMap([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, string) {
+		return i % 3, strconv.Itoa(i)
+	})
+
+	is.Equal(len(result1), 3)
+	is.Equal(result1, map[int][]string{
+		0: {"0", "3"},
+		1: {"1", "4"},
+		2: {"2", "5"},
+	})
+
+	type myInt int
+	type myInts []myInt
+	result2 := GroupByMap(myInts{1, 0, 2, 3, 4, 5}, func(i myInt) (int, string) {
+		return int(i % 3), strconv.Itoa(int(i))
+	})
+
+	is.Equal(len(result2), 3)
+	is.Equal(result2, map[int][]string{
+		0: {"0", "3"},
+		1: {"1", "4"},
+		2: {"2", "5"},
+	})
+
+	type product struct {
+		ID         int64
+		CategoryID int64
+	}
+	products := []product{
+		{ID: 1, CategoryID: 1},
+		{ID: 2, CategoryID: 1},
+		{ID: 3, CategoryID: 2},
+		{ID: 4, CategoryID: 3},
+		{ID: 5, CategoryID: 3},
+	}
+	result3 := GroupByMap(products, func(item product) (int64, string) {
+		return item.CategoryID, "Product " + strconv.FormatInt(item.ID, 10)
+	})
+
+	is.Equal(len(result3), 3)
+	is.Equal(result3, map[int64][]string{
+		1: {"Product 1", "Product 2"},
+		2: {"Product 3"},
+		3: {"Product 4", "Product 5"},
+	})
+}
+
 func TestChunk(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -529,6 +580,53 @@ func TestSliceToMap(t *testing.T) {
 			is.Equal(SliceToMap(testCase.in, transform), testCase.expect)
 		})
 	}
+}
+
+func TestFilterSliceToMap(t *testing.T) {
+	t.Parallel()
+
+	type foo struct {
+		baz string
+		bar int
+	}
+	transform := func(f *foo) (string, int, bool) {
+		return f.baz, f.bar, f.bar > 1
+	}
+	testCases := []struct {
+		in     []*foo
+		expect map[string]int
+	}{
+		{
+			in:     []*foo{{baz: "apple", bar: 1}},
+			expect: map[string]int{},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			expect: map[string]int{"banana": 2},
+		},
+		{
+			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			expect: map[string]int{"apple": 2},
+		},
+	}
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
+			is := assert.New(t)
+			is.Equal(FilterSliceToMap(testCase.in, transform), testCase.expect)
+		})
+	}
+}
+
+func TestKeyify(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Keyify([]int{1, 2, 3, 4})
+	result2 := Keyify([]int{1, 1, 1, 2})
+	result3 := Keyify([]int{})
+	is.Equal(result1, map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}})
+	is.Equal(result2, map[int]struct{}{1: {}, 2: {}})
+	is.Equal(result3, map[int]struct{}{})
 }
 
 func TestDrop(t *testing.T) {

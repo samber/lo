@@ -579,18 +579,56 @@ func Nth[T any, N constraints.Integer](collection []T, nth N) (T, error) {
 	return collection[l+n], nil
 }
 
+// NthOr returns the element at index `nth` of collection.
+// If `nth` is negative, it returns the nth element from the end.
+// If `nth` is out of slice bounds, it returns the fallback value instead of an error.
+func NthOr[T any, N constraints.Integer](collection []T, nth N, fallback T) T {
+	value, err := Nth(collection, nth)
+	if err != nil {
+		return fallback
+	}
+	return value
+}
+
+// NthOrEmpty returns the element at index `nth` of collection.
+// If `nth` is negative, it returns the nth element from the end.
+// If `nth` is out of slice bounds, it returns the zero value (empty value) for that type.
+func NthOrEmpty[T any, N constraints.Integer](collection []T, nth N) T {
+	value, err := Nth(collection, nth)
+	if err != nil {
+		var zeroValue T
+		return zeroValue
+	}
+	return value
+}
+
+// randomIntGenerator is a function that should return a random integer in the range [0, n)
+// where n is the parameter passed to the randomIntGenerator.
+type randomIntGenerator func(n int) int
+
 // Sample returns a random item from collection.
 func Sample[T any](collection []T) T {
+	result := SampleBy(collection, rand.IntN)
+	return result
+}
+
+// SampleBy returns a random item from collection, using randomIntGenerator as the random index generator.
+func SampleBy[T any](collection []T, randomIntGenerator randomIntGenerator) T {
 	size := len(collection)
 	if size == 0 {
 		return Empty[T]()
 	}
-
-	return collection[rand.IntN(size)]
+	return collection[randomIntGenerator(size)]
 }
 
 // Samples returns N random unique items from collection.
 func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
+	results := SamplesBy(collection, count, rand.IntN)
+	return results
+}
+
+// SamplesBy returns N random unique items from collection, using randomIntGenerator as the random index generator.
+func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerator randomIntGenerator) Slice {
 	size := len(collection)
 
 	copy := append(Slice{}, collection...)
@@ -600,7 +638,7 @@ func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
 	for i := 0; i < size && i < count; i++ {
 		copyLength := size - i
 
-		index := rand.IntN(size - i)
+		index := randomIntGenerator(size - i)
 		results = append(results, copy[index])
 
 		// Removes element.

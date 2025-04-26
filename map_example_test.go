@@ -168,6 +168,26 @@ func ExampleAssign() {
 	// Output: 3 1 3 4
 }
 
+func ExampleChunkEntries() {
+	result := ChunkEntries(
+		map[string]int{
+			"a": 1,
+			"b": 2,
+			"c": 3,
+			"d": 4,
+			"e": 5,
+		},
+		3,
+	)
+
+	for i := range result {
+		fmt.Printf("%d\n", len(result[i]))
+	}
+	// Output:
+	// 3
+	// 2
+}
+
 func ExampleMapKeys() {
 	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
 
@@ -211,4 +231,16 @@ func ExampleMapToSlice() {
 	sort.StringSlice(result).Sort()
 	fmt.Printf("%v", result)
 	// Output: [1_1 2_2 3_3 4_4]
+}
+
+func ExampleFilterMapToSlice() {
+	kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
+
+	result := FilterMapToSlice(kv, func(k int, v int64) (string, bool) {
+		return fmt.Sprintf("%d_%d", k, v), k%2 == 0
+	})
+
+	sort.StringSlice(result).Sort()
+	fmt.Printf("%v", result)
+	// Output: [2_2 4_4]
 }
