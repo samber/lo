@@ -150,6 +150,7 @@ Supported helpers for maps:
 - [MapValues](#mapvalues)
 - [MapEntries](#mapentries)
 - [MapToSlice](#maptoslice)
+- [FilterMapToSlice](#FilterMapToSlice)
 
 Supported math helpers:
 
