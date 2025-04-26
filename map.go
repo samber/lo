@@ -249,6 +249,7 @@ func Assign[K comparable, V any, Map ~map[K]V](maps ...Map) Map {
 
 // ChunkEntries splits a map into an array of elements in groups of a length equal to its size. If the map cannot be split evenly,
 // the final chunk will contain the remaining elements.
+// Play: https://go.dev/play/p/X_YQL6mmoD-
 func ChunkEntries[K comparable, V any](m map[K]V, size int) []map[K]V {
 	if size <= 0 {
 		panic("The chunk size must be greater than 0")
