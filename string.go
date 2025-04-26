@@ -1,12 +1,13 @@
 package lo
 
 import (
-	"github.com/samber/lo/internal/rand"
 	"math"
 	"regexp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/samber/lo/internal/rand"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -108,7 +109,7 @@ func Substring[T ~string](str T, offset int, length uint) T {
 		length = uint(size - offset)
 	}
 
-	return T(strings.Replace(string(rs[offset:offset+int(length)]), "\x00", "", -1))
+	return T(strings.ReplaceAll(string(rs[offset:offset+int(length)]), "\x00", ""))
 }
 
 // ChunkString returns an array of strings split into groups the length of size. If array can't be split evenly,
