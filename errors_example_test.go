@@ -427,3 +427,39 @@ func ExampleErrorsAs() {
 
 	// Output: is type myError, err: my error
 }
+
+func ExampleOk() {
+	doSomething := func() (int, error) {
+		return 1, nil
+	}
+
+	// This will return 1
+	Ok(doSomething())
+
+	doSomethingWithError := func() (int, error) {
+		return 0, fmt.Errorf("my error")
+	}
+
+	// This will return 0
+	Ok(doSomethingWithError())
+}
+
+func ExampleOkOr() {
+	doSomething := func() (int, error) {
+		return 1, nil
+	}
+
+	v, err := doSomething()
+
+	// This will return 1
+	OkOr(v, err, 2)
+
+	doSomethingWithError := func() (int, error) {
+		return 0, fmt.Errorf("my error")
+	}
+
+	v, err = doSomethingWithError()
+
+	// This will return 2
+	OkOr(v, err, 2)
+}

@@ -326,6 +326,8 @@ Error handling:
 - [TryWithErrorValue](#trywitherrorvalue)
 - [TryCatchWithErrorValue](#trycatchwitherrorvalue)
 - [ErrorsAs](#errorsas)
+- [Ok](#ok)
+- [OkOr](#okor)
 
 Constraints:
 
@@ -4094,6 +4096,50 @@ if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
 ```
 
 [[play](https://go.dev/play/p/8wk5rH8UfrE)]
+
+### Ok
+
+`Ok` returns the value and ignores the error. Use with caution and only when you don't care about the error.
+
+```go
+doSomething := func() (int, error) {
+	return 1, nil
+}
+
+fmt.Println(lo.Ok(doSomething())) // 1
+
+doSomethingWithError := func() (int, error) {
+	return 0, fmt.Errorf("my error")
+}
+
+fmt.Println(lo.Ok(doSomethingWithError())) // 0
+```
+
+[[play](https://go.dev/play/p/eqQ4T86iVjM)]
+
+### OkOr
+
+`OkOr` returns the value if err is nil, otherwise returns the fallback value.
+
+```go
+doSomething := func() (int, error) {
+	return 1, nil
+}
+
+v, err := doSomething()
+
+fmt.Println(lo.OkOr(v, err, 2)) // 1
+
+doSomethingWithError := func() (int, error) {
+	return 0, fmt.Errorf("my error")
+}
+
+v, err = doSomethingWithError()
+
+fmt.Println(lo.OkOr(v, err, 2)) // 2
+```
+
+[[play](https://go.dev/play/p/gQ-ekv0mkx9)]
 
 ## 🛩 Benchmark
 
