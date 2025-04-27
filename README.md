@@ -290,6 +290,9 @@ Type manipulation helpers:
 - [CoalesceSliceOrEmpty](#coalescesliceorempty)
 - [CoalesceMap](#coalescemap)
 - [CoalesceMapOrEmpty](#coalescemaporempty)
+- [Cast](#cast)
+= [CastJSON](#castjson)
+- [FromBytes](#frombytes)
 
 Function helpers:
 
@@ -3430,6 +3433,84 @@ result := lo.CoalesceMapOrEmpty(map[string]int{"1": 1, "2": 2, "3": 3}, map[stri
 result := lo.CoalesceMapOrEmpty(nil, map[string]int{})
 // {}
 ```
+
+### Cast
+
+Converts any type to a given type. If conversion fails, it returns the zero value of the given type. This is a type-safe version of type assertion.
+
+Cast enforces strict type assertion, for example trying to convert a number of 10 to float64 will return 0.0 instead of 10.0.
+
+```go
+var n any = 10
+
+fmt.Println(lo.Cast[int](n) == 10) // true
+
+fmt.Println(lo.Cast[float64](n) == 10.0) // false
+```
+
+[[play](https://go.dev/play/p/IxL5n8tOvTW)]
+
+
+### CastJSON
+
+Converts any type to a given type based on their json representations. It partially fills the target in case they are not directly compatible. Any errors are ignored.
+
+```go
+type TestObject1 struct {
+	Foo string `json:"foo"`
+	Bar int    `json:"bar"`
+}
+
+type TestObject2 struct {
+	Foo string `json:"foo"`
+	Bar int    `json:"bar"`
+	Qux string `json:"qux"`
+}
+
+testObject1 := TestObject1{
+	Foo: "bar",
+	Bar: 42,
+}
+
+testObject2 := TestObject2{
+	Foo: "bar",
+	Bar: 42,
+	Qux: "baz",
+}
+	
+castedTestObject1 := lo.CastJSON[TestObject1](testObject2)
+
+fmt.Println(castedTestObject1.Foo == testObject1.Foo) // true
+fmt.Println(castedTestObject1.Bar == testObject1.Bar) // true
+```
+
+[[play](https://go.dev/play/p/s42Brn9UOug)]
+
+### FromBytes
+
+Converts a byte array to a given type. Ignores any errors.
+
+```go
+bytes, _ := json.Marshal("foo")
+
+fmt.Println(lo.FromBytes[string](bytes) == "foo") // true
+
+type TestObject struct {
+	Foo string `json:"foo"`
+	Bar int    `json:"bar"`
+}
+
+testObject := TestObject{
+	Foo: "bar",
+	Bar: 42,
+}
+
+bytes, _ = json.Marshal(testObject)
+
+fmt.Println(lo.FromBytes[TestObject](bytes) == testObject) // true
+```
+
+[[play](https://go.dev/play/p/T9dfh5QPEzq)]
 
 ### Partial
 
