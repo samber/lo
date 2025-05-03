@@ -2773,7 +2773,7 @@ Search the maximum time.Time of a collection.
 Returns zero value when the collection is empty.
 
 ```go
-latest := lo.Latest([]time.Time{time.Now(), time.Time{}})
+latest := lo.Latest(time.Now(), time.Time{})
 // 2023-04-01 01:02:03 +0000 UTC
 ```
 
