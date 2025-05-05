@@ -331,6 +331,10 @@ Constraints:
 
 - Clonable
 
+Tree helpers:
+
+- [TableToTree](#tabletotree)
+
 ### Filter
 
 Iterates over a collection and returns an array of all the elements the predicate function returns `true` for.
@@ -4094,6 +4098,56 @@ if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
 ```
 
 [[play](https://go.dev/play/p/8wk5rH8UfrE)]
+
+
+### TableToTree
+
+TableToTree transforms database-like table into tree-structure
+
+```go
+type rowType struct {
+    id       int
+    parentId int
+    value    string
+}
+
+type leafType struct {
+    value string
+    leafs []leafType
+}
+
+table := []rowType{
+    {1, 0, "A"},
+    {2, 1, "AA"},
+    {3, 1, "AB"},
+    {4, 3, "ABA"},
+    {5, 1, "AC"},
+    {6, 0, "B"},
+}
+
+tree, _ := TableToTree(
+    table,
+    func(row *rowType, children []leafType) leafType {
+        return leafType{
+            value: row.value,
+            leafs: children,
+        }
+    },
+    func(row *rowType) (int, int, bool) {
+        return row.id, row.parentId, row.parentId == 0
+    },
+)
+// []leafType{
+//     {value: "A", leafs: []leafType{
+//         {value: "AA"},
+//         {value: "AB", leafs: []leafType{
+//             {value: "ABA"},
+//         }},
+//         {value: "AC"},
+//     }},
+//     {value: "B"},
+// }
+```
 
 ## 🛩 Benchmark
 
