@@ -134,6 +134,17 @@ func TestFromPtrOr(t *testing.T) {
 	is.Equal(fallbackInt, FromPtrOr(nil, fallbackInt))
 }
 
+func TestEnsureNotNilPtr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	num := 42
+	var nilPtr *string
+
+	is.Equal(&num, EnsureNotNilPtr(&num))
+	is.Equal(new(string), EnsureNotNilPtr(nilPtr))
+}
+
 func TestToSlicePtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
