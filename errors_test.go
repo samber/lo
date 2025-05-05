@@ -597,3 +597,21 @@ func TestErrorsAs(t *testing.T) {
 	is.False(ok)
 	is.Nil(nil, err)
 }
+
+func TestOk(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal(1, Ok(1, errors.New("something went wrong")))
+
+	is.Equal(2, Ok(2, nil))
+}
+
+func TestOkOr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal(2, OkOr(1, errors.New("something went wrong"), 2))
+
+	is.Equal(1, OkOr(1, nil, 2))
+}

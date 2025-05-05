@@ -1,6 +1,9 @@
 package lo
 
-import "reflect"
+import (
+	"encoding/json"
+	"reflect"
+)
 
 // IsNil checks if a value is nil or if it's a reference type with a nil underlying value.
 func IsNil(x any) bool {
@@ -186,4 +189,28 @@ func CoalesceMapOrEmpty[K comparable, V any](v ...map[K]V) map[K]V {
 		}
 	}
 	return map[K]V{}
+}
+
+// Converts any type to a given type. If conversion fails, it returns the zero value of the given type. This is a type-safe version of type assertion.
+//
+// Cast enforces strict type assertion, for example trying to convert a number of 10 to float64 will return 0.0 instead of 10.0.
+func Cast[T any](val any) T {
+	if val, ok := val.(T); ok {
+		return val
+	}
+	var zero T
+	return zero
+}
+
+// Converts any type to a given type based on their json representations. It partially fills the target in case they are not directly compatible. Any errors are ignored.
+func CastJSON[T any](val any) T {
+	bytes, _ := json.Marshal(val)
+	return FromBytes[T](bytes)
+}
+
+// Converts a byte array to a given type. Ignores any errors.
+func FromBytes[T any](bytes []byte) T {
+	var v T
+	_ = json.Unmarshal(bytes, &v)
+	return v
 }
