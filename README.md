@@ -1771,7 +1771,7 @@ str := lo.Capitalize("heLLO")
 
 ### Ellipsis
 
-Trims and truncates a string to a specified length and appends an ellipsis if truncated.
+Trims and truncates a string to a specified length **in bytes** and appends an ellipsis if truncated. If the string contains non-ASCII characters (which may occupy multiple bytes in UTF-8), truncating by byte length may split a character in the middle, potentially resulting in garbled output.
 
 ```go
 str := lo.Ellipsis("  Lorem Ipsum  ", 5)
