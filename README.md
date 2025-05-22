@@ -2846,7 +2846,7 @@ last, ok := lo.Last([]int{})
 
 ### LastOrEmpty
 
-Returns the first element of a collection or zero value if empty.
+Returns the last element of a collection or zero value if empty.
 
 ```go
 last := lo.LastOrEmpty([]int{1, 2, 3})
@@ -2858,7 +2858,7 @@ last := lo.LastOrEmpty([]int{})
 
 ### LastOr
 
-Returns the first element of a collection or the fallback value if empty.
+Returns the last element of a collection or the fallback value if empty.
 
 ```go
 last := lo.LastOr([]int{1, 2, 3}, 245)
