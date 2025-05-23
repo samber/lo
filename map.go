@@ -342,3 +342,17 @@ func FilterMapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key 
 
 	return result
 }
+
+// FilterKeys transforms a map into a slice based on predicate returns truthy for specific elements.
+// Play: https://go.dev/play/p/OFlKXlPrBAe
+func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) []V {
+	result := make([]V, 0)
+
+	for k := range in {
+		if predicate(k, in[k]) {
+			result = append(result, in[k])
+		}
+	}
+
+	return result
+}
