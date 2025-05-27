@@ -394,7 +394,7 @@ import lom "github.com/samber/lo/mutable"
 
 list := []int{1, 2, 3, 4}
 lom.Map(list, func(x int) int {
-    return i*2
+    return x*2
 })
 // []int{2, 4, 6, 8}
 ```
