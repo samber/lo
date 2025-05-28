@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -565,4 +566,87 @@ func TestCoalesceMapOrEmpty(t *testing.T) {
 	is.Equal(map2, result9)
 	is.NotNil(result10)
 	is.Equal(map1, result10)
+}
+
+func TestCast(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var n any = 10
+
+	is.Equal(10, Cast[int](n))
+
+	is.True(Cast[int](n) > 0)
+
+	is.NotZero(Cast[int](n))
+
+	is.Zero(Cast[int](nil))
+
+	is.Zero(Cast[string](n))
+
+	is.Zero(Cast[int32](n))
+
+	is.Zero(Cast[int64](n))
+
+	is.Zero(Cast[uint](n))
+
+	is.Zero(Cast[float32](n))
+
+	is.Zero(Cast[float64](n))
+}
+
+func TestCastJSON(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type TestObject1 struct {
+		Foo string `json:"foo"`
+		Bar int    `json:"bar"`
+	}
+
+	type TestObject2 struct {
+		Foo string `json:"foo"`
+		Bar int    `json:"bar"`
+		Qux string `json:"qux"`
+	}
+
+	testObject1 := TestObject1{
+		Foo: "bar",
+		Bar: 42,
+	}
+
+	testObject2 := TestObject2{
+		Foo: "bar",
+		Bar: 42,
+		Qux: "baz",
+	}
+
+	is.Equal(testObject1, CastJSON[TestObject1](testObject2))
+}
+
+func TestFromBytes(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Zero(FromBytes[string]([]byte{}))
+
+	bytes, _ := json.Marshal("foo")
+
+	is.Equal("foo", FromBytes[string](bytes))
+
+	bytes, _ = json.Marshal(42)
+
+	is.Equal(42, FromBytes[int](bytes))
+
+	type TestObject struct {
+		Foo string `json:"foo"`
+		Bar int    `json:"bar"`
+	}
+
+	testObject := TestObject{
+		Foo: "bar",
+		Bar: 42,
+	}
+
+	is.Equal(testObject, FromBytes[TestObject]([]byte(`{"foo":"bar","bar":42}`)))
 }
