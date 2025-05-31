@@ -327,6 +327,11 @@ Error handling:
 - [TryCatchWithErrorValue](#trycatchwitherrorvalue)
 - [ErrorsAs](#errorsas)
 
+Assertions:
+
+- [Assert](#assert)
+- [Assertf](#assertf)
+
 Constraints:
 
 - Clonable
@@ -4094,6 +4099,42 @@ if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
 ```
 
 [[play](https://go.dev/play/p/8wk5rH8UfrE)]
+
+### Assert
+
+C/C++ style assertion.
+
+It does nothing when the condition is `true`, otherwise it panics with an optional message.
+
+Think twice before using it, given that [Go intentionally omits assertions from its standard library](https://go.dev/doc/faq#assertions).
+
+```go
+age := getUserAge()
+
+lo.Assert(age >= 15)
+```
+
+```go
+age := getUserAge()
+
+lo.Assert(age >= 15, "user age must be >= 15")
+```
+
+[[play](https://go.dev/play/p/Xv8LLKBMNwI)]
+
+### Assertf
+
+Like `Assert`, but with `fmt.Printf`-like formatting.
+
+Think twice before using it, given that [Go intentionally omits assertions from its standard library](https://go.dev/doc/faq#assertions).
+
+```go
+age := getUserAge()
+
+lo.Assertf(age >= 15, "user age must be >= 15, got %d", age)
+```
+
+[[play](https://go.dev/play/p/TVPEmVcyrdY)]
 
 ## 🛩 Benchmark
 
