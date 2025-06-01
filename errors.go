@@ -6,6 +6,8 @@ import (
 	"reflect"
 )
 
+const defaultAssertionFailureMessage = "assertion failed"
+
 // Validate is a helper that creates an error when a condition is not met.
 // Play: https://go.dev/play/p/vPyh51XpCBt
 func Validate(ok bool, format string, args ...any) error {
@@ -351,4 +353,29 @@ func ErrorsAs[T error](err error) (T, bool) {
 	var t T
 	ok := errors.As(err, &t)
 	return t, ok
+}
+
+// Assert does nothing when the condition is true, otherwise it panics with an optional message.
+// Play: https://go.dev/play/p/Xv8LLKBMNwI
+func Assert(condition bool, message ...string) {
+	if condition {
+		return
+	}
+
+	panicMessage := defaultAssertionFailureMessage
+	if len(message) > 0 {
+		panicMessage = fmt.Sprintf("%s: %s", defaultAssertionFailureMessage, message[0])
+	}
+	panic(panicMessage)
+}
+
+// Assertf does nothing when the condition is true, otherwise it panics with a formatted message.
+// Play: https://go.dev/play/p/TVPEmVcyrdY
+func Assertf(condition bool, format string, args ...any) {
+	if condition {
+		return
+	}
+
+	panicMessage := fmt.Sprintf("%s: %s", defaultAssertionFailureMessage, fmt.Sprintf(format, args...))
+	panic(panicMessage)
 }

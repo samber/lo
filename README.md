@@ -326,9 +326,6 @@ Error handling:
 - [TryWithErrorValue](#trywitherrorvalue)
 - [TryCatchWithErrorValue](#trycatchwitherrorvalue)
 - [ErrorsAs](#errorsas)
-
-Assertions:
-
 - [Assert](#assert)
 - [Assertf](#assertf)
 
@@ -4102,9 +4099,7 @@ if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
 
 ### Assert
 
-C/C++ style assertion.
-
-It does nothing when the condition is `true`, otherwise it panics with an optional message.
+Does nothing when the condition is `true`, otherwise it panics with an optional message.
 
 Think twice before using it, given that [Go intentionally omits assertions from its standard library](https://go.dev/doc/faq#assertions).
 
