@@ -140,3 +140,31 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, it
 	var sum = SumBy(collection, iteratee)
 	return sum / length
 }
+
+// Mode returns the mode (most frequent value) of a collection.
+// If multiple values ​​have the same highest frequency, then multiple values ​​are returned.
+// If the collection is empty, then the zero value of T is returned.
+func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
+	var length = T(len(collection))
+	if length == 0 {
+		return []T{}
+	}
+
+	var mode = make([]T, 0)
+	maxFreq := 0
+	frequency := make(map[T]int)
+
+	for _, item := range collection {
+		frequency[item]++
+		count := frequency[item]
+
+		if count > maxFreq {
+			maxFreq = count
+			mode = []T{item}
+		} else if count == maxFreq {
+			mode = append(mode, item)
+		}
+	}
+
+	return mode
+}
