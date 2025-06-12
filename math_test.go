@@ -171,3 +171,20 @@ func TestMeanBy(t *testing.T) {
 	is.Equal(result3, uint32(3))
 	is.Equal(result4, uint32(0))
 }
+
+func TestMode(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Mode([]float32{2.3, 3.3, 3.3, 5.3})
+	result2 := Mode([]int32{2, 2, 4, 5})
+	result3 := Mode([]uint32{2, 2, 3, 3})
+	result4 := Mode([]uint32{})
+	result5 := Mode([]int{1, 2, 3, 4, 5, 6, 7, 8, 9})
+
+	is.Equal(result1, float32(3.3))
+	is.Equal(result2, int32(2))
+	is.Equal(result3, uint32(2))
+	is.Equal(result4, uint32(0))
+	is.Equal(result5, int(1))
+}

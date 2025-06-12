@@ -158,6 +158,7 @@ Supported math helpers:
 - [ProductBy](#productby)
 - [Mean](#mean)
 - [MeanBy](#meanby)
+- [Mode](#mode)
 
 Supported helpers for strings:
 
@@ -1643,6 +1644,29 @@ mean := lo.MeanBy(list, mapper)
 
 mean := lo.MeanBy([]float64{}, mapper)
 // 0
+```
+
+
+### Mode
+
+Mode returns the mode (most frequent value) of a collection.
+
+If multiple values have the same highest frequency, the first one encountered is returned.
+
+If the collection is empty, the zero value of T is returned.
+
+```go
+mode := lo.Mode([]int{2, 2, 3, 4})
+// 2
+
+mode := lo.Mode([]float64{2, 2, 3, 3})
+// 2
+
+mode := lo.Mode([]float64{})
+// 0
+
+mode := lo.Mode([]int{1, 2, 3, 4, 5, 6, 7, 8, 9})
+// 1
 ```
 
 ### RandomString
