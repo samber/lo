@@ -326,6 +326,8 @@ Error handling:
 - [TryWithErrorValue](#trywitherrorvalue)
 - [TryCatchWithErrorValue](#trycatchwitherrorvalue)
 - [ErrorsAs](#errorsas)
+- [Assert](#assert)
+- [Assertf](#assertf)
 
 Constraints:
 
@@ -394,7 +396,7 @@ import lom "github.com/samber/lo/mutable"
 
 list := []int{1, 2, 3, 4}
 lom.Map(list, func(x int) int {
-    return i*2
+    return x*2
 })
 // []int{2, 4, 6, 8}
 ```
@@ -1771,7 +1773,7 @@ str := lo.Capitalize("heLLO")
 
 ### Ellipsis
 
-Trims and truncates a string to a specified length and appends an ellipsis if truncated.
+Trims and truncates a string to a specified length **in bytes** and appends an ellipsis if truncated. If the string contains non-ASCII characters (which may occupy multiple bytes in UTF-8), truncating by byte length may split a character in the middle, potentially resulting in garbled output.
 
 ```go
 str := lo.Ellipsis("  Lorem Ipsum  ", 5)
@@ -2846,7 +2848,7 @@ last, ok := lo.Last([]int{})
 
 ### LastOrEmpty
 
-Returns the first element of a collection or zero value if empty.
+Returns the last element of a collection or zero value if empty.
 
 ```go
 last := lo.LastOrEmpty([]int{1, 2, 3})
@@ -2858,7 +2860,7 @@ last := lo.LastOrEmpty([]int{})
 
 ### LastOr
 
-Returns the first element of a collection or the fallback value if empty.
+Returns the last element of a collection or the fallback value if empty.
 
 ```go
 last := lo.LastOr([]int{1, 2, 3}, 245)
@@ -4094,6 +4096,40 @@ if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
 ```
 
 [[play](https://go.dev/play/p/8wk5rH8UfrE)]
+
+### Assert
+
+Does nothing when the condition is `true`, otherwise it panics with an optional message.
+
+Think twice before using it, given that [Go intentionally omits assertions from its standard library](https://go.dev/doc/faq#assertions).
+
+```go
+age := getUserAge()
+
+lo.Assert(age >= 15)
+```
+
+```go
+age := getUserAge()
+
+lo.Assert(age >= 15, "user age must be >= 15")
+```
+
+[[play](https://go.dev/play/p/Xv8LLKBMNwI)]
+
+### Assertf
+
+Like `Assert`, but with `fmt.Printf`-like formatting.
+
+Think twice before using it, given that [Go intentionally omits assertions from its standard library](https://go.dev/doc/faq#assertions).
+
+```go
+age := getUserAge()
+
+lo.Assertf(age >= 15, "user age must be >= 15, got %d", age)
+```
+
+[[play](https://go.dev/play/p/TVPEmVcyrdY)]
 
 ## 🛩 Benchmark
 
