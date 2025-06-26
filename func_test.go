@@ -78,3 +78,61 @@ func TestPartial5(t *testing.T) {
 	is.Equal("26", f(10, 9, -3, 0, 5))
 	is.Equal("21", f(-5, 8, 7, -1, 7))
 }
+
+func TestCurry2(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	add := func(x int, y int) int {
+		return x + y
+	}
+	f := Curry2(add)
+	f1 := f(5)
+	is.Equal(15, f1(10))
+	is.Equal(0, f1(-5))
+}
+
+func TestCurry3(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	add := func(x int, y int, z int) int {
+		return x + y + z
+	}
+	f := Curry3(add)
+	f1 := f(5)
+	f2 := f1(10)
+	is.Equal(24, f2(9))
+	is.Equal(10, f2(-5))
+}
+
+func TestCurry4(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	add := func(x int, y int, z int, a int) int {
+		return x + y + z + a
+	}
+	f := Curry4(add)
+	f1 := f(5)
+	f2 := f1(10)
+	f3 := f2(9)
+	is.Equal(24, f3(0))
+	is.Equal(14, f3(-10))
+}
+
+func TestCurry5(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	add := func(x int, y int, z int, a int, b int) int {
+		return x + y + z + a + b
+	}
+	f := Curry5(add)
+	f1 := f(5)
+	f2 := f1(10)
+	f3 := f2(9)
+	f4 := f3(0)
+	is.Equal(24, f4(0))
+	is.Equal(14, f4(-10))
+}
