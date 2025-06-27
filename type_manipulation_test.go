@@ -134,6 +134,30 @@ func TestFromPtrOr(t *testing.T) {
 	is.Equal(fallbackInt, FromPtrOr(nil, fallbackInt))
 }
 
+func TestFromPtrOrF(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	const fallbackStr = "fallback"
+	callbackStr := func() string {
+		return fallbackStr
+	}
+	str := "foo"
+	ptrStr := &str
+
+	const fallbackInt = -1
+	callbackInt := func() int {
+		return fallbackInt
+	}
+	i := 9
+	ptrInt := &i
+
+	is.Equal(str, FromPtrOrF(ptrStr, callbackStr))
+	is.Equal(fallbackStr, FromPtrOrF(nil, callbackStr))
+	is.Equal(i, FromPtrOrF(ptrInt, callbackInt))
+	is.Equal(fallbackInt, FromPtrOrF(nil, callbackInt))
+}
+
 func TestToSlicePtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
