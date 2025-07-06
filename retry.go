@@ -26,8 +26,13 @@ func (d *debounce) reset() {
 	}
 
 	d.timer = time.AfterFunc(d.after, func() {
-		for i := range d.callbacks {
-			d.callbacks[i]()
+		// We need to lock the mutex here to avoid race conditions with 2 concurrent calls to reset()
+		d.mu.Lock()
+		callbacks := append([]func(){}, d.callbacks...)
+		d.mu.Unlock()
+
+		for i := range callbacks {
+			callbacks[i]()
 		}
 	})
 }
@@ -96,13 +101,15 @@ func (d *debounceBy[T]) reset(key T) {
 	}
 
 	item.timer = time.AfterFunc(d.after, func() {
+		// We need to lock the mutex here to avoid race conditions with 2 concurrent calls to reset()
 		item.mu.Lock()
 		count := item.count
 		item.count = 0
+		callbacks := append([]func(key T, count int){}, d.callbacks...)
 		item.mu.Unlock()
 
-		for i := range d.callbacks {
-			d.callbacks[i](key, count)
+		for i := range callbacks {
+			callbacks[i](key, count)
 		}
 	})
 }
