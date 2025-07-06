@@ -432,7 +432,7 @@ func ZipBy6[A any, B any, C any, D any, E any, F any, Out any](a []A, b []B, c [
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
 func ZipBy7[A any, B any, C any, D any, E any, F any, G any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, iteratee func(a A, b B, c C, d D, e E, f F, g G) Out) []Out {
-	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f)})
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g)})
 
 	result := make([]Out, 0, size)
 
@@ -455,7 +455,7 @@ func ZipBy7[A any, B any, C any, D any, E any, F any, G any, Out any](a []A, b [
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
 func ZipBy8[A any, B any, C any, D any, E any, F any, G any, H any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, iteratee func(a A, b B, c C, d D, e E, f F, g G, h H) Out) []Out {
-	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g)})
+	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h)})
 
 	result := make([]Out, 0, size)
 
