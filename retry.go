@@ -3,8 +3,6 @@ package lo
 import (
 	"sync"
 	"time"
-
-	"golang.org/x/exp/slices"
 )
 
 type debounce struct {
@@ -30,7 +28,7 @@ func (d *debounce) reset() {
 	d.timer = time.AfterFunc(d.after, func() {
 		// We need to lock the mutex here to avoid race conditions with 2 concurrent calls to reset()
 		d.mu.Lock()
-		callbacks := slices.Clone(d.callbacks)
+		callbacks := append([]func(){}, d.callbacks...)
 		d.mu.Unlock()
 
 		for i := range callbacks {
@@ -107,7 +105,7 @@ func (d *debounceBy[T]) reset(key T) {
 		item.mu.Lock()
 		count := item.count
 		item.count = 0
-		callbacks := slices.Clone(d.callbacks)
+		callbacks := append([]func(key T, count int){}, d.callbacks...)
 		item.mu.Unlock()
 
 		for i := range callbacks {
