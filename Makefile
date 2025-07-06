@@ -25,6 +25,8 @@ tools:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 	go get -t -u golang.org/x/tools/cmd/cover
 	go install github.com/sonatype-nexus-community/nancy@latest
+	go install golang.org/x/perf/cmd/benchstat@latest
+	go install github.com/cespare/prettybench@latest
 	go mod tidy
 
 lint:
