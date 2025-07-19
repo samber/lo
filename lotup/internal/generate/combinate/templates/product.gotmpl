@@ -1,0 +1,28 @@
+{{- define "decls-types" }}{{ $N := .N -}}
+[
+	{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }} any,
+	{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}S{{ add $i 1 }} ~[]T{{ add $i 1 }}{{ end }},
+]
+{{- end }}
+{{- define "decls-args" }}{{ $N := .N -}}
+({{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}s{{ add $i 1 }} S{{ add $i 1 }}{{ end }})
+{{- end }}
+{{- define "decls-tuple" }}{{ $N := .N -}}
+Tuple{{ .N }}[{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }}]
+{{- end }}
+{{- $N := .N }}
+func Product{{ .N }}{{ template "decls-types" . }}{{ template "decls-args" . }} []{{ template "decls-tuple" . }} {
+	size := {{ range $i := .N }}{{ if ne $i 0 }} * {{ end }}len(s{{ add $i 1 }}){{ end }}
+	res := make([]{{ template "decls-tuple" . }}, 0, size)
+	{{ range $i := .N }}
+	{{ range $i }}	{{ end }}for _, t{{ add $i 1 }} := range s{{ add $i 1 }} {
+	{{- end }}
+	{{ range .N }}	{{ end }}res = append(res, Of{{ .N }}(
+		{{- range $i := .N }}{{ if ne $i 0 }}, {{ end }}t{{ add $i 1 }}{{ end -}}
+		))
+{{- range $i := .N }}
+{{ range (sub $N $i) }}	{{ end }}}
+{{- end }}
+
+	return res
+}

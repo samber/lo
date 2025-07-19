@@ -1,0 +1,9 @@
+{{- define "tuple-type" }}{{ $N := .N -}}
+Tuple{{ .N }}[{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }}]
+{{- end }}
+{{- define "decls-types" }}{{ $N := .N -}}
+({{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }})
+{{- end }}
+func (t {{ template "tuple-type" . }}) Unpack() {{ template "decls-types" . }} {
+	return {{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}t.V{{ add $i 1 }}{{ end }}
+}
