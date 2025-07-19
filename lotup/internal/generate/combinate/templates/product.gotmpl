@@ -1,13 +1,13 @@
-{{- define "decls-types" }}{{ $N := .N -}}
+{{- define "decls-types" -}}
 [
 	{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }} any,
 	{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}S{{ add $i 1 }} ~[]T{{ add $i 1 }}{{ end }},
 ]
 {{- end }}
-{{- define "decls-args" }}{{ $N := .N -}}
+{{- define "decls-args" -}}
 ({{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}s{{ add $i 1 }} S{{ add $i 1 }}{{ end }})
 {{- end }}
-{{- define "decls-tuple" }}{{ $N := .N -}}
+{{- define "decls-tuple" -}}
 Tuple{{ .N }}[{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }}]
 {{- end }}
 {{- $N := .N }}

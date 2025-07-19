@@ -1,4 +1,4 @@
-{{- define "tuple-type" }}{{ $N := .N -}}
+{{- define "tuple-type" -}}
 Tuple{{ .N }}[{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }} any]
 {{- end }}
 type {{ template "tuple-type" . }} struct {

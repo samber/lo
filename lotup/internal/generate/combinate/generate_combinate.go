@@ -44,8 +44,8 @@ func main() {
 		"add": func(x, y int) int { return x + y },
 		"sub": func(x, y int) int { return x - y },
 	}
-	zipTmpl := template.Must(template.New("class").Funcs(funcMap).Parse(zipRaw))
-	unzipTmpl := template.Must(template.New("unpack").Funcs(funcMap).Parse(unzipRaw))
+	zipTmpl := template.Must(template.New("zip").Funcs(funcMap).Parse(zipRaw))
+	unzipTmpl := template.Must(template.New("unzip").Funcs(funcMap).Parse(unzipRaw))
 	productTmpl := template.Must(template.New("product").Funcs(funcMap).Parse(productRaw))
 
 	pkg := detectPackageName()

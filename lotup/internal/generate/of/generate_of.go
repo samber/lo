@@ -37,7 +37,7 @@ func main() {
 	funcMap := template.FuncMap{
 		"add": func(x, y int) int { return x + y },
 	}
-	monadTmpl := template.Must(template.New("apply").Funcs(funcMap).Parse(ofRaw))
+	ofTmpl := template.Must(template.New("of").Funcs(funcMap).Parse(ofRaw))
 
 	pkg := detectPackageName()
 
@@ -48,7 +48,7 @@ func main() {
 	buf.WriteString(fmt.Sprintf("//go:generate go run %s\n", monadGeneratorPath))
 
 	for n := 2; n <= argumentsLimit; n++ {
-		err := monadTmpl.Execute(&buf, Variant{N: n})
+		err := ofTmpl.Execute(&buf, Variant{N: n})
 		if err != nil {
 			panic(err)
 		}
