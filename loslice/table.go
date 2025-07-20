@@ -20,9 +20,10 @@ func Flatten[T any, Slice ~[]T](table ...Slice) Slice {
 
 func Transpose[T any, Slice ~[]T](table ...Slice) []Slice {
 	n := len(table)
-	if n == 0 {
+	switch n {
+	case 0:
 		return nil
-	} else if n == 1 {
+	case 1:
 		xs := table[0]
 		result := make([]Slice, len(xs))
 		for i := range xs {
@@ -32,7 +33,7 @@ func Transpose[T any, Slice ~[]T](table ...Slice) []Slice {
 		return result
 	}
 
-	sizes := Map(table, len)
+	sizes := Map(table, func(s Slice) int { return len(s) })
 	sizes = Uniq(sizes)
 	if len(sizes) == 1 {
 		// all table have the same size
