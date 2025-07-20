@@ -1,0 +1,8 @@
+
+func First{{ .N }}[T any](first T{{range $i := (sub .N 1) }}, _{{ end }} any) T {
+	return first
+}
+
+func Last{{ .N }}[T any]({{range $i := (sub .N 1) }}{{ if ne $i 0 }}, {{ end }}_{{ end }} any, last T) T {
+	return last
+}

@@ -12,6 +12,10 @@ func (t Tuple2[T1, T2]) Unpack() (T1, T2) {
 	return t.V1, t.V2
 }
 
+func (t Tuple2[T1, T2]) Last() T2 {
+	return t.V2
+}
+
 type Tuple3[T1, T2, T3 any] struct {
 	V1 T1
 	V2 T2
@@ -20,6 +24,10 @@ type Tuple3[T1, T2, T3 any] struct {
 
 func (t Tuple3[T1, T2, T3]) Unpack() (T1, T2, T3) {
 	return t.V1, t.V2, t.V3
+}
+
+func (t Tuple3[T1, T2, T3]) Last() T3 {
+	return t.V3
 }
 
 type Tuple4[T1, T2, T3, T4 any] struct {
@@ -33,6 +41,10 @@ func (t Tuple4[T1, T2, T3, T4]) Unpack() (T1, T2, T3, T4) {
 	return t.V1, t.V2, t.V3, t.V4
 }
 
+func (t Tuple4[T1, T2, T3, T4]) Last() T4 {
+	return t.V4
+}
+
 type Tuple5[T1, T2, T3, T4, T5 any] struct {
 	V1 T1
 	V2 T2
@@ -43,6 +55,10 @@ type Tuple5[T1, T2, T3, T4, T5 any] struct {
 
 func (t Tuple5[T1, T2, T3, T4, T5]) Unpack() (T1, T2, T3, T4, T5) {
 	return t.V1, t.V2, t.V3, t.V4, t.V5
+}
+
+func (t Tuple5[T1, T2, T3, T4, T5]) Last() T5 {
+	return t.V5
 }
 
 type Tuple6[T1, T2, T3, T4, T5, T6 any] struct {
@@ -58,6 +74,10 @@ func (t Tuple6[T1, T2, T3, T4, T5, T6]) Unpack() (T1, T2, T3, T4, T5, T6) {
 	return t.V1, t.V2, t.V3, t.V4, t.V5, t.V6
 }
 
+func (t Tuple6[T1, T2, T3, T4, T5, T6]) Last() T6 {
+	return t.V6
+}
+
 type Tuple7[T1, T2, T3, T4, T5, T6, T7 any] struct {
 	V1 T1
 	V2 T2
@@ -70,6 +90,10 @@ type Tuple7[T1, T2, T3, T4, T5, T6, T7 any] struct {
 
 func (t Tuple7[T1, T2, T3, T4, T5, T6, T7]) Unpack() (T1, T2, T3, T4, T5, T6, T7) {
 	return t.V1, t.V2, t.V3, t.V4, t.V5, t.V6, t.V7
+}
+
+func (t Tuple7[T1, T2, T3, T4, T5, T6, T7]) Last() T7 {
+	return t.V7
 }
 
 type Tuple8[T1, T2, T3, T4, T5, T6, T7, T8 any] struct {
@@ -87,6 +111,10 @@ func (t Tuple8[T1, T2, T3, T4, T5, T6, T7, T8]) Unpack() (T1, T2, T3, T4, T5, T6
 	return t.V1, t.V2, t.V3, t.V4, t.V5, t.V6, t.V7, t.V8
 }
 
+func (t Tuple8[T1, T2, T3, T4, T5, T6, T7, T8]) Last() T8 {
+	return t.V8
+}
+
 type Tuple9[T1, T2, T3, T4, T5, T6, T7, T8, T9 any] struct {
 	V1 T1
 	V2 T2
@@ -101,4 +129,8 @@ type Tuple9[T1, T2, T3, T4, T5, T6, T7, T8, T9 any] struct {
 
 func (t Tuple9[T1, T2, T3, T4, T5, T6, T7, T8, T9]) Unpack() (T1, T2, T3, T4, T5, T6, T7, T8, T9) {
 	return t.V1, t.V2, t.V3, t.V4, t.V5, t.V6, t.V7, t.V8, t.V9
+}
+
+func (t Tuple9[T1, T2, T3, T4, T5, T6, T7, T8, T9]) Last() T9 {
+	return t.V9
 }
