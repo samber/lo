@@ -21,3 +21,44 @@ func FromPairs[K comparable, V any](pairs []lotup.Tuple2[K, V]) (m map[K]V) {
 
 	return m
 }
+
+func FromKeysAndDefault[K comparable, V any](keys []K, value V) (m map[K]V) {
+	m = make(map[K]V, len(keys))
+	for _, k := range keys {
+		m[k] = value
+	}
+
+	return m
+}
+
+func MapKeys[K comparable, V any](keys []K, fmap func(K) V) (m map[K]V) {
+	m = make(map[K]V, len(keys))
+	for _, k := range keys {
+		m[k] = fmap(k)
+	}
+
+	return m
+}
+
+func IMapKeys[K comparable, V any](keys []K, imap func(int, K) V) (m map[K]V) {
+	m = make(map[K]V, len(keys))
+	for i, k := range keys {
+		m[k] = imap(i, k)
+	}
+
+	return m
+}
+
+func Fill[K comparable, V any](size int, get func(int) (K, V)) (m map[K]V) {
+	if size < 0 {
+		return nil
+	}
+
+	m = make(map[K]V, size)
+	for i := 0; i < size; i++ {
+		k, v := get(i)
+		m[k] = v
+	}
+
+	return m
+}

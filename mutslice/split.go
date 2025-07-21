@@ -2,7 +2,7 @@ package mutslice
 
 // Split splits the slice into two parts: the first part contains all elements that satisfy the predicate,
 // and the second part contains the rest not the elements. Changes are made in place.
-func Split[T any, Slice ~[]T](xs Slice, pred func(T) bool) (taken, rest Slice) {
+func Split[Slice ~[]T, T any](xs Slice, pred func(T) bool) (taken, rest Slice) {
 	last, size := 0, len(xs)
 	for last < size && pred(xs[last]) {
 		last++
@@ -20,7 +20,7 @@ func Split[T any, Slice ~[]T](xs Slice, pred func(T) bool) (taken, rest Slice) {
 
 // ISplit splits the slice into two parts: the first part contains all elements that satisfy the predicate,
 // and the second part contains the rest not the elements. Changes are made in place.
-func ISplit[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) (taken, rest Slice) {
+func ISplit[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool) (taken, rest Slice) {
 	last, size := 0, len(xs)
 	for last < size && ipred(last, xs[last]) {
 		last++

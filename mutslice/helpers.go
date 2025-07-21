@@ -62,7 +62,7 @@ func forwardSlice(size int, from int, to int) (int, int, bool) {
 	return start, end, true
 }
 
-func erase[T comparable, Slice ~[]T](xs Slice, start int, end int) Slice {
+func erase[Slice ~[]T, T comparable](xs Slice, start int, end int) Slice {
 	if start == end {
 		return xs // nothing to erase
 	}

@@ -2,7 +2,7 @@ package loslice
 
 import "slices"
 
-func IndexVal[T comparable, Slice ~[]T](xs Slice, val T) (index int, ok bool) {
+func IndexVal[Slice ~[]T, T comparable](xs Slice, val T) (index int, ok bool) {
 	if i := slices.Index(xs, val); i >= 0 {
 		return i, true
 	}
@@ -10,7 +10,7 @@ func IndexVal[T comparable, Slice ~[]T](xs Slice, val T) (index int, ok bool) {
 	return
 }
 
-func Index[T any, Slice ~[]T](xs Slice, pred func(item T) bool) (index int, ok bool) {
+func Index[Slice ~[]T, T any](xs Slice, pred func(item T) bool) (index int, ok bool) {
 	if i := slices.IndexFunc(xs, pred); i >= 0 {
 		return i, true
 	}
@@ -18,7 +18,7 @@ func Index[T any, Slice ~[]T](xs Slice, pred func(item T) bool) (index int, ok b
 	return
 }
 
-func IIndex[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) (index int, ok bool) {
+func IIndex[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool) (index int, ok bool) {
 	for i, x := range xs {
 		if ipred(i, x) {
 			return i, true
@@ -28,7 +28,7 @@ func IIndex[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) (index int, ok
 	return
 }
 
-func RIndexVal[T comparable, Slice ~[]T](xs Slice, val T) (index int, ok bool) {
+func RIndexVal[Slice ~[]T, T comparable](xs Slice, val T) (index int, ok bool) {
 	for i := len(xs) - 1; i >= 0; i-- {
 		if xs[i] == val {
 			return i, true
@@ -38,7 +38,7 @@ func RIndexVal[T comparable, Slice ~[]T](xs Slice, val T) (index int, ok bool) {
 	return
 }
 
-func RIndex[T any, Slice ~[]T](xs Slice, pred func(item T) bool) (index int, ok bool) {
+func RIndex[Slice ~[]T, T any](xs Slice, pred func(item T) bool) (index int, ok bool) {
 	for i := len(xs) - 1; i >= 0; i-- {
 		if pred(xs[i]) {
 			return i, true
@@ -48,7 +48,7 @@ func RIndex[T any, Slice ~[]T](xs Slice, pred func(item T) bool) (index int, ok 
 	return
 }
 
-func IRIndex[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) (index int, ok bool) {
+func IRIndex[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool) (index int, ok bool) {
 	for i := len(xs) - 1; i >= 0; i-- {
 		if ipred(i, xs[i]) {
 			return i, true
@@ -58,55 +58,110 @@ func IRIndex[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) (index int, o
 	return
 }
 
-func IndicesVal[T comparable, Slice ~[]T](xs Slice, val T) (indices []int) {
-	indices = make([]int, 0, CountVal(xs, val))
+func IndicesVal[Slice ~[]T, T comparable](xs Slice, val T) (indices []int) {
+	return indicesVal(xs, val, nil)
+}
+
+func IndicesValEx[Slice ~[]T, T comparable](mode AllocateMode, xs Slice, val T) (indices []int) {
+	indices = allocateCapacity[[]int](mode, len(xs), func() int { return CountVal(xs, val) })
+
+	return indicesVal(xs, val, indices)
+}
+
+func indicesVal[Slice ~[]T, T comparable](xs Slice, val T, indices []int) []int {
 	for i, x := range xs {
 		if x == val {
 			indices = append(indices, i)
 		}
 	}
 
-	return
+	return indices
 }
 
-func RIndicesVal[T comparable, Slice ~[]T](xs Slice, val T) (indices []int) {
+func RIndicesVal[Slice ~[]T, T comparable](xs Slice, val T) (indices []int) {
 	indices = IndicesVal(xs, val)
 	slices.Reverse(indices)
 
 	return
 }
 
-func Indices[T any, Slice ~[]T](xs Slice, pred func(item T) bool) (indices []int) {
-	indices = make([]int, 0, Count(xs, pred))
+func RIndicesValEx[Slice ~[]T, T comparable](mode AllocateMode, xs Slice, val T) (indices []int) {
+	indices = IndicesValEx(mode, xs, val)
+	slices.Reverse(indices)
+
+	return
+}
+
+// Indices returns indices of elements matching the predicate.
+func Indices[Slice ~[]T, T any](xs Slice, pred func(item T) bool) (indices []int) {
+	return indicesImpl(xs, pred, nil)
+}
+
+// IndicesEx returns indices of elements matching the predicate, with allocation mode.
+func IndicesEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, pred func(item T) bool) (indices []int) {
+	indices = allocateCapacity[[]int](mode, len(xs), func() int { return Count(xs, pred) })
+
+	return indicesImpl(xs, pred, indices)
+}
+
+// Helper for Indices and IndicesEx.
+func indicesImpl[Slice ~[]T, T any](xs Slice, pred func(item T) bool, indices []int) []int {
 	for i, x := range xs {
 		if pred(x) {
 			indices = append(indices, i)
 		}
 	}
-
-	return
+	return indices
 }
 
-func RIndices[T any, Slice ~[]T](xs Slice, pred func(item T) bool) (indices []int) {
+func RIndices[Slice ~[]T, T any](xs Slice, pred func(item T) bool) (indices []int) {
 	indices = Indices(xs, pred)
 	slices.Reverse(indices)
 
 	return
 }
 
-func IIndices[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) (indices []int) {
-	indices = make([]int, 0, ICount(xs, ipred))
+// RIndicesEx returns indices of elements matching the predicate, with allocation mode.
+func RIndicesEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, pred func(item T) bool) (indices []int) {
+	indices = IndicesEx(mode, xs, pred)
+	slices.Reverse(indices)
+
+	return
+}
+
+// IIndices returns indices of elements matching the indexed predicate.
+func IIndices[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool) (indices []int) {
+	return iindices(xs, ipred, nil)
+}
+
+// IIndicesEx returns indices of elements matching the indexed predicate, with allocation mode.
+func IIndicesEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, ipred func(int, T) bool) (indices []int) {
+	indices = allocateCapacity[[]int](mode, len(xs), func() int { return ICount(xs, ipred) })
+
+	return iindices(xs, ipred, indices)
+}
+
+// Helper for IIndices and IIndicesEx.
+func iindices[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool, indices []int) []int {
 	for i, x := range xs {
 		if ipred(i, x) {
 			indices = append(indices, i)
 		}
 	}
 
+	return indices
+}
+
+func IRIndices[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool) (indices []int) {
+	indices = IIndices(xs, ipred)
+	slices.Reverse(indices)
+
 	return
 }
 
-func IRIndices[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) (indices []int) {
-	indices = IIndices(xs, ipred)
+// IRIndicesEx returns indices of elements matching the indexed predicate, with allocation mode.
+func IRIndicesEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, ipred func(int, T) bool) (indices []int) {
+	indices = IIndicesEx(mode, xs, ipred)
 	slices.Reverse(indices)
 
 	return
@@ -114,7 +169,7 @@ func IRIndices[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) (indices []
 
 // IndicesNVal returns the first n indices of the value in the slice.
 // Supports negative n to get the last n indices.
-func IndicesNVal[T comparable, Slice ~[]T](xs Slice, n int, val T) (indices []int) {
+func IndicesNVal[Slice ~[]T, T comparable](xs Slice, n int, val T) (indices []int) {
 	if n == 0 {
 		return IndicesVal(xs, val)
 	}
@@ -148,7 +203,7 @@ func IndicesNVal[T comparable, Slice ~[]T](xs Slice, n int, val T) (indices []in
 }
 
 // IndicesN returns the first n indices of the elements that satisfy the predicate in the slice.
-func IndicesN[T any, Slice ~[]T](xs Slice, n int, pred func(item T) bool) (indices []int) {
+func IndicesN[Slice ~[]T, T any](xs Slice, n int, pred func(item T) bool) (indices []int) {
 	if n == 0 {
 		return Indices(xs, pred)
 	}
@@ -182,7 +237,7 @@ func IndicesN[T any, Slice ~[]T](xs Slice, n int, pred func(item T) bool) (indic
 }
 
 // IIndicesN returns the first n indices of the elements that satisfy the predicate in the slice, with access to the index.
-func IIndicesN[T any, Slice ~[]T](xs Slice, n int, ipred func(int, T) bool) (indices []int) {
+func IIndicesN[Slice ~[]T, T any](xs Slice, n int, ipred func(int, T) bool) (indices []int) {
 	if n == 0 {
 		return IIndices(xs, ipred)
 	}

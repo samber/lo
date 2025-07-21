@@ -4,7 +4,7 @@ import "slices"
 
 // Flatten returns an array a single level deep.
 // Play: https://go.dev/play/p/rbp9ORaMpjw
-func Flatten[T any, Slice ~[]T](table ...Slice) Slice {
+func Flatten[Slice ~[]T, T any](table ...Slice) Slice {
 	totalLen := 0
 	for i := range table {
 		totalLen += len(table[i])
@@ -18,7 +18,7 @@ func Flatten[T any, Slice ~[]T](table ...Slice) Slice {
 	return result
 }
 
-func Transpose[T any, Slice ~[]T](table ...Slice) []Slice {
+func Transpose[Slice ~[]T, T any](table ...Slice) []Slice {
 	n := len(table)
 	switch n {
 	case 0:
@@ -82,6 +82,6 @@ func Transpose[T any, Slice ~[]T](table ...Slice) []Slice {
 }
 
 // Interleave round-robin alternating input slices and sequentially appending value at index into result
-func Interleave[T any, Slice ~[]T](table ...Slice) Slice {
+func Interleave[Slice ~[]T, T any](table ...Slice) Slice {
 	return Flatten(Transpose(table...)...)
 }

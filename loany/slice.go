@@ -1,6 +1,6 @@
 package loany
 
-func Slice[T any, Slice ~[]T](xs Slice) []any {
+func Slice[Slice ~[]T, T any](xs Slice) []any {
 	result := make([]any, len(xs))
 	for i, x := range xs {
 		result[i] = x

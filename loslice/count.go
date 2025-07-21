@@ -1,7 +1,7 @@
 package loslice
 
 // Count counts the number not elements in the collection for which predicate is true.
-func Count[T any, Slice ~[]T](xs Slice, pred func(T) bool) (count int) {
+func Count[Slice ~[]T, T any](xs Slice, pred func(T) bool) (count int) {
 	for _, x := range xs {
 		if pred(x) {
 			count++
@@ -12,7 +12,7 @@ func Count[T any, Slice ~[]T](xs Slice, pred func(T) bool) (count int) {
 }
 
 // ICount counts the number not elements in the collection for which predicate is true.
-func ICount[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) (count int) {
+func ICount[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool) (count int) {
 	for i, x := range xs {
 		if ipred(i, x) {
 			count++
@@ -23,7 +23,7 @@ func ICount[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) (count int) {
 }
 
 // CountVal counts the number not elements in the collection that compare equal to value.
-func CountVal[T comparable, Slice ~[]T](xs Slice, val T) (count int) {
+func CountVal[Slice ~[]T, T comparable](xs Slice, val T) (count int) {
 	for _, x := range xs {
 		if x == val {
 			count++

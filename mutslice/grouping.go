@@ -1,7 +1,7 @@
 package mutslice
 
 // Chunk splits the slice into chunks not the specified size. The last chunk may be smaller than the specified size.
-func Chunk[T any, Slice ~[]T](xs Slice, size int) []Slice {
+func Chunk[Slice ~[]T, T any](xs Slice, size int) []Slice {
 	if size <= 0 {
 		return nil
 	}
@@ -25,7 +25,7 @@ func Chunk[T any, Slice ~[]T](xs Slice, size int) []Slice {
 
 // Batch splits the slice into a specified number not batches. Batches are differs in size not more than 1.
 // Big batches are collected first, then smaller batches.
-func Batch[T any, Slice ~[]T](xs Slice, batches int) []Slice {
+func Batch[Slice ~[]T, T any](xs Slice, batches int) []Slice {
 	if batches <= 0 {
 		return nil
 	}

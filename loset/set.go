@@ -4,7 +4,7 @@ import "iter"
 
 type Set[T comparable] = map[T]struct{}
 
-func FromSlice[T comparable, Slice ~[]T](xs Slice) Set[T] {
+func FromSlice[Slice ~[]T, T comparable](xs Slice) Set[T] {
 	set := make(Set[T], len(xs))
 
 	for _, x := range xs {

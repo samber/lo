@@ -2,7 +2,7 @@ package loslice
 
 import "cmp"
 
-func MinVal[T cmp.Ordered, Slice ~[]T](xs Slice) T {
+func MinVal[Slice ~[]T, T cmp.Ordered](xs Slice) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -18,7 +18,7 @@ func MinVal[T cmp.Ordered, Slice ~[]T](xs Slice) T {
 	return res
 }
 
-func ArgMinVal[T cmp.Ordered, Slice ~[]T](xs Slice) int {
+func ArgMinVal[Slice ~[]T, T cmp.Ordered](xs Slice) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -33,7 +33,7 @@ func ArgMinVal[T cmp.Ordered, Slice ~[]T](xs Slice) int {
 	return index
 }
 
-func Min[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (t T, k K) {
+func Min[Slice ~[]T, T any, K cmp.Ordered](xs Slice, fkey func(T) K) (t T, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -48,7 +48,7 @@ func Min[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (t T, k K) 
 	return
 }
 
-func ArgMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (index int, k K) {
+func ArgMin[Slice ~[]T, T any, K cmp.Ordered](xs Slice, fkey func(T) K) (index int, k K) {
 	if len(xs) == 0 {
 		return 0, k
 	}
@@ -64,7 +64,7 @@ func ArgMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (index i
 	return
 }
 
-func IMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (t T, k K) {
+func IMin[Slice ~[]T, T any, K cmp.Ordered](xs Slice, ikey func(int, T) K) (t T, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -79,7 +79,7 @@ func IMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (t T,
 	return
 }
 
-func IArgMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (index int, k K) {
+func IArgMin[Slice ~[]T, T any, K cmp.Ordered](xs Slice, ikey func(int, T) K) (index int, k K) {
 	if len(xs) == 0 {
 		return 0, k
 	}
@@ -95,7 +95,7 @@ func IArgMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (i
 	return
 }
 
-func RMinVal[T cmp.Ordered, Slice ~[]T](xs Slice) T {
+func RMinVal[Slice ~[]T, T cmp.Ordered](xs Slice) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -112,7 +112,7 @@ func RMinVal[T cmp.Ordered, Slice ~[]T](xs Slice) T {
 	return res
 }
 
-func RArgMinVal[T cmp.Ordered, Slice ~[]T](xs Slice) int {
+func RArgMinVal[Slice ~[]T, T cmp.Ordered](xs Slice) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -128,7 +128,7 @@ func RArgMinVal[T cmp.Ordered, Slice ~[]T](xs Slice) int {
 	return index
 }
 
-func RMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (t T, k K) {
+func RMin[Slice ~[]T, T any, K cmp.Ordered](xs Slice, fkey func(T) K) (t T, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -144,7 +144,7 @@ func RMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (t T, k K)
 	return
 }
 
-func RArgMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (index int, k K) {
+func RArgMin[Slice ~[]T, T any, K cmp.Ordered](xs Slice, fkey func(T) K) (index int, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -160,7 +160,7 @@ func RArgMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (index 
 	return
 }
 
-func IRMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(int, T) K) (t T, k K) {
+func IRMin[Slice ~[]T, T any, K cmp.Ordered](xs Slice, fkey func(int, T) K) (t T, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -176,7 +176,7 @@ func IRMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(int, T) K) (t T
 	return
 }
 
-func IRArgMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (index int, k K) {
+func IRArgMin[Slice ~[]T, T any, K cmp.Ordered](xs Slice, ikey func(int, T) K) (index int, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -192,7 +192,7 @@ func IRArgMin[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (
 	return
 }
 
-func MaxVal[T cmp.Ordered, Slice ~[]T](xs Slice) T {
+func MaxVal[Slice ~[]T, T cmp.Ordered](xs Slice) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -206,7 +206,7 @@ func MaxVal[T cmp.Ordered, Slice ~[]T](xs Slice) T {
 	return res
 }
 
-func ArgMaxVal[T cmp.Ordered, Slice ~[]T](xs Slice) int {
+func ArgMaxVal[Slice ~[]T, T cmp.Ordered](xs Slice) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -219,7 +219,7 @@ func ArgMaxVal[T cmp.Ordered, Slice ~[]T](xs Slice) int {
 	return index
 }
 
-func Max[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (t T, k K) {
+func Max[Slice ~[]T, T any, K cmp.Ordered](xs Slice, fkey func(T) K) (t T, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -232,7 +232,7 @@ func Max[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (t T, k K) 
 	return
 }
 
-func ArgMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (index int, k K) {
+func ArgMax[Slice ~[]T, T any, K cmp.Ordered](xs Slice, fkey func(T) K) (index int, k K) {
 	if len(xs) == 0 {
 		return 0, k
 	}
@@ -246,7 +246,7 @@ func ArgMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (index i
 	return
 }
 
-func IMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (t T, k K) {
+func IMax[Slice ~[]T, T any, K cmp.Ordered](xs Slice, ikey func(int, T) K) (t T, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -259,7 +259,7 @@ func IMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (t T,
 	return
 }
 
-func IArgMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (index int, k K) {
+func IArgMax[Slice ~[]T, T any, K cmp.Ordered](xs Slice, ikey func(int, T) K) (index int, k K) {
 	if len(xs) == 0 {
 		return 0, k
 	}
@@ -273,7 +273,7 @@ func IArgMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (i
 	return
 }
 
-func RMaxVal[T cmp.Ordered, Slice ~[]T](xs Slice) T {
+func RMaxVal[Slice ~[]T, T cmp.Ordered](xs Slice) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -288,7 +288,7 @@ func RMaxVal[T cmp.Ordered, Slice ~[]T](xs Slice) T {
 	return res
 }
 
-func RArgMaxVal[T cmp.Ordered, Slice ~[]T](xs Slice) int {
+func RArgMaxVal[Slice ~[]T, T cmp.Ordered](xs Slice) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -302,7 +302,7 @@ func RArgMaxVal[T cmp.Ordered, Slice ~[]T](xs Slice) int {
 	return index
 }
 
-func RMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (t T, k K) {
+func RMax[Slice ~[]T, T any, K cmp.Ordered](xs Slice, fkey func(T) K) (t T, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -316,7 +316,7 @@ func RMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (t T, k K)
 	return
 }
 
-func RArgMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (index int, k K) {
+func RArgMax[Slice ~[]T, T any, K cmp.Ordered](xs Slice, fkey func(T) K) (index int, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -330,7 +330,7 @@ func RArgMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, fkey func(T) K) (index 
 	return
 }
 
-func IRMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (t T, k K) {
+func IRMax[Slice ~[]T, T any, K cmp.Ordered](xs Slice, ikey func(int, T) K) (t T, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -344,7 +344,7 @@ func IRMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (t T
 	return
 }
 
-func IRArgMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (index int, k K) {
+func IRArgMax[Slice ~[]T, T any, K cmp.Ordered](xs Slice, ikey func(int, T) K) (index int, k K) {
 	if len(xs) == 0 {
 		return
 	}
@@ -359,7 +359,7 @@ func IRArgMax[T any, K cmp.Ordered, Slice ~[]T](xs Slice, ikey func(int, T) K) (
 }
 
 // MinCmp forward min using cmpFn
-func MinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) T {
+func MinCmp[Slice ~[]T, T any](xs Slice, cmpFn func(a, b T) int) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -374,7 +374,7 @@ func MinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) T {
 }
 
 // MaxCmp forward max using cmpFn
-func MaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) T {
+func MaxCmp[Slice ~[]T, T any](xs Slice, cmpFn func(a, b T) int) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -389,7 +389,7 @@ func MaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) T {
 }
 
 // RMinCmp reverse min using cmpFn
-func RMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) T {
+func RMinCmp[Slice ~[]T, T any](xs Slice, cmpFn func(a, b T) int) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -405,7 +405,7 @@ func RMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) T {
 }
 
 // RMaxCmp reverse max using cmpFn
-func RMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) T {
+func RMaxCmp[Slice ~[]T, T any](xs Slice, cmpFn func(a, b T) int) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -421,7 +421,7 @@ func RMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) T {
 }
 
 // IMinCmp forward min using index-aware cmpFn
-func IMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) T {
+func IMinCmp[Slice ~[]T, T any](xs Slice, cmpFn func(i, j int, a, b T) int) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -438,7 +438,7 @@ func IMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) T {
 }
 
 // IMaxCmp forward max using index-aware cmpFn
-func IMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) T {
+func IMaxCmp[Slice ~[]T, T any](xs Slice, cmpFn func(i, j int, a, b T) int) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -456,7 +456,7 @@ func IMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) T {
 }
 
 // IRMinCmp reverse min using index-aware cmpFn
-func IRMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) T {
+func IRMinCmp[Slice ~[]T, T any](xs Slice, cmpFn func(i, j int, a, b T) int) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -473,7 +473,7 @@ func IRMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) T {
 }
 
 // IRMaxCmp reverse max using index-aware cmpFn
-func IRMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) T {
+func IRMaxCmp[Slice ~[]T, T any](xs Slice, cmpFn func(i, j int, a, b T) int) T {
 	if len(xs) == 0 {
 		var zero T
 		return zero
@@ -490,7 +490,7 @@ func IRMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) T {
 }
 
 // ArgMinCmp forward min index using cmpFn
-func ArgMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) int {
+func ArgMinCmp[Slice ~[]T, T any](xs Slice, cmpFn func(a, b T) int) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -504,7 +504,7 @@ func ArgMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) int {
 }
 
 // ArgMaxCmp forward max index using cmpFn
-func ArgMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) int {
+func ArgMaxCmp[Slice ~[]T, T any](xs Slice, cmpFn func(a, b T) int) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -518,7 +518,7 @@ func ArgMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) int {
 }
 
 // RArgMinCmp reverse min index using cmpFn
-func RArgMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) int {
+func RArgMinCmp[Slice ~[]T, T any](xs Slice, cmpFn func(a, b T) int) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -533,7 +533,7 @@ func RArgMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) int {
 }
 
 // RArgMaxCmp reverse max index using cmpFn
-func RArgMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) int {
+func RArgMaxCmp[Slice ~[]T, T any](xs Slice, cmpFn func(a, b T) int) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -548,7 +548,7 @@ func RArgMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(a, b T) int) int {
 }
 
 // IArgMinCmp forward min index using index-aware cmpFn
-func IArgMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) int {
+func IArgMinCmp[Slice ~[]T, T any](xs Slice, cmpFn func(i, j int, a, b T) int) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -562,7 +562,7 @@ func IArgMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) i
 }
 
 // IArgMaxCmp forward max index using index-aware cmpFn
-func IArgMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) int {
+func IArgMaxCmp[Slice ~[]T, T any](xs Slice, cmpFn func(i, j int, a, b T) int) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -576,7 +576,7 @@ func IArgMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) i
 }
 
 // IRArgMinCmp reverse min index using index-aware cmpFn
-func IRArgMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) int {
+func IRArgMinCmp[Slice ~[]T, T any](xs Slice, cmpFn func(i, j int, a, b T) int) int {
 	if len(xs) == 0 {
 		return 0
 	}
@@ -591,7 +591,7 @@ func IRArgMinCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) 
 }
 
 // IRArgMaxCmp reverse max index using index-aware cmpFn
-func IRArgMaxCmp[T any, Slice ~[]T](xs Slice, cmpFn func(i, j int, a, b T) int) int {
+func IRArgMaxCmp[Slice ~[]T, T any](xs Slice, cmpFn func(i, j int, a, b T) int) int {
 	if len(xs) == 0 {
 		return 0
 	}

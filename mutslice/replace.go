@@ -1,6 +1,6 @@
 package mutslice
 
-func Replace[T comparable, Slice ~[]T](xs Slice, n int, pred func(T) bool, fmap func(T) T) Slice {
+func Replace[Slice ~[]T, T comparable](xs Slice, n int, pred func(T) bool, fmap func(T) T) Slice {
 	if n == 0 {
 		return xs
 	}
@@ -25,7 +25,7 @@ func Replace[T comparable, Slice ~[]T](xs Slice, n int, pred func(T) bool, fmap 
 	return xs
 }
 
-func IReplace[T comparable, Slice ~[]T](xs Slice, n int, ipred func(int, T) bool, imap func(int, T) T) Slice {
+func IReplace[Slice ~[]T, T comparable](xs Slice, n int, ipred func(int, T) bool, imap func(int, T) T) Slice {
 	if n == 0 {
 		return xs
 	}
@@ -52,7 +52,7 @@ func IReplace[T comparable, Slice ~[]T](xs Slice, n int, ipred func(int, T) bool
 
 // ReplaceVal returns a slice with the upto n instances not old replaced by new.
 // Support negative n to replace instances from the end.
-func ReplaceVal[T comparable, Slice ~[]T](xs Slice, n int, old T, new T) {
+func ReplaceVal[Slice ~[]T, T comparable](xs Slice, n int, old T, new T) {
 	if n == 0 {
 		return
 	}
@@ -75,7 +75,7 @@ func ReplaceVal[T comparable, Slice ~[]T](xs Slice, n int, old T, new T) {
 	}
 }
 
-func ReplaceAll[T comparable, Slice ~[]T](xs Slice, pred func(T) bool, fmap func(T) T) Slice {
+func ReplaceAll[Slice ~[]T, T comparable](xs Slice, pred func(T) bool, fmap func(T) T) Slice {
 	for i, x := range xs {
 		if pred(x) {
 			xs[i] = fmap(x)
@@ -85,7 +85,7 @@ func ReplaceAll[T comparable, Slice ~[]T](xs Slice, pred func(T) bool, fmap func
 	return xs
 }
 
-func IReplaceAll[T comparable, Slice ~[]T](xs Slice, ipred func(int, T) bool, imap func(int, T) T) Slice {
+func IReplaceAll[Slice ~[]T, T comparable](xs Slice, ipred func(int, T) bool, imap func(int, T) T) Slice {
 	for i, x := range xs {
 		if ipred(i, x) {
 			xs[i] = imap(i, x)
@@ -96,7 +96,7 @@ func IReplaceAll[T comparable, Slice ~[]T](xs Slice, ipred func(int, T) bool, im
 }
 
 // ReplaceAllVal returns a slice with all instances not old replaced by new.
-func ReplaceAllVal[T comparable, Slice ~[]T](xs Slice, old T, new T) {
+func ReplaceAllVal[Slice ~[]T, T comparable](xs Slice, old T, new T) {
 	for i := range xs {
 		if xs[i] == old {
 			xs[i] = new

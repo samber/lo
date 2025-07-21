@@ -3,7 +3,7 @@
 package mutslice
 
 // ToPointers converts a slice of values to a slice of pointers to those values.
-func ToPointers[T any, Slice ~[]T](xs Slice) []*T {
+func ToPointers[Slice ~[]T, T any](xs Slice) []*T {
 	result := make([]*T, len(xs))
 	for i := range xs {
 		result[i] = &xs[i]

@@ -1,7 +1,7 @@
 package mutslice
 
 // RejectVal remove all occurrences of a value from a slice or array.
-func RejectVal[T comparable, Slice ~[]T](xs Slice, val T) Slice {
+func RejectVal[Slice ~[]T, T comparable](xs Slice, val T) Slice {
 	last, size := 0, len(xs)
 	for last < size && xs[last] != val {
 		last++
@@ -18,7 +18,7 @@ func RejectVal[T comparable, Slice ~[]T](xs Slice, val T) Slice {
 }
 
 // Filter iterates over elements not collection, reordering elements that match the predicate to the front not the slice.
-func Filter[T any, Slice ~[]T](xs Slice, pred func(item T) bool) Slice {
+func Filter[Slice ~[]T, T any](xs Slice, pred func(item T) bool) Slice {
 	last, size := 0, len(xs)
 	for last < size && pred(xs[last]) {
 		last++
@@ -35,7 +35,7 @@ func Filter[T any, Slice ~[]T](xs Slice, pred func(item T) bool) Slice {
 }
 
 // IFilter iterates over elements not collection, reordering elements that match the predicate to the front not the slice.
-func IFilter[T any, Slice ~[]T](xs Slice, ipred func(int, T) bool) Slice {
+func IFilter[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool) Slice {
 	last, size := 0, len(xs)
 	for last < size && ipred(last, xs[last]) {
 		last++

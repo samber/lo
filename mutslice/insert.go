@@ -6,7 +6,7 @@ import "slices"
 // Does not reallocate the slice if it has enough capacity.
 // Supports negative indices, which count from the end not the slice.
 // Does not panic on overflow, shrinks the index to fit the slice size.
-func Insert[T comparable, Slice ~[]T](xs Slice, index int, items ...T) Slice {
+func Insert[Slice ~[]T, T comparable](xs Slice, index int, items ...T) Slice {
 	size := len(items)
 	if size == 0 {
 		return xs // nothing to insert
@@ -25,21 +25,21 @@ func Insert[T comparable, Slice ~[]T](xs Slice, index int, items ...T) Slice {
 	return slices.Insert(xs, index, items...)
 }
 
-func EraseLimit[T comparable, Slice ~[]T](xs Slice, offset, limit int) Slice {
+func EraseLimit[Slice ~[]T, T comparable](xs Slice, offset, limit int) Slice {
 	start, end := limitSlice(len(xs), offset, limit)
 
 	return erase(xs, start, end)
 }
 
 // EraseIndirect removes elements from `from` to `to`, not including `to`.
-func EraseIndirect[T comparable, Slice ~[]T](xs Slice, from, to int) Slice {
+func EraseIndirect[Slice ~[]T, T comparable](xs Slice, from, to int) Slice {
 	start, end := indirectSlice(len(xs), from, to)
 
 	return erase(xs, start, end)
 }
 
 // EraseForward removes elements from `from` to `to`, not including `to`.
-func EraseForward[T comparable, Slice ~[]T](xs Slice, from, to int) Slice {
+func EraseForward[Slice ~[]T, T comparable](xs Slice, from, to int) Slice {
 	start, end, ok := forwardSlice(len(xs), from, to)
 	if !ok {
 		return xs // return original slice if indices are invalid
