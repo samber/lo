@@ -24,7 +24,7 @@ func Collect[T comparable, Seq iter.Seq[T]](xs Seq) Set[T] {
 	return set
 }
 
-func ToSlice[T comparable, S ~Set[T]](set S) []T {
+func ToSlice[S ~Set[T], T comparable](set S) []T {
 	slice := make([]T, 0, len(set))
 
 	for x := range set {

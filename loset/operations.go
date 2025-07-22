@@ -6,13 +6,13 @@ import (
 	"maps"
 )
 
-func Intersection[T comparable, Set ~map[T]struct{}](a, b Set) (intersection Set) {
+func Intersection[S ~Set[T], T comparable](a, b S) (intersection S) {
 	if len(b) < len(a) {
 		// swap a and b to ensure a is the smaller set
 		a, b = b, a
 	}
 
-	intersection = make(Set, len(a))
+	intersection = make(S, len(a))
 	for k := range a {
 		if _, ok := b[k]; ok {
 			intersection[k] = struct{}{}
@@ -22,13 +22,13 @@ func Intersection[T comparable, Set ~map[T]struct{}](a, b Set) (intersection Set
 	return
 }
 
-func GroupIntersection[T comparable, Set ~map[T]struct{}](sets ...Set) (intersection Set) {
+func GroupIntersection[S ~Set[T], T comparable](sets ...S) (intersection S) {
 	if len(sets) == 0 {
 		return nil
 	}
 
 	// look for the smallest set to reduce iterations
-	i := lotup.First(loslice.ArgMin(sets, func(s Set) int { return len(s) }))
+	i := lotup.First(loslice.ArgMin(sets, func(s S) int { return len(s) }))
 	intersection = maps.Clone(sets[i])
 
 	copy(sets[i:], sets[i+1:])
@@ -46,7 +46,7 @@ func GroupIntersection[T comparable, Set ~map[T]struct{}](sets ...Set) (intersec
 	return intersection
 }
 
-func Union[T comparable, Set ~map[T]struct{}](a, b Set) (union Set) {
+func Union[S ~Set[T], T comparable](a, b S) (union S) {
 	if len(b) > len(a) {
 		// swap a and b to ensure a is the larger set
 		a, b = b, a
@@ -58,12 +58,12 @@ func Union[T comparable, Set ~map[T]struct{}](a, b Set) (union Set) {
 	return union
 }
 
-func GroupUnion[T comparable, Set ~map[T]struct{}](sets ...Set) (union Set) {
+func GroupUnion[S ~Set[T], T comparable](sets ...S) (union S) {
 	if len(sets) == 0 {
 		return nil
 	}
 
-	union = make(Set)
+	union = make(S)
 	for _, set := range sets {
 		maps.Copy(union, set)
 	}
@@ -71,8 +71,8 @@ func GroupUnion[T comparable, Set ~map[T]struct{}](sets ...Set) (union Set) {
 	return union
 }
 
-func Difference[T comparable, Set ~map[T]struct{}](a, b Set) (difference Set) {
-	difference = make(Set, len(a))
+func Difference[S ~Set[T], T comparable](a, b S) (difference S) {
+	difference = make(S, len(a))
 	for k := range a {
 		if _, ok := b[k]; !ok {
 			difference[k] = struct{}{}
@@ -82,7 +82,7 @@ func Difference[T comparable, Set ~map[T]struct{}](a, b Set) (difference Set) {
 	return
 }
 
-func SymmetricDifference[T comparable, Set ~map[T]struct{}](a, b Set) (symmetricDifference Set) {
+func SymmetricDifference[S ~Set[T], T comparable](a, b S) (symmetricDifference S) {
 	if len(b) > len(a) {
 		// swap a and b to ensure a is the larger set
 		a, b = b, a
@@ -101,13 +101,13 @@ func SymmetricDifference[T comparable, Set ~map[T]struct{}](a, b Set) (symmetric
 	return symmetricDifference
 }
 
-func GroupSymmetricDifference[T comparable, Set ~map[T]struct{}](sets ...Set) (symmetricDifference Set) {
+func GroupSymmetricDifference[S ~Set[T], T comparable](sets ...S) (symmetricDifference S) {
 	if len(sets) == 0 {
 		return nil
 	}
 
-	rejected := make(Set)
-	symmetricDifference = make(Set)
+	rejected := make(S)
+	symmetricDifference = make(S)
 	for _, s := range sets {
 		for k := range s {
 			if _, ok := rejected[k]; ok {

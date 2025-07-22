@@ -2,7 +2,7 @@ package loset
 
 import "maps"
 
-func KeepCommon[T comparable, Set ~map[T]struct{}](self, other Set) {
+func KeepCommon[S ~Set[T], T comparable](self, other S) {
 	for k := range self {
 		if _, ok := other[k]; !ok {
 			delete(self, k)
@@ -10,7 +10,7 @@ func KeepCommon[T comparable, Set ~map[T]struct{}](self, other Set) {
 	}
 }
 
-func Subtract[T comparable, Set ~map[T]struct{}](self, other Set) {
+func Subtract[S ~Set[T], T comparable](self, other S) {
 	for k := range self {
 		if _, ok := other[k]; ok {
 			delete(self, k)
@@ -18,6 +18,6 @@ func Subtract[T comparable, Set ~map[T]struct{}](self, other Set) {
 	}
 }
 
-func Add[T comparable, Set ~map[T]struct{}](self Set, other Set) {
+func Add[S ~Set[T], T comparable](self, other S) {
 	maps.Copy(self, other)
 }
