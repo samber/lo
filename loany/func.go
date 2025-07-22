@@ -15,8 +15,12 @@ const (
 
 func errCall(index int, value any, source argSource, fnType reflect.Type, kwType reflect.Type) error {
 	typeName := fnType.In(index).Name()
+	if kwType == nil {
+		return fmt.Errorf("expected argument #%d to be of type `%s`, got `%#v`", index+1, typeName, value)
+	}
+
 	argName := kwType.Field(index).Name
-	return fmt.Errorf("expected argument #%d (%s) to be of type `%s`, got from %s `%#v`", index+1, argName, source, typeName, value)
+	return fmt.Errorf("expected argument #%d (%s) to be of type `%s`, got from %s `%#v`", index+1, argName, typeName, source, value)
 }
 
 // Call calls a function with the provided args and kwargs.
@@ -79,7 +83,11 @@ func Call(fn any, args []any, kwargs any) ([]any, error) {
 		tin := tfn.In(i)
 
 		if !rv.CanConvert(tin) {
-			return nil, errCall(i, val, source, tfn, rvkw.Type())
+			if kwargs == nil {
+				return nil, errCall(i, val, source, tfn, nil)
+			} else {
+				return nil, errCall(i, val, source, tfn, rvkw.Type())
+			}
 		}
 
 		rvargs[i] = rv.Convert(tin)
