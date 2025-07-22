@@ -1,6 +1,6 @@
 package lomap
 
-func Enumerate[K comparable, V any, Map ~map[K]V](m Map) (indices map[K]int) {
+func Enumerate[Map ~map[K]V, K comparable, V any](m Map) (indices map[K]int) {
 	indices = make(map[K]int, len(m))
 	i := 0
 	for k := range m {
@@ -11,7 +11,7 @@ func Enumerate[K comparable, V any, Map ~map[K]V](m Map) (indices map[K]int) {
 	return indices
 }
 
-func Swap[K, V comparable, Map ~map[K]V](m Map) (swapped map[V]K) {
+func Swap[Map ~map[K]V, K, V comparable](m Map) (swapped map[V]K) {
 	swapped = make(map[V]K, len(m))
 	for k, v := range m {
 		swapped[v] = k

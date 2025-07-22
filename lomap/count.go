@@ -1,6 +1,6 @@
 package lomap
 
-func CountKeys[K comparable, V any, Map ~map[K]V](m Map, pred func(K) bool) (count int) {
+func CountKeys[Map ~map[K]V, K comparable, V any](m Map, pred func(K) bool) (count int) {
 	for k := range m {
 		if pred(k) {
 			count++
@@ -10,7 +10,7 @@ func CountKeys[K comparable, V any, Map ~map[K]V](m Map, pred func(K) bool) (cou
 	return count
 }
 
-func CountValues[K comparable, V any, Map ~map[K]V](m Map, pred func(V) bool) (count int) {
+func CountValues[Map ~map[K]V, K comparable, V any](m Map, pred func(V) bool) (count int) {
 	for _, v := range m {
 		if pred(v) {
 			count++
@@ -20,7 +20,7 @@ func CountValues[K comparable, V any, Map ~map[K]V](m Map, pred func(V) bool) (c
 	return count
 }
 
-func CountPairs[K comparable, V any, Map ~map[K]V](m Map, pred func(K, V) bool) (count int) {
+func CountPairs[Map ~map[K]V, K comparable, V any](m Map, pred func(K, V) bool) (count int) {
 	for k, v := range m {
 		if pred(k, v) {
 			count++

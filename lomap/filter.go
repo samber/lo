@@ -1,6 +1,6 @@
 package lomap
 
-func FilterKeys[K comparable, V any, Map ~map[K]V](m Map, pred func(K) bool) (filtered Map) {
+func FilterKeys[Map ~map[K]V, K comparable, V any](m Map, pred func(K) bool) (filtered Map) {
 	filtered = make(Map, len(m))
 	for k, v := range m {
 		if pred(k) {
@@ -11,7 +11,7 @@ func FilterKeys[K comparable, V any, Map ~map[K]V](m Map, pred func(K) bool) (fi
 	return filtered
 }
 
-func FilterValues[K comparable, V any, Map ~map[K]V](m Map, pred func(V) bool) (filtered Map) {
+func FilterValues[Map ~map[K]V, K comparable, V any](m Map, pred func(V) bool) (filtered Map) {
 	filtered = make(Map, len(m))
 	for k, v := range m {
 		if pred(v) {
@@ -22,7 +22,7 @@ func FilterValues[K comparable, V any, Map ~map[K]V](m Map, pred func(V) bool) (
 	return filtered
 }
 
-func FilterPairs[K comparable, V any, Map ~map[K]V](m Map, pred func(K, V) bool) (filtered Map) {
+func FilterPairs[Map ~map[K]V, K comparable, V any](m Map, pred func(K, V) bool) (filtered Map) {
 	filtered = make(Map, len(m))
 	for k, v := range m {
 		if pred(k, v) {

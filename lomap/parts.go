@@ -2,7 +2,7 @@ package lomap
 
 import "github.com/samber/lo/lotup"
 
-func Keys[K comparable, V any, Map ~map[K]V](m Map) (keys []K) {
+func Keys[Map ~map[K]V, K comparable, V any](m Map) (keys []K) {
 	keys = make([]K, 0, len(m))
 	for k := range m {
 		keys = append(keys, k)
@@ -11,7 +11,7 @@ func Keys[K comparable, V any, Map ~map[K]V](m Map) (keys []K) {
 	return keys
 }
 
-func Values[K comparable, V any, Map ~map[K]V](m Map) (values []V) {
+func Values[Map ~map[K]V, K comparable, V any](m Map) (values []V) {
 	values = make([]V, 0, len(m))
 	for _, v := range m {
 		values = append(values, v)
@@ -20,7 +20,7 @@ func Values[K comparable, V any, Map ~map[K]V](m Map) (values []V) {
 	return values
 }
 
-func Pairs[K comparable, V any, Map ~map[K]V](m Map) (pairs []lotup.Tuple2[K, V]) {
+func Pairs[Map ~map[K]V, K comparable, V any](m Map) (pairs []lotup.Tuple2[K, V]) {
 	pairs = make([]lotup.Tuple2[K, V], 0, len(m))
 	for k, v := range m {
 		pairs = append(pairs, lotup.Of2(k, v))
@@ -29,7 +29,7 @@ func Pairs[K comparable, V any, Map ~map[K]V](m Map) (pairs []lotup.Tuple2[K, V]
 	return pairs
 }
 
-func KeysAndValues[K comparable, V any, Map ~map[K]V](m Map) (keys []K, values []V) {
+func KeysAndValues[Map ~map[K]V, K comparable, V any](m Map) (keys []K, values []V) {
 	keys = make([]K, 0, len(m))
 	values = make([]V, 0, len(m))
 	for k, v := range m {
