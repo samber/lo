@@ -39,10 +39,10 @@
 {{ end -}}
 {{- $N := .N }}{{ $R := .R }}{{ $P := .P}}
 func {{ if .Right }}R{{ end }}Partial{{ template "name-suffix" . }}[{{ template "types" . }} any](
-	{{ template "decl-part-args" . }},
 	fn func({{ template "decl-args-types" . }}){{ template "decl-res" . }},
+	{{ template "decl-part-args" . }},
 ) func({{ template "decl-offset-types" . }}){{ template "decl-res" . }} {
-    return func({{ template "decl-offset-args" . }}){{ template "decl-res" . }} {
-        {{ if .R }}return {{ end }}fn({{ template "call-args" . }})
+	return func({{ template "decl-offset-args" . }}){{ template "decl-res" . }} {
+		{{ if .R }}return {{ end }}fn({{ template "call-args" . }})
 	}
 }

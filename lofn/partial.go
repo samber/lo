@@ -7,8 +7,8 @@ import (
 )
 
 func PartialVoid[T1 any](
-	t1 T1,
 	fn func(T1),
+	t1 T1,
 ) func() {
 	return func() {
 		fn(t1)
@@ -16,8 +16,8 @@ func PartialVoid[T1 any](
 }
 
 func PartialVoidCtx[T1 any](
-	t1 T1,
 	fn func(context.Context, T1),
+	t1 T1,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1)
@@ -25,8 +25,8 @@ func PartialVoidCtx[T1 any](
 }
 
 func Partial[R1, T1 any](
-	t1 T1,
 	fn func(T1) R1,
+	t1 T1,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1)
@@ -34,8 +34,8 @@ func Partial[R1, T1 any](
 }
 
 func PartialCtx[R1, T1 any](
-	t1 T1,
 	fn func(context.Context, T1) R1,
+	t1 T1,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1)
@@ -43,8 +43,8 @@ func PartialCtx[R1, T1 any](
 }
 
 func PartialR2[R1, R2, T1 any](
-	t1 T1,
 	fn func(T1) (R1, R2),
+	t1 T1,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1)
@@ -52,8 +52,8 @@ func PartialR2[R1, R2, T1 any](
 }
 
 func PartialR2Ctx[R1, R2, T1 any](
-	t1 T1,
 	fn func(context.Context, T1) (R1, R2),
+	t1 T1,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1)
@@ -61,8 +61,8 @@ func PartialR2Ctx[R1, R2, T1 any](
 }
 
 func PartialR3[R1, R2, R3, T1 any](
-	t1 T1,
 	fn func(T1) (R1, R2, R3),
+	t1 T1,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1)
@@ -70,8 +70,8 @@ func PartialR3[R1, R2, R3, T1 any](
 }
 
 func PartialR3Ctx[R1, R2, R3, T1 any](
-	t1 T1,
 	fn func(context.Context, T1) (R1, R2, R3),
+	t1 T1,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1)
@@ -79,8 +79,8 @@ func PartialR3Ctx[R1, R2, R3, T1 any](
 }
 
 func PartialR4[R1, R2, R3, R4, T1 any](
-	t1 T1,
 	fn func(T1) (R1, R2, R3, R4),
+	t1 T1,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1)
@@ -88,8 +88,8 @@ func PartialR4[R1, R2, R3, R4, T1 any](
 }
 
 func PartialR4Ctx[R1, R2, R3, R4, T1 any](
-	t1 T1,
 	fn func(context.Context, T1) (R1, R2, R3, R4),
+	t1 T1,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1)
@@ -97,8 +97,8 @@ func PartialR4Ctx[R1, R2, R3, R4, T1 any](
 }
 
 func PartialR5[R1, R2, R3, R4, R5, T1 any](
-	t1 T1,
 	fn func(T1) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1)
@@ -106,8 +106,8 @@ func PartialR5[R1, R2, R3, R4, R5, T1 any](
 }
 
 func PartialR5Ctx[R1, R2, R3, R4, R5, T1 any](
-	t1 T1,
 	fn func(context.Context, T1) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1)
@@ -115,8 +115,8 @@ func PartialR5Ctx[R1, R2, R3, R4, R5, T1 any](
 }
 
 func Partial2Void[T1, T2 any](
-	t1 T1,
 	fn func(T1, T2),
+	t1 T1,
 ) func(T2) {
 	return func(t2 T2) {
 		fn(t1, t2)
@@ -124,8 +124,8 @@ func Partial2Void[T1, T2 any](
 }
 
 func Partial22Void[T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2),
+	t1 T1, t2 T2,
 ) func() {
 	return func() {
 		fn(t1, t2)
@@ -133,8 +133,8 @@ func Partial22Void[T1, T2 any](
 }
 
 func Partial2VoidCtx[T1, T2 any](
-	t1 T1,
 	fn func(context.Context, T1, T2),
+	t1 T1,
 ) func(context.Context, T2) {
 	return func(ctx context.Context, t2 T2) {
 		fn(ctx, t1, t2)
@@ -142,8 +142,8 @@ func Partial2VoidCtx[T1, T2 any](
 }
 
 func Partial22VoidCtx[T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2),
+	t1 T1, t2 T2,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2)
@@ -151,8 +151,8 @@ func Partial22VoidCtx[T1, T2 any](
 }
 
 func Partial2[R1, T1, T2 any](
-	t1 T1,
 	fn func(T1, T2) R1,
+	t1 T1,
 ) func(T2) R1 {
 	return func(t2 T2) R1 {
 		return fn(t1, t2)
@@ -160,8 +160,8 @@ func Partial2[R1, T1, T2 any](
 }
 
 func Partial22[R1, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2) R1,
+	t1 T1, t2 T2,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2)
@@ -169,8 +169,8 @@ func Partial22[R1, T1, T2 any](
 }
 
 func Partial2Ctx[R1, T1, T2 any](
-	t1 T1,
 	fn func(context.Context, T1, T2) R1,
+	t1 T1,
 ) func(context.Context, T2) R1 {
 	return func(ctx context.Context, t2 T2) R1 {
 		return fn(ctx, t1, t2)
@@ -178,8 +178,8 @@ func Partial2Ctx[R1, T1, T2 any](
 }
 
 func Partial22Ctx[R1, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2) R1,
+	t1 T1, t2 T2,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2)
@@ -187,8 +187,8 @@ func Partial22Ctx[R1, T1, T2 any](
 }
 
 func Partial2R2[R1, R2, T1, T2 any](
-	t1 T1,
 	fn func(T1, T2) (R1, R2),
+	t1 T1,
 ) func(T2) (R1, R2) {
 	return func(t2 T2) (R1, R2) {
 		return fn(t1, t2)
@@ -196,8 +196,8 @@ func Partial2R2[R1, R2, T1, T2 any](
 }
 
 func Partial22R2[R1, R2, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2) (R1, R2),
+	t1 T1, t2 T2,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2)
@@ -205,8 +205,8 @@ func Partial22R2[R1, R2, T1, T2 any](
 }
 
 func Partial2R2Ctx[R1, R2, T1, T2 any](
-	t1 T1,
 	fn func(context.Context, T1, T2) (R1, R2),
+	t1 T1,
 ) func(context.Context, T2) (R1, R2) {
 	return func(ctx context.Context, t2 T2) (R1, R2) {
 		return fn(ctx, t1, t2)
@@ -214,8 +214,8 @@ func Partial2R2Ctx[R1, R2, T1, T2 any](
 }
 
 func Partial22R2Ctx[R1, R2, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2),
+	t1 T1, t2 T2,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2)
@@ -223,8 +223,8 @@ func Partial22R2Ctx[R1, R2, T1, T2 any](
 }
 
 func Partial2R3[R1, R2, R3, T1, T2 any](
-	t1 T1,
 	fn func(T1, T2) (R1, R2, R3),
+	t1 T1,
 ) func(T2) (R1, R2, R3) {
 	return func(t2 T2) (R1, R2, R3) {
 		return fn(t1, t2)
@@ -232,8 +232,8 @@ func Partial2R3[R1, R2, R3, T1, T2 any](
 }
 
 func Partial22R3[R1, R2, R3, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2)
@@ -241,8 +241,8 @@ func Partial22R3[R1, R2, R3, T1, T2 any](
 }
 
 func Partial2R3Ctx[R1, R2, R3, T1, T2 any](
-	t1 T1,
 	fn func(context.Context, T1, T2) (R1, R2, R3),
+	t1 T1,
 ) func(context.Context, T2) (R1, R2, R3) {
 	return func(ctx context.Context, t2 T2) (R1, R2, R3) {
 		return fn(ctx, t1, t2)
@@ -250,8 +250,8 @@ func Partial2R3Ctx[R1, R2, R3, T1, T2 any](
 }
 
 func Partial22R3Ctx[R1, R2, R3, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2)
@@ -259,8 +259,8 @@ func Partial22R3Ctx[R1, R2, R3, T1, T2 any](
 }
 
 func Partial2R4[R1, R2, R3, R4, T1, T2 any](
-	t1 T1,
 	fn func(T1, T2) (R1, R2, R3, R4),
+	t1 T1,
 ) func(T2) (R1, R2, R3, R4) {
 	return func(t2 T2) (R1, R2, R3, R4) {
 		return fn(t1, t2)
@@ -268,8 +268,8 @@ func Partial2R4[R1, R2, R3, R4, T1, T2 any](
 }
 
 func Partial22R4[R1, R2, R3, R4, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2)
@@ -277,8 +277,8 @@ func Partial22R4[R1, R2, R3, R4, T1, T2 any](
 }
 
 func Partial2R4Ctx[R1, R2, R3, R4, T1, T2 any](
-	t1 T1,
 	fn func(context.Context, T1, T2) (R1, R2, R3, R4),
+	t1 T1,
 ) func(context.Context, T2) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t2 T2) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2)
@@ -286,8 +286,8 @@ func Partial2R4Ctx[R1, R2, R3, R4, T1, T2 any](
 }
 
 func Partial22R4Ctx[R1, R2, R3, R4, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2)
@@ -295,8 +295,8 @@ func Partial22R4Ctx[R1, R2, R3, R4, T1, T2 any](
 }
 
 func Partial2R5[R1, R2, R3, R4, R5, T1, T2 any](
-	t1 T1,
 	fn func(T1, T2) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(T2) (R1, R2, R3, R4, R5) {
 	return func(t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2)
@@ -304,8 +304,8 @@ func Partial2R5[R1, R2, R3, R4, R5, T1, T2 any](
 }
 
 func Partial22R5[R1, R2, R3, R4, R5, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2)
@@ -313,8 +313,8 @@ func Partial22R5[R1, R2, R3, R4, R5, T1, T2 any](
 }
 
 func Partial2R5Ctx[R1, R2, R3, R4, R5, T1, T2 any](
-	t1 T1,
 	fn func(context.Context, T1, T2) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(context.Context, T2) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2)
@@ -322,8 +322,8 @@ func Partial2R5Ctx[R1, R2, R3, R4, R5, T1, T2 any](
 }
 
 func Partial22R5Ctx[R1, R2, R3, R4, R5, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2)
@@ -331,8 +331,8 @@ func Partial22R5Ctx[R1, R2, R3, R4, R5, T1, T2 any](
 }
 
 func Partial3Void[T1, T2, T3 any](
-	t1 T1,
 	fn func(T1, T2, T3),
+	t1 T1,
 ) func(T2, T3) {
 	return func(t2 T2, t3 T3) {
 		fn(t1, t2, t3)
@@ -340,8 +340,8 @@ func Partial3Void[T1, T2, T3 any](
 }
 
 func Partial32Void[T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3),
+	t1 T1, t2 T2,
 ) func(T3) {
 	return func(t3 T3) {
 		fn(t1, t2, t3)
@@ -349,8 +349,8 @@ func Partial32Void[T1, T2, T3 any](
 }
 
 func Partial33Void[T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3),
+	t1 T1, t2 T2, t3 T3,
 ) func() {
 	return func() {
 		fn(t1, t2, t3)
@@ -358,8 +358,8 @@ func Partial33Void[T1, T2, T3 any](
 }
 
 func Partial3VoidCtx[T1, T2, T3 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3),
+	t1 T1,
 ) func(context.Context, T2, T3) {
 	return func(ctx context.Context, t2 T2, t3 T3) {
 		fn(ctx, t1, t2, t3)
@@ -367,8 +367,8 @@ func Partial3VoidCtx[T1, T2, T3 any](
 }
 
 func Partial32VoidCtx[T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3),
+	t1 T1, t2 T2,
 ) func(context.Context, T3) {
 	return func(ctx context.Context, t3 T3) {
 		fn(ctx, t1, t2, t3)
@@ -376,8 +376,8 @@ func Partial32VoidCtx[T1, T2, T3 any](
 }
 
 func Partial33VoidCtx[T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3)
@@ -385,8 +385,8 @@ func Partial33VoidCtx[T1, T2, T3 any](
 }
 
 func Partial3[R1, T1, T2, T3 any](
-	t1 T1,
 	fn func(T1, T2, T3) R1,
+	t1 T1,
 ) func(T2, T3) R1 {
 	return func(t2 T2, t3 T3) R1 {
 		return fn(t1, t2, t3)
@@ -394,8 +394,8 @@ func Partial3[R1, T1, T2, T3 any](
 }
 
 func Partial32[R1, T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3) R1,
+	t1 T1, t2 T2,
 ) func(T3) R1 {
 	return func(t3 T3) R1 {
 		return fn(t1, t2, t3)
@@ -403,8 +403,8 @@ func Partial32[R1, T1, T2, T3 any](
 }
 
 func Partial33[R1, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3)
@@ -412,8 +412,8 @@ func Partial33[R1, T1, T2, T3 any](
 }
 
 func Partial3Ctx[R1, T1, T2, T3 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3) R1,
+	t1 T1,
 ) func(context.Context, T2, T3) R1 {
 	return func(ctx context.Context, t2 T2, t3 T3) R1 {
 		return fn(ctx, t1, t2, t3)
@@ -421,8 +421,8 @@ func Partial3Ctx[R1, T1, T2, T3 any](
 }
 
 func Partial32Ctx[R1, T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3) R1,
+	t1 T1, t2 T2,
 ) func(context.Context, T3) R1 {
 	return func(ctx context.Context, t3 T3) R1 {
 		return fn(ctx, t1, t2, t3)
@@ -430,8 +430,8 @@ func Partial32Ctx[R1, T1, T2, T3 any](
 }
 
 func Partial33Ctx[R1, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3)
@@ -439,8 +439,8 @@ func Partial33Ctx[R1, T1, T2, T3 any](
 }
 
 func Partial3R2[R1, R2, T1, T2, T3 any](
-	t1 T1,
 	fn func(T1, T2, T3) (R1, R2),
+	t1 T1,
 ) func(T2, T3) (R1, R2) {
 	return func(t2 T2, t3 T3) (R1, R2) {
 		return fn(t1, t2, t3)
@@ -448,8 +448,8 @@ func Partial3R2[R1, R2, T1, T2, T3 any](
 }
 
 func Partial32R2[R1, R2, T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3) (R1, R2),
+	t1 T1, t2 T2,
 ) func(T3) (R1, R2) {
 	return func(t3 T3) (R1, R2) {
 		return fn(t1, t2, t3)
@@ -457,8 +457,8 @@ func Partial32R2[R1, R2, T1, T2, T3 any](
 }
 
 func Partial33R2[R1, R2, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3)
@@ -466,8 +466,8 @@ func Partial33R2[R1, R2, T1, T2, T3 any](
 }
 
 func Partial3R2Ctx[R1, R2, T1, T2, T3 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3) (R1, R2),
+	t1 T1,
 ) func(context.Context, T2, T3) (R1, R2) {
 	return func(ctx context.Context, t2 T2, t3 T3) (R1, R2) {
 		return fn(ctx, t1, t2, t3)
@@ -475,8 +475,8 @@ func Partial3R2Ctx[R1, R2, T1, T2, T3 any](
 }
 
 func Partial32R2Ctx[R1, R2, T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3) (R1, R2),
+	t1 T1, t2 T2,
 ) func(context.Context, T3) (R1, R2) {
 	return func(ctx context.Context, t3 T3) (R1, R2) {
 		return fn(ctx, t1, t2, t3)
@@ -484,8 +484,8 @@ func Partial32R2Ctx[R1, R2, T1, T2, T3 any](
 }
 
 func Partial33R2Ctx[R1, R2, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3)
@@ -493,8 +493,8 @@ func Partial33R2Ctx[R1, R2, T1, T2, T3 any](
 }
 
 func Partial3R3[R1, R2, R3, T1, T2, T3 any](
-	t1 T1,
 	fn func(T1, T2, T3) (R1, R2, R3),
+	t1 T1,
 ) func(T2, T3) (R1, R2, R3) {
 	return func(t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(t1, t2, t3)
@@ -502,8 +502,8 @@ func Partial3R3[R1, R2, R3, T1, T2, T3 any](
 }
 
 func Partial32R3[R1, R2, R3, T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(T3) (R1, R2, R3) {
 	return func(t3 T3) (R1, R2, R3) {
 		return fn(t1, t2, t3)
@@ -511,8 +511,8 @@ func Partial32R3[R1, R2, R3, T1, T2, T3 any](
 }
 
 func Partial33R3[R1, R2, R3, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3)
@@ -520,8 +520,8 @@ func Partial33R3[R1, R2, R3, T1, T2, T3 any](
 }
 
 func Partial3R3Ctx[R1, R2, R3, T1, T2, T3 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3),
+	t1 T1,
 ) func(context.Context, T2, T3) (R1, R2, R3) {
 	return func(ctx context.Context, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3)
@@ -529,8 +529,8 @@ func Partial3R3Ctx[R1, R2, R3, T1, T2, T3 any](
 }
 
 func Partial32R3Ctx[R1, R2, R3, T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(context.Context, T3) (R1, R2, R3) {
 	return func(ctx context.Context, t3 T3) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3)
@@ -538,8 +538,8 @@ func Partial32R3Ctx[R1, R2, R3, T1, T2, T3 any](
 }
 
 func Partial33R3Ctx[R1, R2, R3, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3)
@@ -547,8 +547,8 @@ func Partial33R3Ctx[R1, R2, R3, T1, T2, T3 any](
 }
 
 func Partial3R4[R1, R2, R3, R4, T1, T2, T3 any](
-	t1 T1,
 	fn func(T1, T2, T3) (R1, R2, R3, R4),
+	t1 T1,
 ) func(T2, T3) (R1, R2, R3, R4) {
 	return func(t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3)
@@ -556,8 +556,8 @@ func Partial3R4[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func Partial32R4[R1, R2, R3, R4, T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(T3) (R1, R2, R3, R4) {
 	return func(t3 T3) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3)
@@ -565,8 +565,8 @@ func Partial32R4[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func Partial33R4[R1, R2, R3, R4, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3)
@@ -574,8 +574,8 @@ func Partial33R4[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func Partial3R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4),
+	t1 T1,
 ) func(context.Context, T2, T3) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3)
@@ -583,8 +583,8 @@ func Partial3R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func Partial32R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(context.Context, T3) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t3 T3) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3)
@@ -592,8 +592,8 @@ func Partial32R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func Partial33R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3)
@@ -601,8 +601,8 @@ func Partial33R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func Partial3R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t1 T1,
 	fn func(T1, T2, T3) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(T2, T3) (R1, R2, R3, R4, R5) {
 	return func(t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3)
@@ -610,8 +610,8 @@ func Partial3R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func Partial32R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(T3) (R1, R2, R3, R4, R5) {
 	return func(t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3)
@@ -619,8 +619,8 @@ func Partial32R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func Partial33R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3)
@@ -628,8 +628,8 @@ func Partial33R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func Partial3R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(context.Context, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3)
@@ -637,8 +637,8 @@ func Partial3R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func Partial32R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(context.Context, T3) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3)
@@ -646,8 +646,8 @@ func Partial32R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func Partial33R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3)
@@ -655,8 +655,8 @@ func Partial33R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func Partial4Void[T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4),
+	t1 T1,
 ) func(T2, T3, T4) {
 	return func(t2 T2, t3 T3, t4 T4) {
 		fn(t1, t2, t3, t4)
@@ -664,8 +664,8 @@ func Partial4Void[T1, T2, T3, T4 any](
 }
 
 func Partial42Void[T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4),
+	t1 T1, t2 T2,
 ) func(T3, T4) {
 	return func(t3 T3, t4 T4) {
 		fn(t1, t2, t3, t4)
@@ -673,8 +673,8 @@ func Partial42Void[T1, T2, T3, T4 any](
 }
 
 func Partial43Void[T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4) {
 	return func(t4 T4) {
 		fn(t1, t2, t3, t4)
@@ -682,8 +682,8 @@ func Partial43Void[T1, T2, T3, T4 any](
 }
 
 func Partial44Void[T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4)
@@ -691,8 +691,8 @@ func Partial44Void[T1, T2, T3, T4 any](
 }
 
 func Partial4VoidCtx[T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4),
+	t1 T1,
 ) func(context.Context, T2, T3, T4) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4) {
 		fn(ctx, t1, t2, t3, t4)
@@ -700,8 +700,8 @@ func Partial4VoidCtx[T1, T2, T3, T4 any](
 }
 
 func Partial42VoidCtx[T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4) {
 	return func(ctx context.Context, t3 T3, t4 T4) {
 		fn(ctx, t1, t2, t3, t4)
@@ -709,8 +709,8 @@ func Partial42VoidCtx[T1, T2, T3, T4 any](
 }
 
 func Partial43VoidCtx[T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4) {
 	return func(ctx context.Context, t4 T4) {
 		fn(ctx, t1, t2, t3, t4)
@@ -718,8 +718,8 @@ func Partial43VoidCtx[T1, T2, T3, T4 any](
 }
 
 func Partial44VoidCtx[T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4)
@@ -727,8 +727,8 @@ func Partial44VoidCtx[T1, T2, T3, T4 any](
 }
 
 func Partial4[R1, T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4) R1,
+	t1 T1,
 ) func(T2, T3, T4) R1 {
 	return func(t2 T2, t3 T3, t4 T4) R1 {
 		return fn(t1, t2, t3, t4)
@@ -736,8 +736,8 @@ func Partial4[R1, T1, T2, T3, T4 any](
 }
 
 func Partial42[R1, T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4) R1,
+	t1 T1, t2 T2,
 ) func(T3, T4) R1 {
 	return func(t3 T3, t4 T4) R1 {
 		return fn(t1, t2, t3, t4)
@@ -745,8 +745,8 @@ func Partial42[R1, T1, T2, T3, T4 any](
 }
 
 func Partial43[R1, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(T4) R1 {
 	return func(t4 T4) R1 {
 		return fn(t1, t2, t3, t4)
@@ -754,8 +754,8 @@ func Partial43[R1, T1, T2, T3, T4 any](
 }
 
 func Partial44[R1, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4)
@@ -763,8 +763,8 @@ func Partial44[R1, T1, T2, T3, T4 any](
 }
 
 func Partial4Ctx[R1, T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4) R1,
+	t1 T1,
 ) func(context.Context, T2, T3, T4) R1 {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(ctx, t1, t2, t3, t4)
@@ -772,8 +772,8 @@ func Partial4Ctx[R1, T1, T2, T3, T4 any](
 }
 
 func Partial42Ctx[R1, T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4) R1,
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4) R1 {
 	return func(ctx context.Context, t3 T3, t4 T4) R1 {
 		return fn(ctx, t1, t2, t3, t4)
@@ -781,8 +781,8 @@ func Partial42Ctx[R1, T1, T2, T3, T4 any](
 }
 
 func Partial43Ctx[R1, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4) R1 {
 	return func(ctx context.Context, t4 T4) R1 {
 		return fn(ctx, t1, t2, t3, t4)
@@ -790,8 +790,8 @@ func Partial43Ctx[R1, T1, T2, T3, T4 any](
 }
 
 func Partial44Ctx[R1, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4)
@@ -799,8 +799,8 @@ func Partial44Ctx[R1, T1, T2, T3, T4 any](
 }
 
 func Partial4R2[R1, R2, T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4) (R1, R2),
+	t1 T1,
 ) func(T2, T3, T4) (R1, R2) {
 	return func(t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(t1, t2, t3, t4)
@@ -808,8 +808,8 @@ func Partial4R2[R1, R2, T1, T2, T3, T4 any](
 }
 
 func Partial42R2[R1, R2, T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4) (R1, R2),
+	t1 T1, t2 T2,
 ) func(T3, T4) (R1, R2) {
 	return func(t3 T3, t4 T4) (R1, R2) {
 		return fn(t1, t2, t3, t4)
@@ -817,8 +817,8 @@ func Partial42R2[R1, R2, T1, T2, T3, T4 any](
 }
 
 func Partial43R2[R1, R2, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4) (R1, R2) {
 	return func(t4 T4) (R1, R2) {
 		return fn(t1, t2, t3, t4)
@@ -826,8 +826,8 @@ func Partial43R2[R1, R2, T1, T2, T3, T4 any](
 }
 
 func Partial44R2[R1, R2, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4)
@@ -835,8 +835,8 @@ func Partial44R2[R1, R2, T1, T2, T3, T4 any](
 }
 
 func Partial4R2Ctx[R1, R2, T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2),
+	t1 T1,
 ) func(context.Context, T2, T3, T4) (R1, R2) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -844,8 +844,8 @@ func Partial4R2Ctx[R1, R2, T1, T2, T3, T4 any](
 }
 
 func Partial42R2Ctx[R1, R2, T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4) (R1, R2) {
 	return func(ctx context.Context, t3 T3, t4 T4) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -853,8 +853,8 @@ func Partial42R2Ctx[R1, R2, T1, T2, T3, T4 any](
 }
 
 func Partial43R2Ctx[R1, R2, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4) (R1, R2) {
 	return func(ctx context.Context, t4 T4) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -862,8 +862,8 @@ func Partial43R2Ctx[R1, R2, T1, T2, T3, T4 any](
 }
 
 func Partial44R2Ctx[R1, R2, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -871,8 +871,8 @@ func Partial44R2Ctx[R1, R2, T1, T2, T3, T4 any](
 }
 
 func Partial4R3[R1, R2, R3, T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4) (R1, R2, R3),
+	t1 T1,
 ) func(T2, T3, T4) (R1, R2, R3) {
 	return func(t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4)
@@ -880,8 +880,8 @@ func Partial4R3[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func Partial42R3[R1, R2, R3, T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(T3, T4) (R1, R2, R3) {
 	return func(t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4)
@@ -889,8 +889,8 @@ func Partial42R3[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func Partial43R3[R1, R2, R3, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4) (R1, R2, R3) {
 	return func(t4 T4) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4)
@@ -898,8 +898,8 @@ func Partial43R3[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func Partial44R3[R1, R2, R3, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4)
@@ -907,8 +907,8 @@ func Partial44R3[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func Partial4R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3),
+	t1 T1,
 ) func(context.Context, T2, T3, T4) (R1, R2, R3) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -916,8 +916,8 @@ func Partial4R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func Partial42R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4) (R1, R2, R3) {
 	return func(ctx context.Context, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -925,8 +925,8 @@ func Partial42R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func Partial43R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4) (R1, R2, R3) {
 	return func(ctx context.Context, t4 T4) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -934,8 +934,8 @@ func Partial43R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func Partial44R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -943,8 +943,8 @@ func Partial44R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func Partial4R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4),
+	t1 T1,
 ) func(T2, T3, T4) (R1, R2, R3, R4) {
 	return func(t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4)
@@ -952,8 +952,8 @@ func Partial4R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func Partial42R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(T3, T4) (R1, R2, R3, R4) {
 	return func(t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4)
@@ -961,8 +961,8 @@ func Partial42R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func Partial43R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4) (R1, R2, R3, R4) {
 	return func(t4 T4) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4)
@@ -970,8 +970,8 @@ func Partial43R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func Partial44R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4)
@@ -979,8 +979,8 @@ func Partial44R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func Partial4R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4),
+	t1 T1,
 ) func(context.Context, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -988,8 +988,8 @@ func Partial4R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func Partial42R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -997,8 +997,8 @@ func Partial42R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func Partial43R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t4 T4) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -1006,8 +1006,8 @@ func Partial43R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func Partial44R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -1015,8 +1015,8 @@ func Partial44R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func Partial4R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4)
@@ -1024,8 +1024,8 @@ func Partial4R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func Partial42R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(T3, T4) (R1, R2, R3, R4, R5) {
 	return func(t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4)
@@ -1033,8 +1033,8 @@ func Partial42R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func Partial43R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4) (R1, R2, R3, R4, R5) {
 	return func(t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4)
@@ -1042,8 +1042,8 @@ func Partial43R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func Partial44R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4)
@@ -1051,8 +1051,8 @@ func Partial44R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func Partial4R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(context.Context, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -1060,8 +1060,8 @@ func Partial4R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func Partial42R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -1069,8 +1069,8 @@ func Partial42R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func Partial43R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -1078,8 +1078,8 @@ func Partial43R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func Partial44R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -1087,8 +1087,8 @@ func Partial44R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func Partial5Void[T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5),
+	t1 T1,
 ) func(T2, T3, T4, T5) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5) {
 		fn(t1, t2, t3, t4, t5)
@@ -1096,8 +1096,8 @@ func Partial5Void[T1, T2, T3, T4, T5 any](
 }
 
 func Partial52Void[T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5) {
 	return func(t3 T3, t4 T4, t5 T5) {
 		fn(t1, t2, t3, t4, t5)
@@ -1105,8 +1105,8 @@ func Partial52Void[T1, T2, T3, T4, T5 any](
 }
 
 func Partial53Void[T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5) {
 	return func(t4 T4, t5 T5) {
 		fn(t1, t2, t3, t4, t5)
@@ -1114,8 +1114,8 @@ func Partial53Void[T1, T2, T3, T4, T5 any](
 }
 
 func Partial54Void[T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5) {
 	return func(t5 T5) {
 		fn(t1, t2, t3, t4, t5)
@@ -1123,8 +1123,8 @@ func Partial54Void[T1, T2, T3, T4, T5 any](
 }
 
 func Partial55Void[T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4, t5)
@@ -1132,8 +1132,8 @@ func Partial55Void[T1, T2, T3, T4, T5 any](
 }
 
 func Partial5VoidCtx[T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5) {
 		fn(ctx, t1, t2, t3, t4, t5)
@@ -1141,8 +1141,8 @@ func Partial5VoidCtx[T1, T2, T3, T4, T5 any](
 }
 
 func Partial52VoidCtx[T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5) {
 		fn(ctx, t1, t2, t3, t4, t5)
@@ -1150,8 +1150,8 @@ func Partial52VoidCtx[T1, T2, T3, T4, T5 any](
 }
 
 func Partial53VoidCtx[T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5) {
 	return func(ctx context.Context, t4 T4, t5 T5) {
 		fn(ctx, t1, t2, t3, t4, t5)
@@ -1159,8 +1159,8 @@ func Partial53VoidCtx[T1, T2, T3, T4, T5 any](
 }
 
 func Partial54VoidCtx[T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5) {
 	return func(ctx context.Context, t5 T5) {
 		fn(ctx, t1, t2, t3, t4, t5)
@@ -1168,8 +1168,8 @@ func Partial54VoidCtx[T1, T2, T3, T4, T5 any](
 }
 
 func Partial55VoidCtx[T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4, t5)
@@ -1177,8 +1177,8 @@ func Partial55VoidCtx[T1, T2, T3, T4, T5 any](
 }
 
 func Partial5[R1, T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5) R1,
+	t1 T1,
 ) func(T2, T3, T4, T5) R1 {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(t1, t2, t3, t4, t5)
@@ -1186,8 +1186,8 @@ func Partial5[R1, T1, T2, T3, T4, T5 any](
 }
 
 func Partial52[R1, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5) R1,
+	t1 T1, t2 T2,
 ) func(T3, T4, T5) R1 {
 	return func(t3 T3, t4 T4, t5 T5) R1 {
 		return fn(t1, t2, t3, t4, t5)
@@ -1195,8 +1195,8 @@ func Partial52[R1, T1, T2, T3, T4, T5 any](
 }
 
 func Partial53[R1, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5) R1 {
 	return func(t4 T4, t5 T5) R1 {
 		return fn(t1, t2, t3, t4, t5)
@@ -1204,8 +1204,8 @@ func Partial53[R1, T1, T2, T3, T4, T5 any](
 }
 
 func Partial54[R1, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5) R1 {
 	return func(t5 T5) R1 {
 		return fn(t1, t2, t3, t4, t5)
@@ -1213,8 +1213,8 @@ func Partial54[R1, T1, T2, T3, T4, T5 any](
 }
 
 func Partial55[R1, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4, t5)
@@ -1222,8 +1222,8 @@ func Partial55[R1, T1, T2, T3, T4, T5 any](
 }
 
 func Partial5Ctx[R1, T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5) R1,
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5) R1 {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1231,8 +1231,8 @@ func Partial5Ctx[R1, T1, T2, T3, T4, T5 any](
 }
 
 func Partial52Ctx[R1, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5) R1,
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5) R1 {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1240,8 +1240,8 @@ func Partial52Ctx[R1, T1, T2, T3, T4, T5 any](
 }
 
 func Partial53Ctx[R1, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5) R1 {
 	return func(ctx context.Context, t4 T4, t5 T5) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1249,8 +1249,8 @@ func Partial53Ctx[R1, T1, T2, T3, T4, T5 any](
 }
 
 func Partial54Ctx[R1, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5) R1 {
 	return func(ctx context.Context, t5 T5) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1258,8 +1258,8 @@ func Partial54Ctx[R1, T1, T2, T3, T4, T5 any](
 }
 
 func Partial55Ctx[R1, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1267,8 +1267,8 @@ func Partial55Ctx[R1, T1, T2, T3, T4, T5 any](
 }
 
 func Partial5R2[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1,
 ) func(T2, T3, T4, T5) (R1, R2) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1276,8 +1276,8 @@ func Partial5R2[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func Partial52R2[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5) (R1, R2) {
 	return func(t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1285,8 +1285,8 @@ func Partial52R2[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func Partial53R2[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5) (R1, R2) {
 	return func(t4 T4, t5 T5) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1294,8 +1294,8 @@ func Partial53R2[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func Partial54R2[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5) (R1, R2) {
 	return func(t5 T5) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1303,8 +1303,8 @@ func Partial54R2[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func Partial55R2[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1312,8 +1312,8 @@ func Partial55R2[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func Partial5R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5) (R1, R2) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1321,8 +1321,8 @@ func Partial5R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func Partial52R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5) (R1, R2) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1330,8 +1330,8 @@ func Partial52R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func Partial53R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5) (R1, R2) {
 	return func(ctx context.Context, t4 T4, t5 T5) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1339,8 +1339,8 @@ func Partial53R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func Partial54R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5) (R1, R2) {
 	return func(ctx context.Context, t5 T5) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1348,8 +1348,8 @@ func Partial54R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func Partial55R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1357,8 +1357,8 @@ func Partial55R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func Partial5R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1,
 ) func(T2, T3, T4, T5) (R1, R2, R3) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1366,8 +1366,8 @@ func Partial5R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func Partial52R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5) (R1, R2, R3) {
 	return func(t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1375,8 +1375,8 @@ func Partial52R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func Partial53R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5) (R1, R2, R3) {
 	return func(t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1384,8 +1384,8 @@ func Partial53R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func Partial54R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5) (R1, R2, R3) {
 	return func(t5 T5) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1393,8 +1393,8 @@ func Partial54R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func Partial55R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1402,8 +1402,8 @@ func Partial55R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func Partial5R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5) (R1, R2, R3) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1411,8 +1411,8 @@ func Partial5R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func Partial52R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5) (R1, R2, R3) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1420,8 +1420,8 @@ func Partial52R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func Partial53R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5) (R1, R2, R3) {
 	return func(ctx context.Context, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1429,8 +1429,8 @@ func Partial53R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func Partial54R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5) (R1, R2, R3) {
 	return func(ctx context.Context, t5 T5) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1438,8 +1438,8 @@ func Partial54R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func Partial55R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1447,8 +1447,8 @@ func Partial55R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func Partial5R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1,
 ) func(T2, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1456,8 +1456,8 @@ func Partial5R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func Partial52R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5) (R1, R2, R3, R4) {
 	return func(t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1465,8 +1465,8 @@ func Partial52R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func Partial53R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5) (R1, R2, R3, R4) {
 	return func(t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1474,8 +1474,8 @@ func Partial53R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func Partial54R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5) (R1, R2, R3, R4) {
 	return func(t5 T5) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1483,8 +1483,8 @@ func Partial54R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func Partial55R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1492,8 +1492,8 @@ func Partial55R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func Partial5R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1501,8 +1501,8 @@ func Partial5R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func Partial52R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1510,8 +1510,8 @@ func Partial52R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func Partial53R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1519,8 +1519,8 @@ func Partial53R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func Partial54R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t5 T5) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1528,8 +1528,8 @@ func Partial54R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func Partial55R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1537,8 +1537,8 @@ func Partial55R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func Partial5R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(T2, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1546,8 +1546,8 @@ func Partial5R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func Partial52R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1555,8 +1555,8 @@ func Partial52R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func Partial53R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5) (R1, R2, R3, R4, R5) {
 	return func(t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1564,8 +1564,8 @@ func Partial53R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func Partial54R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5) (R1, R2, R3, R4, R5) {
 	return func(t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1573,8 +1573,8 @@ func Partial54R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func Partial55R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5)
@@ -1582,8 +1582,8 @@ func Partial55R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func Partial5R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1591,8 +1591,8 @@ func Partial5R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func Partial52R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1600,8 +1600,8 @@ func Partial52R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func Partial53R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1609,8 +1609,8 @@ func Partial53R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func Partial54R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1618,8 +1618,8 @@ func Partial54R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func Partial55R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -1627,8 +1627,8 @@ func Partial55R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func Partial6Void[T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -1636,8 +1636,8 @@ func Partial6Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62Void[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6) {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -1645,8 +1645,8 @@ func Partial62Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63Void[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6) {
 	return func(t4 T4, t5 T5, t6 T6) {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -1654,8 +1654,8 @@ func Partial63Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64Void[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6) {
 	return func(t5 T5, t6 T6) {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -1663,8 +1663,8 @@ func Partial64Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65Void[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6) {
 	return func(t6 T6) {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -1672,8 +1672,8 @@ func Partial65Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66Void[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -1681,8 +1681,8 @@ func Partial66Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1690,8 +1690,8 @@ func Partial6VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1699,8 +1699,8 @@ func Partial62VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1708,8 +1708,8 @@ func Partial63VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6) {
 	return func(ctx context.Context, t5 T5, t6 T6) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1717,8 +1717,8 @@ func Partial64VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6) {
 	return func(ctx context.Context, t6 T6) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1726,8 +1726,8 @@ func Partial65VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1735,8 +1735,8 @@ func Partial66VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t1 T1,
 ) func(T2, T3, T4, T5, T6) R1 {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1744,8 +1744,8 @@ func Partial6[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6) R1 {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1753,8 +1753,8 @@ func Partial62[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6) R1 {
 	return func(t4 T4, t5 T5, t6 T6) R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1762,8 +1762,8 @@ func Partial63[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6) R1 {
 	return func(t5 T5, t6 T6) R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1771,8 +1771,8 @@ func Partial64[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6) R1 {
 	return func(t6 T6) R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1780,8 +1780,8 @@ func Partial65[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1789,8 +1789,8 @@ func Partial66[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6) R1 {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1798,8 +1798,8 @@ func Partial6Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6) R1 {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1807,8 +1807,8 @@ func Partial62Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6) R1 {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1816,8 +1816,8 @@ func Partial63Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6) R1 {
 	return func(ctx context.Context, t5 T5, t6 T6) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1825,8 +1825,8 @@ func Partial64Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6) R1 {
 	return func(ctx context.Context, t6 T6) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1834,8 +1834,8 @@ func Partial65Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1843,8 +1843,8 @@ func Partial66Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6) (R1, R2) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1852,8 +1852,8 @@ func Partial6R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6) (R1, R2) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1861,8 +1861,8 @@ func Partial62R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6) (R1, R2) {
 	return func(t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1870,8 +1870,8 @@ func Partial63R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6) (R1, R2) {
 	return func(t5 T5, t6 T6) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1879,8 +1879,8 @@ func Partial64R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6) (R1, R2) {
 	return func(t6 T6) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1888,8 +1888,8 @@ func Partial65R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1897,8 +1897,8 @@ func Partial66R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6) (R1, R2) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1906,8 +1906,8 @@ func Partial6R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6) (R1, R2) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1915,8 +1915,8 @@ func Partial62R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6) (R1, R2) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1924,8 +1924,8 @@ func Partial63R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6) (R1, R2) {
 	return func(ctx context.Context, t5 T5, t6 T6) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1933,8 +1933,8 @@ func Partial64R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6) (R1, R2) {
 	return func(ctx context.Context, t6 T6) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1942,8 +1942,8 @@ func Partial65R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -1951,8 +1951,8 @@ func Partial66R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6) (R1, R2, R3) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1960,8 +1960,8 @@ func Partial6R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6) (R1, R2, R3) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1969,8 +1969,8 @@ func Partial62R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6) (R1, R2, R3) {
 	return func(t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1978,8 +1978,8 @@ func Partial63R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6) (R1, R2, R3) {
 	return func(t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1987,8 +1987,8 @@ func Partial64R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6) (R1, R2, R3) {
 	return func(t6 T6) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -1996,8 +1996,8 @@ func Partial65R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2005,8 +2005,8 @@ func Partial66R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6) (R1, R2, R3) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2014,8 +2014,8 @@ func Partial6R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6) (R1, R2, R3) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2023,8 +2023,8 @@ func Partial62R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6) (R1, R2, R3) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2032,8 +2032,8 @@ func Partial63R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6) (R1, R2, R3) {
 	return func(ctx context.Context, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2041,8 +2041,8 @@ func Partial64R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6) (R1, R2, R3) {
 	return func(ctx context.Context, t6 T6) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2050,8 +2050,8 @@ func Partial65R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2059,8 +2059,8 @@ func Partial66R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2068,8 +2068,8 @@ func Partial6R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2077,8 +2077,8 @@ func Partial62R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6) (R1, R2, R3, R4) {
 	return func(t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2086,8 +2086,8 @@ func Partial63R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6) (R1, R2, R3, R4) {
 	return func(t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2095,8 +2095,8 @@ func Partial64R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6) (R1, R2, R3, R4) {
 	return func(t6 T6) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2104,8 +2104,8 @@ func Partial65R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2113,8 +2113,8 @@ func Partial66R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2122,8 +2122,8 @@ func Partial6R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2131,8 +2131,8 @@ func Partial62R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2140,8 +2140,8 @@ func Partial63R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2149,8 +2149,8 @@ func Partial64R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t6 T6) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2158,8 +2158,8 @@ func Partial65R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2167,8 +2167,8 @@ func Partial66R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2176,8 +2176,8 @@ func Partial6R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2185,8 +2185,8 @@ func Partial62R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2194,8 +2194,8 @@ func Partial63R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6) (R1, R2, R3, R4, R5) {
 	return func(t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2203,8 +2203,8 @@ func Partial64R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6) (R1, R2, R3, R4, R5) {
 	return func(t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2212,8 +2212,8 @@ func Partial65R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -2221,8 +2221,8 @@ func Partial66R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial6R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2230,8 +2230,8 @@ func Partial6R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial62R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2239,8 +2239,8 @@ func Partial62R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial63R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2248,8 +2248,8 @@ func Partial63R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial64R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2257,8 +2257,8 @@ func Partial64R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial65R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2266,8 +2266,8 @@ func Partial65R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial66R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -2275,8 +2275,8 @@ func Partial66R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func Partial7Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2284,8 +2284,8 @@ func Partial7Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2293,8 +2293,8 @@ func Partial72Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2302,8 +2302,8 @@ func Partial73Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7) {
 	return func(t5 T5, t6 T6, t7 T7) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2311,8 +2311,8 @@ func Partial74Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7) {
 	return func(t6 T6, t7 T7) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2320,8 +2320,8 @@ func Partial75Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7) {
 	return func(t7 T7) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2329,8 +2329,8 @@ func Partial76Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2338,8 +2338,8 @@ func Partial77Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2347,8 +2347,8 @@ func Partial7VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2356,8 +2356,8 @@ func Partial72VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2365,8 +2365,8 @@ func Partial73VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2374,8 +2374,8 @@ func Partial74VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7) {
 	return func(ctx context.Context, t6 T6, t7 T7) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2383,8 +2383,8 @@ func Partial75VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7) {
 	return func(ctx context.Context, t7 T7) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2392,8 +2392,8 @@ func Partial76VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2401,8 +2401,8 @@ func Partial77VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7) R1 {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2410,8 +2410,8 @@ func Partial7[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7) R1 {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2419,8 +2419,8 @@ func Partial72[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7) R1 {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2428,8 +2428,8 @@ func Partial73[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7) R1 {
 	return func(t5 T5, t6 T6, t7 T7) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2437,8 +2437,8 @@ func Partial74[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7) R1 {
 	return func(t6 T6, t7 T7) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2446,8 +2446,8 @@ func Partial75[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7) R1 {
 	return func(t7 T7) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2455,8 +2455,8 @@ func Partial76[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2464,8 +2464,8 @@ func Partial77[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7) R1 {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2473,8 +2473,8 @@ func Partial7Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7) R1 {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2482,8 +2482,8 @@ func Partial72Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7) R1 {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2491,8 +2491,8 @@ func Partial73Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7) R1 {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2500,8 +2500,8 @@ func Partial74Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7) R1 {
 	return func(ctx context.Context, t6 T6, t7 T7) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2509,8 +2509,8 @@ func Partial75Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7) R1 {
 	return func(ctx context.Context, t7 T7) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2518,8 +2518,8 @@ func Partial76Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2527,8 +2527,8 @@ func Partial77Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7) (R1, R2) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2536,8 +2536,8 @@ func Partial7R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7) (R1, R2) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2545,8 +2545,8 @@ func Partial72R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7) (R1, R2) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2554,8 +2554,8 @@ func Partial73R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7) (R1, R2) {
 	return func(t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2563,8 +2563,8 @@ func Partial74R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7) (R1, R2) {
 	return func(t6 T6, t7 T7) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2572,8 +2572,8 @@ func Partial75R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7) (R1, R2) {
 	return func(t7 T7) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2581,8 +2581,8 @@ func Partial76R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2590,8 +2590,8 @@ func Partial77R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7) (R1, R2) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2599,8 +2599,8 @@ func Partial7R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7) (R1, R2) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2608,8 +2608,8 @@ func Partial72R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7) (R1, R2) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2617,8 +2617,8 @@ func Partial73R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7) (R1, R2) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2626,8 +2626,8 @@ func Partial74R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7) (R1, R2) {
 	return func(ctx context.Context, t6 T6, t7 T7) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2635,8 +2635,8 @@ func Partial75R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7) (R1, R2) {
 	return func(ctx context.Context, t7 T7) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2644,8 +2644,8 @@ func Partial76R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2653,8 +2653,8 @@ func Partial77R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7) (R1, R2, R3) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2662,8 +2662,8 @@ func Partial7R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7) (R1, R2, R3) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2671,8 +2671,8 @@ func Partial72R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7) (R1, R2, R3) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2680,8 +2680,8 @@ func Partial73R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7) (R1, R2, R3) {
 	return func(t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2689,8 +2689,8 @@ func Partial74R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7) (R1, R2, R3) {
 	return func(t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2698,8 +2698,8 @@ func Partial75R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7) (R1, R2, R3) {
 	return func(t7 T7) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2707,8 +2707,8 @@ func Partial76R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2716,8 +2716,8 @@ func Partial77R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7) (R1, R2, R3) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2725,8 +2725,8 @@ func Partial7R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7) (R1, R2, R3) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2734,8 +2734,8 @@ func Partial72R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7) (R1, R2, R3) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2743,8 +2743,8 @@ func Partial73R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7) (R1, R2, R3) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2752,8 +2752,8 @@ func Partial74R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7) (R1, R2, R3) {
 	return func(ctx context.Context, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2761,8 +2761,8 @@ func Partial75R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7) (R1, R2, R3) {
 	return func(ctx context.Context, t7 T7) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2770,8 +2770,8 @@ func Partial76R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2779,8 +2779,8 @@ func Partial77R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2788,8 +2788,8 @@ func Partial7R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2797,8 +2797,8 @@ func Partial72R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2806,8 +2806,8 @@ func Partial73R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7) (R1, R2, R3, R4) {
 	return func(t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2815,8 +2815,8 @@ func Partial74R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7) (R1, R2, R3, R4) {
 	return func(t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2824,8 +2824,8 @@ func Partial75R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7) (R1, R2, R3, R4) {
 	return func(t7 T7) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2833,8 +2833,8 @@ func Partial76R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2842,8 +2842,8 @@ func Partial77R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2851,8 +2851,8 @@ func Partial7R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2860,8 +2860,8 @@ func Partial72R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2869,8 +2869,8 @@ func Partial73R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2878,8 +2878,8 @@ func Partial74R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2887,8 +2887,8 @@ func Partial75R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t7 T7) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2896,8 +2896,8 @@ func Partial76R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2905,8 +2905,8 @@ func Partial77R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2914,8 +2914,8 @@ func Partial7R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2923,8 +2923,8 @@ func Partial72R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2932,8 +2932,8 @@ func Partial73R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2941,8 +2941,8 @@ func Partial74R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7) (R1, R2, R3, R4, R5) {
 	return func(t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2950,8 +2950,8 @@ func Partial75R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7) (R1, R2, R3, R4, R5) {
 	return func(t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2959,8 +2959,8 @@ func Partial76R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -2968,8 +2968,8 @@ func Partial77R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial7R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2977,8 +2977,8 @@ func Partial7R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial72R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2986,8 +2986,8 @@ func Partial72R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial73R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -2995,8 +2995,8 @@ func Partial73R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial74R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -3004,8 +3004,8 @@ func Partial74R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial75R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -3013,8 +3013,8 @@ func Partial75R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial76R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -3022,8 +3022,8 @@ func Partial76R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial77R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -3031,8 +3031,8 @@ func Partial77R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func Partial8Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3040,8 +3040,8 @@ func Partial8Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3049,8 +3049,8 @@ func Partial82Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3058,8 +3058,8 @@ func Partial83Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8) {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3067,8 +3067,8 @@ func Partial84Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8) {
 	return func(t6 T6, t7 T7, t8 T8) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3076,8 +3076,8 @@ func Partial85Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8) {
 	return func(t7 T7, t8 T8) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3085,8 +3085,8 @@ func Partial86Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8) {
 	return func(t8 T8) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3094,8 +3094,8 @@ func Partial87Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3103,8 +3103,8 @@ func Partial88Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3112,8 +3112,8 @@ func Partial8VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3121,8 +3121,8 @@ func Partial82VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3130,8 +3130,8 @@ func Partial83VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3139,8 +3139,8 @@ func Partial84VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8) {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3148,8 +3148,8 @@ func Partial85VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8) {
 	return func(ctx context.Context, t7 T7, t8 T8) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3157,8 +3157,8 @@ func Partial86VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8) {
 	return func(ctx context.Context, t8 T8) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3166,8 +3166,8 @@ func Partial87VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3175,8 +3175,8 @@ func Partial88VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8) R1 {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3184,8 +3184,8 @@ func Partial8[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8) R1 {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3193,8 +3193,8 @@ func Partial82[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8) R1 {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3202,8 +3202,8 @@ func Partial83[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8) R1 {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3211,8 +3211,8 @@ func Partial84[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8) R1 {
 	return func(t6 T6, t7 T7, t8 T8) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3220,8 +3220,8 @@ func Partial85[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8) R1 {
 	return func(t7 T7, t8 T8) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3229,8 +3229,8 @@ func Partial86[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8) R1 {
 	return func(t8 T8) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3238,8 +3238,8 @@ func Partial87[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3247,8 +3247,8 @@ func Partial88[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8) R1 {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3256,8 +3256,8 @@ func Partial8Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8) R1 {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3265,8 +3265,8 @@ func Partial82Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8) R1 {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3274,8 +3274,8 @@ func Partial83Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8) R1 {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3283,8 +3283,8 @@ func Partial84Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8) R1 {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3292,8 +3292,8 @@ func Partial85Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8) R1 {
 	return func(ctx context.Context, t7 T7, t8 T8) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3301,8 +3301,8 @@ func Partial86Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8) R1 {
 	return func(ctx context.Context, t8 T8) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3310,8 +3310,8 @@ func Partial87Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3319,8 +3319,8 @@ func Partial88Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8) (R1, R2) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3328,8 +3328,8 @@ func Partial8R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8) (R1, R2) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3337,8 +3337,8 @@ func Partial82R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8) (R1, R2) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3346,8 +3346,8 @@ func Partial83R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8) (R1, R2) {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3355,8 +3355,8 @@ func Partial84R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8) (R1, R2) {
 	return func(t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3364,8 +3364,8 @@ func Partial85R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8) (R1, R2) {
 	return func(t7 T7, t8 T8) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3373,8 +3373,8 @@ func Partial86R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8) (R1, R2) {
 	return func(t8 T8) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3382,8 +3382,8 @@ func Partial87R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3391,8 +3391,8 @@ func Partial88R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8) (R1, R2) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3400,8 +3400,8 @@ func Partial8R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8) (R1, R2) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3409,8 +3409,8 @@ func Partial82R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8) (R1, R2) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3418,8 +3418,8 @@ func Partial83R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8) (R1, R2) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3427,8 +3427,8 @@ func Partial84R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8) (R1, R2) {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3436,8 +3436,8 @@ func Partial85R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8) (R1, R2) {
 	return func(ctx context.Context, t7 T7, t8 T8) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3445,8 +3445,8 @@ func Partial86R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8) (R1, R2) {
 	return func(ctx context.Context, t8 T8) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3454,8 +3454,8 @@ func Partial87R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3463,8 +3463,8 @@ func Partial88R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3472,8 +3472,8 @@ func Partial8R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8) (R1, R2, R3) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3481,8 +3481,8 @@ func Partial82R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8) (R1, R2, R3) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3490,8 +3490,8 @@ func Partial83R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8) (R1, R2, R3) {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3499,8 +3499,8 @@ func Partial84R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8) (R1, R2, R3) {
 	return func(t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3508,8 +3508,8 @@ func Partial85R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8) (R1, R2, R3) {
 	return func(t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3517,8 +3517,8 @@ func Partial86R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8) (R1, R2, R3) {
 	return func(t8 T8) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3526,8 +3526,8 @@ func Partial87R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3535,8 +3535,8 @@ func Partial88R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3544,8 +3544,8 @@ func Partial8R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8) (R1, R2, R3) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3553,8 +3553,8 @@ func Partial82R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8) (R1, R2, R3) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3562,8 +3562,8 @@ func Partial83R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8) (R1, R2, R3) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3571,8 +3571,8 @@ func Partial84R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8) (R1, R2, R3) {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3580,8 +3580,8 @@ func Partial85R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8) (R1, R2, R3) {
 	return func(ctx context.Context, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3589,8 +3589,8 @@ func Partial86R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8) (R1, R2, R3) {
 	return func(ctx context.Context, t8 T8) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3598,8 +3598,8 @@ func Partial87R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3607,8 +3607,8 @@ func Partial88R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3616,8 +3616,8 @@ func Partial8R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3625,8 +3625,8 @@ func Partial82R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3634,8 +3634,8 @@ func Partial83R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3643,8 +3643,8 @@ func Partial84R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8) (R1, R2, R3, R4) {
 	return func(t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3652,8 +3652,8 @@ func Partial85R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8) (R1, R2, R3, R4) {
 	return func(t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3661,8 +3661,8 @@ func Partial86R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8) (R1, R2, R3, R4) {
 	return func(t8 T8) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3670,8 +3670,8 @@ func Partial87R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3679,8 +3679,8 @@ func Partial88R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3688,8 +3688,8 @@ func Partial8R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3697,8 +3697,8 @@ func Partial82R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3706,8 +3706,8 @@ func Partial83R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3715,8 +3715,8 @@ func Partial84R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3724,8 +3724,8 @@ func Partial85R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3733,8 +3733,8 @@ func Partial86R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t8 T8) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3742,8 +3742,8 @@ func Partial87R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3751,8 +3751,8 @@ func Partial88R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3760,8 +3760,8 @@ func Partial8R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3769,8 +3769,8 @@ func Partial82R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3778,8 +3778,8 @@ func Partial83R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3787,8 +3787,8 @@ func Partial84R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3796,8 +3796,8 @@ func Partial85R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8) (R1, R2, R3, R4, R5) {
 	return func(t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3805,8 +3805,8 @@ func Partial86R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8) (R1, R2, R3, R4, R5) {
 	return func(t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3814,8 +3814,8 @@ func Partial87R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3823,8 +3823,8 @@ func Partial88R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial8R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3832,8 +3832,8 @@ func Partial8R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial82R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3841,8 +3841,8 @@ func Partial82R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial83R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3850,8 +3850,8 @@ func Partial83R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial84R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3859,8 +3859,8 @@ func Partial84R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial85R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3868,8 +3868,8 @@ func Partial85R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial86R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3877,8 +3877,8 @@ func Partial86R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial87R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3886,8 +3886,8 @@ func Partial87R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial88R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -3895,8 +3895,8 @@ func Partial88R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func Partial9Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8, T9) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3904,8 +3904,8 @@ func Partial9Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8, T9) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3913,8 +3913,8 @@ func Partial92Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8, T9) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3922,8 +3922,8 @@ func Partial93Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8, T9) {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3931,8 +3931,8 @@ func Partial94Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8, T9) {
 	return func(t6 T6, t7 T7, t8 T8, t9 T9) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3940,8 +3940,8 @@ func Partial95Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8, T9) {
 	return func(t7 T7, t8 T8, t9 T9) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3949,8 +3949,8 @@ func Partial96Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8, T9) {
 	return func(t8 T8, t9 T9) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3958,8 +3958,8 @@ func Partial97Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T9) {
 	return func(t9 T9) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3967,8 +3967,8 @@ func Partial98Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3976,8 +3976,8 @@ func Partial99Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8, T9) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3985,8 +3985,8 @@ func Partial9VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8, T9) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -3994,8 +3994,8 @@ func Partial92VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8, T9) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4003,8 +4003,8 @@ func Partial93VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8, T9) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4012,8 +4012,8 @@ func Partial94VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8, T9) {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8, t9 T9) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4021,8 +4021,8 @@ func Partial95VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8, T9) {
 	return func(ctx context.Context, t7 T7, t8 T8, t9 T9) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4030,8 +4030,8 @@ func Partial96VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8, T9) {
 	return func(ctx context.Context, t8 T8, t9 T9) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4039,8 +4039,8 @@ func Partial97VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T9) {
 	return func(ctx context.Context, t9 T9) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4048,8 +4048,8 @@ func Partial98VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4057,8 +4057,8 @@ func Partial99VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8, T9) R1 {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4066,8 +4066,8 @@ func Partial9[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8, T9) R1 {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4075,8 +4075,8 @@ func Partial92[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8, T9) R1 {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4084,8 +4084,8 @@ func Partial93[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8, T9) R1 {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4093,8 +4093,8 @@ func Partial94[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8, T9) R1 {
 	return func(t6 T6, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4102,8 +4102,8 @@ func Partial95[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8, T9) R1 {
 	return func(t7 T7, t8 T8, t9 T9) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4111,8 +4111,8 @@ func Partial96[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8, T9) R1 {
 	return func(t8 T8, t9 T9) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4120,8 +4120,8 @@ func Partial97[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T9) R1 {
 	return func(t9 T9) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4129,8 +4129,8 @@ func Partial98[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4138,8 +4138,8 @@ func Partial99[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8, T9) R1 {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4147,8 +4147,8 @@ func Partial9Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8, T9) R1 {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4156,8 +4156,8 @@ func Partial92Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8, T9) R1 {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4165,8 +4165,8 @@ func Partial93Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8, T9) R1 {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4174,8 +4174,8 @@ func Partial94Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8, T9) R1 {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4183,8 +4183,8 @@ func Partial95Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8, T9) R1 {
 	return func(ctx context.Context, t7 T7, t8 T8, t9 T9) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4192,8 +4192,8 @@ func Partial96Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8, T9) R1 {
 	return func(ctx context.Context, t8 T8, t9 T9) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4201,8 +4201,8 @@ func Partial97Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T9) R1 {
 	return func(ctx context.Context, t9 T9) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4210,8 +4210,8 @@ func Partial98Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4219,8 +4219,8 @@ func Partial99Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4228,8 +4228,8 @@ func Partial9R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8, T9) (R1, R2) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4237,8 +4237,8 @@ func Partial92R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8, T9) (R1, R2) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4246,8 +4246,8 @@ func Partial93R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8, T9) (R1, R2) {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4255,8 +4255,8 @@ func Partial94R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8, T9) (R1, R2) {
 	return func(t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4264,8 +4264,8 @@ func Partial95R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8, T9) (R1, R2) {
 	return func(t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4273,8 +4273,8 @@ func Partial96R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8, T9) (R1, R2) {
 	return func(t8 T8, t9 T9) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4282,8 +4282,8 @@ func Partial97R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T9) (R1, R2) {
 	return func(t9 T9) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4291,8 +4291,8 @@ func Partial98R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4300,8 +4300,8 @@ func Partial99R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4309,8 +4309,8 @@ func Partial9R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8, T9) (R1, R2) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4318,8 +4318,8 @@ func Partial92R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8, T9) (R1, R2) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4327,8 +4327,8 @@ func Partial93R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8, T9) (R1, R2) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4336,8 +4336,8 @@ func Partial94R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8, T9) (R1, R2) {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4345,8 +4345,8 @@ func Partial95R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8, T9) (R1, R2) {
 	return func(ctx context.Context, t7 T7, t8 T8, t9 T9) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4354,8 +4354,8 @@ func Partial96R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8, T9) (R1, R2) {
 	return func(ctx context.Context, t8 T8, t9 T9) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4363,8 +4363,8 @@ func Partial97R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T9) (R1, R2) {
 	return func(ctx context.Context, t9 T9) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4372,8 +4372,8 @@ func Partial98R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4381,8 +4381,8 @@ func Partial99R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4390,8 +4390,8 @@ func Partial9R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4399,8 +4399,8 @@ func Partial92R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8, T9) (R1, R2, R3) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4408,8 +4408,8 @@ func Partial93R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8, T9) (R1, R2, R3) {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4417,8 +4417,8 @@ func Partial94R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8, T9) (R1, R2, R3) {
 	return func(t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4426,8 +4426,8 @@ func Partial95R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8, T9) (R1, R2, R3) {
 	return func(t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4435,8 +4435,8 @@ func Partial96R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8, T9) (R1, R2, R3) {
 	return func(t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4444,8 +4444,8 @@ func Partial97R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T9) (R1, R2, R3) {
 	return func(t9 T9) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4453,8 +4453,8 @@ func Partial98R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4462,8 +4462,8 @@ func Partial99R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4471,8 +4471,8 @@ func Partial9R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4480,8 +4480,8 @@ func Partial92R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8, T9) (R1, R2, R3) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4489,8 +4489,8 @@ func Partial93R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8, T9) (R1, R2, R3) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4498,8 +4498,8 @@ func Partial94R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8, T9) (R1, R2, R3) {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4507,8 +4507,8 @@ func Partial95R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8, T9) (R1, R2, R3) {
 	return func(ctx context.Context, t7 T7, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4516,8 +4516,8 @@ func Partial96R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8, T9) (R1, R2, R3) {
 	return func(ctx context.Context, t8 T8, t9 T9) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4525,8 +4525,8 @@ func Partial97R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T9) (R1, R2, R3) {
 	return func(ctx context.Context, t9 T9) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4534,8 +4534,8 @@ func Partial98R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4543,8 +4543,8 @@ func Partial99R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4552,8 +4552,8 @@ func Partial9R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4561,8 +4561,8 @@ func Partial92R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4570,8 +4570,8 @@ func Partial93R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4579,8 +4579,8 @@ func Partial94R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4588,8 +4588,8 @@ func Partial95R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8, T9) (R1, R2, R3, R4) {
 	return func(t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4597,8 +4597,8 @@ func Partial96R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8, T9) (R1, R2, R3, R4) {
 	return func(t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4606,8 +4606,8 @@ func Partial97R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T9) (R1, R2, R3, R4) {
 	return func(t9 T9) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4615,8 +4615,8 @@ func Partial98R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4624,8 +4624,8 @@ func Partial99R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4633,8 +4633,8 @@ func Partial9R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4642,8 +4642,8 @@ func Partial92R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4651,8 +4651,8 @@ func Partial93R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4660,8 +4660,8 @@ func Partial94R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4669,8 +4669,8 @@ func Partial95R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8, T9) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4678,8 +4678,8 @@ func Partial96R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8, T9) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t8 T8, t9 T9) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4687,8 +4687,8 @@ func Partial97R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T9) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t9 T9) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4696,8 +4696,8 @@ func Partial98R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4705,8 +4705,8 @@ func Partial99R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4714,8 +4714,8 @@ func Partial9R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4723,8 +4723,8 @@ func Partial92R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4732,8 +4732,8 @@ func Partial93R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4741,8 +4741,8 @@ func Partial94R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T6, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4750,8 +4750,8 @@ func Partial95R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4759,8 +4759,8 @@ func Partial96R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T8, T9) (R1, R2, R3, R4, R5) {
 	return func(t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4768,8 +4768,8 @@ func Partial97R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T9) (R1, R2, R3, R4, R5) {
 	return func(t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4777,8 +4777,8 @@ func Partial98R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4786,8 +4786,8 @@ func Partial99R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial9R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1,
 ) func(context.Context, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4795,8 +4795,8 @@ func Partial9R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial92R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(context.Context, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4804,8 +4804,8 @@ func Partial92R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial93R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4813,8 +4813,8 @@ func Partial93R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial94R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4822,8 +4822,8 @@ func Partial94R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial95R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T6, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t6 T6, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4831,8 +4831,8 @@ func Partial95R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial96R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T7, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t7 T7, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4840,8 +4840,8 @@ func Partial96R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial97R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T8, T9) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t8 T8, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4849,8 +4849,8 @@ func Partial97R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial98R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T9) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t9 T9) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4858,8 +4858,8 @@ func Partial98R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func Partial99R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -4867,8 +4867,8 @@ func Partial99R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial2Void[T1, T2 any](
-	t2 T2,
 	fn func(T1, T2),
+	t2 T2,
 ) func(T1) {
 	return func(t1 T1) {
 		fn(t1, t2)
@@ -4876,8 +4876,8 @@ func RPartial2Void[T1, T2 any](
 }
 
 func RPartial22Void[T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2),
+	t1 T1, t2 T2,
 ) func() {
 	return func() {
 		fn(t1, t2)
@@ -4885,8 +4885,8 @@ func RPartial22Void[T1, T2 any](
 }
 
 func RPartial2VoidCtx[T1, T2 any](
-	t2 T2,
 	fn func(context.Context, T1, T2),
+	t2 T2,
 ) func(context.Context, T1) {
 	return func(ctx context.Context, t1 T1) {
 		fn(ctx, t1, t2)
@@ -4894,8 +4894,8 @@ func RPartial2VoidCtx[T1, T2 any](
 }
 
 func RPartial22VoidCtx[T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2),
+	t1 T1, t2 T2,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2)
@@ -4903,8 +4903,8 @@ func RPartial22VoidCtx[T1, T2 any](
 }
 
 func RPartial2[R1, T1, T2 any](
-	t2 T2,
 	fn func(T1, T2) R1,
+	t2 T2,
 ) func(T1) R1 {
 	return func(t1 T1) R1 {
 		return fn(t1, t2)
@@ -4912,8 +4912,8 @@ func RPartial2[R1, T1, T2 any](
 }
 
 func RPartial22[R1, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2) R1,
+	t1 T1, t2 T2,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2)
@@ -4921,8 +4921,8 @@ func RPartial22[R1, T1, T2 any](
 }
 
 func RPartial2Ctx[R1, T1, T2 any](
-	t2 T2,
 	fn func(context.Context, T1, T2) R1,
+	t2 T2,
 ) func(context.Context, T1) R1 {
 	return func(ctx context.Context, t1 T1) R1 {
 		return fn(ctx, t1, t2)
@@ -4930,8 +4930,8 @@ func RPartial2Ctx[R1, T1, T2 any](
 }
 
 func RPartial22Ctx[R1, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2) R1,
+	t1 T1, t2 T2,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2)
@@ -4939,8 +4939,8 @@ func RPartial22Ctx[R1, T1, T2 any](
 }
 
 func RPartial2R2[R1, R2, T1, T2 any](
-	t2 T2,
 	fn func(T1, T2) (R1, R2),
+	t2 T2,
 ) func(T1) (R1, R2) {
 	return func(t1 T1) (R1, R2) {
 		return fn(t1, t2)
@@ -4948,8 +4948,8 @@ func RPartial2R2[R1, R2, T1, T2 any](
 }
 
 func RPartial22R2[R1, R2, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2) (R1, R2),
+	t1 T1, t2 T2,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2)
@@ -4957,8 +4957,8 @@ func RPartial22R2[R1, R2, T1, T2 any](
 }
 
 func RPartial2R2Ctx[R1, R2, T1, T2 any](
-	t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2),
+	t2 T2,
 ) func(context.Context, T1) (R1, R2) {
 	return func(ctx context.Context, t1 T1) (R1, R2) {
 		return fn(ctx, t1, t2)
@@ -4966,8 +4966,8 @@ func RPartial2R2Ctx[R1, R2, T1, T2 any](
 }
 
 func RPartial22R2Ctx[R1, R2, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2),
+	t1 T1, t2 T2,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2)
@@ -4975,8 +4975,8 @@ func RPartial22R2Ctx[R1, R2, T1, T2 any](
 }
 
 func RPartial2R3[R1, R2, R3, T1, T2 any](
-	t2 T2,
 	fn func(T1, T2) (R1, R2, R3),
+	t2 T2,
 ) func(T1) (R1, R2, R3) {
 	return func(t1 T1) (R1, R2, R3) {
 		return fn(t1, t2)
@@ -4984,8 +4984,8 @@ func RPartial2R3[R1, R2, R3, T1, T2 any](
 }
 
 func RPartial22R3[R1, R2, R3, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2)
@@ -4993,8 +4993,8 @@ func RPartial22R3[R1, R2, R3, T1, T2 any](
 }
 
 func RPartial2R3Ctx[R1, R2, R3, T1, T2 any](
-	t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2, R3),
+	t2 T2,
 ) func(context.Context, T1) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3) {
 		return fn(ctx, t1, t2)
@@ -5002,8 +5002,8 @@ func RPartial2R3Ctx[R1, R2, R3, T1, T2 any](
 }
 
 func RPartial22R3Ctx[R1, R2, R3, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2, R3),
+	t1 T1, t2 T2,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2)
@@ -5011,8 +5011,8 @@ func RPartial22R3Ctx[R1, R2, R3, T1, T2 any](
 }
 
 func RPartial2R4[R1, R2, R3, R4, T1, T2 any](
-	t2 T2,
 	fn func(T1, T2) (R1, R2, R3, R4),
+	t2 T2,
 ) func(T1) (R1, R2, R3, R4) {
 	return func(t1 T1) (R1, R2, R3, R4) {
 		return fn(t1, t2)
@@ -5020,8 +5020,8 @@ func RPartial2R4[R1, R2, R3, R4, T1, T2 any](
 }
 
 func RPartial22R4[R1, R2, R3, R4, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2)
@@ -5029,8 +5029,8 @@ func RPartial22R4[R1, R2, R3, R4, T1, T2 any](
 }
 
 func RPartial2R4Ctx[R1, R2, R3, R4, T1, T2 any](
-	t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2, R3, R4),
+	t2 T2,
 ) func(context.Context, T1) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2)
@@ -5038,8 +5038,8 @@ func RPartial2R4Ctx[R1, R2, R3, R4, T1, T2 any](
 }
 
 func RPartial22R4Ctx[R1, R2, R3, R4, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2, R3, R4),
+	t1 T1, t2 T2,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2)
@@ -5047,8 +5047,8 @@ func RPartial22R4Ctx[R1, R2, R3, R4, T1, T2 any](
 }
 
 func RPartial2R5[R1, R2, R3, R4, R5, T1, T2 any](
-	t2 T2,
 	fn func(T1, T2) (R1, R2, R3, R4, R5),
+	t2 T2,
 ) func(T1) (R1, R2, R3, R4, R5) {
 	return func(t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2)
@@ -5056,8 +5056,8 @@ func RPartial2R5[R1, R2, R3, R4, R5, T1, T2 any](
 }
 
 func RPartial22R5[R1, R2, R3, R4, R5, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(T1, T2) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2)
@@ -5065,8 +5065,8 @@ func RPartial22R5[R1, R2, R3, R4, R5, T1, T2 any](
 }
 
 func RPartial2R5Ctx[R1, R2, R3, R4, R5, T1, T2 any](
-	t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2, R3, R4, R5),
+	t2 T2,
 ) func(context.Context, T1) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2)
@@ -5074,8 +5074,8 @@ func RPartial2R5Ctx[R1, R2, R3, R4, R5, T1, T2 any](
 }
 
 func RPartial22R5Ctx[R1, R2, R3, R4, R5, T1, T2 any](
-	t1 T1, t2 T2,
 	fn func(context.Context, T1, T2) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2)
@@ -5083,8 +5083,8 @@ func RPartial22R5Ctx[R1, R2, R3, R4, R5, T1, T2 any](
 }
 
 func RPartial3Void[T1, T2, T3 any](
-	t3 T3,
 	fn func(T1, T2, T3),
+	t3 T3,
 ) func(T1, T2) {
 	return func(t1 T1, t2 T2) {
 		fn(t1, t2, t3)
@@ -5092,8 +5092,8 @@ func RPartial3Void[T1, T2, T3 any](
 }
 
 func RPartial32Void[T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(T1, T2, T3),
+	t2 T2, t3 T3,
 ) func(T1) {
 	return func(t1 T1) {
 		fn(t1, t2, t3)
@@ -5101,8 +5101,8 @@ func RPartial32Void[T1, T2, T3 any](
 }
 
 func RPartial33Void[T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3),
+	t1 T1, t2 T2, t3 T3,
 ) func() {
 	return func() {
 		fn(t1, t2, t3)
@@ -5110,8 +5110,8 @@ func RPartial33Void[T1, T2, T3 any](
 }
 
 func RPartial3VoidCtx[T1, T2, T3 any](
-	t3 T3,
 	fn func(context.Context, T1, T2, T3),
+	t3 T3,
 ) func(context.Context, T1, T2) {
 	return func(ctx context.Context, t1 T1, t2 T2) {
 		fn(ctx, t1, t2, t3)
@@ -5119,8 +5119,8 @@ func RPartial3VoidCtx[T1, T2, T3 any](
 }
 
 func RPartial32VoidCtx[T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3),
+	t2 T2, t3 T3,
 ) func(context.Context, T1) {
 	return func(ctx context.Context, t1 T1) {
 		fn(ctx, t1, t2, t3)
@@ -5128,8 +5128,8 @@ func RPartial32VoidCtx[T1, T2, T3 any](
 }
 
 func RPartial33VoidCtx[T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3)
@@ -5137,8 +5137,8 @@ func RPartial33VoidCtx[T1, T2, T3 any](
 }
 
 func RPartial3[R1, T1, T2, T3 any](
-	t3 T3,
 	fn func(T1, T2, T3) R1,
+	t3 T3,
 ) func(T1, T2) R1 {
 	return func(t1 T1, t2 T2) R1 {
 		return fn(t1, t2, t3)
@@ -5146,8 +5146,8 @@ func RPartial3[R1, T1, T2, T3 any](
 }
 
 func RPartial32[R1, T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(T1, T2, T3) R1,
+	t2 T2, t3 T3,
 ) func(T1) R1 {
 	return func(t1 T1) R1 {
 		return fn(t1, t2, t3)
@@ -5155,8 +5155,8 @@ func RPartial32[R1, T1, T2, T3 any](
 }
 
 func RPartial33[R1, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3)
@@ -5164,8 +5164,8 @@ func RPartial33[R1, T1, T2, T3 any](
 }
 
 func RPartial3Ctx[R1, T1, T2, T3 any](
-	t3 T3,
 	fn func(context.Context, T1, T2, T3) R1,
+	t3 T3,
 ) func(context.Context, T1, T2) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2) R1 {
 		return fn(ctx, t1, t2, t3)
@@ -5173,8 +5173,8 @@ func RPartial3Ctx[R1, T1, T2, T3 any](
 }
 
 func RPartial32Ctx[R1, T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) R1,
+	t2 T2, t3 T3,
 ) func(context.Context, T1) R1 {
 	return func(ctx context.Context, t1 T1) R1 {
 		return fn(ctx, t1, t2, t3)
@@ -5182,8 +5182,8 @@ func RPartial32Ctx[R1, T1, T2, T3 any](
 }
 
 func RPartial33Ctx[R1, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) R1,
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3)
@@ -5191,8 +5191,8 @@ func RPartial33Ctx[R1, T1, T2, T3 any](
 }
 
 func RPartial3R2[R1, R2, T1, T2, T3 any](
-	t3 T3,
 	fn func(T1, T2, T3) (R1, R2),
+	t3 T3,
 ) func(T1, T2) (R1, R2) {
 	return func(t1 T1, t2 T2) (R1, R2) {
 		return fn(t1, t2, t3)
@@ -5200,8 +5200,8 @@ func RPartial3R2[R1, R2, T1, T2, T3 any](
 }
 
 func RPartial32R2[R1, R2, T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2),
+	t2 T2, t3 T3,
 ) func(T1) (R1, R2) {
 	return func(t1 T1) (R1, R2) {
 		return fn(t1, t2, t3)
@@ -5209,8 +5209,8 @@ func RPartial32R2[R1, R2, T1, T2, T3 any](
 }
 
 func RPartial33R2[R1, R2, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3)
@@ -5218,8 +5218,8 @@ func RPartial33R2[R1, R2, T1, T2, T3 any](
 }
 
 func RPartial3R2Ctx[R1, R2, T1, T2, T3 any](
-	t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2),
+	t3 T3,
 ) func(context.Context, T1, T2) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2) {
 		return fn(ctx, t1, t2, t3)
@@ -5227,8 +5227,8 @@ func RPartial3R2Ctx[R1, R2, T1, T2, T3 any](
 }
 
 func RPartial32R2Ctx[R1, R2, T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2),
+	t2 T2, t3 T3,
 ) func(context.Context, T1) (R1, R2) {
 	return func(ctx context.Context, t1 T1) (R1, R2) {
 		return fn(ctx, t1, t2, t3)
@@ -5236,8 +5236,8 @@ func RPartial32R2Ctx[R1, R2, T1, T2, T3 any](
 }
 
 func RPartial33R2Ctx[R1, R2, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3)
@@ -5245,8 +5245,8 @@ func RPartial33R2Ctx[R1, R2, T1, T2, T3 any](
 }
 
 func RPartial3R3[R1, R2, R3, T1, T2, T3 any](
-	t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3),
+	t3 T3,
 ) func(T1, T2) (R1, R2, R3) {
 	return func(t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(t1, t2, t3)
@@ -5254,8 +5254,8 @@ func RPartial3R3[R1, R2, R3, T1, T2, T3 any](
 }
 
 func RPartial32R3[R1, R2, R3, T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3),
+	t2 T2, t3 T3,
 ) func(T1) (R1, R2, R3) {
 	return func(t1 T1) (R1, R2, R3) {
 		return fn(t1, t2, t3)
@@ -5263,8 +5263,8 @@ func RPartial32R3[R1, R2, R3, T1, T2, T3 any](
 }
 
 func RPartial33R3[R1, R2, R3, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3)
@@ -5272,8 +5272,8 @@ func RPartial33R3[R1, R2, R3, T1, T2, T3 any](
 }
 
 func RPartial3R3Ctx[R1, R2, R3, T1, T2, T3 any](
-	t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3),
+	t3 T3,
 ) func(context.Context, T1, T2) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3)
@@ -5281,8 +5281,8 @@ func RPartial3R3Ctx[R1, R2, R3, T1, T2, T3 any](
 }
 
 func RPartial32R3Ctx[R1, R2, R3, T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3),
+	t2 T2, t3 T3,
 ) func(context.Context, T1) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3)
@@ -5290,8 +5290,8 @@ func RPartial32R3Ctx[R1, R2, R3, T1, T2, T3 any](
 }
 
 func RPartial33R3Ctx[R1, R2, R3, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3)
@@ -5299,8 +5299,8 @@ func RPartial33R3Ctx[R1, R2, R3, T1, T2, T3 any](
 }
 
 func RPartial3R4[R1, R2, R3, R4, T1, T2, T3 any](
-	t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3, R4),
+	t3 T3,
 ) func(T1, T2) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3)
@@ -5308,8 +5308,8 @@ func RPartial3R4[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func RPartial32R4[R1, R2, R3, R4, T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3, R4),
+	t2 T2, t3 T3,
 ) func(T1) (R1, R2, R3, R4) {
 	return func(t1 T1) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3)
@@ -5317,8 +5317,8 @@ func RPartial32R4[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func RPartial33R4[R1, R2, R3, R4, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3)
@@ -5326,8 +5326,8 @@ func RPartial33R4[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func RPartial3R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
-	t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4),
+	t3 T3,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3)
@@ -5335,8 +5335,8 @@ func RPartial3R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func RPartial32R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4),
+	t2 T2, t3 T3,
 ) func(context.Context, T1) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3)
@@ -5344,8 +5344,8 @@ func RPartial32R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func RPartial33R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3)
@@ -5353,8 +5353,8 @@ func RPartial33R4Ctx[R1, R2, R3, R4, T1, T2, T3 any](
 }
 
 func RPartial3R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3, R4, R5),
+	t3 T3,
 ) func(T1, T2) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3)
@@ -5362,8 +5362,8 @@ func RPartial3R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func RPartial32R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3,
 ) func(T1) (R1, R2, R3, R4, R5) {
 	return func(t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3)
@@ -5371,8 +5371,8 @@ func RPartial32R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func RPartial33R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(T1, T2, T3) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3)
@@ -5380,8 +5380,8 @@ func RPartial33R5[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func RPartial3R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5),
+	t3 T3,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3)
@@ -5389,8 +5389,8 @@ func RPartial3R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func RPartial32R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3,
 ) func(context.Context, T1) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3)
@@ -5398,8 +5398,8 @@ func RPartial32R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func RPartial33R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
-	t1 T1, t2 T2, t3 T3,
 	fn func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3)
@@ -5407,8 +5407,8 @@ func RPartial33R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3 any](
 }
 
 func RPartial4Void[T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(T1, T2, T3, T4),
+	t4 T4,
 ) func(T1, T2, T3) {
 	return func(t1 T1, t2 T2, t3 T3) {
 		fn(t1, t2, t3, t4)
@@ -5416,8 +5416,8 @@ func RPartial4Void[T1, T2, T3, T4 any](
 }
 
 func RPartial42Void[T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4),
+	t3 T3, t4 T4,
 ) func(T1, T2) {
 	return func(t1 T1, t2 T2) {
 		fn(t1, t2, t3, t4)
@@ -5425,8 +5425,8 @@ func RPartial42Void[T1, T2, T3, T4 any](
 }
 
 func RPartial43Void[T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4),
+	t2 T2, t3 T3, t4 T4,
 ) func(T1) {
 	return func(t1 T1) {
 		fn(t1, t2, t3, t4)
@@ -5434,8 +5434,8 @@ func RPartial43Void[T1, T2, T3, T4 any](
 }
 
 func RPartial44Void[T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4)
@@ -5443,8 +5443,8 @@ func RPartial44Void[T1, T2, T3, T4 any](
 }
 
 func RPartial4VoidCtx[T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(context.Context, T1, T2, T3, T4),
+	t4 T4,
 ) func(context.Context, T1, T2, T3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) {
 		fn(ctx, t1, t2, t3, t4)
@@ -5452,8 +5452,8 @@ func RPartial4VoidCtx[T1, T2, T3, T4 any](
 }
 
 func RPartial42VoidCtx[T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4),
+	t3 T3, t4 T4,
 ) func(context.Context, T1, T2) {
 	return func(ctx context.Context, t1 T1, t2 T2) {
 		fn(ctx, t1, t2, t3, t4)
@@ -5461,8 +5461,8 @@ func RPartial42VoidCtx[T1, T2, T3, T4 any](
 }
 
 func RPartial43VoidCtx[T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4),
+	t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T1) {
 	return func(ctx context.Context, t1 T1) {
 		fn(ctx, t1, t2, t3, t4)
@@ -5470,8 +5470,8 @@ func RPartial43VoidCtx[T1, T2, T3, T4 any](
 }
 
 func RPartial44VoidCtx[T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4)
@@ -5479,8 +5479,8 @@ func RPartial44VoidCtx[T1, T2, T3, T4 any](
 }
 
 func RPartial4[R1, T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(T1, T2, T3, T4) R1,
+	t4 T4,
 ) func(T1, T2, T3) R1 {
 	return func(t1 T1, t2 T2, t3 T3) R1 {
 		return fn(t1, t2, t3, t4)
@@ -5488,8 +5488,8 @@ func RPartial4[R1, T1, T2, T3, T4 any](
 }
 
 func RPartial42[R1, T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) R1,
+	t3 T3, t4 T4,
 ) func(T1, T2) R1 {
 	return func(t1 T1, t2 T2) R1 {
 		return fn(t1, t2, t3, t4)
@@ -5497,8 +5497,8 @@ func RPartial42[R1, T1, T2, T3, T4 any](
 }
 
 func RPartial43[R1, T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) R1,
+	t2 T2, t3 T3, t4 T4,
 ) func(T1) R1 {
 	return func(t1 T1) R1 {
 		return fn(t1, t2, t3, t4)
@@ -5506,8 +5506,8 @@ func RPartial43[R1, T1, T2, T3, T4 any](
 }
 
 func RPartial44[R1, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4)
@@ -5515,8 +5515,8 @@ func RPartial44[R1, T1, T2, T3, T4 any](
 }
 
 func RPartial4Ctx[R1, T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) R1,
+	t4 T4,
 ) func(context.Context, T1, T2, T3) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) R1 {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5524,8 +5524,8 @@ func RPartial4Ctx[R1, T1, T2, T3, T4 any](
 }
 
 func RPartial42Ctx[R1, T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) R1,
+	t3 T3, t4 T4,
 ) func(context.Context, T1, T2) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2) R1 {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5533,8 +5533,8 @@ func RPartial42Ctx[R1, T1, T2, T3, T4 any](
 }
 
 func RPartial43Ctx[R1, T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) R1,
+	t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T1) R1 {
 	return func(ctx context.Context, t1 T1) R1 {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5542,8 +5542,8 @@ func RPartial43Ctx[R1, T1, T2, T3, T4 any](
 }
 
 func RPartial44Ctx[R1, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5551,8 +5551,8 @@ func RPartial44Ctx[R1, T1, T2, T3, T4 any](
 }
 
 func RPartial4R2[R1, R2, T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2),
+	t4 T4,
 ) func(T1, T2, T3) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(t1, t2, t3, t4)
@@ -5560,8 +5560,8 @@ func RPartial4R2[R1, R2, T1, T2, T3, T4 any](
 }
 
 func RPartial42R2[R1, R2, T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2),
+	t3 T3, t4 T4,
 ) func(T1, T2) (R1, R2) {
 	return func(t1 T1, t2 T2) (R1, R2) {
 		return fn(t1, t2, t3, t4)
@@ -5569,8 +5569,8 @@ func RPartial42R2[R1, R2, T1, T2, T3, T4 any](
 }
 
 func RPartial43R2[R1, R2, T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2),
+	t2 T2, t3 T3, t4 T4,
 ) func(T1) (R1, R2) {
 	return func(t1 T1) (R1, R2) {
 		return fn(t1, t2, t3, t4)
@@ -5578,8 +5578,8 @@ func RPartial43R2[R1, R2, T1, T2, T3, T4 any](
 }
 
 func RPartial44R2[R1, R2, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4)
@@ -5587,8 +5587,8 @@ func RPartial44R2[R1, R2, T1, T2, T3, T4 any](
 }
 
 func RPartial4R2Ctx[R1, R2, T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2),
+	t4 T4,
 ) func(context.Context, T1, T2, T3) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5596,8 +5596,8 @@ func RPartial4R2Ctx[R1, R2, T1, T2, T3, T4 any](
 }
 
 func RPartial42R2Ctx[R1, R2, T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2),
+	t3 T3, t4 T4,
 ) func(context.Context, T1, T2) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5605,8 +5605,8 @@ func RPartial42R2Ctx[R1, R2, T1, T2, T3, T4 any](
 }
 
 func RPartial43R2Ctx[R1, R2, T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2),
+	t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T1) (R1, R2) {
 	return func(ctx context.Context, t1 T1) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5614,8 +5614,8 @@ func RPartial43R2Ctx[R1, R2, T1, T2, T3, T4 any](
 }
 
 func RPartial44R2Ctx[R1, R2, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5623,8 +5623,8 @@ func RPartial44R2Ctx[R1, R2, T1, T2, T3, T4 any](
 }
 
 func RPartial4R3[R1, R2, R3, T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3),
+	t4 T4,
 ) func(T1, T2, T3) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4)
@@ -5632,8 +5632,8 @@ func RPartial4R3[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func RPartial42R3[R1, R2, R3, T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3),
+	t3 T3, t4 T4,
 ) func(T1, T2) (R1, R2, R3) {
 	return func(t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4)
@@ -5641,8 +5641,8 @@ func RPartial42R3[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func RPartial43R3[R1, R2, R3, T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4,
 ) func(T1) (R1, R2, R3) {
 	return func(t1 T1) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4)
@@ -5650,8 +5650,8 @@ func RPartial43R3[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func RPartial44R3[R1, R2, R3, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4)
@@ -5659,8 +5659,8 @@ func RPartial44R3[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func RPartial4R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3),
+	t4 T4,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5668,8 +5668,8 @@ func RPartial4R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func RPartial42R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3),
+	t3 T3, t4 T4,
 ) func(context.Context, T1, T2) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5677,8 +5677,8 @@ func RPartial42R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func RPartial43R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T1) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5686,8 +5686,8 @@ func RPartial43R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func RPartial44R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5695,8 +5695,8 @@ func RPartial44R3Ctx[R1, R2, R3, T1, T2, T3, T4 any](
 }
 
 func RPartial4R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4),
+	t4 T4,
 ) func(T1, T2, T3) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4)
@@ -5704,8 +5704,8 @@ func RPartial4R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func RPartial42R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4),
+	t3 T3, t4 T4,
 ) func(T1, T2) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4)
@@ -5713,8 +5713,8 @@ func RPartial42R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func RPartial43R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4,
 ) func(T1) (R1, R2, R3, R4) {
 	return func(t1 T1) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4)
@@ -5722,8 +5722,8 @@ func RPartial43R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func RPartial44R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4)
@@ -5731,8 +5731,8 @@ func RPartial44R4[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func RPartial4R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4),
+	t4 T4,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5740,8 +5740,8 @@ func RPartial4R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func RPartial42R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4),
+	t3 T3, t4 T4,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5749,8 +5749,8 @@ func RPartial42R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func RPartial43R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T1) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5758,8 +5758,8 @@ func RPartial43R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func RPartial44R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5767,8 +5767,8 @@ func RPartial44R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4 any](
 }
 
 func RPartial4R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t4 T4,
 ) func(T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4)
@@ -5776,8 +5776,8 @@ func RPartial4R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func RPartial42R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4,
 ) func(T1, T2) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4)
@@ -5785,8 +5785,8 @@ func RPartial42R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func RPartial43R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4,
 ) func(T1) (R1, R2, R3, R4, R5) {
 	return func(t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4)
@@ -5794,8 +5794,8 @@ func RPartial43R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func RPartial44R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4)
@@ -5803,8 +5803,8 @@ func RPartial44R5[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func RPartial4R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t4 T4,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5812,8 +5812,8 @@ func RPartial4R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func RPartial42R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5821,8 +5821,8 @@ func RPartial42R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func RPartial43R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4,
 ) func(context.Context, T1) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5830,8 +5830,8 @@ func RPartial43R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func RPartial44R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
-	t1 T1, t2 T2, t3 T3, t4 T4,
 	fn func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4)
@@ -5839,8 +5839,8 @@ func RPartial44R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4 any](
 }
 
 func RPartial5Void[T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(T1, T2, T3, T4, T5),
+	t5 T5,
 ) func(T1, T2, T3, T4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) {
 		fn(t1, t2, t3, t4, t5)
@@ -5848,8 +5848,8 @@ func RPartial5Void[T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52Void[T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5),
+	t4 T4, t5 T5,
 ) func(T1, T2, T3) {
 	return func(t1 T1, t2 T2, t3 T3) {
 		fn(t1, t2, t3, t4, t5)
@@ -5857,8 +5857,8 @@ func RPartial52Void[T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53Void[T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5),
+	t3 T3, t4 T4, t5 T5,
 ) func(T1, T2) {
 	return func(t1 T1, t2 T2) {
 		fn(t1, t2, t3, t4, t5)
@@ -5866,8 +5866,8 @@ func RPartial53Void[T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54Void[T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5),
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T1) {
 	return func(t1 T1) {
 		fn(t1, t2, t3, t4, t5)
@@ -5875,8 +5875,8 @@ func RPartial54Void[T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55Void[T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4, t5)
@@ -5884,8 +5884,8 @@ func RPartial55Void[T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5VoidCtx[T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5),
+	t5 T5,
 ) func(context.Context, T1, T2, T3, T4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) {
 		fn(ctx, t1, t2, t3, t4, t5)
@@ -5893,8 +5893,8 @@ func RPartial5VoidCtx[T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52VoidCtx[T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5),
+	t4 T4, t5 T5,
 ) func(context.Context, T1, T2, T3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) {
 		fn(ctx, t1, t2, t3, t4, t5)
@@ -5902,8 +5902,8 @@ func RPartial52VoidCtx[T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53VoidCtx[T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5),
+	t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1, T2) {
 	return func(ctx context.Context, t1 T1, t2 T2) {
 		fn(ctx, t1, t2, t3, t4, t5)
@@ -5911,8 +5911,8 @@ func RPartial53VoidCtx[T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54VoidCtx[T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5),
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1) {
 	return func(ctx context.Context, t1 T1) {
 		fn(ctx, t1, t2, t3, t4, t5)
@@ -5920,8 +5920,8 @@ func RPartial54VoidCtx[T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55VoidCtx[T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4, t5)
@@ -5929,8 +5929,8 @@ func RPartial55VoidCtx[T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5[R1, T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(T1, T2, T3, T4, T5) R1,
+	t5 T5,
 ) func(T1, T2, T3, T4) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(t1, t2, t3, t4, t5)
@@ -5938,8 +5938,8 @@ func RPartial5[R1, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52[R1, T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) R1,
+	t4 T4, t5 T5,
 ) func(T1, T2, T3) R1 {
 	return func(t1 T1, t2 T2, t3 T3) R1 {
 		return fn(t1, t2, t3, t4, t5)
@@ -5947,8 +5947,8 @@ func RPartial52[R1, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53[R1, T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) R1,
+	t3 T3, t4 T4, t5 T5,
 ) func(T1, T2) R1 {
 	return func(t1 T1, t2 T2) R1 {
 		return fn(t1, t2, t3, t4, t5)
@@ -5956,8 +5956,8 @@ func RPartial53[R1, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54[R1, T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) R1,
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T1) R1 {
 	return func(t1 T1) R1 {
 		return fn(t1, t2, t3, t4, t5)
@@ -5965,8 +5965,8 @@ func RPartial54[R1, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55[R1, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4, t5)
@@ -5974,8 +5974,8 @@ func RPartial55[R1, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5Ctx[R1, T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) R1,
+	t5 T5,
 ) func(context.Context, T1, T2, T3, T4) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -5983,8 +5983,8 @@ func RPartial5Ctx[R1, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52Ctx[R1, T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) R1,
+	t4 T4, t5 T5,
 ) func(context.Context, T1, T2, T3) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -5992,8 +5992,8 @@ func RPartial52Ctx[R1, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53Ctx[R1, T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) R1,
+	t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1, T2) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6001,8 +6001,8 @@ func RPartial53Ctx[R1, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54Ctx[R1, T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) R1,
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1) R1 {
 	return func(ctx context.Context, t1 T1) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6010,8 +6010,8 @@ func RPartial54Ctx[R1, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55Ctx[R1, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6019,8 +6019,8 @@ func RPartial55Ctx[R1, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5R2[R1, R2, T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2),
+	t5 T5,
 ) func(T1, T2, T3, T4) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6028,8 +6028,8 @@ func RPartial5R2[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52R2[R1, R2, T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2),
+	t4 T4, t5 T5,
 ) func(T1, T2, T3) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6037,8 +6037,8 @@ func RPartial52R2[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53R2[R1, R2, T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2),
+	t3 T3, t4 T4, t5 T5,
 ) func(T1, T2) (R1, R2) {
 	return func(t1 T1, t2 T2) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6046,8 +6046,8 @@ func RPartial53R2[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54R2[R1, R2, T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2),
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T1) (R1, R2) {
 	return func(t1 T1) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6055,8 +6055,8 @@ func RPartial54R2[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55R2[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6064,8 +6064,8 @@ func RPartial55R2[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2),
+	t5 T5,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6073,8 +6073,8 @@ func RPartial5R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2),
+	t4 T4, t5 T5,
 ) func(context.Context, T1, T2, T3) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6082,8 +6082,8 @@ func RPartial52R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2),
+	t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1, T2) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6091,8 +6091,8 @@ func RPartial53R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2),
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1) (R1, R2) {
 	return func(ctx context.Context, t1 T1) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6100,8 +6100,8 @@ func RPartial54R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6109,8 +6109,8 @@ func RPartial55R2Ctx[R1, R2, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3),
+	t5 T5,
 ) func(T1, T2, T3, T4) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6118,8 +6118,8 @@ func RPartial5R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3),
+	t4 T4, t5 T5,
 ) func(T1, T2, T3) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6127,8 +6127,8 @@ func RPartial52R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3),
+	t3 T3, t4 T4, t5 T5,
 ) func(T1, T2) (R1, R2, R3) {
 	return func(t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6136,8 +6136,8 @@ func RPartial53R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T1) (R1, R2, R3) {
 	return func(t1 T1) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6145,8 +6145,8 @@ func RPartial54R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6154,8 +6154,8 @@ func RPartial55R3[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3),
+	t5 T5,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6163,8 +6163,8 @@ func RPartial5R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3),
+	t4 T4, t5 T5,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6172,8 +6172,8 @@ func RPartial52R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3),
+	t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1, T2) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6181,8 +6181,8 @@ func RPartial53R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6190,8 +6190,8 @@ func RPartial54R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6199,8 +6199,8 @@ func RPartial55R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t5 T5,
 ) func(T1, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6208,8 +6208,8 @@ func RPartial5R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t4 T4, t5 T5,
 ) func(T1, T2, T3) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6217,8 +6217,8 @@ func RPartial52R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t3 T3, t4 T4, t5 T5,
 ) func(T1, T2) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6226,8 +6226,8 @@ func RPartial53R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T1) (R1, R2, R3, R4) {
 	return func(t1 T1) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6235,8 +6235,8 @@ func RPartial54R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6244,8 +6244,8 @@ func RPartial55R4[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t5 T5,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6253,8 +6253,8 @@ func RPartial5R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t4 T4, t5 T5,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6262,8 +6262,8 @@ func RPartial52R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6271,8 +6271,8 @@ func RPartial53R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6280,8 +6280,8 @@ func RPartial54R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6289,8 +6289,8 @@ func RPartial55R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t5 T5,
 ) func(T1, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6298,8 +6298,8 @@ func RPartial5R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t4 T4, t5 T5,
 ) func(T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6307,8 +6307,8 @@ func RPartial52R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4, t5 T5,
 ) func(T1, T2) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6316,8 +6316,8 @@ func RPartial53R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(T1) (R1, R2, R3, R4, R5) {
 	return func(t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6325,8 +6325,8 @@ func RPartial54R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5)
@@ -6334,8 +6334,8 @@ func RPartial55R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial5R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t5 T5,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6343,8 +6343,8 @@ func RPartial5R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial52R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t4 T4, t5 T5,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6352,8 +6352,8 @@ func RPartial52R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial53R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6361,8 +6361,8 @@ func RPartial53R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial54R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context, T1) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6370,8 +6370,8 @@ func RPartial54R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial55R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 	fn func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5)
@@ -6379,8 +6379,8 @@ func RPartial55R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5 any](
 }
 
 func RPartial6Void[T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t6 T6,
 ) func(T1, T2, T3, T4, T5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -6388,8 +6388,8 @@ func RPartial6Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62Void[T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t5 T5, t6 T6,
 ) func(T1, T2, T3, T4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -6397,8 +6397,8 @@ func RPartial62Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63Void[T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t4 T4, t5 T5, t6 T6,
 ) func(T1, T2, T3) {
 	return func(t1 T1, t2 T2, t3 T3) {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -6406,8 +6406,8 @@ func RPartial63Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64Void[T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1, T2) {
 	return func(t1 T1, t2 T2) {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -6415,8 +6415,8 @@ func RPartial64Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65Void[T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1) {
 	return func(t1 T1) {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -6424,8 +6424,8 @@ func RPartial65Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66Void[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4, t5, t6)
@@ -6433,8 +6433,8 @@ func RPartial66Void[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t6 T6,
 ) func(context.Context, T1, T2, T3, T4, T5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6442,8 +6442,8 @@ func RPartial6VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3, T4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6451,8 +6451,8 @@ func RPartial62VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6460,8 +6460,8 @@ func RPartial63VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2) {
 	return func(ctx context.Context, t1 T1, t2 T2) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6469,8 +6469,8 @@ func RPartial64VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1) {
 	return func(ctx context.Context, t1 T1) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6478,8 +6478,8 @@ func RPartial65VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66VoidCtx[T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6487,8 +6487,8 @@ func RPartial66VoidCtx[T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6[R1, T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t6 T6,
 ) func(T1, T2, T3, T4, T5) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6496,8 +6496,8 @@ func RPartial6[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62[R1, T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t5 T5, t6 T6,
 ) func(T1, T2, T3, T4) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6505,8 +6505,8 @@ func RPartial62[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63[R1, T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t4 T4, t5 T5, t6 T6,
 ) func(T1, T2, T3) R1 {
 	return func(t1 T1, t2 T2, t3 T3) R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6514,8 +6514,8 @@ func RPartial63[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64[R1, T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1, T2) R1 {
 	return func(t1 T1, t2 T2) R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6523,8 +6523,8 @@ func RPartial64[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65[R1, T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1) R1 {
 	return func(t1 T1) R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6532,8 +6532,8 @@ func RPartial65[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6541,8 +6541,8 @@ func RPartial66[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t6 T6,
 ) func(context.Context, T1, T2, T3, T4, T5) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6550,8 +6550,8 @@ func RPartial6Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3, T4) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6559,8 +6559,8 @@ func RPartial62Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6568,8 +6568,8 @@ func RPartial63Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6577,8 +6577,8 @@ func RPartial64Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1) R1 {
 	return func(ctx context.Context, t1 T1) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6586,8 +6586,8 @@ func RPartial65Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66Ctx[R1, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6595,8 +6595,8 @@ func RPartial66Ctx[R1, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t6 T6,
 ) func(T1, T2, T3, T4, T5) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6604,8 +6604,8 @@ func RPartial6R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t5 T5, t6 T6,
 ) func(T1, T2, T3, T4) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6613,8 +6613,8 @@ func RPartial62R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t4 T4, t5 T5, t6 T6,
 ) func(T1, T2, T3) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6622,8 +6622,8 @@ func RPartial63R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1, T2) (R1, R2) {
 	return func(t1 T1, t2 T2) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6631,8 +6631,8 @@ func RPartial64R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1) (R1, R2) {
 	return func(t1 T1) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6640,8 +6640,8 @@ func RPartial65R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6649,8 +6649,8 @@ func RPartial66R2[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t6 T6,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6658,8 +6658,8 @@ func RPartial6R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6667,8 +6667,8 @@ func RPartial62R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6676,8 +6676,8 @@ func RPartial63R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6685,8 +6685,8 @@ func RPartial64R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1) (R1, R2) {
 	return func(ctx context.Context, t1 T1) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6694,8 +6694,8 @@ func RPartial65R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6703,8 +6703,8 @@ func RPartial66R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t6 T6,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6712,8 +6712,8 @@ func RPartial6R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t5 T5, t6 T6,
 ) func(T1, T2, T3, T4) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6721,8 +6721,8 @@ func RPartial62R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t4 T4, t5 T5, t6 T6,
 ) func(T1, T2, T3) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6730,8 +6730,8 @@ func RPartial63R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1, T2) (R1, R2, R3) {
 	return func(t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6739,8 +6739,8 @@ func RPartial64R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1) (R1, R2, R3) {
 	return func(t1 T1) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6748,8 +6748,8 @@ func RPartial65R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6757,8 +6757,8 @@ func RPartial66R3[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t6 T6,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6766,8 +6766,8 @@ func RPartial6R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6775,8 +6775,8 @@ func RPartial62R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6784,8 +6784,8 @@ func RPartial63R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6793,8 +6793,8 @@ func RPartial64R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6802,8 +6802,8 @@ func RPartial65R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6811,8 +6811,8 @@ func RPartial66R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t6 T6,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6820,8 +6820,8 @@ func RPartial6R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t5 T5, t6 T6,
 ) func(T1, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6829,8 +6829,8 @@ func RPartial62R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t4 T4, t5 T5, t6 T6,
 ) func(T1, T2, T3) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6838,8 +6838,8 @@ func RPartial63R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1, T2) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6847,8 +6847,8 @@ func RPartial64R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1) (R1, R2, R3, R4) {
 	return func(t1 T1) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6856,8 +6856,8 @@ func RPartial65R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6865,8 +6865,8 @@ func RPartial66R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t6 T6,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6874,8 +6874,8 @@ func RPartial6R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6883,8 +6883,8 @@ func RPartial62R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6892,8 +6892,8 @@ func RPartial63R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6901,8 +6901,8 @@ func RPartial64R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6910,8 +6910,8 @@ func RPartial65R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6919,8 +6919,8 @@ func RPartial66R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t6 T6,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6928,8 +6928,8 @@ func RPartial6R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t5 T5, t6 T6,
 ) func(T1, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6937,8 +6937,8 @@ func RPartial62R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t4 T4, t5 T5, t6 T6,
 ) func(T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6946,8 +6946,8 @@ func RPartial63R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1, T2) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6955,8 +6955,8 @@ func RPartial64R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(T1) (R1, R2, R3, R4, R5) {
 	return func(t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6964,8 +6964,8 @@ func RPartial65R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6)
@@ -6973,8 +6973,8 @@ func RPartial66R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial6R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t6 T6,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6982,8 +6982,8 @@ func RPartial6R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial62R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -6991,8 +6991,8 @@ func RPartial62R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial63R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -7000,8 +7000,8 @@ func RPartial63R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial64R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -7009,8 +7009,8 @@ func RPartial64R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial65R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context, T1) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -7018,8 +7018,8 @@ func RPartial65R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial66R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6)
@@ -7027,8 +7027,8 @@ func RPartial66R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6 any](
 }
 
 func RPartial7Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t7 T7,
 ) func(T1, T2, T3, T4, T5, T6) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7036,8 +7036,8 @@ func RPartial7Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t6 T6, t7 T7,
 ) func(T1, T2, T3, T4, T5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7045,8 +7045,8 @@ func RPartial72Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3, T4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7054,8 +7054,8 @@ func RPartial73Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3) {
 	return func(t1 T1, t2 T2, t3 T3) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7063,8 +7063,8 @@ func RPartial74Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2) {
 	return func(t1 T1, t2 T2) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7072,8 +7072,8 @@ func RPartial75Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1) {
 	return func(t1 T1) {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7081,8 +7081,8 @@ func RPartial76Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77Void[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7090,8 +7090,8 @@ func RPartial77Void[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7099,8 +7099,8 @@ func RPartial7VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7108,8 +7108,8 @@ func RPartial72VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7117,8 +7117,8 @@ func RPartial73VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7126,8 +7126,8 @@ func RPartial74VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2) {
 	return func(ctx context.Context, t1 T1, t2 T2) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7135,8 +7135,8 @@ func RPartial75VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1) {
 	return func(ctx context.Context, t1 T1) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7144,8 +7144,8 @@ func RPartial76VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7153,8 +7153,8 @@ func RPartial77VoidCtx[T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t7 T7,
 ) func(T1, T2, T3, T4, T5, T6) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7162,8 +7162,8 @@ func RPartial7[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t6 T6, t7 T7,
 ) func(T1, T2, T3, T4, T5) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7171,8 +7171,8 @@ func RPartial72[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3, T4) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7180,8 +7180,8 @@ func RPartial73[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3) R1 {
 	return func(t1 T1, t2 T2, t3 T3) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7189,8 +7189,8 @@ func RPartial74[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2) R1 {
 	return func(t1 T1, t2 T2) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7198,8 +7198,8 @@ func RPartial75[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1) R1 {
 	return func(t1 T1) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7207,8 +7207,8 @@ func RPartial76[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7216,8 +7216,8 @@ func RPartial77[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7225,8 +7225,8 @@ func RPartial7Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7234,8 +7234,8 @@ func RPartial72Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7243,8 +7243,8 @@ func RPartial73Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7252,8 +7252,8 @@ func RPartial74Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7261,8 +7261,8 @@ func RPartial75Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1) R1 {
 	return func(ctx context.Context, t1 T1) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7270,8 +7270,8 @@ func RPartial76Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7279,8 +7279,8 @@ func RPartial77Ctx[R1, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t7 T7,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7288,8 +7288,8 @@ func RPartial7R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t6 T6, t7 T7,
 ) func(T1, T2, T3, T4, T5) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7297,8 +7297,8 @@ func RPartial72R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3, T4) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7306,8 +7306,8 @@ func RPartial73R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7315,8 +7315,8 @@ func RPartial74R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2) (R1, R2) {
 	return func(t1 T1, t2 T2) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7324,8 +7324,8 @@ func RPartial75R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1) (R1, R2) {
 	return func(t1 T1) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7333,8 +7333,8 @@ func RPartial76R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7342,8 +7342,8 @@ func RPartial77R2[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7351,8 +7351,8 @@ func RPartial7R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7360,8 +7360,8 @@ func RPartial72R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7369,8 +7369,8 @@ func RPartial73R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7378,8 +7378,8 @@ func RPartial74R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7387,8 +7387,8 @@ func RPartial75R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1) (R1, R2) {
 	return func(ctx context.Context, t1 T1) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7396,8 +7396,8 @@ func RPartial76R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7405,8 +7405,8 @@ func RPartial77R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t7 T7,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7414,8 +7414,8 @@ func RPartial7R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t6 T6, t7 T7,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7423,8 +7423,8 @@ func RPartial72R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3, T4) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7432,8 +7432,8 @@ func RPartial73R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7441,8 +7441,8 @@ func RPartial74R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2) (R1, R2, R3) {
 	return func(t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7450,8 +7450,8 @@ func RPartial75R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1) (R1, R2, R3) {
 	return func(t1 T1) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7459,8 +7459,8 @@ func RPartial76R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7468,8 +7468,8 @@ func RPartial77R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7477,8 +7477,8 @@ func RPartial7R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7486,8 +7486,8 @@ func RPartial72R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7495,8 +7495,8 @@ func RPartial73R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7504,8 +7504,8 @@ func RPartial74R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7513,8 +7513,8 @@ func RPartial75R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7522,8 +7522,8 @@ func RPartial76R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7531,8 +7531,8 @@ func RPartial77R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t7 T7,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7540,8 +7540,8 @@ func RPartial7R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t6 T6, t7 T7,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7549,8 +7549,8 @@ func RPartial72R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7558,8 +7558,8 @@ func RPartial73R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7567,8 +7567,8 @@ func RPartial74R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7576,8 +7576,8 @@ func RPartial75R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1) (R1, R2, R3, R4) {
 	return func(t1 T1) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7585,8 +7585,8 @@ func RPartial76R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7594,8 +7594,8 @@ func RPartial77R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7603,8 +7603,8 @@ func RPartial7R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7612,8 +7612,8 @@ func RPartial72R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7621,8 +7621,8 @@ func RPartial73R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7630,8 +7630,8 @@ func RPartial74R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7639,8 +7639,8 @@ func RPartial75R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7648,8 +7648,8 @@ func RPartial76R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7657,8 +7657,8 @@ func RPartial77R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t7 T7,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7666,8 +7666,8 @@ func RPartial7R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t6 T6, t7 T7,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7675,8 +7675,8 @@ func RPartial72R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7684,8 +7684,8 @@ func RPartial73R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7693,8 +7693,8 @@ func RPartial74R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1, T2) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7702,8 +7702,8 @@ func RPartial75R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(T1) (R1, R2, R3, R4, R5) {
 	return func(t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7711,8 +7711,8 @@ func RPartial76R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7)
@@ -7720,8 +7720,8 @@ func RPartial77R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial7R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7729,8 +7729,8 @@ func RPartial7R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial72R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7738,8 +7738,8 @@ func RPartial72R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial73R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7747,8 +7747,8 @@ func RPartial73R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial74R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7756,8 +7756,8 @@ func RPartial74R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial75R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7765,8 +7765,8 @@ func RPartial75R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial76R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context, T1) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7774,8 +7774,8 @@ func RPartial76R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial77R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7)
@@ -7783,8 +7783,8 @@ func RPartial77R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7 any](
 }
 
 func RPartial8Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t8 T8,
 ) func(T1, T2, T3, T4, T5, T6, T7) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7792,8 +7792,8 @@ func RPartial8Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5, T6) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7801,8 +7801,8 @@ func RPartial82Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7810,8 +7810,8 @@ func RPartial83Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7819,8 +7819,8 @@ func RPartial84Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3) {
 	return func(t1 T1, t2 T2, t3 T3) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7828,8 +7828,8 @@ func RPartial85Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2) {
 	return func(t1 T1, t2 T2) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7837,8 +7837,8 @@ func RPartial86Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1) {
 	return func(t1 T1) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7846,8 +7846,8 @@ func RPartial87Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7855,8 +7855,8 @@ func RPartial88Void[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7864,8 +7864,8 @@ func RPartial8VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7873,8 +7873,8 @@ func RPartial82VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7882,8 +7882,8 @@ func RPartial83VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7891,8 +7891,8 @@ func RPartial84VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7900,8 +7900,8 @@ func RPartial85VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2) {
 	return func(ctx context.Context, t1 T1, t2 T2) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7909,8 +7909,8 @@ func RPartial86VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1) {
 	return func(ctx context.Context, t1 T1) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7918,8 +7918,8 @@ func RPartial87VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7927,8 +7927,8 @@ func RPartial88VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t8 T8,
 ) func(T1, T2, T3, T4, T5, T6, T7) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7936,8 +7936,8 @@ func RPartial8[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5, T6) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7945,8 +7945,8 @@ func RPartial82[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7954,8 +7954,8 @@ func RPartial83[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7963,8 +7963,8 @@ func RPartial84[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3) R1 {
 	return func(t1 T1, t2 T2, t3 T3) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7972,8 +7972,8 @@ func RPartial85[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2) R1 {
 	return func(t1 T1, t2 T2) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7981,8 +7981,8 @@ func RPartial86[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1) R1 {
 	return func(t1 T1) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7990,8 +7990,8 @@ func RPartial87[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -7999,8 +7999,8 @@ func RPartial88[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8008,8 +8008,8 @@ func RPartial8Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8017,8 +8017,8 @@ func RPartial82Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8026,8 +8026,8 @@ func RPartial83Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8035,8 +8035,8 @@ func RPartial84Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8044,8 +8044,8 @@ func RPartial85Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8053,8 +8053,8 @@ func RPartial86Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1) R1 {
 	return func(ctx context.Context, t1 T1) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8062,8 +8062,8 @@ func RPartial87Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8071,8 +8071,8 @@ func RPartial88Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t8 T8,
 ) func(T1, T2, T3, T4, T5, T6, T7) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8080,8 +8080,8 @@ func RPartial8R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8089,8 +8089,8 @@ func RPartial82R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8098,8 +8098,8 @@ func RPartial83R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8107,8 +8107,8 @@ func RPartial84R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8116,8 +8116,8 @@ func RPartial85R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2) (R1, R2) {
 	return func(t1 T1, t2 T2) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8125,8 +8125,8 @@ func RPartial86R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1) (R1, R2) {
 	return func(t1 T1) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8134,8 +8134,8 @@ func RPartial87R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8143,8 +8143,8 @@ func RPartial88R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8152,8 +8152,8 @@ func RPartial8R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8161,8 +8161,8 @@ func RPartial82R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8170,8 +8170,8 @@ func RPartial83R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8179,8 +8179,8 @@ func RPartial84R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8188,8 +8188,8 @@ func RPartial85R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8197,8 +8197,8 @@ func RPartial86R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1) (R1, R2) {
 	return func(ctx context.Context, t1 T1) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8206,8 +8206,8 @@ func RPartial87R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8215,8 +8215,8 @@ func RPartial88R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t8 T8,
 ) func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8224,8 +8224,8 @@ func RPartial8R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8233,8 +8233,8 @@ func RPartial82R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8242,8 +8242,8 @@ func RPartial83R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8251,8 +8251,8 @@ func RPartial84R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8260,8 +8260,8 @@ func RPartial85R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2) (R1, R2, R3) {
 	return func(t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8269,8 +8269,8 @@ func RPartial86R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1) (R1, R2, R3) {
 	return func(t1 T1) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8278,8 +8278,8 @@ func RPartial87R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8287,8 +8287,8 @@ func RPartial88R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8296,8 +8296,8 @@ func RPartial8R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8305,8 +8305,8 @@ func RPartial82R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8314,8 +8314,8 @@ func RPartial83R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8323,8 +8323,8 @@ func RPartial84R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8332,8 +8332,8 @@ func RPartial85R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8341,8 +8341,8 @@ func RPartial86R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8350,8 +8350,8 @@ func RPartial87R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8359,8 +8359,8 @@ func RPartial88R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t8 T8,
 ) func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8368,8 +8368,8 @@ func RPartial8R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8377,8 +8377,8 @@ func RPartial82R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8386,8 +8386,8 @@ func RPartial83R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8395,8 +8395,8 @@ func RPartial84R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8404,8 +8404,8 @@ func RPartial85R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8413,8 +8413,8 @@ func RPartial86R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1) (R1, R2, R3, R4) {
 	return func(t1 T1) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8422,8 +8422,8 @@ func RPartial87R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8431,8 +8431,8 @@ func RPartial88R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8440,8 +8440,8 @@ func RPartial8R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8449,8 +8449,8 @@ func RPartial82R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8458,8 +8458,8 @@ func RPartial83R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8467,8 +8467,8 @@ func RPartial84R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8476,8 +8476,8 @@ func RPartial85R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8485,8 +8485,8 @@ func RPartial86R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8494,8 +8494,8 @@ func RPartial87R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8503,8 +8503,8 @@ func RPartial88R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t8 T8,
 ) func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8512,8 +8512,8 @@ func RPartial8R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8521,8 +8521,8 @@ func RPartial82R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8530,8 +8530,8 @@ func RPartial83R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8539,8 +8539,8 @@ func RPartial84R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8548,8 +8548,8 @@ func RPartial85R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1, T2) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8557,8 +8557,8 @@ func RPartial86R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(T1) (R1, R2, R3, R4, R5) {
 	return func(t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8566,8 +8566,8 @@ func RPartial87R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8575,8 +8575,8 @@ func RPartial88R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial8R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8584,8 +8584,8 @@ func RPartial8R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial82R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8593,8 +8593,8 @@ func RPartial82R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial83R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8602,8 +8602,8 @@ func RPartial83R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial84R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8611,8 +8611,8 @@ func RPartial84R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial85R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8620,8 +8620,8 @@ func RPartial85R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial86R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8629,8 +8629,8 @@ func RPartial86R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial87R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context, T1) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8638,8 +8638,8 @@ func RPartial87R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial88R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8)
@@ -8647,8 +8647,8 @@ func RPartial88R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8 any](
 }
 
 func RPartial9Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7, T8) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8656,8 +8656,8 @@ func RPartial9Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8665,8 +8665,8 @@ func RPartial92Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8674,8 +8674,8 @@ func RPartial93Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8683,8 +8683,8 @@ func RPartial94Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8692,8 +8692,8 @@ func RPartial95Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3) {
 	return func(t1 T1, t2 T2, t3 T3) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8701,8 +8701,8 @@ func RPartial96Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2) {
 	return func(t1 T1, t2 T2) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8710,8 +8710,8 @@ func RPartial97Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1) {
 	return func(t1 T1) {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8719,8 +8719,8 @@ func RPartial98Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() {
 	return func() {
 		fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8728,8 +8728,8 @@ func RPartial99Void[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8737,8 +8737,8 @@ func RPartial9VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8746,8 +8746,8 @@ func RPartial92VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8755,8 +8755,8 @@ func RPartial93VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8764,8 +8764,8 @@ func RPartial94VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8773,8 +8773,8 @@ func RPartial95VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8782,8 +8782,8 @@ func RPartial96VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2) {
 	return func(ctx context.Context, t1 T1, t2 T2) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8791,8 +8791,8 @@ func RPartial97VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1) {
 	return func(ctx context.Context, t1 T1) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8800,8 +8800,8 @@ func RPartial98VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) {
 	return func(ctx context.Context) {
 		fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8809,8 +8809,8 @@ func RPartial99VoidCtx[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7, T8) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8818,8 +8818,8 @@ func RPartial9[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8827,8 +8827,8 @@ func RPartial92[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8836,8 +8836,8 @@ func RPartial93[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8845,8 +8845,8 @@ func RPartial94[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4) R1 {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8854,8 +8854,8 @@ func RPartial95[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3) R1 {
 	return func(t1 T1, t2 T2, t3 T3) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8863,8 +8863,8 @@ func RPartial96[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2) R1 {
 	return func(t1 T1, t2 T2) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8872,8 +8872,8 @@ func RPartial97[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1) R1 {
 	return func(t1 T1) R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8881,8 +8881,8 @@ func RPartial98[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() R1 {
 	return func() R1 {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8890,8 +8890,8 @@ func RPartial99[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8899,8 +8899,8 @@ func RPartial9Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8908,8 +8908,8 @@ func RPartial92Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8917,8 +8917,8 @@ func RPartial93Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8926,8 +8926,8 @@ func RPartial94Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8935,8 +8935,8 @@ func RPartial95Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8944,8 +8944,8 @@ func RPartial96Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2) R1 {
 	return func(ctx context.Context, t1 T1, t2 T2) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8953,8 +8953,8 @@ func RPartial97Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1) R1 {
 	return func(ctx context.Context, t1 T1) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8962,8 +8962,8 @@ func RPartial98Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) R1,
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) R1 {
 	return func(ctx context.Context) R1 {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8971,8 +8971,8 @@ func RPartial99Ctx[R1, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8980,8 +8980,8 @@ func RPartial9R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8989,8 +8989,8 @@ func RPartial92R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -8998,8 +8998,8 @@ func RPartial93R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9007,8 +9007,8 @@ func RPartial94R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9016,8 +9016,8 @@ func RPartial95R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3) (R1, R2) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9025,8 +9025,8 @@ func RPartial96R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2) (R1, R2) {
 	return func(t1 T1, t2 T2) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9034,8 +9034,8 @@ func RPartial97R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1) (R1, R2) {
 	return func(t1 T1) (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9043,8 +9043,8 @@ func RPartial98R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() (R1, R2) {
 	return func() (R1, R2) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9052,8 +9052,8 @@ func RPartial99R2[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9061,8 +9061,8 @@ func RPartial9R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9070,8 +9070,8 @@ func RPartial92R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9079,8 +9079,8 @@ func RPartial93R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9088,8 +9088,8 @@ func RPartial94R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9097,8 +9097,8 @@ func RPartial95R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9106,8 +9106,8 @@ func RPartial96R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2) (R1, R2) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9115,8 +9115,8 @@ func RPartial97R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1) (R1, R2) {
 	return func(ctx context.Context, t1 T1) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9124,8 +9124,8 @@ func RPartial98R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) (R1, R2) {
 	return func(ctx context.Context) (R1, R2) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9133,8 +9133,8 @@ func RPartial99R2Ctx[R1, R2, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9142,8 +9142,8 @@ func RPartial9R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9151,8 +9151,8 @@ func RPartial92R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9160,8 +9160,8 @@ func RPartial93R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9169,8 +9169,8 @@ func RPartial94R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9178,8 +9178,8 @@ func RPartial95R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3) (R1, R2, R3) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9187,8 +9187,8 @@ func RPartial96R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2) (R1, R2, R3) {
 	return func(t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9196,8 +9196,8 @@ func RPartial97R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1) (R1, R2, R3) {
 	return func(t1 T1) (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9205,8 +9205,8 @@ func RPartial98R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() (R1, R2, R3) {
 	return func() (R1, R2, R3) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9214,8 +9214,8 @@ func RPartial99R3[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9223,8 +9223,8 @@ func RPartial9R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9232,8 +9232,8 @@ func RPartial92R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9241,8 +9241,8 @@ func RPartial93R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9250,8 +9250,8 @@ func RPartial94R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9259,8 +9259,8 @@ func RPartial95R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9268,8 +9268,8 @@ func RPartial96R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9277,8 +9277,8 @@ func RPartial97R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1) (R1, R2, R3) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9286,8 +9286,8 @@ func RPartial98R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) (R1, R2, R3) {
 	return func(ctx context.Context) (R1, R2, R3) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9295,8 +9295,8 @@ func RPartial99R3Ctx[R1, R2, R3, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9304,8 +9304,8 @@ func RPartial9R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9313,8 +9313,8 @@ func RPartial92R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9322,8 +9322,8 @@ func RPartial93R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9331,8 +9331,8 @@ func RPartial94R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9340,8 +9340,8 @@ func RPartial95R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9349,8 +9349,8 @@ func RPartial96R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2) (R1, R2, R3, R4) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9358,8 +9358,8 @@ func RPartial97R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1) (R1, R2, R3, R4) {
 	return func(t1 T1) (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9367,8 +9367,8 @@ func RPartial98R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() (R1, R2, R3, R4) {
 	return func() (R1, R2, R3, R4) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9376,8 +9376,8 @@ func RPartial99R4[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9385,8 +9385,8 @@ func RPartial9R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9394,8 +9394,8 @@ func RPartial92R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9403,8 +9403,8 @@ func RPartial93R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9412,8 +9412,8 @@ func RPartial94R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9421,8 +9421,8 @@ func RPartial95R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9430,8 +9430,8 @@ func RPartial96R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9439,8 +9439,8 @@ func RPartial97R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1) (R1, R2, R3, R4) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9448,8 +9448,8 @@ func RPartial98R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) (R1, R2, R3, R4) {
 	return func(ctx context.Context) (R1, R2, R3, R4) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9457,8 +9457,8 @@ func RPartial99R4Ctx[R1, R2, R3, R4, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9466,8 +9466,8 @@ func RPartial9R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9475,8 +9475,8 @@ func RPartial92R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial93R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9484,8 +9484,8 @@ func RPartial93R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial94R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9493,8 +9493,8 @@ func RPartial94R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial95R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9502,8 +9502,8 @@ func RPartial95R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial96R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9511,8 +9511,8 @@ func RPartial96R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial97R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1, T2) (R1, R2, R3, R4, R5) {
 	return func(t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9520,8 +9520,8 @@ func RPartial97R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial98R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(T1) (R1, R2, R3, R4, R5) {
 	return func(t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9529,8 +9529,8 @@ func RPartial98R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial99R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func() (R1, R2, R3, R4, R5) {
 	return func() (R1, R2, R3, R4, R5) {
 		return fn(t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9538,8 +9538,8 @@ func RPartial99R5[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial9R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9547,8 +9547,8 @@ func RPartial9R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
 }
 
 func RPartial92R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6, T7) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9556,8 +9556,8 @@ func RPartial92R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any]
 }
 
 func RPartial93R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5, T6) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9565,8 +9565,8 @@ func RPartial93R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any]
 }
 
 func RPartial94R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4, T5) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4, t5 T5) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9574,8 +9574,8 @@ func RPartial94R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any]
 }
 
 func RPartial95R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3, T4) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3, t4 T4) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9583,8 +9583,8 @@ func RPartial95R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any]
 }
 
 func RPartial96R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2, T3) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2, t3 T3) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9592,8 +9592,8 @@ func RPartial96R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any]
 }
 
 func RPartial97R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1, T2) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1, t2 T2) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9601,8 +9601,8 @@ func RPartial97R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any]
 }
 
 func RPartial98R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context, T1) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context, t1 T1) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
@@ -9610,8 +9610,8 @@ func RPartial98R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any]
 }
 
 func RPartial99R5Ctx[R1, R2, R3, R4, R5, T1, T2, T3, T4, T5, T6, T7, T8, T9 any](
-	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 	fn func(context.Context, T1, T2, T3, T4, T5, T6, T7, T8, T9) (R1, R2, R3, R4, R5),
+	t1 T1, t2 T2, t3 T3, t4 T4, t5 T5, t6 T6, t7 T7, t8 T8, t9 T9,
 ) func(context.Context) (R1, R2, R3, R4, R5) {
 	return func(ctx context.Context) (R1, R2, R3, R4, R5) {
 		return fn(ctx, t1, t2, t3, t4, t5, t6, t7, t8, t9)
