@@ -49,6 +49,24 @@ func IMapKeys[K comparable, V any](keys []K, imap func(int, K) V) (m map[K]V) {
 	return m
 }
 
+func MapValues[K comparable, V any](values []V, fmap func(V) K) (m map[K]V) {
+	m = make(map[K]V, len(values))
+	for _, v := range values {
+		m[fmap(v)] = v
+	}
+
+	return m
+}
+
+func IMapValues[K comparable, V any](values []V, imap func(int, V) K) (m map[K]V) {
+	m = make(map[K]V, len(values))
+	for i, v := range values {
+		m[imap(i, v)] = v
+	}
+
+	return m
+}
+
 func Fill[K comparable, V any](size int, get func(int) (K, V)) (m map[K]V) {
 	if size < 0 {
 		return nil
