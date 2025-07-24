@@ -53,7 +53,7 @@ func ArgMinVal[Map ~map[K]V, K comparable, V cmp.Ordered](m Map) K {
 	return key
 }
 
-func Min[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V) R) (V, R) {
+func Min[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, frank func(V) R) (V, R) {
 	if len(m) == 0 {
 		var zero V
 		var zeroR R
@@ -61,9 +61,9 @@ func Min[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V) R
 	}
 
 	val := lotup.Second(Any(m))
-	rank := fkey(val)
+	rank := frank(val)
 	for _, v := range m {
-		r := fkey(v)
+		r := frank(v)
 		if r < rank {
 			val, rank = v, r
 		}
@@ -72,7 +72,7 @@ func Min[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V) R
 	return val, rank
 }
 
-func ArgMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V) R) (K, R) {
+func ArgMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, frank func(V) R) (K, R) {
 	if len(m) == 0 {
 		var zero K
 		var zeroR R
@@ -80,9 +80,9 @@ func ArgMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V
 	}
 
 	key, v := Any(m)
-	rank := fkey(v)
+	rank := frank(v)
 	for k, v := range m {
-		r := fkey(v)
+		r := frank(v)
 		if r < rank {
 			key, rank = k, r
 		}
@@ -91,7 +91,7 @@ func ArgMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V
 	return key, rank
 }
 
-func KMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(K, V) R) (V, R) {
+func KMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, krank func(K, V) R) (V, R) {
 	if len(m) == 0 {
 		var zero V
 		var zeroR R
@@ -99,9 +99,9 @@ func KMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(K, 
 	}
 
 	k, val := Any(m)
-	rank := fkey(k, val)
+	rank := krank(k, val)
 	for k, v := range m {
-		r := fkey(k, v)
+		r := krank(k, v)
 		if r < rank {
 			val, rank = v, r
 		}
@@ -110,7 +110,7 @@ func KMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(K, 
 	return val, rank
 }
 
-func KArgMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(K, V) R) (K, R) {
+func KArgMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, krank func(K, V) R) (K, R) {
 	if len(m) == 0 {
 		var zero K
 		var zeroR R
@@ -118,9 +118,9 @@ func KArgMin[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(
 	}
 
 	key, v := Any(m)
-	rank := fkey(key, v)
+	rank := krank(key, v)
 	for k, v := range m {
-		r := fkey(k, v)
+		r := krank(k, v)
 		if r < rank {
 			key, rank = k, r
 		}
@@ -177,7 +177,7 @@ func ArgMaxVal[Map ~map[K]V, K comparable, V cmp.Ordered](m Map) K {
 	return key
 }
 
-func Max[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V) R) (V, R) {
+func Max[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, frank func(V) R) (V, R) {
 	if len(m) == 0 {
 		var zero V
 		var zeroR R
@@ -185,9 +185,9 @@ func Max[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V) R
 	}
 
 	val := lotup.Second(Any(m))
-	rank := fkey(val)
+	rank := frank(val)
 	for _, v := range m {
-		r := fkey(v)
+		r := frank(v)
 		if r > rank {
 			val, rank = v, r
 		}
@@ -196,7 +196,7 @@ func Max[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V) R
 	return val, rank
 }
 
-func ArgMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V) R) (K, R) {
+func ArgMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, frank func(V) R) (K, R) {
 	if len(m) == 0 {
 		var zero K
 		var zeroR R
@@ -204,9 +204,9 @@ func ArgMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V
 	}
 
 	key, v := Any(m)
-	rank := fkey(v)
+	rank := frank(v)
 	for k, v := range m {
-		r := fkey(v)
+		r := frank(v)
 		if r > rank {
 			key, rank = k, r
 		}
@@ -215,7 +215,7 @@ func ArgMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(V
 	return key, rank
 }
 
-func KMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(K, V) R) (V, R) {
+func KMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, krank func(K, V) R) (V, R) {
 	if len(m) == 0 {
 		var zero V
 		var zeroR R
@@ -223,9 +223,9 @@ func KMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(K, 
 	}
 
 	k, val := Any(m)
-	rank := fkey(k, val)
+	rank := krank(k, val)
 	for k, v := range m {
-		r := fkey(k, v)
+		r := krank(k, v)
 		if r > rank {
 			val, rank = v, r
 		}
@@ -234,7 +234,7 @@ func KMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(K, 
 	return val, rank
 }
 
-func KArgMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(K, V) R) (K, R) {
+func KArgMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, krank func(K, V) R) (K, R) {
 	if len(m) == 0 {
 		var zero K
 		var zeroR R
@@ -242,9 +242,9 @@ func KArgMax[Map ~map[K]V, K comparable, V any, R cmp.Ordered](m Map, fkey func(
 	}
 
 	key, v := Any(m)
-	rank := fkey(key, v)
+	rank := krank(key, v)
 	for k, v := range m {
-		r := fkey(k, v)
+		r := krank(k, v)
 		if r > rank {
 			key, rank = k, r
 		}
