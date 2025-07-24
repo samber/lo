@@ -5,11 +5,11 @@ import "slices"
 // Flatten returns an array a single level deep.
 // Play: https://go.dev/play/p/rbp9ORaMpjw
 func Flatten[Slice ~[]T, T any](table ...Slice) Slice {
-	totalLen := 0
-	for i := range table {
-		totalLen += len(table[i])
+	if len(table) == 0 || Every(table, IsNil) {
+		return nil
 	}
 
+	totalLen := MapSum(table, Len)
 	result := make(Slice, 0, totalLen)
 	for i := range table {
 		result = append(result, table[i]...)
@@ -25,6 +25,11 @@ func Transpose[Slice ~[]T, T any](table ...Slice) []Slice {
 		return nil
 	case 1:
 		xs := table[0]
+
+		if xs == nil {
+			return nil
+		}
+
 		result := make([]Slice, len(xs))
 		for i := range xs {
 			result[i] = Slice{xs[i]}
@@ -33,12 +38,16 @@ func Transpose[Slice ~[]T, T any](table ...Slice) []Slice {
 		return result
 	}
 
-	sizes := Map(table, func(s Slice) int { return len(s) })
-	sizes = Uniq(sizes)
+	sizes := Uniq(Map(table, Len))
 	if len(sizes) == 1 {
 		// all table have the same size
-		m := sizes[0]
-		result := make([]Slice, m)
+		sz := sizes[0]
+
+		if sz == 0 && Every(table, IsNil) {
+			return nil
+		}
+
+		result := make([]Slice, sz)
 		for i := range result {
 			result[i] = make(Slice, n)
 			for j := range result[i] {

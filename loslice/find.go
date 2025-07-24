@@ -63,8 +63,11 @@ func IndicesVal[Slice ~[]T, T comparable](xs Slice, val T) (indices []int) {
 }
 
 func IndicesValEx[Slice ~[]T, T comparable](mode AllocateMode, xs Slice, val T) (indices []int) {
-	indices = allocateCapacity[[]int](mode, len(xs), func() int { return CountVal(xs, val) })
+	if xs == nil {
+		return nil
+	}
 
+	indices = allocateCapacity[[]int](mode, len(xs), func() int { return CountVal(xs, val) })
 	return indicesVal(xs, val, indices)
 }
 
@@ -99,8 +102,11 @@ func Indices[Slice ~[]T, T any](xs Slice, pred func(item T) bool) (indices []int
 
 // IndicesEx returns indices of elements matching the predicate, with allocation mode.
 func IndicesEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, pred func(item T) bool) (indices []int) {
-	indices = allocateCapacity[[]int](mode, len(xs), func() int { return Count(xs, pred) })
+	if xs == nil {
+		return nil
+	}
 
+	indices = allocateCapacity[[]int](mode, len(xs), func() int { return Count(xs, pred) })
 	return indicesImpl(xs, pred, indices)
 }
 
@@ -136,8 +142,11 @@ func IIndices[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool) (indices []i
 
 // IIndicesEx returns indices of elements matching the indexed predicate, with allocation mode.
 func IIndicesEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, ipred func(int, T) bool) (indices []int) {
-	indices = allocateCapacity[[]int](mode, len(xs), func() int { return ICount(xs, ipred) })
+	if xs == nil {
+		return nil
+	}
 
+	indices = allocateCapacity[[]int](mode, len(xs), func() int { return ICount(xs, ipred) })
 	return iindices(xs, ipred, indices)
 }
 
@@ -170,6 +179,10 @@ func IRIndicesEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, ipred func(int,
 // IndicesNVal returns the first n indices of the value in the slice.
 // Supports negative n to get the last n indices.
 func IndicesNVal[Slice ~[]T, T comparable](xs Slice, n int, val T) (indices []int) {
+	if xs == nil {
+		return nil
+	}
+
 	if n == 0 {
 		return IndicesVal(xs, val)
 	}
@@ -204,6 +217,10 @@ func IndicesNVal[Slice ~[]T, T comparable](xs Slice, n int, val T) (indices []in
 
 // IndicesN returns the first n indices of the elements that satisfy the predicate in the slice.
 func IndicesN[Slice ~[]T, T any](xs Slice, n int, pred func(item T) bool) (indices []int) {
+	if xs == nil {
+		return nil
+	}
+
 	if n == 0 {
 		return Indices(xs, pred)
 	}
@@ -238,6 +255,10 @@ func IndicesN[Slice ~[]T, T any](xs Slice, n int, pred func(item T) bool) (indic
 
 // IIndicesN returns the first n indices of the elements that satisfy the predicate in the slice, with access to the index.
 func IIndicesN[Slice ~[]T, T any](xs Slice, n int, ipred func(int, T) bool) (indices []int) {
+	if xs == nil {
+		return nil
+	}
+
 	if n == 0 {
 		return IIndices(xs, ipred)
 	}

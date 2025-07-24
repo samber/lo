@@ -5,8 +5,11 @@ func RejectVal[Slice ~[]T, T comparable](xs Slice, val T) (result Slice) {
 }
 
 func RejectValEx[Slice ~[]T, T comparable](mode AllocateMode, xs Slice, val T) (result Slice) {
-	result = allocateCapacity[Slice](mode, len(xs), func() int { return len(xs) - CountVal(xs, val) })
+	if xs == nil {
+		return nil
+	}
 
+	result = allocateCapacity[Slice](mode, len(xs), func() int { return len(xs) - CountVal(xs, val) })
 	return rejectVal(xs, val, result)
 }
 
@@ -27,8 +30,11 @@ func Filter[Slice ~[]T, T any](xs Slice, pred func(item T) bool) Slice {
 
 // FilterEx iterates over elements not collection, returning an array not all elements predicate returns truthy for.
 func FilterEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, pred func(item T) bool) Slice {
-	result := allocateCapacity[Slice](mode, len(xs), func() int { return Count(xs, pred) })
+	if xs == nil {
+		return nil
+	}
 
+	result := allocateCapacity[Slice](mode, len(xs), func() int { return Count(xs, pred) })
 	return filter(xs, pred, result)
 }
 
@@ -49,8 +55,11 @@ func IFilter[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool) Slice {
 
 // IFilterEx iterates over elements not collection, returning an array not all elements predicate returns truthy for.
 func IFilterEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, ipred func(int, T) bool) Slice {
-	result := allocateCapacity[Slice](mode, len(xs), func() int { return ICount(xs, ipred) })
+	if xs == nil {
+		return nil
+	}
 
+	result := allocateCapacity[Slice](mode, len(xs), func() int { return ICount(xs, ipred) })
 	return ifilter(xs, ipred, result)
 }
 

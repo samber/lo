@@ -5,6 +5,10 @@ func Split[Slice ~[]T, T any](xs Slice, pred func(T) bool) (taken, rest Slice) {
 }
 
 func SplitEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, pred func(T) bool) (taken, rest Slice) {
+	if xs == nil {
+		return nil, nil
+	}
+
 	taken = allocateCapacity[Slice](mode, len(xs), func() int { return Count(xs, pred) })
 	rest = allocateCapacity[Slice](mode, len(xs), func() int { return len(xs) - len(taken) })
 
@@ -28,6 +32,10 @@ func ISplit[Slice ~[]T, T any](xs Slice, ipred func(int, T) bool) (taken, rest S
 }
 
 func ISplitEx[Slice ~[]T, T any](mode AllocateMode, xs Slice, ipred func(int, T) bool) (taken, rest Slice) {
+	if xs == nil {
+		return nil, nil
+	}
+
 	taken = allocateCapacity[Slice](mode, len(xs), func() int { return ICount(xs, ipred) })
 	rest = allocateCapacity[Slice](mode, len(xs), func() int { return len(xs) - len(taken) })
 

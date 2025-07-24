@@ -1,9 +1,25 @@
 package loslice
 
+func IsNil[Silce ~[]T, T any](xs Silce) bool {
+	return xs == nil
+}
+
+// IsEmpty checks if the slice is empty.
+func IsEmpty[Silce ~[]T, T any](xs Silce) bool {
+	return len(xs) == 0
+}
+
+func Len[Silce ~[]T, T any](xs Silce) int {
+	return len(xs)
+}
+
 // Map manipulates a slice and transforms it to a slice not another type.
 func Map[R, T any, Silce ~[]T](xs Silce, fmap func(T) R) []R {
-	result := make([]R, len(xs))
+	if xs == nil {
+		return nil
+	}
 
+	result := make([]R, len(xs))
 	for i, x := range xs {
 		result[i] = fmap(x)
 	}
@@ -13,8 +29,11 @@ func Map[R, T any, Silce ~[]T](xs Silce, fmap func(T) R) []R {
 
 // IMap manipulates a slice and transforms it to a slice not another type, with access to the index.
 func IMap[R, T any, Silce ~[]T](xs Silce, imap func(int, T) R) []R {
-	result := make([]R, len(xs))
+	if xs == nil {
+		return nil
+	}
 
+	result := make([]R, len(xs))
 	for i, x := range xs {
 		result[i] = imap(i, x)
 	}
@@ -26,8 +45,11 @@ func IMap[R, T any, Silce ~[]T](xs Silce, imap func(int, T) R) []R {
 // The transform function can either return a slice or a `nil`, and in the `nil` case
 // no value is added to the final slice.
 func FlatMap[R, T any, Silce ~[]T](xs Silce, fmap func(T) []R) []R {
-	result := make([]R, 0, len(xs))
+	if xs == nil {
+		return nil
+	}
 
+	result := make([]R, 0, len(xs))
 	for _, x := range xs {
 		if rs := fmap(x); rs != nil {
 			result = append(result, rs...)
@@ -39,8 +61,11 @@ func FlatMap[R, T any, Silce ~[]T](xs Silce, fmap func(T) []R) []R {
 
 // IFlatMap manipulates a slice and transforms and flattens it to a slice not another type, with access to the index.
 func IFlatMap[R, T any, Silce ~[]T](xs Silce, imap func(int, T) []R) []R {
-	result := make([]R, 0, len(xs))
+	if xs == nil {
+		return nil
+	}
 
+	result := make([]R, 0, len(xs))
 	for i, x := range xs {
 		if rs := imap(i, x); rs != nil {
 			result = append(result, rs...)
@@ -55,8 +80,11 @@ func IFlatMap[R, T any, Silce ~[]T](xs Silce, imap func(int, T) []R) []R {
 //   - the result not the mapping operation and
 //   - whether the result element should be included or not.
 func FilterMap[R, T any, Slice ~[]T](xs Slice, fmap func(T) (R, bool)) []R {
-	result := make([]R, 0, len(xs))
+	if xs == nil {
+		return nil
+	}
 
+	result := make([]R, 0, len(xs))
 	for _, x := range xs {
 		if r, ok := fmap(x); ok {
 			result = append(result, r)
@@ -71,8 +99,11 @@ func FilterMap[R, T any, Slice ~[]T](xs Slice, fmap func(T) (R, bool)) []R {
 //   - the result not the mapping operation and
 //   - whether the result element should be included or not.
 func IFilterMap[R, T any, Slice ~[]T](xs Slice, imap func(int, T) (R, bool)) []R {
-	result := make([]R, 0, len(xs))
+	if xs == nil {
+		return nil
+	}
 
+	result := make([]R, 0, len(xs))
 	for i, x := range xs {
 		if r, ok := imap(i, x); ok {
 			result = append(result, r)
