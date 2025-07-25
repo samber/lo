@@ -22,7 +22,7 @@ func IGroup[Slice ~[]T, T any, K comparable](xs Slice, ikey func(int, T) K) map[
 	return m
 }
 
-func GroupMap[Slice ~[]T, T, V any, K comparable](xs Slice, fmap func(T) (K, V)) map[K][]V {
+func GroupMap[Slice ~[]T, V, T any, K comparable](xs Slice, fmap func(T) (K, V)) map[K][]V {
 	m := make(map[K][]V, len(xs))
 
 	for _, x := range xs {
@@ -33,7 +33,7 @@ func GroupMap[Slice ~[]T, T, V any, K comparable](xs Slice, fmap func(T) (K, V))
 	return m
 }
 
-func IGroupMap[Slice ~[]T, T, V any, K comparable](xs Slice, ifmap func(int, T) (K, V)) map[K][]V {
+func IGroupMap[Slice ~[]T, V, T any, K comparable](xs Slice, ifmap func(int, T) (K, V)) map[K][]V {
 	m := make(map[K][]V, len(xs))
 
 	for i, x := range xs {
@@ -68,7 +68,7 @@ func IGroupFilter[Slice ~[]T, T any, K comparable](xs Slice, ifkey func(int, T) 
 	return m
 }
 
-func GroupFilterMap[Slice ~[]T, T, V any, K comparable](xs Slice, fmap func(T) (K, V, bool)) map[K][]V {
+func GroupFilterMap[Slice ~[]T, V, T any, K comparable](xs Slice, fmap func(T) (K, V, bool)) map[K][]V {
 	m := make(map[K][]V, len(xs))
 
 	for _, x := range xs {
@@ -80,7 +80,7 @@ func GroupFilterMap[Slice ~[]T, T, V any, K comparable](xs Slice, fmap func(T) (
 	return m
 }
 
-func IGroupFilterMap[Slice ~[]T, T, V any, K comparable](xs Slice, ifmap func(int, T) (K, V, bool)) map[K][]V {
+func IGroupFilterMap[Slice ~[]T, V, T any, K comparable](xs Slice, ifmap func(int, T) (K, V, bool)) map[K][]V {
 	m := make(map[K][]V, len(xs))
 
 	for i, x := range xs {

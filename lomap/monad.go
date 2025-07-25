@@ -273,6 +273,7 @@ func GroupDistinct[Map ~map[K]V, K comparable, V any](ms ...Map) Map {
 	return result
 }
 
+// Unique returns a new map containing keys from `a` that are not present in `b`.
 func Unique[Map ~map[K]V, K comparable, V any](a, b Map) Map {
 	if a == nil && b == nil {
 		return nil
