@@ -71,10 +71,10 @@ func Call(fn any, args []any, kwargs any) ([]any, error) {
 	for i := range numIn {
 		if len(args) > 0 {
 			source = fromArgs
-			val = args[0]
+			val = args[i]
 		} else if kwargs != nil {
 			source = fromKwargs
-			val = rvkw.Field(0).Interface()
+			val = rvkw.Field(i).Interface()
 		} else {
 			panic("impossible: neither args nor kwargs were provided")
 		}
