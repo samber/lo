@@ -286,7 +286,7 @@ func Unique[Map ~map[K]V, K comparable, V any](a, b Map) Map {
 	result := make(Map, len(a))
 	for k := range a {
 		if _, exists := b[k]; !exists {
-			result[k] = b[k] // Add only keys from a that are not in b
+			result[k] = a[k] // Add only keys from a that are not in b
 		}
 	}
 
