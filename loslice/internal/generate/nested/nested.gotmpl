@@ -1,0 +1,23 @@
+{{- define "decls-types" -}}{{ $N := .N }}
+	{{- range $i := .N }}
+		{{- if ne $i 0 }}, {{ end -}}
+		S{{ add $i 1 }} ~[]
+		{{- if eq $N (add $i 1) }}T{{ else }}S{{ add $i 2 }}{{ end -}}
+	{{- end }}
+{{- end }}
+{{- define "decls-args" -}}
+s1 S1{{ range $i := .N }}, i{{ add $i 1 }}{{ end }} int
+{{- end }}
+func Nested{{ .N }}[{{ template "decls-types" . }}, T any](
+	{{ template "decls-args" . }},
+) (v T, ok bool) {
+
+	{{ range $i := (sub .N 1) -}}
+	s{{ add $i 2 }}, ok := Get(s{{ add $i 1 }}, i{{ add $i 1 }})
+	if !ok {
+		return
+	}
+
+	{{ end -}}
+	return Get(s{{ .N }}, i{{ .N }})
+}
