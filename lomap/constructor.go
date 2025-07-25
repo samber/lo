@@ -2,9 +2,8 @@ package lomap
 
 import "github.com/samber/lo/lotup"
 
-func FromKeysAndValues[K comparable, V any](keys []K, values []V) (m map[K]V) {
+func Zip[K comparable, V any](keys []K, values []V) (m map[K]V) {
 	size := min(len(keys), len(values))
-
 	m = make(map[K]V, size)
 	for i := range size {
 		m[keys[i]] = values[i]
@@ -31,7 +30,7 @@ func FromKeysAndDefault[K comparable, V any](keys []K, value V) (m map[K]V) {
 	return m
 }
 
-func MapKeys[K comparable, V any](keys []K, fmap func(K) V) (m map[K]V) {
+func FromKeys[K comparable, V any](keys []K, fmap func(K) V) (m map[K]V) {
 	m = make(map[K]V, len(keys))
 	for _, k := range keys {
 		m[k] = fmap(k)
@@ -40,7 +39,7 @@ func MapKeys[K comparable, V any](keys []K, fmap func(K) V) (m map[K]V) {
 	return m
 }
 
-func IMapKeys[K comparable, V any](keys []K, imap func(int, K) V) (m map[K]V) {
+func IFromKeys[K comparable, V any](keys []K, imap func(int, K) V) (m map[K]V) {
 	m = make(map[K]V, len(keys))
 	for i, k := range keys {
 		m[k] = imap(i, k)
@@ -49,7 +48,7 @@ func IMapKeys[K comparable, V any](keys []K, imap func(int, K) V) (m map[K]V) {
 	return m
 }
 
-func MapValues[K comparable, V any](values []V, fmap func(V) K) (m map[K]V) {
+func FromValues[K comparable, V any](values []V, fmap func(V) K) (m map[K]V) {
 	m = make(map[K]V, len(values))
 	for _, v := range values {
 		m[fmap(v)] = v
@@ -58,7 +57,7 @@ func MapValues[K comparable, V any](values []V, fmap func(V) K) (m map[K]V) {
 	return m
 }
 
-func IMapValues[K comparable, V any](values []V, imap func(int, V) K) (m map[K]V) {
+func IFromValues[K comparable, V any](values []V, imap func(int, V) K) (m map[K]V) {
 	m = make(map[K]V, len(values))
 	for i, v := range values {
 		m[imap(i, v)] = v

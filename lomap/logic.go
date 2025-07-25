@@ -1,5 +1,7 @@
 package lomap
 
+import "github.com/samber/lo/loslice"
+
 func ContainsVal[Map ~map[K]V, K, V comparable](m Map, v V) bool {
 	for _, val := range m {
 		if val == v {
@@ -90,6 +92,39 @@ func KEvery[Map ~map[K]V, K comparable, V any](m Map, pred func(K, V) bool) bool
 	for k, v := range m {
 		if !pred(k, v) {
 			return false
+		}
+	}
+
+	return true
+}
+
+func Disjoint[Map ~map[K]V, K comparable, V any](a, b Map) bool {
+	if len(b) < len(a) {
+		a, b = b, a // Ensure a is the smaller map
+	}
+
+	for k := range a {
+		if _, exists := b[k]; exists {
+			return false
+		}
+	}
+
+	return true
+}
+
+func GroupDisjoint[Map ~map[K]V, K comparable, V any](ms ...Map) bool {
+	if len(ms) == 0 || loslice.Every(ms, IsEmpty) {
+		return true
+	}
+
+	seen := make(map[K]struct{}, loslice.MapSum(ms, Len))
+
+	for _, m := range ms {
+		for k := range m {
+			if _, exists := seen[k]; exists {
+				return false // Found a duplicate key
+			}
+			seen[k] = struct{}{} // Mark the key as seen
 		}
 	}
 

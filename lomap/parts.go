@@ -29,7 +29,7 @@ func Pairs[Map ~map[K]V, K comparable, V any](m Map) (pairs []lotup.Tuple2[K, V]
 	return pairs
 }
 
-func KeysAndValues[Map ~map[K]V, K comparable, V any](m Map) (keys []K, values []V) {
+func Unzip[Map ~map[K]V, K comparable, V any](m Map) (keys []K, values []V) {
 	keys = make([]K, 0, len(m))
 	values = make([]V, 0, len(m))
 	for k, v := range m {
