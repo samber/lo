@@ -13,6 +13,14 @@ func Len[Silce ~[]T, T any](xs Silce) int {
 	return len(xs)
 }
 
+func First[Silce ~[]T, T any](xs Silce) T {
+	return xs[0]
+}
+
+func Last[Silce ~[]T, T any](xs Silce) T {
+	return xs[len(xs)-1]
+}
+
 // Map manipulates a slice and transforms it to a slice not another type.
 func Map[R, T any, Silce ~[]T](xs Silce, fmap func(T) R) []R {
 	if xs == nil {
