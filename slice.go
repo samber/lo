@@ -221,7 +221,11 @@ func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
 		if last > len(collection) {
 			last = len(collection)
 		}
-		result = append(result, collection[i*size:last:last])
+
+		// Copy chunk in a new slice, to prevent memory leak and free memory from initial collection.
+		newSlice := make(Slice, last-i*size)
+		copy(newSlice, collection[i*size:last])
+		result = append(result, newSlice)
 	}
 
 	return result

@@ -544,7 +544,7 @@ func TestNewThrottleWithCount(t *testing.T) {
 	}
 	is.Equal(3, callCount)
 
-	time.Sleep(11 * time.Millisecond)
+	time.Sleep(15 * time.Millisecond)
 
 	for i := 0; i < 20; i++ {
 		th()
@@ -572,7 +572,7 @@ func TestNewThrottleBy(t *testing.T) {
 			callCountB++
 		}
 	}
-	th, reset := NewThrottleBy[string](10*time.Millisecond, f1)
+	th, reset := NewThrottleBy(10*time.Millisecond, f1)
 
 	is.Equal(0, callCountA)
 	is.Equal(0, callCountB)
@@ -604,6 +604,7 @@ func TestNewThrottleBy(t *testing.T) {
 func TestNewThrottleByWithCount(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
+
 	callCountA := 0
 	callCountB := 0
 	f1 := func(key string) {
@@ -623,7 +624,7 @@ func TestNewThrottleByWithCount(t *testing.T) {
 	is.Equal(3, callCountA)
 	is.Equal(3, callCountB)
 
-	time.Sleep(11 * time.Millisecond)
+	time.Sleep(15 * time.Millisecond)
 
 	for i := 0; i < 20; i++ {
 		th("a")

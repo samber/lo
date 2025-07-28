@@ -85,7 +85,7 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 	return sum
 }
 
-// Product gets the product of the values in a collection. If collection is empty 0 is returned.
+// Product gets the product of the values in a collection. If collection is empty 1 is returned.
 // Play: https://go.dev/play/p/2_kjM_smtAH
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
 	if collection == nil {
@@ -103,7 +103,7 @@ func Product[T constraints.Float | constraints.Integer | constraints.Complex](co
 	return product
 }
 
-// ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 0 is returned.
+// ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 1 is returned.
 // Play: https://go.dev/play/p/wadzrWr9Aer
 func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) R) R {
 	if collection == nil {
