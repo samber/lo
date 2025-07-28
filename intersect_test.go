@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -192,6 +193,46 @@ func TestIntersect(t *testing.T) {
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Intersect(allStrings, allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestIntersectBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type User struct {
+		ID   int
+		Name string
+	}
+
+	list1 := []User{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+		{ID: 3, Name: "Charlie"},
+	}
+
+	list2 := []User{
+		{ID: 2, Name: "Robert"},
+		{ID: 3, Name: "Charlie"},
+		{ID: 4, Name: "Alice"},
+	}
+
+	intersectByID := IntersectBy(list1, list2, func(u User) int {
+		return u.ID
+	})
+	is.Equal(intersectByID, []User{{ID: 2, Name: "Robert"}, {ID: 3, Name: "Charlie"}})
+	// output: [{2 Robert} {3 Charlie}]
+
+	intersectByName := IntersectBy(list1, list2, func(u User) string {
+		return u.Name
+	})
+	is.Equal(intersectByName, []User{{ID: 3, Name: "Charlie"}, {ID: 4, Name: "Alice"}})
+	// output: [{3 Charlie} {4 Alice}]
+
+	intersectByIDAndName := IntersectBy(list1, list2, func(u User) string {
+		return strconv.Itoa(u.ID) + u.Name
+	})
+	is.Equal(intersectByIDAndName, []User{{ID: 3, Name: "Charlie"}})
+	// output: [{3 Charlie}]
 }
 
 func TestDifference(t *testing.T) {
