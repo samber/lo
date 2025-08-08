@@ -1019,6 +1019,44 @@ func TestReplaceAll(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestClone(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Test with int slice
+	original1 := []int{1, 2, 3, 4, 5}
+	result1 := Clone(original1)
+	is.Equal(result1, []int{1, 2, 3, 4, 5})
+
+	// Verify it's a different slice by checking that modifying one doesn't affect the other
+	original1[0] = 99
+	is.Equal(original1, []int{99, 2, 3, 4, 5})
+	is.Equal(result1, []int{1, 2, 3, 4, 5})
+
+	// Test with string slice
+	original2 := []string{"a", "b", "c"}
+	result2 := Clone(original2)
+	is.Equal(result2, []string{"a", "b", "c"})
+
+	// Test with empty slice
+	original3 := []int{}
+	result3 := Clone(original3)
+	is.Equal(result3, []int{})
+	is.Equal(len(result3), 0)
+
+	// Test with nil slice
+	var original4 []int
+	result4 := Clone(original4)
+	is.Nil(result4)
+
+	// Verify shallow copy behavior - modifying clone doesn't affect original
+	original5 := []int{1, 2, 3}
+	result5 := Clone(original5)
+	result5[0] = 99
+	is.Equal(original5, []int{1, 2, 3}) // Original unchanged
+	is.Equal(result5, []int{99, 2, 3})  // Clone changed
+}
+
 func TestCompact(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
