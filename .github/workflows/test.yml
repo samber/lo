@@ -21,7 +21,7 @@ jobs:
           - "1.24"
           - "1.x"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Go
         uses: actions/setup-go@v5
