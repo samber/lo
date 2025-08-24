@@ -344,8 +344,24 @@ func FilterMapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key 
 }
 
 // FilterKeys transforms a map into a slice based on predicate returns truthy for specific elements.
+// It is a mix of lo.Filter() and lo.Keys().
 // Play: https://go.dev/play/p/OFlKXlPrBAe
-func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) []V {
+func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) []K {
+	result := make([]K, 0)
+
+	for k := range in {
+		if predicate(k, in[k]) {
+			result = append(result, k)
+		}
+	}
+
+	return result
+}
+
+// FilterValues transforms a map into a slice based on predicate returns truthy for specific elements.
+// It is a mix of lo.Filter() and lo.Values().
+// Play: https://go.dev/play/p/YVD5r_h-LX-
+func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) []V {
 	result := make([]V, 0)
 
 	for k := range in {
