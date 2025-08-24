@@ -1518,6 +1518,8 @@ result := FilterKeys(kv, func(k int, v string) bool {
 // [1]
 ```
 
+[[play](https://go.dev/play/p/OFlKXlPrBAe)]
+
 ### FilterValues
 
 Transforms a map into a slice based on predicate returns truthy for specific elements. It is a mix of `lo.Filter()` and `lo.Values()`.
@@ -1530,6 +1532,8 @@ result := FilterValues(kv, func(k int, v string) bool {
 })
 // ["foo"]
 ```
+
+[[play](https://go.dev/play/p/YVD5r_h-LX-)]
 
 ### Range / RangeFrom / RangeWithSteps
 
