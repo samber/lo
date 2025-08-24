@@ -537,10 +537,27 @@ func TestFilterKeys(t *testing.T) {
 	result1 := FilterKeys(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) bool {
 		return v == "foo"
 	})
-	is.Equal([]string{"foo"}, result1)
+	is.Equal([]int{1}, result1)
 	is.Len(result1, 1)
 
 	result2 := FilterKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
+		return false
+	})
+	is.Equal([]string{}, result2)
+	is.Len(result2, 0)
+}
+
+func TestFilterValues(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := FilterValues(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) bool {
+		return v == "foo"
+	})
+	is.Equal([]string{"foo"}, result1)
+	is.Len(result1, 1)
+
+	result2 := FilterValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
 		return false
 	})
 	is.Equal([]int{}, result2)

@@ -147,6 +147,8 @@ Supported helpers for maps:
 - [MapEntries](#mapentries)
 - [MapToSlice](#maptoslice)
 - [FilterMapToSlice](#FilterMapToSlice)
+- [FilterKeys](#FilterKeys)
+- [FilterValues](#FilterValues)
 
 Supported math helpers:
 
@@ -1501,6 +1503,32 @@ result := lo.FilterMapToSlice(kv, func(k int, v int64) (string, bool) {
     return fmt.Sprintf("%d_%d", k, v), k%2 == 0
 })
 // []{"2_2", "4_4"}
+```
+
+### FilterKeys
+
+Transforms a map into a slice based on predicate returns truthy for specific elements. It is a mix of `lo.Filter()` and `lo.Keys()`.
+
+```go
+kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
+
+result := FilterKeys(kv, func(k int, v string) bool {
+    return v == "foo"
+})
+// [1]
+```
+
+### FilterValues
+
+Transforms a map into a slice based on predicate returns truthy for specific elements. It is a mix of `lo.Filter()` and `lo.Values()`.
+
+```go
+kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
+
+result := FilterValues(kv, func(k int, v string) bool {
+    return v == "foo"
+})
+// ["foo"]
 ```
 
 ### Range / RangeFrom / RangeWithSteps

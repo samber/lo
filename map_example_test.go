@@ -244,3 +244,25 @@ func ExampleFilterMapToSlice() {
 	fmt.Printf("%v", result)
 	// Output: [2_2 4_4]
 }
+
+func ExampleFilterKeys() {
+	kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
+
+	result := FilterKeys(kv, func(k int, v string) bool {
+		return v == "foo"
+	})
+
+	fmt.Printf("%v", result)
+	// Output: [1]
+}
+
+func ExampleFilterValues() {
+	kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
+
+	result := FilterValues(kv, func(k int, v string) bool {
+		return v == "foo"
+	})
+
+	fmt.Printf("%v", result)
+	// Output: [foo]
+}
