@@ -1270,6 +1270,21 @@ value := lo.ValueOr(map[string]int{"foo": 1, "bar": 2}, "baz", 42)
 // 42
 ```
 
+[[play](https://go.dev/play/p/pvoEPxdiL8m)]
+
+### _GetOrSet_
+
+Returns value of the given key or set the fallback value if not present
+
+```go
+value := lo.GetOrSet[string, int](map[string]int{"foo": 1, "bar": 2}, "foo", 42)
+// 1
+
+value := lo.GetOrSet[string, int](map[string]int{"foo": 1, "bar": 2}, "baz", 42)
+// 42
+// and the original map becomes map[string]int{"foo": 1, "bar": 2, "baz": 42}
+```
+
 [[play](https://go.dev/play/p/bAq9mHErB4V)]
 
 ### PickBy
