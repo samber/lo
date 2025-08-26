@@ -155,6 +155,15 @@ func TestReduceRight(t *testing.T) {
 	is.Equal(result3, 20)
 }
 
+func TestFilterByType(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{1, 2}, FilterByType[int]([]any{1, "foo", 2, true}))
+	is.Equal([]any{1, "foo", 2, true}, FilterByType[any]([]any{1, "foo", 2, true}))
+	is.Equal([]float64{}, FilterByType[float64]([]any{1, "foo", 2, true}))
+}
+
 func TestForEach(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
