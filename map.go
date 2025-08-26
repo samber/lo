@@ -1,5 +1,9 @@
 package lo
 
+import (
+	"fmt"
+)
+
 // Keys creates an array of the map keys.
 // Play: https://go.dev/play/p/Uu11fHASqrU
 func Keys[K comparable, V any](in ...map[K]V) []K {
@@ -135,6 +139,21 @@ func PickByValues[K comparable, V comparable, Map ~map[K]V](in Map, values []V) 
 		}
 	}
 	return r
+}
+
+// ValuesByKeys returns an array of values in the same order as the given keys.
+// if the key in keys slice but not in the map, return error
+// Play: https://go.dev/play/p/J0SvRMzPJo_s
+func ValuesByKeys[K comparable, V any](in map[K]V, keys []K) ([]V, error) {
+	out := make([]V, 0, len(keys))
+	for i := range keys {
+		v, ok := in[keys[i]]
+		if !ok {
+			return nil, fmt.Errorf("ValuesByKeys: %v is not in the map", keys[i])
+		}
+		out = append(out, v)
+	}
+	return out, nil
 }
 
 // OmitBy returns same map type filtered by given predicate.
