@@ -141,6 +141,40 @@ func Difference[T comparable, Slice ~[]T](list1 Slice, list2 Slice) (Slice, Slic
 	return left, right
 }
 
+// DifferenceBy returns the difference between two collections by callback.
+// The first value is the collection of element absent of list2.
+// The second value is the collection of element absent of list1.
+// Callback used to transform non-comparable into comparable
+func DifferenceBy[T comparable, V any](list1, list2 []V, callback func(item V) T) ([]V, []V) {
+	left := make([]V, 0)
+	right := make([]V, 0)
+
+	seenLeft := map[T]struct{}{}
+	seenRight := map[T]struct{}{}
+
+	for _, elem := range list1 {
+		seenLeft[callback(elem)] = struct{}{}
+	}
+
+	for _, elem := range list2 {
+		seenRight[callback(elem)] = struct{}{}
+	}
+
+	for _, elem := range list1 {
+		if _, ok := seenRight[callback(elem)]; !ok {
+			left = append(left, elem)
+		}
+	}
+
+	for _, elem := range list2 {
+		if _, ok := seenLeft[callback(elem)]; !ok {
+			right = append(right, elem)
+		}
+	}
+
+	return left, right
+}
+
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
 func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {

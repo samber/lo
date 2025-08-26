@@ -2385,6 +2385,23 @@ left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 // []int{}, []int{}
 ```
 
+### DifferenceBy
+
+Returns the difference between two collections by callback func.
+
+- The first value is the collection of element absent of list2.
+- The second value is the collection of element absent of list1.
+
+```go
+left, right := lo.DifferenceBy([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
+// []int{1, 3, 4, 5}, []int{6}
+
+left, right := lo.DifferenceBy([][]int{{1}, {2}}, [][]int{{0}, {1}}, func(item []int) int {
+return item[0]
+})
+// [][]int{{2}}, [][]int{{0}}
+```
+
 ### Union
 
 Returns all distinct elements from given collections. Result will not change the order of elements relatively.
