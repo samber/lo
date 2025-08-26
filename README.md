@@ -215,6 +215,7 @@ Supported intersection helpers:
 - [NoneBy](#noneby)
 - [Intersect](#intersect)
 - [Difference](#difference)
+- [SymmetricDifference](#symmetric_difference)
 - [Union](#union)
 - [Without](#without)
 - [WithoutBy](#withoutby)
@@ -2383,6 +2384,21 @@ left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
 
 left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 // []int{}, []int{}
+```
+
+### SymmetricDifference
+
+Returns the symmetric difference between two collections.
+
+Returns all elements which are in either of the collections but not in both.
+Does not preserve order of elements.
+
+```go
+diff := SymmetricDifference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
+// []int{1, 3, 4, 5, 6}
+
+diff := SymmetricDifference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+// []int{}
 ```
 
 ### Union
