@@ -108,6 +108,27 @@ func Intersect[T comparable, Slice ~[]T](list1 Slice, list2 Slice) Slice {
 	return result
 }
 
+// IntersectBy returns the intersection between two collections using a custom key selector function.
+// It preserves the order of elements from the second list (list2).
+func IntersectBy[T any, K comparable, Slice ~[]T](list1 Slice, list2 Slice, iteratee func(T) K) Slice {
+	result := make(Slice, 0)
+	seen := make(map[K]struct{})
+
+	for _, item := range list1 {
+		key := iteratee(item)
+		seen[key] = struct{}{}
+	}
+
+	for _, item := range list2 {
+		key := iteratee(item)
+		if _, exists := seen[key]; exists {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
+
 // Difference returns the difference between two collections.
 // The first value is the collection of element absent of list2.
 // The second value is the collection of element absent of list1.
