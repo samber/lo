@@ -682,6 +682,11 @@ func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old T, new T) Slice 
 	return Replace(collection, old, new, -1)
 }
 
+// Clone returns a shallow copy of the collection.
+func Clone[T any](collection []T) []T {
+	return append(collection[:0:0], collection...)
+}
+
 // Compact returns a slice of all non-zero elements.
 // Play: https://go.dev/play/p/tXiy-iK6PAc
 func Compact[T comparable, Slice ~[]T](collection Slice) Slice {
