@@ -1221,16 +1221,16 @@ result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "")
 ### CutSuffix
 CutSuffix returns collection without the provided ending suffix T and reports whether it found the suffix. If s doesn't end with suffix, CutSuffix returns collection, false. If suffix is the empty T, CutSuffix returns collection, true.
 ```go
-actualRight, result = lo.CutSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, "g")
-// actualRight: []string{"b", "c", "d", "e", "f", "g"}
+actualLeft, result = lo.CutSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, "g")
+// actualLeft: []string{"a", "b", "c", "d", "e", "f"}
 // result: true
 // negative
-result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "b")
-// actualRight: []string{"a", "b", "c", "d", "e", "f", "g"}
+actualLeft, result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "b")
+// actualLeft: []string{"a", "b", "c", "d", "e", "f", "g"}
 // result: false
 
-result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "")
-// actualRight: []string{"a", "b", "c", "d", "e", "f", "g"}
+actualLeft, result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "")
+// actualLeft: []string{"a", "b", "c", "d", "e", "f", "g"}
 // result: true
 ```
 
