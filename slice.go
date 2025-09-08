@@ -747,3 +747,60 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 
 	return append(append(append(output, collection[:i]...), elements...), collection[i:]...)
 }
+
+// Cut slices collection around the first instance of separator, returning the part of collection
+// before and after separator. The found result reports whether separator appears in collection.
+// If separator does not appear in s, cut returns collection, empty slice of T, false.
+func Cut[T comparable, S ~[]T](collection S, separator T) (before S, after S, found bool) {
+	if len(collection) == 0 {
+		return collection, make(S, 0), false
+	}
+	for i, v := range collection {
+		if v == separator {
+			if i == 0 {
+				return make(S, 0), collection[i+1:], true
+			}
+			if i == len(collection)-1 {
+				return collection[:i], make(S, 0), true
+			}
+			return collection[:i],
+				collection[i+1:], true
+		}
+	}
+	return collection, make(S, 0), false
+}
+
+// CutPrefix returns collection without the provided leading prefix T
+// and reports whether it found the prefix.
+// If s doesn't start with prefix, CutPrefix returns collection, false.
+// If prefix is the empty T, CutPrefix returns collection, true.
+func CutPrefix[T comparable, S ~[]T](collection S, separator T) (after S, found bool) {
+	if separator == *new(T) {
+		return collection, true
+	}
+	if len(collection) == 0 {
+		return collection, false
+	}
+	if separator == collection[0] {
+		return collection[1:], true
+	} else {
+		return collection, false
+	}
+}
+
+// CutSuffix returns collection without the provided ending suffix T and reports
+// whether it found the suffix. If s doesn't end with suffix, CutSuffix returns collection, false.
+// If suffix is the empty T, CutSuffix returns collection, true.
+func CutSuffix[T comparable, S ~[]T](collection S, separator T) (before S, found bool) {
+	if separator == *new(T) {
+		return collection, true
+	}
+	if len(collection) == 0 {
+		return collection, false
+	}
+	if separator == collection[len(collection)-1] {
+		return collection[:len(collection)-1], true
+	} else {
+		return collection, false
+	}
+}
