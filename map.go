@@ -262,7 +262,7 @@ func ChunkEntries[K comparable, V any](m map[K]V, size int) []map[K]V {
 
 	chunksNum := count / size
 	if count%size != 0 {
-		chunksNum += 1
+		chunksNum++
 	}
 
 	result := make([]map[K]V, 0, chunksNum)

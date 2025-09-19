@@ -51,9 +51,8 @@ func must(err any, messageArgs ...any) {
 		message := messageFromMsgAndArgs(messageArgs...)
 		if message != "" {
 			panic(message + ": " + e.Error())
-		} else {
-			panic(e.Error())
 		}
+		panic(e.Error())
 
 	default:
 		panic("must: invalid err type '" + reflect.TypeOf(err).Name() + "', should either be a bool or an error")

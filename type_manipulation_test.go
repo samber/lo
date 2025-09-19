@@ -27,7 +27,7 @@ func TestIsNil(t *testing.T) {
 
 	var ifaceWithNilValue any = (*string)(nil) //nolint:staticcheck
 	is.True(IsNil(ifaceWithNilValue))
-	is.False(ifaceWithNilValue == nil) //nolint:staticcheck
+	is.NotNil(ifaceWithNilValue) //nolint:staticcheck
 }
 
 func TestIsNotNil(t *testing.T) {
@@ -51,7 +51,7 @@ func TestIsNotNil(t *testing.T) {
 
 	var ifaceWithNilValue any = (*string)(nil) //nolint:staticcheck
 	is.False(IsNotNil(ifaceWithNilValue))
-	is.True(ifaceWithNilValue != nil) //nolint:staticcheck
+	is.NotNil(ifaceWithNilValue) //nolint:staticcheck
 }
 
 func TestToPtr(t *testing.T) {
@@ -75,11 +75,11 @@ func TestNil(t *testing.T) {
 
 	is.Equal(expNilFloat64, nilFloat64)
 	is.Nil(nilFloat64)
-	is.NotEqual(nil, nilFloat64)
+	is.NotNil(nilFloat64)
 
 	is.Equal(expNilString, nilString)
 	is.Nil(nilString)
-	is.NotEqual(nil, nilString)
+	is.NotNil(nilString)
 
 	is.NotEqual(nilString, nilFloat64)
 }

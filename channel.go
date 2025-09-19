@@ -8,6 +8,7 @@ import (
 	"github.com/samber/lo/internal/rand"
 )
 
+// DispatchingStrategy is a function that distributes messages to channels.
 type DispatchingStrategy[T any] func(msg T, index uint64, channels []<-chan T) int
 
 // ChannelDispatcher distributes messages from input channels into N child channels.
@@ -22,7 +23,7 @@ func ChannelDispatcher[T any](stream <-chan T, count int, channelBufferCap int, 
 		// propagate channel closing to children
 		defer closeChannels(children)
 
-		var i uint64 = 0
+		var i uint64
 
 		for {
 			msg, ok := <-stream

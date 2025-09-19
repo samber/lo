@@ -631,7 +631,7 @@ func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
 func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerator randomIntGenerator) Slice {
 	size := len(collection)
 
-	copy := append(Slice{}, collection...)
+	cOpy := append(Slice{}, collection...)
 
 	results := Slice{}
 
@@ -639,12 +639,12 @@ func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerato
 		copyLength := size - i
 
 		index := randomIntGenerator(size - i)
-		results = append(results, copy[index])
+		results = append(results, cOpy[index])
 
 		// Removes element.
 		// It is faster to swap with last element and remove it.
-		copy[index] = copy[copyLength-1]
-		copy = copy[:copyLength-1]
+		cOpy[index] = cOpy[copyLength-1]
+		cOpy = cOpy[:copyLength-1]
 	}
 
 	return results

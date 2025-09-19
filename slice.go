@@ -211,7 +211,7 @@ func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
 
 	chunksNum := len(collection) / size
 	if len(collection)%size != 0 {
-		chunksNum += 1
+		chunksNum++
 	}
 
 	result := make([]Slice, 0, chunksNum)
@@ -662,13 +662,13 @@ func Slice[T any, Slice ~[]T](collection Slice, start int, end int) Slice {
 
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
 // Play: https://go.dev/play/p/XfPzmf9gql6
-func Replace[T comparable, Slice ~[]T](collection Slice, old T, new T, n int) Slice {
+func Replace[T comparable, Slice ~[]T](collection Slice, old T, nEw T, n int) Slice {
 	result := make(Slice, len(collection))
 	copy(result, collection)
 
 	for i := range result {
 		if result[i] == old && n != 0 {
-			result[i] = new
+			result[i] = nEw
 			n--
 		}
 	}
@@ -678,8 +678,8 @@ func Replace[T comparable, Slice ~[]T](collection Slice, old T, new T, n int) Sl
 
 // ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
 // Play: https://go.dev/play/p/a9xZFUHfYcV
-func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old T, new T) Slice {
-	return Replace(collection, old, new, -1)
+func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old T, nEw T) Slice {
+	return Replace(collection, old, nEw, -1)
 }
 
 // Compact returns a slice of all non-zero elements.

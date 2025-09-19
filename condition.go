@@ -26,9 +26,9 @@ type ifElse[T any] struct {
 	done   bool
 }
 
-// If.
+// If is a 1 line if/else statement.
 // Play: https://go.dev/play/p/WSw3ApMxhyW
-func If[T any](condition bool, result T) *ifElse[T] {
+func If[T any](condition bool, result T) *ifElse[T] { //nolint:revive
 	if condition {
 		return &ifElse[T]{result, true}
 	}
@@ -37,9 +37,9 @@ func If[T any](condition bool, result T) *ifElse[T] {
 	return &ifElse[T]{t, false}
 }
 
-// IfF.
+// IfF is a 1 line if/else statement whose options are functions
 // Play: https://go.dev/play/p/WSw3ApMxhyW
-func IfF[T any](condition bool, resultF func() T) *ifElse[T] {
+func IfF[T any](condition bool, resultF func() T) *ifElse[T] { //nolint:revive
 	if condition {
 		return &ifElse[T]{resultF(), true}
 	}
@@ -98,7 +98,7 @@ type switchCase[T comparable, R any] struct {
 
 // Switch is a pure functional switch/case/default statement.
 // Play: https://go.dev/play/p/TGbKUMAeRUd
-func Switch[T comparable, R any](predicate T) *switchCase[T, R] {
+func Switch[T comparable, R any](predicate T) *switchCase[T, R] { //nolint:revive
 	var result R
 
 	return &switchCase[T, R]{
