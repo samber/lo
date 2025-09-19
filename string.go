@@ -36,7 +36,7 @@ func RandomString(size int, charset []rune) string {
 	if size <= 0 {
 		panic("lo.RandomString: Size parameter must be greater than 0")
 	}
-	if len(charset) <= 0 {
+	if len(charset) == 0 {
 		panic("lo.RandomString: Charset parameter must not be empty")
 	}
 

@@ -64,7 +64,7 @@ func Reverse[T any, Slice ~[]T](collection Slice) {
 	length := len(collection)
 	half := length / 2
 
-	for i := 0; i < half; i = i + 1 {
+	for i := 0; i < half; i++ {
 		j := length - 1 - i
 		collection[i], collection[j] = collection[j], collection[i]
 	}

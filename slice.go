@@ -732,15 +732,16 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 	sizeElements := len(elements)
 	output := make(Slice, 0, sizeCollection+sizeElements) // preallocate memory for the output slice
 
-	if sizeElements == 0 {
+	switch {
+	case sizeElements == 0:
 		return append(output, collection...) // simple copy
-	} else if i > sizeCollection {
+	case i > sizeCollection:
 		// positive overflow
 		return append(append(output, collection...), elements...)
-	} else if i < -sizeCollection {
+	case i < -sizeCollection:
 		// negative overflow
 		return append(append(output, elements...), collection...)
-	} else if i < 0 {
+	case i < 0:
 		// backward
 		i = sizeCollection + i
 	}

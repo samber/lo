@@ -477,7 +477,7 @@ func TestMapEntries(t *testing.T) {
 	//		return v, k
 	//	}, map[string]string{"1": "foo", "2": "bar", "true": "ccc"})
 	//}
-	//NormalMappers
+	// NormalMappers
 	{
 		mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(k string, v string) (string, string) {
 			return k, k + v

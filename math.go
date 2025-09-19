@@ -80,7 +80,7 @@ func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collec
 func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) R) R {
 	var sum R
 	for i := range collection {
-		sum = sum + iteratee(collection[i])
+		sum += iteratee(collection[i])
 	}
 	return sum
 }
@@ -116,7 +116,7 @@ func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Co
 
 	var product R = 1
 	for i := range collection {
-		product = product * iteratee(collection[i])
+		product *= iteratee(collection[i])
 	}
 	return product
 }
