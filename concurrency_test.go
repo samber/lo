@@ -78,7 +78,7 @@ func TestAsync(t *testing.T) {
 
 	select {
 	case result := <-ch:
-		is.Equal(result, 10)
+		is.Equal(10, result)
 	case <-time.After(time.Millisecond):
 		is.Fail("Async should not block")
 	}
@@ -117,7 +117,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, 10)
+			is.Equal(10, result)
 		case <-time.After(time.Millisecond):
 			is.Fail("Async1 should not block")
 		}
@@ -135,7 +135,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, Tuple2[int, string]{10, "Hello"})
+			is.Equal(Tuple2[int, string]{10, "Hello"}, result)
 		case <-time.After(time.Millisecond):
 			is.Fail("Async2 should not block")
 		}
@@ -153,7 +153,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, Tuple3[int, string, bool]{10, "Hello", true})
+			is.Equal(Tuple3[int, string, bool]{10, "Hello", true}, result)
 		case <-time.After(time.Millisecond):
 			is.Fail("Async3 should not block")
 		}
@@ -171,7 +171,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, Tuple4[int, string, bool, float64]{10, "Hello", true, 3.14})
+			is.Equal(Tuple4[int, string, bool, float64]{10, "Hello", true, 3.14}, result)
 		case <-time.After(time.Millisecond):
 			is.Fail("Async4 should not block")
 		}
@@ -189,7 +189,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, Tuple5[int, string, bool, float64, string]{10, "Hello", true, 3.14, "World"})
+			is.Equal(Tuple5[int, string, bool, float64, string]{10, "Hello", true, 3.14, "World"}, result)
 		case <-time.After(time.Millisecond):
 			is.Fail("Async5 should not block")
 		}
@@ -207,7 +207,7 @@ func TestAsyncX(t *testing.T) {
 
 		select {
 		case result := <-ch:
-			is.Equal(result, Tuple6[int, string, bool, float64, string, int]{10, "Hello", true, 3.14, "World", 100})
+			is.Equal(Tuple6[int, string, bool, float64, string, int]{10, "Hello", true, 3.14, "World", 100}, result)
 		case <-time.After(time.Millisecond):
 			is.Fail("Async6 should not block")
 		}
@@ -266,7 +266,7 @@ func TestWaitFor(t *testing.T) {
 		is := assert.New(t)
 
 		iter, duration, ok := WaitFor(alwaysFalse, shortTimeout, 10*time.Millisecond)
-		is.Equal(0, iter, "unexpected iteration count")
+		is.Zero(iter, "unexpected iteration count")
 		is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
 		is.False(ok)
 	})
@@ -279,7 +279,7 @@ func TestWaitFor(t *testing.T) {
 
 		shortTimeout := 4 * time.Millisecond
 		iter, duration, ok := WaitFor(alwaysFalse, shortTimeout, 10*time.Millisecond)
-		is.Equal(0, iter, "unexpected iteration count")
+		is.Zero(iter, "unexpected iteration count")
 		is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
 		is.False(ok)
 	})
@@ -349,7 +349,7 @@ func TestWaitForWithContext(t *testing.T) {
 		is := assert.New(t)
 
 		iter, duration, ok := WaitForWithContext(context.Background(), alwaysFalse, shortTimeout, 10*time.Millisecond)
-		is.Equal(0, iter, "unexpected iteration count")
+		is.Zero(iter, "unexpected iteration count")
 		is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
 		is.False(ok)
 	})
@@ -362,7 +362,7 @@ func TestWaitForWithContext(t *testing.T) {
 
 		shortTimeout := 4 * time.Millisecond
 		iter, duration, ok := WaitForWithContext(context.Background(), alwaysFalse, shortTimeout, 10*time.Millisecond)
-		is.Equal(0, iter, "unexpected iteration count")
+		is.Zero(iter, "unexpected iteration count")
 		is.InEpsilon(10*time.Millisecond, duration, float64(500*time.Microsecond))
 		is.False(ok)
 	})
@@ -406,7 +406,7 @@ func TestWaitForWithContext(t *testing.T) {
 		cancel()
 
 		iter, duration, ok := WaitForWithContext(canceledCtx, alwaysFalse, 100*time.Millisecond, 1050*time.Microsecond)
-		is.Equal(0, iter, "unexpected iteration count")
+		is.Zero(iter, "unexpected iteration count")
 		is.InEpsilon(1*time.Millisecond, duration, float64(5*time.Microsecond))
 		is.False(ok)
 	})

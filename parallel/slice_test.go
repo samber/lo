@@ -19,10 +19,10 @@ func TestMap(t *testing.T) {
 		return strconv.FormatInt(x, 10)
 	})
 
-	is.Equal(len(result1), 4)
-	is.Equal(len(result2), 4)
-	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
-	is.Equal(result2, []string{"1", "2", "3", "4"})
+	is.Len(result1, 4)
+	is.Len(result2, 4)
+	is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, result1)
+	is.Equal([]string{"1", "2", "3", "4"}, result2)
 }
 
 func TestForEach(t *testing.T) {
@@ -44,8 +44,8 @@ func TestTimes(t *testing.T) {
 		return strconv.FormatInt(int64(i), 10)
 	})
 
-	is.Equal(len(result1), 3)
-	is.Equal(result1, []string{"0", "1", "2"})
+	is.Len(result1, 3)
+	is.Equal([]string{"0", "1", "2"}, result1)
 }
 
 func TestGroupBy(t *testing.T) {
@@ -62,12 +62,12 @@ func TestGroupBy(t *testing.T) {
 		})
 	}
 
-	is.EqualValues(len(result1), 3)
-	is.EqualValues(result1, map[int][]int{
+	is.Len(result1, 3)
+	is.Equal(map[int][]int{
 		0: {0, 3},
 		1: {1, 4},
 		2: {2, 5},
-	})
+	}, result1)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -103,7 +103,7 @@ func TestPartitionBy(t *testing.T) {
 	}
 
 	is.ElementsMatch(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
-	is.Equal(result2, [][]int{})
+	is.Equal([][]int{}, result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}

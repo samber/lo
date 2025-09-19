@@ -19,14 +19,14 @@ func TestT(t *testing.T) {
 	r7 := T8[string, int, float32]("j", 7, 8.0, true, "k", 9, 10.0, false)
 	r8 := T9[string, int, float32]("l", 8, 9.0, false, "m", 10, 11.0, true, "n")
 
-	is.Equal(r1, Tuple2[string, int]{A: "a", B: 1})
-	is.Equal(r2, Tuple3[string, int, float32]{A: "b", B: 2, C: 3.0})
-	is.Equal(r3, Tuple4[string, int, float32, bool]{A: "c", B: 3, C: 4.0, D: true})
-	is.Equal(r4, Tuple5[string, int, float32, bool, string]{A: "d", B: 4, C: 5.0, D: false, E: "e"})
-	is.Equal(r5, Tuple6[string, int, float32, bool, string, int]{A: "f", B: 5, C: 6.0, D: true, E: "g", F: 7})
-	is.Equal(r6, Tuple7[string, int, float32, bool, string, int, float64]{A: "h", B: 6, C: 7.0, D: false, E: "i", F: 8, G: 9.0})
-	is.Equal(r7, Tuple8[string, int, float32, bool, string, int, float64, bool]{A: "j", B: 7, C: 8.0, D: true, E: "k", F: 9, G: 10.0, H: false})
-	is.Equal(r8, Tuple9[string, int, float32, bool, string, int, float64, bool, string]{A: "l", B: 8, C: 9.0, D: false, E: "m", F: 10, G: 11.0, H: true, I: "n"})
+	is.Equal(Tuple2[string, int]{A: "a", B: 1}, r1)
+	is.Equal(Tuple3[string, int, float32]{A: "b", B: 2, C: 3.0}, r2)
+	is.Equal(Tuple4[string, int, float32, bool]{A: "c", B: 3, C: 4.0, D: true}, r3)
+	is.Equal(Tuple5[string, int, float32, bool, string]{A: "d", B: 4, C: 5.0, D: false, E: "e"}, r4)
+	is.Equal(Tuple6[string, int, float32, bool, string, int]{A: "f", B: 5, C: 6.0, D: true, E: "g", F: 7}, r5)
+	is.Equal(Tuple7[string, int, float32, bool, string, int, float64]{A: "h", B: 6, C: 7.0, D: false, E: "i", F: 8, G: 9.0}, r6)
+	is.Equal(Tuple8[string, int, float32, bool, string, int, float64, bool]{A: "j", B: 7, C: 8.0, D: true, E: "k", F: 9, G: 10.0, H: false}, r7)
+	is.Equal(Tuple9[string, int, float32, bool, string, int, float64, bool, string]{A: "l", B: 8, C: 9.0, D: false, E: "m", F: 10, G: 11.0, H: true, I: "n"}, r8)
 }
 
 func TestUnpack(t *testing.T) {
@@ -71,14 +71,14 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 
 		r1, r2, r3, r4 = tuple.Unpack()
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 	}
 
 	{
@@ -89,7 +89,7 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 		is.Equal("b", r5)
 
 		r1, r2, r3, r4, r5 = tuple.Unpack()
@@ -97,7 +97,7 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 		is.Equal("b", r5)
 	}
 
@@ -109,7 +109,7 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 		is.Equal("b", r5)
 		is.Equal(2, r6)
 
@@ -118,7 +118,7 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 		is.Equal("b", r5)
 		is.Equal(2, r6)
 	}
@@ -131,7 +131,7 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 		is.Equal("b", r5)
 		is.Equal(2, r6)
 		is.Equal(3.0, r7)
@@ -141,7 +141,7 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 		is.Equal("b", r5)
 		is.Equal(2, r6)
 		is.Equal(3.0, r7)
@@ -155,22 +155,22 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 		is.Equal("b", r5)
 		is.Equal(2, r6)
 		is.Equal(3.0, r7)
-		is.Equal(true, r8)
+		is.True(r8)
 
 		r1, r2, r3, r4, r5, r6, r7, r8 = tuple.Unpack()
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 		is.Equal("b", r5)
 		is.Equal(2, r6)
 		is.Equal(3.0, r7)
-		is.Equal(true, r8)
+		is.True(r8)
 	}
 
 	{
@@ -181,11 +181,11 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 		is.Equal("b", r5)
 		is.Equal(2, r6)
 		is.Equal(3.0, r7)
-		is.Equal(true, r8)
+		is.True(r8)
 		is.Equal("c", r9)
 
 		r1, r2, r3, r4, r5, r6, r7, r8, r9 = tuple.Unpack()
@@ -193,11 +193,11 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-		is.Equal(true, r4)
+		is.True(r4)
 		is.Equal("b", r5)
 		is.Equal(2, r6)
 		is.Equal(3.0, r7)
-		is.Equal(true, r8)
+		is.True(r8)
 		is.Equal("c", r9)
 	}
 }
@@ -274,42 +274,42 @@ func TestZip(t *testing.T) {
 		[]int32{1, 2, 3, 4, 5, 6, 7, 8, 9},
 	)
 
-	is.Equal(r1, []Tuple2[string, int]{
+	is.Equal([]Tuple2[string, int]{
 		{A: "a", B: 1},
 		{A: "b", B: 2},
-	})
+	}, r1)
 
-	is.Equal(r2, []Tuple3[string, int, int]{
+	is.Equal([]Tuple3[string, int, int]{
 		{A: "a", B: 1, C: 4},
 		{A: "b", B: 2, C: 5},
 		{A: "c", B: 3, C: 6},
-	})
+	}, r2)
 
-	is.Equal(r3, []Tuple4[string, int, int, bool]{
+	is.Equal([]Tuple4[string, int, int, bool]{
 		{A: "a", B: 1, C: 5, D: true},
 		{A: "b", B: 2, C: 6, D: true},
 		{A: "c", B: 3, C: 7, D: true},
 		{A: "d", B: 4, C: 8, D: true},
-	})
+	}, r3)
 
-	is.Equal(r4, []Tuple5[string, int, int, bool, float32]{
+	is.Equal([]Tuple5[string, int, int, bool, float32]{
 		{A: "a", B: 1, C: 6, D: true, E: 0.1},
 		{A: "b", B: 2, C: 7, D: true, E: 0.2},
 		{A: "c", B: 3, C: 8, D: true, E: 0.3},
 		{A: "d", B: 4, C: 9, D: true, E: 0.4},
 		{A: "e", B: 5, C: 10, D: true, E: 0.5},
-	})
+	}, r4)
 
-	is.Equal(r5, []Tuple6[string, int, int, bool, float32, float64]{
+	is.Equal([]Tuple6[string, int, int, bool, float32, float64]{
 		{A: "a", B: 1, C: 7, D: true, E: 0.1, F: 0.01},
 		{A: "b", B: 2, C: 8, D: true, E: 0.2, F: 0.02},
 		{A: "c", B: 3, C: 9, D: true, E: 0.3, F: 0.03},
 		{A: "d", B: 4, C: 10, D: true, E: 0.4, F: 0.04},
 		{A: "e", B: 5, C: 11, D: true, E: 0.5, F: 0.05},
 		{A: "f", B: 6, C: 12, D: true, E: 0.6, F: 0.06},
-	})
+	}, r5)
 
-	is.Equal(r6, []Tuple7[string, int, int, bool, float32, float64, int8]{
+	is.Equal([]Tuple7[string, int, int, bool, float32, float64, int8]{
 		{A: "a", B: 1, C: 8, D: true, E: 0.1, F: 0.01, G: 1},
 		{A: "b", B: 2, C: 9, D: true, E: 0.2, F: 0.02, G: 2},
 		{A: "c", B: 3, C: 10, D: true, E: 0.3, F: 0.03, G: 3},
@@ -317,9 +317,9 @@ func TestZip(t *testing.T) {
 		{A: "e", B: 5, C: 12, D: true, E: 0.5, F: 0.05, G: 5},
 		{A: "f", B: 6, C: 13, D: true, E: 0.6, F: 0.06, G: 6},
 		{A: "g", B: 7, C: 14, D: true, E: 0.7, F: 0.07, G: 7},
-	})
+	}, r6)
 
-	is.Equal(r7, []Tuple8[string, int, int, bool, float32, float64, int8, int16]{
+	is.Equal([]Tuple8[string, int, int, bool, float32, float64, int8, int16]{
 		{A: "a", B: 1, C: 9, D: true, E: 0.1, F: 0.01, G: 1, H: 1},
 		{A: "b", B: 2, C: 10, D: true, E: 0.2, F: 0.02, G: 2, H: 2},
 		{A: "c", B: 3, C: 11, D: true, E: 0.3, F: 0.03, G: 3, H: 3},
@@ -328,9 +328,9 @@ func TestZip(t *testing.T) {
 		{A: "f", B: 6, C: 14, D: true, E: 0.6, F: 0.06, G: 6, H: 6},
 		{A: "g", B: 7, C: 15, D: true, E: 0.7, F: 0.07, G: 7, H: 7},
 		{A: "h", B: 8, C: 16, D: true, E: 0.8, F: 0.08, G: 8, H: 8},
-	})
+	}, r7)
 
-	is.Equal(r8, []Tuple9[string, int, int, bool, float32, float64, int8, int16, int32]{
+	is.Equal([]Tuple9[string, int, int, bool, float32, float64, int8, int16, int32]{
 		{A: "a", B: 1, C: 10, D: true, E: 0.1, F: 0.01, G: 1, H: 1, I: 1},
 		{A: "b", B: 2, C: 11, D: true, E: 0.2, F: 0.02, G: 2, H: 2, I: 2},
 		{A: "c", B: 3, C: 12, D: true, E: 0.3, F: 0.03, G: 3, H: 3, I: 3},
@@ -340,7 +340,7 @@ func TestZip(t *testing.T) {
 		{A: "g", B: 7, C: 16, D: true, E: 0.7, F: 0.07, G: 7, H: 7, I: 7},
 		{A: "h", B: 8, C: 17, D: true, E: 0.8, F: 0.08, G: 8, H: 8, I: 8},
 		{A: "i", B: 9, C: 18, D: true, E: 0.9, F: 0.09, G: 9, H: 9, I: 9},
-	})
+	}, r8)
 }
 
 func TestZipBy(t *testing.T) {
@@ -439,42 +439,42 @@ func TestZipBy(t *testing.T) {
 		},
 	)
 
-	is.Equal(r1, []Tuple2[string, int]{
+	is.Equal([]Tuple2[string, int]{
 		{A: "a", B: 1},
 		{A: "b", B: 2},
-	})
+	}, r1)
 
-	is.Equal(r2, []Tuple3[string, int, int]{
+	is.Equal([]Tuple3[string, int, int]{
 		{A: "a", B: 1, C: 4},
 		{A: "b", B: 2, C: 5},
 		{A: "c", B: 3, C: 6},
-	})
+	}, r2)
 
-	is.Equal(r3, []Tuple4[string, int, int, bool]{
+	is.Equal([]Tuple4[string, int, int, bool]{
 		{A: "a", B: 1, C: 5, D: true},
 		{A: "b", B: 2, C: 6, D: true},
 		{A: "c", B: 3, C: 7, D: true},
 		{A: "d", B: 4, C: 8, D: true},
-	})
+	}, r3)
 
-	is.Equal(r4, []Tuple5[string, int, int, bool, float32]{
+	is.Equal([]Tuple5[string, int, int, bool, float32]{
 		{A: "a", B: 1, C: 6, D: true, E: 0.1},
 		{A: "b", B: 2, C: 7, D: true, E: 0.2},
 		{A: "c", B: 3, C: 8, D: true, E: 0.3},
 		{A: "d", B: 4, C: 9, D: true, E: 0.4},
 		{A: "e", B: 5, C: 10, D: true, E: 0.5},
-	})
+	}, r4)
 
-	is.Equal(r5, []Tuple6[string, int, int, bool, float32, float64]{
+	is.Equal([]Tuple6[string, int, int, bool, float32, float64]{
 		{A: "a", B: 1, C: 7, D: true, E: 0.1, F: 0.01},
 		{A: "b", B: 2, C: 8, D: true, E: 0.2, F: 0.02},
 		{A: "c", B: 3, C: 9, D: true, E: 0.3, F: 0.03},
 		{A: "d", B: 4, C: 10, D: true, E: 0.4, F: 0.04},
 		{A: "e", B: 5, C: 11, D: true, E: 0.5, F: 0.05},
 		{A: "f", B: 6, C: 12, D: true, E: 0.6, F: 0.06},
-	})
+	}, r5)
 
-	is.Equal(r6, []Tuple7[string, int, int, bool, float32, float64, int8]{
+	is.Equal([]Tuple7[string, int, int, bool, float32, float64, int8]{
 		{A: "a", B: 1, C: 8, D: true, E: 0.1, F: 0.01, G: 1},
 		{A: "b", B: 2, C: 9, D: true, E: 0.2, F: 0.02, G: 2},
 		{A: "c", B: 3, C: 10, D: true, E: 0.3, F: 0.03, G: 3},
@@ -482,9 +482,9 @@ func TestZipBy(t *testing.T) {
 		{A: "e", B: 5, C: 12, D: true, E: 0.5, F: 0.05, G: 5},
 		{A: "f", B: 6, C: 13, D: true, E: 0.6, F: 0.06, G: 6},
 		{A: "g", B: 7, C: 14, D: true, E: 0.7, F: 0.07, G: 7},
-	})
+	}, r6)
 
-	is.Equal(r7, []Tuple8[string, int, int, bool, float32, float64, int8, int16]{
+	is.Equal([]Tuple8[string, int, int, bool, float32, float64, int8, int16]{
 		{A: "a", B: 1, C: 9, D: true, E: 0.1, F: 0.01, G: 1, H: 1},
 		{A: "b", B: 2, C: 10, D: true, E: 0.2, F: 0.02, G: 2, H: 2},
 		{A: "c", B: 3, C: 11, D: true, E: 0.3, F: 0.03, G: 3, H: 3},
@@ -493,9 +493,9 @@ func TestZipBy(t *testing.T) {
 		{A: "f", B: 6, C: 14, D: true, E: 0.6, F: 0.06, G: 6, H: 6},
 		{A: "g", B: 7, C: 15, D: true, E: 0.7, F: 0.07, G: 7, H: 7},
 		{A: "h", B: 8, C: 16, D: true, E: 0.8, F: 0.08, G: 8, H: 8},
-	})
+	}, r7)
 
-	is.Equal(r8, []Tuple9[string, int, int, bool, float32, float64, int8, int16, int32]{
+	is.Equal([]Tuple9[string, int, int, bool, float32, float64, int8, int16, int32]{
 		{A: "a", B: 1, C: 10, D: true, E: 0.1, F: 0.01, G: 1, H: 1, I: 1},
 		{A: "b", B: 2, C: 11, D: true, E: 0.2, F: 0.02, G: 2, H: 2, I: 2},
 		{A: "c", B: 3, C: 12, D: true, E: 0.3, F: 0.03, G: 3, H: 3, I: 3},
@@ -505,7 +505,7 @@ func TestZipBy(t *testing.T) {
 		{A: "g", B: 7, C: 16, D: true, E: 0.7, F: 0.07, G: 7, H: 7, I: 7},
 		{A: "h", B: 8, C: 17, D: true, E: 0.8, F: 0.08, G: 8, H: 8, I: 8},
 		{A: "i", B: 9, C: 18, D: true, E: 0.9, F: 0.09, G: 9, H: 9, I: 9},
-	})
+	}, r8)
 }
 
 func TestUnzip(t *testing.T) {
@@ -514,8 +514,8 @@ func TestUnzip(t *testing.T) {
 
 	r1, r2 := Unzip2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
 
-	is.Equal(r1, []string{"a", "b"})
-	is.Equal(r2, []int{1, 2})
+	is.Equal([]string{"a", "b"}, r1)
+	is.Equal([]int{1, 2}, r2)
 }
 
 func TestUnzipBy(t *testing.T) {
@@ -526,8 +526,8 @@ func TestUnzipBy(t *testing.T) {
 		return i.A + i.A, i.B + i.B
 	})
 
-	is.Equal(r1, []string{"aa", "bb"})
-	is.Equal(r2, []int{2, 4})
+	is.Equal([]string{"aa", "bb"}, r1)
+	is.Equal([]int{2, 4}, r2)
 }
 
 func TestCrossJoin(t *testing.T) {
@@ -540,13 +540,13 @@ func TestCrossJoin(t *testing.T) {
 	mixedList := []any{9.6, 4, "foobar"}
 
 	results1 := CrossJoin2(emptyList, listTwo)
-	is.Len(results1, 0)
+	is.Empty(results1)
 
 	results2 := CrossJoin2(listOne, emptyList)
-	is.Len(results2, 0)
+	is.Empty(results2)
 
 	results3 := CrossJoin2(emptyList, emptyList)
-	is.Len(results3, 0)
+	is.Empty(results3)
 
 	results4 := CrossJoin2([]string{"a"}, listTwo)
 	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3)}, results4)
@@ -571,13 +571,13 @@ func TestCrossJoinBy(t *testing.T) {
 	mixedList := []any{9.6, 4, "foobar"}
 
 	results1 := CrossJoinBy2(emptyList, listTwo, T2[any, int])
-	is.Len(results1, 0)
+	is.Empty(results1)
 
 	results2 := CrossJoinBy2(listOne, emptyList, T2[string, any])
-	is.Len(results2, 0)
+	is.Empty(results2)
 
 	results3 := CrossJoinBy2(emptyList, emptyList, T2[any, any])
-	is.Len(results3, 0)
+	is.Empty(results3)
 
 	results4 := CrossJoinBy2([]string{"a"}, listTwo, T2[string, int])
 	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3)}, results4)
