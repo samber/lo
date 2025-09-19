@@ -106,7 +106,7 @@ func FromAnySlice[T any](in []any) (out []T, ok bool) {
 
 	result := make([]T, len(in))
 	for i := range in {
-		result[i] = in[i].(T) //nolint:errcheck
+		result[i] = in[i].(T) //nolint:errcheck,forcetypeassert
 	}
 	return result, true
 }
