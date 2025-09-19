@@ -25,7 +25,7 @@ func messageFromMsgAndArgs(msgAndArgs ...any) string {
 		return fmt.Sprintf("%+v", msgAndArgs[0])
 	}
 	if len(msgAndArgs) > 1 {
-		return fmt.Sprintf(msgAndArgs[0].(string), msgAndArgs[1:]...)
+		return fmt.Sprintf(msgAndArgs[0].(string), msgAndArgs[1:]...) //nolint:errcheck
 	}
 	return ""
 }

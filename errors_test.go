@@ -518,7 +518,9 @@ func TestTryWithErrorValue(t *testing.T) {
 		return errors.New("foo")
 	})
 	is.False(ok)
-	is.EqualError(err.(error), "foo")
+	e, isError := err.(error)
+	is.True(isError)
+	is.EqualError(e, "foo")
 
 	err, ok = TryWithErrorValue(func() error {
 		return nil
