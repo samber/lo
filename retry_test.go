@@ -40,14 +40,14 @@ func TestAttempt(t *testing.T) {
 		return nil
 	})
 
-	is.Equal(iter1, 1)
-	is.Equal(err1, nil)
-	is.Equal(iter2, 6)
-	is.Equal(err2, nil)
-	is.Equal(iter3, 2)
+	is.Equal(1, iter1)
+	is.NoError(err1)
+	is.Equal(6, iter2)
+	is.NoError(err2)
+	is.Equal(2, iter3)
 	is.Equal(err3, err)
-	is.Equal(iter4, 43)
-	is.Equal(err4, nil)
+	is.Equal(43, iter4)
+	is.NoError(err4)
 }
 
 func TestAttemptWithDelay(t *testing.T) {
@@ -81,22 +81,22 @@ func TestAttemptWithDelay(t *testing.T) {
 		return nil
 	})
 
-	is.Equal(iter1, 1)
+	is.Equal(1, iter1)
 	is.GreaterOrEqual(dur1, 0*time.Millisecond)
 	is.Less(dur1, 1*time.Millisecond)
-	is.Equal(err1, nil)
-	is.Equal(iter2, 6)
+	is.NoError(err1)
+	is.Equal(6, iter2)
 	is.Greater(dur2, 50*time.Millisecond)
 	is.Less(dur2, 60*time.Millisecond)
-	is.Equal(err2, nil)
-	is.Equal(iter3, 2)
+	is.NoError(err2)
+	is.Equal(2, iter3)
 	is.Greater(dur3, 10*time.Millisecond)
 	is.Less(dur3, 20*time.Millisecond)
 	is.Equal(err3, err)
-	is.Equal(iter4, 11)
+	is.Equal(11, iter4)
 	is.Greater(dur4, 100*time.Millisecond)
 	is.Less(dur4, 115*time.Millisecond)
-	is.Equal(err4, nil)
+	is.NoError(err4)
 }
 
 func TestAttemptWhile(t *testing.T) {
@@ -108,8 +108,8 @@ func TestAttemptWhile(t *testing.T) {
 		return nil, true
 	})
 
-	is.Equal(iter1, 1)
-	is.Nil(err1)
+	is.Equal(1, iter1)
+	is.NoError(err1)
 
 	iter2, err2 := AttemptWhile(42, func(i int) (error, bool) {
 		if i == 5 {
@@ -119,8 +119,8 @@ func TestAttemptWhile(t *testing.T) {
 		return err, true
 	})
 
-	is.Equal(iter2, 6)
-	is.Nil(err2)
+	is.Equal(6, iter2)
+	is.NoError(err2)
 
 	iter3, err3 := AttemptWhile(2, func(i int) (error, bool) {
 		if i == 5 {
@@ -130,7 +130,7 @@ func TestAttemptWhile(t *testing.T) {
 		return err, true
 	})
 
-	is.Equal(iter3, 2)
+	is.Equal(2, iter3)
 	is.Equal(err3, err)
 
 	iter4, err4 := AttemptWhile(0, func(i int) (error, bool) {
@@ -141,8 +141,8 @@ func TestAttemptWhile(t *testing.T) {
 		return nil, true
 	})
 
-	is.Equal(iter4, 43)
-	is.Nil(err4)
+	is.Equal(43, iter4)
+	is.NoError(err4)
 
 	iter5, err5 := AttemptWhile(0, func(i int) (error, bool) {
 		if i == 5 {
@@ -152,15 +152,15 @@ func TestAttemptWhile(t *testing.T) {
 		return err, true
 	})
 
-	is.Equal(iter5, 6)
-	is.Nil(err5)
+	is.Equal(6, iter5)
+	is.NoError(err5)
 
 	iter6, err6 := AttemptWhile(0, func(i int) (error, bool) {
 		return nil, false
 	})
 
-	is.Equal(iter6, 1)
-	is.Nil(err6)
+	is.Equal(1, iter6)
+	is.NoError(err6)
 
 	iter7, err7 := AttemptWhile(42, func(i int) (error, bool) {
 		if i == 42 {
@@ -173,8 +173,8 @@ func TestAttemptWhile(t *testing.T) {
 		return nil, true
 	})
 
-	is.Equal(iter7, 42)
-	is.Nil(err7)
+	is.Equal(42, iter7)
+	is.NoError(err7)
 }
 
 func TestAttemptWhileWithDelay(t *testing.T) {
@@ -186,10 +186,10 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 		return nil, true
 	})
 
-	is.Equal(iter1, 1)
+	is.Equal(1, iter1)
 	is.GreaterOrEqual(dur1, 0*time.Millisecond)
 	is.Less(dur1, 1*time.Millisecond)
-	is.Nil(err1)
+	is.NoError(err1)
 
 	iter2, dur2, err2 := AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		if i == 5 {
@@ -199,10 +199,10 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 		return err, true
 	})
 
-	is.Equal(iter2, 6)
+	is.Equal(6, iter2)
 	is.Greater(dur2, 50*time.Millisecond)
 	is.Less(dur2, 60*time.Millisecond)
-	is.Nil(err2)
+	is.NoError(err2)
 
 	iter3, dur3, err3 := AttemptWhileWithDelay(2, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		if i == 5 {
@@ -212,7 +212,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 		return err, true
 	})
 
-	is.Equal(iter3, 2)
+	is.Equal(2, iter3)
 	is.Greater(dur3, 10*time.Millisecond)
 	is.Less(dur3, 20*time.Millisecond)
 	is.Equal(err3, err)
@@ -225,10 +225,10 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 		return nil, true
 	})
 
-	is.Equal(iter4, 11)
+	is.Equal(11, iter4)
 	is.Greater(dur4, 100*time.Millisecond)
 	is.Less(dur4, 115*time.Millisecond)
-	is.Nil(err4)
+	is.NoError(err4)
 
 	iter5, dur5, err5 := AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		if i == 5 {
@@ -238,19 +238,19 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 		return err, true
 	})
 
-	is.Equal(iter5, 6)
+	is.Equal(6, iter5)
 	is.Greater(dur5, 10*time.Millisecond)
 	is.Less(dur5, 115*time.Millisecond)
-	is.Nil(err5)
+	is.NoError(err5)
 
 	iter6, dur6, err6 := AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		return nil, false
 	})
 
-	is.Equal(iter6, 1)
+	is.Equal(1, iter6)
 	is.Less(dur6, 10*time.Millisecond)
 	is.Less(dur6, 115*time.Millisecond)
-	is.Nil(err6)
+	is.NoError(err6)
 
 	iter7, dur7, err7 := AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		if i == 42 {
@@ -263,9 +263,9 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 		return nil, true
 	})
 
-	is.Equal(iter7, 42)
+	is.Equal(42, iter7)
 	is.Less(dur7, 500*time.Millisecond)
-	is.Nil(err7)
+	is.NoError(err7)
 }
 
 func TestDebounce(t *testing.T) {
@@ -355,9 +355,9 @@ func TestDebounceBy(t *testing.T) {
 	}
 
 	mu.Lock()
-	is.EqualValues(output[0], 30)
-	is.EqualValues(output[1], 30)
-	is.EqualValues(output[2], 30)
+	is.Equal(30, output[0])
+	is.Equal(30, output[1])
+	is.Equal(30, output[2])
 	mu.Unlock()
 
 	d2, _ := NewDebounceBy(10*time.Millisecond, f2)
@@ -375,9 +375,9 @@ func TestDebounceBy(t *testing.T) {
 	time.Sleep(10 * time.Millisecond)
 
 	mu.Lock()
-	is.EqualValues(output[0], 45)
-	is.EqualValues(output[1], 45)
-	is.EqualValues(output[2], 45)
+	is.Equal(45, output[0])
+	is.Equal(45, output[1])
+	is.Equal(45, output[2])
 	mu.Unlock()
 
 	// execute once because it is canceled after 200ms.
@@ -398,9 +398,9 @@ func TestDebounceBy(t *testing.T) {
 	}
 
 	mu.Lock()
-	is.EqualValues(output[0], 75)
-	is.EqualValues(output[1], 75)
-	is.EqualValues(output[2], 75)
+	is.Equal(75, output[0])
+	is.Equal(75, output[1])
+	is.Equal(75, output[2])
 	mu.Unlock()
 }
 
@@ -429,7 +429,7 @@ func TestTransaction(t *testing.T) {
 
 		state, err := transaction.Process(21)
 		is.Equal(142, state)
-		is.Equal(nil, err)
+		is.NoError(err)
 	}
 
 	// with error
@@ -508,7 +508,7 @@ func TestNewThrottle(t *testing.T) {
 	}
 	th, reset := NewThrottle(10*time.Millisecond, f1)
 
-	is.Equal(0, callCount)
+	is.Zero(callCount)
 	for j := 0; j < 100; j++ {
 		th()
 	}
@@ -574,8 +574,8 @@ func TestNewThrottleBy(t *testing.T) {
 	}
 	th, reset := NewThrottleBy(10*time.Millisecond, f1)
 
-	is.Equal(0, callCountA)
-	is.Equal(0, callCountB)
+	is.Zero(callCountA)
+	is.Zero(callCountB)
 	for j := 0; j < 100; j++ {
 		th("a")
 		th("b")

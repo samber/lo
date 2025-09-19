@@ -13,9 +13,9 @@ func TestRange(t *testing.T) {
 	result1 := Range(4)
 	result2 := Range(-4)
 	result3 := Range(0)
-	is.Equal(result1, []int{0, 1, 2, 3})
-	is.Equal(result2, []int{0, -1, -2, -3})
-	is.Equal(result3, []int{})
+	is.Equal([]int{0, 1, 2, 3}, result1)
+	is.Equal([]int{0, -1, -2, -3}, result2)
+	is.Equal([]int{}, result3)
 }
 
 func TestRangeFrom(t *testing.T) {
@@ -27,11 +27,11 @@ func TestRangeFrom(t *testing.T) {
 	result3 := RangeFrom(10, 0)
 	result4 := RangeFrom(2.0, 3)
 	result5 := RangeFrom(-2.0, -3)
-	is.Equal(result1, []int{1, 2, 3, 4, 5})
-	is.Equal(result2, []int{-1, -2, -3, -4, -5})
-	is.Equal(result3, []int{})
-	is.Equal(result4, []float64{2.0, 3.0, 4.0})
-	is.Equal(result5, []float64{-2.0, -3.0, -4.0})
+	is.Equal([]int{1, 2, 3, 4, 5}, result1)
+	is.Equal([]int{-1, -2, -3, -4, -5}, result2)
+	is.Equal([]int{}, result3)
+	is.Equal([]float64{2.0, 3.0, 4.0}, result4)
+	is.Equal([]float64{-2.0, -3.0, -4.0}, result5)
 }
 
 func TestRangeClose(t *testing.T) {
@@ -60,9 +60,9 @@ func TestClamp(t *testing.T) {
 	result2 := Clamp(-42, -10, 10)
 	result3 := Clamp(42, -10, 10)
 
-	is.Equal(result1, 0)
-	is.Equal(result2, -10)
-	is.Equal(result3, 10)
+	is.Zero(result1)
+	is.Equal(-10, result2)
+	is.Equal(10, result3)
 }
 
 func TestSum(t *testing.T) {
@@ -74,11 +74,11 @@ func TestSum(t *testing.T) {
 	result4 := Sum([]uint32{})
 	result5 := Sum([]complex128{4_4, 2_2})
 
-	is.Equal(result1, float32(14.900001))
-	is.Equal(result2, int32(14))
-	is.Equal(result3, uint32(14))
-	is.Equal(result4, uint32(0))
-	is.Equal(result5, complex128(6_6))
+	is.InEpsilon(14.9, result1, 1e-7)
+	is.Equal(int32(14), result2)
+	is.Equal(uint32(14), result3)
+	is.Equal(uint32(0), result4)
+	is.Equal(complex128(6_6), result5)
 }
 
 func TestSumBy(t *testing.T) {
@@ -91,11 +91,11 @@ func TestSumBy(t *testing.T) {
 	result4 := SumBy([]uint32{}, func(n uint32) uint32 { return n })
 	result5 := SumBy([]complex128{4_4, 2_2}, func(n complex128) complex128 { return n })
 
-	is.Equal(result1, float32(14.900001))
-	is.Equal(result2, int32(14))
-	is.Equal(result3, uint32(14))
-	is.Equal(result4, uint32(0))
-	is.Equal(result5, complex128(6_6))
+	is.InEpsilon(14.9, result1, 1e-7)
+	is.Equal(int32(14), result2)
+	is.Equal(uint32(14), result3)
+	is.Equal(uint32(0), result4)
+	is.Equal(complex128(6_6), result5)
 }
 
 func TestProduct(t *testing.T) {
@@ -110,14 +110,14 @@ func TestProduct(t *testing.T) {
 	result7 := Product([]complex128{4_4, 2_2})
 	result8 := Product[uint32](nil)
 
-	is.Equal(result1, float32(160.908))
-	is.Equal(result2, int32(120))
-	is.Equal(result3, int32(0))
-	is.Equal(result4, int32(-126))
-	is.Equal(result5, uint32(120))
-	is.Equal(result6, uint32(1))
-	is.Equal(result7, complex128(96_8))
-	is.Equal(result8, uint32(1))
+	is.InEpsilon(160.908, result1, 1e-7)
+	is.Equal(int32(120), result2)
+	is.Equal(int32(0), result3)
+	is.Equal(int32(-126), result4)
+	is.Equal(uint32(120), result5)
+	is.Equal(uint32(1), result6)
+	is.Equal(complex128(96_8), result7)
+	is.Equal(uint32(1), result8)
 }
 
 func TestProductBy(t *testing.T) {
@@ -132,14 +132,14 @@ func TestProductBy(t *testing.T) {
 	result7 := ProductBy([]complex128{4_4, 2_2}, func(n complex128) complex128 { return n })
 	result8 := ProductBy(nil, func(n uint32) uint32 { return n })
 
-	is.Equal(result1, float32(160.908))
-	is.Equal(result2, int32(120))
-	is.Equal(result3, int32(0))
-	is.Equal(result4, int32(-126))
-	is.Equal(result5, uint32(120))
-	is.Equal(result6, uint32(1))
-	is.Equal(result7, complex128(96_8))
-	is.Equal(result8, uint32(1))
+	is.InEpsilon(160.908, result1, 1e-7)
+	is.Equal(int32(120), result2)
+	is.Equal(int32(0), result3)
+	is.Equal(int32(-126), result4)
+	is.Equal(uint32(120), result5)
+	is.Equal(uint32(1), result6)
+	is.Equal(complex128(96_8), result7)
+	is.Equal(uint32(1), result8)
 }
 
 func TestMean(t *testing.T) {
@@ -151,10 +151,10 @@ func TestMean(t *testing.T) {
 	result3 := Mean([]uint32{2, 3, 4, 5})
 	result4 := Mean([]uint32{})
 
-	is.Equal(result1, float32(3.7250001))
-	is.Equal(result2, int32(3))
-	is.Equal(result3, uint32(3))
-	is.Equal(result4, uint32(0))
+	is.InEpsilon(3.725, result1, 1e-7)
+	is.Equal(int32(3), result2)
+	is.Equal(uint32(3), result3)
+	is.Equal(uint32(0), result4)
 }
 
 func TestMeanBy(t *testing.T) {
@@ -166,10 +166,10 @@ func TestMeanBy(t *testing.T) {
 	result3 := MeanBy([]uint32{2, 3, 4, 5}, func(n uint32) uint32 { return n })
 	result4 := MeanBy([]uint32{}, func(n uint32) uint32 { return n })
 
-	is.Equal(result1, float32(3.7250001))
-	is.Equal(result2, int32(3))
-	is.Equal(result3, uint32(3))
-	is.Equal(result4, uint32(0))
+	is.InEpsilon(3.725, result1, 1e-7)
+	is.Equal(int32(3), result2)
+	is.Equal(uint32(3), result3)
+	is.Equal(uint32(0), result4)
 }
 
 func TestMode(t *testing.T) {
@@ -182,9 +182,9 @@ func TestMode(t *testing.T) {
 	result4 := Mode([]uint32{})
 	result5 := Mode([]int{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
-	is.Equal(result1, []float32{3.3})
-	is.Equal(result2, []int32{2})
-	is.Equal(result3, []uint32{2, 3})
-	is.Equal(result4, []uint32{})
-	is.Equal(result5, []int{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	is.Equal([]float32{3.3}, result1)
+	is.Equal([]int32{2}, result2)
+	is.Equal([]uint32{2, 3}, result3)
+	is.Equal([]uint32{}, result4)
+	is.Equal([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, result5)
 }

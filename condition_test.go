@@ -13,8 +13,8 @@ func TestTernary(t *testing.T) {
 	result1 := Ternary(true, "a", "b")
 	result2 := Ternary(false, "a", "b")
 
-	is.Equal(result1, "a")
-	is.Equal(result2, "b")
+	is.Equal("a", result1)
+	is.Equal("b", result2)
 }
 
 func TestTernaryF(t *testing.T) {
@@ -23,8 +23,8 @@ func TestTernaryF(t *testing.T) {
 	result1 := TernaryF(true, func() string { return "a" }, func() string { return "b" })
 	result2 := TernaryF(false, func() string { return "a" }, func() string { return "b" })
 
-	is.Equal(result1, "a")
-	is.Equal(result2, "b")
+	is.Equal("a", result1)
+	is.Equal("b", result2)
 }
 
 func TestIfElse(t *testing.T) {
@@ -36,10 +36,10 @@ func TestIfElse(t *testing.T) {
 	result3 := If(false, 1).ElseIf(true, 2).Else(3)
 	result4 := If(false, 1).ElseIf(false, 2).Else(3)
 
-	is.Equal(result1, 1)
-	is.Equal(result2, 1)
-	is.Equal(result3, 2)
-	is.Equal(result4, 3)
+	is.Equal(1, result1)
+	is.Equal(1, result2)
+	is.Equal(2, result3)
+	is.Equal(3, result4)
 }
 
 func TestIfFElseF(t *testing.T) {
@@ -51,10 +51,10 @@ func TestIfFElseF(t *testing.T) {
 	result3 := IfF(false, func() int { return 1 }).ElseIfF(true, func() int { return 2 }).ElseF(func() int { return 3 })
 	result4 := IfF(false, func() int { return 1 }).ElseIfF(false, func() int { return 2 }).ElseF(func() int { return 3 })
 
-	is.Equal(result1, 1)
-	is.Equal(result2, 1)
-	is.Equal(result3, 2)
-	is.Equal(result4, 3)
+	is.Equal(1, result1)
+	is.Equal(1, result2)
+	is.Equal(2, result3)
+	is.Equal(3, result4)
 }
 
 func TestSwitchCase(t *testing.T) {
@@ -66,10 +66,10 @@ func TestSwitchCase(t *testing.T) {
 	result3 := Switch[int, int](42).Case(1, 1).Case(42, 2).Default(3)
 	result4 := Switch[int, int](42).Case(1, 1).Case(1, 2).Default(3)
 
-	is.Equal(result1, 1)
-	is.Equal(result2, 1)
-	is.Equal(result3, 2)
-	is.Equal(result4, 3)
+	is.Equal(1, result1)
+	is.Equal(1, result2)
+	is.Equal(2, result3)
+	is.Equal(3, result4)
 }
 
 func TestSwitchCaseF(t *testing.T) {
@@ -81,8 +81,8 @@ func TestSwitchCaseF(t *testing.T) {
 	result3 := Switch[int, int](42).CaseF(1, func() int { return 1 }).CaseF(42, func() int { return 2 }).DefaultF(func() int { return 3 })
 	result4 := Switch[int, int](42).CaseF(1, func() int { return 1 }).CaseF(1, func() int { return 2 }).DefaultF(func() int { return 3 })
 
-	is.Equal(result1, 1)
-	is.Equal(result2, 1)
-	is.Equal(result3, 2)
-	is.Equal(result4, 3)
+	is.Equal(1, result1)
+	is.Equal(1, result2)
+	is.Equal(2, result3)
+	is.Equal(3, result4)
 }

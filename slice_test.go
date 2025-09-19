@@ -18,12 +18,12 @@ func TestFilter(t *testing.T) {
 	r1 := Filter([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 		return x%2 == 0
 	})
-	is.Equal(r1, []int{2, 4})
+	is.Equal([]int{2, 4}, r1)
 
 	r2 := Filter([]string{"", "foo", "", "bar", ""}, func(x string, _ int) bool {
 		return len(x) > 0
 	})
-	is.Equal(r2, []string{"foo", "bar"})
+	is.Equal([]string{"foo", "bar"}, r2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -44,10 +44,10 @@ func TestMap(t *testing.T) {
 		return strconv.FormatInt(x, 10)
 	})
 
-	is.Equal(len(result1), 4)
-	is.Equal(len(result2), 4)
-	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello"})
-	is.Equal(result2, []string{"1", "2", "3", "4"})
+	is.Len(result1, 4)
+	is.Len(result2, 4)
+	is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, result1)
+	is.Equal([]string{"1", "2", "3", "4"}, result2)
 }
 
 func TestUniqMap(t *testing.T) {
@@ -64,7 +64,7 @@ func TestUniqMap(t *testing.T) {
 		return item.Name
 	})
 
-	is.Equal(result, []string{"Alice", "Alex"})
+	is.Equal([]string{"Alice", "Alex"}, result)
 }
 
 func TestFilterMap(t *testing.T) {
@@ -84,10 +84,10 @@ func TestFilterMap(t *testing.T) {
 		return "", false
 	})
 
-	is.Equal(len(r1), 2)
-	is.Equal(len(r2), 2)
-	is.Equal(r1, []string{"2", "4"})
-	is.Equal(r2, []string{"xpu", "xpu"})
+	is.Len(r1, 2)
+	is.Len(r2, 2)
+	is.Equal([]string{"2", "4"}, r1)
+	is.Equal([]string{"xpu", "xpu"}, r2)
 }
 
 func TestFlatMap(t *testing.T) {
@@ -105,10 +105,10 @@ func TestFlatMap(t *testing.T) {
 		return result
 	})
 
-	is.Equal(len(result1), 5)
-	is.Equal(len(result2), 10)
-	is.Equal(result1, []string{"Hello", "Hello", "Hello", "Hello", "Hello"})
-	is.Equal(result2, []string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"})
+	is.Len(result1, 5)
+	is.Len(result2, 10)
+	is.Equal([]string{"Hello", "Hello", "Hello", "Hello", "Hello"}, result1)
+	is.Equal([]string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"}, result2)
 }
 
 func TestTimes(t *testing.T) {
@@ -119,8 +119,8 @@ func TestTimes(t *testing.T) {
 		return strconv.FormatInt(int64(i), 10)
 	})
 
-	is.Equal(len(result1), 3)
-	is.Equal(result1, []string{"0", "1", "2"})
+	is.Len(result1, 3)
+	is.Equal([]string{"0", "1", "2"}, result1)
 }
 
 func TestReduce(t *testing.T) {
@@ -134,8 +134,8 @@ func TestReduce(t *testing.T) {
 		return agg + item
 	}, 10)
 
-	is.Equal(result1, 10)
-	is.Equal(result2, 20)
+	is.Equal(10, result1)
+	is.Equal(20, result2)
 }
 
 func TestReduceRight(t *testing.T) {
@@ -146,13 +146,13 @@ func TestReduceRight(t *testing.T) {
 		return append(agg, item...)
 	}, []int{})
 
-	is.Equal(result1, []int{4, 5, 2, 3, 0, 1})
+	is.Equal([]int{4, 5, 2, 3, 0, 1}, result1)
 
 	type collection []int
 	result3 := ReduceRight(collection{1, 2, 3, 4}, func(agg int, item int, _ int) int {
 		return agg + item
 	}, 10)
-	is.Equal(result3, 20)
+	is.Equal(20, result3)
 }
 
 func TestForEach(t *testing.T) {
@@ -203,8 +203,8 @@ func TestUniq(t *testing.T) {
 
 	result1 := Uniq([]int{1, 2, 2, 1})
 
-	is.Equal(len(result1), 2)
-	is.Equal(result1, []int{1, 2})
+	is.Len(result1, 2)
+	is.Equal([]int{1, 2}, result1)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -220,8 +220,8 @@ func TestUniqBy(t *testing.T) {
 		return i % 3
 	})
 
-	is.Equal(len(result1), 3)
-	is.Equal(result1, []int{0, 1, 2})
+	is.Len(result1, 3)
+	is.Equal([]int{0, 1, 2}, result1)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -239,12 +239,12 @@ func TestGroupBy(t *testing.T) {
 		return i % 3
 	})
 
-	is.Equal(len(result1), 3)
-	is.Equal(result1, map[int][]int{
+	is.Len(result1, 3)
+	is.Equal(map[int][]int{
 		0: {0, 3},
 		1: {1, 4},
 		2: {2, 5},
-	})
+	}, result1)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -262,12 +262,12 @@ func TestGroupByMap(t *testing.T) {
 		return i % 3, strconv.Itoa(i)
 	})
 
-	is.Equal(len(result1), 3)
-	is.Equal(result1, map[int][]string{
+	is.Len(result1, 3)
+	is.Equal(map[int][]string{
 		0: {"0", "3"},
 		1: {"1", "4"},
 		2: {"2", "5"},
-	})
+	}, result1)
 
 	type myInt int
 	type myInts []myInt
@@ -275,12 +275,12 @@ func TestGroupByMap(t *testing.T) {
 		return int(i % 3), strconv.Itoa(int(i))
 	})
 
-	is.Equal(len(result2), 3)
-	is.Equal(result2, map[int][]string{
+	is.Len(result2, 3)
+	is.Equal(map[int][]string{
 		0: {"0", "3"},
 		1: {"1", "4"},
 		2: {"2", "5"},
-	})
+	}, result2)
 
 	type product struct {
 		ID         int64
@@ -297,12 +297,12 @@ func TestGroupByMap(t *testing.T) {
 		return item.CategoryID, "Product " + strconv.FormatInt(item.ID, 10)
 	})
 
-	is.Equal(len(result3), 3)
-	is.Equal(result3, map[int64][]string{
+	is.Len(result3, 3)
+	is.Equal(map[int64][]string{
 		1: {"Product 1", "Product 2"},
 		2: {"Product 3"},
 		3: {"Product 4", "Product 5"},
-	})
+	}, result3)
 }
 
 func TestChunk(t *testing.T) {
@@ -314,10 +314,10 @@ func TestChunk(t *testing.T) {
 	result3 := Chunk([]int{}, 2)
 	result4 := Chunk([]int{0}, 2)
 
-	is.Equal(result1, [][]int{{0, 1}, {2, 3}, {4, 5}})
-	is.Equal(result2, [][]int{{0, 1}, {2, 3}, {4, 5}, {6}})
-	is.Equal(result3, [][]int{})
-	is.Equal(result4, [][]int{{0}})
+	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}}, result1)
+	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}, {6}}, result2)
+	is.Equal([][]int{}, result3)
+	is.Equal([][]int{{0}}, result4)
 	is.PanicsWithValue("Second parameter must be greater than 0", func() {
 		Chunk([]int{0}, 0)
 	})
@@ -331,7 +331,7 @@ func TestChunk(t *testing.T) {
 	originalArray := []int{0, 1, 2, 3, 4, 5}
 	result5 := Chunk(originalArray, 2)
 	result5[0] = append(result5[0], 6)
-	is.Equal(originalArray, []int{0, 1, 2, 3, 4, 5})
+	is.Equal([]int{0, 1, 2, 3, 4, 5}, originalArray)
 }
 
 func TestPartitionBy(t *testing.T) {
@@ -350,8 +350,8 @@ func TestPartitionBy(t *testing.T) {
 	result1 := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
 	result2 := PartitionBy([]int{}, oddEven)
 
-	is.Equal(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
-	is.Equal(result2, [][]int{})
+	is.Equal([][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}}, result1)
+	is.Equal([][]int{}, result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -367,7 +367,7 @@ func TestFlatten(t *testing.T) {
 
 	result1 := Flatten([][]int{{0, 1}, {2, 3, 4, 5}})
 
-	is.Equal(result1, []int{0, 1, 2, 3, 4, 5})
+	is.Equal([]int{0, 1, 2, 3, 4, 5}, result1)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -435,8 +435,8 @@ func TestShuffle(t *testing.T) {
 	result1 := Shuffle([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 	result2 := Shuffle([]int{})
 
-	is.NotEqual(result1, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-	is.Equal(result2, []int{})
+	is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result1)
+	is.Equal([]int{}, result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -452,9 +452,9 @@ func TestReverse(t *testing.T) {
 	result2 := Reverse([]int{0, 1, 2, 3, 4, 5, 6})
 	result3 := Reverse([]int{})
 
-	is.Equal(result1, []int{5, 4, 3, 2, 1, 0})
-	is.Equal(result2, []int{6, 5, 4, 3, 2, 1, 0})
-	is.Equal(result3, []int{})
+	is.Equal([]int{5, 4, 3, 2, 1, 0}, result1)
+	is.Equal([]int{6, 5, 4, 3, 2, 1, 0}, result2)
+	is.Equal([]int{}, result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -469,8 +469,8 @@ func TestFill(t *testing.T) {
 	result1 := Fill([]foo{{"a"}, {"a"}}, foo{"b"})
 	result2 := Fill([]foo{}, foo{"a"})
 
-	is.Equal(result1, []foo{{"b"}, {"b"}})
-	is.Equal(result2, []foo{})
+	is.Equal([]foo{{"b"}, {"b"}}, result1)
+	is.Equal([]foo{}, result2)
 }
 
 func TestRepeat(t *testing.T) {
@@ -480,8 +480,8 @@ func TestRepeat(t *testing.T) {
 	result1 := Repeat(2, foo{"a"})
 	result2 := Repeat(0, foo{"a"})
 
-	is.Equal(result1, []foo{{"a"}, {"a"}})
-	is.Equal(result2, []foo{})
+	is.Equal([]foo{{"a"}, {"a"}}, result1)
+	is.Equal([]foo{}, result2)
 }
 
 func TestRepeatBy(t *testing.T) {
@@ -509,7 +509,7 @@ func TestKeyBy(t *testing.T) {
 		return len(str)
 	})
 
-	is.Equal(result1, map[int]string{1: "a", 2: "aa", 3: "aaa"})
+	is.Equal(map[int]string{1: "a", 2: "aa", 3: "aaa"}, result1)
 }
 
 func TestAssociate(t *testing.T) {
@@ -624,9 +624,9 @@ func TestKeyify(t *testing.T) {
 	result1 := Keyify([]int{1, 2, 3, 4})
 	result2 := Keyify([]int{1, 1, 1, 2})
 	result3 := Keyify([]int{})
-	is.Equal(result1, map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}})
-	is.Equal(result2, map[int]struct{}{1: {}, 2: {}})
-	is.Equal(result3, map[int]struct{}{})
+	is.Equal(map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}}, result1)
+	is.Equal(map[int]struct{}{1: {}, 2: {}}, result2)
+	is.Equal(map[int]struct{}{}, result3)
 }
 
 func TestDrop(t *testing.T) {
@@ -744,13 +744,13 @@ func TestReject(t *testing.T) {
 		return x%2 == 0
 	})
 
-	is.Equal(r1, []int{1, 3})
+	is.Equal([]int{1, 3}, r1)
 
 	r2 := Reject([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
 		return len(x) > 3
 	})
 
-	is.Equal(r2, []string{"foo", "bar"})
+	is.Equal([]string{"foo", "bar"}, r2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -777,10 +777,10 @@ func TestRejectMap(t *testing.T) {
 		return "", true
 	})
 
-	is.Equal(len(r1), 2)
-	is.Equal(len(r2), 2)
-	is.Equal(r1, []string{"2", "4"})
-	is.Equal(r2, []string{"xpu", "xpu"})
+	is.Len(r1, 2)
+	is.Len(r2, 2)
+	is.Equal([]string{"2", "4"}, r1)
+	is.Equal([]string{"xpu", "xpu"}, r2)
 }
 
 func TestFilterReject(t *testing.T) {
@@ -791,15 +791,15 @@ func TestFilterReject(t *testing.T) {
 		return x%2 == 0
 	})
 
-	is.Equal(left1, []int{2, 4})
-	is.Equal(right1, []int{1, 3})
+	is.Equal([]int{2, 4}, left1)
+	is.Equal([]int{1, 3}, right1)
 
 	left2, right2 := FilterReject([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
 		return len(x) > 3
 	})
 
-	is.Equal(left2, []string{"Smith", "Domin", "Olivia"})
-	is.Equal(right2, []string{"foo", "bar"})
+	is.Equal([]string{"Smith", "Domin", "Olivia"}, left2)
+	is.Equal([]string{"foo", "bar"}, right2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -818,9 +818,9 @@ func TestCount(t *testing.T) {
 	count2 := Count([]int{1, 2, 1}, 3)
 	count3 := Count([]int{}, 1)
 
-	is.Equal(count1, 2)
-	is.Equal(count2, 0)
-	is.Equal(count3, 0)
+	is.Equal(2, count1)
+	is.Zero(count2)
+	is.Zero(count3)
 }
 
 func TestCountBy(t *testing.T) {
@@ -839,9 +839,9 @@ func TestCountBy(t *testing.T) {
 		return i <= 2
 	})
 
-	is.Equal(count1, 2)
-	is.Equal(count2, 0)
-	is.Equal(count3, 0)
+	is.Equal(2, count1)
+	is.Zero(count2)
+	is.Zero(count3)
 }
 
 func TestCountValues(t *testing.T) {
@@ -1025,15 +1025,15 @@ func TestCompact(t *testing.T) {
 
 	r1 := Compact([]int{2, 0, 4, 0})
 
-	is.Equal(r1, []int{2, 4})
+	is.Equal([]int{2, 4}, r1)
 
 	r2 := Compact([]string{"", "foo", "", "bar", ""})
 
-	is.Equal(r2, []string{"foo", "bar"})
+	is.Equal([]string{"foo", "bar"}, r2)
 
 	r3 := Compact([]bool{true, false, true, false})
 
-	is.Equal(r3, []bool{true, true})
+	is.Equal([]bool{true, true}, r3)
 
 	type foo struct {
 		bar int
@@ -1049,7 +1049,7 @@ func TestCompact(t *testing.T) {
 		{bar: 2, baz: ""},  // bar is non-zero
 	})
 
-	is.Equal(r4, []foo{{bar: 1, baz: "a"}, {bar: 2, baz: ""}})
+	is.Equal([]foo{{bar: 1, baz: "a"}, {bar: 2, baz: ""}}, r4)
 
 	// slice of pointers to structs
 	// If an element is nil, Compact removes it.
@@ -1058,7 +1058,7 @@ func TestCompact(t *testing.T) {
 	// NOTE: e2 is a zero value of foo, but its pointer &e2 is not a zero value of *foo.
 	r5 := Compact([]*foo{&e1, &e2, nil, &e3})
 
-	is.Equal(r5, []*foo{&e1, &e2, &e3})
+	is.Equal([]*foo{&e1, &e2, &e3}, r5)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -1114,21 +1114,21 @@ func TestSplice(t *testing.T) {
 	// positive overflow
 	results = Splice(sample, 42, "1", "2")
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
-	is.Equal(results, []string{"a", "b", "c", "d", "e", "f", "g", "1", "2"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g", "1", "2"}, results)
 
 	// negative overflow
 	results = Splice(sample, -42, "1", "2")
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
-	is.Equal(results, []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"})
+	is.Equal([]string{"1", "2", "a", "b", "c", "d", "e", "f", "g"}, results)
 
 	// backward
 	results = Splice(sample, -2, "1", "2")
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
-	is.Equal(results, []string{"a", "b", "c", "d", "e", "1", "2", "f", "g"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "1", "2", "f", "g"}, results)
 
 	results = Splice(sample, -7, "1", "2")
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
-	is.Equal(results, []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"})
+	is.Equal([]string{"1", "2", "a", "b", "c", "d", "e", "f", "g"}, results)
 
 	// other
 	is.Equal([]string{"1", "2"}, Splice([]string{}, 0, "1", "2"))

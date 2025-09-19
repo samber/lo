@@ -60,7 +60,7 @@ func TestToPtr(t *testing.T) {
 
 	result1 := ToPtr([]int{1, 2})
 
-	is.Equal(*result1, []int{1, 2})
+	is.Equal([]int{1, 2}, *result1)
 }
 
 func TestNil(t *testing.T) {
@@ -94,11 +94,11 @@ func TestEmptyableToPtr(t *testing.T) {
 	is.Nil(EmptyableToPtr[map[int]int](nil))
 	is.Nil(EmptyableToPtr[error](nil))
 
-	is.Equal(*EmptyableToPtr(42), 42)
-	is.Equal(*EmptyableToPtr("nonempty"), "nonempty")
-	is.Equal(*EmptyableToPtr([]int{}), []int{})
-	is.Equal(*EmptyableToPtr([]int{1, 2}), []int{1, 2})
-	is.Equal(*EmptyableToPtr(map[int]int{}), map[int]int{})
+	is.Equal(42, *EmptyableToPtr(42))
+	is.Equal("nonempty", *EmptyableToPtr("nonempty"))
+	is.Equal([]int{}, *EmptyableToPtr([]int{}))
+	is.Equal([]int{1, 2}, *EmptyableToPtr([]int{1, 2}))
+	is.Equal(map[int]int{}, *EmptyableToPtr(map[int]int{}))
 	is.Equal(*EmptyableToPtr(assert.AnError), assert.AnError)
 }
 
@@ -110,10 +110,10 @@ func TestFromPtr(t *testing.T) {
 	ptr := &str1
 
 	is.Equal("foo", FromPtr(ptr))
-	is.Equal("", FromPtr[string](nil))
-	is.Equal(0, FromPtr[int](nil))
+	is.Empty(FromPtr[string](nil))
+	is.Zero(FromPtr[int](nil))
 	is.Nil(FromPtr[*string](nil))
-	is.EqualValues(ptr, FromPtr(&ptr))
+	is.Equal(ptr, FromPtr(&ptr))
 }
 
 func TestFromPtrOr(t *testing.T) {
@@ -142,7 +142,7 @@ func TestToSlicePtr(t *testing.T) {
 	str2 := "bar"
 	result1 := ToSlicePtr([]string{str1, str2})
 
-	is.Equal(result1, []*string{&str1, &str2})
+	is.Equal([]*string{&str1, &str2}, result1)
 }
 
 func TestFromSlicePtr(t *testing.T) {
@@ -152,7 +152,7 @@ func TestFromSlicePtr(t *testing.T) {
 	str2 := "bar"
 	result1 := FromSlicePtr([]*string{&str1, &str2, nil})
 
-	is.Equal(result1, []string{str1, str2, ""})
+	is.Equal([]string{str1, str2, ""}, result1)
 }
 
 func TestFromSlicePtrOr(t *testing.T) {
@@ -162,7 +162,7 @@ func TestFromSlicePtrOr(t *testing.T) {
 	str2 := "bar"
 	result1 := FromSlicePtrOr([]*string{&str1, &str2, nil}, "fallback")
 
-	is.Equal(result1, []string{str1, str2, "fallback"})
+	is.Equal([]string{str1, str2, "fallback"}, result1)
 }
 
 func TestToAnySlice(t *testing.T) {
@@ -270,7 +270,7 @@ func TestCoalesce(t *testing.T) {
 	result9, ok9 := Coalesce(zeroStruct, struct1)
 	result10, ok10 := Coalesce(zeroStruct, struct1, struct2)
 
-	is.Equal(0, result1)
+	is.Zero(result1)
 	is.False(ok1)
 
 	is.Equal(3, result2)
@@ -288,16 +288,16 @@ func TestCoalesce(t *testing.T) {
 	is.Equal(str1, result6)
 	is.True(ok6)
 
-	is.Equal(result7, 1)
+	is.Equal(1, result7)
 	is.True(ok7)
 
-	is.Equal(result8, zeroStruct)
+	is.Zero(result8)
 	is.False(ok8)
 
-	is.Equal(result9, struct1)
+	is.Equal(struct1, result9)
 	is.True(ok9)
 
-	is.Equal(result10, struct1)
+	is.Equal(struct1, result10)
 	is.True(ok10)
 }
 
@@ -329,16 +329,16 @@ func TestCoalesceOrEmpty(t *testing.T) {
 	result9 := CoalesceOrEmpty(zeroStruct, struct1)
 	result10 := CoalesceOrEmpty(zeroStruct, struct1, struct2)
 
-	is.Equal(0, result1)
+	is.Zero(result1)
 	is.Equal(3, result2)
 	is.Nil(result3)
 	is.Equal(str1, result4)
 	is.Equal(str1, result5)
 	is.Equal(str1, result6)
-	is.Equal(result7, 1)
-	is.Equal(result8, zeroStruct)
-	is.Equal(result9, struct1)
-	is.Equal(result10, struct1)
+	is.Equal(1, result7)
+	is.Zero(result8)
+	is.Equal(struct1, result9)
+	is.Equal(struct1, result10)
 }
 
 func TestCoalesceSlice(t *testing.T) {

@@ -15,21 +15,21 @@ func TestKeys(t *testing.T) {
 
 	r1 := Keys(map[string]int{"foo": 1, "bar": 2})
 	sort.Strings(r1)
-	is.Equal(r1, []string{"bar", "foo"})
+	is.Equal([]string{"bar", "foo"}, r1)
 
 	r2 := Keys(map[string]int{})
 	is.Empty(r2)
 
 	r3 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
 	sort.Strings(r3)
-	is.Equal(r3, []string{"bar", "baz", "foo"})
+	is.Equal([]string{"bar", "baz", "foo"}, r3)
 
 	r4 := Keys[string, int]()
-	is.Equal(r4, []string{})
+	is.Equal([]string{}, r4)
 
 	r5 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 	sort.Strings(r5)
-	is.Equal(r5, []string{"bar", "bar", "foo"})
+	is.Equal([]string{"bar", "bar", "foo"}, r5)
 }
 
 func TestUniqKeys(t *testing.T) {
@@ -38,25 +38,25 @@ func TestUniqKeys(t *testing.T) {
 
 	r1 := UniqKeys(map[string]int{"foo": 1, "bar": 2})
 	sort.Strings(r1)
-	is.Equal(r1, []string{"bar", "foo"})
+	is.Equal([]string{"bar", "foo"}, r1)
 
 	r2 := UniqKeys(map[string]int{})
 	is.Empty(r2)
 
 	r3 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
 	sort.Strings(r3)
-	is.Equal(r3, []string{"bar", "baz", "foo"})
+	is.Equal([]string{"bar", "baz", "foo"}, r3)
 
 	r4 := UniqKeys[string, int]()
-	is.Equal(r4, []string{})
+	is.Equal([]string{}, r4)
 
 	r5 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
 	sort.Strings(r5)
-	is.Equal(r5, []string{"bar", "foo"})
+	is.Equal([]string{"bar", "foo"}, r5)
 
 	// check order
 	r6 := UniqKeys(map[string]int{"foo": 1}, map[string]int{"bar": 3})
-	is.Equal(r6, []string{"foo", "bar"})
+	is.Equal([]string{"foo", "bar"}, r6)
 }
 
 func TestHasKey(t *testing.T) {
@@ -76,21 +76,21 @@ func TestValues(t *testing.T) {
 
 	r1 := Values(map[string]int{"foo": 1, "bar": 2})
 	sort.Ints(r1)
-	is.Equal(r1, []int{1, 2})
+	is.Equal([]int{1, 2}, r1)
 
 	r2 := Values(map[string]int{})
 	is.Empty(r2)
 
 	r3 := Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
 	sort.Ints(r3)
-	is.Equal(r3, []int{1, 2, 3})
+	is.Equal([]int{1, 2, 3}, r3)
 
 	r4 := Values[string, int]()
-	is.Equal(r4, []int{})
+	is.Equal([]int{}, r4)
 
 	r5 := Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
 	sort.Ints(r5)
-	is.Equal(r5, []int{1, 1, 2, 3})
+	is.Equal([]int{1, 1, 2, 3}, r5)
 }
 
 func TestUniqValues(t *testing.T) {
@@ -99,29 +99,29 @@ func TestUniqValues(t *testing.T) {
 
 	r1 := UniqValues(map[string]int{"foo": 1, "bar": 2})
 	sort.Ints(r1)
-	is.Equal(r1, []int{1, 2})
+	is.Equal([]int{1, 2}, r1)
 
 	r2 := UniqValues(map[string]int{})
 	is.Empty(r2)
 
 	r3 := UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
 	sort.Ints(r3)
-	is.Equal(r3, []int{1, 2, 3})
+	is.Equal([]int{1, 2, 3}, r3)
 
 	r4 := UniqValues[string, int]()
-	is.Equal(r4, []int{})
+	is.Equal([]int{}, r4)
 
 	r5 := UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
 	sort.Ints(r5)
-	is.Equal(r5, []int{1, 2, 3})
+	is.Equal([]int{1, 2, 3}, r5)
 
 	r6 := UniqValues(map[string]int{"foo": 1, "bar": 1}, map[string]int{"foo": 1, "bar": 3})
 	sort.Ints(r6)
-	is.Equal(r6, []int{1, 3})
+	is.Equal([]int{1, 3}, r6)
 
 	// check order
 	r7 := UniqValues(map[string]int{"foo": 1}, map[string]int{"bar": 3})
-	is.Equal(r7, []int{1, 3})
+	is.Equal([]int{1, 3}, r7)
 }
 
 func TestValueOr(t *testing.T) {
@@ -129,10 +129,10 @@ func TestValueOr(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := ValueOr(map[string]int{"foo": 1}, "bar", 2)
-	is.Equal(r1, 2)
+	is.Equal(2, r1)
 
 	r2 := ValueOr(map[string]int{"foo": 1}, "foo", 2)
-	is.Equal(r2, 1)
+	is.Equal(1, r2)
 }
 
 func TestPickBy(t *testing.T) {
@@ -143,7 +143,7 @@ func TestPickBy(t *testing.T) {
 		return value%2 == 1
 	})
 
-	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+	is.Equal(map[string]int{"foo": 1, "baz": 3}, r1)
 
 	type myMap map[string]int
 	before := myMap{"": 0, "foobar": 6, "baz": 3}
@@ -157,7 +157,7 @@ func TestPickByKeys(t *testing.T) {
 
 	r1 := PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz", "qux"})
 
-	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+	is.Equal(map[string]int{"foo": 1, "baz": 3}, r1)
 
 	type myMap map[string]int
 	before := myMap{"": 0, "foobar": 6, "baz": 3}
@@ -171,7 +171,7 @@ func TestPickByValues(t *testing.T) {
 
 	r1 := PickByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
-	is.Equal(r1, map[string]int{"foo": 1, "baz": 3})
+	is.Equal(map[string]int{"foo": 1, "baz": 3}, r1)
 
 	type myMap map[string]int
 	before := myMap{"": 0, "foobar": 6, "baz": 3}
@@ -187,7 +187,7 @@ func TestOmitBy(t *testing.T) {
 		return value%2 == 1
 	})
 
-	is.Equal(r1, map[string]int{"bar": 2})
+	is.Equal(map[string]int{"bar": 2}, r1)
 
 	type myMap map[string]int
 	before := myMap{"": 0, "foobar": 6, "baz": 3}
@@ -201,7 +201,7 @@ func TestOmitByKeys(t *testing.T) {
 
 	r1 := OmitByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz", "qux"})
 
-	is.Equal(r1, map[string]int{"bar": 2})
+	is.Equal(map[string]int{"bar": 2}, r1)
 
 	type myMap map[string]int
 	before := myMap{"": 0, "foobar": 6, "baz": 3}
@@ -215,7 +215,7 @@ func TestOmitByValues(t *testing.T) {
 
 	r1 := OmitByValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []int{1, 3})
 
-	is.Equal(r1, map[string]int{"bar": 2})
+	is.Equal(map[string]int{"bar": 2}, r1)
 
 	type myMap map[string]int
 	before := myMap{"": 0, "foobar": 6, "baz": 3}
@@ -232,7 +232,7 @@ func TestEntries(t *testing.T) {
 	sort.Slice(r1, func(i, j int) bool {
 		return r1[i].Value < r1[j].Value
 	})
-	is.EqualValues(r1, []Entry[string, int]{
+	is.Equal([]Entry[string, int]{
 		{
 			Key:   "foo",
 			Value: 1,
@@ -241,7 +241,7 @@ func TestEntries(t *testing.T) {
 			Key:   "bar",
 			Value: 2,
 		},
-	})
+	}, r1)
 }
 
 func TestToPairs(t *testing.T) {
@@ -253,7 +253,7 @@ func TestToPairs(t *testing.T) {
 	sort.Slice(r1, func(i, j int) bool {
 		return r1[i].Value < r1[j].Value
 	})
-	is.EqualValues(r1, []Entry[string, int]{
+	is.Equal([]Entry[string, int]{
 		{
 			Key:   "baz",
 			Value: 3,
@@ -262,7 +262,7 @@ func TestToPairs(t *testing.T) {
 			Key:   "qux",
 			Value: 4,
 		},
-	})
+	}, r1)
 }
 
 func TestFromEntries(t *testing.T) {
@@ -281,8 +281,8 @@ func TestFromEntries(t *testing.T) {
 	})
 
 	is.Len(r1, 2)
-	is.Equal(r1["foo"], 1)
-	is.Equal(r1["bar"], 2)
+	is.Equal(1, r1["foo"])
+	is.Equal(2, r1["bar"])
 }
 
 func TestFromPairs(t *testing.T) {
@@ -301,8 +301,8 @@ func TestFromPairs(t *testing.T) {
 	})
 
 	is.Len(r1, 2)
-	is.Equal(r1["baz"], 3)
-	is.Equal(r1["qux"], 4)
+	is.Equal(3, r1["baz"])
+	is.Equal(4, r1["qux"])
 }
 
 func TestInvert(t *testing.T) {
@@ -313,7 +313,7 @@ func TestInvert(t *testing.T) {
 	r2 := Invert(map[string]int{"a": 1, "b": 2, "c": 1})
 
 	is.Len(r1, 2)
-	is.EqualValues(map[int]string{1: "a", 2: "b"}, r1)
+	is.Equal(map[int]string{1: "a", 2: "b"}, r1)
 	is.Len(r2, 2)
 }
 
@@ -324,7 +324,7 @@ func TestAssign(t *testing.T) {
 	result1 := Assign(map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4})
 
 	is.Len(result1, 3)
-	is.Equal(result1, map[string]int{"a": 1, "b": 3, "c": 4})
+	is.Equal(map[string]int{"a": 1, "b": 3, "c": 4}, result1)
 
 	type myMap map[string]int
 	before := myMap{"": 0, "foobar": 6, "baz": 3}
@@ -375,7 +375,7 @@ func TestChunkEntries(t *testing.T) {
 	for k := range result6[0] {
 		result6[0][k] = 10
 	}
-	is.Equal(originalMap, map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5})
+	is.Equal(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, originalMap)
 }
 
 func TestMapKeys(t *testing.T) {
@@ -389,9 +389,9 @@ func TestMapKeys(t *testing.T) {
 		return strconv.FormatInt(int64(v), 10)
 	})
 
-	is.Equal(len(result1), 1)
-	is.Equal(len(result2), 4)
-	is.Equal(result2, map[string]int{"1": 1, "2": 2, "3": 3, "4": 4})
+	is.Len(result1, 1)
+	is.Len(result2, 4)
+	is.Equal(map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}, result2)
 }
 
 func TestMapValues(t *testing.T) {
@@ -405,16 +405,16 @@ func TestMapValues(t *testing.T) {
 		return strconv.FormatInt(int64(x), 10)
 	})
 
-	is.Equal(len(result1), 4)
-	is.Equal(len(result2), 4)
-	is.Equal(result1, map[int]string{1: "Hello", 2: "Hello", 3: "Hello", 4: "Hello"})
-	is.Equal(result2, map[int]string{1: "1", 2: "2", 3: "3", 4: "4"})
+	is.Len(result1, 4)
+	is.Len(result2, 4)
+	is.Equal(map[int]string{1: "Hello", 2: "Hello", 3: "Hello", 4: "Hello"}, result1)
+	is.Equal(map[int]string{1: "1", 2: "2", 3: "3", 4: "4"}, result2)
 }
 
 func mapEntriesTest[I any, O any](t *testing.T, in map[string]I, iteratee func(string, I) (string, O), expected map[string]O) {
 	is := assert.New(t)
 	result := MapEntries(in, iteratee)
-	is.Equal(result, expected)
+	is.Equal(expected, result)
 }
 
 func TestMapEntries(t *testing.T) {
@@ -435,7 +435,7 @@ func TestMapEntries(t *testing.T) {
 		MapEntries(r1, func(k string, v int) (string, string) {
 			return k, strconv.Itoa(v) + "!!"
 		})
-		is.Equal(r1, map[string]int{"foo": 1, "bar": 2})
+		is.Equal(map[string]int{"foo": 1, "bar": 2}, r1)
 	}
 	// EmptyInput
 	{
@@ -507,8 +507,8 @@ func TestMapToSlice(t *testing.T) {
 		return strconv.FormatInt(int64(k), 10)
 	})
 
-	is.Equal(len(result1), 4)
-	is.Equal(len(result2), 4)
+	is.Len(result1, 4)
+	is.Len(result2, 4)
 	is.ElementsMatch(result1, []string{"1_5", "2_6", "3_7", "4_8"})
 	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
 }
@@ -524,8 +524,8 @@ func TestFilterMapToSlice(t *testing.T) {
 		return strconv.FormatInt(int64(k), 10), k%2 == 0
 	})
 
-	is.Equal(len(result1), 2)
-	is.Equal(len(result2), 2)
+	is.Len(result1, 2)
+	is.Len(result2, 2)
 	is.ElementsMatch(result1, []string{"2_6", "4_8"})
 	is.ElementsMatch(result2, []string{"2", "4"})
 }
@@ -544,7 +544,7 @@ func TestFilterKeys(t *testing.T) {
 		return false
 	})
 	is.Equal([]string{}, result2)
-	is.Len(result2, 0)
+	is.Empty(result2)
 }
 
 func TestFilterValues(t *testing.T) {
@@ -561,7 +561,7 @@ func TestFilterValues(t *testing.T) {
 		return false
 	})
 	is.Equal([]int{}, result2)
-	is.Len(result2, 0)
+	is.Empty(result2)
 }
 
 func BenchmarkAssign(b *testing.B) {

@@ -78,8 +78,8 @@ func TestSubstring(t *testing.T) {
 	str14 := Substring("你好，世界", 0, 3)
 	str15 := Substring("hello", 5, 1)
 
-	is.Equal("", str1)
-	is.Equal("", str2)
+	is.Empty(str1)
+	is.Empty(str2)
 	is.Equal("he", str3)
 	is.Equal("hello", str4)
 	is.Equal("he", str5)
@@ -92,7 +92,7 @@ func TestSubstring(t *testing.T) {
 	is.Equal("ello", str12)
 	is.Equal("🏠🐶", str13)
 	is.Equal("你好，", str14)
-	is.Equal("", str15)
+	is.Empty(str15)
 }
 
 func TestRuneLength(t *testing.T) {
@@ -100,7 +100,7 @@ func TestRuneLength(t *testing.T) {
 	is := assert.New(t)
 
 	is.Equal(5, RuneLength("hellô"))
-	is.Equal(6, len("hellô"))
+	is.Len("hellô", 6)
 }
 
 func TestAllCase(t *testing.T) {

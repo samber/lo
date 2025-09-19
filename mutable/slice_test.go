@@ -15,16 +15,16 @@ func TestFilter(t *testing.T) {
 		return x%2 == 0
 	})
 
-	is.Equal(input1, []int{2, 4, 3, 4})
-	is.Equal(r1, []int{2, 4})
+	is.Equal([]int{2, 4, 3, 4}, input1)
+	is.Equal([]int{2, 4}, r1)
 
 	input2 := []string{"", "foo", "", "bar", ""}
 	r2 := Filter(input2, func(x string) bool {
 		return len(x) > 0
 	})
 
-	is.Equal(input2, []string{"foo", "bar", "", "bar", ""})
-	is.Equal(r2, []string{"foo", "bar"})
+	is.Equal([]string{"foo", "bar", "", "bar", ""}, input2)
+	is.Equal([]string{"foo", "bar"}, r2)
 }
 
 func TestFilterI(t *testing.T) {
@@ -36,7 +36,7 @@ func TestFilterI(t *testing.T) {
 		return x%2 == 0
 	})
 
-	is.Equal(r1, []int{2, 4})
+	is.Equal([]int{2, 4}, r1)
 }
 
 func TestMap(t *testing.T) {
@@ -47,15 +47,15 @@ func TestMap(t *testing.T) {
 	Map(list, func(x int) int {
 		return x * 2
 	})
-	is.Equal(len(list), 4)
-	is.Equal(list, []int{2, 4, 6, 8})
+	is.Len(list, 4)
+	is.Equal([]int{2, 4, 6, 8}, list)
 
 	list = []int{1, 2, 3, 4}
 	Map(list, func(x int) int {
 		return x * 4
 	})
-	is.Equal(len(list), 4)
-	is.Equal(list, []int{4, 8, 12, 16})
+	is.Len(list, 4)
+	is.Equal([]int{4, 8, 12, 16}, list)
 }
 
 func TestMapI(t *testing.T) {
@@ -67,16 +67,16 @@ func TestMapI(t *testing.T) {
 		is.Equal(index, x-1)
 		return x * 2
 	})
-	is.Equal(len(list), 4)
-	is.Equal(list, []int{2, 4, 6, 8})
+	is.Len(list, 4)
+	is.Equal([]int{2, 4, 6, 8}, list)
 
 	list = []int{1, 2, 3, 4}
 	MapI(list, func(x int, index int) int {
 		is.Equal(index, x-1)
 		return x * 4
 	})
-	is.Equal(len(list), 4)
-	is.Equal(list, []int{4, 8, 12, 16})
+	is.Len(list, 4)
+	is.Equal([]int{4, 8, 12, 16}, list)
 }
 
 func TestShuffle(t *testing.T) {
@@ -85,11 +85,11 @@ func TestShuffle(t *testing.T) {
 
 	list := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 	Shuffle(list)
-	is.NotEqual(list, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+	is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, list)
 
 	list = []int{}
 	Shuffle(list)
-	is.Equal(list, []int{})
+	is.Equal([]int{}, list)
 }
 
 func TestReverse(t *testing.T) {
@@ -98,15 +98,15 @@ func TestReverse(t *testing.T) {
 
 	list := []int{0, 1, 2, 3, 4, 5}
 	Reverse(list)
-	is.Equal(list, []int{5, 4, 3, 2, 1, 0})
+	is.Equal([]int{5, 4, 3, 2, 1, 0}, list)
 
 	list = []int{0, 1, 2, 3, 4, 5, 6}
 	Reverse(list)
-	is.Equal(list, []int{6, 5, 4, 3, 2, 1, 0})
+	is.Equal([]int{6, 5, 4, 3, 2, 1, 0}, list)
 
 	list = []int{}
 	Reverse(list)
-	is.Equal(list, []int{})
+	is.Equal([]int{}, list)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
