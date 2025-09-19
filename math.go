@@ -68,7 +68,7 @@ func Clamp[T constraints.Ordered](value T, min T, max T) T {
 // Sum sums the values in a collection. If collection is empty 0 is returned.
 // Play: https://go.dev/play/p/upfeJVqs4Bt
 func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
-	var sum T = 0
+	var sum T
 	for i := range collection {
 		sum += collection[i]
 	}
@@ -78,9 +78,9 @@ func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collec
 // SumBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 0 is returned.
 // Play: https://go.dev/play/p/Dz_a_7jN_ca
 func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) R) R {
-	var sum R = 0
+	var sum R
 	for i := range collection {
-		sum = sum + iteratee(collection[i])
+		sum += iteratee(collection[i])
 	}
 	return sum
 }
@@ -116,28 +116,28 @@ func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Co
 
 	var product R = 1
 	for i := range collection {
-		product = product * iteratee(collection[i])
+		product *= iteratee(collection[i])
 	}
 	return product
 }
 
 // Mean calculates the mean of a collection of numbers.
 func Mean[T constraints.Float | constraints.Integer](collection []T) T {
-	var length = T(len(collection))
+	length := T(len(collection))
 	if length == 0 {
 		return 0
 	}
-	var sum = Sum(collection)
+	sum := Sum(collection)
 	return sum / length
 }
 
 // MeanBy calculates the mean of a collection of numbers using the given return value from the iteration function.
 func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(item T) R) R {
-	var length = R(len(collection))
+	length := R(len(collection))
 	if length == 0 {
 		return 0
 	}
-	var sum = SumBy(collection, iteratee)
+	sum := SumBy(collection, iteratee)
 	return sum / length
 }
 
@@ -145,12 +145,12 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, it
 // If multiple values ​​have the same highest frequency, then multiple values ​​are returned.
 // If the collection is empty, then the zero value of T is returned.
 func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
-	var length = T(len(collection))
+	length := T(len(collection))
 	if length == 0 {
 		return []T{}
 	}
 
-	var mode = make([]T, 0)
+	mode := make([]T, 0)
 	maxFreq := 0
 	frequency := make(map[T]int)
 

@@ -518,7 +518,9 @@ func TestTryWithErrorValue(t *testing.T) {
 		return errors.New("foo")
 	})
 	is.False(ok)
-	is.EqualError(err.(error), "foo")
+	e, isError := err.(error)
+	is.True(isError)
+	is.EqualError(e, "foo")
 
 	err, ok = TryWithErrorValue(func() error {
 		return nil
@@ -618,7 +620,7 @@ func TestAssert(t *testing.T) {
 		Assert(false, "user defined message")
 	})
 
-	//checks that the examples in `README.md` compile
+	// checks that the examples in `README.md` compile
 	{
 		age := 20
 		is.NotPanics(func() {
@@ -650,7 +652,7 @@ func TestAssertf(t *testing.T) {
 		Assertf(false, "user defined message %d %d", 1, 2)
 	})
 
-	//checks that the example in `README.md` compiles
+	// checks that the example in `README.md` compiles
 	{
 		age := 7
 		is.PanicsWithValue("assertion failed: user age must be >= 15, got 7", func() {

@@ -25,7 +25,7 @@ func messageFromMsgAndArgs(msgAndArgs ...any) string {
 		return fmt.Sprintf("%+v", msgAndArgs[0])
 	}
 	if len(msgAndArgs) > 1 {
-		return fmt.Sprintf(msgAndArgs[0].(string), msgAndArgs[1:]...)
+		return fmt.Sprintf(msgAndArgs[0].(string), msgAndArgs[1:]...) //nolint:errcheck,forcetypeassert
 	}
 	return ""
 }
@@ -51,9 +51,8 @@ func must(err any, messageArgs ...any) {
 		message := messageFromMsgAndArgs(messageArgs...)
 		if message != "" {
 			panic(message + ": " + e.Error())
-		} else {
-			panic(e.Error())
 		}
+		panic(e.Error())
 
 	default:
 		panic("must: invalid err type '" + reflect.TypeOf(err).Name() + "', should either be a bool or an error")

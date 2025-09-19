@@ -350,18 +350,14 @@ func TestZipBy(t *testing.T) {
 	r1 := ZipBy2(
 		[]string{"a", "b"},
 		[]int{1, 2},
-		func(a string, b int) Tuple2[string, int] {
-			return T2(a, b)
-		},
+		T2[string, int],
 	)
 
 	r2 := ZipBy3(
 		[]string{"a", "b", "c"},
 		[]int{1, 2, 3},
 		[]int{4, 5, 6},
-		func(a string, b int, c int) Tuple3[string, int, int] {
-			return T3(a, b, c)
-		},
+		T3[string, int, int],
 	)
 
 	r3 := ZipBy4(
@@ -369,9 +365,7 @@ func TestZipBy(t *testing.T) {
 		[]int{1, 2, 3, 4},
 		[]int{5, 6, 7, 8},
 		[]bool{true, true, true, true},
-		func(a string, b int, c int, d bool) Tuple4[string, int, int, bool] {
-			return T4(a, b, c, d)
-		},
+		T4[string, int, int, bool],
 	)
 
 	r4 := ZipBy5(
@@ -380,9 +374,7 @@ func TestZipBy(t *testing.T) {
 		[]int{6, 7, 8, 9, 10},
 		[]bool{true, true, true, true, true},
 		[]float32{0.1, 0.2, 0.3, 0.4, 0.5},
-		func(a string, b int, c int, d bool, e float32) Tuple5[string, int, int, bool, float32] {
-			return T5(a, b, c, d, e)
-		},
+		T5[string, int, int, bool, float32],
 	)
 
 	r5 := ZipBy6(
@@ -392,9 +384,7 @@ func TestZipBy(t *testing.T) {
 		[]bool{true, true, true, true, true, true},
 		[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6},
 		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06},
-		func(a string, b int, c int, d bool, e float32, f float64) Tuple6[string, int, int, bool, float32, float64] {
-			return T6(a, b, c, d, e, f)
-		},
+		T6[string, int, int, bool, float32, float64],
 	)
 
 	r6 := ZipBy7(
@@ -405,9 +395,7 @@ func TestZipBy(t *testing.T) {
 		[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7},
 		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07},
 		[]int8{1, 2, 3, 4, 5, 6, 7},
-		func(a string, b int, c int, d bool, e float32, f float64, g int8) Tuple7[string, int, int, bool, float32, float64, int8] {
-			return T7(a, b, c, d, e, f, g)
-		},
+		T7[string, int, int, bool, float32, float64, int8],
 	)
 
 	r7 := ZipBy8(
@@ -419,9 +407,7 @@ func TestZipBy(t *testing.T) {
 		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08},
 		[]int8{1, 2, 3, 4, 5, 6, 7, 8},
 		[]int16{1, 2, 3, 4, 5, 6, 7, 8},
-		func(a string, b int, c int, d bool, e float32, f float64, g int8, h int16) Tuple8[string, int, int, bool, float32, float64, int8, int16] {
-			return T8(a, b, c, d, e, f, g, h)
-		},
+		T8[string, int, int, bool, float32, float64, int8, int16],
 	)
 
 	r8 := ZipBy9(
@@ -434,9 +420,7 @@ func TestZipBy(t *testing.T) {
 		[]int8{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]int16{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]int32{1, 2, 3, 4, 5, 6, 7, 8, 9},
-		func(a string, b int, c int, d bool, e float32, f float64, g int8, h int16, i int32) Tuple9[string, int, int, bool, float32, float64, int8, int16, int32] {
-			return T9(a, b, c, d, e, f, g, h, i)
-		},
+		T9[string, int, int, bool, float32, float64, int8, int16, int32],
 	)
 
 	is.Equal([]Tuple2[string, int]{

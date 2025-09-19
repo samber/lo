@@ -17,7 +17,7 @@ func (s *synchronize) Do(cb func()) {
 }
 
 // Synchronize wraps the underlying callback in a mutex. It receives an optional mutex.
-func Synchronize(opt ...sync.Locker) *synchronize {
+func Synchronize(opt ...sync.Locker) *synchronize { //nolint:revive
 	if len(opt) > 1 {
 		panic("unexpected arguments")
 	} else if len(opt) == 0 {
