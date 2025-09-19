@@ -526,7 +526,6 @@ func TestNewThrottle(t *testing.T) {
 	reset()
 	th()
 	is.Equal(3, callCount)
-
 }
 
 func TestNewThrottleWithCount(t *testing.T) {
@@ -598,7 +597,6 @@ func TestNewThrottleBy(t *testing.T) {
 	th("a")
 	is.Equal(3, callCountA)
 	is.Equal(2, callCountB)
-
 }
 
 func TestNewThrottleByWithCount(t *testing.T) {

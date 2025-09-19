@@ -123,21 +123,21 @@ func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Co
 
 // Mean calculates the mean of a collection of numbers.
 func Mean[T constraints.Float | constraints.Integer](collection []T) T {
-	var length = T(len(collection))
+	length := T(len(collection))
 	if length == 0 {
 		return 0
 	}
-	var sum = Sum(collection)
+	sum := Sum(collection)
 	return sum / length
 }
 
 // MeanBy calculates the mean of a collection of numbers using the given return value from the iteration function.
 func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(item T) R) R {
-	var length = R(len(collection))
+	length := R(len(collection))
 	if length == 0 {
 		return 0
 	}
-	var sum = SumBy(collection, iteratee)
+	sum := SumBy(collection, iteratee)
 	return sum / length
 }
 
@@ -145,12 +145,12 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, it
 // If multiple values ​​have the same highest frequency, then multiple values ​​are returned.
 // If the collection is empty, then the zero value of T is returned.
 func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
-	var length = T(len(collection))
+	length := T(len(collection))
 	if length == 0 {
 		return []T{}
 	}
 
-	var mode = make([]T, 0)
+	mode := make([]T, 0)
 	maxFreq := 0
 	frequency := make(map[T]int)
 
