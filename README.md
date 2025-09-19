@@ -3556,7 +3556,7 @@ iter, err := lo.Attempt(0, func(i int) error {
 // nil
 ```
 
-For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+For more advanced retry strategies, please take a look at [cenkalti/backoff](https://github.com/cenkalti/backoff) or [Failsafe-go](https://failsafe-go.dev/retry/).
 
 [[play](https://go.dev/play/p/3ggJZ2ZKcMj)]
 
@@ -3579,7 +3579,7 @@ iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duratio
 // nil
 ```
 
-For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+For more advanced retry strategies, please take a look at [cenkalti/backoff](https://github.com/cenkalti/backoff) or [Failsafe-go](https://failsafe-go.dev/retry/).
 
 [[play](https://go.dev/play/p/tVs6CygC7m1)]
 
@@ -3604,7 +3604,7 @@ count1, err1 := lo.AttemptWhile(5, func(i int) (error, bool) {
 })
 ```
 
-For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+For more advanced retry strategies, please take a look at [cenkalti/backoff](https://github.com/cenkalti/backoff) or [Failsafe-go](https://failsafe-go.dev/retry/).
 
 [[play](https://go.dev/play/p/M2wVq24PaZM)]
 
@@ -3629,7 +3629,7 @@ count1, time1, err1 := lo.AttemptWhileWithDelay(5, time.Millisecond, func(i int,
 })
 ```
 
-For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
+For more advanced retry strategies, please take a look at [cenkalti/backoff](https://github.com/cenkalti/backoff) or [Failsafe-go](https://failsafe-go.dev/retry/).
 
 [[play](https://go.dev/play/p/cfcmhvLO-nv)]
 
