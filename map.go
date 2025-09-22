@@ -252,7 +252,7 @@ func Assign[K comparable, V any, Map ~map[K]V](maps ...Map) Map {
 // Play: https://go.dev/play/p/X_YQL6mmoD-
 func ChunkEntries[K comparable, V any](m map[K]V, size int) []map[K]V {
 	if size <= 0 {
-		panic("The chunk size must be greater than 0")
+		panic("lo.ChunkEntries: size must be greater than 0")
 	}
 
 	count := len(m)

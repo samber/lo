@@ -55,7 +55,7 @@ func TestSynchronize(t *testing.T) {
 
 	// check we don't accept multiple arguments
 	{
-		is.PanicsWithValue("unexpected arguments", func() {
+		is.PanicsWithValue("lo.Synchronize: unexpected arguments", func() {
 			mu := &sync.Mutex{}
 			Synchronize(mu, mu, mu)
 		})

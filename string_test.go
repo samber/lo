@@ -27,8 +27,8 @@ func TestRandomString(t *testing.T) {
 	is.Equal(100, RuneLength(str3))
 	is.Subset(noneUtf8Charset, []rune(str3))
 
-	is.PanicsWithValue("lo.RandomString: Charset parameter must not be empty", func() { RandomString(100, []rune{}) })
-	is.PanicsWithValue("lo.RandomString: Size parameter must be greater than 0", func() { RandomString(0, LowerCaseLettersCharset) })
+	is.PanicsWithValue("lo.RandomString: charset must not be empty", func() { RandomString(100, []rune{}) })
+	is.PanicsWithValue("lo.RandomString: size must be greater than 0", func() { RandomString(0, LowerCaseLettersCharset) })
 }
 
 func TestChunkString(t *testing.T) {
@@ -53,7 +53,7 @@ func TestChunkString(t *testing.T) {
 	result6 := ChunkString("明1好休2林森", 2)
 	is.Equal([]string{"明1", "好休", "2林", "森"}, result6)
 
-	is.Panics(func() {
+	is.PanicsWithValue("lo.ChunkString: size must be greater than 0", func() {
 		ChunkString("12345", 0)
 	})
 }
