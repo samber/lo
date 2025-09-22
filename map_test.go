@@ -2,7 +2,6 @@ package lo
 
 import (
 	"fmt"
-	"sort"
 	"strconv"
 	"testing"
 
@@ -14,22 +13,19 @@ func TestKeys(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := Keys(map[string]int{"foo": 1, "bar": 2})
-	sort.Strings(r1)
-	is.Equal([]string{"bar", "foo"}, r1)
+	is.ElementsMatch(r1, []string{"bar", "foo"})
 
 	r2 := Keys(map[string]int{})
 	is.Empty(r2)
 
 	r3 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
-	sort.Strings(r3)
-	is.Equal([]string{"bar", "baz", "foo"}, r3)
+	is.ElementsMatch(r3, []string{"bar", "baz", "foo"})
 
 	r4 := Keys[string, int]()
 	is.Empty(r4)
 
 	r5 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
-	sort.Strings(r5)
-	is.Equal([]string{"bar", "bar", "foo"}, r5)
+	is.ElementsMatch(r5, []string{"bar", "bar", "foo"})
 }
 
 func TestUniqKeys(t *testing.T) {
@@ -37,22 +33,19 @@ func TestUniqKeys(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := UniqKeys(map[string]int{"foo": 1, "bar": 2})
-	sort.Strings(r1)
-	is.Equal([]string{"bar", "foo"}, r1)
+	is.ElementsMatch(r1, []string{"bar", "foo"})
 
 	r2 := UniqKeys(map[string]int{})
 	is.Empty(r2)
 
 	r3 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
-	sort.Strings(r3)
-	is.Equal([]string{"bar", "baz", "foo"}, r3)
+	is.ElementsMatch(r3, []string{"bar", "baz", "foo"})
 
 	r4 := UniqKeys[string, int]()
 	is.Empty(r4)
 
 	r5 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
-	sort.Strings(r5)
-	is.Equal([]string{"bar", "foo"}, r5)
+	is.ElementsMatch(r5, []string{"bar", "foo"})
 
 	// check order
 	r6 := UniqKeys(map[string]int{"foo": 1}, map[string]int{"bar": 3})
@@ -75,22 +68,19 @@ func TestValues(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := Values(map[string]int{"foo": 1, "bar": 2})
-	sort.Ints(r1)
-	is.Equal([]int{1, 2}, r1)
+	is.ElementsMatch(r1, []int{1, 2})
 
 	r2 := Values(map[string]int{})
 	is.Empty(r2)
 
 	r3 := Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
-	sort.Ints(r3)
-	is.Equal([]int{1, 2, 3}, r3)
+	is.ElementsMatch(r3, []int{1, 2, 3})
 
 	r4 := Values[string, int]()
 	is.Empty(r4)
 
 	r5 := Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
-	sort.Ints(r5)
-	is.Equal([]int{1, 1, 2, 3}, r5)
+	is.ElementsMatch(r5, []int{1, 1, 2, 3})
 }
 
 func TestUniqValues(t *testing.T) {
@@ -98,26 +88,22 @@ func TestUniqValues(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := UniqValues(map[string]int{"foo": 1, "bar": 2})
-	sort.Ints(r1)
-	is.Equal([]int{1, 2}, r1)
+	is.ElementsMatch(r1, []int{1, 2})
 
 	r2 := UniqValues(map[string]int{})
 	is.Empty(r2)
 
 	r3 := UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
-	sort.Ints(r3)
-	is.Equal([]int{1, 2, 3}, r3)
+	is.ElementsMatch(r3, []int{1, 2, 3})
 
 	r4 := UniqValues[string, int]()
 	is.Empty(r4)
 
 	r5 := UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
-	sort.Ints(r5)
-	is.Equal([]int{1, 2, 3}, r5)
+	is.ElementsMatch(r5, []int{1, 2, 3})
 
 	r6 := UniqValues(map[string]int{"foo": 1, "bar": 1}, map[string]int{"foo": 1, "bar": 3})
-	sort.Ints(r6)
-	is.Equal([]int{1, 3}, r6)
+	is.ElementsMatch(r6, []int{1, 3})
 
 	// check order
 	r7 := UniqValues(map[string]int{"foo": 1}, map[string]int{"bar": 3})
@@ -228,11 +214,7 @@ func TestEntries(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := Entries(map[string]int{"foo": 1, "bar": 2})
-
-	sort.Slice(r1, func(i, j int) bool {
-		return r1[i].Value < r1[j].Value
-	})
-	is.Equal([]Entry[string, int]{
+	is.ElementsMatch(r1, []Entry[string, int]{
 		{
 			Key:   "foo",
 			Value: 1,
@@ -241,7 +223,7 @@ func TestEntries(t *testing.T) {
 			Key:   "bar",
 			Value: 2,
 		},
-	}, r1)
+	})
 }
 
 func TestToPairs(t *testing.T) {
@@ -249,11 +231,7 @@ func TestToPairs(t *testing.T) {
 	is := assert.New(t)
 
 	r1 := ToPairs(map[string]int{"baz": 3, "qux": 4})
-
-	sort.Slice(r1, func(i, j int) bool {
-		return r1[i].Value < r1[j].Value
-	})
-	is.Equal([]Entry[string, int]{
+	is.ElementsMatch(r1, []Entry[string, int]{
 		{
 			Key:   "baz",
 			Value: 3,
@@ -262,7 +240,7 @@ func TestToPairs(t *testing.T) {
 			Key:   "qux",
 			Value: 4,
 		},
-	}, r1)
+	})
 }
 
 func TestFromEntries(t *testing.T) {

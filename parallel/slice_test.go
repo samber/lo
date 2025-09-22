@@ -57,9 +57,7 @@ func TestGroupBy(t *testing.T) {
 
 	// order
 	for x := range result1 {
-		sort.Slice(result1[x], func(i, j int) bool {
-			return result1[x][i] < result1[x][j]
-		})
+		sort.Ints(result1[x])
 	}
 
 	is.Len(result1, 3)
@@ -97,9 +95,7 @@ func TestPartitionBy(t *testing.T) {
 		return result1[i][0] < result1[j][0]
 	})
 	for x := range result1 {
-		sort.Slice(result1[x], func(i, j int) bool {
-			return result1[x][i] < result1[x][j]
-		})
+		sort.Ints(result1[x])
 	}
 
 	is.ElementsMatch(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})

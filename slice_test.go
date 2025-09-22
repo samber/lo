@@ -169,8 +169,8 @@ func TestForEach(t *testing.T) {
 		callParams2 = append(callParams2, i)
 	})
 
-	is.ElementsMatch([]string{"a", "b", "c"}, callParams1)
-	is.ElementsMatch([]int{0, 1, 2}, callParams2)
+	is.Equal([]string{"a", "b", "c"}, callParams1)
+	is.Equal([]int{0, 1, 2}, callParams2)
 	is.IsIncreasing(callParams2)
 }
 
@@ -192,8 +192,8 @@ func TestForEachWhile(t *testing.T) {
 		return true
 	})
 
-	is.ElementsMatch([]string{"a", "b"}, callParams1)
-	is.ElementsMatch([]int{0, 1}, callParams2)
+	is.Equal([]string{"a", "b"}, callParams1)
+	is.Equal([]int{0, 1}, callParams2)
 	is.IsIncreasing(callParams2)
 }
 

@@ -3,7 +3,6 @@ package lo
 import (
 	"fmt"
 	"math/rand"
-	"sort"
 	"testing"
 	"time"
 
@@ -742,9 +741,7 @@ func TestSamples(t *testing.T) {
 	result1 := Samples([]string{"a", "b", "c"}, 3)
 	result2 := Samples([]string{}, 3)
 
-	sort.Strings(result1)
-
-	is.Equal([]string{"a", "b", "c"}, result1)
+	is.ElementsMatch(result1, []string{"a", "b", "c"})
 	is.Empty(result2)
 
 	type myStrings []string
@@ -762,9 +759,7 @@ func TestSamplesBy(t *testing.T) {
 	result1 := SamplesBy([]string{"a", "b", "c"}, 3, r.Intn)
 	result2 := SamplesBy([]string{}, 3, r.Intn)
 
-	sort.Strings(result1)
-
-	is.Equal([]string{"a", "b", "c"}, result1)
+	is.ElementsMatch(result1, []string{"a", "b", "c"})
 	is.Empty(result2)
 
 	type myStrings []string
