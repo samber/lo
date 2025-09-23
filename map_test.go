@@ -564,19 +564,19 @@ func BenchmarkAssign(b *testing.B) {
 		sameMap := allTheSameMap(b, count)
 
 		b.Run(fmt.Sprintf("%d", count), func(b *testing.B) {
-			testcase := []struct {
+			testCases := []struct {
 				name string
-				maps []map[string]int
+				in   []map[string]int
 			}{
 				{"different", differentMap},
 				{"same", sameMap},
 			}
 
-			for _, tc := range testcase {
+			for _, tc := range testCases {
 				b.Run(tc.name, func(b *testing.B) {
 					b.ResetTimer()
 					for n := 0; n < b.N; n++ {
-						result := Assign(tc.maps...)
+						result := Assign(tc.in...)
 						_ = result
 					}
 				})

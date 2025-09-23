@@ -357,10 +357,10 @@ func TestFlatten(t *testing.T) {
 func TestInterleave(t *testing.T) {
 	is := assert.New(t)
 
-	tests := []struct {
-		name        string
-		collections [][]int
-		want        []int
+	testCases := []struct {
+		name string
+		in   [][]int
+		want []int
 	}{
 		{
 			"nil",
@@ -393,9 +393,11 @@ func TestInterleave(t *testing.T) {
 			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, Interleave(tt.collections...))
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			tc := tc
+			t.Parallel()
+			assert.Equal(t, tc.want, Interleave(tc.in...))
 		})
 	}
 
@@ -500,26 +502,27 @@ func TestAssociate(t *testing.T) {
 		return f.baz, f.bar
 	}
 	testCases := []struct {
-		in     []*foo
-		expect map[string]int
+		in   []*foo
+		want map[string]int
 	}{
 		{
-			in:     []*foo{{baz: "apple", bar: 1}},
-			expect: map[string]int{"apple": 1},
+			in:   []*foo{{baz: "apple", bar: 1}},
+			want: map[string]int{"apple": 1},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
-			expect: map[string]int{"apple": 1, "banana": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			want: map[string]int{"apple": 1, "banana": 2},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
-			expect: map[string]int{"apple": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			want: map[string]int{"apple": 2},
 		},
 	}
-	for i, testCase := range testCases {
+	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			is := assert.New(t)
-			is.Equal(Associate(testCase.in, transform), testCase.expect)
+			tc := tc
+			t.Parallel()
+			assert.Equal(t, tc.want, Associate(tc.in, transform))
 		})
 	}
 }
@@ -535,26 +538,27 @@ func TestSliceToMap(t *testing.T) {
 		return f.baz, f.bar
 	}
 	testCases := []struct {
-		in     []*foo
-		expect map[string]int
+		in   []*foo
+		want map[string]int
 	}{
 		{
-			in:     []*foo{{baz: "apple", bar: 1}},
-			expect: map[string]int{"apple": 1},
+			in:   []*foo{{baz: "apple", bar: 1}},
+			want: map[string]int{"apple": 1},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
-			expect: map[string]int{"apple": 1, "banana": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			want: map[string]int{"apple": 1, "banana": 2},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
-			expect: map[string]int{"apple": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			want: map[string]int{"apple": 2},
 		},
 	}
-	for i, testCase := range testCases {
+	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			is := assert.New(t)
-			is.Equal(SliceToMap(testCase.in, transform), testCase.expect)
+			tc := tc
+			t.Parallel()
+			assert.Equal(t, tc.want, SliceToMap(tc.in, transform))
 		})
 	}
 }
@@ -570,26 +574,27 @@ func TestFilterSliceToMap(t *testing.T) {
 		return f.baz, f.bar, f.bar > 1
 	}
 	testCases := []struct {
-		in     []*foo
-		expect map[string]int
+		in   []*foo
+		want map[string]int
 	}{
 		{
-			in:     []*foo{{baz: "apple", bar: 1}},
-			expect: map[string]int{},
+			in:   []*foo{{baz: "apple", bar: 1}},
+			want: map[string]int{},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
-			expect: map[string]int{"banana": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			want: map[string]int{"banana": 2},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
-			expect: map[string]int{"apple": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			want: map[string]int{"apple": 2},
 		},
 	}
-	for i, testCase := range testCases {
+	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			is := assert.New(t)
-			is.Equal(FilterSliceToMap(testCase.in, transform), testCase.expect)
+			tc := tc
+			t.Parallel()
+			assert.Equal(t, tc.want, FilterSliceToMap(tc.in, transform))
 		})
 	}
 }
