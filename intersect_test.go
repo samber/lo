@@ -290,6 +290,13 @@ func TestWithoutBy(t *testing.T) {
 	is.Equal([]User{{Name: "peter"}}, result1)
 	is.Equal([]User{}, result2)
 	is.Equal([]User{}, result3)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := WithoutBy(allStrings, func(s string) string {
+		return s
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestWithoutEmpty(t *testing.T) {
