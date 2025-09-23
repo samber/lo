@@ -151,6 +151,7 @@ func RuneLength(str string) int {
 }
 
 // PascalCase converts string to pascal case.
+// Play: https://go.dev/play/p/Dy_V_6DUYhe
 func PascalCase(str string) string {
 	items := Words(str)
 	for i := range items {
@@ -160,6 +161,7 @@ func PascalCase(str string) string {
 }
 
 // CamelCase converts string to camel case.
+// Play: https://go.dev/play/p/Go6aKwUiq59
 func CamelCase(str string) string {
 	items := Words(str)
 	for i, item := range items {
@@ -173,6 +175,7 @@ func CamelCase(str string) string {
 }
 
 // KebabCase converts string to kebab case.
+// Play: https://go.dev/play/p/96gT_WZnTVP
 func KebabCase(str string) string {
 	items := Words(str)
 	for i := range items {
@@ -182,6 +185,7 @@ func KebabCase(str string) string {
 }
 
 // SnakeCase converts string to snake case.
+// Play: https://go.dev/play/p/ziB0V89IeVH
 func SnakeCase(str string) string {
 	items := Words(str)
 	for i := range items {
@@ -191,6 +195,7 @@ func SnakeCase(str string) string {
 }
 
 // Words splits string into an array of its words.
+// Play: https://go.dev/play/p/-f3VIQqiaVw
 func Words(str string) []string {
 	str = splitWordReg.ReplaceAllString(str, `$1$3$5$7 $2$4$6$8$9`)
 	// example: Int8Value => Int 8Value => Int 8 Value
@@ -207,6 +212,7 @@ func Words(str string) []string {
 }
 
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
+// Play: https://go.dev/play/p/uLTZZQXqnsa
 func Capitalize(str string) string {
 	return cases.Title(language.English).String(str)
 }
@@ -214,6 +220,7 @@ func Capitalize(str string) string {
 // Ellipsis trims and truncates a string to a specified length **in bytes** and appends an ellipsis
 // if truncated. If the string contains non-ASCII characters (which may occupy multiple bytes in UTF-8),
 // truncating by byte length may split a character in the middle, potentially resulting in garbled output.
+// Play: https://go.dev/play/p/qE93rgqe1TW
 func Ellipsis(str string, length int) string {
 	str = strings.TrimSpace(str)
 

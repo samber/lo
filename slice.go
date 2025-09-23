@@ -34,6 +34,7 @@ func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 }
 
 // UniqMap manipulates a slice and transforms it to a slice of another type with unique values.
+// Play: https://go.dev/play/p/fygzLBhvUdB
 func UniqMap[T any, R comparable](collection []T, iteratee func(item T, index int) R) []R {
 	result := make([]R, 0, len(collection))
 	seen := make(map[R]struct{}, len(collection))
@@ -53,7 +54,7 @@ func UniqMap[T any, R comparable](collection []T, iteratee func(item T, index in
 //   - the result of the mapping operation and
 //   - whether the result element should be included or not.
 //
-// Play: https://go.dev/play/p/-AuYXfy7opz
+// Play: https://go.dev/play/p/CgHYNUpOd1I
 func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
 	result := make([]R, 0, len(collection))
 
@@ -69,7 +70,7 @@ func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R
 // FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
 // The transform function can either return a slice or a `nil`, and in the `nil` case
 // no value is added to the final slice.
-// Play: https://go.dev/play/p/YSoYmQTA8-U
+// Play: https://go.dev/play/p/pFCF5WVB225
 func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R) []R {
 	result := make([]R, 0, len(collection))
 
@@ -82,7 +83,7 @@ func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R)
 
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
-// Play: https://go.dev/play/p/R4UHXZNaaUG
+// Play: https://go.dev/play/p/CgHYNUpOd1I
 func Reduce[T any, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R {
 	for i := range collection {
 		initial = accumulator(initial, collection[i], i)
@@ -189,6 +190,7 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 }
 
 // GroupByMap returns an object composed of keys generated from the results of running each element of collection through iteratee.
+// Play: https://go.dev/play/p/iMeruQ3_W80
 func GroupByMap[T any, K comparable, V any](collection []T, iteratee func(item T) (K, V)) map[K][]V {
 	result := map[K][]V{}
 
@@ -203,7 +205,7 @@ func GroupByMap[T any, K comparable, V any](collection []T, iteratee func(item T
 
 // Chunk returns an array of elements split into groups the length of size. If array can't be split evenly,
 // the final chunk will be the remaining elements.
-// Play: https://go.dev/play/p/EeKl0AuTehH
+// Play: https://go.dev/play/p/kEMkFbdu85g
 func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
 	if size <= 0 {
 		panic("Second parameter must be greater than 0")
@@ -368,7 +370,7 @@ func RepeatBy[T any](count int, predicate func(index int) T) []T {
 }
 
 // KeyBy transforms a slice or an array of structs to a map based on a pivot callback.
-// Play: https://go.dev/play/p/mdaClUAT-zZ
+// Play: https://go.dev/play/p/ccUiUL_Lnel
 func KeyBy[K comparable, V any](collection []V, iteratee func(item V) K) map[K]V {
 	result := make(map[K]V, len(collection))
 
@@ -408,6 +410,7 @@ func SliceToMap[T any, K comparable, V any](collection []T, transform func(item 
 // If any of two pairs would have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 // The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
+// Play: https://go.dev/play/p/2z0rDz2ZSGU
 func FilterSliceToMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V, bool)) map[K]V {
 	result := make(map[K]V, len(collection))
 
@@ -422,6 +425,7 @@ func FilterSliceToMap[T any, K comparable, V any](collection []T, transform func
 }
 
 // Keyify returns a map with each unique element of the slice as a key.
+// Play: https://go.dev/play/p/RYhhM_csqIG
 func Keyify[T comparable, Slice ~[]T](collection Slice) map[T]struct{} {
 	result := make(map[T]struct{}, len(collection))
 
@@ -516,7 +520,7 @@ func DropByIndex[T any](collection []T, indexes ...int) []T {
 }
 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
-// Play: https://go.dev/play/p/YkLMODy1WEL
+// Play: https://go.dev/play/p/pFCF5WVB225
 func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
 	result := Slice{}
 
@@ -533,6 +537,8 @@ func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 // The callback function should return two values:
 //   - the result of the mapping operation and
 //   - whether the result element should be included or not.
+//
+// Play: https://go.dev/play/p/W9Ug9r0QFkL
 func RejectMap[T any, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
 	result := []R{}
 
@@ -547,6 +553,7 @@ func RejectMap[T any, R any](collection []T, callback func(item T, index int) (R
 
 // FilterReject mixes Filter and Reject, this method returns two slices, one for the elements of collection that
 // predicate returns truthy for and one for the elements that predicate does not return truthy for.
+// Play: https://go.dev/play/p/lHSEGSznJjB
 func FilterReject[T any, Slice ~[]T](collection Slice, predicate func(T, int) bool) (kept Slice, rejected Slice) {
 	kept = make(Slice, 0, len(collection))
 	rejected = make(Slice, 0, len(collection))

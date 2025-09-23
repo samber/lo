@@ -331,6 +331,7 @@ func Zip9[A, B, C, D, E, F, G, H, I any](a []A, b []B, c []C, d []D, e []E, f []
 // ZipBy2 creates a slice of transformed elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/wlHur6yO8rR
 func ZipBy2[A any, B any, Out any](a []A, b []B, iteratee func(a A, b B) Out) []Out {
 	size := Max([]int{len(a), len(b)})
 
@@ -349,6 +350,7 @@ func ZipBy2[A any, B any, Out any](a []A, b []B, iteratee func(a A, b B) Out) []
 // ZipBy3 creates a slice of transformed elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/j9maveOnSQX
 func ZipBy3[A any, B any, C any, Out any](a []A, b []B, c []C, iteratee func(a A, b B, c C) Out) []Out {
 	size := Max([]int{len(a), len(b), len(c)})
 
@@ -368,6 +370,7 @@ func ZipBy3[A any, B any, C any, Out any](a []A, b []B, c []C, iteratee func(a A
 // ZipBy4 creates a slice of transformed elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/Y1eF2Ke0Ayz
 func ZipBy4[A any, B any, C any, D any, Out any](a []A, b []B, c []C, d []D, iteratee func(a A, b B, c C, d D) Out) []Out {
 	size := Max([]int{len(a), len(b), len(c), len(d)})
 
@@ -388,6 +391,7 @@ func ZipBy4[A any, B any, C any, D any, Out any](a []A, b []B, c []C, d []D, ite
 // ZipBy5 creates a slice of transformed elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/SLynyalh5Oa
 func ZipBy5[A any, B any, C any, D any, E any, Out any](a []A, b []B, c []C, d []D, e []E, iteratee func(a A, b B, c C, d D, e E) Out) []Out {
 	size := Max([]int{len(a), len(b), len(c), len(d), len(e)})
 
@@ -409,6 +413,7 @@ func ZipBy5[A any, B any, C any, D any, E any, Out any](a []A, b []B, c []C, d [
 // ZipBy6 creates a slice of transformed elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/IK6KVgw9e-S
 func ZipBy6[A any, B any, C any, D any, E any, F any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, iteratee func(a A, b B, c C, d D, e E, f F) Out) []Out {
 	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f)})
 
@@ -431,6 +436,7 @@ func ZipBy6[A any, B any, C any, D any, E any, F any, Out any](a []A, b []B, c [
 // ZipBy7 creates a slice of transformed elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/4uW6a2vXh8w
 func ZipBy7[A any, B any, C any, D any, E any, F any, G any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, iteratee func(a A, b B, c C, d D, e E, f F, g G) Out) []Out {
 	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g)})
 
@@ -454,6 +460,7 @@ func ZipBy7[A any, B any, C any, D any, E any, F any, G any, Out any](a []A, b [
 // ZipBy8 creates a slice of transformed elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/tk8xW7XzY4v
 func ZipBy8[A any, B any, C any, D any, E any, F any, G any, H any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, iteratee func(a A, b B, c C, d D, e E, f F, g G, h H) Out) []Out {
 	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h)})
 
@@ -478,6 +485,7 @@ func ZipBy8[A any, B any, C any, D any, E any, F any, G any, H any, Out any](a [
 // ZipBy9 creates a slice of transformed elements, the first of which contains the first elements
 // of the given arrays, the second of which contains the second elements of the given arrays, and so on.
 // When collections have different size, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/VGqjDmQ9YqX
 func ZipBy9[A any, B any, C any, D any, E any, F any, G any, H any, I any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, i []I, iteratee func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) []Out {
 	size := Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h), len(i)})
 
@@ -686,6 +694,7 @@ func Unzip9[A, B, C, D, E, F, G, H, I any](tuples []Tuple9[A, B, C, D, E, F, G, 
 
 // UnzipBy2 iterates over a collection and creates an array regrouping the elements
 // to their pre-zip configuration.
+// Play: https://go.dev/play/p/tN8yqaRZz0r
 func UnzipBy2[In any, A any, B any](items []In, iteratee func(In) (a A, b B)) ([]A, []B) {
 	size := len(items)
 	r1 := make([]A, 0, size)
@@ -702,6 +711,7 @@ func UnzipBy2[In any, A any, B any](items []In, iteratee func(In) (a A, b B)) ([
 
 // UnzipBy3 iterates over a collection and creates an array regrouping the elements
 // to their pre-zip configuration.
+// Play: https://go.dev/play/p/36ITO2DlQq1
 func UnzipBy3[In any, A any, B any, C any](items []In, iteratee func(In) (a A, b B, c C)) ([]A, []B, []C) {
 	size := len(items)
 	r1 := make([]A, 0, size)
@@ -720,6 +730,7 @@ func UnzipBy3[In any, A any, B any, C any](items []In, iteratee func(In) (a A, b
 
 // UnzipBy4 iterates over a collection and creates an array regrouping the elements
 // to their pre-zip configuration.
+// Play: https://go.dev/play/p/zJ6qY1dD1rL
 func UnzipBy4[In any, A any, B any, C any, D any](items []In, iteratee func(In) (a A, b B, c C, d D)) ([]A, []B, []C, []D) {
 	size := len(items)
 	r1 := make([]A, 0, size)
@@ -740,6 +751,7 @@ func UnzipBy4[In any, A any, B any, C any, D any](items []In, iteratee func(In) 
 
 // UnzipBy5 iterates over a collection and creates an array regrouping the elements
 // to their pre-zip configuration.
+// Play: https://go.dev/play/p/3f7jKkV9xZt
 func UnzipBy5[In any, A any, B any, C any, D any, E any](items []In, iteratee func(In) (a A, b B, c C, d D, e E)) ([]A, []B, []C, []D, []E) {
 	size := len(items)
 	r1 := make([]A, 0, size)
@@ -762,6 +774,7 @@ func UnzipBy5[In any, A any, B any, C any, D any, E any](items []In, iteratee fu
 
 // UnzipBy6 iterates over a collection and creates an array regrouping the elements
 // to their pre-zip configuration.
+// Play: https://go.dev/play/p/8Y1b7tKu2pL
 func UnzipBy6[In any, A any, B any, C any, D any, E any, F any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F)) ([]A, []B, []C, []D, []E, []F) {
 	size := len(items)
 	r1 := make([]A, 0, size)
@@ -786,6 +799,7 @@ func UnzipBy6[In any, A any, B any, C any, D any, E any, F any](items []In, iter
 
 // UnzipBy7 iterates over a collection and creates an array regrouping the elements
 // to their pre-zip configuration.
+// Play: https://go.dev/play/p/7j1kLmVn3pM
 func UnzipBy7[In any, A any, B any, C any, D any, E any, F any, G any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G)) ([]A, []B, []C, []D, []E, []F, []G) {
 	size := len(items)
 	r1 := make([]A, 0, size)
@@ -812,6 +826,7 @@ func UnzipBy7[In any, A any, B any, C any, D any, E any, F any, G any](items []I
 
 // UnzipBy8 iterates over a collection and creates an array regrouping the elements
 // to their pre-zip configuration.
+// Play: https://go.dev/play/p/1n2k3L4m5N6
 func UnzipBy8[In any, A any, B any, C any, D any, E any, F any, G any, H any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G, h H)) ([]A, []B, []C, []D, []E, []F, []G, []H) {
 	size := len(items)
 	r1 := make([]A, 0, size)
@@ -840,6 +855,7 @@ func UnzipBy8[In any, A any, B any, C any, D any, E any, F any, G any, H any](it
 
 // UnzipBy9 iterates over a collection and creates an array regrouping the elements
 // to their pre-zip configuration.
+// Play: https://go.dev/play/p/7o8p9q0r1s2
 func UnzipBy9[In any, A any, B any, C any, D any, E any, F any, G any, H any, I any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G, h H, i I)) ([]A, []B, []C, []D, []E, []F, []G, []H, []I) {
 	size := len(items)
 	r1 := make([]A, 0, size)
@@ -871,6 +887,7 @@ func UnzipBy9[In any, A any, B any, C any, D any, E any, F any, G any, H any, I 
 // CrossJoin2 combines every items from one list with every items from others.
 // It is the cartesian product of lists received as arguments.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/3VFppyL9FDU
 func CrossJoin2[A, B any](listA []A, listB []B) []Tuple2[A, B] {
 	return CrossJoinBy2(listA, listB, T2[A, B])
 }
@@ -878,6 +895,7 @@ func CrossJoin2[A, B any](listA []A, listB []B) []Tuple2[A, B] {
 // CrossJoin3 combines every items from one list with every items from others.
 // It is the cartesian product of lists received as arguments.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/2WGeHyJj4fK
 func CrossJoin3[A, B, C any](listA []A, listB []B, listC []C) []Tuple3[A, B, C] {
 	return CrossJoinBy3(listA, listB, listC, T3[A, B, C])
 }
@@ -885,6 +903,7 @@ func CrossJoin3[A, B, C any](listA []A, listB []B, listC []C) []Tuple3[A, B, C] 
 // CrossJoin4 combines every items from one list with every items from others.
 // It is the cartesian product of lists received as arguments.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/6XhKjLmMnNp
 func CrossJoin4[A, B, C, D any](listA []A, listB []B, listC []C, listD []D) []Tuple4[A, B, C, D] {
 	return CrossJoinBy4(listA, listB, listC, listD, T4[A, B, C, D])
 }
@@ -892,6 +911,7 @@ func CrossJoin4[A, B, C, D any](listA []A, listB []B, listC []C, listD []D) []Tu
 // CrossJoin5 combines every items from one list with every items from others.
 // It is the cartesian product of lists received as arguments.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/7oPqRsTuVwX
 func CrossJoin5[A, B, C, D, E any](listA []A, listB []B, listC []C, listD []D, listE []E) []Tuple5[A, B, C, D, E] {
 	return CrossJoinBy5(listA, listB, listC, listD, listE, T5[A, B, C, D, E])
 }
@@ -899,6 +919,7 @@ func CrossJoin5[A, B, C, D, E any](listA []A, listB []B, listC []C, listD []D, l
 // CrossJoin6 combines every items from one list with every items from others.
 // It is the cartesian product of lists received as arguments.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/8yZ1aB2cD3e
 func CrossJoin6[A, B, C, D, E, F any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F) []Tuple6[A, B, C, D, E, F] {
 	return CrossJoinBy6(listA, listB, listC, listD, listE, listF, T6[A, B, C, D, E, F])
 }
@@ -906,6 +927,7 @@ func CrossJoin6[A, B, C, D, E, F any](listA []A, listB []B, listC []C, listD []D
 // CrossJoin7 combines every items from one list with every items from others.
 // It is the cartesian product of lists received as arguments.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/9f4g5h6i7j8
 func CrossJoin7[A, B, C, D, E, F, G any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G) []Tuple7[A, B, C, D, E, F, G] {
 	return CrossJoinBy7(listA, listB, listC, listD, listE, listF, listG, T7[A, B, C, D, E, F, G])
 }
@@ -913,6 +935,7 @@ func CrossJoin7[A, B, C, D, E, F, G any](listA []A, listB []B, listC []C, listD 
 // CrossJoin8 combines every items from one list with every items from others.
 // It is the cartesian product of lists received as arguments.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/0k1l2m3n4o5
 func CrossJoin8[A, B, C, D, E, F, G, H any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H) []Tuple8[A, B, C, D, E, F, G, H] {
 	return CrossJoinBy8(listA, listB, listC, listD, listE, listF, listG, listH, T8[A, B, C, D, E, F, G, H])
 }
@@ -920,6 +943,7 @@ func CrossJoin8[A, B, C, D, E, F, G, H any](listA []A, listB []B, listC []C, lis
 // CrossJoin9 combines every items from one list with every items from others.
 // It is the cartesian product of lists received as arguments.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/6p7q8r9s0t1
 func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, listI []I) []Tuple9[A, B, C, D, E, F, G, H, I] {
 	return CrossJoinBy9(listA, listB, listC, listD, listE, listF, listG, listH, listI, T9[A, B, C, D, E, F, G, H, I])
 }
@@ -928,6 +952,7 @@ func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA []A, listB []B, listC []C, 
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/8Y7btpvuA-C
 func CrossJoinBy2[A, B, Out any](listA []A, listB []B, project func(a A, b B) Out) []Out {
 	size := len(listA) * len(listB)
 	if size == 0 {
@@ -949,6 +974,7 @@ func CrossJoinBy2[A, B, Out any](listA []A, listB []B, project func(a A, b B) Ou
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/3z4y5x6w7v8
 func CrossJoinBy3[A, B, C, Out any](listA []A, listB []B, listC []C, project func(a A, b B, c C) Out) []Out {
 	size := len(listA) * len(listB) * len(listC)
 	if size == 0 {
@@ -972,6 +998,7 @@ func CrossJoinBy3[A, B, C, Out any](listA []A, listB []B, listC []C, project fun
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/8b9c0d1e2f3
 func CrossJoinBy4[A, B, C, D, Out any](listA []A, listB []B, listC []C, listD []D, project func(a A, b B, c C, d D) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD)
 	if size == 0 {
@@ -997,6 +1024,7 @@ func CrossJoinBy4[A, B, C, D, Out any](listA []A, listB []B, listC []C, listD []
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/4g5h6i7j8k9
 func CrossJoinBy5[A, B, C, D, E, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, project func(a A, b B, c C, d D, e E) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE)
 	if size == 0 {
@@ -1024,6 +1052,7 @@ func CrossJoinBy5[A, B, C, D, E, Out any](listA []A, listB []B, listC []C, listD
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/1l2m3n4o5p6
 func CrossJoinBy6[A, B, C, D, E, F, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, project func(a A, b B, c C, d D, e E, f F) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF)
 	if size == 0 {
@@ -1053,6 +1082,7 @@ func CrossJoinBy6[A, B, C, D, E, F, Out any](listA []A, listB []B, listC []C, li
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/7q8r9s0t1u2
 func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, project func(a A, b B, c C, d D, e E, f F, g G) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG)
 	if size == 0 {
@@ -1084,6 +1114,7 @@ func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA []A, listB []B, listC []C,
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/3v4w5x6y7z8
 func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, project func(a A, b B, c C, d D, e E, f F, g G, h H) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG) * len(listH)
 	if size == 0 {
@@ -1117,6 +1148,7 @@ func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA []A, listB []B, listC [
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // It returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/9a0b1c2d3e4
 func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, listI []I, project func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG) * len(listH) * len(listI)
 	if size == 0 {

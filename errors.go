@@ -61,7 +61,7 @@ func must(err any, messageArgs ...any) {
 
 // Must is a helper that wraps a call to a function returning a value and an error
 // and panics if err is error or false.
-// Play: https://go.dev/play/p/TMoWrRp3DyC
+// Play: https://go.dev/play/p/fOqtX5HudtN
 func Must[T any](val T, err any, messageArgs ...any) T {
 	must(err, messageArgs...)
 	return val

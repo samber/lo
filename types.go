@@ -13,6 +13,7 @@ type Tuple2[A, B any] struct {
 }
 
 // Unpack returns values contained in tuple.
+// Play: https://go.dev/play/p/yrtn7QJTmL_E
 func (t Tuple2[A, B]) Unpack() (A, B) {
 	return t.A, t.B
 }
@@ -25,6 +26,7 @@ type Tuple3[A, B, C any] struct {
 }
 
 // Unpack returns values contained in tuple.
+// Play: https://go.dev/play/p/yrtn7QJTmL_E
 func (t Tuple3[A, B, C]) Unpack() (A, B, C) {
 	return t.A, t.B, t.C
 }
@@ -38,6 +40,7 @@ type Tuple4[A, B, C, D any] struct {
 }
 
 // Unpack returns values contained in tuple.
+// Play: https://go.dev/play/p/yrtn7QJTmL_E
 func (t Tuple4[A, B, C, D]) Unpack() (A, B, C, D) {
 	return t.A, t.B, t.C, t.D
 }
@@ -52,6 +55,7 @@ type Tuple5[A, B, C, D, E any] struct {
 }
 
 // Unpack returns values contained in tuple.
+// Play: https://go.dev/play/p/7J4KrtgtK3M
 func (t Tuple5[A, B, C, D, E]) Unpack() (A, B, C, D, E) {
 	return t.A, t.B, t.C, t.D, t.E
 }
@@ -67,6 +71,7 @@ type Tuple6[A, B, C, D, E, F any] struct {
 }
 
 // Unpack returns values contained in tuple.
+// Play: https://go.dev/play/p/7J4KrtgtK3M
 func (t Tuple6[A, B, C, D, E, F]) Unpack() (A, B, C, D, E, F) {
 	return t.A, t.B, t.C, t.D, t.E, t.F
 }
@@ -83,6 +88,7 @@ type Tuple7[A, B, C, D, E, F, G any] struct {
 }
 
 // Unpack returns values contained in tuple.
+// Play: https://go.dev/play/p/Ow9Zgf_zeiA
 func (t Tuple7[A, B, C, D, E, F, G]) Unpack() (A, B, C, D, E, F, G) {
 	return t.A, t.B, t.C, t.D, t.E, t.F, t.G
 }
@@ -100,6 +106,7 @@ type Tuple8[A, B, C, D, E, F, G, H any] struct {
 }
 
 // Unpack returns values contained in tuple.
+// Play: https://go.dev/play/p/Ow9Zgf_zeiA
 func (t Tuple8[A, B, C, D, E, F, G, H]) Unpack() (A, B, C, D, E, F, G, H) {
 	return t.A, t.B, t.C, t.D, t.E, t.F, t.G, t.H
 }
@@ -118,6 +125,7 @@ type Tuple9[A, B, C, D, E, F, G, H, I any] struct {
 }
 
 // Unpack returns values contained in tuple.
+// Play: https://go.dev/play/p/Ow9Zgf_zeiA
 func (t Tuple9[A, B, C, D, E, F, G, H, I]) Unpack() (A, B, C, D, E, F, G, H, I) {
 	return t.A, t.B, t.C, t.D, t.E, t.F, t.G, t.H, t.I
 }

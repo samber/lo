@@ -194,6 +194,7 @@ func AttemptWithDelay(maxIteration int, delay time.Duration, f func(index int, d
 // immediately if the second return value is false. When the first
 // argument is less than `1`, the function runs until a successful response is
 // returned.
+// Play: https://go.dev/play/p/1VS7HxlYMOG
 func AttemptWhile(maxIteration int, f func(int) (error, bool)) (int, error) {
 	var err error
 	var shouldContinueInvoke bool
@@ -218,6 +219,7 @@ func AttemptWhile(maxIteration int, f func(int) (error, bool)) (int, error) {
 // It will terminate the invoke immediately if the second return value is false.
 // When the first argument is less than `1`, the function runs until a successful
 // response is returned.
+// Play: https://go.dev/play/p/mhufUjJfLEF
 func AttemptWhileWithDelay(maxIteration int, delay time.Duration, f func(int, time.Duration) (error, bool)) (int, time.Duration, error) {
 	var err error
 	var shouldContinueInvoke bool
@@ -247,6 +249,7 @@ type transactionStep[T any] struct {
 }
 
 // NewTransaction instantiate a new transaction.
+// Play: https://go.dev/play/p/Qxrd7MGQGh1
 func NewTransaction[T any]() *Transaction[T] {
 	return &Transaction[T]{
 		steps: []transactionStep[T]{},
@@ -259,6 +262,7 @@ type Transaction[T any] struct {
 }
 
 // Then adds a step to the chain of callbacks. It returns the same Transaction.
+// Play: https://go.dev/play/p/Qxrd7MGQGh1 https://go.dev/play/p/xrHb2_kMvTY
 func (t *Transaction[T]) Then(exec func(T) (T, error), onRollback func(T) T) *Transaction[T] {
 	t.steps = append(t.steps, transactionStep[T]{
 		exec:       exec,
@@ -269,6 +273,7 @@ func (t *Transaction[T]) Then(exec func(T) (T, error), onRollback func(T) T) *Tr
 }
 
 // Process runs the Transaction steps and rollbacks in case of errors.
+// Play: https://go.dev/play/p/Qxrd7MGQGh1 https://go.dev/play/p/xrHb2_kMvTY
 func (t *Transaction[T]) Process(state T) (T, error) {
 	var i int
 	var err error
@@ -341,11 +346,13 @@ func (th *throttleBy[T]) reset() {
 
 // NewThrottle creates a throttled instance that invokes given functions only once in every interval.
 // This returns 2 functions, First one is throttled function and Second one is a function to reset interval
+// Play: https://go.dev/play/p/qQn3fm8Z7jS
 func NewThrottle(interval time.Duration, f ...func()) (throttle func(), reset func()) {
 	return NewThrottleWithCount(interval, 1, f...)
 }
 
 // NewThrottleWithCount is NewThrottle with count limit, throttled function will be invoked count times in every interval.
+// Play: https://go.dev/play/p/w5nc0MgWtjC
 func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (throttle func(), reset func()) {
 	callbacks := Map(f, func(item func(), _ int) func(struct{}) {
 		return func(struct{}) {
@@ -361,11 +368,13 @@ func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (throt
 
 // NewThrottleBy creates a throttled instance that invokes given functions only once in every interval.
 // This returns 2 functions, First one is throttled function and Second one is a function to reset interval
+// Play: https://go.dev/play/p/0Wv6oX7dHdC
 func NewThrottleBy[T comparable](interval time.Duration, f ...func(key T)) (throttle func(key T), reset func()) {
 	return NewThrottleByWithCount[T](interval, 1, f...)
 }
 
 // NewThrottleByWithCount is NewThrottleBy with count limit, throttled function will be invoked count times in every interval.
+// Play: https://go.dev/play/p/vQk3ECH7_EW
 func NewThrottleByWithCount[T comparable](interval time.Duration, count int, f ...func(key T)) (throttle func(key T), reset func()) {
 	if count <= 0 {
 		count = 1

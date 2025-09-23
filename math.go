@@ -122,6 +122,7 @@ func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Co
 }
 
 // Mean calculates the mean of a collection of numbers.
+// Play: https://go.dev/play/p/tPURSuteUsP
 func Mean[T constraints.Float | constraints.Integer](collection []T) T {
 	length := T(len(collection))
 	if length == 0 {
@@ -132,6 +133,7 @@ func Mean[T constraints.Float | constraints.Integer](collection []T) T {
 }
 
 // MeanBy calculates the mean of a collection of numbers using the given return value from the iteration function.
+// Play: https://go.dev/play/p/j7TsVwBOZ7P
 func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(item T) R) R {
 	length := R(len(collection))
 	if length == 0 {

@@ -7,6 +7,7 @@ import "github.com/samber/lo/internal/rand"
 // and should return true for elements that should be kept and false for elements that should be removed.
 // The function returns the modified slice, which may be shorter than the original if some elements were removed.
 // Note that the order of elements in the original slice is preserved in the output.
+// Play: https://go.dev/play/p/0jY3Z0B7O_5
 func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	j := 0
 	for _, item := range collection {
@@ -36,6 +37,7 @@ func FilterI[T any, Slice ~[]T](collection Slice, predicate func(item T, index i
 
 // Map is a generic function that modifies the input slice in-place to contain the result of applying the provided
 // function to each element of the slice. The function returns the modified slice, which has the same length as the original.
+// Play: https://go.dev/play/p/0jY3Z0B7O_5
 func Map[T any, Slice ~[]T](collection Slice, fn func(item T) T) {
 	for i := range collection {
 		collection[i] = fn(collection[i])

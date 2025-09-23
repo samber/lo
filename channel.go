@@ -14,6 +14,7 @@ type DispatchingStrategy[T any] func(msg T, index uint64, channels []<-chan T) i
 // ChannelDispatcher distributes messages from input channels into N child channels.
 // Close events are propagated to children.
 // Underlying channels can have a fixed buffer capacity or be unbuffered when cap is 0.
+// Play: https://go.dev/play/p/UZGu2wVg3J2
 func ChannelDispatcher[T any](stream <-chan T, count int, channelBufferCap int, strategy DispatchingStrategy[T]) []<-chan T {
 	children := createChannels[T](count, channelBufferCap)
 
@@ -73,6 +74,7 @@ func channelIsNotFull[T any](ch <-chan T) bool {
 
 // DispatchingStrategyRoundRobin distributes messages in a rotating sequential manner.
 // If the channel capacity is exceeded, the next channel will be selected and so on.
+// Play: https://go.dev/play/p/UZGu2wVg3J2
 func DispatchingStrategyRoundRobin[T any](msg T, index uint64, channels []<-chan T) int {
 	for {
 		i := int(index % uint64(len(channels)))
@@ -87,6 +89,7 @@ func DispatchingStrategyRoundRobin[T any](msg T, index uint64, channels []<-chan
 
 // DispatchingStrategyRandom distributes messages in a random manner.
 // If the channel capacity is exceeded, another random channel will be selected and so on.
+// Play: https://go.dev/play/p/GEyGn3TdGk4
 func DispatchingStrategyRandom[T any](msg T, index uint64, channels []<-chan T) int {
 	for {
 		i := rand.IntN(len(channels))
@@ -100,6 +103,7 @@ func DispatchingStrategyRandom[T any](msg T, index uint64, channels []<-chan T) 
 
 // DispatchingStrategyWeightedRandom distributes messages in a weighted manner.
 // If the channel capacity is exceeded, another random channel will be selected and so on.
+// Play: https://go.dev/play/p/v0eMh8NZG2L
 func DispatchingStrategyWeightedRandom[T any](weights []int) DispatchingStrategy[T] {
 	seq := []int{}
 
@@ -123,6 +127,7 @@ func DispatchingStrategyWeightedRandom[T any](weights []int) DispatchingStrategy
 
 // DispatchingStrategyFirst distributes messages in the first non-full channel.
 // If the capacity of the first channel is exceeded, the second channel will be selected and so on.
+// Play: https://go.dev/play/p/OrJCvOmk42f
 func DispatchingStrategyFirst[T any](msg T, index uint64, channels []<-chan T) int {
 	for {
 		for i := range channels {
@@ -136,6 +141,7 @@ func DispatchingStrategyFirst[T any](msg T, index uint64, channels []<-chan T) i
 }
 
 // DispatchingStrategyLeast distributes messages in the emptiest channel.
+// Play: https://go.dev/play/p/ypy0jrRcEe7
 func DispatchingStrategyLeast[T any](msg T, index uint64, channels []<-chan T) int {
 	seq := Range(len(channels))
 
@@ -146,6 +152,7 @@ func DispatchingStrategyLeast[T any](msg T, index uint64, channels []<-chan T) i
 
 // DispatchingStrategyMost distributes messages in the fullest channel.
 // If the channel capacity is exceeded, the next channel will be selected and so on.
+// Play: https://go.dev/play/p/erHHone7rF9
 func DispatchingStrategyMost[T any](msg T, index uint64, channels []<-chan T) int {
 	seq := Range(len(channels))
 
@@ -155,6 +162,7 @@ func DispatchingStrategyMost[T any](msg T, index uint64, channels []<-chan T) in
 }
 
 // SliceToChannel returns a read-only channels of collection elements.
+// Play: https://go.dev/play/p/lIbSY3QmiEg
 func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 	ch := make(chan T, bufferSize)
 
@@ -170,6 +178,7 @@ func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 }
 
 // ChannelToSlice returns a slice built from channels items. Blocks until channel closes.
+// Play: https://go.dev/play/p/lIbSY3QmiEg
 func ChannelToSlice[T any](ch <-chan T) []T {
 	collection := []T{}
 
@@ -181,6 +190,7 @@ func ChannelToSlice[T any](ch <-chan T) []T {
 }
 
 // Generator implements the generator design pattern.
+// Play: https://go.dev/play/p/lIbSY3QmiEg
 func Generator[T any](bufferSize int, generator func(yield func(T))) <-chan T {
 	ch := make(chan T, bufferSize)
 
@@ -198,6 +208,7 @@ func Generator[T any](bufferSize int, generator func(yield func(T))) <-chan T {
 
 // Buffer creates a slice of n elements from a channel. Returns the slice and the slice length.
 // @TODO: we should probably provide an helper that reuse the same buffer.
+// Play: https://go.dev/play/p/gPQ-6xmcKQI
 func Buffer[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
 	buffer := make([]T, 0, size)
 	index := 0
@@ -224,6 +235,7 @@ func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime t
 
 // BufferWithContext creates a slice of n elements from a channel, with context. Returns the slice and the slice length.
 // @TODO: we should probably provide an helper that reuse the same buffer.
+// Play: https://go.dev/play/p/oRfOyJWK9YF
 func BufferWithContext[T any](ctx context.Context, ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
 	buffer := make([]T, 0, size)
 	now := time.Now()
@@ -246,6 +258,7 @@ func BufferWithContext[T any](ctx context.Context, ch <-chan T, size int) (colle
 }
 
 // BufferWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
+// Play: https://go.dev/play/p/sxyEM3koo4n
 func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
@@ -261,6 +274,7 @@ func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (coll
 
 // FanIn collects messages from multiple input channels into a single buffered channel.
 // Output messages has no priority. When all upstream channels reach EOF, downstream channel closes.
+// Play: https://go.dev/play/p/FH8Wq-T04Jb
 func FanIn[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 	out := make(chan T, channelBufferCap)
 	var wg sync.WaitGroup
@@ -295,6 +309,7 @@ func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 // FanOut broadcasts all the upstream messages to multiple downstream channels.
 // When upstream channel reach EOF, downstream channels close. If any downstream
 // channels is full, broadcasting is paused.
+// Play: https://go.dev/play/p/2LHxcjKX23L
 func FanOut[T any](count int, channelsBufferCap int, upstream <-chan T) []<-chan T {
 	downstreams := createChannels[T](count, channelsBufferCap)
 

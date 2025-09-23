@@ -10,6 +10,7 @@ import (
 
 // IndexOf returns the index at which the first occurrence of a value is found in an array or return -1
 // if the value cannot be found.
+// Play: https://go.dev/play/p/Eo7W0lvKTky
 func IndexOf[T comparable](collection []T, element T) int {
 	for i := range collection {
 		if collection[i] == element {
@@ -22,6 +23,7 @@ func IndexOf[T comparable](collection []T, element T) int {
 
 // LastIndexOf returns the index at which the last occurrence of a value is found in an array or return -1
 // if the value cannot be found.
+// Play: https://go.dev/play/p/Eo7W0lvKTky
 func LastIndexOf[T comparable](collection []T, element T) int {
 	length := len(collection)
 
@@ -35,6 +37,7 @@ func LastIndexOf[T comparable](collection []T, element T) int {
 }
 
 // Find search an element in a slice based on a predicate. It returns element and true if element was found.
+// Play: https://go.dev/play/p/Eo7W0lvKTky
 func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {
 	for i := range collection {
 		if predicate(collection[i]) {
@@ -48,6 +51,7 @@ func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {
 
 // FindIndexOf searches an element in a slice based on a predicate and returns the index and true.
 // It returns -1 and false if the element is not found.
+// Play: https://go.dev/play/p/XWSEM4Ic_t0
 func FindIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bool) {
 	for i := range collection {
 		if predicate(collection[i]) {
@@ -61,6 +65,7 @@ func FindIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bo
 
 // FindLastIndexOf searches last element in a slice based on a predicate and returns the index and true.
 // It returns -1 and false if the element is not found.
+// Play: https://go.dev/play/p/dPiMRtJ6cUx
 func FindLastIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bool) {
 	length := len(collection)
 
@@ -75,6 +80,7 @@ func FindLastIndexOf[T any](collection []T, predicate func(item T) bool) (T, int
 }
 
 // FindOrElse search an element in a slice based on a predicate. It returns the element if found or a given fallback value otherwise.
+// Play: https://go.dev/play/p/Eo7W0lvKTky
 func FindOrElse[T any](collection []T, fallback T, predicate func(item T) bool) T {
 	for i := range collection {
 		if predicate(collection[i]) {
@@ -86,6 +92,7 @@ func FindOrElse[T any](collection []T, fallback T, predicate func(item T) bool) 
 }
 
 // FindKey returns the key of the first value matching.
+// Play: https://go.dev/play/p/Bg0w1VDPYXx
 func FindKey[K comparable, V comparable](object map[K]V, value V) (K, bool) {
 	for k := range object {
 		if object[k] == value {
@@ -97,6 +104,7 @@ func FindKey[K comparable, V comparable](object map[K]V, value V) (K, bool) {
 }
 
 // FindKeyBy returns the key of the first element predicate returns truthy for.
+// Play: https://go.dev/play/p/9IbiPElcyo8
 func FindKeyBy[K comparable, V any](object map[K]V, predicate func(key K, value V) bool) (K, bool) {
 	for k := range object {
 		if predicate(k, object[k]) {
@@ -221,6 +229,7 @@ func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iterate
 
 // Min search the minimum value of a collection.
 // Returns zero value when the collection is empty.
+// Play: https://go.dev/play/p/r6e-Z8JozS8
 func Min[T constraints.Ordered](collection []T) T {
 	var min T
 
@@ -365,6 +374,7 @@ func EarliestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 
 // Max searches the maximum value of a collection.
 // Returns zero value when the collection is empty.
+// Play: https://go.dev/play/p/r6e-Z8JozS8
 func Max[T constraints.Ordered](collection []T) T {
 	var max T
 
@@ -508,6 +518,7 @@ func LatestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 }
 
 // First returns the first element of a collection and check for availability of the first element.
+// Play: https://go.dev/play/p/ul45Z0y2EFO
 func First[T any](collection []T) (T, bool) {
 	length := len(collection)
 
@@ -520,12 +531,14 @@ func First[T any](collection []T) (T, bool) {
 }
 
 // FirstOrEmpty returns the first element of a collection or zero value if empty.
+// Play: https://go.dev/play/p/ul45Z0y2EFO
 func FirstOrEmpty[T any](collection []T) T {
 	i, _ := First(collection)
 	return i
 }
 
 // FirstOr returns the first element of a collection or the fallback value if empty.
+// Play: https://go.dev/play/p/ul45Z0y2EFO
 func FirstOr[T any](collection []T, fallback T) T {
 	i, ok := First(collection)
 	if !ok {
@@ -536,6 +549,7 @@ func FirstOr[T any](collection []T, fallback T) T {
 }
 
 // Last returns the last element of a collection or error if empty.
+// Play: https://go.dev/play/p/ul45Z0y2EFO
 func Last[T any](collection []T) (T, bool) {
 	length := len(collection)
 
@@ -548,12 +562,14 @@ func Last[T any](collection []T) (T, bool) {
 }
 
 // LastOrEmpty returns the last element of a collection or zero value if empty.
+// Play: https://go.dev/play/p/ul45Z0y2EFO
 func LastOrEmpty[T any](collection []T) T {
 	i, _ := Last(collection)
 	return i
 }
 
 // LastOr returns the last element of a collection or the fallback value if empty.
+// Play: https://go.dev/play/p/ul45Z0y2EFO
 func LastOr[T any](collection []T, fallback T) T {
 	i, ok := Last(collection)
 	if !ok {
@@ -565,6 +581,7 @@ func LastOr[T any](collection []T, fallback T) T {
 
 // Nth returns the element at index `nth` of collection. If `nth` is negative, the nth element
 // from the end is returned. An error is returned when nth is out of slice bounds.
+// Play: https://go.dev/play/p/sHoh88KWt6B
 func Nth[T any, N constraints.Integer](collection []T, nth N) (T, error) {
 	n := int(nth)
 	l := len(collection)
@@ -582,6 +599,7 @@ func Nth[T any, N constraints.Integer](collection []T, nth N) (T, error) {
 // NthOr returns the element at index `nth` of collection.
 // If `nth` is negative, it returns the nth element from the end.
 // If `nth` is out of slice bounds, it returns the fallback value instead of an error.
+// Play: https://go.dev/play/p/sHoh88KWt6B
 func NthOr[T any, N constraints.Integer](collection []T, nth N, fallback T) T {
 	value, err := Nth(collection, nth)
 	if err != nil {
@@ -593,6 +611,7 @@ func NthOr[T any, N constraints.Integer](collection []T, nth N, fallback T) T {
 // NthOrEmpty returns the element at index `nth` of collection.
 // If `nth` is negative, it returns the nth element from the end.
 // If `nth` is out of slice bounds, it returns the zero value (empty value) for that type.
+// Play: https://go.dev/play/p/sHoh88KWt6B
 func NthOrEmpty[T any, N constraints.Integer](collection []T, nth N) T {
 	value, err := Nth(collection, nth)
 	if err != nil {
@@ -607,12 +626,14 @@ func NthOrEmpty[T any, N constraints.Integer](collection []T, nth N) T {
 type randomIntGenerator func(n int) int
 
 // Sample returns a random item from collection.
+// Play: https://go.dev/play/p/vCcSJbh5s6l
 func Sample[T any](collection []T) T {
 	result := SampleBy(collection, rand.IntN)
 	return result
 }
 
 // SampleBy returns a random item from collection, using randomIntGenerator as the random index generator.
+// Play: https://go.dev/play/p/HDmKmMgq0XN
 func SampleBy[T any](collection []T, randomIntGenerator randomIntGenerator) T {
 	size := len(collection)
 	if size == 0 {
@@ -622,12 +643,14 @@ func SampleBy[T any](collection []T, randomIntGenerator randomIntGenerator) T {
 }
 
 // Samples returns N random unique items from collection.
+// Play: https://go.dev/play/p/vCcSJbh5s6l
 func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
 	results := SamplesBy(collection, count, rand.IntN)
 	return results
 }
 
 // SamplesBy returns N random unique items from collection, using randomIntGenerator as the random index generator.
+// Play: https://go.dev/play/p/HDmKmMgq0XN
 func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerator randomIntGenerator) Slice {
 	size := len(collection)
 

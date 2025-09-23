@@ -175,7 +175,7 @@ func OmitByValues[K comparable, V comparable, Map ~map[K]V](in Map, values []V) 
 }
 
 // Entries transforms a map into array of key/value pairs.
-// Play:
+// Play: https://go.dev/play/p/_t4Xe34-Nl5
 func Entries[K comparable, V any](in map[K]V) []Entry[K, V] {
 	entries := make([]Entry[K, V], 0, len(in))
 
@@ -331,6 +331,7 @@ func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key K, val
 // The iteratee returns a value and a boolean. If the boolean is true, the value is added to the result slice.
 // If the boolean is false, the value is not added to the result slice.
 // The order of the keys in the input map is not specified and the order of the keys in the output slice is not guaranteed.
+// Play: https://go.dev/play/p/jgsD_Kil9pV
 func FilterMapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key K, value V) (R, bool)) []R {
 	result := make([]R, 0, len(in))
 

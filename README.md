@@ -392,6 +392,8 @@ lop.Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 // []string{"1", "2", "3", "4"}
 ```
 
+[[play](https://go.dev/play/p/sCJaB3quRMC)]
+
 Mutable: like `lo.Map()`, but the slice is updated in place.
 
 ```go
@@ -403,6 +405,8 @@ lom.Map(list, func(x int) int {
 })
 // []int{2, 4, 6, 8}
 ```
+
+[[play](https://go.dev/play/p/0jY3Z0B7O_5)]
 
 ### UniqMap
 
@@ -420,6 +424,8 @@ names := lo.UniqMap(users, func(u User, index int) string {
 })
 // []string{"Alex", "Bob", "Alice"}
 ```
+
+[[play](https://go.dev/play/p/fygzLBhvUdB)]
 
 ### FilterMap
 
@@ -616,6 +622,8 @@ groups := lo.GroupByMap([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, int) {
 // map[int][]int{0: []int{0, 6}, 1: []int{2, 8}, 2: []int{4, 10}}
 ```
 
+[[play](https://go.dev/play/p/iMeruQ3_W80)]
+
 ### Chunk
 
 Returns an array of elements split into groups the length of size. If array can't be split evenly, the final chunk will be the remaining elements.
@@ -634,7 +642,7 @@ lo.Chunk([]int{0}, 2)
 // [][]int{{0}}
 ```
 
-[[play](https://go.dev/play/p/EeKl0AuTehH)]
+[[play](https://go.dev/play/p/kEMkFbdu85g)]
 
 ### PartitionBy
 
@@ -853,6 +861,8 @@ result := lo.FilterSliceToMap(list, func(str string) (string, int, bool) {
 // map[string][int]{"aa":2 "aaa":3}
 ```
 
+[[play](https://go.dev/play/p/2z0rDz2ZSGU)]
+
 ### Keyify
 
 Returns a map with each unique element of the slice as a key.
@@ -861,6 +871,8 @@ Returns a map with each unique element of the slice as a key.
 set := lo.Keyify([]int{1, 1, 2, 3, 4})
 // map[int]struct{}{1:{}, 2:{}, 3:{}, 4:{}}
 ```
+
+[[play](https://go.dev/play/p/RYhhM_csqIG)]
 
 ### Drop
 
@@ -1360,7 +1372,7 @@ entries := lo.Entries(map[string]int{"foo": 1, "bar": 2})
 // }
 ```
 
-[[play](https://go.dev/play/p/3Dhgx46gawJ)]
+[[play](https://go.dev/play/p/_t4Xe34-Nl5)]
 
 ### FromEntries (alias: FromPairs)
 
@@ -1678,6 +1690,8 @@ mean := lo.MeanBy([]float64{}, mapper)
 // 0
 ```
 
+[[play](https://go.dev/play/p/j7TsVwBOZ7P)]
+
 
 ### Mode
 
@@ -1773,7 +1787,7 @@ str := lo.PascalCase("hello_world")
 // HelloWorld
 ```
 
-[[play](https://go.dev/play/p/iZkdeLP9oiB)]
+[[play](https://go.dev/play/p/Dy_V_6DUYhe)]
 
 ### CamelCase
 
@@ -1784,7 +1798,7 @@ str := lo.CamelCase("hello_world")
 // helloWorld
 ```
 
-[[play](https://go.dev/play/p/dtyFB58MBRp)]
+[[play](https://go.dev/play/p/Go6aKwUiq59)]
 
 ### KebabCase
 
@@ -1795,7 +1809,7 @@ str := lo.KebabCase("helloWorld")
 // hello-world
 ```
 
-[[play](https://go.dev/play/p/2YTuPafwECA)]
+[[play](https://go.dev/play/p/96gT_WZnTVP)]
 
 ### SnakeCase
 
@@ -1806,7 +1820,7 @@ str := lo.SnakeCase("HelloWorld")
 // hello_world
 ```
 
-[[play](https://go.dev/play/p/QVKJG9nOnDg)]
+[[play](https://go.dev/play/p/ziB0V89IeVH)]
 
 ### Words
 
@@ -1817,7 +1831,7 @@ str := lo.Words("helloWorld")
 // []string{"hello", "world"}
 ```
 
-[[play](https://go.dev/play/p/2P4zhqqq61g)]
+[[play](https://go.dev/play/p/-f3VIQqiaVw)]
 
 ### Capitalize
 
@@ -1827,6 +1841,8 @@ Converts the first character of string to upper case and the remaining to lower 
 str := lo.Capitalize("heLLO")
 // Hello
 ```
+
+[[play](https://go.dev/play/p/uLTZZQXqnsa)]
 
 ### Ellipsis
 
@@ -1842,6 +1858,8 @@ str := lo.Ellipsis("Lorem Ipsum", 100)
 str := lo.Ellipsis("Lorem Ipsum", 3)
 // ...
 ```
+
+[[play](https://go.dev/play/p/qE93rgqe1TW)]
 
 ### T2 -> T9
 
@@ -1968,6 +1986,8 @@ duration := lo.Duration(func() {
 // 3s
 ```
 
+[[play](https://go.dev/play/p/HQfbBbAXaFP)]
+
 ### Duration0 -> Duration10
 
 Returns the time taken to execute a function.
@@ -2028,6 +2048,8 @@ for i := range children {
 }
 ```
 
+[[play](https://go.dev/play/p/UZGu2wVg3J2)]
+
 Many distributions strategies are available:
 
 - [lo.DispatchingStrategyRoundRobin](./channel.go): Distributes messages in a rotating sequential manner.
@@ -2087,6 +2109,8 @@ for v := range lo.SliceToChannel(2, list) {
 }
 // prints 1, then 2, then 3, then 4, then 5
 ```
+
+[[play](https://go.dev/play/p/lIbSY3QmiEg)]
 
 ### ChannelToSlice
 
@@ -2274,6 +2298,8 @@ present := lo.Contains([]int{0, 1, 2, 3, 4, 5}, 5)
 // true
 ```
 
+[[play](https://go.dev/play/p/W1EvyqY6t9j)]
+
 ### ContainsBy
 
 Returns true if the predicate function returns `true`.
@@ -2308,6 +2334,8 @@ b := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
 // true
 ```
 
+[[play](https://go.dev/play/p/dn1-vhHsq9x)]
+
 ### Some
 
 Returns true if at least 1 element of a subset is contained into a collection.
@@ -2316,6 +2344,9 @@ If the subset is empty Some returns false.
 ```go
 ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // true
+```
+
+[[play](https://go.dev/play/p/Lj4ceFkeT9V)]
 
 ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // false
@@ -2344,6 +2375,8 @@ b := None([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // true
 ```
 
+[[play](https://go.dev/play/p/fye7JsmxzPV)]
+
 ### NoneBy
 
 Returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
@@ -2354,6 +2387,8 @@ b := NoneBy([]int{1, 2, 3, 4}, func(x int) bool {
 })
 // true
 ```
+
+[[play](https://go.dev/play/p/O64WZ32H58S)]
 
 ### Intersect
 
@@ -2384,6 +2419,8 @@ left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
 left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
 // []int{}, []int{}
 ```
+
+[[play](https://go.dev/play/p/pKE-JgzqRpz)]
 
 ### Union
 
@@ -2499,6 +2536,8 @@ notFound := lo.IndexOf([]int{0, 1, 2, 1, 2, 3}, 6)
 // -1
 ```
 
+[[play](https://go.dev/play/p/Eo7W0lvKTky)]
+
 ### LastIndexOf
 
 Returns the index at which the last occurrence of a value is found in an array or return -1 if the value cannot be found.
@@ -2527,6 +2566,8 @@ str, ok := lo.Find([]string{"foobar"}, func(i string) bool {
 // "", false
 ```
 
+[[play](https://go.dev/play/p/Eo7W0lvKTky)]
+
 ### FindIndexOf
 
 FindIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
@@ -2543,6 +2584,8 @@ str, index, ok := lo.FindIndexOf([]string{"foobar"}, func(i string) bool {
 // "", -1, false
 ```
 
+[[play](https://go.dev/play/p/XWSEM4Ic_t0)]
+
 ### FindLastIndexOf
 
 FindLastIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
@@ -2558,6 +2601,8 @@ str, index, ok := lo.FindLastIndexOf([]string{"foobar"}, func(i string) bool {
 })
 // "", -1, false
 ```
+
+[[play](https://go.dev/play/p/dPiMRtJ6cUx)]
 
 ### FindOrElse
 
@@ -2665,6 +2710,8 @@ min := lo.Min([]int{})
 min := lo.Min([]time.Duration{time.Second, time.Hour})
 // 1s
 ```
+
+[[play](https://go.dev/play/p/r6e-Z8JozS8)]
 
 ### MinIndex
 
@@ -2985,6 +3032,8 @@ lo.Sample([]string{})
 // ""
 ```
 
+[[play](https://go.dev/play/p/FYA45LcpfM2)]
+
 
 
 ### SampleBy
@@ -3214,6 +3263,8 @@ Returns a pointer copy of the value.
 ptr := lo.ToPtr("hello world")
 // *string{"hello world"}
 ```
+
+[[play](https://go.dev/play/p/P2sD0PMXw4F)]
 
 ### Nil
 
@@ -3503,6 +3554,8 @@ f(42)
 // 47
 ```
 
+[[play](https://go.dev/play/p/Sy1gAQiQZ3v)]
+
 ### Partial2 -> Partial5
 
 Returns new function that, when called, has its first argument set to the provided value.
@@ -3517,6 +3570,8 @@ f(10, 5)
 f(42, -4)
 // 80
 ```
+
+[[play](https://go.dev/play/p/-xiPjy4JChJ)]
 
 ### Attempt
 
@@ -3606,7 +3661,7 @@ count1, err1 := lo.AttemptWhile(5, func(i int) (error, bool) {
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
-[[play](https://go.dev/play/p/M2wVq24PaZM)]
+[[play](https://go.dev/play/p/1VS7HxlYMOG)]
 
 ### AttemptWhileWithDelay
 
@@ -3631,7 +3686,7 @@ count1, time1, err1 := lo.AttemptWhileWithDelay(5, time.Millisecond, func(i int,
 
 For more advanced retry strategies (delay, exponential backoff...), please take a look on [cenkalti/backoff](https://github.com/cenkalti/backoff).
 
-[[play](https://go.dev/play/p/cfcmhvLO-nv)]
+[[play](https://go.dev/play/p/mhufUjJfLEF)]
 
 ### Debounce
 
@@ -3876,6 +3931,8 @@ iterations, duration, ok := lo.WaitFor(laterTrue, 10*time.Millisecond, 5*time.Mi
 // false
 ```
 
+[[play](https://go.dev/play/p/t_wTDmubbK3)]
+
 ### WaitForWithContext
 
 Runs periodically until a condition is validated or context is invalid.
@@ -3917,6 +3974,8 @@ iterations, duration, ok := lo.WaitForWithContext(expiringCtx, alwaysFalse, 100*
 // 5.1ms
 // false
 ```
+
+[[play](https://go.dev/play/p/t_wTDmubbK3)]
 
 ### Validate
 
