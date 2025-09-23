@@ -851,7 +851,6 @@ The order of keys in returned map is not specified and is not guaranteed to be t
 
 The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
 
-
 ```go
 list := []string{"a", "aa", "aaa"}
 
@@ -1692,7 +1691,6 @@ mean := lo.MeanBy([]float64{}, mapper)
 
 [[play](https://go.dev/play/p/j7TsVwBOZ7P)]
 
-
 ### Mode
 
 Calculates the mode(most frequent value) of a collection of numbers.
@@ -1700,7 +1698,6 @@ Calculates the mode(most frequent value) of a collection of numbers.
 If multiple values ​​have the same highest frequency, then multiple values ​​are returned.
 
 If the collection is empty, the zero value of `T[]` is returned.
-
 
 ```go
 mode := lo.Mode([]int{2, 2, 3, 4})
@@ -2449,7 +2446,6 @@ Filters a slice by excluding elements whose extracted keys match any in the excl
 
 It returns a new slice containing only the elements whose keys are not in the exclude list.
 
-
 ```go
 type struct User {
     ID int
@@ -2989,7 +2985,7 @@ nth, err := lo.Nth([]int{0, 1, 2, 3}, -2)
 ### NthOr
 
 Returns the element at index `nth` of the collection. If `nth` is negative, it returns the `nth` element from the end. If `nth` is out of slice bounds, it returns the provided fallback value
-```go	
+```go
 nth := lo.NthOr([]int{10, 20, 30, 40, 50}, 2, -1)
 // 30
 
@@ -3032,10 +3028,10 @@ lo.Sample([]string{})
 // ""
 ```
 
-[[play](https://go.dev/play/p/FYA45LcpfM2)]
-
-
-
+(??)[[play](https://go.dev/play/p/FYA45LcpfM2)]
+(??)
+(??)
+(??)
 ### SampleBy
 
 Returns a random item from collection, using a given random integer generator.
@@ -3073,7 +3069,6 @@ lo.SamplesBy([]string{"a", "b", "c"}, 3, r.Intn)
 ### Ternary
 
 A 1 line if/else statement.
-
 
 ```go
 result := lo.Ternary(true, "a", "b")

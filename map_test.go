@@ -624,6 +624,5 @@ func BenchmarkAssign(b *testing.B) {
 				})
 			}
 		})
-
 	}
 }

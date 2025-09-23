@@ -77,12 +77,9 @@ linters:
           - funlen
         path: "_test\\.go$"
 
-
-
 issues:
   max-issues-per-linter: 0  # 0 = unlimited (we want ALL issues)
   max-same-issues: 100
-
 
 formatters:
   enable:

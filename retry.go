@@ -323,7 +323,6 @@ func (th *throttleBy[T]) throttledFunc(key T) {
 		for _, f := range th.callbacks {
 			f(key)
 		}
-
 	}
 	if th.timer == nil {
 		th.timer = time.AfterFunc(th.interval, func() {
