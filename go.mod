@@ -1,6 +1,6 @@
 module github.com/samber/lo
 
-go 1.18
+go 1.23
 
 //
 // Dev dependencies are excluded from releases. Please check CI.
