@@ -935,7 +935,7 @@ l := lo.DropByIndex([]int{0, 1, 2, 3, 4, 5}, 2, 4, -1)
 
 ### Reject
 
-The opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
+The opposite of Filter, this method returns the elements of collection that predicate does not return true for.
 
 ```go
 odd := lo.Reject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
@@ -964,7 +964,7 @@ items := lo.RejectMap([]int{1, 2, 3, 4}, func(x int, _ int) (int, bool) {
 
 ### FilterReject
 
-Mixes Filter and Reject, this method returns two slices, one for the elements of collection that predicate returns truthy for and one for the elements that predicate does not return truthy for.
+Mixes Filter and Reject, this method returns two slices, one for the elements of collection that predicate returns true for and one for the elements that predicate does not return true for.
 
 ```go
 kept, rejected := lo.FilterReject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
@@ -1519,7 +1519,7 @@ result := lo.FilterMapToSlice(kv, func(k int, v int64) (string, bool) {
 
 ### FilterKeys
 
-Transforms a map into a slice based on predicate returns truthy for specific elements. It is a mix of `lo.Filter()` and `lo.Keys()`.
+Transforms a map into a slice based on predicate returns true for specific elements. It is a mix of `lo.Filter()` and `lo.Keys()`.
 
 ```go
 kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
@@ -1534,7 +1534,7 @@ result := FilterKeys(kv, func(k int, v string) bool {
 
 ### FilterValues
 
-Transforms a map into a slice based on predicate returns truthy for specific elements. It is a mix of `lo.Filter()` and `lo.Values()`.
+Transforms a map into a slice based on predicate returns true for specific elements. It is a mix of `lo.Filter()` and `lo.Values()`.
 
 ```go
 kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
@@ -2640,7 +2640,7 @@ result3, ok3 := lo.FindKey(map[string]test{"foo": test{"foo"}, "bar": test{"bar"
 
 ### FindKeyBy
 
-Returns the key of the first element predicate returns truthy for.
+Returns the key of the first element predicate returns true for.
 
 ```go
 result1, ok1 := lo.FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {

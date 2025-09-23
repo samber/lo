@@ -7,7 +7,7 @@ import (
 	"github.com/samber/lo/mutable"
 )
 
-// Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for.
+// Filter iterates over elements of collection, returning an array of all elements predicate returns true for.
 // Play: https://go.dev/play/p/Apjg3WeSi7K
 func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
 	result := make(Slice, 0, len(collection))
@@ -519,7 +519,7 @@ func DropByIndex[T any](collection []T, indexes ...int) []T {
 	return result
 }
 
-// Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return truthy for.
+// Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return true for.
 // Play: https://go.dev/play/p/pFCF5WVB225
 func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
 	result := Slice{}
@@ -552,7 +552,7 @@ func RejectMap[T any, R any](collection []T, callback func(item T, index int) (R
 }
 
 // FilterReject mixes Filter and Reject, this method returns two slices, one for the elements of collection that
-// predicate returns truthy for and one for the elements that predicate does not return truthy for.
+// predicate returns true for and one for the elements that predicate does not return true for.
 // Play: https://go.dev/play/p/lHSEGSznJjB
 func FilterReject[T any, Slice ~[]T](collection Slice, predicate func(T, int) bool) (kept Slice, rejected Slice) {
 	kept = make(Slice, 0, len(collection))
