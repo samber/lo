@@ -8,7 +8,7 @@ import (
 	"github.com/samber/lo/internal/rand"
 )
 
-// IndexOf returns the index at which the first occurrence of a value is found in an array or return -1
+// IndexOf returns the index at which the first occurrence of a value is found in a slice or return -1
 // if the value cannot be found.
 // Play: https://go.dev/play/p/Eo7W0lvKTky
 func IndexOf[T comparable](collection []T, element T) int {
@@ -21,7 +21,7 @@ func IndexOf[T comparable](collection []T, element T) int {
 	return -1
 }
 
-// LastIndexOf returns the index at which the last occurrence of a value is found in an array or return -1
+// LastIndexOf returns the index at which the last occurrence of a value is found in a slice or return -1
 // if the value cannot be found.
 // Play: https://go.dev/play/p/Eo7W0lvKTky
 func LastIndexOf[T comparable](collection []T, element T) int {
@@ -141,8 +141,8 @@ func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
 }
 
 // FindUniquesBy returns a slice with all the unique elements of the collection.
-// The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
-// invoked for each element in array to generate the criterion by which uniqueness is computed.
+// The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
+// invoked for each element in slice to generate the criterion by which uniqueness is computed.
 func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
@@ -197,8 +197,8 @@ func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
 }
 
 // FindDuplicatesBy returns a slice with the first occurrence of each duplicated element in the collection.
-// The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
-// invoked for each element in array to generate the criterion by which uniqueness is computed.
+// The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
+// invoked for each element in slice to generate the criterion by which uniqueness is computed.
 func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 

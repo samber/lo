@@ -6,7 +6,7 @@ package rand
 
 import "math/rand"
 
-// Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
+// Shuffle returns a slice of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 func Shuffle(n int, swap func(i, j int)) {
 	rand.Shuffle(n, swap)
 }

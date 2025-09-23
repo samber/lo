@@ -7,7 +7,7 @@ import (
 	"github.com/samber/lo/mutable"
 )
 
-// Filter iterates over elements of collection, returning an array of all elements predicate returns true for.
+// Filter iterates over elements of collection, returning a slice of all elements predicate returns true for.
 // Play: https://go.dev/play/p/Apjg3WeSi7K
 func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
 	result := make(Slice, 0, len(collection))
@@ -121,7 +121,7 @@ func ForEachWhile[T any](collection []T, iteratee func(item T, index int) (goon 
 	}
 }
 
-// Times invokes the iteratee n times, returning an array of the results of each invocation.
+// Times invokes the iteratee n times, returning a slice of the results of each invocation.
 // The iteratee is invoked with index as argument.
 // Play: https://go.dev/play/p/vgQj3Glr6lT
 func Times[T any](count int, iteratee func(index int) T) []T {
@@ -134,8 +134,8 @@ func Times[T any](count int, iteratee func(index int) T) []T {
 	return result
 }
 
-// Uniq returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
-// The order of result values is determined by the order they occur in the array.
+// Uniq returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept.
+// The order of result values is determined by the order they occur in the slice.
 // Play: https://go.dev/play/p/DTzbeXZ6iEN
 func Uniq[T comparable, Slice ~[]T](collection Slice) Slice {
 	result := make(Slice, 0, len(collection))
@@ -153,9 +153,9 @@ func Uniq[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
-// UniqBy returns a duplicate-free version of an array, in which only the first occurrence of each element is kept.
-// The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
-// invoked for each element in array to generate the criterion by which uniqueness is computed.
+// UniqBy returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept.
+// The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
+// invoked for each element in slice to generate the criterion by which uniqueness is computed.
 // Play: https://go.dev/play/p/g42Z3QSb53u
 func UniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	result := make(Slice, 0, len(collection))
@@ -203,7 +203,7 @@ func GroupByMap[T any, K comparable, V any](collection []T, iteratee func(item T
 	return result
 }
 
-// Chunk returns an array of elements split into groups of length size. If array can't be split evenly,
+// Chunk returns a slice of elements split into groups of length size. If slice can't be split evenly,
 // the final chunk will be the remaining elements.
 // Play: https://go.dev/play/p/kEMkFbdu85g
 func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
@@ -233,7 +233,7 @@ func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
 	return result
 }
 
-// PartitionBy returns an array of elements split into groups. The order of grouped values is
+// PartitionBy returns a slice of elements split into groups. The order of grouped values is
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through iteratee.
 // Play: https://go.dev/play/p/NfQ_nGjkgXW
@@ -261,7 +261,7 @@ func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee fun
 	// return Values[K, []T](groups)
 }
 
-// Flatten returns an array a single level deep.
+// Flatten returns a slice a single level deep.
 // Play: https://go.dev/play/p/rbp9ORaMpjw
 func Flatten[T any, Slice ~[]T](collection []Slice) Slice {
 	totalLen := 0
@@ -315,7 +315,7 @@ func Interleave[T any, Slice ~[]T](collections ...Slice) Slice {
 	return result
 }
 
-// Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
+// Shuffle returns a slice of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 // Play: https://go.dev/play/p/ZTGG7OUCdnp
 //
 // Deprecated: use mutable.Shuffle() instead.
@@ -324,7 +324,7 @@ func Shuffle[T any, Slice ~[]T](collection Slice) Slice {
 	return collection
 }
 
-// Reverse reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
+// Reverse reverses slice so that the first element becomes the last, the second element becomes the second to last, and so on.
 // Play: https://go.dev/play/p/iv2e9jslfBM
 //
 // Deprecated: use mutable.Reverse() instead.
@@ -333,7 +333,7 @@ func Reverse[T any, Slice ~[]T](collection Slice) Slice {
 	return collection
 }
 
-// Fill fills elements of array with `initial` value.
+// Fill fills elements of slice with `initial` value.
 // Play: https://go.dev/play/p/VwR34GzqEub
 func Fill[T Clonable[T], Slice ~[]T](collection Slice, initial T) Slice {
 	result := make(Slice, 0, len(collection))
@@ -369,7 +369,7 @@ func RepeatBy[T any](count int, predicate func(index int) T) []T {
 	return result
 }
 
-// KeyBy transforms a slice or an array of structs to a map based on a pivot callback.
+// KeyBy transforms a slice or a slice of structs to a map based on a pivot callback.
 // Play: https://go.dev/play/p/ccUiUL_Lnel
 func KeyBy[K comparable, V any](collection []V, iteratee func(item V) K) map[K]V {
 	result := make(map[K]V, len(collection))
@@ -384,7 +384,7 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(item V) K) map[K]V
 
 // Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 // If any of two pairs have the same key the last one gets added to the map.
-// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original slice.
 // Play: https://go.dev/play/p/WHa2CfMO3Lr
 func Associate[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K]V {
 	result := make(map[K]V, len(collection))
@@ -399,7 +399,7 @@ func Associate[T any, K comparable, V any](collection []T, transform func(item T
 
 // SliceToMap returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 // If any of two pairs have the same key the last one gets added to the map.
-// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original slice.
 // Alias of Associate().
 // Play: https://go.dev/play/p/WHa2CfMO3Lr
 func SliceToMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K]V {
@@ -408,7 +408,7 @@ func SliceToMap[T any, K comparable, V any](collection []T, transform func(item 
 
 // FilterSliceToMap returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 // If any of two pairs have the same key the last one gets added to the map.
-// The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original slice.
 // The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
 // Play: https://go.dev/play/p/2z0rDz2ZSGU
 func FilterSliceToMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V, bool)) map[K]V {
@@ -436,7 +436,7 @@ func Keyify[T comparable, Slice ~[]T](collection Slice) map[T]struct{} {
 	return result
 }
 
-// Drop drops n elements from the beginning of a slice or array.
+// Drop drops n elements from the beginning of a slice.
 // Play: https://go.dev/play/p/JswS7vXRJP2
 func Drop[T any, Slice ~[]T](collection Slice, n int) Slice {
 	if len(collection) <= n {
@@ -448,7 +448,7 @@ func Drop[T any, Slice ~[]T](collection Slice, n int) Slice {
 	return append(result, collection[n:]...)
 }
 
-// DropRight drops n elements from the end of a slice or array.
+// DropRight drops n elements from the end of a slice.
 // Play: https://go.dev/play/p/GG0nXkSJJa3
 func DropRight[T any, Slice ~[]T](collection Slice, n int) Slice {
 	if len(collection) <= n {
@@ -459,7 +459,7 @@ func DropRight[T any, Slice ~[]T](collection Slice, n int) Slice {
 	return append(result, collection[:len(collection)-n]...)
 }
 
-// DropWhile drops elements from the beginning of a slice or array while the predicate returns true.
+// DropWhile drops elements from the beginning of a slice while the predicate returns true.
 // Play: https://go.dev/play/p/7gBPYw2IK16
 func DropWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	i := 0
@@ -473,7 +473,7 @@ func DropWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool)
 	return append(result, collection[i:]...)
 }
 
-// DropRightWhile drops elements from the end of a slice or array while the predicate returns true.
+// DropRightWhile drops elements from the end of a slice while the predicate returns true.
 // Play: https://go.dev/play/p/3-n71oEC0Hz
 func DropRightWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	i := len(collection) - 1
@@ -487,7 +487,7 @@ func DropRightWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) 
 	return append(result, collection[:i+1]...)
 }
 
-// DropByIndex drops elements from a slice or array by the index.
+// DropByIndex drops elements from a slice by the index.
 // A negative index will drop elements from the end of the slice.
 // Play: https://go.dev/play/p/bPIH4npZRxS
 func DropByIndex[T any](collection []T, indexes ...int) []T {

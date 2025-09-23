@@ -97,7 +97,7 @@ func Unpack9[A, B, C, D, E, F, G, H, I any](tuple Tuple9[A, B, C, D, E, F, G, H,
 }
 
 // Zip2 creates a slice of grouped elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/jujaA6GaJTp
 func Zip2[A, B any](a []A, b []B) []Tuple2[A, B] {
@@ -119,7 +119,7 @@ func Zip2[A, B any](a []A, b []B) []Tuple2[A, B] {
 }
 
 // Zip3 creates a slice of grouped elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/jujaA6GaJTp
 func Zip3[A, B, C any](a []A, b []B, c []C) []Tuple3[A, B, C] {
@@ -143,7 +143,7 @@ func Zip3[A, B, C any](a []A, b []B, c []C) []Tuple3[A, B, C] {
 }
 
 // Zip4 creates a slice of grouped elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/jujaA6GaJTp
 func Zip4[A, B, C, D any](a []A, b []B, c []C, d []D) []Tuple4[A, B, C, D] {
@@ -169,7 +169,7 @@ func Zip4[A, B, C, D any](a []A, b []B, c []C, d []D) []Tuple4[A, B, C, D] {
 }
 
 // Zip5 creates a slice of grouped elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/jujaA6GaJTp
 func Zip5[A, B, C, D, E any](a []A, b []B, c []C, d []D, e []E) []Tuple5[A, B, C, D, E] {
@@ -197,7 +197,7 @@ func Zip5[A, B, C, D, E any](a []A, b []B, c []C, d []D, e []E) []Tuple5[A, B, C
 }
 
 // Zip6 creates a slice of grouped elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/jujaA6GaJTp
 func Zip6[A, B, C, D, E, F any](a []A, b []B, c []C, d []D, e []E, f []F) []Tuple6[A, B, C, D, E, F] {
@@ -227,7 +227,7 @@ func Zip6[A, B, C, D, E, F any](a []A, b []B, c []C, d []D, e []E, f []F) []Tupl
 }
 
 // Zip7 creates a slice of grouped elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/jujaA6GaJTp
 func Zip7[A, B, C, D, E, F, G any](a []A, b []B, c []C, d []D, e []E, f []F, g []G) []Tuple7[A, B, C, D, E, F, G] {
@@ -259,7 +259,7 @@ func Zip7[A, B, C, D, E, F, G any](a []A, b []B, c []C, d []D, e []E, f []F, g [
 }
 
 // Zip8 creates a slice of grouped elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/jujaA6GaJTp
 func Zip8[A, B, C, D, E, F, G, H any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H) []Tuple8[A, B, C, D, E, F, G, H] {
@@ -293,7 +293,7 @@ func Zip8[A, B, C, D, E, F, G, H any](a []A, b []B, c []C, d []D, e []E, f []F, 
 }
 
 // Zip9 creates a slice of grouped elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/jujaA6GaJTp
 func Zip9[A, B, C, D, E, F, G, H, I any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, i []I) []Tuple9[A, B, C, D, E, F, G, H, I] {
@@ -329,7 +329,7 @@ func Zip9[A, B, C, D, E, F, G, H, I any](a []A, b []B, c []C, d []D, e []E, f []
 }
 
 // ZipBy2 creates a slice of transformed elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/wlHur6yO8rR
 func ZipBy2[A any, B any, Out any](a []A, b []B, iteratee func(a A, b B) Out) []Out {
@@ -348,7 +348,7 @@ func ZipBy2[A any, B any, Out any](a []A, b []B, iteratee func(a A, b B) Out) []
 }
 
 // ZipBy3 creates a slice of transformed elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/j9maveOnSQX
 func ZipBy3[A any, B any, C any, Out any](a []A, b []B, c []C, iteratee func(a A, b B, c C) Out) []Out {
@@ -368,7 +368,7 @@ func ZipBy3[A any, B any, C any, Out any](a []A, b []B, c []C, iteratee func(a A
 }
 
 // ZipBy4 creates a slice of transformed elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/Y1eF2Ke0Ayz
 func ZipBy4[A any, B any, C any, D any, Out any](a []A, b []B, c []C, d []D, iteratee func(a A, b B, c C, d D) Out) []Out {
@@ -389,7 +389,7 @@ func ZipBy4[A any, B any, C any, D any, Out any](a []A, b []B, c []C, d []D, ite
 }
 
 // ZipBy5 creates a slice of transformed elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/SLynyalh5Oa
 func ZipBy5[A any, B any, C any, D any, E any, Out any](a []A, b []B, c []C, d []D, e []E, iteratee func(a A, b B, c C, d D, e E) Out) []Out {
@@ -411,7 +411,7 @@ func ZipBy5[A any, B any, C any, D any, E any, Out any](a []A, b []B, c []C, d [
 }
 
 // ZipBy6 creates a slice of transformed elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/IK6KVgw9e-S
 func ZipBy6[A any, B any, C any, D any, E any, F any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, iteratee func(a A, b B, c C, d D, e E, f F) Out) []Out {
@@ -434,7 +434,7 @@ func ZipBy6[A any, B any, C any, D any, E any, F any, Out any](a []A, b []B, c [
 }
 
 // ZipBy7 creates a slice of transformed elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/4uW6a2vXh8w
 func ZipBy7[A any, B any, C any, D any, E any, F any, G any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, iteratee func(a A, b B, c C, d D, e E, f F, g G) Out) []Out {
@@ -458,7 +458,7 @@ func ZipBy7[A any, B any, C any, D any, E any, F any, G any, Out any](a []A, b [
 }
 
 // ZipBy8 creates a slice of transformed elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/tk8xW7XzY4v
 func ZipBy8[A any, B any, C any, D any, E any, F any, G any, H any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, iteratee func(a A, b B, c C, d D, e E, f F, g G, h H) Out) []Out {
@@ -483,7 +483,7 @@ func ZipBy8[A any, B any, C any, D any, E any, F any, G any, H any, Out any](a [
 }
 
 // ZipBy9 creates a slice of transformed elements, the first of which contains the first elements
-// of the given arrays, the second of which contains the second elements of the given arrays, and so on.
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
 // Play: https://go.dev/play/p/VGqjDmQ9YqX
 func ZipBy9[A any, B any, C any, D any, E any, F any, G any, H any, I any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, i []I, iteratee func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) []Out {
@@ -508,7 +508,7 @@ func ZipBy9[A any, B any, C any, D any, E any, F any, G any, H any, I any, Out a
 	return result
 }
 
-// Unzip2 accepts an array of grouped elements and creates an array regrouping the elements
+// Unzip2 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/ciHugugvaAW
 func Unzip2[A, B any](tuples []Tuple2[A, B]) ([]A, []B) {
@@ -524,7 +524,7 @@ func Unzip2[A, B any](tuples []Tuple2[A, B]) ([]A, []B) {
 	return r1, r2
 }
 
-// Unzip3 accepts an array of grouped elements and creates an array regrouping the elements
+// Unzip3 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/ciHugugvaAW
 func Unzip3[A, B, C any](tuples []Tuple3[A, B, C]) ([]A, []B, []C) {
@@ -542,7 +542,7 @@ func Unzip3[A, B, C any](tuples []Tuple3[A, B, C]) ([]A, []B, []C) {
 	return r1, r2, r3
 }
 
-// Unzip4 accepts an array of grouped elements and creates an array regrouping the elements
+// Unzip4 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/ciHugugvaAW
 func Unzip4[A, B, C, D any](tuples []Tuple4[A, B, C, D]) ([]A, []B, []C, []D) {
@@ -562,7 +562,7 @@ func Unzip4[A, B, C, D any](tuples []Tuple4[A, B, C, D]) ([]A, []B, []C, []D) {
 	return r1, r2, r3, r4
 }
 
-// Unzip5 accepts an array of grouped elements and creates an array regrouping the elements
+// Unzip5 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/ciHugugvaAW
 func Unzip5[A, B, C, D, E any](tuples []Tuple5[A, B, C, D, E]) ([]A, []B, []C, []D, []E) {
@@ -584,7 +584,7 @@ func Unzip5[A, B, C, D, E any](tuples []Tuple5[A, B, C, D, E]) ([]A, []B, []C, [
 	return r1, r2, r3, r4, r5
 }
 
-// Unzip6 accepts an array of grouped elements and creates an array regrouping the elements
+// Unzip6 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/ciHugugvaAW
 func Unzip6[A, B, C, D, E, F any](tuples []Tuple6[A, B, C, D, E, F]) ([]A, []B, []C, []D, []E, []F) {
@@ -608,7 +608,7 @@ func Unzip6[A, B, C, D, E, F any](tuples []Tuple6[A, B, C, D, E, F]) ([]A, []B, 
 	return r1, r2, r3, r4, r5, r6
 }
 
-// Unzip7 accepts an array of grouped elements and creates an array regrouping the elements
+// Unzip7 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/ciHugugvaAW
 func Unzip7[A, B, C, D, E, F, G any](tuples []Tuple7[A, B, C, D, E, F, G]) ([]A, []B, []C, []D, []E, []F, []G) {
@@ -634,7 +634,7 @@ func Unzip7[A, B, C, D, E, F, G any](tuples []Tuple7[A, B, C, D, E, F, G]) ([]A,
 	return r1, r2, r3, r4, r5, r6, r7
 }
 
-// Unzip8 accepts an array of grouped elements and creates an array regrouping the elements
+// Unzip8 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/ciHugugvaAW
 func Unzip8[A, B, C, D, E, F, G, H any](tuples []Tuple8[A, B, C, D, E, F, G, H]) ([]A, []B, []C, []D, []E, []F, []G, []H) {
@@ -662,7 +662,7 @@ func Unzip8[A, B, C, D, E, F, G, H any](tuples []Tuple8[A, B, C, D, E, F, G, H])
 	return r1, r2, r3, r4, r5, r6, r7, r8
 }
 
-// Unzip9 accepts an array of grouped elements and creates an array regrouping the elements
+// Unzip9 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/ciHugugvaAW
 func Unzip9[A, B, C, D, E, F, G, H, I any](tuples []Tuple9[A, B, C, D, E, F, G, H, I]) ([]A, []B, []C, []D, []E, []F, []G, []H, []I) {
@@ -692,7 +692,7 @@ func Unzip9[A, B, C, D, E, F, G, H, I any](tuples []Tuple9[A, B, C, D, E, F, G, 
 	return r1, r2, r3, r4, r5, r6, r7, r8, r9
 }
 
-// UnzipBy2 iterates over a collection and creates an array regrouping the elements
+// UnzipBy2 iterates over a collection and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/tN8yqaRZz0r
 func UnzipBy2[In any, A any, B any](items []In, iteratee func(In) (a A, b B)) ([]A, []B) {
@@ -709,7 +709,7 @@ func UnzipBy2[In any, A any, B any](items []In, iteratee func(In) (a A, b B)) ([
 	return r1, r2
 }
 
-// UnzipBy3 iterates over a collection and creates an array regrouping the elements
+// UnzipBy3 iterates over a collection and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/36ITO2DlQq1
 func UnzipBy3[In any, A any, B any, C any](items []In, iteratee func(In) (a A, b B, c C)) ([]A, []B, []C) {
@@ -728,7 +728,7 @@ func UnzipBy3[In any, A any, B any, C any](items []In, iteratee func(In) (a A, b
 	return r1, r2, r3
 }
 
-// UnzipBy4 iterates over a collection and creates an array regrouping the elements
+// UnzipBy4 iterates over a collection and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/zJ6qY1dD1rL
 func UnzipBy4[In any, A any, B any, C any, D any](items []In, iteratee func(In) (a A, b B, c C, d D)) ([]A, []B, []C, []D) {
@@ -749,7 +749,7 @@ func UnzipBy4[In any, A any, B any, C any, D any](items []In, iteratee func(In) 
 	return r1, r2, r3, r4
 }
 
-// UnzipBy5 iterates over a collection and creates an array regrouping the elements
+// UnzipBy5 iterates over a collection and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/3f7jKkV9xZt
 func UnzipBy5[In any, A any, B any, C any, D any, E any](items []In, iteratee func(In) (a A, b B, c C, d D, e E)) ([]A, []B, []C, []D, []E) {
@@ -772,7 +772,7 @@ func UnzipBy5[In any, A any, B any, C any, D any, E any](items []In, iteratee fu
 	return r1, r2, r3, r4, r5
 }
 
-// UnzipBy6 iterates over a collection and creates an array regrouping the elements
+// UnzipBy6 iterates over a collection and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/8Y1b7tKu2pL
 func UnzipBy6[In any, A any, B any, C any, D any, E any, F any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F)) ([]A, []B, []C, []D, []E, []F) {
@@ -797,7 +797,7 @@ func UnzipBy6[In any, A any, B any, C any, D any, E any, F any](items []In, iter
 	return r1, r2, r3, r4, r5, r6
 }
 
-// UnzipBy7 iterates over a collection and creates an array regrouping the elements
+// UnzipBy7 iterates over a collection and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/7j1kLmVn3pM
 func UnzipBy7[In any, A any, B any, C any, D any, E any, F any, G any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G)) ([]A, []B, []C, []D, []E, []F, []G) {
@@ -824,7 +824,7 @@ func UnzipBy7[In any, A any, B any, C any, D any, E any, F any, G any](items []I
 	return r1, r2, r3, r4, r5, r6, r7
 }
 
-// UnzipBy8 iterates over a collection and creates an array regrouping the elements
+// UnzipBy8 iterates over a collection and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/1n2k3L4m5N6
 func UnzipBy8[In any, A any, B any, C any, D any, E any, F any, G any, H any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G, h H)) ([]A, []B, []C, []D, []E, []F, []G, []H) {
@@ -853,7 +853,7 @@ func UnzipBy8[In any, A any, B any, C any, D any, E any, F any, G any, H any](it
 	return r1, r2, r3, r4, r5, r6, r7, r8
 }
 
-// UnzipBy9 iterates over a collection and creates an array regrouping the elements
+// UnzipBy9 iterates over a collection and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/7o8p9q0r1s2
 func UnzipBy9[In any, A any, B any, C any, D any, E any, F any, G any, H any, I any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G, h H, i I)) ([]A, []B, []C, []D, []E, []F, []G, []H, []I) {

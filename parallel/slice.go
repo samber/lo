@@ -43,7 +43,7 @@ func ForEach[T any](collection []T, iteratee func(item T, index int)) {
 	wg.Wait()
 }
 
-// Times invokes the iteratee n times, returning an array of the results of each invocation.
+// Times invokes the iteratee n times, returning a slice of the results of each invocation.
 // The iteratee is invoked with index as argument.
 // `iteratee` is called in parallel.
 func Times[T any](count int, iteratee func(index int) T) []T {
@@ -84,7 +84,7 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 	return result
 }
 
-// PartitionBy returns an array of elements split into groups. The order of grouped values is
+// PartitionBy returns a slice of elements split into groups. The order of grouped values is
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through iteratee.
 // The order of groups is determined by their first appearance in the collection.

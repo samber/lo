@@ -4,7 +4,7 @@ import (
 	"github.com/samber/lo/internal/constraints"
 )
 
-// Range creates an array of numbers (positive and/or negative) with given length.
+// Range creates a slice of numbers (positive and/or negative) with given length.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func Range(elementNum int) []int {
 	length := If(elementNum < 0, -elementNum).Else(elementNum)
@@ -16,7 +16,7 @@ func Range(elementNum int) []int {
 	return result
 }
 
-// RangeFrom creates an array of numbers from start with specified length.
+// RangeFrom creates a slice of numbers from start with specified length.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum int) []T {
 	length := If(elementNum < 0, -elementNum).Else(elementNum)
@@ -28,8 +28,8 @@ func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum in
 	return result
 }
 
-// RangeWithSteps creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
-// step set to zero will return an empty array.
+// RangeWithSteps creates a slice of numbers (positive and/or negative) progressing from start up to, but not including end.
+// step set to zero will return an empty slice.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step T) []T {
 	result := []T{}

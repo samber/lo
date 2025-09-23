@@ -1,6 +1,6 @@
 package lo
 
-// Keys creates an array of the map keys.
+// Keys creates a slice of the map keys.
 // Play: https://go.dev/play/p/Uu11fHASqrU
 func Keys[K comparable, V any](in ...map[K]V) []K {
 	size := 0
@@ -18,7 +18,7 @@ func Keys[K comparable, V any](in ...map[K]V) []K {
 	return result
 }
 
-// UniqKeys creates an array of unique keys in the map.
+// UniqKeys creates a slice of unique keys in the map.
 // Play: https://go.dev/play/p/TPKAb6ILdHk
 func UniqKeys[K comparable, V any](in ...map[K]V) []K {
 	size := 0
@@ -49,7 +49,7 @@ func HasKey[K comparable, V any](in map[K]V, key K) bool {
 	return ok
 }
 
-// Values creates an array of the map values.
+// Values creates a slice of the map values.
 // Play: https://go.dev/play/p/nnRTQkzQfF6
 func Values[K comparable, V any](in ...map[K]V) []V {
 	size := 0
@@ -67,7 +67,7 @@ func Values[K comparable, V any](in ...map[K]V) []V {
 	return result
 }
 
-// UniqValues creates an array of unique values in the map.
+// UniqValues creates a slice of unique values in the map.
 // Play: https://go.dev/play/p/nf6bXMh7rM3
 func UniqValues[K comparable, V comparable](in ...map[K]V) []V {
 	size := 0
@@ -174,7 +174,7 @@ func OmitByValues[K comparable, V comparable, Map ~map[K]V](in Map, values []V) 
 	return r
 }
 
-// Entries transforms a map into array of key/value pairs.
+// Entries transforms a map into a slice of key/value pairs.
 // Play: https://go.dev/play/p/_t4Xe34-Nl5
 func Entries[K comparable, V any](in map[K]V) []Entry[K, V] {
 	entries := make([]Entry[K, V], 0, len(in))
@@ -189,14 +189,14 @@ func Entries[K comparable, V any](in map[K]V) []Entry[K, V] {
 	return entries
 }
 
-// ToPairs transforms a map into array of key/value pairs.
+// ToPairs transforms a map into a slice of key/value pairs.
 // Alias of Entries().
 // Play: https://go.dev/play/p/3Dhgx46gawJ
 func ToPairs[K comparable, V any](in map[K]V) []Entry[K, V] {
 	return Entries(in)
 }
 
-// FromEntries transforms an array of key/value pairs into a map.
+// FromEntries transforms a slice of key/value pairs into a map.
 // Play: https://go.dev/play/p/oIr5KHFGCEN
 func FromEntries[K comparable, V any](entries []Entry[K, V]) map[K]V {
 	out := make(map[K]V, len(entries))
@@ -208,7 +208,7 @@ func FromEntries[K comparable, V any](entries []Entry[K, V]) map[K]V {
 	return out
 }
 
-// FromPairs transforms an array of key/value pairs into a map.
+// FromPairs transforms a slice of key/value pairs into a map.
 // Alias of FromEntries().
 // Play: https://go.dev/play/p/oIr5KHFGCEN
 func FromPairs[K comparable, V any](entries []Entry[K, V]) map[K]V {
@@ -247,7 +247,7 @@ func Assign[K comparable, V any, Map ~map[K]V](maps ...Map) Map {
 	return out
 }
 
-// ChunkEntries splits a map into an array of elements in groups of length equal to its size. If the map cannot be split evenly,
+// ChunkEntries splits a map into a slice of elements in groups of length equal to its size. If the map cannot be split evenly,
 // the final chunk will contain the remaining elements.
 // Play: https://go.dev/play/p/X_YQL6mmoD-
 func ChunkEntries[K comparable, V any](m map[K]V, size int) []map[K]V {

@@ -113,7 +113,7 @@ func Substring[T ~string](str T, offset int, length uint) T {
 	return T(strings.ReplaceAll(string(rs[offset:offset+int(length)]), "\x00", ""))
 }
 
-// ChunkString returns an array of strings split into groups of length size. If the string can't be split evenly,
+// ChunkString returns a slice of strings split into groups of length size. If the string can't be split evenly,
 // the final chunk will be the remaining characters.
 // Play: https://go.dev/play/p/__FLTuJVz54
 func ChunkString[T ~string](str T, size int) []T {
@@ -194,7 +194,7 @@ func SnakeCase(str string) string {
 	return strings.Join(items, "_")
 }
 
-// Words splits string into an array of its words.
+// Words splits string into a slice of its words.
 // Play: https://go.dev/play/p/-f3VIQqiaVw
 func Words(str string) []string {
 	str = splitWordReg.ReplaceAllString(str, `$1$3$5$7 $2$4$6$8$9`)
