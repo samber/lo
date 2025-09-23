@@ -1,2 +1,2 @@
 
-Credits goes to https://gopherize.me/
+Credit goes to https://gopherize.me/

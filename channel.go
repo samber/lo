@@ -177,7 +177,7 @@ func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 	return ch
 }
 
-// ChannelToSlice returns a slice built from channels items. Blocks until channel closes.
+// ChannelToSlice returns a slice built from channel items. Blocks until channel closes.
 // Play: https://go.dev/play/p/lIbSY3QmiEg
 func ChannelToSlice[T any](ch <-chan T) []T {
 	collection := []T{}

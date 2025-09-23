@@ -572,7 +572,7 @@ uniqValues := lo.Uniq([]int{1, 2, 2, 1})
 
 ### UniqBy
 
-Returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept. The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is invoked for each element in slice to generate the criterion by which uniqueness is computed.
+Returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept. The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is invoked for each element in the slice to generate the criterion by which uniqueness is computed.
 
 ```go
 uniqValues := lo.UniqBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
@@ -626,7 +626,7 @@ groups := lo.GroupByMap([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, int) {
 
 ### Chunk
 
-Returns a slice of elements split into groups of length size. If slice can't be split evenly, the final chunk will be the remaining elements.
+Returns a slice of elements split into groups of length size. If the slice can't be split evenly, the final chunk will be the remaining elements.
 
 ```go
 lo.Chunk([]int{0, 1, 2, 3, 4, 5}, 2)
@@ -725,7 +725,7 @@ list
 
 ### Reverse
 
-Reverses slice so that the first element becomes the last, the second element becomes the second to last, and so on.
+Reverses a slice so that the first element becomes the last, the second element becomes the second to last, and so on.
 
 ⚠️ This helper is **mutable**.
 
@@ -743,7 +743,7 @@ list
 
 ### Fill
 
-Fills elements of slice with `initial` value.
+Fills elements of a slice with `initial` value.
 
 ```go
 type foo struct {
@@ -1489,7 +1489,7 @@ out := lo.MapEntries(in, func(k string, v int) (int, string) {
 
 ### MapToSlice
 
-Transforms a map into a slice based on specific iteratee.
+Transforms a map into a slice based on specified iteratee.
 
 ```go
 m := map[int]int64{1: 4, 2: 5, 3: 6}
@@ -1504,7 +1504,7 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
 
 ### FilterMapToSlice
 
-Transforms a map into a slice based on specific iteratee. The iteratee returns a value and a boolean. If the boolean is true, the value is added to the result slice.
+Transforms a map into a slice based on specified iteratee. The iteratee returns a value and a boolean. If the boolean is true, the value is added to the result slice.
 
 If the boolean is false, the value is not added to the result slice. The order of the keys in the input map is not specified and the order of the keys in the output slice is not guaranteed.
 
@@ -1878,7 +1878,7 @@ tuple2 := lo.T2(example())
 
 ### Unpack2 -> Unpack9
 
-Returns values contained in tuple.
+Returns values contained in a tuple.
 
 ```go
 r1, r2 := lo.Unpack2(lo.Tuple2[string, int]{"a", 1})
@@ -1947,7 +1947,7 @@ a, b := lo.UnzipBy2([]string{"hello", "john", "doe"}, func(str string) (string, 
 
 ### CrossJoin2 -> CrossJoin9
 
-Combines every item from one list with every item from others. It is the cartesian product of lists received as arguments. It returns an empty list if a list is empty.
+Combines every item from one list with every item from others. It is the cartesian product of lists received as arguments. Returns an empty list if a list is empty.
 
 ```go
 result := lo.CrossJoin2([]string{"hello", "john", "doe"}, []int{1, 2})
@@ -1961,7 +1961,7 @@ result := lo.CrossJoin2([]string{"hello", "john", "doe"}, []int{1, 2})
 
 ### CrossJoinBy2 -> CrossJoinBy9
 
-Combines every item from one list with every item from others. It is the cartesian product of lists received as arguments. The project function is used to create the output values. It returns an empty list if a list is empty.
+Combines every item from one list with every item from others. It is the cartesian product of lists received as arguments. The project function is used to create the output values. Returns an empty list if a list is empty.
 
 ```go
 result := lo.CrossJoinBy2([]string{"hello", "john", "doe"}, []int{1, 2}, func(a A, b B) string {
@@ -2114,7 +2114,7 @@ for v := range lo.SliceToChannel(2, list) {
 
 ### ChannelToSlice
 
-Returns a slice built from channels items. Blocks until channel closes.
+Returns a slice built from channel items. Blocks until channel closes.
 
 ```go
 list := []int{1, 2, 3, 4, 5}
@@ -2433,7 +2433,7 @@ union := lo.Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2}, []int{0, 10})
 
 ### Without
 
-Returns slice excluding all given values.
+Returns a slice excluding all given values.
 
 ```go
 subset := lo.Without([]int{0, 2, 10}, 2)
@@ -2447,7 +2447,7 @@ subset := lo.Without([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
 
 Filters a slice by excluding elements whose extracted keys match any in the exclude list.
 
-It returns a new slice containing only the elements whose keys are not in the exclude list.
+Returns a new slice containing only the elements whose keys are not in the exclude list.
 
 
 ```go
@@ -2478,7 +2478,7 @@ filteredUsers := lo.WithoutBy(users, getID, excludedIDs...)
 
 ### WithoutEmpty
 
-Returns slice excluding zero values.
+Returns a slice excluding zero values.
 
 ```go
 subset := lo.WithoutEmpty([]int{0, 2, 10})
@@ -2487,7 +2487,7 @@ subset := lo.WithoutEmpty([]int{0, 2, 10})
 
 ### WithoutNth
 
-Returns slice excluding nth value.
+Returns a slice excluding the nth value.
 
 ```go
 subset := lo.WithoutNth([]int{-2, -1, 0, 1, 2}, 3, -42, 1)
@@ -2526,7 +2526,7 @@ b := lo.ElementsMatchBy(
 
 ### IndexOf
 
-Returns the index at which the first occurrence of a value is found in a slice or return -1 if the value cannot be found.
+Returns the index at which the first occurrence of a value is found in a slice or -1 if the value cannot be found.
 
 ```go
 found := lo.IndexOf([]int{0, 1, 2, 1, 2, 3}, 2)
@@ -2540,7 +2540,7 @@ notFound := lo.IndexOf([]int{0, 1, 2, 1, 2, 3}, 6)
 
 ### LastIndexOf
 
-Returns the index at which the last occurrence of a value is found in a slice or return -1 if the value cannot be found.
+Returns the index at which the last occurrence of a value is found in a slice or -1 if the value cannot be found.
 
 ```go
 found := lo.LastIndexOf([]int{0, 1, 2, 1, 2, 3}, 2)
@@ -2552,7 +2552,7 @@ notFound := lo.LastIndexOf([]int{0, 1, 2, 1, 2, 3}, 6)
 
 ### Find
 
-Searches for an element in a slice based on a predicate. It returns element and true if element was found.
+Searches for an element in a slice based on a predicate. Returns element and true if element was found.
 
 ```go
 str, ok := lo.Find([]string{"a", "b", "c", "d"}, func(i string) bool {
@@ -2570,7 +2570,7 @@ str, ok := lo.Find([]string{"foobar"}, func(i string) bool {
 
 ### FindIndexOf
 
-FindIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
+FindIndexOf searches for an element in a slice based on a predicate and returns the index and true. Returns -1 and false if the element is not found.
 
 ```go
 str, index, ok := lo.FindIndexOf([]string{"a", "b", "a", "b"}, func(i string) bool {
@@ -2588,7 +2588,7 @@ str, index, ok := lo.FindIndexOf([]string{"foobar"}, func(i string) bool {
 
 ### FindLastIndexOf
 
-FindLastIndexOf searches an element in a slice based on a predicate and returns the index and true. It returns -1 and false if the element is not found.
+FindLastIndexOf searches for the last element in a slice based on a predicate and returns the index and true. Returns -1 and false if the element is not found.
 
 ```go
 str, index, ok := lo.FindLastIndexOf([]string{"a", "b", "a", "b"}, func(i string) bool {
@@ -2606,7 +2606,7 @@ str, index, ok := lo.FindLastIndexOf([]string{"foobar"}, func(i string) bool {
 
 ### FindOrElse
 
-Searches for an element in a slice based on a predicate. It returns the element if found or a given fallback value otherwise.
+Searches for an element in a slice based on a predicate. Returns the element if found or a given fallback value otherwise.
 
 ```go
 str := lo.FindOrElse([]string{"a", "b", "c", "d"}, "x", func(i string) bool {
@@ -2656,7 +2656,7 @@ result2, ok2 := lo.FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(
 
 ### FindUniques
 
-Returns a slice with all the unique elements of the collection. The order of result values is determined by the order they occur in the slice.
+Returns a slice with all the elements that appear in the collection only once. The order of result values is determined by the order they occur in the slice.
 
 ```go
 uniqueValues := lo.FindUniques([]int{1, 2, 2, 1, 2, 3})
@@ -2665,7 +2665,7 @@ uniqueValues := lo.FindUniques([]int{1, 2, 2, 1, 2, 3})
 
 ### FindUniquesBy
 
-Returns a slice with all the unique elements of the collection. The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is invoked for each element in slice to generate the criterion by which uniqueness is computed.
+Returns a slice with all the elements that appear in the collection only once. The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is invoked for each element in the slice to generate the criterion by which uniqueness is computed.
 
 ```go
 uniqueValues := lo.FindUniquesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
@@ -2685,7 +2685,7 @@ duplicatedValues := lo.FindDuplicates([]int{1, 2, 2, 1, 2, 3})
 
 ### FindDuplicatesBy
 
-Returns a slice with the first occurrence of each duplicated element in the collection. The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is invoked for each element in slice to generate the criterion by which uniqueness is computed.
+Returns a slice with the first occurrence of each duplicated element in the collection. The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is invoked for each element in the slice to generate the criterion by which uniqueness is computed.
 
 ```go
 duplicatedValues := lo.FindDuplicatesBy([]int{3, 4, 5, 6, 7}, func(i int) int {

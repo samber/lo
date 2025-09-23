@@ -8,7 +8,7 @@ import (
 	"github.com/samber/lo/internal/rand"
 )
 
-// IndexOf returns the index at which the first occurrence of a value is found in a slice or return -1
+// IndexOf returns the index at which the first occurrence of a value is found in a slice or -1
 // if the value cannot be found.
 // Play: https://go.dev/play/p/Eo7W0lvKTky
 func IndexOf[T comparable](collection []T, element T) int {
@@ -21,7 +21,7 @@ func IndexOf[T comparable](collection []T, element T) int {
 	return -1
 }
 
-// LastIndexOf returns the index at which the last occurrence of a value is found in a slice or return -1
+// LastIndexOf returns the index at which the last occurrence of a value is found in a slice or -1
 // if the value cannot be found.
 // Play: https://go.dev/play/p/Eo7W0lvKTky
 func LastIndexOf[T comparable](collection []T, element T) int {
@@ -36,7 +36,7 @@ func LastIndexOf[T comparable](collection []T, element T) int {
 	return -1
 }
 
-// Find searches for an element in a slice based on a predicate. It returns element and true if element was found.
+// Find searches for an element in a slice based on a predicate. Returns element and true if element was found.
 // Play: https://go.dev/play/p/Eo7W0lvKTky
 func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {
 	for i := range collection {
@@ -49,8 +49,8 @@ func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {
 	return result, false
 }
 
-// FindIndexOf searches an element in a slice based on a predicate and returns the index and true.
-// It returns -1 and false if the element is not found.
+// FindIndexOf searches for an element in a slice based on a predicate and returns the index and true.
+// Returns -1 and false if the element is not found.
 // Play: https://go.dev/play/p/XWSEM4Ic_t0
 func FindIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bool) {
 	for i := range collection {
@@ -63,8 +63,8 @@ func FindIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bo
 	return result, -1, false
 }
 
-// FindLastIndexOf searches last element in a slice based on a predicate and returns the index and true.
-// It returns -1 and false if the element is not found.
+// FindLastIndexOf searches for the last element in a slice based on a predicate and returns the index and true.
+// Returns -1 and false if the element is not found.
 // Play: https://go.dev/play/p/dPiMRtJ6cUx
 func FindLastIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bool) {
 	length := len(collection)
@@ -79,7 +79,7 @@ func FindLastIndexOf[T any](collection []T, predicate func(item T) bool) (T, int
 	return result, -1, false
 }
 
-// FindOrElse searches for an element in a slice based on a predicate. It returns the element if found or a given fallback value otherwise.
+// FindOrElse searches for an element in a slice based on a predicate. Returns the element if found or a given fallback value otherwise.
 // Play: https://go.dev/play/p/Eo7W0lvKTky
 func FindOrElse[T any](collection []T, fallback T, predicate func(item T) bool) T {
 	for i := range collection {
@@ -115,7 +115,7 @@ func FindKeyBy[K comparable, V any](object map[K]V, predicate func(key K, value 
 	return Empty[K](), false
 }
 
-// FindUniques returns a slice with all the unique elements of the collection.
+// FindUniques returns a slice with all the elements that appear in the collection only once.
 // The order of result values is determined by the order they occur in the collection.
 func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
 	isDupl := make(map[T]bool, len(collection))
@@ -140,9 +140,9 @@ func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
-// FindUniquesBy returns a slice with all the unique elements of the collection.
+// FindUniquesBy returns a slice with all the elements that appear in the collection only once.
 // The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
-// invoked for each element in slice to generate the criterion by which uniqueness is computed.
+// invoked for each element in the slice to generate the criterion by which uniqueness is computed.
 func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
@@ -198,7 +198,7 @@ func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
 
 // FindDuplicatesBy returns a slice with the first occurrence of each duplicated element in the collection.
 // The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
-// invoked for each element in slice to generate the criterion by which uniqueness is computed.
+// invoked for each element in the slice to generate the criterion by which uniqueness is computed.
 func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
@@ -622,7 +622,7 @@ func NthOrEmpty[T any, N constraints.Integer](collection []T, nth N) T {
 }
 
 // randomIntGenerator is a function that should return a random integer in the range [0, n)
-// where n is the parameter passed to the randomIntGenerator.
+// where n is the argument passed to the randomIntGenerator.
 type randomIntGenerator func(n int) int
 
 // Sample returns a random item from collection.

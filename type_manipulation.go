@@ -94,7 +94,7 @@ func FromSlicePtrOr[T any](collection []*T, fallback T) []T {
 	})
 }
 
-// ToAnySlice returns a slice with all elements mapped to `any` type
+// ToAnySlice returns a slice with all elements mapped to `any` type.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func ToAnySlice[T any](collection []T) []any {
 	result := make([]any, len(collection))

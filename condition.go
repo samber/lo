@@ -11,7 +11,7 @@ func Ternary[T any](condition bool, ifOutput T, elseOutput T) T {
 	return elseOutput
 }
 
-// TernaryF is a single line if/else statement whose options are functions
+// TernaryF is a single line if/else statement whose options are functions.
 // Play: https://go.dev/play/p/AO4VW20JoqM
 func TernaryF[T any](condition bool, ifFunc func() T, elseFunc func() T) T {
 	if condition {
@@ -37,7 +37,7 @@ func If[T any](condition bool, result T) *ifElse[T] { //nolint:revive
 	return &ifElse[T]{t, false}
 }
 
-// IfF is a single line if/else statement whose options are functions
+// IfF is a single line if/else statement whose options are functions.
 // Play: https://go.dev/play/p/WSw3ApMxhyW
 func IfF[T any](condition bool, resultF func() T) *ifElse[T] { //nolint:revive
 	if condition {

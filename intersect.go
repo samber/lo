@@ -176,7 +176,7 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	return result
 }
 
-// Without returns slice excluding all given values.
+// Without returns a slice excluding all given values.
 // Play: https://go.dev/play/p/5j30Ux8TaD0
 func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
 	excludeMap := make(map[T]struct{}, len(exclude))
@@ -194,7 +194,7 @@ func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
 }
 
 // WithoutBy filters a slice by excluding elements whose extracted keys match any in the exclude list.
-// It returns a new slice containing only the elements whose keys are not in the exclude list.
+// Returns a new slice containing only the elements whose keys are not in the exclude list.
 // Play: https://go.dev/play/p/VgWJOF01NbJ
 func WithoutBy[T any, K comparable](collection []T, iteratee func(item T) K, exclude ...K) []T {
 	excludeMap := make(map[K]struct{}, len(exclude))
@@ -211,14 +211,14 @@ func WithoutBy[T any, K comparable](collection []T, iteratee func(item T) K, exc
 	return result
 }
 
-// WithoutEmpty returns slice excluding zero values.
+// WithoutEmpty returns a slice excluding zero values.
 //
 // Deprecated: Use lo.Compact instead.
 func WithoutEmpty[T comparable, Slice ~[]T](collection Slice) Slice {
 	return Compact(collection)
 }
 
-// WithoutNth returns slice excluding nth value.
+// WithoutNth returns a slice excluding the nth value.
 // Play: https://go.dev/play/p/5g3F9R2H1xL
 func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice {
 	length := len(collection)

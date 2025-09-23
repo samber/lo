@@ -48,49 +48,49 @@ func T9[A, B, C, D, E, F, G, H, I any](a A, b B, c C, d D, e E, f F, g G, h H, i
 	return Tuple9[A, B, C, D, E, F, G, H, I]{A: a, B: b, C: c, D: d, E: e, F: f, G: g, H: h, I: i}
 }
 
-// Unpack2 returns values contained in tuple.
+// Unpack2 returns values contained in a tuple.
 // Play: https://go.dev/play/p/xVP_k0kJ96W
 func Unpack2[A, B any](tuple Tuple2[A, B]) (A, B) {
 	return tuple.A, tuple.B
 }
 
-// Unpack3 returns values contained in tuple.
+// Unpack3 returns values contained in a tuple.
 // Play: https://go.dev/play/p/xVP_k0kJ96W
 func Unpack3[A, B, C any](tuple Tuple3[A, B, C]) (A, B, C) {
 	return tuple.A, tuple.B, tuple.C
 }
 
-// Unpack4 returns values contained in tuple.
+// Unpack4 returns values contained in a tuple.
 // Play: https://go.dev/play/p/xVP_k0kJ96W
 func Unpack4[A, B, C, D any](tuple Tuple4[A, B, C, D]) (A, B, C, D) {
 	return tuple.A, tuple.B, tuple.C, tuple.D
 }
 
-// Unpack5 returns values contained in tuple.
+// Unpack5 returns values contained in a tuple.
 // Play: https://go.dev/play/p/xVP_k0kJ96W
 func Unpack5[A, B, C, D, E any](tuple Tuple5[A, B, C, D, E]) (A, B, C, D, E) {
 	return tuple.A, tuple.B, tuple.C, tuple.D, tuple.E
 }
 
-// Unpack6 returns values contained in tuple.
+// Unpack6 returns values contained in a tuple.
 // Play: https://go.dev/play/p/xVP_k0kJ96W
 func Unpack6[A, B, C, D, E, F any](tuple Tuple6[A, B, C, D, E, F]) (A, B, C, D, E, F) {
 	return tuple.A, tuple.B, tuple.C, tuple.D, tuple.E, tuple.F
 }
 
-// Unpack7 returns values contained in tuple.
+// Unpack7 returns values contained in a tuple.
 // Play: https://go.dev/play/p/xVP_k0kJ96W
 func Unpack7[A, B, C, D, E, F, G any](tuple Tuple7[A, B, C, D, E, F, G]) (A, B, C, D, E, F, G) {
 	return tuple.A, tuple.B, tuple.C, tuple.D, tuple.E, tuple.F, tuple.G
 }
 
-// Unpack8 returns values contained in tuple.
+// Unpack8 returns values contained in a tuple.
 // Play: https://go.dev/play/p/xVP_k0kJ96W
 func Unpack8[A, B, C, D, E, F, G, H any](tuple Tuple8[A, B, C, D, E, F, G, H]) (A, B, C, D, E, F, G, H) {
 	return tuple.A, tuple.B, tuple.C, tuple.D, tuple.E, tuple.F, tuple.G, tuple.H
 }
 
-// Unpack9 returns values contained in tuple.
+// Unpack9 returns values contained in a tuple.
 // Play: https://go.dev/play/p/xVP_k0kJ96W
 func Unpack9[A, B, C, D, E, F, G, H, I any](tuple Tuple9[A, B, C, D, E, F, G, H, I]) (A, B, C, D, E, F, G, H, I) {
 	return tuple.A, tuple.B, tuple.C, tuple.D, tuple.E, tuple.F, tuple.G, tuple.H, tuple.I
@@ -886,7 +886,7 @@ func UnzipBy9[In any, A any, B any, C any, D any, E any, F any, G any, H any, I 
 
 // CrossJoin2 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/3VFppyL9FDU
 func CrossJoin2[A, B any](listA []A, listB []B) []Tuple2[A, B] {
 	return CrossJoinBy2(listA, listB, T2[A, B])
@@ -894,7 +894,7 @@ func CrossJoin2[A, B any](listA []A, listB []B) []Tuple2[A, B] {
 
 // CrossJoin3 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/2WGeHyJj4fK
 func CrossJoin3[A, B, C any](listA []A, listB []B, listC []C) []Tuple3[A, B, C] {
 	return CrossJoinBy3(listA, listB, listC, T3[A, B, C])
@@ -902,7 +902,7 @@ func CrossJoin3[A, B, C any](listA []A, listB []B, listC []C) []Tuple3[A, B, C] 
 
 // CrossJoin4 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/6XhKjLmMnNp
 func CrossJoin4[A, B, C, D any](listA []A, listB []B, listC []C, listD []D) []Tuple4[A, B, C, D] {
 	return CrossJoinBy4(listA, listB, listC, listD, T4[A, B, C, D])
@@ -910,7 +910,7 @@ func CrossJoin4[A, B, C, D any](listA []A, listB []B, listC []C, listD []D) []Tu
 
 // CrossJoin5 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/7oPqRsTuVwX
 func CrossJoin5[A, B, C, D, E any](listA []A, listB []B, listC []C, listD []D, listE []E) []Tuple5[A, B, C, D, E] {
 	return CrossJoinBy5(listA, listB, listC, listD, listE, T5[A, B, C, D, E])
@@ -918,7 +918,7 @@ func CrossJoin5[A, B, C, D, E any](listA []A, listB []B, listC []C, listD []D, l
 
 // CrossJoin6 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/8yZ1aB2cD3e
 func CrossJoin6[A, B, C, D, E, F any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F) []Tuple6[A, B, C, D, E, F] {
 	return CrossJoinBy6(listA, listB, listC, listD, listE, listF, T6[A, B, C, D, E, F])
@@ -926,7 +926,7 @@ func CrossJoin6[A, B, C, D, E, F any](listA []A, listB []B, listC []C, listD []D
 
 // CrossJoin7 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/9f4g5h6i7j8
 func CrossJoin7[A, B, C, D, E, F, G any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G) []Tuple7[A, B, C, D, E, F, G] {
 	return CrossJoinBy7(listA, listB, listC, listD, listE, listF, listG, T7[A, B, C, D, E, F, G])
@@ -934,7 +934,7 @@ func CrossJoin7[A, B, C, D, E, F, G any](listA []A, listB []B, listC []C, listD 
 
 // CrossJoin8 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/0k1l2m3n4o5
 func CrossJoin8[A, B, C, D, E, F, G, H any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H) []Tuple8[A, B, C, D, E, F, G, H] {
 	return CrossJoinBy8(listA, listB, listC, listD, listE, listF, listG, listH, T8[A, B, C, D, E, F, G, H])
@@ -942,7 +942,7 @@ func CrossJoin8[A, B, C, D, E, F, G, H any](listA []A, listB []B, listC []C, lis
 
 // CrossJoin9 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/6p7q8r9s0t1
 func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, listI []I) []Tuple9[A, B, C, D, E, F, G, H, I] {
 	return CrossJoinBy9(listA, listB, listC, listD, listE, listF, listG, listH, listI, T9[A, B, C, D, E, F, G, H, I])
@@ -951,7 +951,7 @@ func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA []A, listB []B, listC []C, 
 // CrossJoinBy2 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/8Y7btpvuA-C
 func CrossJoinBy2[A, B, Out any](listA []A, listB []B, project func(a A, b B) Out) []Out {
 	size := len(listA) * len(listB)
@@ -973,7 +973,7 @@ func CrossJoinBy2[A, B, Out any](listA []A, listB []B, project func(a A, b B) Ou
 // CrossJoinBy3 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/3z4y5x6w7v8
 func CrossJoinBy3[A, B, C, Out any](listA []A, listB []B, listC []C, project func(a A, b B, c C) Out) []Out {
 	size := len(listA) * len(listB) * len(listC)
@@ -997,7 +997,7 @@ func CrossJoinBy3[A, B, C, Out any](listA []A, listB []B, listC []C, project fun
 // CrossJoinBy4 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/8b9c0d1e2f3
 func CrossJoinBy4[A, B, C, D, Out any](listA []A, listB []B, listC []C, listD []D, project func(a A, b B, c C, d D) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD)
@@ -1023,7 +1023,7 @@ func CrossJoinBy4[A, B, C, D, Out any](listA []A, listB []B, listC []C, listD []
 // CrossJoinBy5 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/4g5h6i7j8k9
 func CrossJoinBy5[A, B, C, D, E, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, project func(a A, b B, c C, d D, e E) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE)
@@ -1051,7 +1051,7 @@ func CrossJoinBy5[A, B, C, D, E, Out any](listA []A, listB []B, listC []C, listD
 // CrossJoinBy6 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/1l2m3n4o5p6
 func CrossJoinBy6[A, B, C, D, E, F, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, project func(a A, b B, c C, d D, e E, f F) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF)
@@ -1081,7 +1081,7 @@ func CrossJoinBy6[A, B, C, D, E, F, Out any](listA []A, listB []B, listC []C, li
 // CrossJoinBy7 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/7q8r9s0t1u2
 func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, project func(a A, b B, c C, d D, e E, f F, g G) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG)
@@ -1113,7 +1113,7 @@ func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA []A, listB []B, listC []C,
 // CrossJoinBy8 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/3v4w5x6y7z8
 func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, project func(a A, b B, c C, d D, e E, f F, g G, h H) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG) * len(listH)
@@ -1147,7 +1147,7 @@ func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA []A, listB []B, listC [
 // CrossJoinBy9 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
-// It returns an empty list if a list is empty.
+// Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/9a0b1c2d3e4
 func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, listI []I, project func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG) * len(listH) * len(listI)

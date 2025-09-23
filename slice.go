@@ -155,7 +155,7 @@ func Uniq[T comparable, Slice ~[]T](collection Slice) Slice {
 
 // UniqBy returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
-// invoked for each element in slice to generate the criterion by which uniqueness is computed.
+// invoked for each element in the slice to generate the criterion by which uniqueness is computed.
 // Play: https://go.dev/play/p/g42Z3QSb53u
 func UniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	result := make(Slice, 0, len(collection))
@@ -203,7 +203,7 @@ func GroupByMap[T any, K comparable, V any](collection []T, iteratee func(item T
 	return result
 }
 
-// Chunk returns a slice of elements split into groups of length size. If slice can't be split evenly,
+// Chunk returns a slice of elements split into groups of length size. If the slice can't be split evenly,
 // the final chunk will be the remaining elements.
 // Play: https://go.dev/play/p/kEMkFbdu85g
 func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
@@ -277,7 +277,7 @@ func Flatten[T any, Slice ~[]T](collection []Slice) Slice {
 	return result
 }
 
-// Interleave round-robin alternating input slices and sequentially appending value at index into result
+// Interleave round-robin alternating input slices and sequentially appending value at index into result.
 // Play: https://go.dev/play/p/-RJkTLQEDVt
 func Interleave[T any, Slice ~[]T](collections ...Slice) Slice {
 	if len(collections) == 0 {
@@ -324,7 +324,7 @@ func Shuffle[T any, Slice ~[]T](collection Slice) Slice {
 	return collection
 }
 
-// Reverse reverses slice so that the first element becomes the last, the second element becomes the second to last, and so on.
+// Reverse reverses a slice so that the first element becomes the last, the second element becomes the second to last, and so on.
 // Play: https://go.dev/play/p/iv2e9jslfBM
 //
 // Deprecated: use mutable.Reverse() instead.
@@ -333,7 +333,7 @@ func Reverse[T any, Slice ~[]T](collection Slice) Slice {
 	return collection
 }
 
-// Fill fills elements of slice with `initial` value.
+// Fill fills elements of a slice with `initial` value.
 // Play: https://go.dev/play/p/VwR34GzqEub
 func Fill[T Clonable[T], Slice ~[]T](collection Slice, initial T) Slice {
 	result := make(Slice, 0, len(collection))
