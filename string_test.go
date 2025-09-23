@@ -422,22 +422,11 @@ func TestAllCase(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			pascal := PascalCase(test.input)
-			if pascal != test.output.PascalCase {
-				t.Errorf("PascalCase(%q) = %q; expected %q", test.input, pascal, test.output.PascalCase)
-			}
-			camel := CamelCase(test.input)
-			if camel != test.output.CamelCase {
-				t.Errorf("CamelCase(%q) = %q; expected %q", test.input, camel, test.output.CamelCase)
-			}
-			kebab := KebabCase(test.input)
-			if kebab != test.output.KebabCase {
-				t.Errorf("KebabCase(%q) = %q; expected %q", test.input, kebab, test.output.KebabCase)
-			}
-			snake := SnakeCase(test.input)
-			if snake != test.output.SnakeCase {
-				t.Errorf("SnakeCase(%q) = %q; expected %q", test.input, snake, test.output.SnakeCase)
-			}
+			is := assert.New(t)
+			is.Equalf(test.output.PascalCase, PascalCase(test.input), "PascalCase(%v)", test.input)
+			is.Equalf(test.output.CamelCase, CamelCase(test.input), "CamelCase(%v)", test.input)
+			is.Equalf(test.output.KebabCase, KebabCase(test.input), "KebabCase(%v)", test.input)
+			is.Equalf(test.output.SnakeCase, SnakeCase(test.input), "SnakeCase(%v)", test.input)
 		})
 	}
 }

@@ -3,7 +3,6 @@ package lo
 import (
 	"fmt"
 	"math"
-	"reflect"
 	"strconv"
 	"strings"
 	"testing"
@@ -396,9 +395,7 @@ func TestInterleave(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Interleave(tt.collections...); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Interleave() = %v, want %v", got, tt.want)
-			}
+			assert.Equal(t, tt.want, Interleave(tt.collections...))
 		})
 	}
 

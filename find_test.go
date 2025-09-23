@@ -602,9 +602,10 @@ func TestNth(t *testing.T) {
 }
 
 func TestNthOr(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
 	t.Run("Integers", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		const defaultValue = -1
 		intSlice := []int{10, 20, 30, 40, 50}
 
@@ -614,6 +615,9 @@ func TestNthOr(t *testing.T) {
 	})
 
 	t.Run("Strings", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		const defaultValue = "none"
 		strSlice := []string{"apple", "banana", "cherry", "date"}
 
@@ -623,6 +627,9 @@ func TestNthOr(t *testing.T) {
 	})
 
 	t.Run("Structs", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		type User struct {
 			ID   int
 			Name string
@@ -645,9 +652,10 @@ func TestNthOr(t *testing.T) {
 }
 
 func TestNthOrEmpty(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
 	t.Run("Integers", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		intSlice := []int{10, 20, 30, 40, 50}
 
 		is.Equal(30, NthOrEmpty(intSlice, 2))
@@ -656,6 +664,9 @@ func TestNthOrEmpty(t *testing.T) {
 	})
 
 	t.Run("Strings", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		strSlice := []string{"apple", "banana", "cherry", "date"}
 
 		is.Equal("banana", NthOrEmpty(strSlice, 1))
@@ -664,6 +675,9 @@ func TestNthOrEmpty(t *testing.T) {
 	})
 
 	t.Run("Structs", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		type User struct {
 			ID   int
 			Name string
