@@ -45,7 +45,7 @@ func TestAttempt(t *testing.T) {
 	is.Equal(6, iter2)
 	is.NoError(err2)
 	is.Equal(2, iter3)
-	is.Equal(err3, err)
+	is.Equal(err, err3)
 	is.Equal(43, iter4)
 	is.NoError(err4)
 }
@@ -92,7 +92,7 @@ func TestAttemptWithDelay(t *testing.T) {
 	is.Equal(2, iter3)
 	is.Greater(dur3, 10*time.Millisecond)
 	is.Less(dur3, 20*time.Millisecond)
-	is.Equal(err3, err)
+	is.Equal(err, err3)
 	is.Equal(11, iter4)
 	is.Greater(dur4, 100*time.Millisecond)
 	is.Less(dur4, 115*time.Millisecond)
@@ -131,7 +131,7 @@ func TestAttemptWhile(t *testing.T) {
 	})
 
 	is.Equal(2, iter3)
-	is.Equal(err3, err)
+	is.Equal(err, err3)
 
 	iter4, err4 := AttemptWhile(0, func(i int) (error, bool) {
 		if i < 42 {
@@ -215,7 +215,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	is.Equal(2, iter3)
 	is.Greater(dur3, 10*time.Millisecond)
 	is.Less(dur3, 20*time.Millisecond)
-	is.Equal(err3, err)
+	is.Equal(err, err3)
 
 	iter4, dur4, err4 := AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		if i < 10 {

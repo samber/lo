@@ -73,7 +73,7 @@ func TestFindIndexOf(t *testing.T) {
 	is.Equal(1, index1)
 	is.Empty(item2)
 	is.False(ok2)
-	is.Equal(index2, -1)
+	is.Equal(-1, index2)
 }
 
 func TestFindLastIndexOf(t *testing.T) {
@@ -96,7 +96,7 @@ func TestFindLastIndexOf(t *testing.T) {
 	is.Equal(4, index1)
 	is.Empty(item2)
 	is.False(ok2)
-	is.Equal(index2, -1)
+	is.Equal(-1, index2)
 }
 
 func TestFindOrElse(t *testing.T) {
@@ -294,7 +294,7 @@ func TestMinIndex(t *testing.T) {
 	is.Zero(index3)
 
 	is.Zero(result4)
-	is.Equal(index4, -1)
+	is.Equal(-1, index4)
 }
 
 func TestMinBy(t *testing.T) {
@@ -337,7 +337,7 @@ func TestMinIndexBy(t *testing.T) {
 	is.Equal(2, index2)
 
 	is.Empty(result3)
-	is.Equal(index3, -1)
+	is.Equal(-1, index3)
 }
 
 func TestEarliest(t *testing.T) {
@@ -413,7 +413,7 @@ func TestMaxIndex(t *testing.T) {
 	is.Equal(2, index3)
 
 	is.Zero(result4)
-	is.Equal(index4, -1)
+	is.Equal(-1, index4)
 }
 
 func TestMaxBy(t *testing.T) {
@@ -456,7 +456,7 @@ func TestMaxIndexBy(t *testing.T) {
 	is.Zero(index2)
 
 	is.Empty(result3)
-	is.Equal(index3, -1)
+	is.Equal(-1, index3)
 }
 
 func TestLatest(t *testing.T) {
@@ -592,9 +592,9 @@ func TestNth(t *testing.T) {
 	is.Equal(2, result2)
 	is.NoError(err2)
 	is.Zero(result3)
-	is.Equal(err3, fmt.Errorf("nth: 42 out of slice bounds"))
+	is.Equal(fmt.Errorf("nth: 42 out of slice bounds"), err3)
 	is.Zero(result4)
-	is.Equal(err4, fmt.Errorf("nth: 0 out of slice bounds"))
+	is.Equal(fmt.Errorf("nth: 0 out of slice bounds"), err4)
 	is.Equal(42, result5)
 	is.NoError(err5)
 	is.Equal(42, result6)

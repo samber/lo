@@ -99,7 +99,7 @@ func TestEmptyableToPtr(t *testing.T) {
 	is.Empty(*EmptyableToPtr([]int{}))
 	is.Equal([]int{1, 2}, *EmptyableToPtr([]int{1, 2}))
 	is.Empty(*EmptyableToPtr(map[int]int{}))
-	is.Equal(*EmptyableToPtr(assert.AnError), assert.AnError)
+	is.Equal(assert.AnError, *EmptyableToPtr(assert.AnError))
 }
 
 func TestFromPtr(t *testing.T) {
