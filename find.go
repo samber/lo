@@ -231,72 +231,72 @@ func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iterate
 // Returns zero value when the collection is empty.
 // Play: https://go.dev/play/p/r6e-Z8JozS8
 func Min[T constraints.Ordered](collection []T) T {
-	var min T
+	var mIn T
 
 	if len(collection) == 0 {
-		return min
+		return mIn
 	}
 
-	min = collection[0]
+	mIn = collection[0]
 
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if item < min {
-			min = item
+		if item < mIn {
+			mIn = item
 		}
 	}
 
-	return min
+	return mIn
 }
 
 // MinIndex search the minimum value of a collection and the index of the minimum value.
 // Returns (zero value, -1) when the collection is empty.
 func MinIndex[T constraints.Ordered](collection []T) (T, int) {
 	var (
-		min   T
+		mIn   T
 		index int
 	)
 
 	if len(collection) == 0 {
-		return min, -1
+		return mIn, -1
 	}
 
-	min = collection[0]
+	mIn = collection[0]
 
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if item < min {
-			min = item
+		if item < mIn {
+			mIn = item
 			index = i
 		}
 	}
 
-	return min, index
+	return mIn, index
 }
 
 // MinBy search the minimum value of a collection using the given comparison function.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns zero value when the collection is empty.
 func MinBy[T any](collection []T, comparison func(a T, b T) bool) T {
-	var min T
+	var mIn T
 
 	if len(collection) == 0 {
-		return min
+		return mIn
 	}
 
-	min = collection[0]
+	mIn = collection[0]
 
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if comparison(item, min) {
-			min = item
+		if comparison(item, mIn) {
+			mIn = item
 		}
 	}
 
-	return min
+	return mIn
 }
 
 // MinIndexBy search the minimum value of a collection using the given comparison function and the index of the minimum value.
@@ -304,48 +304,48 @@ func MinBy[T any](collection []T, comparison func(a T, b T) bool) T {
 // Returns (zero value, -1) when the collection is empty.
 func MinIndexBy[T any](collection []T, comparison func(a T, b T) bool) (T, int) {
 	var (
-		min   T
+		mIn   T
 		index int
 	)
 
 	if len(collection) == 0 {
-		return min, -1
+		return mIn, -1
 	}
 
-	min = collection[0]
+	mIn = collection[0]
 
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if comparison(item, min) {
-			min = item
+		if comparison(item, mIn) {
+			mIn = item
 			index = i
 		}
 	}
 
-	return min, index
+	return mIn, index
 }
 
 // Earliest search the minimum time.Time of a collection.
 // Returns zero value when the collection is empty.
 func Earliest(times ...time.Time) time.Time {
-	var min time.Time
+	var mIn time.Time
 
 	if len(times) == 0 {
-		return min
+		return mIn
 	}
 
-	min = times[0]
+	mIn = times[0]
 
 	for i := 1; i < len(times); i++ {
 		item := times[i]
 
-		if item.Before(min) {
-			min = item
+		if item.Before(mIn) {
+			mIn = item
 		}
 	}
 
-	return min
+	return mIn
 }
 
 // EarliestBy search the minimum time.Time of a collection using the given iteratee function.
@@ -376,72 +376,72 @@ func EarliestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 // Returns zero value when the collection is empty.
 // Play: https://go.dev/play/p/r6e-Z8JozS8
 func Max[T constraints.Ordered](collection []T) T {
-	var max T
+	var mAx T
 
 	if len(collection) == 0 {
-		return max
+		return mAx
 	}
 
-	max = collection[0]
+	mAx = collection[0]
 
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if item > max {
-			max = item
+		if item > mAx {
+			mAx = item
 		}
 	}
 
-	return max
+	return mAx
 }
 
 // MaxIndex searches the maximum value of a collection and the index of the maximum value.
 // Returns (zero value, -1) when the collection is empty.
 func MaxIndex[T constraints.Ordered](collection []T) (T, int) {
 	var (
-		max   T
+		mAx   T
 		index int
 	)
 
 	if len(collection) == 0 {
-		return max, -1
+		return mAx, -1
 	}
 
-	max = collection[0]
+	mAx = collection[0]
 
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if item > max {
-			max = item
+		if item > mAx {
+			mAx = item
 			index = i
 		}
 	}
 
-	return max, index
+	return mAx, index
 }
 
 // MaxBy search the maximum value of a collection using the given comparison function.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns zero value when the collection is empty.
 func MaxBy[T any](collection []T, comparison func(a T, b T) bool) T {
-	var max T
+	var mAx T
 
 	if len(collection) == 0 {
-		return max
+		return mAx
 	}
 
-	max = collection[0]
+	mAx = collection[0]
 
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if comparison(item, max) {
-			max = item
+		if comparison(item, mAx) {
+			mAx = item
 		}
 	}
 
-	return max
+	return mAx
 }
 
 // MaxIndexBy search the maximum value of a collection using the given comparison function and the index of the maximum value.
@@ -449,48 +449,48 @@ func MaxBy[T any](collection []T, comparison func(a T, b T) bool) T {
 // Returns (zero value, -1) when the collection is empty.
 func MaxIndexBy[T any](collection []T, comparison func(a T, b T) bool) (T, int) {
 	var (
-		max   T
+		mAx   T
 		index int
 	)
 
 	if len(collection) == 0 {
-		return max, -1
+		return mAx, -1
 	}
 
-	max = collection[0]
+	mAx = collection[0]
 
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if comparison(item, max) {
-			max = item
+		if comparison(item, mAx) {
+			mAx = item
 			index = i
 		}
 	}
 
-	return max, index
+	return mAx, index
 }
 
 // Latest search the maximum time.Time of a collection.
 // Returns zero value when the collection is empty.
 func Latest(times ...time.Time) time.Time {
-	var max time.Time
+	var mAx time.Time
 
 	if len(times) == 0 {
-		return max
+		return mAx
 	}
 
-	max = times[0]
+	mAx = times[0]
 
 	for i := 1; i < len(times); i++ {
 		item := times[i]
 
-		if item.After(max) {
-			max = item
+		if item.After(mAx) {
+			mAx = item
 		}
 	}
 
-	return max
+	return mAx
 }
 
 // LatestBy search the maximum time.Time of a collection using the given iteratee function.
