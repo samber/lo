@@ -89,7 +89,7 @@ func TestShuffle(t *testing.T) {
 
 	list = []int{}
 	Shuffle(list)
-	is.Equal([]int{}, list)
+	is.Empty(list)
 }
 
 func TestReverse(t *testing.T) {
@@ -106,7 +106,7 @@ func TestReverse(t *testing.T) {
 
 	list = []int{}
 	Reverse(list)
-	is.Equal([]int{}, list)
+	is.Empty(list)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -124,5 +124,5 @@ func TestFill(t *testing.T) {
 
 	list2 := []string{}
 	Fill(list2, "b")
-	is.Equal([]string{}, list2)
+	is.Empty(list2)
 }

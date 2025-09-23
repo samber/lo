@@ -178,12 +178,10 @@ func TestFindUniques(t *testing.T) {
 	result3 := FindUniques([]int{1, 2, 2, 1})
 
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 
 	result4 := FindUniques([]int{})
 
 	is.Empty(result4)
-	is.Equal([]int{}, result4)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -214,14 +212,12 @@ func TestFindUniquesBy(t *testing.T) {
 	})
 
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 
 	result4 := FindUniquesBy([]int{}, func(i int) int {
 		return i % 3
 	})
 
 	is.Empty(result4)
-	is.Equal([]int{}, result4)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -243,12 +239,10 @@ func TestFindDuplicates(t *testing.T) {
 	result2 := FindDuplicates([]int{1, 2, 3})
 
 	is.Empty(result2)
-	is.Equal([]int{}, result2)
 
 	result3 := FindDuplicates([]int{})
 
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -272,14 +266,12 @@ func TestFindDuplicatesBy(t *testing.T) {
 	})
 
 	is.Empty(result2)
-	is.Equal([]int{}, result2)
 
 	result3 := FindDuplicatesBy([]int{}, func(i int) int {
 		return i % 3
 	})
 
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -686,12 +678,11 @@ func TestNthOrEmpty(t *testing.T) {
 	})
 
 	t.Run("Strings", func(t *testing.T) {
-		const defaultValue = ""
 		strSlice := []string{"apple", "banana", "cherry", "date"}
 
 		is.Equal("banana", NthOrEmpty(strSlice, 1))
 		is.Equal("cherry", NthOrEmpty(strSlice, -2))
-		is.Equal(defaultValue, NthOrEmpty(strSlice, 10))
+		is.Empty(NthOrEmpty(strSlice, 10))
 	})
 
 	t.Run("Structs", func(t *testing.T) {
@@ -754,7 +745,7 @@ func TestSamples(t *testing.T) {
 	sort.Strings(result1)
 
 	is.Equal([]string{"a", "b", "c"}, result1)
-	is.Equal([]string{}, result2)
+	is.Empty(result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -774,7 +765,7 @@ func TestSamplesBy(t *testing.T) {
 	sort.Strings(result1)
 
 	is.Equal([]string{"a", "b", "c"}, result1)
-	is.Equal([]string{}, result2)
+	is.Empty(result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}

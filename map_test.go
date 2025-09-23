@@ -25,7 +25,7 @@ func TestKeys(t *testing.T) {
 	is.Equal([]string{"bar", "baz", "foo"}, r3)
 
 	r4 := Keys[string, int]()
-	is.Equal([]string{}, r4)
+	is.Empty(r4)
 
 	r5 := Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 	sort.Strings(r5)
@@ -48,7 +48,7 @@ func TestUniqKeys(t *testing.T) {
 	is.Equal([]string{"bar", "baz", "foo"}, r3)
 
 	r4 := UniqKeys[string, int]()
-	is.Equal([]string{}, r4)
+	is.Empty(r4)
 
 	r5 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
 	sort.Strings(r5)
@@ -86,7 +86,7 @@ func TestValues(t *testing.T) {
 	is.Equal([]int{1, 2, 3}, r3)
 
 	r4 := Values[string, int]()
-	is.Equal([]int{}, r4)
+	is.Empty(r4)
 
 	r5 := Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
 	sort.Ints(r5)
@@ -109,7 +109,7 @@ func TestUniqValues(t *testing.T) {
 	is.Equal([]int{1, 2, 3}, r3)
 
 	r4 := UniqValues[string, int]()
-	is.Equal([]int{}, r4)
+	is.Empty(r4)
 
 	r5 := UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
 	sort.Ints(r5)
@@ -342,17 +342,11 @@ func TestChunkEntries(t *testing.T) {
 	result4 := ChunkEntries(map[string]int{"a": 1}, 2)
 	result5 := ChunkEntries(map[string]int{"a": 1, "b": 2}, 1)
 
-	expectedCount1 := 3
-	expectedCount2 := 2
-	expectedCount3 := 0
-	expectedCount4 := 1
-	expectedCount5 := 2
-
-	is.Len(result1, expectedCount1)
-	is.Len(result2, expectedCount2)
-	is.Len(result3, expectedCount3)
-	is.Len(result4, expectedCount4)
-	is.Len(result5, expectedCount5)
+	is.Len(result1, 3)
+	is.Len(result2, 2)
+	is.Empty(result3)
+	is.Len(result4, 1)
+	is.Len(result5, 2)
 
 	is.PanicsWithValue("The chunk size must be greater than 0", func() {
 		ChunkEntries(map[string]int{"a": 1}, 0)
@@ -543,7 +537,6 @@ func TestFilterKeys(t *testing.T) {
 	result2 := FilterKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
 		return false
 	})
-	is.Equal([]string{}, result2)
 	is.Empty(result2)
 }
 
@@ -560,7 +553,6 @@ func TestFilterValues(t *testing.T) {
 	result2 := FilterValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
 		return false
 	})
-	is.Equal([]int{}, result2)
 	is.Empty(result2)
 }
 

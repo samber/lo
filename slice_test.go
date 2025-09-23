@@ -316,7 +316,7 @@ func TestChunk(t *testing.T) {
 
 	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}}, result1)
 	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}, {6}}, result2)
-	is.Equal([][]int{}, result3)
+	is.Empty(result3)
 	is.Equal([][]int{{0}}, result4)
 	is.PanicsWithValue("Second parameter must be greater than 0", func() {
 		Chunk([]int{0}, 0)
@@ -351,7 +351,7 @@ func TestPartitionBy(t *testing.T) {
 	result2 := PartitionBy([]int{}, oddEven)
 
 	is.Equal([][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}}, result1)
-	is.Equal([][]int{}, result2)
+	is.Empty(result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -436,7 +436,7 @@ func TestShuffle(t *testing.T) {
 	result2 := Shuffle([]int{})
 
 	is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result1)
-	is.Equal([]int{}, result2)
+	is.Empty(result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -454,7 +454,7 @@ func TestReverse(t *testing.T) {
 
 	is.Equal([]int{5, 4, 3, 2, 1, 0}, result1)
 	is.Equal([]int{6, 5, 4, 3, 2, 1, 0}, result2)
-	is.Equal([]int{}, result3)
+	is.Empty(result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -470,7 +470,7 @@ func TestFill(t *testing.T) {
 	result2 := Fill([]foo{}, foo{"a"})
 
 	is.Equal([]foo{{"b"}, {"b"}}, result1)
-	is.Equal([]foo{}, result2)
+	is.Empty(result2)
 }
 
 func TestRepeat(t *testing.T) {
@@ -481,7 +481,7 @@ func TestRepeat(t *testing.T) {
 	result2 := Repeat(0, foo{"a"})
 
 	is.Equal([]foo{{"a"}, {"a"}}, result1)
-	is.Equal([]foo{}, result2)
+	is.Empty(result2)
 }
 
 func TestRepeatBy(t *testing.T) {
@@ -496,7 +496,7 @@ func TestRepeatBy(t *testing.T) {
 	result2 := RepeatBy(2, cb)
 	result3 := RepeatBy(5, cb)
 
-	is.Equal([]int{}, result1)
+	is.Empty(result1)
 	is.Equal([]int{0, 1}, result2)
 	is.Equal([]int{0, 1, 4, 9, 16}, result3)
 }
@@ -626,7 +626,7 @@ func TestKeyify(t *testing.T) {
 	result3 := Keyify([]int{})
 	is.Equal(map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}}, result1)
 	is.Equal(map[int]struct{}{1: {}, 2: {}}, result2)
-	is.Equal(map[int]struct{}{}, result3)
+	is.Empty(result3)
 }
 
 func TestDrop(t *testing.T) {
@@ -637,8 +637,8 @@ func TestDrop(t *testing.T) {
 	is.Equal([]int{2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 2))
 	is.Equal([]int{3, 4}, Drop([]int{0, 1, 2, 3, 4}, 3))
 	is.Equal([]int{4}, Drop([]int{0, 1, 2, 3, 4}, 4))
-	is.Equal([]int{}, Drop([]int{0, 1, 2, 3, 4}, 5))
-	is.Equal([]int{}, Drop([]int{0, 1, 2, 3, 4}, 6))
+	is.Empty(Drop([]int{0, 1, 2, 3, 4}, 5))
+	is.Empty(Drop([]int{0, 1, 2, 3, 4}, 6))
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -654,8 +654,8 @@ func TestDropRight(t *testing.T) {
 	is.Equal([]int{0, 1, 2}, DropRight([]int{0, 1, 2, 3, 4}, 2))
 	is.Equal([]int{0, 1}, DropRight([]int{0, 1, 2, 3, 4}, 3))
 	is.Equal([]int{0}, DropRight([]int{0, 1, 2, 3, 4}, 4))
-	is.Equal([]int{}, DropRight([]int{0, 1, 2, 3, 4}, 5))
-	is.Equal([]int{}, DropRight([]int{0, 1, 2, 3, 4}, 6))
+	is.Empty(DropRight([]int{0, 1, 2, 3, 4}, 5))
+	is.Empty(DropRight([]int{0, 1, 2, 3, 4}, 6))
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -671,7 +671,7 @@ func TestDropWhile(t *testing.T) {
 		return t != 4
 	}))
 
-	is.Equal([]int{}, DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+	is.Empty(DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
 		return true
 	}))
 
@@ -703,7 +703,7 @@ func TestDropRightWhile(t *testing.T) {
 		return t == 10
 	}))
 
-	is.Equal([]int{}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+	is.Empty(DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
 		return t != 10
 	}))
 
@@ -729,11 +729,11 @@ func TestDropByIndex(t *testing.T) {
 	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 5))
 	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 100))
 	is.Equal([]int{0, 1, 2, 3}, DropByIndex([]int{0, 1, 2, 3, 4}, -1))
-	is.Equal([]int{}, DropByIndex([]int{}, 0, 1))
-	is.Equal([]int{}, DropByIndex([]int{42}, 0, 1))
-	is.Equal([]int{}, DropByIndex([]int{42}, 1, 0))
-	is.Equal([]int{}, DropByIndex([]int{}, 1))
-	is.Equal([]int{}, DropByIndex([]int{1}, 0))
+	is.Empty(DropByIndex([]int{}, 0, 1))
+	is.Empty(DropByIndex([]int{42}, 0, 1))
+	is.Empty(DropByIndex([]int{42}, 1, 0))
+	is.Empty(DropByIndex([]int{}, 1))
+	is.Empty(DropByIndex([]int{1}, 0))
 }
 
 func TestReject(t *testing.T) {
@@ -848,7 +848,7 @@ func TestCountValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal(map[int]int{}, CountValues([]int{}))
+	is.Empty(CountValues([]int{}))
 	is.Equal(map[int]int{1: 1, 2: 1}, CountValues([]int{1, 2}))
 	is.Equal(map[int]int{1: 1, 2: 2}, CountValues([]int{1, 2, 2}))
 	is.Equal(map[string]int{"": 1, "foo": 1, "bar": 1}, CountValues([]string{"foo", "bar", ""}))
@@ -872,7 +872,7 @@ func TestCountValuesBy(t *testing.T) {
 	result4 := CountValuesBy([]string{"foo", "bar", ""}, length)
 	result5 := CountValuesBy([]string{"foo", "bar", "bar"}, length)
 
-	is.Equal(map[bool]int{}, result1)
+	is.Empty(result1)
 	is.Equal(map[bool]int{true: 1, false: 1}, result2)
 	is.Equal(map[bool]int{true: 2, false: 1}, result3)
 	is.Equal(map[int]int{0: 1, 3: 2}, result4)
@@ -898,8 +898,8 @@ func TestSubset(t *testing.T) {
 	out11 := Subset(in, -4, 1)
 	out12 := Subset(in, -4, math.MaxUint)
 
-	is.Equal([]int{}, out1)
-	is.Equal([]int{}, out2)
+	is.Empty(out1)
+	is.Empty(out2)
 	is.Equal([]int{0, 1}, out3)
 	is.Equal([]int{0, 1, 2, 3, 4}, out4)
 	is.Equal([]int{0, 1}, out5)
@@ -942,21 +942,21 @@ func TestSlice(t *testing.T) {
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
 
-	is.Equal([]int{}, out1)
+	is.Empty(out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
 	is.Equal([]int{0, 1, 2, 3, 4}, out4)
-	is.Equal([]int{}, out5)
+	is.Empty(out5)
 	is.Equal([]int{1, 2, 3, 4}, out6)
 	is.Equal([]int{1, 2, 3, 4}, out7)
 	is.Equal([]int{4}, out8)
-	is.Equal([]int{}, out9)
-	is.Equal([]int{}, out10)
-	is.Equal([]int{}, out11)
-	is.Equal([]int{}, out12)
-	is.Equal([]int{}, out13)
-	is.Equal([]int{}, out14)
-	is.Equal([]int{}, out15)
+	is.Empty(out9)
+	is.Empty(out10)
+	is.Empty(out11)
+	is.Empty(out12)
+	is.Empty(out13)
+	is.Empty(out14)
+	is.Empty(out15)
 	is.Equal([]int{0}, out16)
 	is.Equal([]int{0, 1, 2}, out17)
 	is.Equal([]int{0, 1, 2, 3, 4}, out18)

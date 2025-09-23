@@ -103,7 +103,7 @@ func TestPartitionBy(t *testing.T) {
 	}
 
 	is.ElementsMatch(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
-	is.Equal([][]int{}, result2)
+	is.Empty(result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
