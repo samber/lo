@@ -24,7 +24,7 @@ func ContainsBy[T any](collection []T, predicate func(item T) bool) bool {
 	return false
 }
 
-// Every returns true if all elements of a subset are contained into a collection or if the subset is empty.
+// Every returns true if all elements of a subset are contained in a collection or if the subset is empty.
 // Play: https://go.dev/play/p/W1EvyqY6t9j
 func Every[T comparable](collection []T, subset []T) bool {
 	for i := range subset {
@@ -48,7 +48,7 @@ func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 	return true
 }
 
-// Some returns true if at least 1 element of a subset is contained into a collection.
+// Some returns true if at least 1 element of a subset is contained in a collection.
 // If the subset is empty Some returns false.
 // Play: https://go.dev/play/p/Lj4ceFkeT9V
 func Some[T comparable](collection []T, subset []T) bool {
@@ -74,7 +74,7 @@ func SomeBy[T any](collection []T, predicate func(item T) bool) bool {
 	return false
 }
 
-// None returns true if no element of a subset are contained into a collection or if the subset is empty.
+// None returns true if no element of a subset is contained in a collection or if the subset is empty.
 // Play: https://go.dev/play/p/fye7JsmxzPV
 func None[T comparable](collection []T, subset []T) bool {
 	for i := range subset {
@@ -118,8 +118,8 @@ func Intersect[T comparable, Slice ~[]T](list1 Slice, list2 Slice) Slice {
 }
 
 // Difference returns the difference between two collections.
-// The first value is the collection of element absent of list2.
-// The second value is the collection of element absent of list1.
+// The first value is the collection of elements absent from list2.
+// The second value is the collection of elements absent from list1.
 // Play: https://go.dev/play/p/pKE-JgzqRpz
 func Difference[T comparable, Slice ~[]T](list1 Slice, list2 Slice) (Slice, Slice) {
 	left := Slice{}
@@ -241,7 +241,7 @@ func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice {
 }
 
 // ElementsMatch returns true if lists contain the same set of elements (including empty set).
-// If there are duplicate elements, the number of appearances of each of them in both lists should match.
+// If there are duplicate elements, the number of occurrences in each list should match.
 // The order of elements is not checked.
 // Play: https://go.dev/play/p/XWSEM4Ic_t0
 func ElementsMatch[T comparable, Slice ~[]T](list1 Slice, list2 Slice) bool {
@@ -249,7 +249,7 @@ func ElementsMatch[T comparable, Slice ~[]T](list1 Slice, list2 Slice) bool {
 }
 
 // ElementsMatchBy returns true if lists contain the same set of elements' keys (including empty set).
-// If there are duplicate keys, the number of appearances of each of them in both lists should match.
+// If there are duplicate keys, the number of occurrences in each list should match.
 // The order of elements is not checked.
 // Play: https://go.dev/play/p/XWSEM4Ic_t0
 func ElementsMatchBy[T any, K comparable](list1 []T, list2 []T, iteratee func(item T) K) bool {

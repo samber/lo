@@ -36,7 +36,7 @@ func LastIndexOf[T comparable](collection []T, element T) int {
 	return -1
 }
 
-// Find search an element in a slice based on a predicate. It returns element and true if element was found.
+// Find searches for an element in a slice based on a predicate. It returns element and true if element was found.
 // Play: https://go.dev/play/p/Eo7W0lvKTky
 func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {
 	for i := range collection {
@@ -79,7 +79,7 @@ func FindLastIndexOf[T any](collection []T, predicate func(item T) bool) (T, int
 	return result, -1, false
 }
 
-// FindOrElse search an element in a slice based on a predicate. It returns the element if found or a given fallback value otherwise.
+// FindOrElse searches for an element in a slice based on a predicate. It returns the element if found or a given fallback value otherwise.
 // Play: https://go.dev/play/p/Eo7W0lvKTky
 func FindOrElse[T any](collection []T, fallback T, predicate func(item T) bool) T {
 	for i := range collection {
@@ -170,7 +170,7 @@ func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee f
 	return result
 }
 
-// FindDuplicates returns a slice with the first occurrence of each duplicated elements of the collection.
+// FindDuplicates returns a slice with the first occurrence of each duplicated element in the collection.
 // The order of result values is determined by the order they occur in the collection.
 func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
 	isDupl := make(map[T]bool, len(collection))
@@ -196,7 +196,7 @@ func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
-// FindDuplicatesBy returns a slice with the first occurrence of each duplicated elements of the collection.
+// FindDuplicatesBy returns a slice with the first occurrence of each duplicated element in the collection.
 // The order of result values is determined by the order they occur in the array. It accepts `iteratee` which is
 // invoked for each element in array to generate the criterion by which uniqueness is computed.
 func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {

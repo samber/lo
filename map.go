@@ -247,7 +247,7 @@ func Assign[K comparable, V any, Map ~map[K]V](maps ...Map) Map {
 	return out
 }
 
-// ChunkEntries splits a map into an array of elements in groups of a length equal to its size. If the map cannot be split evenly,
+// ChunkEntries splits a map into an array of elements in groups of length equal to its size. If the map cannot be split evenly,
 // the final chunk will contain the remaining elements.
 // Play: https://go.dev/play/p/X_YQL6mmoD-
 func ChunkEntries[K comparable, V any](m map[K]V, size int) []map[K]V {
@@ -278,7 +278,7 @@ func ChunkEntries[K comparable, V any](m map[K]V, size int) []map[K]V {
 	return result
 }
 
-// MapKeys manipulates a map keys and transforms it to a map of another type.
+// MapKeys manipulates map keys and transforms it to a map of another type.
 // Play: https://go.dev/play/p/9_4WPIqOetJ
 func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value V, key K) R) map[R]V {
 	result := make(map[R]V, len(in))
@@ -290,7 +290,7 @@ func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value 
 	return result
 }
 
-// MapValues manipulates a map values and transforms it to a map of another type.
+// MapValues manipulates map values and transforms it to a map of another type.
 // Play: https://go.dev/play/p/T_8xAfvcf0W
 func MapValues[K comparable, V any, R any](in map[K]V, iteratee func(value V, key K) R) map[K]R {
 	result := make(map[K]R, len(in))
@@ -302,7 +302,7 @@ func MapValues[K comparable, V any, R any](in map[K]V, iteratee func(value V, ke
 	return result
 }
 
-// MapEntries manipulates a map entries and transforms it to a map of another type.
+// MapEntries manipulates map entries and transforms it to a map of another type.
 // Play: https://go.dev/play/p/VuvNQzxKimT
 func MapEntries[K1 comparable, V1 any, K2 comparable, V2 any](in map[K1]V1, iteratee func(key K1, value V1) (K2, V2)) map[K2]V2 {
 	result := make(map[K2]V2, len(in))

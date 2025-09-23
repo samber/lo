@@ -29,7 +29,7 @@ func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum in
 }
 
 // RangeWithSteps creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
-// step set to zero will return empty array.
+// step set to zero will return an empty array.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step T) []T {
 	result := []T{}
@@ -144,7 +144,7 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, it
 }
 
 // Mode returns the mode (most frequent value) of a collection.
-// If multiple values ​​have the same highest frequency, then multiple values ​​are returned.
+// If multiple values have the same highest frequency, then multiple values are returned.
 // If the collection is empty, then the zero value of T is returned.
 func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
 	length := T(len(collection))

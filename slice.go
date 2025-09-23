@@ -49,7 +49,7 @@ func UniqMap[T any, R comparable](collection []T, iteratee func(item T, index in
 	return result
 }
 
-// FilterMap returns a slice which obtained after both filtering and mapping using the given callback function.
+// FilterMap returns a slice obtained after both filtering and mapping using the given callback function.
 // The callback function should return two values:
 //   - the result of the mapping operation and
 //   - whether the result element should be included or not.
@@ -92,7 +92,7 @@ func Reduce[T any, R any](collection []T, accumulator func(agg R, item T, index 
 	return initial
 }
 
-// ReduceRight helper is like Reduce except that it iterates over elements of collection from right to left.
+// ReduceRight is like Reduce except that it iterates over elements of collection from right to left.
 // Play: https://go.dev/play/p/Fq3W70l7wXF
 func ReduceRight[T any, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R {
 	for i := len(collection) - 1; i >= 0; i-- {
@@ -203,7 +203,7 @@ func GroupByMap[T any, K comparable, V any](collection []T, iteratee func(item T
 	return result
 }
 
-// Chunk returns an array of elements split into groups the length of size. If array can't be split evenly,
+// Chunk returns an array of elements split into groups of length size. If array can't be split evenly,
 // the final chunk will be the remaining elements.
 // Play: https://go.dev/play/p/kEMkFbdu85g
 func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
@@ -383,7 +383,7 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(item V) K) map[K]V
 }
 
 // Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
-// If any of two pairs would have the same key the last one gets added to the map.
+// If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 // Play: https://go.dev/play/p/WHa2CfMO3Lr
 func Associate[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K]V {
@@ -398,7 +398,7 @@ func Associate[T any, K comparable, V any](collection []T, transform func(item T
 }
 
 // SliceToMap returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
-// If any of two pairs would have the same key the last one gets added to the map.
+// If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 // Alias of Associate().
 // Play: https://go.dev/play/p/WHa2CfMO3Lr
@@ -407,7 +407,7 @@ func SliceToMap[T any, K comparable, V any](collection []T, transform func(item 
 }
 
 // FilterSliceToMap returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
-// If any of two pairs would have the same key the last one gets added to the map.
+// If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original array.
 // The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
 // Play: https://go.dev/play/p/2z0rDz2ZSGU
@@ -533,7 +533,7 @@ func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 	return result
 }
 
-// RejectMap is the opposite of FilterMap, this method returns a slice which obtained after both filtering and mapping using the given callback function.
+// RejectMap is the opposite of FilterMap, this method returns a slice obtained after both filtering and mapping using the given callback function.
 // The callback function should return two values:
 //   - the result of the mapping operation and
 //   - whether the result element should be included or not.
@@ -569,7 +569,7 @@ func FilterReject[T any, Slice ~[]T](collection Slice, predicate func(T, int) bo
 	return kept, rejected
 }
 
-// Count counts the number of elements in the collection that compare equal to value.
+// Count counts the number of elements in the collection that equal value.
 // Play: https://go.dev/play/p/Y3FlK54yveC
 func Count[T comparable](collection []T, value T) (count int) {
 	for i := range collection {
@@ -605,7 +605,7 @@ func CountValues[T comparable](collection []T) map[T]int {
 	return result
 }
 
-// CountValuesBy counts the number of each element return from mapper function.
+// CountValuesBy counts the number of each element returned from mapper function.
 // Is equivalent to chaining lo.Map and lo.CountValues.
 // Play: https://go.dev/play/p/2U0dG1SnOmS
 func CountValuesBy[T any, U comparable](collection []T, mapper func(item T) U) map[U]int {

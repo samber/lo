@@ -113,8 +113,8 @@ func Substring[T ~string](str T, offset int, length uint) T {
 	return T(strings.ReplaceAll(string(rs[offset:offset+int(length)]), "\x00", ""))
 }
 
-// ChunkString returns an array of strings split into groups the length of size. If array can't be split evenly,
-// the final chunk will be the remaining elements.
+// ChunkString returns an array of strings split into groups of length size. If the string can't be split evenly,
+// the final chunk will be the remaining characters.
 // Play: https://go.dev/play/p/__FLTuJVz54
 func ChunkString[T ~string](str T, size int) []T {
 	if size <= 0 {
