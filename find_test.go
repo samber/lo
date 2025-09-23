@@ -350,7 +350,7 @@ func TestEarliest(t *testing.T) {
 	result2 := Earliest()
 
 	is.Equal(a, result1)
-	is.Equal(time.Time{}, result2)
+	is.Zero(result2)
 }
 
 func TestEarliestBy(t *testing.T) {
@@ -376,7 +376,7 @@ func TestEarliestBy(t *testing.T) {
 
 	is.Equal(foo{t3}, result1)
 	is.Equal(foo{t1}, result2)
-	is.Equal(foo{}, result3)
+	is.Zero(result3)
 }
 
 func TestMax(t *testing.T) {
@@ -469,7 +469,7 @@ func TestLatest(t *testing.T) {
 	result2 := Latest()
 
 	is.Equal(b, result1)
-	is.Equal(time.Time{}, result2)
+	is.Zero(result2)
 }
 
 func TestLatestBy(t *testing.T) {
@@ -495,7 +495,7 @@ func TestLatestBy(t *testing.T) {
 
 	is.Equal(foo{t2}, result1)
 	is.Equal(foo{t1}, result2)
-	is.Equal(foo{}, result3)
+	is.Zero(result3)
 }
 
 func TestFirst(t *testing.T) {
@@ -648,12 +648,11 @@ func TestNthOrEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 	t.Run("Integers", func(t *testing.T) {
-		const defaultValue = 0
 		intSlice := []int{10, 20, 30, 40, 50}
 
 		is.Equal(30, NthOrEmpty(intSlice, 2))
 		is.Equal(50, NthOrEmpty(intSlice, -1))
-		is.Equal(defaultValue, NthOrEmpty(intSlice, 10))
+		is.Zero(NthOrEmpty(intSlice, 10))
 	})
 
 	t.Run("Strings", func(t *testing.T) {
@@ -681,8 +680,7 @@ func TestNthOrEmpty(t *testing.T) {
 		expectedUser = User{ID: 3, Name: "Charlie"}
 		is.Equal(expectedUser, NthOrEmpty(userSlice, -1))
 
-		expectedUser = User{ID: 0, Name: ""}
-		is.Equal(expectedUser, NthOrEmpty(userSlice, 10))
+		is.Zero(NthOrEmpty(userSlice, 10))
 	})
 }
 
