@@ -217,7 +217,7 @@ func ExampleMapEntries() {
 		return v, k
 	})
 
-	fmt.Printf("%v\n", result)
+	fmt.Printf("%v", result)
 	// Output: map[1:foo 2:bar]
 }
 
@@ -228,7 +228,7 @@ func ExampleMapToSlice() {
 		return fmt.Sprintf("%d_%d", k, v)
 	})
 
-	sort.StringSlice(result).Sort()
+	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [1_1 2_2 3_3 4_4]
 }
@@ -240,7 +240,7 @@ func ExampleFilterMapToSlice() {
 		return fmt.Sprintf("%d_%d", k, v), k%2 == 0
 	})
 
-	sort.StringSlice(result).Sort()
+	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [2_2 4_4]
 }
