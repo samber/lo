@@ -165,21 +165,15 @@ func TestFindUniques(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := FindUniques([]int{1, 2, 3})
-
-	is.Len(result1, 3)
 	is.Equal([]int{1, 2, 3}, result1)
 
 	result2 := FindUniques([]int{1, 2, 2, 3, 1, 2})
-
-	is.Len(result2, 1)
 	is.Equal([]int{3}, result2)
 
 	result3 := FindUniques([]int{1, 2, 2, 1})
-
 	is.Empty(result3)
 
 	result4 := FindUniques([]int{})
-
 	is.Empty(result4)
 
 	type myStrings []string
@@ -195,27 +189,21 @@ func TestFindUniquesBy(t *testing.T) {
 	result1 := FindUniquesBy([]int{0, 1, 2}, func(i int) int {
 		return i % 3
 	})
-
-	is.Len(result1, 3)
 	is.Equal([]int{0, 1, 2}, result1)
 
 	result2 := FindUniquesBy([]int{0, 1, 2, 3, 4}, func(i int) int {
 		return i % 3
 	})
-
-	is.Len(result2, 1)
 	is.Equal([]int{2}, result2)
 
 	result3 := FindUniquesBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
-
 	is.Empty(result3)
 
 	result4 := FindUniquesBy([]int{}, func(i int) int {
 		return i % 3
 	})
-
 	is.Empty(result4)
 
 	type myStrings []string
@@ -231,16 +219,12 @@ func TestFindDuplicates(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := FindDuplicates([]int{1, 2, 2, 1, 2, 3})
-
-	is.Len(result1, 2)
 	is.Equal([]int{1, 2}, result1)
 
 	result2 := FindDuplicates([]int{1, 2, 3})
-
 	is.Empty(result2)
 
 	result3 := FindDuplicates([]int{})
-
 	is.Empty(result3)
 
 	type myStrings []string
@@ -256,20 +240,16 @@ func TestFindDuplicatesBy(t *testing.T) {
 	result1 := FindDuplicatesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
 		return i % 3
 	})
-
-	is.Len(result1, 2)
 	is.Equal([]int{3, 4}, result1)
 
 	result2 := FindDuplicatesBy([]int{0, 1, 2, 3, 4}, func(i int) int {
 		return i % 5
 	})
-
 	is.Empty(result2)
 
 	result3 := FindDuplicatesBy([]int{}, func(i int) int {
 		return i % 3
 	})
-
 	is.Empty(result3)
 
 	type myStrings []string

@@ -47,14 +47,12 @@ func TestMap(t *testing.T) {
 	Map(list, func(x int) int {
 		return x * 2
 	})
-	is.Len(list, 4)
 	is.Equal([]int{2, 4, 6, 8}, list)
 
 	list = []int{1, 2, 3, 4}
 	Map(list, func(x int) int {
 		return x * 4
 	})
-	is.Len(list, 4)
 	is.Equal([]int{4, 8, 12, 16}, list)
 }
 
@@ -67,7 +65,6 @@ func TestMapI(t *testing.T) {
 		is.Equal(index, x-1)
 		return x * 2
 	})
-	is.Len(list, 4)
 	is.Equal([]int{2, 4, 6, 8}, list)
 
 	list = []int{1, 2, 3, 4}
@@ -75,7 +72,6 @@ func TestMapI(t *testing.T) {
 		is.Equal(index, x-1)
 		return x * 4
 	})
-	is.Len(list, 4)
 	is.Equal([]int{4, 8, 12, 16}, list)
 }
 

@@ -290,7 +290,6 @@ func TestInvert(t *testing.T) {
 	r1 := Invert(map[string]int{"a": 1, "b": 2})
 	r2 := Invert(map[string]int{"a": 1, "b": 2, "c": 1})
 
-	is.Len(r1, 2)
 	is.Equal(map[int]string{1: "a", 2: "b"}, r1)
 	is.Len(r2, 2)
 }
@@ -300,8 +299,6 @@ func TestAssign(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := Assign(map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4})
-
-	is.Len(result1, 3)
 	is.Equal(map[string]int{"a": 1, "b": 3, "c": 4}, result1)
 
 	type myMap map[string]int
@@ -362,7 +359,6 @@ func TestMapKeys(t *testing.T) {
 	})
 
 	is.Len(result1, 1)
-	is.Len(result2, 4)
 	is.Equal(map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}, result2)
 }
 
@@ -377,8 +373,6 @@ func TestMapValues(t *testing.T) {
 		return strconv.FormatInt(int64(x), 10)
 	})
 
-	is.Len(result1, 4)
-	is.Len(result2, 4)
 	is.Equal(map[int]string{1: "Hello", 2: "Hello", 3: "Hello", 4: "Hello"}, result1)
 	is.Equal(map[int]string{1: "1", 2: "2", 3: "3", 4: "4"}, result2)
 }
@@ -479,8 +473,6 @@ func TestMapToSlice(t *testing.T) {
 		return strconv.FormatInt(int64(k), 10)
 	})
 
-	is.Len(result1, 4)
-	is.Len(result2, 4)
 	is.ElementsMatch(result1, []string{"1_5", "2_6", "3_7", "4_8"})
 	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
 }
@@ -496,8 +488,6 @@ func TestFilterMapToSlice(t *testing.T) {
 		return strconv.FormatInt(int64(k), 10), k%2 == 0
 	})
 
-	is.Len(result1, 2)
-	is.Len(result2, 2)
 	is.ElementsMatch(result1, []string{"2_6", "4_8"})
 	is.ElementsMatch(result2, []string{"2", "4"})
 }
@@ -510,7 +500,6 @@ func TestFilterKeys(t *testing.T) {
 		return v == "foo"
 	})
 	is.Equal([]int{1}, result1)
-	is.Len(result1, 1)
 
 	result2 := FilterKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
 		return false
@@ -526,7 +515,6 @@ func TestFilterValues(t *testing.T) {
 		return v == "foo"
 	})
 	is.Equal([]string{"foo"}, result1)
-	is.Len(result1, 1)
 
 	result2 := FilterValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
 		return false

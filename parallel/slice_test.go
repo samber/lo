@@ -19,8 +19,6 @@ func TestMap(t *testing.T) {
 		return strconv.FormatInt(x, 10)
 	})
 
-	is.Len(result1, 4)
-	is.Len(result2, 4)
 	is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, result1)
 	is.Equal([]string{"1", "2", "3", "4"}, result2)
 }
@@ -44,7 +42,6 @@ func TestTimes(t *testing.T) {
 		return strconv.FormatInt(int64(i), 10)
 	})
 
-	is.Len(result1, 3)
 	is.Equal([]string{"0", "1", "2"}, result1)
 }
 
@@ -60,7 +57,6 @@ func TestGroupBy(t *testing.T) {
 		sort.Ints(result1[x])
 	}
 
-	is.Len(result1, 3)
 	is.Equal(map[int][]int{
 		0: {0, 3},
 		1: {1, 4},

@@ -44,8 +44,6 @@ func TestMap(t *testing.T) {
 		return strconv.FormatInt(x, 10)
 	})
 
-	is.Len(result1, 4)
-	is.Len(result2, 4)
 	is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, result1)
 	is.Equal([]string{"1", "2", "3", "4"}, result2)
 }
@@ -84,8 +82,6 @@ func TestFilterMap(t *testing.T) {
 		return "", false
 	})
 
-	is.Len(r1, 2)
-	is.Len(r2, 2)
 	is.Equal([]string{"2", "4"}, r1)
 	is.Equal([]string{"xpu", "xpu"}, r2)
 }
@@ -105,8 +101,6 @@ func TestFlatMap(t *testing.T) {
 		return result
 	})
 
-	is.Len(result1, 5)
-	is.Len(result2, 10)
 	is.Equal([]string{"Hello", "Hello", "Hello", "Hello", "Hello"}, result1)
 	is.Equal([]string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"}, result2)
 }
@@ -118,8 +112,6 @@ func TestTimes(t *testing.T) {
 	result1 := Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)
 	})
-
-	is.Len(result1, 3)
 	is.Equal([]string{"0", "1", "2"}, result1)
 }
 
@@ -202,8 +194,6 @@ func TestUniq(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := Uniq([]int{1, 2, 2, 1})
-
-	is.Len(result1, 2)
 	is.Equal([]int{1, 2}, result1)
 
 	type myStrings []string
@@ -219,8 +209,6 @@ func TestUniqBy(t *testing.T) {
 	result1 := UniqBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
-
-	is.Len(result1, 3)
 	is.Equal([]int{0, 1, 2}, result1)
 
 	type myStrings []string
@@ -238,8 +226,6 @@ func TestGroupBy(t *testing.T) {
 	result1 := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
-
-	is.Len(result1, 3)
 	is.Equal(map[int][]int{
 		0: {0, 3},
 		1: {1, 4},
@@ -261,8 +247,6 @@ func TestGroupByMap(t *testing.T) {
 	result1 := GroupByMap([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, string) {
 		return i % 3, strconv.Itoa(i)
 	})
-
-	is.Len(result1, 3)
 	is.Equal(map[int][]string{
 		0: {"0", "3"},
 		1: {"1", "4"},
@@ -274,8 +258,6 @@ func TestGroupByMap(t *testing.T) {
 	result2 := GroupByMap(myInts{1, 0, 2, 3, 4, 5}, func(i myInt) (int, string) {
 		return int(i % 3), strconv.Itoa(int(i))
 	})
-
-	is.Len(result2, 3)
 	is.Equal(map[int][]string{
 		0: {"0", "3"},
 		1: {"1", "4"},
@@ -296,8 +278,6 @@ func TestGroupByMap(t *testing.T) {
 	result3 := GroupByMap(products, func(item product) (int64, string) {
 		return item.CategoryID, "Product " + strconv.FormatInt(item.ID, 10)
 	})
-
-	is.Len(result3, 3)
 	is.Equal(map[int64][]string{
 		1: {"Product 1", "Product 2"},
 		2: {"Product 3"},
@@ -777,8 +757,6 @@ func TestRejectMap(t *testing.T) {
 		return "", true
 	})
 
-	is.Len(r1, 2)
-	is.Len(r2, 2)
 	is.Equal([]string{"2", "4"}, r1)
 	is.Equal([]string{"xpu", "xpu"}, r2)
 }
