@@ -1,7 +1,6 @@
 package lo
 
 import (
-	"fmt"
 	"math/rand"
 	"testing"
 	"time"
@@ -592,9 +591,9 @@ func TestNth(t *testing.T) {
 	is.Equal(2, result2)
 	is.NoError(err2)
 	is.Zero(result3)
-	is.Equal(fmt.Errorf("nth: 42 out of slice bounds"), err3)
+	is.EqualError(err3, "nth: 42 out of slice bounds")
 	is.Zero(result4)
-	is.Equal(fmt.Errorf("nth: 0 out of slice bounds"), err4)
+	is.EqualError(err4, "nth: 0 out of slice bounds")
 	is.Equal(42, result5)
 	is.NoError(err5)
 	is.Equal(42, result6)
