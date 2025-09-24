@@ -142,6 +142,7 @@ Supported helpers for maps:
 - [FromEntries / FromPairs](#fromentries-alias-frompairs)
 - [Invert](#invert)
 - [Assign (merge of maps)](#assign)
+- [ChunkEntries](#chunkentries)
 - [MapKeys](#mapkeys)
 - [MapValues](#mapvalues)
 - [MapEntries](#mapentries)
@@ -196,6 +197,7 @@ Supported helpers for channels:
 
 - [ChannelDispatcher](#channeldispatcher)
 - [SliceToChannel](#slicetochannel)
+- [ChannelToSlice](#channeltoslice)
 - [Generator](#generator)
 - [Buffer](#buffer)
 - [BufferWithContext](#bufferwithcontext)
@@ -315,6 +317,7 @@ Concurrency helpers:
 - [ThrottleByWithCount](#throttle)
 - [Synchronize](#synchronize)
 - [Async](#async)
+- [Async{0->6}](#async0-6)
 - [Transaction](#transaction)
 - [WaitFor](#waitfor)
 - [WaitForWithContext](#waitforwithcontext)
