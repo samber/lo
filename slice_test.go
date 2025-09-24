@@ -318,7 +318,7 @@ func TestChunk(t *testing.T) {
 	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}, {6}}, result2)
 	is.Equal([][]int{}, result3)
 	is.Equal([][]int{{0}}, result4)
-	is.PanicsWithValue("Second parameter must be greater than 0", func() {
+	is.PanicsWithValue("lo.Chunk: size must be greater than 0", func() {
 		Chunk([]int{0}, 0)
 	})
 

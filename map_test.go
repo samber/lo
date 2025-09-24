@@ -354,10 +354,10 @@ func TestChunkEntries(t *testing.T) {
 	is.Len(result4, expectedCount4)
 	is.Len(result5, expectedCount5)
 
-	is.PanicsWithValue("The chunk size must be greater than 0", func() {
+	is.PanicsWithValue("lo.ChunkEntries: size must be greater than 0", func() {
 		ChunkEntries(map[string]int{"a": 1}, 0)
 	})
-	is.PanicsWithValue("The chunk size must be greater than 0", func() {
+	is.PanicsWithValue("lo.ChunkEntries: size must be greater than 0", func() {
 		ChunkEntries(map[string]int{"a": 1}, -1)
 	})
 
