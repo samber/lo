@@ -508,7 +508,7 @@ func ExampleReplace() {
 	// [42 1 42 1 2 3 42]
 }
 
-func ExampleReplaceAll() {
+func ExampleCompact() {
 	list := []string{"", "foo", "", "bar", ""}
 
 	result := Compact(list)
