@@ -3028,10 +3028,8 @@ lo.Sample([]string{})
 // ""
 ```
 
-(??)[[play](https://go.dev/play/p/FYA45LcpfM2)]
-(??)
-(??)
-(??)
+[[play](https://go.dev/play/p/FYA45LcpfM2)]
+
 ### SampleBy
 
 Returns a random item from collection, using a given random integer generator.
