@@ -750,57 +750,66 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 
 // Cut slices collection around the first instance of separator, returning the part of collection
 // before and after separator. The found result reports whether separator appears in collection.
-// If separator does not appear in s, cut returns collection, empty slice of T, false.
-func Cut[T comparable, S ~[]T](collection S, separator T) (before S, after S, found bool) {
-	if len(collection) == 0 {
-		return collection, make(S, 0), false
+// If separator does not appear in s, cut returns collection, empty slice of []T, false.
+func Cut[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Slice, after Slice, found bool) {
+	if len(separator) == 0 {
+		return make(Slice, 0), collection, true
 	}
-	for i, v := range collection {
-		if v == separator {
-			if i == 0 {
-				return make(S, 0), collection[i+1:], true
-			}
-			if i == len(collection)-1 {
-				return collection[:i], make(S, 0), true
-			}
-			return collection[:i],
-				collection[i+1:], true
-		}
-	}
-	return collection, make(S, 0), false
+
+	for i := 0; i+len(separator) <= len(collection); i++ {
+        match := true
+        for j := 0; j < len(separator); j++ {
+            if collection[i+j] != separator[j] {
+                match = false
+                break
+            }
+        }
+        if match {
+            return collection[:i], collection[i+len(separator):], true
+        }
+    }
+
+    return collection, make(Slice, 0), false
 }
 
-// CutPrefix returns collection without the provided leading prefix T
+// CutPrefix returns collection without the provided leading prefix []T
 // and reports whether it found the prefix.
 // If s doesn't start with prefix, CutPrefix returns collection, false.
-// If prefix is the empty T, CutPrefix returns collection, true.
-func CutPrefix[T comparable, S ~[]T](collection S, separator T) (after S, found bool) {
-	if separator == *new(T) {
-		return collection, true
-	}
-	if len(collection) == 0 {
-		return collection, false
-	}
-	if separator == collection[0] {
-		return collection[1:], true
-	} else {
-		return collection, false
-	}
+// If prefix is the empty []T, CutPrefix returns collection, true.
+func CutPrefix[T comparable, Slice ~[]T](collection Slice, separator Slice) (after Slice, found bool) {
+	if len(separator) == 0 {
+        return collection, true
+    }
+    if len(separator) > len(collection) {
+        return collection, false
+    }
+
+    for i := range separator {
+        if collection[i] != separator[i] {
+            return collection, false
+        }
+    }
+
+    return collection[len(separator):], true
 }
 
-// CutSuffix returns collection without the provided ending suffix T and reports
+// CutSuffix returns collection without the provided ending suffix []T and reports
 // whether it found the suffix. If s doesn't end with suffix, CutSuffix returns collection, false.
-// If suffix is the empty T, CutSuffix returns collection, true.
-func CutSuffix[T comparable, S ~[]T](collection S, separator T) (before S, found bool) {
-	if separator == *new(T) {
-		return collection, true
-	}
-	if len(collection) == 0 {
-		return collection, false
-	}
-	if separator == collection[len(collection)-1] {
-		return collection[:len(collection)-1], true
-	} else {
-		return collection, false
-	}
+// If suffix is the empty []T, CutSuffix returns collection, true.
+func CutSuffix[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Slice, found bool) {
+	if len(separator) == 0 {
+        return collection, true
+    }
+    if len(separator) > len(collection) {
+        return collection, false
+    }
+
+	start := len(collection) - len(separator)
+    for i := range separator {
+        if collection[start+i] != separator[i] {
+            return collection, false
+        }
+    }
+
+    return collection[:start], true
 }
