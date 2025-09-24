@@ -52,7 +52,7 @@ func MapI[T any, Slice ~[]T](collection Slice, fn func(item T, index int) T) {
 	}
 }
 
-// Shuffle returns an array of shuffled values. Uses the Fisher-Yates shuffle algorithm.
+// Shuffle returns a slice of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 // Play: https://go.dev/play/p/2xb3WdLjeSJ
 func Shuffle[T any, Slice ~[]T](collection Slice) {
 	rand.Shuffle(len(collection), func(i, j int) {
@@ -60,7 +60,7 @@ func Shuffle[T any, Slice ~[]T](collection Slice) {
 	})
 }
 
-// Reverse reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
+// Reverse reverses a slice so that the first element becomes the last, the second element becomes the second to last, and so on.
 // Play: https://go.dev/play/p/O-M5pmCRgzV
 func Reverse[T any, Slice ~[]T](collection Slice) {
 	length := len(collection)

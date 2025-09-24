@@ -34,10 +34,10 @@ var (
 // Play: https://go.dev/play/p/rRseOQVVum4
 func RandomString(size int, charset []rune) string {
 	if size <= 0 {
-		panic("lo.RandomString: Size parameter must be greater than 0")
+		panic("lo.RandomString: size must be greater than 0")
 	}
 	if len(charset) == 0 {
-		panic("lo.RandomString: Charset parameter must not be empty")
+		panic("lo.RandomString: charset must not be empty")
 	}
 
 	// see https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
@@ -113,12 +113,12 @@ func Substring[T ~string](str T, offset int, length uint) T {
 	return T(strings.ReplaceAll(string(rs[offset:offset+int(length)]), "\x00", ""))
 }
 
-// ChunkString returns an array of strings split into groups the length of size. If array can't be split evenly,
-// the final chunk will be the remaining elements.
+// ChunkString returns a slice of strings split into groups of length size. If the string can't be split evenly,
+// the final chunk will be the remaining characters.
 // Play: https://go.dev/play/p/__FLTuJVz54
 func ChunkString[T ~string](str T, size int) []T {
 	if size <= 0 {
-		panic("lo.ChunkString: Size parameter must be greater than 0")
+		panic("lo.ChunkString: size must be greater than 0")
 	}
 
 	if len(str) == 0 {
@@ -194,7 +194,7 @@ func SnakeCase(str string) string {
 	return strings.Join(items, "_")
 }
 
-// Words splits string into an array of its words.
+// Words splits string into a slice of its words.
 // Play: https://go.dev/play/p/-f3VIQqiaVw
 func Words(str string) []string {
 	str = splitWordReg.ReplaceAllString(str, `$1$3$5$7 $2$4$6$8$9`)

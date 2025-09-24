@@ -96,10 +96,10 @@ func TestEmptyableToPtr(t *testing.T) {
 
 	is.Equal(42, *EmptyableToPtr(42))
 	is.Equal("nonempty", *EmptyableToPtr("nonempty"))
-	is.Equal([]int{}, *EmptyableToPtr([]int{}))
+	is.Empty(*EmptyableToPtr([]int{}))
 	is.Equal([]int{1, 2}, *EmptyableToPtr([]int{1, 2}))
-	is.Equal(map[int]int{}, *EmptyableToPtr(map[int]int{}))
-	is.Equal(*EmptyableToPtr(assert.AnError), assert.AnError)
+	is.Empty(*EmptyableToPtr(map[int]int{}))
+	is.Equal(assert.AnError, *EmptyableToPtr(assert.AnError))
 }
 
 func TestFromPtr(t *testing.T) {
@@ -175,7 +175,7 @@ func TestToAnySlice(t *testing.T) {
 	out2 := ToAnySlice(in2)
 
 	is.Equal([]any{0, 1, 2, 3}, out1)
-	is.Equal([]any{}, out2)
+	is.Empty(out2)
 }
 
 func TestFromAnySlice(t *testing.T) {
@@ -186,7 +186,7 @@ func TestFromAnySlice(t *testing.T) {
 		out1, ok1 := FromAnySlice[string]([]any{"foobar", 42})
 		out2, ok2 := FromAnySlice[string]([]any{"foobar", "42"})
 
-		is.Equal([]string{}, out1)
+		is.Empty(out1)
 		is.False(ok1)
 		is.Equal([]string{"foobar", "42"}, out2)
 		is.True(ok2)
@@ -363,27 +363,22 @@ func TestCoalesceSlice(t *testing.T) {
 
 	is.NotNil(result1)
 	is.Empty(result1)
-	is.Equal([]int{}, result1)
 	is.False(ok1)
 
 	is.NotNil(result2)
 	is.Empty(result2)
-	is.Equal([]int{}, result2)
 	is.False(ok2)
 
 	is.NotNil(result3)
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 	is.False(ok3)
 
 	is.NotNil(result4)
 	is.Empty(result4)
-	is.Equal([]int{}, result4)
 	is.False(ok4)
 
 	is.NotNil(result5)
 	is.Empty(result5)
-	is.Equal([]int{}, result5)
 	is.False(ok5)
 
 	is.NotNil(result6)
@@ -429,19 +424,14 @@ func TestCoalesceSliceOrEmpty(t *testing.T) {
 
 	is.NotNil(result1)
 	is.Empty(result1)
-	is.Equal([]int{}, result1)
 	is.NotNil(result2)
 	is.Empty(result2)
-	is.Equal([]int{}, result2)
 	is.NotNil(result3)
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 	is.NotNil(result4)
 	is.Empty(result4)
-	is.Equal([]int{}, result4)
 	is.NotNil(result5)
 	is.Empty(result5)
-	is.Equal([]int{}, result5)
 	is.NotNil(result6)
 	is.Equal(slice2, result6)
 	is.NotNil(result7)
@@ -476,27 +466,22 @@ func TestCoalesceMap(t *testing.T) {
 
 	is.NotNil(result1)
 	is.Empty(result1)
-	is.Equal(map[int]int{}, result1)
 	is.False(ok1)
 
 	is.NotNil(result2)
 	is.Empty(result2)
-	is.Equal(map[int]int{}, result2)
 	is.False(ok2)
 
 	is.NotNil(result3)
 	is.Empty(result3)
-	is.Equal(map[int]int{}, result3)
 	is.False(ok3)
 
 	is.NotNil(result4)
 	is.Empty(result4)
-	is.Equal(map[int]int{}, result4)
 	is.False(ok4)
 
 	is.NotNil(result5)
 	is.Empty(result5)
-	is.Equal(map[int]int{}, result5)
 	is.False(ok5)
 
 	is.NotNil(result6)
@@ -542,19 +527,14 @@ func TestCoalesceMapOrEmpty(t *testing.T) {
 
 	is.NotNil(result1)
 	is.Empty(result1)
-	is.Equal(map[int]int{}, result1)
 	is.NotNil(result2)
 	is.Empty(result2)
-	is.Equal(map[int]int{}, result2)
 	is.NotNil(result3)
 	is.Empty(result3)
-	is.Equal(map[int]int{}, result3)
 	is.NotNil(result4)
 	is.Empty(result4)
-	is.Equal(map[int]int{}, result4)
 	is.NotNil(result5)
 	is.Empty(result5)
-	is.Equal(map[int]int{}, result5)
 	is.NotNil(result6)
 	is.Equal(map2, result6)
 	is.NotNil(result7)

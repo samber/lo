@@ -3,7 +3,6 @@ package lo
 import (
 	"fmt"
 	"math"
-	"reflect"
 	"strconv"
 	"strings"
 	"testing"
@@ -44,8 +43,6 @@ func TestMap(t *testing.T) {
 		return strconv.FormatInt(x, 10)
 	})
 
-	is.Len(result1, 4)
-	is.Len(result2, 4)
 	is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, result1)
 	is.Equal([]string{"1", "2", "3", "4"}, result2)
 }
@@ -84,8 +81,6 @@ func TestFilterMap(t *testing.T) {
 		return "", false
 	})
 
-	is.Len(r1, 2)
-	is.Len(r2, 2)
 	is.Equal([]string{"2", "4"}, r1)
 	is.Equal([]string{"xpu", "xpu"}, r2)
 }
@@ -105,8 +100,6 @@ func TestFlatMap(t *testing.T) {
 		return result
 	})
 
-	is.Len(result1, 5)
-	is.Len(result2, 10)
 	is.Equal([]string{"Hello", "Hello", "Hello", "Hello", "Hello"}, result1)
 	is.Equal([]string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"}, result2)
 }
@@ -118,8 +111,6 @@ func TestTimes(t *testing.T) {
 	result1 := Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)
 	})
-
-	is.Len(result1, 3)
 	is.Equal([]string{"0", "1", "2"}, result1)
 }
 
@@ -169,8 +160,8 @@ func TestForEach(t *testing.T) {
 		callParams2 = append(callParams2, i)
 	})
 
-	is.ElementsMatch([]string{"a", "b", "c"}, callParams1)
-	is.ElementsMatch([]int{0, 1, 2}, callParams2)
+	is.Equal([]string{"a", "b", "c"}, callParams1)
+	is.Equal([]int{0, 1, 2}, callParams2)
 	is.IsIncreasing(callParams2)
 }
 
@@ -192,8 +183,8 @@ func TestForEachWhile(t *testing.T) {
 		return true
 	})
 
-	is.ElementsMatch([]string{"a", "b"}, callParams1)
-	is.ElementsMatch([]int{0, 1}, callParams2)
+	is.Equal([]string{"a", "b"}, callParams1)
+	is.Equal([]int{0, 1}, callParams2)
 	is.IsIncreasing(callParams2)
 }
 
@@ -202,8 +193,6 @@ func TestUniq(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := Uniq([]int{1, 2, 2, 1})
-
-	is.Len(result1, 2)
 	is.Equal([]int{1, 2}, result1)
 
 	type myStrings []string
@@ -219,8 +208,6 @@ func TestUniqBy(t *testing.T) {
 	result1 := UniqBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
-
-	is.Len(result1, 3)
 	is.Equal([]int{0, 1, 2}, result1)
 
 	type myStrings []string
@@ -238,8 +225,6 @@ func TestGroupBy(t *testing.T) {
 	result1 := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
-
-	is.Len(result1, 3)
 	is.Equal(map[int][]int{
 		0: {0, 3},
 		1: {1, 4},
@@ -261,8 +246,6 @@ func TestGroupByMap(t *testing.T) {
 	result1 := GroupByMap([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, string) {
 		return i % 3, strconv.Itoa(i)
 	})
-
-	is.Len(result1, 3)
 	is.Equal(map[int][]string{
 		0: {"0", "3"},
 		1: {"1", "4"},
@@ -274,8 +257,6 @@ func TestGroupByMap(t *testing.T) {
 	result2 := GroupByMap(myInts{1, 0, 2, 3, 4, 5}, func(i myInt) (int, string) {
 		return int(i % 3), strconv.Itoa(int(i))
 	})
-
-	is.Len(result2, 3)
 	is.Equal(map[int][]string{
 		0: {"0", "3"},
 		1: {"1", "4"},
@@ -296,8 +277,6 @@ func TestGroupByMap(t *testing.T) {
 	result3 := GroupByMap(products, func(item product) (int64, string) {
 		return item.CategoryID, "Product " + strconv.FormatInt(item.ID, 10)
 	})
-
-	is.Len(result3, 3)
 	is.Equal(map[int64][]string{
 		1: {"Product 1", "Product 2"},
 		2: {"Product 3"},
@@ -316,9 +295,9 @@ func TestChunk(t *testing.T) {
 
 	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}}, result1)
 	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}, {6}}, result2)
-	is.Equal([][]int{}, result3)
+	is.Empty(result3)
 	is.Equal([][]int{{0}}, result4)
-	is.PanicsWithValue("Second parameter must be greater than 0", func() {
+	is.PanicsWithValue("lo.Chunk: size must be greater than 0", func() {
 		Chunk([]int{0}, 0)
 	})
 
@@ -327,11 +306,11 @@ func TestChunk(t *testing.T) {
 	nonempty := Chunk(allStrings, 2)
 	is.IsType(nonempty[0], allStrings, "type preserved")
 
-	// appending to a chunk should not affect original array
-	originalArray := []int{0, 1, 2, 3, 4, 5}
-	result5 := Chunk(originalArray, 2)
+	// appending to a chunk should not affect original slice
+	original := []int{0, 1, 2, 3, 4, 5}
+	result5 := Chunk(original, 2)
 	result5[0] = append(result5[0], 6)
-	is.Equal([]int{0, 1, 2, 3, 4, 5}, originalArray)
+	is.Equal([]int{0, 1, 2, 3, 4, 5}, original)
 }
 
 func TestPartitionBy(t *testing.T) {
@@ -351,7 +330,7 @@ func TestPartitionBy(t *testing.T) {
 	result2 := PartitionBy([]int{}, oddEven)
 
 	is.Equal([][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}}, result1)
-	is.Equal([][]int{}, result2)
+	is.Empty(result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -378,10 +357,10 @@ func TestFlatten(t *testing.T) {
 func TestInterleave(t *testing.T) {
 	is := assert.New(t)
 
-	tests := []struct {
-		name        string
-		collections [][]int
-		want        []int
+	testCases := []struct {
+		name string
+		in   [][]int
+		want []int
 	}{
 		{
 			"nil",
@@ -414,11 +393,11 @@ func TestInterleave(t *testing.T) {
 			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := Interleave(tt.collections...); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Interleave() = %v, want %v", got, tt.want)
-			}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			tc := tc
+			t.Parallel()
+			assert.Equal(t, tc.want, Interleave(tc.in...))
 		})
 	}
 
@@ -436,7 +415,7 @@ func TestShuffle(t *testing.T) {
 	result2 := Shuffle([]int{})
 
 	is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result1)
-	is.Equal([]int{}, result2)
+	is.Empty(result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -454,7 +433,7 @@ func TestReverse(t *testing.T) {
 
 	is.Equal([]int{5, 4, 3, 2, 1, 0}, result1)
 	is.Equal([]int{6, 5, 4, 3, 2, 1, 0}, result2)
-	is.Equal([]int{}, result3)
+	is.Empty(result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -470,7 +449,7 @@ func TestFill(t *testing.T) {
 	result2 := Fill([]foo{}, foo{"a"})
 
 	is.Equal([]foo{{"b"}, {"b"}}, result1)
-	is.Equal([]foo{}, result2)
+	is.Empty(result2)
 }
 
 func TestRepeat(t *testing.T) {
@@ -481,7 +460,7 @@ func TestRepeat(t *testing.T) {
 	result2 := Repeat(0, foo{"a"})
 
 	is.Equal([]foo{{"a"}, {"a"}}, result1)
-	is.Equal([]foo{}, result2)
+	is.Empty(result2)
 }
 
 func TestRepeatBy(t *testing.T) {
@@ -496,7 +475,7 @@ func TestRepeatBy(t *testing.T) {
 	result2 := RepeatBy(2, cb)
 	result3 := RepeatBy(5, cb)
 
-	is.Equal([]int{}, result1)
+	is.Empty(result1)
 	is.Equal([]int{0, 1}, result2)
 	is.Equal([]int{0, 1, 4, 9, 16}, result3)
 }
@@ -523,26 +502,27 @@ func TestAssociate(t *testing.T) {
 		return f.baz, f.bar
 	}
 	testCases := []struct {
-		in     []*foo
-		expect map[string]int
+		in   []*foo
+		want map[string]int
 	}{
 		{
-			in:     []*foo{{baz: "apple", bar: 1}},
-			expect: map[string]int{"apple": 1},
+			in:   []*foo{{baz: "apple", bar: 1}},
+			want: map[string]int{"apple": 1},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
-			expect: map[string]int{"apple": 1, "banana": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			want: map[string]int{"apple": 1, "banana": 2},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
-			expect: map[string]int{"apple": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			want: map[string]int{"apple": 2},
 		},
 	}
-	for i, testCase := range testCases {
+	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			is := assert.New(t)
-			is.Equal(Associate(testCase.in, transform), testCase.expect)
+			tc := tc
+			t.Parallel()
+			assert.Equal(t, tc.want, Associate(tc.in, transform))
 		})
 	}
 }
@@ -558,26 +538,27 @@ func TestSliceToMap(t *testing.T) {
 		return f.baz, f.bar
 	}
 	testCases := []struct {
-		in     []*foo
-		expect map[string]int
+		in   []*foo
+		want map[string]int
 	}{
 		{
-			in:     []*foo{{baz: "apple", bar: 1}},
-			expect: map[string]int{"apple": 1},
+			in:   []*foo{{baz: "apple", bar: 1}},
+			want: map[string]int{"apple": 1},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
-			expect: map[string]int{"apple": 1, "banana": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			want: map[string]int{"apple": 1, "banana": 2},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
-			expect: map[string]int{"apple": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			want: map[string]int{"apple": 2},
 		},
 	}
-	for i, testCase := range testCases {
+	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			is := assert.New(t)
-			is.Equal(SliceToMap(testCase.in, transform), testCase.expect)
+			tc := tc
+			t.Parallel()
+			assert.Equal(t, tc.want, SliceToMap(tc.in, transform))
 		})
 	}
 }
@@ -593,26 +574,27 @@ func TestFilterSliceToMap(t *testing.T) {
 		return f.baz, f.bar, f.bar > 1
 	}
 	testCases := []struct {
-		in     []*foo
-		expect map[string]int
+		in   []*foo
+		want map[string]int
 	}{
 		{
-			in:     []*foo{{baz: "apple", bar: 1}},
-			expect: map[string]int{},
+			in:   []*foo{{baz: "apple", bar: 1}},
+			want: map[string]int{},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
-			expect: map[string]int{"banana": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}},
+			want: map[string]int{"banana": 2},
 		},
 		{
-			in:     []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
-			expect: map[string]int{"apple": 2},
+			in:   []*foo{{baz: "apple", bar: 1}, {baz: "apple", bar: 2}},
+			want: map[string]int{"apple": 2},
 		},
 	}
-	for i, testCase := range testCases {
+	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			is := assert.New(t)
-			is.Equal(FilterSliceToMap(testCase.in, transform), testCase.expect)
+			tc := tc
+			t.Parallel()
+			assert.Equal(t, tc.want, FilterSliceToMap(tc.in, transform))
 		})
 	}
 }
@@ -626,7 +608,7 @@ func TestKeyify(t *testing.T) {
 	result3 := Keyify([]int{})
 	is.Equal(map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}}, result1)
 	is.Equal(map[int]struct{}{1: {}, 2: {}}, result2)
-	is.Equal(map[int]struct{}{}, result3)
+	is.Empty(result3)
 }
 
 func TestDrop(t *testing.T) {
@@ -637,8 +619,8 @@ func TestDrop(t *testing.T) {
 	is.Equal([]int{2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 2))
 	is.Equal([]int{3, 4}, Drop([]int{0, 1, 2, 3, 4}, 3))
 	is.Equal([]int{4}, Drop([]int{0, 1, 2, 3, 4}, 4))
-	is.Equal([]int{}, Drop([]int{0, 1, 2, 3, 4}, 5))
-	is.Equal([]int{}, Drop([]int{0, 1, 2, 3, 4}, 6))
+	is.Empty(Drop([]int{0, 1, 2, 3, 4}, 5))
+	is.Empty(Drop([]int{0, 1, 2, 3, 4}, 6))
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -654,8 +636,8 @@ func TestDropRight(t *testing.T) {
 	is.Equal([]int{0, 1, 2}, DropRight([]int{0, 1, 2, 3, 4}, 2))
 	is.Equal([]int{0, 1}, DropRight([]int{0, 1, 2, 3, 4}, 3))
 	is.Equal([]int{0}, DropRight([]int{0, 1, 2, 3, 4}, 4))
-	is.Equal([]int{}, DropRight([]int{0, 1, 2, 3, 4}, 5))
-	is.Equal([]int{}, DropRight([]int{0, 1, 2, 3, 4}, 6))
+	is.Empty(DropRight([]int{0, 1, 2, 3, 4}, 5))
+	is.Empty(DropRight([]int{0, 1, 2, 3, 4}, 6))
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -671,7 +653,7 @@ func TestDropWhile(t *testing.T) {
 		return t != 4
 	}))
 
-	is.Equal([]int{}, DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+	is.Empty(DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
 		return true
 	}))
 
@@ -703,7 +685,7 @@ func TestDropRightWhile(t *testing.T) {
 		return t == 10
 	}))
 
-	is.Equal([]int{}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+	is.Empty(DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
 		return t != 10
 	}))
 
@@ -729,11 +711,11 @@ func TestDropByIndex(t *testing.T) {
 	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 5))
 	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 100))
 	is.Equal([]int{0, 1, 2, 3}, DropByIndex([]int{0, 1, 2, 3, 4}, -1))
-	is.Equal([]int{}, DropByIndex([]int{}, 0, 1))
-	is.Equal([]int{}, DropByIndex([]int{42}, 0, 1))
-	is.Equal([]int{}, DropByIndex([]int{42}, 1, 0))
-	is.Equal([]int{}, DropByIndex([]int{}, 1))
-	is.Equal([]int{}, DropByIndex([]int{1}, 0))
+	is.Empty(DropByIndex([]int{}, 0, 1))
+	is.Empty(DropByIndex([]int{42}, 0, 1))
+	is.Empty(DropByIndex([]int{42}, 1, 0))
+	is.Empty(DropByIndex([]int{}, 1))
+	is.Empty(DropByIndex([]int{1}, 0))
 }
 
 func TestReject(t *testing.T) {
@@ -777,8 +759,6 @@ func TestRejectMap(t *testing.T) {
 		return "", true
 	})
 
-	is.Len(r1, 2)
-	is.Len(r2, 2)
 	is.Equal([]string{"2", "4"}, r1)
 	is.Equal([]string{"xpu", "xpu"}, r2)
 }
@@ -848,7 +828,7 @@ func TestCountValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal(map[int]int{}, CountValues([]int{}))
+	is.Empty(CountValues([]int{}))
 	is.Equal(map[int]int{1: 1, 2: 1}, CountValues([]int{1, 2}))
 	is.Equal(map[int]int{1: 1, 2: 2}, CountValues([]int{1, 2, 2}))
 	is.Equal(map[string]int{"": 1, "foo": 1, "bar": 1}, CountValues([]string{"foo", "bar", ""}))
@@ -872,7 +852,7 @@ func TestCountValuesBy(t *testing.T) {
 	result4 := CountValuesBy([]string{"foo", "bar", ""}, length)
 	result5 := CountValuesBy([]string{"foo", "bar", "bar"}, length)
 
-	is.Equal(map[bool]int{}, result1)
+	is.Empty(result1)
 	is.Equal(map[bool]int{true: 1, false: 1}, result2)
 	is.Equal(map[bool]int{true: 2, false: 1}, result3)
 	is.Equal(map[int]int{0: 1, 3: 2}, result4)
@@ -898,8 +878,8 @@ func TestSubset(t *testing.T) {
 	out11 := Subset(in, -4, 1)
 	out12 := Subset(in, -4, math.MaxUint)
 
-	is.Equal([]int{}, out1)
-	is.Equal([]int{}, out2)
+	is.Empty(out1)
+	is.Empty(out2)
 	is.Equal([]int{0, 1}, out3)
 	is.Equal([]int{0, 1, 2, 3, 4}, out4)
 	is.Equal([]int{0, 1}, out5)
@@ -942,21 +922,21 @@ func TestSlice(t *testing.T) {
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
 
-	is.Equal([]int{}, out1)
+	is.Empty(out1)
 	is.Equal([]int{0}, out2)
 	is.Equal([]int{0, 1, 2, 3, 4}, out3)
 	is.Equal([]int{0, 1, 2, 3, 4}, out4)
-	is.Equal([]int{}, out5)
+	is.Empty(out5)
 	is.Equal([]int{1, 2, 3, 4}, out6)
 	is.Equal([]int{1, 2, 3, 4}, out7)
 	is.Equal([]int{4}, out8)
-	is.Equal([]int{}, out9)
-	is.Equal([]int{}, out10)
-	is.Equal([]int{}, out11)
-	is.Equal([]int{}, out12)
-	is.Equal([]int{}, out13)
-	is.Equal([]int{}, out14)
-	is.Equal([]int{}, out15)
+	is.Empty(out9)
+	is.Empty(out10)
+	is.Empty(out11)
+	is.Empty(out12)
+	is.Empty(out13)
+	is.Empty(out14)
+	is.Empty(out15)
 	is.Equal([]int{0}, out16)
 	is.Equal([]int{0, 1, 2}, out17)
 	is.Equal([]int{0, 1, 2, 3, 4}, out18)

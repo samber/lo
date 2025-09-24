@@ -261,7 +261,7 @@ type Transaction[T any] struct {
 	steps []transactionStep[T]
 }
 
-// Then adds a step to the chain of callbacks. It returns the same Transaction.
+// Then adds a step to the chain of callbacks. Returns the same Transaction.
 // Play: https://go.dev/play/p/Qxrd7MGQGh1 https://go.dev/play/p/xrHb2_kMvTY
 func (t *Transaction[T]) Then(exec func(T) (T, error), onRollback func(T) T) *Transaction[T] {
 	t.steps = append(t.steps, transactionStep[T]{
@@ -344,7 +344,7 @@ func (th *throttleBy[T]) reset() {
 }
 
 // NewThrottle creates a throttled instance that invokes given functions only once in every interval.
-// This returns 2 functions, First one is throttled function and Second one is a function to reset interval
+// This returns 2 functions, First one is throttled function and Second one is a function to reset interval.
 // Play: https://go.dev/play/p/qQn3fm8Z7jS
 func NewThrottle(interval time.Duration, f ...func()) (throttle func(), reset func()) {
 	return NewThrottleWithCount(interval, 1, f...)
@@ -366,7 +366,7 @@ func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (throt
 }
 
 // NewThrottleBy creates a throttled instance that invokes given functions only once in every interval.
-// This returns 2 functions, First one is throttled function and Second one is a function to reset interval
+// This returns 2 functions, First one is throttled function and Second one is a function to reset interval.
 // Play: https://go.dev/play/p/0Wv6oX7dHdC
 func NewThrottleBy[T comparable](interval time.Duration, f ...func(key T)) (throttle func(key T), reset func()) {
 	return NewThrottleByWithCount[T](interval, 1, f...)
