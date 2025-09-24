@@ -15,7 +15,7 @@ func TestRange(t *testing.T) {
 	result3 := Range(0)
 	is.Equal([]int{0, 1, 2, 3}, result1)
 	is.Equal([]int{0, -1, -2, -3}, result2)
-	is.Equal([]int{}, result3)
+	is.Empty(result3)
 }
 
 func TestRangeFrom(t *testing.T) {
@@ -29,7 +29,7 @@ func TestRangeFrom(t *testing.T) {
 	result5 := RangeFrom(-2.0, -3)
 	is.Equal([]int{1, 2, 3, 4, 5}, result1)
 	is.Equal([]int{-1, -2, -3, -4, -5}, result2)
-	is.Equal([]int{}, result3)
+	is.Empty(result3)
 	is.Equal([]float64{2.0, 3.0, 4.0}, result4)
 	is.Equal([]float64{-2.0, -3.0, -4.0}, result5)
 }
@@ -45,9 +45,9 @@ func TestRangeClose(t *testing.T) {
 	result5 := RangeWithSteps(1.0, 4.0, 2.0)
 	result6 := RangeWithSteps[float32](-1.0, -4.0, -1.0)
 	is.Equal([]int{0, 6, 12, 18}, result1)
-	is.Equal([]int{}, result2)
-	is.Equal([]int{}, result3)
-	is.Equal([]int{}, result4)
+	is.Empty(result2)
+	is.Empty(result3)
+	is.Empty(result4)
 	is.Equal([]float64{1.0, 3.0}, result5)
 	is.Equal([]float32{-1.0, -2.0, -3.0}, result6)
 }
@@ -185,6 +185,6 @@ func TestMode(t *testing.T) {
 	is.Equal([]float32{3.3}, result1)
 	is.Equal([]int32{2}, result2)
 	is.Equal([]uint32{2, 3}, result3)
-	is.Equal([]uint32{}, result4)
+	is.Empty(result4)
 	is.Equal([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, result5)
 }
