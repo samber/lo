@@ -1179,63 +1179,62 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
 
-
-
 ### Cut
-Cut slices collection around the first instance of separator, returning the part of collection before and after separator. The found result reports whether separator appears in collection. If separator does not appear in s, cut returns collection, empty slice of T, false.
+
+Slices collection around the first instance of separator, returning the part of collection before and after separator. The found result reports whether separator appears in collection. If separator does not appear in s, cut returns collection, empty slice of []T, false.
 
 ```go
-actualLeft, actualRight, result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "b")
+actualLeft, actualRight, result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b", "c", "d"})
 // actualLeft: []string{"a"}
-// actualRight: []string{"c", "d", "e", "f", "g"}
+// actualRight: []string{"e", "f", "g"}
 // result: true
 
-// negative
-result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "z")
+result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"z"})
 // actualLeft: []string{"a", "b", "c", "d", "e", "f", "g"}
 // actualRight: []string{}
 // result: false
 
-// left margin
-result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "a")
+result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
 // actualLeft: []string{}
-// actualRight: []string{"b", "c", "d", "e", "f", "g"}
+// actualRight: []string{"c", "d", "e", "f", "g"}
 // result: true
 ```
+
 ### CutPrefix
-CutPrefix returns collection without the provided leading prefix T and reports whether it found the prefix. If s doesn't start with prefix, CutPrefix returns collection, false. If prefix is the empty T, CutPrefix returns collection, true.
+
+Returns collection without the provided leading prefix []T and reports whether it found the prefix. If s doesn't start with prefix, CutPrefix returns collection, false. If prefix is the empty []T, CutPrefix returns collection, true.
+
 ```go
-actualRight, result = lo.CutPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, "a")
-// actualRight: []string{"b", "c", "d", "e", "f", "g"}
+actualRight, result = lo.CutPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c"})
+// actualRight: []string{"d", "e", "f", "g"}
 // result: true
-// negative
-result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "b")
+
+result = lo.CutPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b"})
 // actualRight: []string{"a", "b", "c", "d", "e", "f", "g"}
 // result: false
 
-result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "")
+result = lo.CutPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
 // actualRight: []string{"a", "b", "c", "d", "e", "f", "g"}
 // result: true
 ```
 
 ### CutSuffix
-CutSuffix returns collection without the provided ending suffix T and reports whether it found the suffix. If s doesn't end with suffix, CutSuffix returns collection, false. If suffix is the empty T, CutSuffix returns collection, true.
+
+Returns collection without the provided ending suffix []T and reports whether it found the suffix. If it doesn't end with suffix, CutSuffix returns collection, false. If suffix is the empty []T, CutSuffix returns collection, true.
+
 ```go
-actualLeft, result = lo.CutSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, "g")
-// actualLeft: []string{"a", "b", "c", "d", "e", "f"}
+actualLeft, result = lo.CutSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"f", "g"})
+// actualLeft: []string{"a", "b", "c", "d", "e"}
 // result: true
-// negative
-actualLeft, result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "b")
+
+actualLeft, result = lo.CutSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b"})
 // actualLeft: []string{"a", "b", "c", "d", "e", "f", "g"}
 // result: false
 
-actualLeft, result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, "")
+actualLeft, result = lo.CutSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
 // actualLeft: []string{"a", "b", "c", "d", "e", "f", "g"}
 // result: true
 ```
-
-
-
 
 ### Keys
 
