@@ -73,7 +73,7 @@ func Must0(err any, messageArgs ...any) {
 	must(err, messageArgs...)
 }
 
-// Must1 is an alias to Must
+// Must1 is an alias to Must.
 // Play: https://go.dev/play/p/TMoWrRp3DyC
 func Must1[T any](val T, err any, messageArgs ...any) T {
 	return Must(val, err, messageArgs...)

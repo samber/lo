@@ -1,9 +1,7 @@
 package lo
 
 import (
-	"fmt"
 	"math/rand"
-	"sort"
 	"testing"
 	"time"
 
@@ -74,7 +72,7 @@ func TestFindIndexOf(t *testing.T) {
 	is.Equal(1, index1)
 	is.Empty(item2)
 	is.False(ok2)
-	is.Equal(index2, -1)
+	is.Equal(-1, index2)
 }
 
 func TestFindLastIndexOf(t *testing.T) {
@@ -97,7 +95,7 @@ func TestFindLastIndexOf(t *testing.T) {
 	is.Equal(4, index1)
 	is.Empty(item2)
 	is.False(ok2)
-	is.Equal(index2, -1)
+	is.Equal(-1, index2)
 }
 
 func TestFindOrElse(t *testing.T) {
@@ -166,24 +164,16 @@ func TestFindUniques(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := FindUniques([]int{1, 2, 3})
-
-	is.Len(result1, 3)
 	is.Equal([]int{1, 2, 3}, result1)
 
 	result2 := FindUniques([]int{1, 2, 2, 3, 1, 2})
-
-	is.Len(result2, 1)
 	is.Equal([]int{3}, result2)
 
 	result3 := FindUniques([]int{1, 2, 2, 1})
-
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 
 	result4 := FindUniques([]int{})
-
 	is.Empty(result4)
-	is.Equal([]int{}, result4)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -198,30 +188,22 @@ func TestFindUniquesBy(t *testing.T) {
 	result1 := FindUniquesBy([]int{0, 1, 2}, func(i int) int {
 		return i % 3
 	})
-
-	is.Len(result1, 3)
 	is.Equal([]int{0, 1, 2}, result1)
 
 	result2 := FindUniquesBy([]int{0, 1, 2, 3, 4}, func(i int) int {
 		return i % 3
 	})
-
-	is.Len(result2, 1)
 	is.Equal([]int{2}, result2)
 
 	result3 := FindUniquesBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 		return i % 3
 	})
-
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 
 	result4 := FindUniquesBy([]int{}, func(i int) int {
 		return i % 3
 	})
-
 	is.Empty(result4)
-	is.Equal([]int{}, result4)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -236,19 +218,13 @@ func TestFindDuplicates(t *testing.T) {
 	is := assert.New(t)
 
 	result1 := FindDuplicates([]int{1, 2, 2, 1, 2, 3})
-
-	is.Len(result1, 2)
 	is.Equal([]int{1, 2}, result1)
 
 	result2 := FindDuplicates([]int{1, 2, 3})
-
 	is.Empty(result2)
-	is.Equal([]int{}, result2)
 
 	result3 := FindDuplicates([]int{})
-
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -263,23 +239,17 @@ func TestFindDuplicatesBy(t *testing.T) {
 	result1 := FindDuplicatesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
 		return i % 3
 	})
-
-	is.Len(result1, 2)
 	is.Equal([]int{3, 4}, result1)
 
 	result2 := FindDuplicatesBy([]int{0, 1, 2, 3, 4}, func(i int) int {
 		return i % 5
 	})
-
 	is.Empty(result2)
-	is.Equal([]int{}, result2)
 
 	result3 := FindDuplicatesBy([]int{}, func(i int) int {
 		return i % 3
 	})
-
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -323,7 +293,7 @@ func TestMinIndex(t *testing.T) {
 	is.Zero(index3)
 
 	is.Zero(result4)
-	is.Equal(index4, -1)
+	is.Equal(-1, index4)
 }
 
 func TestMinBy(t *testing.T) {
@@ -366,7 +336,7 @@ func TestMinIndexBy(t *testing.T) {
 	is.Equal(2, index2)
 
 	is.Empty(result3)
-	is.Equal(index3, -1)
+	is.Equal(-1, index3)
 }
 
 func TestEarliest(t *testing.T) {
@@ -379,7 +349,7 @@ func TestEarliest(t *testing.T) {
 	result2 := Earliest()
 
 	is.Equal(a, result1)
-	is.Equal(time.Time{}, result2)
+	is.Zero(result2)
 }
 
 func TestEarliestBy(t *testing.T) {
@@ -405,7 +375,7 @@ func TestEarliestBy(t *testing.T) {
 
 	is.Equal(foo{t3}, result1)
 	is.Equal(foo{t1}, result2)
-	is.Equal(foo{}, result3)
+	is.Zero(result3)
 }
 
 func TestMax(t *testing.T) {
@@ -442,7 +412,7 @@ func TestMaxIndex(t *testing.T) {
 	is.Equal(2, index3)
 
 	is.Zero(result4)
-	is.Equal(index4, -1)
+	is.Equal(-1, index4)
 }
 
 func TestMaxBy(t *testing.T) {
@@ -485,7 +455,7 @@ func TestMaxIndexBy(t *testing.T) {
 	is.Zero(index2)
 
 	is.Empty(result3)
-	is.Equal(index3, -1)
+	is.Equal(-1, index3)
 }
 
 func TestLatest(t *testing.T) {
@@ -498,7 +468,7 @@ func TestLatest(t *testing.T) {
 	result2 := Latest()
 
 	is.Equal(b, result1)
-	is.Equal(time.Time{}, result2)
+	is.Zero(result2)
 }
 
 func TestLatestBy(t *testing.T) {
@@ -524,7 +494,7 @@ func TestLatestBy(t *testing.T) {
 
 	is.Equal(foo{t2}, result1)
 	is.Equal(foo{t1}, result2)
-	is.Equal(foo{}, result3)
+	is.Zero(result3)
 }
 
 func TestFirst(t *testing.T) {
@@ -621,9 +591,9 @@ func TestNth(t *testing.T) {
 	is.Equal(2, result2)
 	is.NoError(err2)
 	is.Zero(result3)
-	is.Equal(err3, fmt.Errorf("nth: 42 out of slice bounds"))
+	is.EqualError(err3, "nth: 42 out of slice bounds")
 	is.Zero(result4)
-	is.Equal(err4, fmt.Errorf("nth: 0 out of slice bounds"))
+	is.EqualError(err4, "nth: 0 out of slice bounds")
 	is.Equal(42, result5)
 	is.NoError(err5)
 	is.Equal(42, result6)
@@ -631,9 +601,10 @@ func TestNth(t *testing.T) {
 }
 
 func TestNthOr(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
 	t.Run("Integers", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		const defaultValue = -1
 		intSlice := []int{10, 20, 30, 40, 50}
 
@@ -643,6 +614,9 @@ func TestNthOr(t *testing.T) {
 	})
 
 	t.Run("Strings", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		const defaultValue = "none"
 		strSlice := []string{"apple", "banana", "cherry", "date"}
 
@@ -652,6 +626,9 @@ func TestNthOr(t *testing.T) {
 	})
 
 	t.Run("Structs", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		type User struct {
 			ID   int
 			Name string
@@ -674,27 +651,32 @@ func TestNthOr(t *testing.T) {
 }
 
 func TestNthOrEmpty(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
 	t.Run("Integers", func(t *testing.T) {
-		const defaultValue = 0
+		t.Parallel()
+		is := assert.New(t)
+
 		intSlice := []int{10, 20, 30, 40, 50}
 
 		is.Equal(30, NthOrEmpty(intSlice, 2))
 		is.Equal(50, NthOrEmpty(intSlice, -1))
-		is.Equal(defaultValue, NthOrEmpty(intSlice, 10))
+		is.Zero(NthOrEmpty(intSlice, 10))
 	})
 
 	t.Run("Strings", func(t *testing.T) {
-		const defaultValue = ""
+		t.Parallel()
+		is := assert.New(t)
+
 		strSlice := []string{"apple", "banana", "cherry", "date"}
 
 		is.Equal("banana", NthOrEmpty(strSlice, 1))
 		is.Equal("cherry", NthOrEmpty(strSlice, -2))
-		is.Equal(defaultValue, NthOrEmpty(strSlice, 10))
+		is.Empty(NthOrEmpty(strSlice, 10))
 	})
 
 	t.Run("Structs", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		type User struct {
 			ID   int
 			Name string
@@ -711,8 +693,7 @@ func TestNthOrEmpty(t *testing.T) {
 		expectedUser = User{ID: 3, Name: "Charlie"}
 		is.Equal(expectedUser, NthOrEmpty(userSlice, -1))
 
-		expectedUser = User{ID: 0, Name: ""}
-		is.Equal(expectedUser, NthOrEmpty(userSlice, 10))
+		is.Zero(NthOrEmpty(userSlice, 10))
 	})
 }
 
@@ -751,10 +732,8 @@ func TestSamples(t *testing.T) {
 	result1 := Samples([]string{"a", "b", "c"}, 3)
 	result2 := Samples([]string{}, 3)
 
-	sort.Strings(result1)
-
-	is.Equal([]string{"a", "b", "c"}, result1)
-	is.Equal([]string{}, result2)
+	is.ElementsMatch(result1, []string{"a", "b", "c"})
+	is.Empty(result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -771,10 +750,8 @@ func TestSamplesBy(t *testing.T) {
 	result1 := SamplesBy([]string{"a", "b", "c"}, 3, r.Intn)
 	result2 := SamplesBy([]string{}, 3, r.Intn)
 
-	sort.Strings(result1)
-
-	is.Equal([]string{"a", "b", "c"}, result1)
-	is.Equal([]string{}, result2)
+	is.ElementsMatch(result1, []string{"a", "b", "c"})
+	is.Empty(result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
