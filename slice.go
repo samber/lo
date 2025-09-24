@@ -490,10 +490,10 @@ func DropRightWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) 
 // DropByIndex drops elements from a slice or array by the index.
 // A negative index will drop elements from the end of the slice.
 // Play: https://go.dev/play/p/bPIH4npZRxS
-func DropByIndex[T any](collection []T, indexes ...int) []T {
+func DropByIndex[T any, Slice ~[]T](collection Slice, indexes ...int) Slice {
 	initialSize := len(collection)
 	if initialSize == 0 {
-		return make([]T, 0)
+		return make(Slice, 0)
 	}
 
 	for i := range indexes {
@@ -505,7 +505,7 @@ func DropByIndex[T any](collection []T, indexes ...int) []T {
 	indexes = Uniq(indexes)
 	sort.Ints(indexes)
 
-	result := make([]T, 0, initialSize)
+	result := make(Slice, 0, initialSize)
 	result = append(result, collection...)
 
 	for i := range indexes {

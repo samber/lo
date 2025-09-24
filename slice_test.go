@@ -734,6 +734,11 @@ func TestDropByIndex(t *testing.T) {
 	is.Equal([]int{}, DropByIndex([]int{42}, 1, 0))
 	is.Equal([]int{}, DropByIndex([]int{}, 1))
 	is.Equal([]int{}, DropByIndex([]int{1}, 0))
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := DropByIndex(allStrings, 0)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestReject(t *testing.T) {
