@@ -288,7 +288,7 @@ func TestWithoutBy(t *testing.T) {
 	result2 := WithoutBy([]User{}, func(item User) int { return item.Age }, 1, 2, 3)
 	result3 := WithoutBy([]User{}, func(item User) string { return item.Name })
 	is.Equal([]User{{Name: "peter"}}, result1)
-  is.Empty(result2)
+	is.Empty(result2)
 	is.Empty(result3)
 
 	type myStrings []string
