@@ -123,6 +123,10 @@ Supported helpers for slices:
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
 - [Splice](#Splice)
+- [Cut](#Cut)
+- [CutPrefix](#CutPrefix)
+- [CutSuffix](#CutSuffix)
+
 
 Supported helpers for maps:
 
@@ -1190,6 +1194,63 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 ```
 
 [[play](https://go.dev/play/p/wiG6XyBBu49)]
+
+### Cut
+
+Slices collection around the first instance of separator, returning the part of collection before and after separator. The found result reports whether separator appears in collection. If separator does not appear in s, cut returns collection, empty slice of []T, false.
+
+```go
+actualLeft, actualRight, result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b", "c", "d"})
+// actualLeft: []string{"a"}
+// actualRight: []string{"e", "f", "g"}
+// result: true
+
+result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"z"})
+// actualLeft: []string{"a", "b", "c", "d", "e", "f", "g"}
+// actualRight: []string{}
+// result: false
+
+result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
+// actualLeft: []string{}
+// actualRight: []string{"c", "d", "e", "f", "g"}
+// result: true
+```
+
+### CutPrefix
+
+Returns collection without the provided leading prefix []T and reports whether it found the prefix. If s doesn't start with prefix, CutPrefix returns collection, false. If prefix is the empty []T, CutPrefix returns collection, true.
+
+```go
+actualRight, result = lo.CutPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c"})
+// actualRight: []string{"d", "e", "f", "g"}
+// result: true
+
+result = lo.CutPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b"})
+// actualRight: []string{"a", "b", "c", "d", "e", "f", "g"}
+// result: false
+
+result = lo.CutPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
+// actualRight: []string{"a", "b", "c", "d", "e", "f", "g"}
+// result: true
+```
+
+### CutSuffix
+
+Returns collection without the provided ending suffix []T and reports whether it found the suffix. If it doesn't end with suffix, CutSuffix returns collection, false. If suffix is the empty []T, CutSuffix returns collection, true.
+
+```go
+actualLeft, result = lo.CutSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"f", "g"})
+// actualLeft: []string{"a", "b", "c", "d", "e"}
+// result: true
+
+actualLeft, result = lo.CutSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b"})
+// actualLeft: []string{"a", "b", "c", "d", "e", "f", "g"}
+// result: false
+
+actualLeft, result = lo.CutSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
+// actualLeft: []string{"a", "b", "c", "d", "e", "f", "g"}
+// result: true
+```
 
 ### Keys
 
