@@ -19,8 +19,6 @@ func TestMap(t *testing.T) {
 		return strconv.FormatInt(x, 10)
 	})
 
-	is.Len(result1, 4)
-	is.Len(result2, 4)
 	is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, result1)
 	is.Equal([]string{"1", "2", "3", "4"}, result2)
 }
@@ -44,7 +42,6 @@ func TestTimes(t *testing.T) {
 		return strconv.FormatInt(int64(i), 10)
 	})
 
-	is.Len(result1, 3)
 	is.Equal([]string{"0", "1", "2"}, result1)
 }
 
@@ -57,12 +54,9 @@ func TestGroupBy(t *testing.T) {
 
 	// order
 	for x := range result1 {
-		sort.Slice(result1[x], func(i, j int) bool {
-			return result1[x][i] < result1[x][j]
-		})
+		sort.Ints(result1[x])
 	}
 
-	is.Len(result1, 3)
 	is.Equal(map[int][]int{
 		0: {0, 3},
 		1: {1, 4},
@@ -97,13 +91,11 @@ func TestPartitionBy(t *testing.T) {
 		return result1[i][0] < result1[j][0]
 	})
 	for x := range result1 {
-		sort.Slice(result1[x], func(i, j int) bool {
-			return result1[x][i] < result1[x][j]
-		})
+		sort.Ints(result1[x])
 	}
 
 	is.ElementsMatch(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
-	is.Equal([][]int{}, result2)
+	is.Empty(result2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}

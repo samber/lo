@@ -60,7 +60,7 @@ func FromPtrOr[T any](x *T, fallback T) T {
 	return *x
 }
 
-// ToSlicePtr returns a slice of pointer copy of value.
+// ToSlicePtr returns a slice of pointers to each value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func ToSlicePtr[T any](collection []T) []*T {
 	result := make([]*T, len(collection))
@@ -94,7 +94,7 @@ func FromSlicePtrOr[T any](collection []*T, fallback T) []T {
 	})
 }
 
-// ToAnySlice returns a slice with all elements mapped to `any` type
+// ToAnySlice returns a slice with all elements mapped to `any` type.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func ToAnySlice[T any](collection []T) []any {
 	result := make([]any, len(collection))
@@ -104,7 +104,7 @@ func ToAnySlice[T any](collection []T) []any {
 	return result
 }
 
-// FromAnySlice returns an `any` slice with all elements mapped to a type.
+// FromAnySlice returns a slice with all elements mapped to a type.
 // Returns false in case of type conversion failure.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func FromAnySlice[T any](in []any) (out []T, ok bool) {

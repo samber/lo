@@ -20,7 +20,7 @@ func (s *synchronize) Do(cb func()) {
 // Play: https://go.dev/play/p/X3cqROSpQmu
 func Synchronize(opt ...sync.Locker) *synchronize { //nolint:revive
 	if len(opt) > 1 {
-		panic("unexpected arguments")
+		panic("lo.Synchronize: unexpected arguments")
 	} else if len(opt) == 0 {
 		opt = append(opt, &sync.Mutex{})
 	}
