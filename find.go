@@ -36,6 +36,38 @@ func LastIndexOf[T comparable](collection []T, element T) int {
 	return -1
 }
 
+// HasPrefix returns true if the collection has the prefix.
+// Play: https://go.dev/play/p/SrljzVDpMQM
+func HasPrefix[T comparable](collection []T, prefix []T) bool {
+	if len(collection) < len(prefix) {
+		return false
+	}
+
+	for i := range prefix {
+		if collection[i] != prefix[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+// HasSuffix returns true if the collection has the suffix.
+// Play: https://go.dev/play/p/bJeLetQNAON
+func HasSuffix[T comparable](collection []T, suffix []T) bool {
+	if len(collection) < len(suffix) {
+		return false
+	}
+
+	for i := range suffix {
+		if collection[len(collection)-len(suffix)+i] != suffix[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
 // Find search an element in a slice based on a predicate. It returns element and true if element was found.
 // Play: https://go.dev/play/p/Eo7W0lvKTky
 func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {

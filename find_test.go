@@ -32,6 +32,22 @@ func TestLastIndexOf(t *testing.T) {
 	is.Equal(-1, result2)
 }
 
+func TestHasPrefix(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.True(HasPrefix([]int{1, 2, 3, 4}, []int{1, 2}))
+	is.False(HasPrefix([]int{1, 2, 3, 4}, []int{42}))
+}
+
+func TestHasSuffix(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.True(HasSuffix([]int{1, 2, 3, 4}, []int{3, 4}))
+	is.False(HasSuffix([]int{1, 2, 3, 4}, []int{42}))
+}
+
 func TestFind(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

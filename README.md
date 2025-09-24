@@ -227,6 +227,8 @@ Supported search helpers:
 
 - [IndexOf](#indexof)
 - [LastIndexOf](#lastindexof)
+- [HasPrefix](#hasprefix)
+- [HasSuffix](#hassuffix)
 - [Find](#find)
 - [FindIndexOf](#findindexof)
 - [FindLastIndexOf](#findlastindexof)
@@ -2549,6 +2551,34 @@ found := lo.LastIndexOf([]int{0, 1, 2, 1, 2, 3}, 2)
 notFound := lo.LastIndexOf([]int{0, 1, 2, 1, 2, 3}, 6)
 // -1
 ```
+
+### HasPrefix
+
+Returns true if the collection has the prefix.
+
+```go
+ok := lo.HasPrefix([]int{1, 2, 3, 4}, []int{42})
+// false
+
+ok := lo.HasPrefix([]int{1, 2, 3, 4}, []int{1, 2})
+// true
+```
+
+[[play](https://go.dev/play/p/SrljzVDpMQM)]
+
+### HasSuffix
+
+Returns true if the collection has the suffix.
+
+```go
+ok := lo.HasSuffix([]int{1, 2, 3, 4}, []int{42})
+// false
+
+ok := lo.HasSuffix([]int{1, 2, 3, 4}, []int{3, 4})
+// true
+```
+
+[[play](https://go.dev/play/p/bJeLetQNAON)]
 
 ### Find
 
