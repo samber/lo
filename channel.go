@@ -161,7 +161,7 @@ func DispatchingStrategyMost[T any](msg T, index uint64, channels []<-chan T) in
 	})
 }
 
-// SliceToChannel returns a read-only channels of collection elements.
+// SliceToChannel returns a read-only channel of collection elements.
 // Play: https://go.dev/play/p/lIbSY3QmiEg
 func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 	ch := make(chan T, bufferSize)
@@ -177,7 +177,7 @@ func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 	return ch
 }
 
-// ChannelToSlice returns a slice built from channels items. Blocks until channel closes.
+// ChannelToSlice returns a slice built from channel items. Blocks until channel closes.
 // Play: https://go.dev/play/p/lIbSY3QmiEg
 func ChannelToSlice[T any](ch <-chan T) []T {
 	collection := []T{}
@@ -207,7 +207,7 @@ func Generator[T any](bufferSize int, generator func(yield func(T))) <-chan T {
 }
 
 // Buffer creates a slice of n elements from a channel. Returns the slice and the slice length.
-// @TODO: we should probably provide an helper that reuse the same buffer.
+// @TODO: we should probably provide a helper that reuses the same buffer.
 // Play: https://go.dev/play/p/gPQ-6xmcKQI
 func Buffer[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
 	buffer := make([]T, 0, size)
@@ -234,7 +234,7 @@ func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime t
 }
 
 // BufferWithContext creates a slice of n elements from a channel, with context. Returns the slice and the slice length.
-// @TODO: we should probably provide an helper that reuse the same buffer.
+// @TODO: we should probably provide a helper that reuses the same buffer.
 // Play: https://go.dev/play/p/oRfOyJWK9YF
 func BufferWithContext[T any](ctx context.Context, ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
 	buffer := make([]T, 0, size)
@@ -273,7 +273,7 @@ func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (coll
 }
 
 // FanIn collects messages from multiple input channels into a single buffered channel.
-// Output messages has no priority. When all upstream channels reach EOF, downstream channel closes.
+// Output messages have no priority. When all upstream channels reach EOF, downstream channel closes.
 // Play: https://go.dev/play/p/FH8Wq-T04Jb
 func FanIn[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 	out := make(chan T, channelBufferCap)
@@ -299,7 +299,7 @@ func FanIn[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 }
 
 // ChannelMerge collects messages from multiple input channels into a single buffered channel.
-// Output messages has no priority. When all upstream channels reach EOF, downstream channel closes.
+// Output messages have no priority. When all upstream channels reach EOF, downstream channel closes.
 //
 // Deprecated: Use [FanIn] instead.
 func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
@@ -307,7 +307,7 @@ func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 }
 
 // FanOut broadcasts all the upstream messages to multiple downstream channels.
-// When upstream channel reach EOF, downstream channels close. If any downstream
+// When upstream channel reaches EOF, downstream channels close. If any downstream
 // channels is full, broadcasting is paused.
 // Play: https://go.dev/play/p/2LHxcjKX23L
 func FanOut[T any](count int, channelsBufferCap int, upstream <-chan T) []<-chan T {
