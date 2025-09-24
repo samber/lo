@@ -2989,7 +2989,7 @@ nth, err := lo.Nth([]int{0, 1, 2, 3}, -2)
 ### NthOr
 
 Returns the element at index `nth` of the collection. If `nth` is negative, it returns the `nth` element from the end. If `nth` is out of slice bounds, it returns the provided fallback value
-```go	
+```go
 nth := lo.NthOr([]int{10, 20, 30, 40, 50}, 2, -1)
 // 30
 
@@ -4293,14 +4293,6 @@ ok  	github.com/samber/lo	6.657s
 Don't hesitate ;)
 
 Helper naming: helpers must be self-explanatory and respect standards (other languages, libraries...). Feel free to suggest many names in your contributions.
-
-### With Docker
-
-```bash
-docker-compose run --rm dev
-```
-
-### Without Docker
 
 ```bash
 # Install some dev dependencies
