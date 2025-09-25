@@ -83,6 +83,28 @@ func ExampleReduce() {
 	// Output: 10
 }
 
+func ExampleReduceRight() {
+	list := slices.Values([][]int{{0, 1}, {2, 3}, {4, 5}})
+
+	result := ReduceRight(list, func(agg, item []int) []int {
+		return append(agg, item...)
+	}, []int{})
+
+	fmt.Printf("%v", result)
+	// Output: [4 5 2 3 0 1]
+}
+
+func ExampleReduceRightI() {
+	list := slices.Values([][]int{{0, 1}, {2, 3}, {4, 5}})
+
+	result := ReduceRightI(list, func(agg, item []int, index int) []int {
+		return append(agg, item...)
+	}, []int{})
+
+	fmt.Printf("%v", result)
+	// Output: [4 5 2 3 0 1]
+}
+
 func ExampleForEach() {
 	list := slices.Values([]int64{1, 2, 3, 4})
 
