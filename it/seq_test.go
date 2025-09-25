@@ -360,6 +360,24 @@ func TestInterleave(t *testing.T) {
 	}
 }
 
+func TestReverse(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Reverse(values(0, 1, 2, 3, 4, 5))
+	result2 := Reverse(values(0, 1, 2, 3, 4, 5, 6))
+	result3 := Reverse(values[int]())
+
+	is.Equal([]int{5, 4, 3, 2, 1, 0}, slices.Collect(result1))
+	is.Equal([]int{6, 5, 4, 3, 2, 1, 0}, slices.Collect(result2))
+	is.Empty(slices.Collect(result3))
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := Reverse(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
 func TestFill(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

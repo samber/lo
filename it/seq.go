@@ -4,10 +4,12 @@ package it
 
 import (
 	"iter"
+	"slices"
 	"sort"
 
 	"github.com/samber/lo"
 	"github.com/samber/lo/internal/constraints"
+	"github.com/samber/lo/mutable"
 )
 
 // Filter iterates over elements of collection, returning a sequence of all elements predicate returns true for.
@@ -379,6 +381,13 @@ func Interleave[T any](collections ...iter.Seq[T]) iter.Seq[T] {
 			}
 		}
 	}
+}
+
+// Reverse reverses a sequence so that the first element becomes the last, the second element becomes the second to last, and so on.
+func Reverse[T any, I ~func(func(T) bool)](collection I) I {
+	slice := slices.Collect(iter.Seq[T](collection))
+	mutable.Reverse(slice)
+	return I(slices.Values(slice))
 }
 
 // Fill replaces elements of a sequence with `initial` value.
