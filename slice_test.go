@@ -1288,3 +1288,89 @@ func TestCutSuffix(t *testing.T) {
 	is.True(result)
 	is.Equal([]string{"a", "a", "b"}, actualAfterS)
 }
+
+func TestTrim(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual := Trim([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
+	is.Equal([]string{"c", "d", "e", "f", "g"}, actual)
+	actual = Trim([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"g", "f"})
+	is.Equal([]string{"a", "b", "c", "d", "e"}, actual)
+	actual = Trim([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g"})
+	is.Equal([]string{}, actual)
+	actual = Trim([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g", "h"})
+	is.Equal([]string{}, actual)
+	actual = Trim([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+}
+
+func TestTrimLeft(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual := TrimLeft([]string{"a", "a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
+	is.Equal([]string{"c", "d", "e", "f", "g"}, actual)
+	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b", "a"})
+	is.Equal([]string{"c", "d", "e", "f", "g"}, actual)
+	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"g", "f"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g"})
+	is.Equal([]string{}, actual)
+	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g", "h"})
+	is.Equal([]string{}, actual)
+	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+}
+
+func TestTrimPrefix(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual := TrimPrefix([]string{"a", "b", "a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
+	is.Equal([]string{"c", "d", "e", "f", "g"}, actual)
+	actual = TrimPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b", "a"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	actual = TrimPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"g", "f"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	actual = TrimPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g"})
+	is.Equal([]string{}, actual)
+	actual = TrimPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g", "h"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	actual = TrimPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+}
+
+func TestTrimRight(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual := TrimRight([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	actual = TrimRight([]string{"a", "b", "c", "d", "e", "f", "g", "g"}, []string{"g", "f"})
+	is.Equal([]string{"a", "b", "c", "d", "e"}, actual)
+	actual = TrimRight([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g"})
+	is.Equal([]string{}, actual)
+	actual = TrimRight([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g", "h"})
+	is.Equal([]string{}, actual)
+	actual = TrimRight([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+}
+
+func TestTrimSuffix(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual := TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g", "f", "g"}, []string{"f", "g"})
+	is.Equal([]string{"a", "b", "c", "d", "e"}, actual)
+	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g", "f", "g"}, []string{"g", "f"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g", "f", "g"}, actual)
+	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g"})
+	is.Equal([]string{}, actual)
+	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g", "h"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+}

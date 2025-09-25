@@ -126,7 +126,11 @@ Supported helpers for slices:
 - [Cut](#Cut)
 - [CutPrefix](#CutPrefix)
 - [CutSuffix](#CutSuffix)
-
+- [Trim](#Trim)
+- [TrimLeft](#TrimLeft)
+- [TrimPrefix](#TrimPrefix)
+- [TrimRight](#TrimRight)
+- [TrimSuffix](#TrimSuffix)
 
 Supported helpers for maps:
 
@@ -1193,7 +1197,7 @@ result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 // []string{"a", "b", "1", "2"}
 ```
 
-[[play](https://go.dev/play/p/wiG6XyBBu49)]
+[[play](https://go.dev/play/p/G5_GhkeSUBA)]
 
 ### Cut
 
@@ -1216,6 +1220,8 @@ result = lo.Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
 // result: true
 ```
 
+[[play](https://go.dev/play/p/GiL3qhpIP3f)]
+
 ### CutPrefix
 
 Returns collection without the provided leading prefix []T and reports whether it found the prefix. If s doesn't start with prefix, CutPrefix returns collection, false. If prefix is the empty []T, CutPrefix returns collection, true.
@@ -1234,6 +1240,8 @@ result = lo.CutPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
 // result: true
 ```
 
+[[play](https://go.dev/play/p/7Plak4a1ICl)]
+
 ### CutSuffix
 
 Returns collection without the provided ending suffix []T and reports whether it found the suffix. If it doesn't end with suffix, CutSuffix returns collection, false. If suffix is the empty []T, CutSuffix returns collection, true.
@@ -1251,6 +1259,78 @@ actualLeft, result = lo.CutSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, [
 // actualLeft: []string{"a", "b", "c", "d", "e", "f", "g"}
 // result: true
 ```
+
+[[play](https://go.dev/play/p/7FKfBFvPTaT)]
+
+### Trim
+
+Removes all the leading and trailing cutset from the collection.
+
+```go
+result := lo.Trim([]int{0, 1, 2, 0, 3, 0}, []int{1, 0})
+// []int{2, 0, 3}
+
+result := lo.Trim([]string{"hello", "world", " "}, []string{" ", ""})
+// []string{"hello", "world"}
+```
+
+[[play](https://go.dev/play/p/1an9mxLdRG5)]
+
+### TrimLeft
+
+Removes all the leading cutset from the collection.
+
+```go
+result := lo.TrimLeft([]int{0, 1, 2, 0, 3, 0}, []int{1, 0})
+// []int{2, 0, 3, 0}
+
+result := lo.TrimLeft([]string{"hello", "world", " "}, []string{" ", ""})
+// []string{"hello", "world", " "}
+```
+
+[[play](https://go.dev/play/p/74aqfAYLmyi)]
+
+### TrimPrefix
+
+Removes all the leading prefix from the collection.
+
+```go
+result := lo.TrimPrefix([]int{1, 2, 1, 2, 3, 1, 2, 4}, []int{1, 2})
+// []int{3, 1, 2, 4}
+
+result := lo.TrimPrefix([]string{"hello", "world", "hello", "test"}, []string{"hello"})
+// []string{"world", "hello", "test"}
+```
+
+[[play](https://go.dev/play/p/SHO6X-YegPg)]
+
+### TrimRight
+
+Removes all the trailing cutset from the collection.
+
+```go
+result := lo.TrimRight([]int{0, 1, 2, 0, 3, 0}, []int{0, 3})
+// []int{0, 1, 2}
+
+result := lo.TrimRight([]string{"hello", "world", "  "}, []string{" ", ""})
+// []string{"hello", "world", ""}
+```
+
+[[play](https://go.dev/play/p/MRpAfR6sf0g)]
+
+### TrimSuffix
+
+Removes all the trailing suffix from the collection.
+
+```go
+result := lo.TrimSuffix([]int{1, 2, 3, 1, 2, 4, 2, 4, 2, 4}, []int{2, 4})
+// []int{1, 2, 3, 1}
+
+result := lo.TrimSuffix([]string{"hello", "world", "hello", "test"}, []string{"test"})
+// []string{"hello", "world", "hello"}
+```
+
+[[play](https://go.dev/play/p/IjEUrV0iofq)]
 
 ### Keys
 

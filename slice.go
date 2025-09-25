@@ -722,7 +722,6 @@ func IsSorted[T constraints.Ordered](collection []T) bool {
 }
 
 // IsSortedByKey checks if a slice is sorted by iteratee.
-// Play: https://go.dev/play/p/wiG6XyBBu49
 func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(item T) K) bool {
 	size := len(collection)
 
@@ -763,6 +762,7 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 // Cut slices collection around the first instance of separator, returning the part of collection
 // before and after separator. The found result reports whether separator appears in collection.
 // If separator does not appear in s, cut returns collection, empty slice of []T, false.
+// Play: https://go.dev/play/p/GiL3qhpIP3f
 func Cut[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Slice, after Slice, found bool) {
 	if len(separator) == 0 {
 		return make(Slice, 0), collection, true
@@ -788,6 +788,7 @@ func Cut[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Sl
 // and reports whether it found the prefix.
 // If s doesn't start with prefix, CutPrefix returns collection, false.
 // If prefix is the empty []T, CutPrefix returns collection, true.
+// Play: https://go.dev/play/p/7Plak4a1ICl
 func CutPrefix[T comparable, Slice ~[]T](collection Slice, separator Slice) (after Slice, found bool) {
 	if len(separator) == 0 {
 		return collection, true
@@ -808,6 +809,7 @@ func CutPrefix[T comparable, Slice ~[]T](collection Slice, separator Slice) (aft
 // CutSuffix returns collection without the provided ending suffix []T and reports
 // whether it found the suffix. If s doesn't end with suffix, CutSuffix returns collection, false.
 // If suffix is the empty []T, CutSuffix returns collection, true.
+// Play: https://go.dev/play/p/7FKfBFvPTaT
 func CutSuffix[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Slice, found bool) {
 	if len(separator) == 0 {
 		return collection, true
@@ -824,4 +826,62 @@ func CutSuffix[T comparable, Slice ~[]T](collection Slice, separator Slice) (bef
 	}
 
 	return collection[:start], true
+}
+
+// Trim removes all the leading and trailing cutset from the collection.
+// Play: https://go.dev/play/p/1an9mxLdRG5
+func Trim[T comparable, Slice ~[]T](collection Slice, cutset Slice) Slice {
+	return TrimLeft(TrimRight(collection, cutset), cutset)
+}
+
+// TrimLeft removes all the leading cutset from the collection.
+// Play: https://go.dev/play/p/74aqfAYLmyi
+func TrimLeft[T comparable, Slice ~[]T](collection Slice, cutset Slice) Slice {
+	set := Keyify(cutset)
+
+	return DropWhile(collection, func(item T) bool {
+		_, ok := set[item]
+		return ok
+	})
+}
+
+// TrimPrefix removes all the leading prefix from the collection.
+// Play: https://go.dev/play/p/SHO6X-YegPg
+func TrimPrefix[T comparable, Slice ~[]T](collection Slice, prefix Slice) Slice {
+	if len(prefix) == 0 {
+		return collection
+	}
+
+	for {
+		if !HasPrefix(collection, prefix) {
+			return collection
+		}
+		collection = collection[len(prefix):]
+	}
+}
+
+// TrimRight removes all the trailing cutset from the collection.
+// Play: https://go.dev/play/p/MRpAfR6sf0g
+func TrimRight[T comparable, Slice ~[]T](collection Slice, cutset Slice) Slice {
+	set := Keyify(cutset)
+
+	return DropRightWhile(collection, func(item T) bool {
+		_, ok := set[item]
+		return ok
+	})
+}
+
+// TrimSuffix removes all the trailing suffix from the collection.
+// Play: https://go.dev/play/p/IjEUrV0iofq
+func TrimSuffix[T comparable, Slice ~[]T](collection Slice, suffix Slice) Slice {
+	if len(suffix) == 0 {
+		return collection
+	}
+
+	for {
+		if !HasSuffix(collection, suffix) {
+			return collection
+		}
+		collection = collection[:len(collection)-len(suffix)]
+	}
 }
