@@ -113,7 +113,7 @@ func ForEach[T any](collection []T, iteratee func(item T, index int)) {
 // ForEachWhile iterates over elements of collection and invokes iteratee for each element
 // collection return value decide to continue or break, like do while().
 // Play: https://go.dev/play/p/QnLGt35tnow
-func ForEachWhile[T any](collection []T, iteratee func(item T, index int) (goon bool)) {
+func ForEachWhile[T any](collection []T, iteratee func(item T, index int) bool) {
 	for i := range collection {
 		if !iteratee(collection[i], i) {
 			break
@@ -571,7 +571,9 @@ func FilterReject[T any, Slice ~[]T](collection Slice, predicate func(T, int) bo
 
 // Count counts the number of elements in the collection that equal value.
 // Play: https://go.dev/play/p/Y3FlK54yveC
-func Count[T comparable](collection []T, value T) (count int) {
+func Count[T comparable](collection []T, value T) int {
+	var count int
+
 	for i := range collection {
 		if collection[i] == value {
 			count++
@@ -583,7 +585,9 @@ func Count[T comparable](collection []T, value T) (count int) {
 
 // CountBy counts the number of elements in the collection for which predicate is true.
 // Play: https://go.dev/play/p/ByQbNYQQi4X
-func CountBy[T any](collection []T, predicate func(item T) bool) (count int) {
+func CountBy[T any](collection []T, predicate func(item T) bool) int {
+	var count int
+
 	for i := range collection {
 		if predicate(collection[i]) {
 			count++
@@ -765,19 +769,19 @@ func Cut[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Sl
 	}
 
 	for i := 0; i+len(separator) <= len(collection); i++ {
-        match := true
-        for j := 0; j < len(separator); j++ {
-            if collection[i+j] != separator[j] {
-                match = false
-                break
-            }
-        }
-        if match {
-            return collection[:i], collection[i+len(separator):], true
-        }
-    }
+		match := true
+		for j := 0; j < len(separator); j++ {
+			if collection[i+j] != separator[j] {
+				match = false
+				break
+			}
+		}
+		if match {
+			return collection[:i], collection[i+len(separator):], true
+		}
+	}
 
-    return collection, make(Slice, 0), false
+	return collection, make(Slice, 0), false
 }
 
 // CutPrefix returns collection without the provided leading prefix []T
@@ -786,19 +790,19 @@ func Cut[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Sl
 // If prefix is the empty []T, CutPrefix returns collection, true.
 func CutPrefix[T comparable, Slice ~[]T](collection Slice, separator Slice) (after Slice, found bool) {
 	if len(separator) == 0 {
-        return collection, true
-    }
-    if len(separator) > len(collection) {
-        return collection, false
-    }
+		return collection, true
+	}
+	if len(separator) > len(collection) {
+		return collection, false
+	}
 
-    for i := range separator {
-        if collection[i] != separator[i] {
-            return collection, false
-        }
-    }
+	for i := range separator {
+		if collection[i] != separator[i] {
+			return collection, false
+		}
+	}
 
-    return collection[len(separator):], true
+	return collection[len(separator):], true
 }
 
 // CutSuffix returns collection without the provided ending suffix []T and reports
@@ -806,18 +810,18 @@ func CutPrefix[T comparable, Slice ~[]T](collection Slice, separator Slice) (aft
 // If suffix is the empty []T, CutSuffix returns collection, true.
 func CutSuffix[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Slice, found bool) {
 	if len(separator) == 0 {
-        return collection, true
-    }
-    if len(separator) > len(collection) {
-        return collection, false
-    }
+		return collection, true
+	}
+	if len(separator) > len(collection) {
+		return collection, false
+	}
 
 	start := len(collection) - len(separator)
-    for i := range separator {
-        if collection[start+i] != separator[i] {
-            return collection, false
-        }
-    }
+	for i := range separator {
+		if collection[start+i] != separator[i] {
+			return collection, false
+		}
+	}
 
-    return collection[:start], true
+	return collection[:start], true
 }

@@ -115,11 +115,12 @@ func FromAnySlice[T any](in []any) (out []T, ok bool) {
 		}
 	}()
 
-	result := make([]T, len(in))
+	out = make([]T, len(in))
+	ok = true
 	for i := range in {
-		result[i] = in[i].(T) //nolint:errcheck,forcetypeassert
+		out[i] = in[i].(T) //nolint:errcheck,forcetypeassert
 	}
-	return result, true
+	return out, ok
 }
 
 // Empty returns the zero value (https://go.dev/ref/spec#The_zero_value).
@@ -145,16 +146,16 @@ func IsNotEmpty[T comparable](v T) bool {
 
 // Coalesce returns the first non-empty arguments. Arguments must be comparable.
 // Play: https://go.dev/play/p/Gyo9otyvFHH
-func Coalesce[T comparable](values ...T) (result T, ok bool) {
+func Coalesce[T comparable](values ...T) (T, bool) {
+	var zero T
+
 	for i := range values {
-		if values[i] != result {
-			result = values[i]
-			ok = true
-			return
+		if values[i] != zero {
+			return values[i], true
 		}
 	}
 
-	return
+	return zero, false
 }
 
 // CoalesceOrEmpty returns the first non-empty arguments. Arguments must be comparable.
