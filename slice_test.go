@@ -355,6 +355,7 @@ func TestFlatten(t *testing.T) {
 }
 
 func TestInterleave(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	testCases := []struct {

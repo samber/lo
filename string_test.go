@@ -108,6 +108,8 @@ func TestRuneLength(t *testing.T) {
 }
 
 func TestAllCase(t *testing.T) {
+	t.Parallel()
+
 	type output struct {
 		PascalCase string
 		CamelCase  string
@@ -437,6 +439,8 @@ func TestAllCase(t *testing.T) {
 }
 
 func TestWords(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		in   string
 		want []string
@@ -460,6 +464,8 @@ func TestWords(t *testing.T) {
 }
 
 func TestCapitalize(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		name string
 		in   string
