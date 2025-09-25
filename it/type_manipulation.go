@@ -49,6 +49,24 @@ func FromAny[T any](collection iter.Seq[any]) iter.Seq[T] {
 	}
 }
 
+// Empty returns an empty sequence.
+func Empty[T any]() iter.Seq[T] {
+	return func(yield func(T) bool) {}
+}
+
+// IsEmpty returns true if the sequence is empty.
+func IsEmpty[T any](collection iter.Seq[T]) bool {
+	for range collection {
+		return false
+	}
+	return true
+}
+
+// IsNotEmpty returns true if the sequence is not empty.
+func IsNotEmpty[T any](collection iter.Seq[T]) bool {
+	return !IsEmpty(collection)
+}
+
 // Coalesce returns the first non-empty sequence.
 func Coalesce[T any](v ...iter.Seq[T]) (iter.Seq[T], bool) {
 	for i := range v {

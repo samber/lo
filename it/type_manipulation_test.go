@@ -66,6 +66,29 @@ func TestFromAny(t *testing.T) {
 	is.Equal([]string{"foobar", "42"}, slices.Collect(out2))
 }
 
+func TestEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Empty(slices.Collect(Empty[string]()))
+}
+
+func TestIsEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.True(IsEmpty(values[string]()))
+	is.False(IsEmpty(values("foo")))
+}
+
+func TestIsNotEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.False(IsNotEmpty(values[string]()))
+	is.True(IsNotEmpty(values("foo")))
+}
+
 func TestCoalesce(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
