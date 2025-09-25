@@ -146,6 +146,7 @@ func TestToSlicePtr(t *testing.T) {
 }
 
 func TestFromSlicePtr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
@@ -156,6 +157,7 @@ func TestFromSlicePtr(t *testing.T) {
 }
 
 func TestFromSlicePtrOr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"

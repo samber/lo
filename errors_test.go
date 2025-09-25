@@ -8,6 +8,7 @@ import (
 )
 
 func TestValidate(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	slice := []string{"a"}

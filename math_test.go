@@ -66,6 +66,7 @@ func TestClamp(t *testing.T) {
 }
 
 func TestSum(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Sum([]float32{2.3, 3.3, 4, 5.3})
@@ -99,6 +100,7 @@ func TestSumBy(t *testing.T) {
 }
 
 func TestProduct(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Product([]float32{2.3, 3.3, 4, 5.3})
@@ -121,6 +123,7 @@ func TestProduct(t *testing.T) {
 }
 
 func TestProductBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := ProductBy([]float32{2.3, 3.3, 4, 5.3}, func(n float32) float32 { return n })

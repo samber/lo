@@ -35,6 +35,7 @@ linters:
     - godot
     - thelper
     - tparallel
+    - paralleltest
 
   # disable noisy/controversial ones which you might enable later
   disable:

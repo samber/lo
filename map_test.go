@@ -378,7 +378,10 @@ func TestMapValues(t *testing.T) {
 }
 
 func TestMapEntries(t *testing.T) {
+	t.Parallel()
+
 	t.Run("Normal", func(t *testing.T) {
+		t.Parallel()
 		is := assert.New(t)
 
 		r1 := MapEntries(map[string]int{"foo": 1, "bar": 2},
@@ -401,6 +404,8 @@ func TestMapEntries(t *testing.T) {
 	})
 
 	t.Run("NoMutation", func(t *testing.T) {
+		t.Parallel()
+
 		r1 := map[string]int{"foo": 1, "bar": 2}
 		MapEntries(r1, func(k string, v int) (string, string) {
 			return k, strconv.Itoa(v) + "!!"
@@ -409,6 +414,8 @@ func TestMapEntries(t *testing.T) {
 	})
 
 	t.Run("EmptyInput", func(t *testing.T) {
+		t.Parallel()
+
 		r1 := MapEntries(map[string]int{},
 			func(k string, v int) (string, string) {
 				return k, strconv.Itoa(v) + "!!"
@@ -423,6 +430,8 @@ func TestMapEntries(t *testing.T) {
 	})
 
 	t.Run("Identity", func(t *testing.T) {
+		t.Parallel()
+
 		r1 := MapEntries(map[string]int{"foo": 1, "bar": 2},
 			func(k string, v int) (string, int) {
 				return k, v
@@ -437,6 +446,8 @@ func TestMapEntries(t *testing.T) {
 	})
 
 	t.Run("ToConstantEntry", func(t *testing.T) {
+		t.Parallel()
+
 		r1 := MapEntries(map[string]any{"foo": 1, "bar": "2", "ccc": true},
 			func(k string, v any) (string, any) {
 				return "key", "value"
@@ -453,6 +464,8 @@ func TestMapEntries(t *testing.T) {
 	// // because using range over map, the order is not guaranteed
 	// // this test is not deterministic
 	// t.Run("OverlappingKeys", func(t *testing.T) {
+	// 		t.Parallel()
+	//
 	// 	r1 := MapEntries(map[string]any{"foo": 1, "foo2": 2, "Foo": 2, "Foo2": "2", "bar": "2", "ccc": true},
 	// 		func(k string, v any) (string, any) {
 	// 			return string(k[0]), v
@@ -467,6 +480,8 @@ func TestMapEntries(t *testing.T) {
 	// })
 
 	t.Run("NormalMappers", func(t *testing.T) {
+		t.Parallel()
+
 		r1 := MapEntries(map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"},
 			func(k, v string) (string, string) {
 				return k, k + v

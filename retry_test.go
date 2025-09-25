@@ -100,6 +100,7 @@ func TestAttemptWithDelay(t *testing.T) {
 }
 
 func TestAttemptWhile(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	err := errors.New("failed")
@@ -178,6 +179,7 @@ func TestAttemptWhile(t *testing.T) {
 }
 
 func TestAttemptWhileWithDelay(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	err := errors.New("failed")
@@ -405,6 +407,7 @@ func TestDebounceBy(t *testing.T) {
 }
 
 func TestTransaction(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	// no error
