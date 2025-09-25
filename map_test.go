@@ -377,89 +377,112 @@ func TestMapValues(t *testing.T) {
 	is.Equal(map[int]string{1: "1", 2: "2", 3: "3", 4: "4"}, result2)
 }
 
-func mapEntriesTest[I any, O any](t *testing.T, in map[string]I, iteratee func(string, I) (string, O), expected map[string]O) {
-	is := assert.New(t)
-	result := MapEntries(in, iteratee)
-	is.Equal(expected, result)
-}
-
 func TestMapEntries(t *testing.T) {
-	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(k string, v int) (string, int) {
-		return k, v + 1
-	}, map[string]int{"foo": 2, "bar": 3})
-	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(k string, v int) (string, string) {
-		return k, k + strconv.Itoa(v)
-	}, map[string]string{"foo": "foo1", "bar": "bar2"})
-	mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(k string, v int) (string, string) {
-		return k, strconv.Itoa(v) + k
-	}, map[string]string{"foo": "1foo", "bar": "2bar"})
-
-	// NoMutation
-	{
+	t.Run("Normal", func(t *testing.T) {
 		is := assert.New(t)
+
+		r1 := MapEntries(map[string]int{"foo": 1, "bar": 2},
+			func(k string, v int) (string, int) {
+				return k, v + 1
+			})
+		is.Equal(map[string]int{"foo": 2, "bar": 3}, r1)
+
+		r2 := MapEntries(map[string]int{"foo": 1, "bar": 2},
+			func(k string, v int) (string, string) {
+				return k, k + strconv.Itoa(v)
+			})
+		is.Equal(map[string]string{"foo": "foo1", "bar": "bar2"}, r2)
+
+		r3 := MapEntries(map[string]int{"foo": 1, "bar": 2},
+			func(k string, v int) (string, string) {
+				return k, strconv.Itoa(v) + k
+			})
+		is.Equal(map[string]string{"foo": "1foo", "bar": "2bar"}, r3)
+	})
+
+	t.Run("NoMutation", func(t *testing.T) {
 		r1 := map[string]int{"foo": 1, "bar": 2}
 		MapEntries(r1, func(k string, v int) (string, string) {
 			return k, strconv.Itoa(v) + "!!"
 		})
-		is.Equal(map[string]int{"foo": 1, "bar": 2}, r1)
-	}
-	// EmptyInput
-	{
-		mapEntriesTest(t, map[string]int{}, func(k string, v int) (string, string) {
-			return k, strconv.Itoa(v) + "!!"
-		}, map[string]string{})
+		assert.Equal(t, map[string]int{"foo": 1, "bar": 2}, r1)
+	})
 
-		mapEntriesTest(t, map[string]any{}, func(k string, v any) (string, any) {
-			return k, v
-		}, map[string]any{})
-	}
-	// Identity
-	{
-		mapEntriesTest(t, map[string]int{"foo": 1, "bar": 2}, func(k string, v int) (string, int) {
-			return k, v
-		}, map[string]int{"foo": 1, "bar": 2})
-		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(k string, v any) (string, any) {
-			return k, v
-		}, map[string]any{"foo": 1, "bar": "2", "ccc": true})
-	}
-	// ToConstantEntry
-	{
-		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(k string, v any) (string, any) {
-			return "key", "value"
-		}, map[string]any{"key": "value"})
-		mapEntriesTest(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, func(k string, v any) (string, any) {
-			return "b", 5
-		}, map[string]any{"b": 5})
-	}
+	t.Run("EmptyInput", func(t *testing.T) {
+		r1 := MapEntries(map[string]int{},
+			func(k string, v int) (string, string) {
+				return k, strconv.Itoa(v) + "!!"
+			})
+		assert.Empty(t, r1)
 
-	//// OverlappingKeys
-	//// because using range over map, the order is not guaranteed
-	//// this test is not deterministic
-	//{
-	//	mapEntriesTest(t, map[string]any{"foo": 1, "foo2": 2, "Foo": 2, "Foo2": "2", "bar": "2", "ccc": true}, func(k string, v any) (string, any) {
-	//		return string(k[0]), v
-	//	}, map[string]any{"F": "2", "b": "2", "c": true, "f": 2})
-	//	mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(k string, v string) (string, string) {
-	//		return v, k
-	//	}, map[string]string{"1": "foo", "2": "bar", "true": "ccc"})
-	//}
-	// NormalMappers
-	{
-		mapEntriesTest(t, map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"}, func(k string, v string) (string, string) {
-			return k, k + v
-		}, map[string]string{"Foo": "Foo2", "Foo2": "Foo22", "bar": "bar2", "ccc": "ccctrue", "foo": "foo1", "foo2": "foo22"})
+		r2 := MapEntries(map[string]any{},
+			func(k string, v any) (string, any) {
+				return k, v
+			})
+		assert.Empty(t, r2)
+	})
 
-		mapEntriesTest(t, map[string]struct {
+	t.Run("Identity", func(t *testing.T) {
+		r1 := MapEntries(map[string]int{"foo": 1, "bar": 2},
+			func(k string, v int) (string, int) {
+				return k, v
+			})
+		assert.Equal(t, map[string]int{"foo": 1, "bar": 2}, r1)
+
+		r2 := MapEntries(map[string]any{"foo": 1, "bar": "2", "ccc": true},
+			func(k string, v any) (string, any) {
+				return k, v
+			})
+		assert.Equal(t, map[string]any{"foo": 1, "bar": "2", "ccc": true}, r2)
+	})
+
+	t.Run("ToConstantEntry", func(t *testing.T) {
+		r1 := MapEntries(map[string]any{"foo": 1, "bar": "2", "ccc": true},
+			func(k string, v any) (string, any) {
+				return "key", "value"
+			})
+		assert.Equal(t, map[string]any{"key": "value"}, r1)
+
+		r2 := MapEntries(map[string]any{"foo": 1, "bar": "2", "ccc": true},
+			func(k string, v any) (string, any) {
+				return "b", 5
+			})
+		assert.Equal(t, map[string]any{"b": 5}, r2)
+	})
+
+	// // because using range over map, the order is not guaranteed
+	// // this test is not deterministic
+	// t.Run("OverlappingKeys", func(t *testing.T) {
+	// 	r1 := MapEntries(map[string]any{"foo": 1, "foo2": 2, "Foo": 2, "Foo2": "2", "bar": "2", "ccc": true},
+	// 		func(k string, v any) (string, any) {
+	// 			return string(k[0]), v
+	// 		})
+	// 	assert.Equal(t, map[string]any{"F": "2", "b": "2", "c": true, "f": 1}, r1)
+	//
+	// 	r2 := MapEntries(map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"},
+	// 		func(k, v string) (string, string) {
+	// 			return v, k
+	// 		})
+	// 	assert.Equal(t, map[string]string{"1": "foo", "2": "bar", "true": "ccc"}, r2)
+	// })
+
+	t.Run("NormalMappers", func(t *testing.T) {
+		r1 := MapEntries(map[string]string{"foo": "1", "foo2": "2", "Foo": "2", "Foo2": "2", "bar": "2", "ccc": "true"},
+			func(k, v string) (string, string) {
+				return k, k + v
+			})
+		assert.Equal(t, map[string]string{"Foo": "Foo2", "Foo2": "Foo22", "bar": "bar2", "ccc": "ccctrue", "foo": "foo1", "foo2": "foo22"}, r1)
+
+		type myStruct struct {
 			name string
 			age  int
-		}{"1-11-1": {name: "foo", age: 1}, "2-22-2": {name: "bar", age: 2}}, func(k string, v struct {
-			name string
-			age  int
-		},
-		) (string, string) {
-			return v.name, k
-		}, map[string]string{"bar": "2-22-2", "foo": "1-11-1"})
-	}
+		}
+		r2 := MapEntries(map[string]myStruct{"1-11-1": {name: "foo", age: 1}, "2-22-2": {name: "bar", age: 2}},
+			func(k string, v myStruct) (string, string) {
+				return v.name, k
+			})
+		assert.Equal(t, map[string]string{"bar": "2-22-2", "foo": "1-11-1"}, r2)
+	})
 }
 
 func TestMapToSlice(t *testing.T) {
@@ -526,6 +549,7 @@ func BenchmarkAssign(b *testing.B) {
 	counts := []int{32768, 1024, 128, 32, 2}
 
 	allDifferentMap := func(b *testing.B, n int) []map[string]int {
+		b.Helper()
 		defer b.ResetTimer()
 		m := make([]map[string]int, 0)
 		for i := 0; i < n; i++ {
@@ -543,6 +567,7 @@ func BenchmarkAssign(b *testing.B) {
 	}
 
 	allTheSameMap := func(b *testing.B, n int) []map[string]int {
+		b.Helper()
 		defer b.ResetTimer()
 		m := make([]map[string]int, 0)
 		for i := 0; i < n; i++ {

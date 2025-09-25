@@ -33,6 +33,7 @@ linters:
     - perfsprint
     - nolintlint
     - godot
+    - thelper
 
   # disable noisy/controversial ones which you might enable later
   disable:
