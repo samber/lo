@@ -181,7 +181,7 @@ func FilterFromMap[K comparable, V, R any](in map[K]V, iteratee func(key K, valu
 }
 
 // FilterKeys transforms a map into a sequence based on predicate returns true for specific elements.
-// It is a mix of lo.Filter() and lo.Keys().
+// It is a mix of Filter and Keys.
 func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) iter.Seq[K] {
 	return func(yield func(K) bool) {
 		for k := range in {
@@ -193,7 +193,7 @@ func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) 
 }
 
 // FilterValues transforms a map into a sequence based on predicate returns true for specific elements.
-// It is a mix of lo.Filter() and lo.Values().
+// It is a mix of Filter and Values.
 func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) iter.Seq[V] {
 	return func(yield func(V) bool) {
 		for k := range in {

@@ -669,7 +669,7 @@ func CountValues[T comparable](collection iter.Seq[T]) map[T]int {
 }
 
 // CountValuesBy counts the number of each element returned from mapper function.
-// Is equivalent to chaining lo.Map and lo.CountValues.
+// Is equivalent to chaining Map and CountValues.
 func CountValuesBy[T any, U comparable](collection iter.Seq[T], mapper func(item T) U) map[U]int {
 	result := make(map[U]int)
 
