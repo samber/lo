@@ -29,6 +29,10 @@ func TestRandomString(t *testing.T) {
 
 	is.PanicsWithValue("lo.RandomString: charset must not be empty", func() { RandomString(100, []rune{}) })
 	is.PanicsWithValue("lo.RandomString: size must be greater than 0", func() { RandomString(0, LowerCaseLettersCharset) })
+
+	str4 := RandomString(10, []rune{65})
+	is.Equal(10, RuneLength(str4))
+	is.Subset([]rune{65, 65, 65, 65, 65, 65, 65, 65, 65, 65}, []rune(str4))
 }
 
 func TestChunkString(t *testing.T) {
