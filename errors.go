@@ -129,7 +129,7 @@ func Try(callback func() error) (ok bool) {
 		ok = false
 	}
 
-	return
+	return ok
 }
 
 // Try0 has the same behavior as Try, but callback returns no variable.
@@ -327,7 +327,7 @@ func TryWithErrorValue(callback func() error) (errorValue any, ok bool) {
 		errorValue = err
 	}
 
-	return
+	return errorValue, ok
 }
 
 // TryCatch has the same behavior as Try, but calls the catch function in case of error.

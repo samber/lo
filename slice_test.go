@@ -1133,36 +1133,43 @@ func TestSplice(t *testing.T) {
 func TestCutSuccess(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
+
 	// case 1
 	actualLeft, actualRight, result := Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
 	is.True(result)
 	is.Equal([]string{}, actualLeft)
 	is.Equal([]string{"c", "d", "e", "f", "g"}, actualRight)
+
 	// case 2
 	actualLeft, actualRight, result = Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"f", "g"})
 	is.True(result)
 	is.Equal([]string{"a", "b", "c", "d", "e"}, actualLeft)
 	is.Equal([]string{}, actualRight)
+
 	// case 3
 	actualLeft, actualRight, result = Cut([]string{"g"}, []string{"g"})
 	is.True(result)
 	is.Equal([]string{}, actualLeft)
 	is.Equal([]string{}, actualRight)
+
 	// case 4
 	actualLeft, actualRight, result = Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b", "c"})
 	is.True(result)
 	is.Equal([]string{"a"}, actualLeft)
 	is.Equal([]string{"d", "e", "f", "g"}, actualRight)
+
 	// case 5
 	actualLeft, actualRight, result = Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"e", "f"})
 	is.True(result)
 	is.Equal([]string{"a", "b", "c", "d"}, actualLeft)
 	is.Equal([]string{"g"}, actualRight)
+
 	// case 6
 	actualLeft, actualRight, result = Cut([]string{"a", "b"}, []string{"b"})
 	is.True(result)
 	is.Equal([]string{"a"}, actualLeft)
 	is.Equal([]string{}, actualRight)
+
 	// case 7
 	actualLeft, actualRight, result = Cut([]string{"a", "b"}, []string{"a"})
 	is.True(result)
@@ -1173,16 +1180,19 @@ func TestCutSuccess(t *testing.T) {
 func TestCutFail(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
+
 	// case 1
 	actualLeft, actualRight, result := Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"z"})
 	is.False(result)
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actualLeft)
 	is.Equal([]string{}, actualRight)
+
 	// case 2
 	actualLeft, actualRight, result = Cut([]string{}, []string{"z"})
 	is.False(result)
 	is.Equal([]string{}, actualLeft)
 	is.Equal([]string{}, actualRight)
+
 	// case 3
 	actualLeft, actualRight, result = Cut([]string{"a"}, []string{"z"})
 	is.False(result)
@@ -1198,6 +1208,7 @@ type TestCutStruct struct {
 func TestCutPrefix(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
+
 	// case 1
 	actualAfter, result := CutPrefix(
 		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
@@ -1205,6 +1216,7 @@ func TestCutPrefix(t *testing.T) {
 	)
 	is.True(result)
 	is.Equal([]TestCutStruct{{id: 2, data: "a"}, {id: 2, data: "b"}}, actualAfter)
+
 	// case 2
 	actualAfter, result = CutPrefix(
 		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
@@ -1212,6 +1224,7 @@ func TestCutPrefix(t *testing.T) {
 	)
 	is.True(result)
 	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}}, actualAfter)
+
 	// case 3
 	actualAfter, result = CutPrefix(
 		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
@@ -1219,6 +1232,7 @@ func TestCutPrefix(t *testing.T) {
 	)
 	is.False(result)
 	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}}, actualAfter)
+
 	// case 4
 	actualAfter, result = CutPrefix(
 		[]TestCutStruct{},
@@ -1226,6 +1240,7 @@ func TestCutPrefix(t *testing.T) {
 	)
 	is.False(result)
 	is.Equal([]TestCutStruct{}, actualAfter)
+
 	// case 5
 	actualAfterS, result := CutPrefix([]string{"a", "a", "b"}, []string{})
 	is.True(result)
@@ -1235,6 +1250,7 @@ func TestCutPrefix(t *testing.T) {
 func TestCutSuffix(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
+
 	// case 1
 	actualBefore, result := CutSuffix(
 		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
@@ -1242,6 +1258,7 @@ func TestCutSuffix(t *testing.T) {
 	)
 	is.False(result)
 	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}}, actualBefore)
+
 	// case 2
 	actualBefore, result = CutSuffix(
 		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
@@ -1249,6 +1266,7 @@ func TestCutSuffix(t *testing.T) {
 	)
 	is.True(result)
 	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}}, actualBefore)
+
 	// case 3
 	actualBefore, result = CutSuffix(
 		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
@@ -1256,6 +1274,7 @@ func TestCutSuffix(t *testing.T) {
 	)
 	is.True(result)
 	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}}, actualBefore)
+
 	// case 4
 	actualBefore, result = CutSuffix(
 		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
@@ -1263,6 +1282,7 @@ func TestCutSuffix(t *testing.T) {
 	)
 	is.False(result)
 	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}}, actualBefore)
+
 	// case 5
 	actualAfterS, result := CutSuffix([]string{"a", "a", "b"}, []string{})
 	is.True(result)

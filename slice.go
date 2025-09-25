@@ -113,7 +113,7 @@ func ForEach[T any](collection []T, iteratee func(item T, index int)) {
 // ForEachWhile iterates over elements of collection and invokes iteratee for each element
 // collection return value decide to continue or break, like do while().
 // Play: https://go.dev/play/p/QnLGt35tnow
-func ForEachWhile[T any](collection []T, iteratee func(item T, index int) (goon bool)) {
+func ForEachWhile[T any](collection []T, iteratee func(item T, index int) bool) {
 	for i := range collection {
 		if !iteratee(collection[i], i) {
 			break
@@ -571,7 +571,9 @@ func FilterReject[T any, Slice ~[]T](collection Slice, predicate func(T, int) bo
 
 // Count counts the number of elements in the collection that equal value.
 // Play: https://go.dev/play/p/Y3FlK54yveC
-func Count[T comparable](collection []T, value T) (count int) {
+func Count[T comparable](collection []T, value T) int {
+	var count int
+
 	for i := range collection {
 		if collection[i] == value {
 			count++
@@ -583,7 +585,9 @@ func Count[T comparable](collection []T, value T) (count int) {
 
 // CountBy counts the number of elements in the collection for which predicate is true.
 // Play: https://go.dev/play/p/ByQbNYQQi4X
-func CountBy[T any](collection []T, predicate func(item T) bool) (count int) {
+func CountBy[T any](collection []T, predicate func(item T) bool) int {
+	var count int
+
 	for i := range collection {
 		if predicate(collection[i]) {
 			count++
