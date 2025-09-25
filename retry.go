@@ -256,7 +256,7 @@ func NewTransaction[T any]() *Transaction[T] {
 	}
 }
 
-// Transaction implements a Saga pattern
+// Transaction implements a Saga pattern.
 type Transaction[T any] struct {
 	steps []transactionStep[T]
 }
@@ -299,7 +299,7 @@ func (t *Transaction[T]) Process(state T) (T, error) {
 	return state, err
 }
 
-// @TODO: single mutex per key ?
+// @TODO: single mutex per key?
 type throttleBy[T comparable] struct {
 	mu         *sync.Mutex
 	timer      *time.Timer

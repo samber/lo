@@ -73,7 +73,7 @@ func BenchmarkMap(b *testing.B) {
 	})
 }
 
-// also apply to UniqValues
+// @TODO: also apply to UniqValues.
 func BenchmarkUniqKeys(b *testing.B) {
 	m := []map[int64]int64{
 		mapGenerator(100000),

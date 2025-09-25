@@ -32,6 +32,7 @@ linters:
     - whitespace
     - perfsprint
     - nolintlint
+    - godot
 
   # disable noisy/controversial ones which you might enable later
   disable:
