@@ -615,12 +615,17 @@ func TestDrop(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
+	is.Equal([]int{0, 1, 2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 0))
 	is.Equal([]int{1, 2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 1))
 	is.Equal([]int{2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 2))
 	is.Equal([]int{3, 4}, Drop([]int{0, 1, 2, 3, 4}, 3))
 	is.Equal([]int{4}, Drop([]int{0, 1, 2, 3, 4}, 4))
 	is.Empty(Drop([]int{0, 1, 2, 3, 4}, 5))
 	is.Empty(Drop([]int{0, 1, 2, 3, 4}, 6))
+
+	is.PanicsWithValue("lo.Drop: n must not be negative", func() {
+		Drop([]int{0, 1, 2, 3, 4}, -1)
+	})
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -632,12 +637,17 @@ func TestDropRight(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
+	is.Equal([]int{0, 1, 2, 3, 4}, DropRight([]int{0, 1, 2, 3, 4}, 0))
 	is.Equal([]int{0, 1, 2, 3}, DropRight([]int{0, 1, 2, 3, 4}, 1))
 	is.Equal([]int{0, 1, 2}, DropRight([]int{0, 1, 2, 3, 4}, 2))
 	is.Equal([]int{0, 1}, DropRight([]int{0, 1, 2, 3, 4}, 3))
 	is.Equal([]int{0}, DropRight([]int{0, 1, 2, 3, 4}, 4))
 	is.Empty(DropRight([]int{0, 1, 2, 3, 4}, 5))
 	is.Empty(DropRight([]int{0, 1, 2, 3, 4}, 6))
+
+	is.PanicsWithValue("lo.DropRight: n must not be negative", func() {
+		DropRight([]int{0, 1, 2, 3, 4}, -1)
+	})
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}

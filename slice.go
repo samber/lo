@@ -439,6 +439,10 @@ func Keyify[T comparable, Slice ~[]T](collection Slice) map[T]struct{} {
 // Drop drops n elements from the beginning of a slice.
 // Play: https://go.dev/play/p/JswS7vXRJP2
 func Drop[T any, Slice ~[]T](collection Slice, n int) Slice {
+	if n < 0 {
+		panic("lo.Drop: n must not be negative")
+	}
+
 	if len(collection) <= n {
 		return make(Slice, 0)
 	}
@@ -451,6 +455,10 @@ func Drop[T any, Slice ~[]T](collection Slice, n int) Slice {
 // DropRight drops n elements from the end of a slice.
 // Play: https://go.dev/play/p/GG0nXkSJJa3
 func DropRight[T any, Slice ~[]T](collection Slice, n int) Slice {
+	if n < 0 {
+		panic("lo.DropRight: n must not be negative")
+	}
+
 	if len(collection) <= n {
 		return Slice{}
 	}
