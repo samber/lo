@@ -390,6 +390,24 @@ func TestInterleave(t *testing.T) {
 	}
 }
 
+func TestShuffle(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Shuffle(values(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+	result2 := Shuffle(values[int]())
+
+	slice1 := slices.Collect(result1)
+	is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, slice1)
+	is.ElementsMatch([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, slice1)
+	is.Empty(slices.Collect(result2))
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := Shuffle(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
 func TestReverse(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
