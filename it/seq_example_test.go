@@ -232,6 +232,15 @@ func ExampleInterleave() {
 	// [1 2 3 4 5 6 7 8 9 10]
 }
 
+func ExampleReverse() {
+	list := slices.Values([]int{0, 1, 2, 3, 4, 5})
+
+	result := slices.Collect(Reverse(list))
+
+	fmt.Printf("%v", result)
+	// Output: [5 4 3 2 1 0]
+}
+
 func ExampleFill() {
 	list := slices.Values([]foo{{"a"}, {"a"}})
 
