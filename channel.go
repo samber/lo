@@ -145,8 +145,8 @@ func DispatchingStrategyFirst[T any](msg T, index uint64, channels []<-chan T) i
 func DispatchingStrategyLeast[T any](msg T, index uint64, channels []<-chan T) int {
 	seq := Range(len(channels))
 
-	return MinBy(seq, func(item int, min int) bool {
-		return len(channels[item]) < len(channels[min])
+	return MinBy(seq, func(item int, mIn int) bool {
+		return len(channels[item]) < len(channels[mIn])
 	})
 }
 
@@ -156,8 +156,8 @@ func DispatchingStrategyLeast[T any](msg T, index uint64, channels []<-chan T) i
 func DispatchingStrategyMost[T any](msg T, index uint64, channels []<-chan T) int {
 	seq := Range(len(channels))
 
-	return MaxBy(seq, func(item int, max int) bool {
-		return len(channels[item]) > len(channels[max]) && channelIsNotFull(channels[item])
+	return MaxBy(seq, func(item int, mAx int) bool {
+		return len(channels[item]) > len(channels[mAx]) && channelIsNotFull(channels[item])
 	})
 }
 

@@ -56,11 +56,11 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 
 // Clamp clamps number within the inclusive lower and upper bounds.
 // Play: https://go.dev/play/p/RU4lJNC2hlI
-func Clamp[T constraints.Ordered](value T, min T, max T) T {
-	if value < min {
-		return min
-	} else if value > max {
-		return max
+func Clamp[T constraints.Ordered](value T, mIn T, mAx T) T {
+	if value < mIn {
+		return mIn
+	} else if value > mAx {
+		return mAx
 	}
 	return value
 }

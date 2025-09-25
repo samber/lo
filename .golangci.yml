@@ -36,6 +36,7 @@ linters:
     - thelper
     - tparallel
     - paralleltest
+    - predeclared
 
   # disable noisy/controversial ones which you might enable later
   disable:
