@@ -5,8 +5,16 @@ import "reflect"
 // IsNil checks if a value is nil or if it's a reference type with a nil underlying value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func IsNil(x any) bool {
-	defer func() { recover() }() // nolint:errcheck
-	return x == nil || reflect.ValueOf(x).IsNil()
+	if x == nil {
+		return true
+	}
+	v := reflect.ValueOf(x)
+	switch v.Kind() { // nolint:exhaustive
+	case reflect.Chan, reflect.Func, reflect.Map, reflect.Pointer, reflect.UnsafePointer, reflect.Interface, reflect.Slice:
+		return v.IsNil()
+	default:
+		return false
+	}
 }
 
 // IsNotNil checks if a value is not nil or if it's not a reference type with a nil underlying value.
@@ -107,20 +115,16 @@ func ToAnySlice[T any](collection []T) []any {
 // FromAnySlice returns a slice with all elements mapped to a type.
 // Returns false in case of type conversion failure.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
-func FromAnySlice[T any](in []any) (out []T, ok bool) {
-	defer func() {
-		if r := recover(); r != nil {
-			out = []T{}
-			ok = false
-		}
-	}()
-
-	out = make([]T, len(in))
-	ok = true
+func FromAnySlice[T any](in []any) ([]T, bool) {
+	out := make([]T, len(in))
 	for i := range in {
-		out[i] = in[i].(T) //nolint:errcheck,forcetypeassert
+		t, ok := in[i].(T)
+		if !ok {
+			return []T{}, false
+		}
+		out[i] = t
 	}
-	return out, ok
+	return out, true
 }
 
 // Empty returns the zero value (https://go.dev/ref/spec#The_zero_value).
