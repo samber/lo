@@ -100,9 +100,13 @@ func nearestPowerOfTwo(capacity int) int {
 	return n + 1
 }
 
-// Substring return part of a string.
+// Substring returns part of a string.
 // Play: https://go.dev/play/p/TQlxQi82Lu1
-func Substring[T ~string](str T, offset int, length uint) T {
+func Substring[T ~string](str T, offset, length int) T {
+	if length < 0 {
+		panic("lo.Substring: length must not be negative")
+	}
+
 	rs := []rune(str)
 	size := len(rs)
 
@@ -117,11 +121,11 @@ func Substring[T ~string](str T, offset int, length uint) T {
 		return Empty[T]()
 	}
 
-	if length > uint(size)-uint(offset) {
-		length = uint(size - offset)
+	if length > size-offset {
+		length = size - offset
 	}
 
-	return T(strings.ReplaceAll(string(rs[offset:offset+int(length)]), "\x00", ""))
+	return T(strings.ReplaceAll(string(rs[offset:offset+length]), "\x00", ""))
 }
 
 // ChunkString returns a slice of strings split into groups of length size. If the string can't be split evenly,

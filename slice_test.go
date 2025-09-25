@@ -893,7 +893,7 @@ func TestSubset(t *testing.T) {
 	out9 := Subset(in, 2, 4)
 	out10 := Subset(in, -2, 4)
 	out11 := Subset(in, -4, 1)
-	out12 := Subset(in, -4, math.MaxUint)
+	out12 := Subset(in, -4, math.MaxInt)
 
 	is.Empty(out1)
 	is.Empty(out2)
@@ -907,6 +907,10 @@ func TestSubset(t *testing.T) {
 	is.Equal([]int{3, 4}, out10)
 	is.Equal([]int{1}, out11)
 	is.Equal([]int{1, 2, 3, 4}, out12)
+
+	is.PanicsWithValue("lo.Subset: length must not be negative", func() {
+		Subset(in, 0, -1)
+	})
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
