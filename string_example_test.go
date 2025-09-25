@@ -8,7 +8,7 @@ import (
 func ExampleSubstring() {
 	result1 := Substring("hello", 2, 3)
 	result2 := Substring("hello", -4, 3)
-	result3 := Substring("hello", -2, math.MaxUint)
+	result3 := Substring("hello", -2, math.MaxInt)
 	result4 := Substring("🏠🐶🐱", 0, 2)
 	result5 := Substring("你好，世界", 0, 3)
 
