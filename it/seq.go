@@ -393,6 +393,13 @@ func Interleave[T any](collections ...iter.Seq[T]) iter.Seq[T] {
 	}
 }
 
+// Shuffle returns a sequence of shuffled values. Uses the Fisher-Yates shuffle algorithm.
+func Shuffle[T any, I ~func(func(T) bool)](collection I) I {
+	slice := slices.Collect(iter.Seq[T](collection))
+	mutable.Shuffle(slice)
+	return I(slices.Values(slice))
+}
+
 // Reverse reverses a sequence so that the first element becomes the last, the second element becomes the second to last, and so on.
 func Reverse[T any, I ~func(func(T) bool)](collection I) I {
 	slice := slices.Collect(iter.Seq[T](collection))
