@@ -135,6 +135,36 @@ func TestReduce(t *testing.T) {
 	is.Equal(20, result2)
 }
 
+func TestReduceRight(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := ReduceRight(values([]int{0, 1}, []int{2, 3}, []int{4, 5}), func(agg, item []int) []int {
+		return append(agg, item...)
+	}, []int{})
+	is.Equal([]int{4, 5, 2, 3, 0, 1}, result1)
+
+	result2 := ReduceRight(values(1, 2, 3, 4), func(agg, item int) int {
+		return agg + item
+	}, 10)
+	is.Equal(20, result2)
+}
+
+func TestReduceRightI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := ReduceRightI(values([]int{0, 1}, []int{2, 3}, []int{4, 5}), func(agg, item []int, _ int) []int {
+		return append(agg, item...)
+	}, []int{})
+	is.Equal([]int{4, 5, 2, 3, 0, 1}, result1)
+
+	result2 := ReduceRightI(values(1, 2, 3, 4), func(agg, item, _ int) int {
+		return agg + item
+	}, 10)
+	is.Equal(20, result2)
+}
+
 func TestForEachI(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

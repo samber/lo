@@ -178,6 +178,16 @@ func ReduceI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, i
 	return initial
 }
 
+// ReduceRight is like Reduce except that it iterates over elements of collection from right to left.
+func ReduceRight[T, R any](collection iter.Seq[T], accumulator func(agg R, item T) R, initial R) R {
+	return Reduce(Reverse(collection), accumulator, initial)
+}
+
+// ReduceRightI is like Reduce except that it iterates over elements of collection from right to left.
+func ReduceRightI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, index int) R, initial R) R {
+	return ReduceI(Reverse(collection), accumulator, initial)
+}
+
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 func ForEach[T any](collection iter.Seq[T], iteratee func(item T)) {
 	var i int
