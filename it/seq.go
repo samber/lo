@@ -482,6 +482,10 @@ func Drop[T any, I ~func(func(T) bool)](collection I, n int) I {
 		panic("it.Drop: n must not be negative")
 	}
 
+	if n == 0 {
+		return collection
+	}
+
 	return func(yield func(T) bool) {
 		var i int
 		for item := range collection {
@@ -497,6 +501,10 @@ func Drop[T any, I ~func(func(T) bool)](collection I, n int) I {
 func DropRight[T any, I ~func(func(T) bool)](collection I, n int) I {
 	if n < 0 {
 		panic("it.DropRight: n must not be negative")
+	}
+
+	if n == 0 {
+		return collection
 	}
 
 	return func(yield func(T) bool) {

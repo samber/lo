@@ -534,12 +534,17 @@ func TestDrop(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
+	is.Equal([]int{0, 1, 2, 3, 4}, slices.Collect(Drop(values(0, 1, 2, 3, 4), 0)))
 	is.Equal([]int{1, 2, 3, 4}, slices.Collect(Drop(values(0, 1, 2, 3, 4), 1)))
 	is.Equal([]int{2, 3, 4}, slices.Collect(Drop(values(0, 1, 2, 3, 4), 2)))
 	is.Equal([]int{3, 4}, slices.Collect(Drop(values(0, 1, 2, 3, 4), 3)))
 	is.Equal([]int{4}, slices.Collect(Drop(values(0, 1, 2, 3, 4), 4)))
 	is.Empty(slices.Collect(Drop(values(0, 1, 2, 3, 4), 5)))
 	is.Empty(slices.Collect(Drop(values(0, 1, 2, 3, 4), 6)))
+
+	is.PanicsWithValue("it.Drop: n must not be negative", func() {
+		Drop(values(0, 1, 2, 3, 4), -1)
+	})
 
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar"))
@@ -551,12 +556,17 @@ func TestDropRight(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
+	is.Equal([]int{0, 1, 2, 3, 4}, slices.Collect(DropRight(values(0, 1, 2, 3, 4), 0)))
 	is.Equal([]int{0, 1, 2, 3}, slices.Collect(DropRight(values(0, 1, 2, 3, 4), 1)))
 	is.Equal([]int{0, 1, 2}, slices.Collect(DropRight(values(0, 1, 2, 3, 4), 2)))
 	is.Equal([]int{0, 1}, slices.Collect(DropRight(values(0, 1, 2, 3, 4), 3)))
 	is.Equal([]int{0}, slices.Collect(DropRight(values(0, 1, 2, 3, 4), 4)))
 	is.Empty(slices.Collect(DropRight(values(0, 1, 2, 3, 4), 5)))
 	is.Empty(slices.Collect(DropRight(values(0, 1, 2, 3, 4), 6)))
+
+	is.PanicsWithValue("it.DropRight: n must not be negative", func() {
+		DropRight(values(0, 1, 2, 3, 4), -1)
+	})
 
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar"))
