@@ -31,6 +31,7 @@ linters:
     - testifylint
     - whitespace
     - perfsprint
+    - nolintlint
 
   # disable noisy/controversial ones which you might enable later
   disable:
