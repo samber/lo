@@ -9,7 +9,7 @@ func IsNil(x any) bool {
 		return true
 	}
 	v := reflect.ValueOf(x)
-	switch v.Kind() { // nolint:exhaustive
+	switch v.Kind() { //nolint:exhaustive
 	case reflect.Chan, reflect.Func, reflect.Map, reflect.Pointer, reflect.UnsafePointer, reflect.Interface, reflect.Slice:
 		return v.IsNil()
 	default:

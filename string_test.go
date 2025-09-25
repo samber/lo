@@ -108,6 +108,8 @@ func TestRuneLength(t *testing.T) {
 }
 
 func TestAllCase(t *testing.T) {
+	t.Parallel()
+
 	type output struct {
 		PascalCase string
 		CamelCase  string
@@ -424,8 +426,8 @@ func TestAllCase(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
+		tc := tc
 		t.Run(tc.in, func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			is := assert.New(t)
 			is.Equalf(tc.want.PascalCase, PascalCase(tc.in), "PascalCase(%v)", tc.in)
@@ -437,6 +439,8 @@ func TestAllCase(t *testing.T) {
 }
 
 func TestWords(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		in   string
 		want []string
@@ -451,8 +455,8 @@ func TestWords(t *testing.T) {
 		{"Int8Value", []string{"Int", "8", "Value"}},
 	}
 	for _, tc := range testCases {
+		tc := tc
 		t.Run(tc.in, func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			assert.Equalf(t, tc.want, Words(tc.in), "Words(%v)", tc.in)
 		})
@@ -460,6 +464,8 @@ func TestWords(t *testing.T) {
 }
 
 func TestCapitalize(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		name string
 		in   string
@@ -469,8 +475,8 @@ func TestCapitalize(t *testing.T) {
 		{"mixed case", "heLLO", "Hello"},
 	}
 	for _, tc := range testCases {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			assert.Equalf(t, tc.want, Capitalize(tc.in), "Capitalize(%v)", tc.in)
 		})

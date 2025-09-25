@@ -10,6 +10,7 @@ import (
 )
 
 func TestMap(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Map([]int{1, 2, 3, 4}, func(x int, _ int) string {
@@ -24,6 +25,7 @@ func TestMap(t *testing.T) {
 }
 
 func TestForEach(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	var counter uint64
@@ -36,6 +38,7 @@ func TestForEach(t *testing.T) {
 }
 
 func TestTimes(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := Times(3, func(i int) string {
@@ -46,6 +49,7 @@ func TestTimes(t *testing.T) {
 }
 
 func TestGroupBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
@@ -72,6 +76,7 @@ func TestGroupBy(t *testing.T) {
 }
 
 func TestPartitionBy(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	oddEven := func(x int) string {

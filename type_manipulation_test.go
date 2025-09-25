@@ -146,6 +146,7 @@ func TestToSlicePtr(t *testing.T) {
 }
 
 func TestFromSlicePtr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
@@ -156,6 +157,7 @@ func TestFromSlicePtr(t *testing.T) {
 }
 
 func TestFromSlicePtrOr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
@@ -197,7 +199,6 @@ func TestEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	//nolint:unused
 	type test struct{}
 
 	is.Empty(Empty[string]())
@@ -212,7 +213,6 @@ func TestIsEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	//nolint:unused
 	type test struct {
 		foobar string
 	}
@@ -229,7 +229,6 @@ func TestIsNotEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	//nolint:unused
 	type test struct {
 		foobar string
 	}

@@ -355,6 +355,7 @@ func TestFlatten(t *testing.T) {
 }
 
 func TestInterleave(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	testCases := []struct {
@@ -394,8 +395,8 @@ func TestInterleave(t *testing.T) {
 		},
 	}
 	for _, tc := range testCases {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			assert.Equal(t, tc.want, Interleave(tc.in...))
 		})
@@ -519,8 +520,8 @@ func TestAssociate(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
+		tc := tc
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			assert.Equal(t, tc.want, Associate(tc.in, transform))
 		})
@@ -555,8 +556,8 @@ func TestSliceToMap(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
+		tc := tc
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			assert.Equal(t, tc.want, SliceToMap(tc.in, transform))
 		})
@@ -591,8 +592,8 @@ func TestFilterSliceToMap(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
+		tc := tc
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			assert.Equal(t, tc.want, FilterSliceToMap(tc.in, transform))
 		})

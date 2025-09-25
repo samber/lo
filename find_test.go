@@ -316,14 +316,14 @@ func TestMinBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := MinBy([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
-		return len(item) < len(min)
+	result1 := MinBy([]string{"s1", "string2", "s3"}, func(item string, mIn string) bool {
+		return len(item) < len(mIn)
 	})
-	result2 := MinBy([]string{"string1", "string2", "s3"}, func(item string, min string) bool {
-		return len(item) < len(min)
+	result2 := MinBy([]string{"string1", "string2", "s3"}, func(item string, mIn string) bool {
+		return len(item) < len(mIn)
 	})
-	result3 := MinBy([]string{}, func(item string, min string) bool {
-		return len(item) < len(min)
+	result3 := MinBy([]string{}, func(item string, mIn string) bool {
+		return len(item) < len(mIn)
 	})
 
 	is.Equal("s1", result1)
@@ -335,14 +335,14 @@ func TestMinIndexBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1, index1 := MinIndexBy([]string{"s1", "string2", "s3"}, func(item string, min string) bool {
-		return len(item) < len(min)
+	result1, index1 := MinIndexBy([]string{"s1", "string2", "s3"}, func(item string, mIn string) bool {
+		return len(item) < len(mIn)
 	})
-	result2, index2 := MinIndexBy([]string{"string1", "string2", "s3"}, func(item string, min string) bool {
-		return len(item) < len(min)
+	result2, index2 := MinIndexBy([]string{"string1", "string2", "s3"}, func(item string, mIn string) bool {
+		return len(item) < len(mIn)
 	})
-	result3, index3 := MinIndexBy([]string{}, func(item string, min string) bool {
-		return len(item) < len(min)
+	result3, index3 := MinIndexBy([]string{}, func(item string, mIn string) bool {
+		return len(item) < len(mIn)
 	})
 
 	is.Equal("s1", result1)
@@ -435,14 +435,14 @@ func TestMaxBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := MaxBy([]string{"s1", "string2", "s3"}, func(item string, max string) bool {
-		return len(item) > len(max)
+	result1 := MaxBy([]string{"s1", "string2", "s3"}, func(item string, mAx string) bool {
+		return len(item) > len(mAx)
 	})
-	result2 := MaxBy([]string{"string1", "string2", "s3"}, func(item string, max string) bool {
-		return len(item) > len(max)
+	result2 := MaxBy([]string{"string1", "string2", "s3"}, func(item string, mAx string) bool {
+		return len(item) > len(mAx)
 	})
-	result3 := MaxBy([]string{}, func(item string, max string) bool {
-		return len(item) > len(max)
+	result3 := MaxBy([]string{}, func(item string, mAx string) bool {
+		return len(item) > len(mAx)
 	})
 
 	is.Equal("string2", result1)
@@ -454,14 +454,14 @@ func TestMaxIndexBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1, index1 := MaxIndexBy([]string{"s1", "string2", "s3"}, func(item string, max string) bool {
-		return len(item) > len(max)
+	result1, index1 := MaxIndexBy([]string{"s1", "string2", "s3"}, func(item string, mAx string) bool {
+		return len(item) > len(mAx)
 	})
-	result2, index2 := MaxIndexBy([]string{"string1", "string2", "s3"}, func(item string, max string) bool {
-		return len(item) > len(max)
+	result2, index2 := MaxIndexBy([]string{"string1", "string2", "s3"}, func(item string, mAx string) bool {
+		return len(item) > len(mAx)
 	})
-	result3, index3 := MaxIndexBy([]string{}, func(item string, max string) bool {
-		return len(item) > len(max)
+	result3, index3 := MaxIndexBy([]string{}, func(item string, mAx string) bool {
+		return len(item) > len(mAx)
 	})
 
 	is.Equal("string2", result1)
@@ -617,6 +617,8 @@ func TestNth(t *testing.T) {
 }
 
 func TestNthOr(t *testing.T) {
+	t.Parallel()
+
 	t.Run("Integers", func(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
@@ -667,6 +669,8 @@ func TestNthOr(t *testing.T) {
 }
 
 func TestNthOrEmpty(t *testing.T) {
+	t.Parallel()
+
 	t.Run("Integers", func(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
