@@ -116,13 +116,15 @@ func FromPairs[K comparable, V any](entries ...iter.Seq2[K, V]) map[K]V {
 	return FromEntries(entries...)
 }
 
-// Assign merges multiple maps from left to right.
-func Assign[K comparable, V any, Map ~map[K]V](maps iter.Seq[Map]) Map {
+// Assign merges multiple sequences of maps from left to right.
+func Assign[K comparable, V any, Map ~map[K]V](maps ...iter.Seq[Map]) Map {
 	out := make(Map)
 
-	for item := range maps {
-		for k := range item {
-			out[k] = item[k]
+	for i := range maps {
+		for item := range maps[i] {
+			for k := range item {
+				out[k] = item[k]
+			}
 		}
 	}
 
