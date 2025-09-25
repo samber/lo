@@ -563,7 +563,7 @@ func BenchmarkAssign(b *testing.B) {
 		differentMap := allDifferentMap(b, count)
 		sameMap := allTheSameMap(b, count)
 
-		b.Run(fmt.Sprintf("%d", count), func(b *testing.B) {
+		b.Run(strconv.Itoa(count), func(b *testing.B) {
 			testCases := []struct {
 				name string
 				in   []map[string]int

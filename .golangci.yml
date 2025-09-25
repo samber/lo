@@ -30,6 +30,7 @@ linters:
     # - wsl_v5
     - testifylint
     - whitespace
+    - perfsprint
 
   # disable noisy/controversial ones which you might enable later
   disable:

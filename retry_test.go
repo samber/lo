@@ -1,7 +1,7 @@
 package lo
 
 import (
-	"fmt"
+	"errors"
 	"sync"
 	"testing"
 	"time"
@@ -13,7 +13,7 @@ func TestAttempt(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	err := fmt.Errorf("failed")
+	err := errors.New("failed")
 
 	iter1, err1 := Attempt(42, func(i int) error {
 		return nil
@@ -54,7 +54,7 @@ func TestAttemptWithDelay(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	err := fmt.Errorf("failed")
+	err := errors.New("failed")
 
 	iter1, dur1, err1 := AttemptWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) error {
 		return nil
@@ -102,7 +102,7 @@ func TestAttemptWithDelay(t *testing.T) {
 func TestAttemptWhile(t *testing.T) {
 	is := assert.New(t)
 
-	err := fmt.Errorf("failed")
+	err := errors.New("failed")
 
 	iter1, err1 := AttemptWhile(42, func(i int) (error, bool) {
 		return nil, true
@@ -180,7 +180,7 @@ func TestAttemptWhile(t *testing.T) {
 func TestAttemptWhileWithDelay(t *testing.T) {
 	is := assert.New(t)
 
-	err := fmt.Errorf("failed")
+	err := errors.New("failed")
 
 	iter1, dur1, err1 := AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
 		return nil, true

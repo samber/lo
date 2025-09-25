@@ -2143,7 +2143,7 @@ duration := lo.Duration0(func() {
 
 err, duration := lo.Duration1(func() error {
     // very long job
-    return fmt.Errorf("an error")
+    return errors.New("an error")
 })
 // an error
 // 3s
@@ -3752,7 +3752,7 @@ iter, err := lo.Attempt(42, func(i int) error {
         return nil
     }
 
-    return fmt.Errorf("failed")
+    return errors.New("failed")
 })
 // 6
 // nil
@@ -3762,14 +3762,14 @@ iter, err := lo.Attempt(2, func(i int) error {
         return nil
     }
 
-    return fmt.Errorf("failed")
+    return errors.New("failed")
 })
 // 2
 // error "failed"
 
 iter, err := lo.Attempt(0, func(i int) error {
     if i < 42 {
-        return fmt.Errorf("failed")
+        return errors.New("failed")
     }
 
     return nil
@@ -3794,7 +3794,7 @@ iter, duration, err := lo.AttemptWithDelay(5, 2*time.Second, func(i int, duratio
         return nil
     }
 
-    return fmt.Errorf("failed")
+    return errors.New("failed")
 })
 // 3
 // ~ 4 seconds
@@ -4045,7 +4045,7 @@ transaction := NewTransaction().
             fmt.Println("step 3")
 
             if true {
-                return state, fmt.Errorf("error")
+                return state, errors.New("error")
             }
 
             return state + 42, nil
@@ -4239,7 +4239,7 @@ ok := lo.Try(func() error {
 // true
 
 ok := lo.Try(func() error {
-    return fmt.Errorf("error")
+    return errors.New("error")
 })
 // false
 ```
@@ -4279,7 +4279,7 @@ str, ok := lo.TryOr(func() error {
 // true
 
 str, ok := lo.TryOr(func() error {
-    return "hello", fmt.Errorf("error")
+    return "hello", errors.New("error")
 }, "world")
 // world
 // false
