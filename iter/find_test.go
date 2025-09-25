@@ -556,6 +556,8 @@ func TestNth(t *testing.T) {
 }
 
 func TestNthOr(t *testing.T) {
+	t.Parallel()
+
 	t.Run("Integers", func(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
@@ -602,6 +604,8 @@ func TestNthOr(t *testing.T) {
 }
 
 func TestNthOrEmpty(t *testing.T) {
+	t.Parallel()
+
 	t.Run("Integers", func(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)

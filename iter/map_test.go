@@ -256,6 +256,7 @@ func BenchmarkAssign(b *testing.B) {
 	counts := []int{32768, 1024, 128, 32, 2}
 
 	allDifferentMap := func(b *testing.B, n int) []map[string]int {
+		b.Helper()
 		defer b.ResetTimer()
 		m := make([]map[string]int, 0)
 		for i := 0; i < n; i++ {
@@ -273,6 +274,7 @@ func BenchmarkAssign(b *testing.B) {
 	}
 
 	allTheSameMap := func(b *testing.B, n int) []map[string]int {
+		b.Helper()
 		defer b.ResetTimer()
 		m := make([]map[string]int, 0)
 		for i := 0; i < n; i++ {
@@ -293,7 +295,7 @@ func BenchmarkAssign(b *testing.B) {
 		differentMap := allDifferentMap(b, count)
 		sameMap := allTheSameMap(b, count)
 
-		b.Run(fmt.Sprintf("%d", count), func(b *testing.B) {
+		b.Run(strconv.Itoa(count), func(b *testing.B) {
 			testCases := []struct {
 				name string
 				in   []map[string]int

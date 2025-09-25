@@ -19,6 +19,7 @@ func TestToPtr(t *testing.T) {
 }
 
 func TestFromPtr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
@@ -29,6 +30,7 @@ func TestFromPtr(t *testing.T) {
 }
 
 func TestFromPtrOr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
