@@ -1,6 +1,6 @@
 //go:build go1.23
 
-package iter
+package it
 
 import (
 	"slices"
@@ -31,7 +31,7 @@ func TestChunkString(t *testing.T) {
 	result6 := ChunkString("明1好休2林森", 2)
 	is.Equal([]string{"明1", "好休", "2林", "森"}, slices.Collect(result6))
 
-	is.PanicsWithValue("iter.ChunkString: size must be greater than 0", func() {
+	is.PanicsWithValue("it.ChunkString: size must be greater than 0", func() {
 		ChunkString("12345", 0)
 	})
 }

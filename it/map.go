@@ -1,6 +1,6 @@
 //go:build go1.23
 
-package iter
+package it
 
 import (
 	"iter"
@@ -133,7 +133,7 @@ func Assign[K comparable, V any, Map ~map[K]V](maps iter.Seq[Map]) Map {
 // the final chunk will contain the remaining elements.
 func ChunkEntries[K comparable, V any](m map[K]V, size int) iter.Seq[map[K]V] {
 	if size <= 0 {
-		panic("iter.ChunkEntries: size must be greater than 0")
+		panic("it.ChunkEntries: size must be greater than 0")
 	}
 
 	return func(yield func(map[K]V) bool) {

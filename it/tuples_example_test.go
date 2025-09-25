@@ -1,6 +1,6 @@
 //go:build go1.23
 
-package iter
+package it
 
 import (
 	"fmt"

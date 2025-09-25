@@ -1,6 +1,6 @@
 //go:build go1.23
 
-package iter
+package it
 
 import (
 	"iter"
@@ -299,7 +299,7 @@ func GroupByMap[T any, K comparable, V any](collection iter.Seq[T], iteratee fun
 // the final chunk will be the remaining elements.
 func Chunk[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 	if size <= 0 {
-		panic("iter.Chunk: size must be greater than 0")
+		panic("it.Chunk: size must be greater than 0")
 	}
 
 	return func(yield func([]T) bool) {
@@ -479,7 +479,7 @@ func Keyify[T comparable](collection iter.Seq[T]) map[T]struct{} {
 // Drop drops n elements from the beginning of a sequence.
 func Drop[T any, I ~func(func(T) bool)](collection I, n int) I {
 	if n < 0 {
-		panic("lo.Drop: offset must not be negative")
+		panic("it.Drop: n must not be negative")
 	}
 
 	return func(yield func(T) bool) {
@@ -496,7 +496,7 @@ func Drop[T any, I ~func(func(T) bool)](collection I, n int) I {
 // DropRight drops n elements from the end of a sequence.
 func DropRight[T any, I ~func(func(T) bool)](collection I, n int) I {
 	if n < 0 {
-		panic("lo.DropRight: offset must not be negative")
+		panic("it.DropRight: n must not be negative")
 	}
 
 	return func(yield func(T) bool) {
@@ -675,10 +675,10 @@ func CountValuesBy[T any, U comparable](collection iter.Seq[T], mapper func(item
 // Subset returns a subset of a sequence from `offset` up to `length` elements.
 func Subset[T any, I ~func(func(T) bool)](collection I, offset, length int) I {
 	if offset < 0 {
-		panic("iter.Subset: offset must not be negative")
+		panic("it.Subset: offset must not be negative")
 	}
 	if length < 0 {
-		panic("iter.Subset: length must not be negative")
+		panic("it.Subset: length must not be negative")
 	}
 
 	return func(yield func(T) bool) {
@@ -782,7 +782,7 @@ func IsSortedByKey[T any, K constraints.Ordered](collection iter.Seq[T], iterate
 // Splice inserts multiple elements at index i. The helper is protected against overflow errors.
 func Splice[T any, I ~func(func(T) bool)](collection I, index int, elements ...T) I {
 	if index < 0 {
-		panic("iter.Splice: index must not be negative")
+		panic("it.Splice: index must not be negative")
 	}
 
 	if len(elements) == 0 {

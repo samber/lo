@@ -1,6 +1,6 @@
 //go:build go1.23
 
-package iter
+package it
 
 import (
 	"fmt"
@@ -278,7 +278,7 @@ func TestChunk(t *testing.T) {
 	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}, {6}}, slices.Collect(result2))
 	is.Empty(slices.Collect(result3))
 	is.Equal([][]int{{0}}, slices.Collect(result4))
-	is.PanicsWithValue("iter.Chunk: size must be greater than 0", func() {
+	is.PanicsWithValue("it.Chunk: size must be greater than 0", func() {
 		Chunk(values(0), 0)
 	})
 }

@@ -1,6 +1,6 @@
 //go:build go1.23
 
-package iter
+package it
 
 import (
 	"iter"
@@ -41,7 +41,7 @@ func FromAny[T any](collection iter.Seq[any]) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		for item := range collection {
 			if t, ok := item.(T); !ok {
-				panic("iter.FromAny: type conversion failed")
+				panic("it.FromAny: type conversion failed")
 			} else if !yield(t) {
 				return
 			}

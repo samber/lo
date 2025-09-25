@@ -1,6 +1,6 @@
 //go:build go1.23
 
-package iter
+package it
 
 import (
 	"fmt"
@@ -170,10 +170,10 @@ func TestChunkEntries(t *testing.T) {
 	is.Len(slices.Collect(result4), 1)
 	is.Len(slices.Collect(result5), 2)
 
-	is.PanicsWithValue("iter.ChunkEntries: size must be greater than 0", func() {
+	is.PanicsWithValue("it.ChunkEntries: size must be greater than 0", func() {
 		ChunkEntries(map[string]int{"a": 1}, 0)
 	})
-	is.PanicsWithValue("iter.ChunkEntries: size must be greater than 0", func() {
+	is.PanicsWithValue("it.ChunkEntries: size must be greater than 0", func() {
 		ChunkEntries(map[string]int{"a": 1}, -1)
 	})
 

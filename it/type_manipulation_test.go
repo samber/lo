@@ -1,6 +1,6 @@
 //go:build go1.23
 
-package iter
+package it
 
 import (
 	"slices"
@@ -62,7 +62,7 @@ func TestFromAny(t *testing.T) {
 	out1 := FromAny[string](values[any]("foobar", 42))
 	out2 := FromAny[string](values[any]("foobar", "42"))
 
-	is.PanicsWithValue("iter.FromAny: type conversion failed", func() { _ = slices.Collect(out1) })
+	is.PanicsWithValue("it.FromAny: type conversion failed", func() { _ = slices.Collect(out1) })
 	is.Equal([]string{"foobar", "42"}, slices.Collect(out2))
 }
 

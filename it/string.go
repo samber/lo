@@ -1,6 +1,6 @@
 //go:build go1.23
 
-package iter
+package it
 
 import "iter"
 
@@ -8,7 +8,7 @@ import "iter"
 // the final chunk will be the remaining characters.
 func ChunkString[T ~string](str T, size int) iter.Seq[T] {
 	if size <= 0 {
-		panic("iter.ChunkString: size must be greater than 0")
+		panic("it.ChunkString: size must be greater than 0")
 	}
 
 	return func(yield func(T) bool) {
