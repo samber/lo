@@ -43,6 +43,17 @@ func RandomString(size int, charset []rune) string {
 	// see https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
 	sb := strings.Builder{}
 	sb.Grow(size)
+
+	if len(charset) == 1 {
+		// Edge case, because if the charset is a single character,
+		// it will panic below (divide by zero).
+		// -> https://github.com/samber/lo/issues/679
+		for i := 0; i < size; i++ {
+			sb.WriteRune(charset[0])
+		}
+		return sb.String()
+	}
+
 	// Calculate the number of bits required to represent the charset,
 	// e.g., for 62 characters, it would need 6 bits (since 62 -> 64 = 2^6)
 	letterIDBits := int(math.Log2(float64(nearestPowerOfTwo(len(charset)))))
