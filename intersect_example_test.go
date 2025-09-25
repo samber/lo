@@ -28,7 +28,7 @@ func ExampleWithoutBy() {
 	filteredUsers := WithoutBy(users, extractID, excludedIDs...)
 
 	// output the filtered users
-	fmt.Printf("%v\n", filteredUsers)
+	fmt.Printf("%v", filteredUsers)
 	// Output:
 	// [{1 Alice}]
 }

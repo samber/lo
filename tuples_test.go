@@ -506,7 +506,7 @@ func TestUnzipBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1, r2 := UnzipBy2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}}, func(i Tuple2[string, int]) (a string, b int) {
+	r1, r2 := UnzipBy2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}}, func(i Tuple2[string, int]) (string, int) {
 		return i.A + i.A, i.B + i.B
 	})
 

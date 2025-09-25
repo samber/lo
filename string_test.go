@@ -23,8 +23,12 @@ func TestRandomString(t *testing.T) {
 	is.Equal(100, RuneLength(str3))
 	is.Subset(noneUtf8Charset, []rune(str3))
 
-	is.PanicsWithValue("lo.RandomString: Charset parameter must not be empty", func() { RandomString(100, []rune{}) })
-	is.PanicsWithValue("lo.RandomString: Size parameter must be greater than 0", func() { RandomString(0, LowerCaseLettersCharset) })
+	is.PanicsWithValue("lo.RandomString: charset must not be empty", func() { RandomString(100, []rune{}) })
+	is.PanicsWithValue("lo.RandomString: size must be greater than 0", func() { RandomString(0, LowerCaseLettersCharset) })
+
+	str4 := RandomString(10, []rune{65})
+	is.Equal(10, RuneLength(str4))
+	is.Subset([]rune{65, 65, 65, 65, 65, 65, 65, 65, 65, 65}, []rune(str4))
 }
 
 func TestChunkString(t *testing.T) {
@@ -49,7 +53,7 @@ func TestChunkString(t *testing.T) {
 	result6 := ChunkString("明1好休2林森", 2)
 	is.Equal([]string{"明1", "好休", "2林", "森"}, result6)
 
-	is.Panics(func() {
+	is.PanicsWithValue("lo.ChunkString: size must be greater than 0", func() {
 		ChunkString("12345", 0)
 	})
 }
@@ -106,309 +110,308 @@ func TestAllCase(t *testing.T) {
 		KebabCase  string
 		SnakeCase  string
 	}
-	name := ""
-	tests := []struct {
-		name   string
-		input  string
-		output output
+	testCases := []struct {
+		name string
+		in   string
+		want output
 	}{
-		{name: name, output: output{}},
-		{name: name, input: ".", output: output{}},
-		{name: name, input: "Hello world!", output: output{
+		{want: output{}},
+		{in: ".", want: output{}},
+		{in: "Hello world!", want: output{
 			PascalCase: "HelloWorld",
 			CamelCase:  "helloWorld",
 			KebabCase:  "hello-world",
 			SnakeCase:  "hello_world",
 		}},
-		{name: name, input: "A", output: output{
+		{in: "A", want: output{
 			PascalCase: "A",
 			CamelCase:  "a",
 			KebabCase:  "a",
 			SnakeCase:  "a",
 		}},
-		{name: name, input: "a", output: output{
+		{in: "a", want: output{
 			PascalCase: "A",
 			CamelCase:  "a",
 			KebabCase:  "a",
 			SnakeCase:  "a",
 		}},
-		{name: name, input: "foo", output: output{
+		{in: "foo", want: output{
 			PascalCase: "Foo",
 			CamelCase:  "foo",
 			KebabCase:  "foo",
 			SnakeCase:  "foo",
 		}},
-		{name: name, input: "snake_case", output: output{
+		{in: "snake_case", want: output{
 			PascalCase: "SnakeCase",
 			CamelCase:  "snakeCase",
 			KebabCase:  "snake-case",
 			SnakeCase:  "snake_case",
 		}},
-		{name: name, input: "SNAKE_CASE", output: output{
+		{in: "SNAKE_CASE", want: output{
 			PascalCase: "SnakeCase",
 			CamelCase:  "snakeCase",
 			KebabCase:  "snake-case",
 			SnakeCase:  "snake_case",
 		}},
-		{name: name, input: "kebab-case", output: output{
+		{in: "kebab-case", want: output{
 			PascalCase: "KebabCase",
 			CamelCase:  "kebabCase",
 			KebabCase:  "kebab-case",
 			SnakeCase:  "kebab_case",
 		}},
-		{name: name, input: "PascalCase", output: output{
+		{in: "PascalCase", want: output{
 			PascalCase: "PascalCase",
 			CamelCase:  "pascalCase",
 			KebabCase:  "pascal-case",
 			SnakeCase:  "pascal_case",
 		}},
-		{name: name, input: "camelCase", output: output{
+		{in: "camelCase", want: output{
 			PascalCase: "CamelCase",
 			CamelCase:  "camelCase",
 			KebabCase:  `camel-case`,
 			SnakeCase:  "camel_case",
 		}},
-		{name: name, input: "Title Case", output: output{
+		{in: "Title Case", want: output{
 			PascalCase: "TitleCase",
 			CamelCase:  "titleCase",
 			KebabCase:  "title-case",
 			SnakeCase:  "title_case",
 		}},
-		{name: name, input: "point.case", output: output{
+		{in: "point.case", want: output{
 			PascalCase: "PointCase",
 			CamelCase:  "pointCase",
 			KebabCase:  "point-case",
 			SnakeCase:  "point_case",
 		}},
-		{name: name, input: "snake_case_with_more_words", output: output{
+		{in: "snake_case_with_more_words", want: output{
 			PascalCase: "SnakeCaseWithMoreWords",
 			CamelCase:  "snakeCaseWithMoreWords",
 			KebabCase:  "snake-case-with-more-words",
 			SnakeCase:  "snake_case_with_more_words",
 		}},
-		{name: name, input: "SNAKE_CASE_WITH_MORE_WORDS", output: output{
+		{in: "SNAKE_CASE_WITH_MORE_WORDS", want: output{
 			PascalCase: "SnakeCaseWithMoreWords",
 			CamelCase:  "snakeCaseWithMoreWords",
 			KebabCase:  "snake-case-with-more-words",
 			SnakeCase:  "snake_case_with_more_words",
 		}},
-		{name: name, input: "kebab-case-with-more-words", output: output{
+		{in: "kebab-case-with-more-words", want: output{
 			PascalCase: "KebabCaseWithMoreWords",
 			CamelCase:  "kebabCaseWithMoreWords",
 			KebabCase:  "kebab-case-with-more-words",
 			SnakeCase:  "kebab_case_with_more_words",
 		}},
-		{name: name, input: "PascalCaseWithMoreWords", output: output{
+		{in: "PascalCaseWithMoreWords", want: output{
 			PascalCase: "PascalCaseWithMoreWords",
 			CamelCase:  "pascalCaseWithMoreWords",
 			KebabCase:  "pascal-case-with-more-words",
 			SnakeCase:  "pascal_case_with_more_words",
 		}},
-		{name: name, input: "camelCaseWithMoreWords", output: output{
+		{in: "camelCaseWithMoreWords", want: output{
 			PascalCase: "CamelCaseWithMoreWords",
 			CamelCase:  "camelCaseWithMoreWords",
 			KebabCase:  "camel-case-with-more-words",
 			SnakeCase:  "camel_case_with_more_words",
 		}},
-		{name: name, input: "Title Case With More Words", output: output{
+		{in: "Title Case With More Words", want: output{
 			PascalCase: "TitleCaseWithMoreWords",
 			CamelCase:  "titleCaseWithMoreWords",
 			KebabCase:  "title-case-with-more-words",
 			SnakeCase:  "title_case_with_more_words",
 		}},
-		{name: name, input: "point.case.with.more.words", output: output{
+		{in: "point.case.with.more.words", want: output{
 			PascalCase: "PointCaseWithMoreWords",
 			CamelCase:  "pointCaseWithMoreWords",
 			KebabCase:  "point-case-with-more-words",
 			SnakeCase:  "point_case_with_more_words",
 		}},
-		{name: name, input: "snake_case__with___multiple____delimiters", output: output{
+		{in: "snake_case__with___multiple____delimiters", want: output{
 			PascalCase: "SnakeCaseWithMultipleDelimiters",
 			CamelCase:  "snakeCaseWithMultipleDelimiters",
 			KebabCase:  "snake-case-with-multiple-delimiters",
 			SnakeCase:  "snake_case_with_multiple_delimiters",
 		}},
-		{name: name, input: "SNAKE_CASE__WITH___multiple____DELIMITERS", output: output{
+		{in: "SNAKE_CASE__WITH___multiple____DELIMITERS", want: output{
 			PascalCase: "SnakeCaseWithMultipleDelimiters",
 			CamelCase:  "snakeCaseWithMultipleDelimiters",
 			KebabCase:  "snake-case-with-multiple-delimiters",
 			SnakeCase:  "snake_case_with_multiple_delimiters",
 		}},
-		{name: name, input: "kebab-case--with---multiple----delimiters", output: output{
+		{in: "kebab-case--with---multiple----delimiters", want: output{
 			PascalCase: "KebabCaseWithMultipleDelimiters",
 			CamelCase:  "kebabCaseWithMultipleDelimiters",
 			KebabCase:  "kebab-case-with-multiple-delimiters",
 			SnakeCase:  "kebab_case_with_multiple_delimiters",
 		}},
-		{name: name, input: "Title Case  With   Multiple    Delimiters", output: output{
+		{in: "Title Case  With   Multiple    Delimiters", want: output{
 			PascalCase: "TitleCaseWithMultipleDelimiters",
 			CamelCase:  "titleCaseWithMultipleDelimiters",
 			KebabCase:  "title-case-with-multiple-delimiters",
 			SnakeCase:  "title_case_with_multiple_delimiters",
 		}},
-		{name: name, input: "point.case..with...multiple....delimiters", output: output{
+		{in: "point.case..with...multiple....delimiters", want: output{
 			PascalCase: "PointCaseWithMultipleDelimiters",
 			CamelCase:  "pointCaseWithMultipleDelimiters",
 			KebabCase:  "point-case-with-multiple-delimiters",
 			SnakeCase:  "point_case_with_multiple_delimiters",
 		}},
-		{name: name, input: " leading space", output: output{
+		{in: " leading space", want: output{
 			PascalCase: "LeadingSpace",
 			CamelCase:  "leadingSpace",
 			KebabCase:  "leading-space",
 			SnakeCase:  "leading_space",
 		}},
-		{name: name, input: "   leading spaces", output: output{
+		{in: "   leading spaces", want: output{
 			PascalCase: "LeadingSpaces",
 			CamelCase:  "leadingSpaces",
 			KebabCase:  "leading-spaces",
 			SnakeCase:  "leading_spaces",
 		}},
-		{name: name, input: "\t\t\r\n leading whitespaces", output: output{
+		{in: "\t\t\r\n leading whitespaces", want: output{
 			PascalCase: "LeadingWhitespaces",
 			CamelCase:  "leadingWhitespaces",
 			KebabCase:  "leading-whitespaces",
 			SnakeCase:  "leading_whitespaces",
 		}},
-		{name: name, input: "trailing space ", output: output{
+		{in: "trailing space ", want: output{
 			PascalCase: "TrailingSpace",
 			CamelCase:  "trailingSpace",
 			KebabCase:  "trailing-space",
 			SnakeCase:  "trailing_space",
 		}},
-		{name: name, input: "trailing spaces   ", output: output{
+		{in: "trailing spaces   ", want: output{
 			PascalCase: "TrailingSpaces",
 			CamelCase:  "trailingSpaces",
 			KebabCase:  "trailing-spaces",
 			SnakeCase:  "trailing_spaces",
 		}},
-		{name: name, input: "trailing whitespaces\t\t\r\n", output: output{
+		{in: "trailing whitespaces\t\t\r\n", want: output{
 			PascalCase: "TrailingWhitespaces",
 			CamelCase:  "trailingWhitespaces",
 			KebabCase:  "trailing-whitespaces",
 			SnakeCase:  "trailing_whitespaces",
 		}},
-		{name: name, input: " on both sides ", output: output{
+		{in: " on both sides ", want: output{
 			PascalCase: "OnBothSides",
 			CamelCase:  "onBothSides",
 			KebabCase:  "on-both-sides",
 			SnakeCase:  "on_both_sides",
 		}},
-		{name: name, input: "    many on both sides  ", output: output{
+		{in: "    many on both sides  ", want: output{
 			PascalCase: "ManyOnBothSides",
 			CamelCase:  "manyOnBothSides",
 			KebabCase:  "many-on-both-sides",
 			SnakeCase:  "many_on_both_sides",
 		}},
-		{name: name, input: "\r whitespaces on both sides\t\t\r\n", output: output{
+		{in: "\r whitespaces on both sides\t\t\r\n", want: output{
 			PascalCase: "WhitespacesOnBothSides",
 			CamelCase:  "whitespacesOnBothSides",
 			KebabCase:  "whitespaces-on-both-sides",
 			SnakeCase:  "whitespaces_on_both_sides",
 		}},
-		{name: name, input: "  extraSpaces in_This TestCase Of MIXED_CASES\t", output: output{
+		{in: "  extraSpaces in_This TestCase Of MIXED_CASES\t", want: output{
 			PascalCase: "ExtraSpacesInThisTestCaseOfMixedCases",
 			CamelCase:  "extraSpacesInThisTestCaseOfMixedCases",
 			KebabCase:  "extra-spaces-in-this-test-case-of-mixed-cases",
 			SnakeCase:  "extra_spaces_in_this_test_case_of_mixed_cases",
 		}},
-		{name: name, input: "CASEBreak", output: output{
+		{in: "CASEBreak", want: output{
 			PascalCase: "CaseBreak",
 			CamelCase:  "caseBreak",
 			KebabCase:  "case-break",
 			SnakeCase:  "case_break",
 		}},
-		{name: name, input: "ID", output: output{
+		{in: "ID", want: output{
 			PascalCase: "Id",
 			CamelCase:  "id",
 			KebabCase:  "id",
 			SnakeCase:  "id",
 		}},
-		{name: name, input: "userID", output: output{
+		{in: "userID", want: output{
 			PascalCase: "UserId",
 			CamelCase:  "userId",
 			KebabCase:  "user-id",
 			SnakeCase:  "user_id",
 		}},
-		{name: name, input: "JSON_blob", output: output{
+		{in: "JSON_blob", want: output{
 			PascalCase: "JsonBlob",
 			CamelCase:  "jsonBlob",
 			KebabCase:  "json-blob",
 			SnakeCase:  "json_blob",
 		}},
-		{name: name, input: "HTTPStatusCode", output: output{
+		{in: "HTTPStatusCode", want: output{
 			PascalCase: "HttpStatusCode",
 			CamelCase:  "httpStatusCode",
 			KebabCase:  "http-status-code",
 			SnakeCase:  "http_status_code",
 		}},
-		{name: name, input: "FreeBSD and SSLError are not golang initialisms", output: output{
+		{in: "FreeBSD and SSLError are not golang initialisms", want: output{
 			PascalCase: "FreeBsdAndSslErrorAreNotGolangInitialisms",
 			CamelCase:  "freeBsdAndSslErrorAreNotGolangInitialisms",
 			KebabCase:  "free-bsd-and-ssl-error-are-not-golang-initialisms",
 			SnakeCase:  "free_bsd_and_ssl_error_are_not_golang_initialisms",
 		}},
-		{name: name, input: "David's Computer", output: output{
+		{in: "David's Computer", want: output{
 			PascalCase: "DavidSComputer",
 			CamelCase:  "davidSComputer",
 			KebabCase:  "david-s-computer",
 			SnakeCase:  "david_s_computer",
 		}},
-		{name: name, input: "http200", output: output{
+		{in: "http200", want: output{
 			PascalCase: "Http200",
 			CamelCase:  "http200",
 			KebabCase:  "http-200",
 			SnakeCase:  "http_200",
 		}},
-		{name: name, input: "NumberSplittingVersion1.0r3", output: output{
+		{in: "NumberSplittingVersion1.0r3", want: output{
 			PascalCase: "NumberSplittingVersion10R3",
 			CamelCase:  "numberSplittingVersion10R3",
 			KebabCase:  "number-splitting-version-1-0-r3",
 			SnakeCase:  "number_splitting_version_1_0_r3",
 		}},
-		{name: name, input: "When you have a comma, odd results", output: output{
+		{in: "When you have a comma, odd results", want: output{
 			PascalCase: "WhenYouHaveACommaOddResults",
 			CamelCase:  "whenYouHaveACommaOddResults",
 			KebabCase:  "when-you-have-a-comma-odd-results",
 			SnakeCase:  "when_you_have_a_comma_odd_results",
 		}},
-		{name: name, input: "Ordinal numbers work: 1st 2nd and 3rd place", output: output{
+		{in: "Ordinal numbers work: 1st 2nd and 3rd place", want: output{
 			PascalCase: "OrdinalNumbersWork1St2NdAnd3RdPlace",
 			CamelCase:  "ordinalNumbersWork1St2NdAnd3RdPlace",
 			KebabCase:  "ordinal-numbers-work-1-st-2-nd-and-3-rd-place",
 			SnakeCase:  "ordinal_numbers_work_1_st_2_nd_and_3_rd_place",
 		}},
-		{name: name, input: "BadUTF8\xe2\xe2\xa1", output: output{
+		{in: "BadUTF8\xe2\xe2\xa1", want: output{
 			PascalCase: "BadUtf8",
 			CamelCase:  "badUtf8",
 			KebabCase:  "bad-utf-8",
 			SnakeCase:  "bad_utf_8",
 		}},
-		{name: name, input: "IDENT3", output: output{
+		{in: "IDENT3", want: output{
 			PascalCase: "Ident3",
 			CamelCase:  "ident3",
 			KebabCase:  "ident-3",
 			SnakeCase:  "ident_3",
 		}},
-		{name: name, input: "LogRouterS3BucketName", output: output{
+		{in: "LogRouterS3BucketName", want: output{
 			PascalCase: "LogRouterS3BucketName",
 			CamelCase:  "logRouterS3BucketName",
 			KebabCase:  "log-router-s3-bucket-name",
 			SnakeCase:  "log_router_s3_bucket_name",
 		}},
-		{name: name, input: "PINEAPPLE", output: output{
+		{in: "PINEAPPLE", want: output{
 			PascalCase: "Pineapple",
 			CamelCase:  "pineapple",
 			KebabCase:  "pineapple",
 			SnakeCase:  "pineapple",
 		}},
-		{name: name, input: "Int8Value", output: output{
+		{in: "Int8Value", want: output{
 			PascalCase: "Int8Value",
 			CamelCase:  "int8Value",
 			KebabCase:  "int-8-value",
 			SnakeCase:  "int_8_value",
 		}},
-		{name: name, input: "first.last", output: output{
+		{in: "first.last", want: output{
 			PascalCase: "FirstLast",
 			CamelCase:  "firstLast",
 			KebabCase:  "first-last",
@@ -416,68 +419,56 @@ func TestAllCase(t *testing.T) {
 		}},
 	}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			pascal := PascalCase(test.input)
-			if pascal != test.output.PascalCase {
-				t.Errorf("PascalCase(%q) = %q; expected %q", test.input, pascal, test.output.PascalCase)
-			}
-			camel := CamelCase(test.input)
-			if camel != test.output.CamelCase {
-				t.Errorf("CamelCase(%q) = %q; expected %q", test.input, camel, test.output.CamelCase)
-			}
-			kebab := KebabCase(test.input)
-			if kebab != test.output.KebabCase {
-				t.Errorf("KebabCase(%q) = %q; expected %q", test.input, kebab, test.output.KebabCase)
-			}
-			snake := SnakeCase(test.input)
-			if snake != test.output.SnakeCase {
-				t.Errorf("SnakeCase(%q) = %q; expected %q", test.input, snake, test.output.SnakeCase)
-			}
+	for _, tc := range testCases {
+		t.Run(tc.in, func(t *testing.T) {
+			tc := tc
+			t.Parallel()
+			is := assert.New(t)
+			is.Equalf(tc.want.PascalCase, PascalCase(tc.in), "PascalCase(%v)", tc.in)
+			is.Equalf(tc.want.CamelCase, CamelCase(tc.in), "CamelCase(%v)", tc.in)
+			is.Equalf(tc.want.KebabCase, KebabCase(tc.in), "KebabCase(%v)", tc.in)
+			is.Equalf(tc.want.SnakeCase, SnakeCase(tc.in), "SnakeCase(%v)", tc.in)
 		})
 	}
 }
 
 func TestWords(t *testing.T) {
-	type args struct {
-		str string
-	}
-	tests := []struct {
-		name string
-		args args
+	testCases := []struct {
+		in   string
 		want []string
 	}{
-		{"", args{"PascalCase"}, []string{"Pascal", "Case"}},
-		{"", args{"camelCase"}, []string{"camel", "Case"}},
-		{"", args{"snake_case"}, []string{"snake", "case"}},
-		{"", args{"kebab_case"}, []string{"kebab", "case"}},
-		{"", args{"_test text_"}, []string{"test", "text"}},
-		{"", args{"UPPERCASE"}, []string{"UPPERCASE"}},
-		{"", args{"HTTPCode"}, []string{"HTTP", "Code"}},
-		{"", args{"Int8Value"}, []string{"Int", "8", "Value"}},
+		{"PascalCase", []string{"Pascal", "Case"}},
+		{"camelCase", []string{"camel", "Case"}},
+		{"snake_case", []string{"snake", "case"}},
+		{"kebab_case", []string{"kebab", "case"}},
+		{"_test text_", []string{"test", "text"}},
+		{"UPPERCASE", []string{"UPPERCASE"}},
+		{"HTTPCode", []string{"HTTP", "Code"}},
+		{"Int8Value", []string{"Int", "8", "Value"}},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equalf(t, tt.want, Words(tt.args.str), "words(%v)", tt.args.str)
+	for _, tc := range testCases {
+		t.Run(tc.in, func(t *testing.T) {
+			tc := tc
+			t.Parallel()
+			assert.Equalf(t, tc.want, Words(tc.in), "Words(%v)", tc.in)
 		})
 	}
 }
 
 func TestCapitalize(t *testing.T) {
-	type args struct {
-		word string
-	}
-	tests := []struct {
+	testCases := []struct {
 		name string
-		args args
+		in   string
 		want string
 	}{
-		{"", args{"hello"}, "Hello"},
-		{"", args{"heLLO"}, "Hello"},
+		{"lower case", "hello", "Hello"},
+		{"mixed case", "heLLO", "Hello"},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equalf(t, tt.want, Capitalize(tt.args.word), "Capitalize(%v)", tt.args.word)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			tc := tc
+			t.Parallel()
+			assert.Equalf(t, tc.want, Capitalize(tc.in), "Capitalize(%v)", tc.in)
 		})
 	}
 }

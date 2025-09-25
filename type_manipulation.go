@@ -5,8 +5,16 @@ import "reflect"
 // IsNil checks if a value is nil or if it's a reference type with a nil underlying value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func IsNil(x any) bool {
-	defer func() { recover() }() // nolint:errcheck
-	return x == nil || reflect.ValueOf(x).IsNil()
+	if x == nil {
+		return true
+	}
+	v := reflect.ValueOf(x)
+	switch v.Kind() { // nolint:exhaustive
+	case reflect.Chan, reflect.Func, reflect.Map, reflect.Pointer, reflect.UnsafePointer, reflect.Interface, reflect.Slice:
+		return v.IsNil()
+	default:
+		return false
+	}
 }
 
 // IsNotNil checks if a value is not nil or if it's not a reference type with a nil underlying value.
@@ -60,7 +68,7 @@ func FromPtrOr[T any](x *T, fallback T) T {
 	return *x
 }
 
-// ToSlicePtr returns a slice of pointer copy of value.
+// ToSlicePtr returns a slice of pointers to each value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func ToSlicePtr[T any](collection []T) []*T {
 	result := make([]*T, len(collection))
@@ -94,7 +102,7 @@ func FromSlicePtrOr[T any](collection []*T, fallback T) []T {
 	})
 }
 
-// ToAnySlice returns a slice with all elements mapped to `any` type
+// ToAnySlice returns a slice with all elements mapped to `any` type.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func ToAnySlice[T any](collection []T) []any {
 	result := make([]any, len(collection))
@@ -104,22 +112,19 @@ func ToAnySlice[T any](collection []T) []any {
 	return result
 }
 
-// FromAnySlice returns an `any` slice with all elements mapped to a type.
+// FromAnySlice returns a slice with all elements mapped to a type.
 // Returns false in case of type conversion failure.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
-func FromAnySlice[T any](in []any) (out []T, ok bool) {
-	defer func() {
-		if r := recover(); r != nil {
-			out = []T{}
-			ok = false
-		}
-	}()
-
-	result := make([]T, len(in))
+func FromAnySlice[T any](in []any) ([]T, bool) {
+	out := make([]T, len(in))
 	for i := range in {
-		result[i] = in[i].(T) //nolint:errcheck,forcetypeassert
+		t, ok := in[i].(T)
+		if !ok {
+			return []T{}, false
+		}
+		out[i] = t
 	}
-	return result, true
+	return out, true
 }
 
 // Empty returns the zero value (https://go.dev/ref/spec#The_zero_value).
@@ -145,16 +150,16 @@ func IsNotEmpty[T comparable](v T) bool {
 
 // Coalesce returns the first non-empty arguments. Arguments must be comparable.
 // Play: https://go.dev/play/p/Gyo9otyvFHH
-func Coalesce[T comparable](values ...T) (result T, ok bool) {
+func Coalesce[T comparable](values ...T) (T, bool) {
+	var zero T
+
 	for i := range values {
-		if values[i] != result {
-			result = values[i]
-			ok = true
-			return
+		if values[i] != zero {
+			return values[i], true
 		}
 	}
 
-	return
+	return zero, false
 }
 
 // CoalesceOrEmpty returns the first non-empty arguments. Arguments must be comparable.

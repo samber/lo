@@ -271,7 +271,7 @@ func TestBuffer(t *testing.T) {
 	is.Equal([]int{3}, items2)
 	is.Equal(1, length2)
 	is.False(ok2)
-	is.Equal([]int{}, items3)
+	is.Empty(items3)
 	is.Zero(length3)
 	is.False(ok3)
 }
@@ -331,7 +331,7 @@ func TestBufferWithTimeout(t *testing.T) {
 	is.True(ok1)
 
 	items2, length2, _, ok2 := BufferWithTimeout(ch, 20, 2*time.Millisecond)
-	is.Equal([]int{}, items2)
+	is.Empty(items2)
 	is.Zero(length2)
 	is.True(ok2)
 
@@ -346,7 +346,7 @@ func TestBufferWithTimeout(t *testing.T) {
 	is.True(ok4)
 
 	items5, length5, _, ok5 := BufferWithTimeout(ch, 3, 25*time.Millisecond)
-	is.Equal([]int{}, items5)
+	is.Empty(items5)
 	is.Zero(length5)
 	is.False(ok5)
 }

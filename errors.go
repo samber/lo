@@ -73,7 +73,7 @@ func Must0(err any, messageArgs ...any) {
 	must(err, messageArgs...)
 }
 
-// Must1 is an alias to Must
+// Must1 is an alias to Must.
 // Play: https://go.dev/play/p/TMoWrRp3DyC
 func Must1[T any](val T, err any, messageArgs ...any) T {
 	return Must(val, err, messageArgs...)
@@ -129,7 +129,7 @@ func Try(callback func() error) (ok bool) {
 		ok = false
 	}
 
-	return
+	return ok
 }
 
 // Try0 has the same behavior as Try, but callback returns no variable.
@@ -327,7 +327,7 @@ func TryWithErrorValue(callback func() error) (errorValue any, ok bool) {
 		errorValue = err
 	}
 
-	return
+	return errorValue, ok
 }
 
 // TryCatch has the same behavior as Try, but calls the catch function in case of error.

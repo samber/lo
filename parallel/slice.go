@@ -3,7 +3,7 @@ package parallel
 import "sync"
 
 // Map manipulates a slice and transforms it to a slice of another type.
-// `iteratee` is call in parallel. Result keep the same order.
+// `iteratee` is called in parallel. Result keep the same order.
 // Play: https://go.dev/play/p/sCJaB3quRMC
 func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 	result := make([]R, len(collection))
@@ -27,7 +27,7 @@ func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
 }
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.
-// `iteratee` is call in parallel.
+// `iteratee` is called in parallel.
 // Play: https://go.dev/play/p/sCJaB3quRMC
 func ForEach[T any](collection []T, iteratee func(item T, index int)) {
 	var wg sync.WaitGroup
@@ -43,9 +43,9 @@ func ForEach[T any](collection []T, iteratee func(item T, index int)) {
 	wg.Wait()
 }
 
-// Times invokes the iteratee n times, returning an array of the results of each invocation.
+// Times invokes the iteratee n times, returning a slice of the results of each invocation.
 // The iteratee is invoked with index as argument.
-// `iteratee` is call in parallel.
+// `iteratee` is called in parallel.
 func Times[T any](count int, iteratee func(index int) T) []T {
 	result := make([]T, count)
 
@@ -69,7 +69,7 @@ func Times[T any](count int, iteratee func(index int) T) []T {
 
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // The order of grouped values is determined by the order they occur in the collection.
-// `iteratee` is call in parallel.
+// `iteratee` is called in parallel.
 func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) map[U]Slice {
 	result := map[U]Slice{}
 
@@ -84,11 +84,11 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 	return result
 }
 
-// PartitionBy returns an array of elements split into groups. The order of grouped values is
+// PartitionBy returns a slice of elements split into groups. The order of grouped values is
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through iteratee.
 // The order of groups is determined by their first appearance in the collection.
-// `iteratee` is call in parallel.
+// `iteratee` is called in parallel.
 func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K) []Slice {
 	result := []Slice{}
 	seen := map[K]int{}
