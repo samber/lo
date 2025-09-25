@@ -71,6 +71,15 @@ func ExampleFromEntries() {
 	// Output: 3 1 2 3
 }
 
+func ExampleInvert() {
+	kv := maps.All(map[string]int{"foo": 1, "bar": 2, "baz": 3})
+
+	result := maps.Collect(Invert(kv))
+
+	fmt.Printf("%v %v %v %v", len(result), result[1], result[2], result[3])
+	// Output: 3 foo bar baz
+}
+
 func ExampleAssign() {
 	result := Assign(values(
 		map[string]int{"a": 1, "b": 2},

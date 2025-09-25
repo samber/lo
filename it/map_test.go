@@ -141,6 +141,17 @@ func TestFromPairs(t *testing.T) {
 	is.Equal(4, r1["qux"])
 }
 
+func TestInvert(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := Invert(maps.All(map[string]int{"a": 1, "b": 2}))
+	r2 := Invert(maps.All(map[string]int{"a": 1, "b": 2, "c": 1}))
+
+	is.Equal(map[int]string{1: "a", 2: "b"}, maps.Collect(r1))
+	is.Len(maps.Collect(r2), 2)
+}
+
 func TestAssign(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

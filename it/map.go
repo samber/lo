@@ -116,6 +116,17 @@ func FromPairs[K comparable, V any](entries ...iter.Seq2[K, V]) map[K]V {
 	return FromEntries(entries...)
 }
 
+// Invert creates a sequence composed of inverted keys and values.
+func Invert[K, V comparable](in iter.Seq2[K, V]) iter.Seq2[V, K] {
+	return func(yield func(V, K) bool) {
+		for k, v := range in {
+			if !yield(v, k) {
+				return
+			}
+		}
+	}
+}
+
 // Assign merges multiple sequences of maps from left to right.
 func Assign[K comparable, V any, Map ~map[K]V](maps ...iter.Seq[Map]) Map {
 	out := make(Map)
