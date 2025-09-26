@@ -9,60 +9,60 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestToPtr(t *testing.T) {
+func TestToSeqPtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
 	str2 := "bar"
-	result1 := ToPtr(values(str1, str2))
+	result1 := ToSeqPtr(values(str1, str2))
 
 	is.Equal([]*string{&str1, &str2}, slices.Collect(result1))
 }
 
-func TestFromPtr(t *testing.T) {
+func TestFromSeqPtr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
 	str2 := "bar"
-	result1 := FromPtr(values(&str1, &str2, nil))
+	result1 := FromSeqPtr(values(&str1, &str2, nil))
 
 	is.Equal([]string{str1, str2, ""}, slices.Collect(result1))
 }
 
-func TestFromPtrOr(t *testing.T) {
+func TestFromSeqPtrOr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
 	str2 := "bar"
-	result1 := FromPtrOr(values(&str1, &str2, nil), "fallback")
+	result1 := FromSeqPtrOr(values(&str1, &str2, nil), "fallback")
 
 	is.Equal([]string{str1, str2, "fallback"}, slices.Collect(result1))
 }
 
-func TestToAny(t *testing.T) {
+func TestToAnySeq(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
 	in1 := values(0, 1, 2, 3)
 	in2 := values[int]()
-	out1 := ToAny(in1)
-	out2 := ToAny(in2)
+	out1 := ToAnySeq(in1)
+	out2 := ToAnySeq(in2)
 
 	is.Equal([]any{0, 1, 2, 3}, slices.Collect(out1))
 	is.Empty(slices.Collect(out2))
 }
 
-func TestFromAny(t *testing.T) {
+func TestFromAnySeq(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	out1 := FromAny[string](values[any]("foobar", 42))
-	out2 := FromAny[string](values[any]("foobar", "42"))
+	out1 := FromAnySeq[string](values[any]("foobar", 42))
+	out2 := FromAnySeq[string](values[any]("foobar", "42"))
 
-	is.PanicsWithValue("it.FromAny: type conversion failed", func() { _ = slices.Collect(out1) })
+	is.PanicsWithValue("it.FromAnySeq: type conversion failed", func() { _ = slices.Collect(out1) })
 	is.Equal([]string{"foobar", "42"}, slices.Collect(out2))
 }
 
@@ -89,7 +89,7 @@ func TestIsNotEmpty(t *testing.T) {
 	is.True(IsNotEmpty(values("foo")))
 }
 
-func TestCoalesce(t *testing.T) {
+func TestCoalesceSeq(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -97,13 +97,13 @@ func TestCoalesce(t *testing.T) {
 	seq1 := values(1)
 	seq2 := values(1, 2)
 
-	result1, ok1 := Coalesce[int]()
-	result4, ok4 := Coalesce(seq0)
-	result6, ok6 := Coalesce(seq2)
-	result7, ok7 := Coalesce(seq1)
-	result8, ok8 := Coalesce(seq1, seq2)
-	result9, ok9 := Coalesce(seq2, seq1)
-	result10, ok10 := Coalesce(seq0, seq1, seq2)
+	result1, ok1 := CoalesceSeq[int]()
+	result4, ok4 := CoalesceSeq(seq0)
+	result6, ok6 := CoalesceSeq(seq2)
+	result7, ok7 := CoalesceSeq(seq1)
+	result8, ok8 := CoalesceSeq(seq1, seq2)
+	result9, ok9 := CoalesceSeq(seq2, seq1)
+	result10, ok10 := CoalesceSeq(seq0, seq1, seq2)
 
 	is.NotNil(result1)
 	is.Empty(slices.Collect(result1))
@@ -134,7 +134,7 @@ func TestCoalesce(t *testing.T) {
 	is.True(ok10)
 }
 
-func TestCoalesceOrEmpty(t *testing.T) {
+func TestCoalesceSeqOrEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -142,13 +142,13 @@ func TestCoalesceOrEmpty(t *testing.T) {
 	seq1 := values(1)
 	seq2 := values(1, 2)
 
-	result1 := CoalesceOrEmpty[int]()
-	result4 := CoalesceOrEmpty(seq0)
-	result6 := CoalesceOrEmpty(seq2)
-	result7 := CoalesceOrEmpty(seq1)
-	result8 := CoalesceOrEmpty(seq1, seq2)
-	result9 := CoalesceOrEmpty(seq2, seq1)
-	result10 := CoalesceOrEmpty(seq0, seq1, seq2)
+	result1 := CoalesceSeqOrEmpty[int]()
+	result4 := CoalesceSeqOrEmpty(seq0)
+	result6 := CoalesceSeqOrEmpty(seq2)
+	result7 := CoalesceSeqOrEmpty(seq1)
+	result8 := CoalesceSeqOrEmpty(seq1, seq2)
+	result9 := CoalesceSeqOrEmpty(seq2, seq1)
+	result10 := CoalesceSeqOrEmpty(seq0, seq1, seq2)
 
 	is.NotNil(result1)
 	is.Empty(slices.Collect(result1))

@@ -466,19 +466,19 @@ func Associate[T any, K comparable, V any](collection iter.Seq[T], transform fun
 	return result
 }
 
-// ToMap returns a map containing key-value pairs provided by transform function applied to elements of the given sequence.
+// SeqToMap returns a map containing key-value pairs provided by transform function applied to elements of the given sequence.
 // If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original sequence.
 // Alias of Associate().
-func ToMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V)) map[K]V {
+func SeqToMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V)) map[K]V {
 	return Associate(collection, transform)
 }
 
-// FilterToMap returns a map containing key-value pairs provided by transform function applied to elements of the given sequence.
+// FilterSeqToMap returns a map containing key-value pairs provided by transform function applied to elements of the given sequence.
 // If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original sequence.
 // The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
-func FilterToMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V, bool)) map[K]V {
+func FilterSeqToMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V, bool)) map[K]V {
 	result := make(map[K]V)
 
 	for item := range collection {

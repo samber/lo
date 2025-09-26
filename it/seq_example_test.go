@@ -307,10 +307,10 @@ func ExampleKeyBy() {
 	// Output: map[1:a 2:aa 3:aaa]
 }
 
-func ExampleToMap() {
+func ExampleSeqToMap() {
 	list := slices.Values([]string{"a", "aa", "aaa"})
 
-	result := ToMap(list, func(str string) (string, int) {
+	result := SeqToMap(list, func(str string) (string, int) {
 		return str, len(str)
 	})
 
@@ -318,10 +318,10 @@ func ExampleToMap() {
 	// Output: map[a:1 aa:2 aaa:3]
 }
 
-func ExampleFilterToMap() {
+func ExampleFilterSeqToMap() {
 	list := slices.Values([]string{"a", "aa", "aaa"})
 
-	result := FilterToMap(list, func(str string) (string, int, bool) {
+	result := FilterSeqToMap(list, func(str string) (string, int, bool) {
 		return str, len(str), len(str) > 1
 	})
 
