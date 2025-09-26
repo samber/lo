@@ -283,8 +283,8 @@ func ChunkEntries[K comparable, V any](m map[K]V, size int) []map[K]V {
 func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value V, key K) R) map[R]V {
 	result := make(map[R]V, len(in))
 
-	for k := range in {
-		result[iteratee(in[k], k)] = in[k]
+	for k, v := range in {
+		result[iteratee(v, k)] = v
 	}
 
 	return result
