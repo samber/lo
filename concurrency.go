@@ -109,7 +109,7 @@ func Async6[A, B, C, D, E, F any](f func() (A, B, C, D, E, F)) <-chan Tuple6[A, 
 
 // WaitFor runs periodically until a condition is validated.
 // Play: https://go.dev/play/p/t_wTDmubbK3
-func WaitFor(condition func(i int) bool, timeout time.Duration, heartbeatDelay time.Duration) (totalIterations int, elapsed time.Duration, conditionFound bool) {
+func WaitFor(condition func(i int) bool, timeout, heartbeatDelay time.Duration) (totalIterations int, elapsed time.Duration, conditionFound bool) {
 	conditionWithContext := func(_ context.Context, currentIteration int) bool {
 		return condition(currentIteration)
 	}
@@ -118,7 +118,7 @@ func WaitFor(condition func(i int) bool, timeout time.Duration, heartbeatDelay t
 
 // WaitForWithContext runs periodically until a condition is validated or context is canceled.
 // Play: https://go.dev/play/p/t_wTDmubbK3
-func WaitForWithContext(ctx context.Context, condition func(ctx context.Context, currentIteration int) bool, timeout time.Duration, heartbeatDelay time.Duration) (totalIterations int, elapsed time.Duration, conditionFound bool) {
+func WaitForWithContext(ctx context.Context, condition func(ctx context.Context, currentIteration int) bool, timeout, heartbeatDelay time.Duration) (totalIterations int, elapsed time.Duration, conditionFound bool) {
 	start := time.Now()
 
 	if ctx.Err() != nil {

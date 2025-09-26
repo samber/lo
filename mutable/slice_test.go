@@ -31,7 +31,7 @@ func TestFilterI(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := FilterI([]int{1, 2, 3, 4}, func(x int, i int) bool {
+	r1 := FilterI([]int{1, 2, 3, 4}, func(x, i int) bool {
 		is.Equal(i, x-1)
 		return x%2 == 0
 	})
@@ -61,14 +61,14 @@ func TestMapI(t *testing.T) {
 	is := assert.New(t)
 
 	list := []int{1, 2, 3, 4}
-	MapI(list, func(x int, index int) int {
+	MapI(list, func(x, index int) int {
 		is.Equal(index, x-1)
 		return x * 2
 	})
 	is.Equal([]int{2, 4, 6, 8}, list)
 
 	list = []int{1, 2, 3, 4}
-	MapI(list, func(x int, index int) int {
+	MapI(list, func(x, index int) int {
 		is.Equal(index, x-1)
 		return x * 4
 	})

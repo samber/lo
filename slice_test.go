@@ -14,7 +14,7 @@ func TestFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Filter([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+	r1 := Filter([]int{1, 2, 3, 4}, func(x, _ int) bool {
 		return x%2 == 0
 	})
 	is.Equal([]int{2, 4}, r1)
@@ -36,7 +36,7 @@ func TestMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Map([]int{1, 2, 3, 4}, func(x int, _ int) string {
+	result1 := Map([]int{1, 2, 3, 4}, func(x, _ int) string {
 		return "Hello"
 	})
 	result2 := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
@@ -89,7 +89,7 @@ func TestFlatMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FlatMap([]int{0, 1, 2, 3, 4}, func(x int, _ int) []string {
+	result1 := FlatMap([]int{0, 1, 2, 3, 4}, func(x, _ int) []string {
 		return []string{"Hello"}
 	})
 	result2 := FlatMap([]int64{0, 1, 2, 3, 4}, func(x int64, _ int) []string {
@@ -118,10 +118,10 @@ func TestReduce(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Reduce([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+	result1 := Reduce([]int{1, 2, 3, 4}, func(agg, item, _ int) int {
 		return agg + item
 	}, 0)
-	result2 := Reduce([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+	result2 := Reduce([]int{1, 2, 3, 4}, func(agg, item, _ int) int {
 		return agg + item
 	}, 10)
 
@@ -133,14 +133,14 @@ func TestReduceRight(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {
+	result1 := ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg, item []int, _ int) []int {
 		return append(agg, item...)
 	}, []int{})
 
 	is.Equal([]int{4, 5, 2, 3, 0, 1}, result1)
 
 	type collection []int
-	result3 := ReduceRight(collection{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+	result3 := ReduceRight(collection{1, 2, 3, 4}, func(agg, item, _ int) int {
 		return agg + item
 	}, 10)
 	is.Equal(20, result3)
@@ -738,7 +738,7 @@ func TestReject(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Reject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+	r1 := Reject([]int{1, 2, 3, 4}, func(x, _ int) bool {
 		return x%2 == 0
 	})
 
@@ -783,7 +783,7 @@ func TestFilterReject(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	left1, right1 := FilterReject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+	left1, right1 := FilterReject([]int{1, 2, 3, 4}, func(x, _ int) bool {
 		return x%2 == 0
 	})
 

@@ -13,7 +13,7 @@ func TestMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Map([]int{1, 2, 3, 4}, func(x int, _ int) string {
+	result1 := Map([]int{1, 2, 3, 4}, func(x, _ int) string {
 		return "Hello"
 	})
 	result2 := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
@@ -30,7 +30,7 @@ func TestForEach(t *testing.T) {
 
 	var counter uint64
 	collection := []int{1, 2, 3, 4}
-	ForEach(collection, func(x int, i int) {
+	ForEach(collection, func(x, i int) {
 		atomic.AddUint64(&counter, 1)
 	})
 

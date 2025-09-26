@@ -93,6 +93,9 @@ formatters:
   enable:
     - gofmt
     - gofumpt
+  settings:
+    gofumpt:
+      extra-rules: true
   exclusions:
     generated: lax
     paths:
