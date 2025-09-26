@@ -2,7 +2,11 @@
 
 package it
 
-import "iter"
+import (
+	"iter"
+
+	"github.com/samber/lo"
+)
 
 // SeqToChannel returns a read-only channel of collection elements.
 func SeqToChannel[T any](bufferSize int, collection iter.Seq[T]) <-chan T {
@@ -11,6 +15,21 @@ func SeqToChannel[T any](bufferSize int, collection iter.Seq[T]) <-chan T {
 	go func() {
 		for item := range collection {
 			ch <- item
+		}
+
+		close(ch)
+	}()
+
+	return ch
+}
+
+// SeqToChannel2 returns a read-only channel of collection elements.
+func SeqToChannel2[K, V any](bufferSize int, collection iter.Seq2[K, V]) <-chan lo.Tuple2[K, V] {
+	ch := make(chan lo.Tuple2[K, V], bufferSize)
+
+	go func() {
+		for k, v := range collection {
+			ch <- lo.Tuple2[K, V]{A: k, B: v}
 		}
 
 		close(ch)
