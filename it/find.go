@@ -5,9 +5,12 @@ package it
 import (
 	"fmt"
 	"iter"
+	"slices"
 	"time"
 
+	"github.com/samber/lo"
 	"github.com/samber/lo/internal/constraints"
+	"github.com/samber/lo/internal/rand"
 )
 
 // IndexOf returns the index at which the first occurrence of a value is found in a sequence or -1
@@ -454,4 +457,27 @@ func NthOrEmpty[T any, N constraints.Integer](collection iter.Seq[T], nth N) T {
 		return zeroValue
 	}
 	return value
+}
+
+// Sample returns a random item from collection.
+func Sample[T any](collection iter.Seq[T]) T {
+	return SampleBy(collection, rand.IntN)
+}
+
+// SampleBy returns a random item from collection, using randomIntGenerator as the random index generator.
+func SampleBy[T any](collection iter.Seq[T], randomIntGenerator func(int) int) T {
+	slice := slices.Collect(collection)
+	return lo.SampleBy(slice, randomIntGenerator)
+}
+
+// Samples returns N random unique items from collection.
+func Samples[T any, I ~func(func(T) bool)](collection I, count int) I {
+	return SamplesBy(collection, count, rand.IntN)
+}
+
+// SamplesBy returns N random unique items from collection, using randomIntGenerator as the random index generator.
+func SamplesBy[T any, I ~func(func(T) bool)](collection I, count int, randomIntGenerator func(int) int) I {
+	slice := slices.Collect(iter.Seq[T](collection))
+	seq := lo.SamplesBy(slice, count, randomIntGenerator)
+	return I(slices.Values(seq))
 }

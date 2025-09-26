@@ -4,6 +4,7 @@ package it
 
 import (
 	"iter"
+	"math/rand"
 	"slices"
 	"testing"
 	"time"
@@ -648,4 +649,62 @@ func TestNthOrEmpty(t *testing.T) {
 		is.Zero(NthOrEmpty(users, -1))
 		is.Zero(NthOrEmpty(users, 10))
 	})
+}
+
+func TestSample(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Sample(values("a", "b", "c"))
+	result2 := Sample(values[string]())
+
+	is.True(Contains(values("a", "b", "c"), result1))
+	is.Empty(result2)
+}
+
+func TestSampleBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r := rand.New(rand.NewSource(42))
+
+	result1 := SampleBy(values("a", "b", "c"), r.Intn)
+	result2 := SampleBy(values[string](), rand.Intn)
+
+	is.True(Contains(values("a", "b", "c"), result1))
+	is.Empty(result2)
+}
+
+func TestSamples(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Samples(values("a", "b", "c"), 3)
+	result2 := Samples(values[string](), 3)
+
+	is.ElementsMatch(slices.Collect(result1), []string{"a", "b", "c"})
+	is.Empty(slices.Collect(result2))
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := Samples(allStrings, 2)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestSamplesBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r := rand.New(rand.NewSource(42))
+
+	result1 := SamplesBy(values("a", "b", "c"), 3, r.Intn)
+	result2 := SamplesBy(values[string](), 3, r.Intn)
+
+	is.ElementsMatch(slices.Collect(result1), []string{"a", "b", "c"})
+	is.Empty(slices.Collect(result2))
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := SamplesBy(allStrings, 2, r.Intn)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
