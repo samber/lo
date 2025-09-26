@@ -110,10 +110,10 @@ func ExampleChunkEntries() {
 	// 2
 }
 
-func ExampleFromMap() {
+func ExampleMapToSeq() {
 	kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
 
-	result := slices.Collect(FromMap(kv, func(k int, v int64) string {
+	result := slices.Collect(MapToSeq(kv, func(k int, v int64) string {
 		return fmt.Sprintf("%d_%d", k, v)
 	}))
 
@@ -122,10 +122,10 @@ func ExampleFromMap() {
 	// Output: [1_1 2_2 3_3 4_4]
 }
 
-func ExampleFilterFromMap() {
+func ExampleFilterMapToSeq() {
 	kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
 
-	result := slices.Collect(FilterFromMap(kv, func(k int, v int64) (string, bool) {
+	result := slices.Collect(FilterMapToSeq(kv, func(k int, v int64) (string, bool) {
 		return fmt.Sprintf("%d_%d", k, v), k%2 == 0
 	}))
 

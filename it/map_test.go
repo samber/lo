@@ -205,14 +205,14 @@ func TestChunkEntries(t *testing.T) {
 	is.Equal(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, originalMap)
 }
 
-func TestFromMap(t *testing.T) {
+func TestMapToSeq(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FromMap(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, v int) string {
+	result1 := MapToSeq(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, v int) string {
 		return fmt.Sprintf("%d_%d", k, v)
 	})
-	result2 := FromMap(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, _ int) string {
+	result2 := MapToSeq(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, _ int) string {
 		return strconv.FormatInt(int64(k), 10)
 	})
 
@@ -220,14 +220,14 @@ func TestFromMap(t *testing.T) {
 	is.ElementsMatch(slices.Collect(result2), []string{"1", "2", "3", "4"})
 }
 
-func TestFilterFromMap(t *testing.T) {
+func TestFilterMapToSeq(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FilterFromMap(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, v int) (string, bool) {
+	result1 := FilterMapToSeq(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, v int) (string, bool) {
 		return fmt.Sprintf("%d_%d", k, v), k%2 == 0
 	})
-	result2 := FilterFromMap(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, _ int) (string, bool) {
+	result2 := FilterMapToSeq(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, _ int) (string, bool) {
 		return strconv.FormatInt(int64(k), 10), k%2 == 0
 	})
 

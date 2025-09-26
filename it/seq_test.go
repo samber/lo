@@ -512,7 +512,7 @@ func TestAssociate(t *testing.T) {
 	}
 }
 
-func TestToMap(t *testing.T) {
+func TestSeqToMap(t *testing.T) {
 	t.Parallel()
 
 	type foo struct {
@@ -543,12 +543,12 @@ func TestToMap(t *testing.T) {
 		tc := tc
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			t.Parallel()
-			assert.Equal(t, tc.want, ToMap(slices.Values(tc.in), transform))
+			assert.Equal(t, tc.want, SeqToMap(slices.Values(tc.in), transform))
 		})
 	}
 }
 
-func TestFilterToMap(t *testing.T) {
+func TestFilterSeqSeqToMap(t *testing.T) {
 	t.Parallel()
 
 	type foo struct {
@@ -579,7 +579,7 @@ func TestFilterToMap(t *testing.T) {
 		tc := tc
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			t.Parallel()
-			assert.Equal(t, tc.want, FilterToMap(slices.Values(tc.in), transform))
+			assert.Equal(t, tc.want, FilterSeqSeqToMap(slices.Values(tc.in), transform))
 		})
 	}
 }

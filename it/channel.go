@@ -4,8 +4,8 @@ package it
 
 import "iter"
 
-// ToChannel returns a read-only channel of collection elements.
-func ToChannel[T any](bufferSize int, collection iter.Seq[T]) <-chan T {
+// SeqToChannel returns a read-only channel of collection elements.
+func SeqToChannel[T any](bufferSize int, collection iter.Seq[T]) <-chan T {
 	ch := make(chan T, bufferSize)
 
 	go func() {
@@ -19,8 +19,8 @@ func ToChannel[T any](bufferSize int, collection iter.Seq[T]) <-chan T {
 	return ch
 }
 
-// FromChannel returns a sequence built from channels items. Blocks until channel closes.
-func FromChannel[T any](ch <-chan T) iter.Seq[T] {
+// ChannelToSeq returns a sequence built from channels items. Blocks until channel closes.
+func ChannelToSeq[T any](ch <-chan T) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		for item := range ch {
 			if !yield(item) {

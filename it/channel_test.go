@@ -9,11 +9,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestToChannel(t *testing.T) {
+func TestSeqToChannel(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	ch := ToChannel(2, values(1, 2, 3))
+	ch := SeqToChannel(2, values(1, 2, 3))
 
 	r1, ok1 := <-ch
 	r2, ok2 := <-ch
@@ -29,12 +29,12 @@ func TestToChannel(t *testing.T) {
 	is.False(ok4)
 }
 
-func TestFromChannel(t *testing.T) {
+func TestChannelToSeq(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	ch := ToChannel(2, values(1, 2, 3))
-	items := FromChannel(ch)
+	ch := SeqToChannel(2, values(1, 2, 3))
+	items := ChannelToSeq(ch)
 
 	is.Equal([]int{1, 2, 3}, slices.Collect(items))
 }
