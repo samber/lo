@@ -841,11 +841,26 @@ func CutSuffix[T comparable, Slice ~[]T](collection Slice, separator Slice) (bef
 func Trim[T comparable, Slice ~[]T](collection Slice, cutset Slice) Slice {
 	set := Keyify(cutset)
 
-	predicate := func(item T) bool {
-		_, ok := set[item]
-		return ok
+	i := 0
+	for ; i < len(collection); i++ {
+		if _, ok := set[collection[i]]; !ok {
+			break
+		}
 	}
-	return DropRightWhile(DropWhile(collection, predicate), predicate)
+
+	if i >= len(collection) {
+		return Slice{}
+	}
+
+	j := len(collection) - 1
+	for ; j >= 0; j-- {
+		if _, ok := set[collection[j]]; !ok {
+			break
+		}
+	}
+
+	result := make(Slice, 0, j+1-i)
+	return append(result, collection[i:j+1]...)
 }
 
 // TrimLeft removes all the leading cutset from the collection.
