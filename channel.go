@@ -15,7 +15,7 @@ type DispatchingStrategy[T any] func(msg T, index uint64, channels []<-chan T) i
 // Close events are propagated to children.
 // Underlying channels can have a fixed buffer capacity or be unbuffered when cap is 0.
 // Play: https://go.dev/play/p/UZGu2wVg3J2
-func ChannelDispatcher[T any](stream <-chan T, count int, channelBufferCap int, strategy DispatchingStrategy[T]) []<-chan T {
+func ChannelDispatcher[T any](stream <-chan T, count, channelBufferCap int, strategy DispatchingStrategy[T]) []<-chan T {
 	children := createChannels[T](count, channelBufferCap)
 
 	roChildren := channelsToReadOnly(children)
@@ -42,7 +42,7 @@ func ChannelDispatcher[T any](stream <-chan T, count int, channelBufferCap int, 
 	return roChildren
 }
 
-func createChannels[T any](count int, channelBufferCap int) []chan T {
+func createChannels[T any](count, channelBufferCap int) []chan T {
 	children := make([]chan T, 0, count)
 
 	for i := 0; i < count; i++ {
@@ -145,7 +145,7 @@ func DispatchingStrategyFirst[T any](msg T, index uint64, channels []<-chan T) i
 func DispatchingStrategyLeast[T any](msg T, index uint64, channels []<-chan T) int {
 	seq := Range(len(channels))
 
-	return MinBy(seq, func(item int, mIn int) bool {
+	return MinBy(seq, func(item, mIn int) bool {
 		return len(channels[item]) < len(channels[mIn])
 	})
 }
@@ -156,7 +156,7 @@ func DispatchingStrategyLeast[T any](msg T, index uint64, channels []<-chan T) i
 func DispatchingStrategyMost[T any](msg T, index uint64, channels []<-chan T) int {
 	seq := Range(len(channels))
 
-	return MaxBy(seq, func(item int, mAx int) bool {
+	return MaxBy(seq, func(item, mAx int) bool {
 		return len(channels[item]) > len(channels[mAx]) && channelIsNotFull(channels[item])
 	})
 }
@@ -310,7 +310,7 @@ func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 // When upstream channel reaches EOF, downstream channels close. If any downstream
 // channels is full, broadcasting is paused.
 // Play: https://go.dev/play/p/2LHxcjKX23L
-func FanOut[T any](count int, channelsBufferCap int, upstream <-chan T) []<-chan T {
+func FanOut[T any](count, channelsBufferCap int, upstream <-chan T) []<-chan T {
 	downstreams := createChannels[T](count, channelsBufferCap)
 
 	go func() {

@@ -38,7 +38,7 @@ func LastIndexOf[T comparable](collection []T, element T) int {
 
 // HasPrefix returns true if the collection has the prefix.
 // Play: https://go.dev/play/p/SrljzVDpMQM
-func HasPrefix[T comparable](collection []T, prefix []T) bool {
+func HasPrefix[T comparable](collection, prefix []T) bool {
 	if len(collection) < len(prefix) {
 		return false
 	}
@@ -54,7 +54,7 @@ func HasPrefix[T comparable](collection []T, prefix []T) bool {
 
 // HasSuffix returns true if the collection has the suffix.
 // Play: https://go.dev/play/p/bJeLetQNAON
-func HasSuffix[T comparable](collection []T, suffix []T) bool {
+func HasSuffix[T comparable](collection, suffix []T) bool {
 	if len(collection) < len(suffix) {
 		return false
 	}
@@ -125,7 +125,7 @@ func FindOrElse[T any](collection []T, fallback T, predicate func(item T) bool) 
 
 // FindKey returns the key of the first value matching.
 // Play: https://go.dev/play/p/Bg0w1VDPYXx
-func FindKey[K comparable, V comparable](object map[K]V, value V) (K, bool) {
+func FindKey[K, V comparable](object map[K]V, value V) (K, bool) {
 	for k := range object {
 		if object[k] == value {
 			return k, true
@@ -311,7 +311,7 @@ func MinIndex[T constraints.Ordered](collection []T) (T, int) {
 // MinBy search the minimum value of a collection using the given comparison function.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns zero value when the collection is empty.
-func MinBy[T any](collection []T, comparison func(a T, b T) bool) T {
+func MinBy[T any](collection []T, comparison func(a, b T) bool) T {
 	var mIn T
 
 	if len(collection) == 0 {
@@ -334,7 +334,7 @@ func MinBy[T any](collection []T, comparison func(a T, b T) bool) T {
 // MinIndexBy search the minimum value of a collection using the given comparison function and the index of the minimum value.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
-func MinIndexBy[T any](collection []T, comparison func(a T, b T) bool) (T, int) {
+func MinIndexBy[T any](collection []T, comparison func(a, b T) bool) (T, int) {
 	var (
 		mIn   T
 		index int
@@ -456,7 +456,7 @@ func MaxIndex[T constraints.Ordered](collection []T) (T, int) {
 // MaxBy search the maximum value of a collection using the given comparison function.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns zero value when the collection is empty.
-func MaxBy[T any](collection []T, comparison func(a T, b T) bool) T {
+func MaxBy[T any](collection []T, comparison func(a, b T) bool) T {
 	var mAx T
 
 	if len(collection) == 0 {
@@ -479,7 +479,7 @@ func MaxBy[T any](collection []T, comparison func(a T, b T) bool) T {
 // MaxIndexBy search the maximum value of a collection using the given comparison function and the index of the maximum value.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
-func MaxIndexBy[T any](collection []T, comparison func(a T, b T) bool) (T, int) {
+func MaxIndexBy[T any](collection []T, comparison func(a, b T) bool) (T, int) {
 	var (
 		mAx   T
 		index int

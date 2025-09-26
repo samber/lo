@@ -71,7 +71,7 @@ func ExampleFlatMap() {
 func ExampleReduce() {
 	list := []int64{1, 2, 3, 4}
 
-	result := Reduce(list, func(agg int64, item int64, index int) int64 {
+	result := Reduce(list, func(agg, item int64, index int) int64 {
 		return agg + item
 	}, 0)
 
@@ -82,7 +82,7 @@ func ExampleReduce() {
 func ExampleReduceRight() {
 	list := [][]int{{0, 1}, {2, 3}, {4, 5}}
 
-	result := ReduceRight(list, func(agg []int, item []int, index int) []int {
+	result := ReduceRight(list, func(agg, item []int, index int) []int {
 		return append(agg, item...)
 	}, []int{})
 
@@ -382,7 +382,7 @@ func ExampleDropByIndex() {
 func ExampleReject() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := Reject(list, func(x int, _ int) bool {
+	result := Reject(list, func(x, _ int) bool {
 		return x%2 == 0
 	})
 

@@ -26,7 +26,7 @@ func ContainsBy[T any](collection []T, predicate func(item T) bool) bool {
 
 // Every returns true if all elements of a subset are contained in a collection or if the subset is empty.
 // Play: https://go.dev/play/p/W1EvyqY6t9j
-func Every[T comparable](collection []T, subset []T) bool {
+func Every[T comparable](collection, subset []T) bool {
 	for i := range subset {
 		if !Contains(collection, subset[i]) {
 			return false
@@ -51,7 +51,7 @@ func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 // Some returns true if at least 1 element of a subset is contained in a collection.
 // If the subset is empty Some returns false.
 // Play: https://go.dev/play/p/Lj4ceFkeT9V
-func Some[T comparable](collection []T, subset []T) bool {
+func Some[T comparable](collection, subset []T) bool {
 	for i := range subset {
 		if Contains(collection, subset[i]) {
 			return true
@@ -76,7 +76,7 @@ func SomeBy[T any](collection []T, predicate func(item T) bool) bool {
 
 // None returns true if no element of a subset is contained in a collection or if the subset is empty.
 // Play: https://go.dev/play/p/fye7JsmxzPV
-func None[T comparable](collection []T, subset []T) bool {
+func None[T comparable](collection, subset []T) bool {
 	for i := range subset {
 		if Contains(collection, subset[i]) {
 			return false
@@ -100,7 +100,7 @@ func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 
 // Intersect returns the intersection between two collections.
 // Play: https://go.dev/play/p/uuElL9X9e58
-func Intersect[T comparable, Slice ~[]T](list1 Slice, list2 Slice) Slice {
+func Intersect[T comparable, Slice ~[]T](list1, list2 Slice) Slice {
 	result := Slice{}
 	seen := map[T]struct{}{}
 
@@ -121,7 +121,7 @@ func Intersect[T comparable, Slice ~[]T](list1 Slice, list2 Slice) Slice {
 // The first value is the collection of elements absent from list2.
 // The second value is the collection of elements absent from list1.
 // Play: https://go.dev/play/p/pKE-JgzqRpz
-func Difference[T comparable, Slice ~[]T](list1 Slice, list2 Slice) (Slice, Slice) {
+func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
 	left := Slice{}
 	right := Slice{}
 
@@ -244,7 +244,7 @@ func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice {
 // If there are duplicate elements, the number of occurrences in each list should match.
 // The order of elements is not checked.
 // Play: https://go.dev/play/p/XWSEM4Ic_t0
-func ElementsMatch[T comparable, Slice ~[]T](list1 Slice, list2 Slice) bool {
+func ElementsMatch[T comparable, Slice ~[]T](list1, list2 Slice) bool {
 	return ElementsMatchBy(list1, list2, func(item T) T { return item })
 }
 
@@ -252,7 +252,7 @@ func ElementsMatch[T comparable, Slice ~[]T](list1 Slice, list2 Slice) bool {
 // If there are duplicate keys, the number of occurrences in each list should match.
 // The order of elements is not checked.
 // Play: https://go.dev/play/p/XWSEM4Ic_t0
-func ElementsMatchBy[T any, K comparable](list1 []T, list2 []T, iteratee func(item T) K) bool {
+func ElementsMatchBy[T any, K comparable](list1, list2 []T, iteratee func(item T) K) bool {
 	if len(list1) != len(list2) {
 		return false
 	}

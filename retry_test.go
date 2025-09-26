@@ -325,19 +325,19 @@ func TestDebounceBy(t *testing.T) {
 	mu := sync.Mutex{}
 	output := map[int]int{0: 0, 1: 0, 2: 0}
 
-	f1 := func(key int, count int) {
+	f1 := func(key, count int) {
 		mu.Lock()
 		output[key] += count
 		mu.Unlock()
 		// fmt.Printf("[key=%d] 1. Called once after 10ms when func stopped invoking!\n", key)
 	}
-	f2 := func(key int, count int) {
+	f2 := func(key, count int) {
 		mu.Lock()
 		output[key] += count
 		mu.Unlock()
 		// fmt.Printf("[key=%d] 2. Called once after 10ms when func stopped invoking!\n", key)
 	}
-	f3 := func(key int, count int) {
+	f3 := func(key, count int) {
 		mu.Lock()
 		output[key] += count
 		mu.Unlock()

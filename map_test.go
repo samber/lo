@@ -351,10 +351,10 @@ func TestMapKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	result1 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x, _ int) string {
 		return "Hello"
 	})
-	result2 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string {
+	result2 := MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_, v int) string {
 		return strconv.FormatInt(int64(v), 10)
 	})
 
@@ -366,10 +366,10 @@ func TestMapValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	result1 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x, _ int) string {
 		return "Hello"
 	})
-	result2 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x int, _ int) string {
+	result2 := MapValues(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x, _ int) string {
 		return strconv.FormatInt(int64(x), 10)
 	})
 
@@ -504,10 +504,10 @@ func TestMapToSlice(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, v int) string {
+	result1 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, v int) string {
 		return fmt.Sprintf("%d_%d", k, v)
 	})
-	result2 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, _ int) string {
+	result2 := MapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, _ int) string {
 		return strconv.FormatInt(int64(k), 10)
 	})
 
@@ -519,10 +519,10 @@ func TestFilterMapToSlice(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FilterMapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, v int) (string, bool) {
+	result1 := FilterMapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, v int) (string, bool) {
 		return fmt.Sprintf("%d_%d", k, v), k%2 == 0
 	})
-	result2 := FilterMapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k int, _ int) (string, bool) {
+	result2 := FilterMapToSlice(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, _ int) (string, bool) {
 		return strconv.FormatInt(int64(k), 10), k%2 == 0
 	})
 

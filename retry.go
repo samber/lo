@@ -346,13 +346,13 @@ func (th *throttleBy[T]) reset() {
 // NewThrottle creates a throttled instance that invokes given functions only once in every interval.
 // This returns 2 functions, First one is throttled function and Second one is a function to reset interval.
 // Play: https://go.dev/play/p/qQn3fm8Z7jS
-func NewThrottle(interval time.Duration, f ...func()) (throttle func(), reset func()) {
+func NewThrottle(interval time.Duration, f ...func()) (throttle, reset func()) {
 	return NewThrottleWithCount(interval, 1, f...)
 }
 
 // NewThrottleWithCount is NewThrottle with count limit, throttled function will be invoked count times in every interval.
 // Play: https://go.dev/play/p/w5nc0MgWtjC
-func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (throttle func(), reset func()) {
+func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (throttle, reset func()) {
 	callbacks := Map(f, func(item func(), _ int) func(struct{}) {
 		return func(struct{}) {
 			item()
