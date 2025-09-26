@@ -17,6 +17,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
+          version: 'v2.4'
           args: --timeout 120s --max-same-issues 50
 
       - name: Bearer
