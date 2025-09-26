@@ -237,7 +237,7 @@ func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
 // of running each element of collection through iteratee.
 // Play: https://go.dev/play/p/NfQ_nGjkgXW
 func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K) []Slice {
-	result := []Slice{}
+	var result []Slice
 	seen := map[K]int{}
 
 	for i := range collection {
@@ -480,7 +480,7 @@ func Drop[T any, Slice ~[]T](collection Slice, n int) Slice {
 	}
 
 	if len(collection) <= n {
-		return make(Slice, 0)
+		return Slice{}
 	}
 
 	result := make(Slice, 0, len(collection)-n)
@@ -537,7 +537,7 @@ func DropRightWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) 
 func DropByIndex[T any, Slice ~[]T](collection Slice, indexes ...int) Slice {
 	initialSize := len(collection)
 	if initialSize == 0 {
-		return make(Slice, 0)
+		return Slice{}
 	}
 
 	for i := range indexes {
@@ -584,7 +584,7 @@ func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 //
 // Play: https://go.dev/play/p/W9Ug9r0QFkL
 func RejectMap[T, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
-	result := []R{}
+	var result []R
 
 	for i := range collection {
 		if r, ok := callback(collection[i], i); !ok {
@@ -821,7 +821,7 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 // Play: https://go.dev/play/p/GiL3qhpIP3f
 func Cut[T comparable, Slice ~[]T](collection, separator Slice) (before, after Slice, found bool) {
 	if len(separator) == 0 {
-		return make(Slice, 0), collection, true
+		return Slice{}, collection, true
 	}
 
 	for i := 0; i+len(separator) <= len(collection); i++ {
@@ -837,7 +837,7 @@ func Cut[T comparable, Slice ~[]T](collection, separator Slice) (before, after S
 		}
 	}
 
-	return collection, make(Slice, 0), false
+	return collection, Slice{}, false
 }
 
 // CutPrefix returns collection without the provided leading prefix []T

@@ -90,7 +90,7 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 // The order of groups is determined by their first appearance in the collection.
 // `iteratee` is called in parallel.
 func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K) []Slice {
-	result := []Slice{}
+	var result []Slice
 	seen := map[K]int{}
 
 	keys := Map(collection, func(item T, _ int) K {

@@ -114,11 +114,11 @@ func TestFill(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	list1 := []string{"a", "0"}
-	Fill(list1, "b")
-	is.Equal([]string{"b", "b"}, list1)
+	list := []string{"a", "0"}
+	Fill(list, "b")
+	is.Equal([]string{"b", "b"}, list)
 
-	list2 := []string{}
-	Fill(list2, "b")
-	is.Empty(list2)
+	list = []string{}
+	Fill(list, "b")
+	is.Empty(list)
 }

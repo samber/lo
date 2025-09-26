@@ -105,7 +105,7 @@ func DispatchingStrategyRandom[T any](msg T, index uint64, channels []<-chan T) 
 // If the channel capacity is exceeded, another random channel will be selected and so on.
 // Play: https://go.dev/play/p/v0eMh8NZG2L
 func DispatchingStrategyWeightedRandom[T any](weights []int) DispatchingStrategy[T] {
-	seq := []int{}
+	var seq []int
 
 	for i := 0; i < len(weights); i++ {
 		for j := 0; j < weights[i]; j++ {
@@ -180,7 +180,7 @@ func SliceToChannel[T any](bufferSize int, collection []T) <-chan T {
 // ChannelToSlice returns a slice built from channel items. Blocks until channel closes.
 // Play: https://go.dev/play/p/lIbSY3QmiEg
 func ChannelToSlice[T any](ch <-chan T) []T {
-	collection := []T{}
+	var collection []T //nolint:prealloc
 
 	for item := range ch {
 		collection = append(collection, item)
