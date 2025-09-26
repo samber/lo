@@ -839,7 +839,28 @@ func CutSuffix[T comparable, Slice ~[]T](collection, separator Slice) (before Sl
 // Trim removes all the leading and trailing cutset from the collection.
 // Play: https://go.dev/play/p/1an9mxLdRG5
 func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
-	return TrimLeft(TrimRight(collection, cutset), cutset)
+	set := Keyify(cutset)
+
+	i := 0
+	for ; i < len(collection); i++ {
+		if _, ok := set[collection[i]]; !ok {
+			break
+		}
+	}
+
+	if i >= len(collection) {
+		return Slice{}
+	}
+
+	j := len(collection) - 1
+	for ; j >= 0; j-- {
+		if _, ok := set[collection[j]]; !ok {
+			break
+		}
+	}
+
+	result := make(Slice, 0, j+1-i)
+	return append(result, collection[i:j+1]...)
 }
 
 // TrimLeft removes all the leading cutset from the collection.
