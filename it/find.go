@@ -42,6 +42,58 @@ func LastIndexOf[T comparable](collection iter.Seq[T], element T) int {
 	return index
 }
 
+// HasPrefix returns true if the collection has the prefix.
+func HasPrefix[T comparable](collection iter.Seq[T], prefix ...T) bool {
+	if len(prefix) == 0 {
+		return true
+	}
+
+	var i int
+	for item := range collection {
+		if item != prefix[i] {
+			return false
+		}
+		i++
+		if i == len(prefix) {
+			return true
+		}
+	}
+	return false
+}
+
+// HasSuffix returns true if the collection has the suffix.
+func HasSuffix[T comparable](collection iter.Seq[T], suffix ...T) bool {
+	if len(suffix) == 0 {
+		return true
+	}
+
+	n := len(suffix)
+	buf := make([]T, 0, n)
+	var i int
+
+	for item := range collection {
+		if len(buf) < n {
+			buf = append(buf, item)
+		} else {
+			buf[i] = item
+		}
+		i = (i + 1) % n
+	}
+
+	if len(buf) < n {
+		return false
+	}
+
+	i += n
+	for j := range suffix {
+		if suffix[j] != buf[(i+j)%n] {
+			return false
+		}
+	}
+
+	return true
+}
+
 // Find searches for an element in a sequence based on a predicate. Returns element and true if element was found.
 func Find[T any](collection iter.Seq[T], predicate func(item T) bool) (T, bool) {
 	for item := range collection {

@@ -36,6 +36,7 @@ func TestHasPrefix(t *testing.T) {
 
 	is.True(HasPrefix([]int{1, 2, 3, 4}, []int{1, 2}))
 	is.False(HasPrefix([]int{1, 2, 3, 4}, []int{42}))
+	is.True(HasPrefix([]int{1, 2, 3, 4}, nil))
 }
 
 func TestHasSuffix(t *testing.T) {
@@ -44,6 +45,7 @@ func TestHasSuffix(t *testing.T) {
 
 	is.True(HasSuffix([]int{1, 2, 3, 4}, []int{3, 4}))
 	is.False(HasSuffix([]int{1, 2, 3, 4}, []int{42}))
+	is.True(HasSuffix([]int{1, 2, 3, 4}, nil))
 }
 
 func TestFind(t *testing.T) {
