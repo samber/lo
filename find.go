@@ -126,8 +126,8 @@ func FindOrElse[T any](collection []T, fallback T, predicate func(item T) bool) 
 // FindKey returns the key of the first value matching.
 // Play: https://go.dev/play/p/Bg0w1VDPYXx
 func FindKey[K, V comparable](object map[K]V, value V) (K, bool) {
-	for k := range object {
-		if object[k] == value {
+	for k, v := range object {
+		if v == value {
 			return k, true
 		}
 	}
@@ -138,8 +138,8 @@ func FindKey[K, V comparable](object map[K]V, value V) (K, bool) {
 // FindKeyBy returns the key of the first element predicate returns true for.
 // Play: https://go.dev/play/p/9IbiPElcyo8
 func FindKeyBy[K comparable, V any](object map[K]V, predicate func(key K, value V) bool) (K, bool) {
-	for k := range object {
-		if predicate(k, object[k]) {
+	for k, v := range object {
+		if predicate(k, v) {
 			return k, true
 		}
 	}
