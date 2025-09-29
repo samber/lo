@@ -48,8 +48,8 @@ func UniqKeys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 func Values[K comparable, V any](in ...map[K]V) iter.Seq[V] {
 	return func(yield func(V) bool) {
 		for i := range in {
-			for k := range in[i] {
-				if !yield(in[i][k]) {
+			for _, v := range in[i] {
+				if !yield(v) {
 					return
 				}
 			}
@@ -68,15 +68,14 @@ func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V] {
 		seen := make(map[V]struct{}, size)
 
 		for i := range in {
-			for k := range in[i] {
-				val := in[i][k]
-				if _, exists := seen[val]; exists {
+			for _, v := range in[i] {
+				if _, exists := seen[v]; exists {
 					continue
 				}
-				if !yield(val) {
+				if !yield(v) {
 					return
 				}
-				seen[val] = struct{}{}
+				seen[v] = struct{}{}
 			}
 		}
 	}
@@ -133,8 +132,8 @@ func Assign[K comparable, V any, Map ~map[K]V](maps ...iter.Seq[Map]) Map {
 
 	for i := range maps {
 		for item := range maps[i] {
-			for k := range item {
-				out[k] = item[k]
+			for k, v := range item {
+				out[k] = v
 			}
 		}
 	}
@@ -169,8 +168,8 @@ func ChunkEntries[K comparable, V any](m map[K]V, size int) iter.Seq[map[K]V] {
 // MapToSeq transforms a map into a sequence based on specified iteratee.
 func MapToSeq[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) R) iter.Seq[R] {
 	return func(yield func(R) bool) {
-		for k := range in {
-			if !yield(iteratee(k, in[k])) {
+		for k, v := range in {
+			if !yield(iteratee(k, v)) {
 				return
 			}
 		}
@@ -183,8 +182,8 @@ func MapToSeq[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) 
 // The order of the keys in the input map is not specified and the order of the keys in the output sequence is not guaranteed.
 func FilterMapToSeq[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) (R, bool)) iter.Seq[R] {
 	return func(yield func(R) bool) {
-		for k := range in {
-			if v, ok := iteratee(k, in[k]); ok && !yield(v) {
+		for k, v := range in {
+			if v, ok := iteratee(k, v); ok && !yield(v) {
 				return
 			}
 		}
@@ -195,8 +194,8 @@ func FilterMapToSeq[K comparable, V, R any](in map[K]V, iteratee func(key K, val
 // It is a mix of Filter and Keys.
 func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) iter.Seq[K] {
 	return func(yield func(K) bool) {
-		for k := range in {
-			if predicate(k, in[k]) && !yield(k) {
+		for k, v := range in {
+			if predicate(k, v) && !yield(k) {
 				return
 			}
 		}
@@ -207,8 +206,8 @@ func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) 
 // It is a mix of Filter and Values.
 func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) iter.Seq[V] {
 	return func(yield func(V) bool) {
-		for k := range in {
-			if predicate(k, in[k]) && !yield(in[k]) {
+		for k, v := range in {
+			if predicate(k, v) && !yield(v) {
 				return
 			}
 		}

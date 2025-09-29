@@ -662,7 +662,9 @@ func RejectMapI[T, R any](collection iter.Seq[T], callback func(item T, index in
 }
 
 // Count counts the number of elements in the collection that equal value.
-func Count[T comparable](collection iter.Seq[T], value T) (count int) {
+func Count[T comparable](collection iter.Seq[T], value T) int {
+	var count int
+
 	for item := range collection {
 		if item == value {
 			count++
@@ -673,7 +675,9 @@ func Count[T comparable](collection iter.Seq[T], value T) (count int) {
 }
 
 // CountBy counts the number of elements in the collection for which predicate is true.
-func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) (count int) {
+func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int {
+	var count int
+
 	for item := range collection {
 		if predicate(item) {
 			count++
