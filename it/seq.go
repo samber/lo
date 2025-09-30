@@ -23,6 +23,12 @@ func Length[T any](collection iter.Seq[T]) int {
 	return count
 }
 
+// Drain consumes an entire sequence.
+func Drain[T any](collection iter.Seq[T]) {
+	for range collection { //nolint:revive
+	}
+}
+
 // Filter iterates over elements of collection, returning a sequence of all elements predicate returns true for.
 func Filter[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I {
 	return FilterI(collection, func(item T, _ int) bool { return predicate(item) })

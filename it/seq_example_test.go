@@ -19,6 +19,12 @@ func ExampleLength() {
 	// Output: 4
 }
 
+func ExampleDrain() {
+	list := slices.Values([]int64{1, 2, 3, 4})
+
+	Drain(list)
+}
+
 func ExampleFilter() {
 	list := slices.Values([]int64{1, 2, 3, 4})
 

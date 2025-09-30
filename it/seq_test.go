@@ -25,6 +25,23 @@ func TestLength(t *testing.T) {
 	is.Equal(4, r2)
 }
 
+func TestDrain(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var done bool
+	list := iter.Seq[int](func(yield func(int) bool) {
+		yield(1)
+		yield(2)
+		yield(3)
+		done = true
+	})
+
+	Drain(list)
+
+	is.True(done)
+}
+
 func TestFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
