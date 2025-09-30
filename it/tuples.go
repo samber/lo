@@ -295,72 +295,72 @@ func Zip9[A, B, C, D, E, F, G, H, I any](a iter.Seq[A], b iter.Seq[B], c iter.Se
 // ZipBy2 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
-func ZipBy2[A, B, Out any](a iter.Seq[A], b iter.Seq[B], iteratee func(a A, b B) Out) iter.Seq[Out] {
+func ZipBy2[A, B, Out any](a iter.Seq[A], b iter.Seq[B], transform func(a A, b B) Out) iter.Seq[Out] {
 	return Map(Zip2(a, b), func(item lo.Tuple2[A, B]) Out {
-		return iteratee(item.A, item.B)
+		return transform(item.A, item.B)
 	})
 }
 
 // ZipBy3 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
-func ZipBy3[A, B, C, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], iteratee func(a A, b B, c C) Out) iter.Seq[Out] {
+func ZipBy3[A, B, C, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], transform func(a A, b B, c C) Out) iter.Seq[Out] {
 	return Map(Zip3(a, b, c), func(item lo.Tuple3[A, B, C]) Out {
-		return iteratee(item.A, item.B, item.C)
+		return transform(item.A, item.B, item.C)
 	})
 }
 
 // ZipBy4 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
-func ZipBy4[A, B, C, D, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], iteratee func(a A, b B, c C, d D) Out) iter.Seq[Out] {
+func ZipBy4[A, B, C, D, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], transform func(a A, b B, c C, d D) Out) iter.Seq[Out] {
 	return Map(Zip4(a, b, c, d), func(item lo.Tuple4[A, B, C, D]) Out {
-		return iteratee(item.A, item.B, item.C, item.D)
+		return transform(item.A, item.B, item.C, item.D)
 	})
 }
 
 // ZipBy5 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
-func ZipBy5[A, B, C, D, E, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], iteratee func(a A, b B, c C, d D, e E) Out) iter.Seq[Out] {
+func ZipBy5[A, B, C, D, E, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], transform func(a A, b B, c C, d D, e E) Out) iter.Seq[Out] {
 	return Map(Zip5(a, b, c, d, e), func(item lo.Tuple5[A, B, C, D, E]) Out {
-		return iteratee(item.A, item.B, item.C, item.D, item.E)
+		return transform(item.A, item.B, item.C, item.D, item.E)
 	})
 }
 
 // ZipBy6 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
-func ZipBy6[A, B, C, D, E, F, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], iteratee func(a A, b B, c C, d D, e E, f F) Out) iter.Seq[Out] {
+func ZipBy6[A, B, C, D, E, F, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], transform func(a A, b B, c C, d D, e E, f F) Out) iter.Seq[Out] {
 	return Map(Zip6(a, b, c, d, e, f), func(item lo.Tuple6[A, B, C, D, E, F]) Out {
-		return iteratee(item.A, item.B, item.C, item.D, item.E, item.F)
+		return transform(item.A, item.B, item.C, item.D, item.E, item.F)
 	})
 }
 
 // ZipBy7 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
-func ZipBy7[A, B, C, D, E, F, G, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], iteratee func(a A, b B, c C, d D, e E, f F, g G) Out) iter.Seq[Out] {
+func ZipBy7[A, B, C, D, E, F, G, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], transform func(a A, b B, c C, d D, e E, f F, g G) Out) iter.Seq[Out] {
 	return Map(Zip7(a, b, c, d, e, f, g), func(item lo.Tuple7[A, B, C, D, E, F, G]) Out {
-		return iteratee(item.A, item.B, item.C, item.D, item.E, item.F, item.G)
+		return transform(item.A, item.B, item.C, item.D, item.E, item.F, item.G)
 	})
 }
 
 // ZipBy8 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
-func ZipBy8[A, B, C, D, E, F, G, H, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], h iter.Seq[H], iteratee func(a A, b B, c C, d D, e E, f F, g G, h H) Out) iter.Seq[Out] {
+func ZipBy8[A, B, C, D, E, F, G, H, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], h iter.Seq[H], transform func(a A, b B, c C, d D, e E, f F, g G, h H) Out) iter.Seq[Out] {
 	return Map(Zip8(a, b, c, d, e, f, g, h), func(item lo.Tuple8[A, B, C, D, E, F, G, H]) Out {
-		return iteratee(item.A, item.B, item.C, item.D, item.E, item.F, item.G, item.H)
+		return transform(item.A, item.B, item.C, item.D, item.E, item.F, item.G, item.H)
 	})
 }
 
 // ZipBy9 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
-func ZipBy9[A, B, C, D, E, F, G, H, I, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], h iter.Seq[H], i iter.Seq[I], iteratee func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) iter.Seq[Out] {
+func ZipBy9[A, B, C, D, E, F, G, H, I, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], h iter.Seq[H], i iter.Seq[I], transform func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) iter.Seq[Out] {
 	return Map(Zip9(a, b, c, d, e, f, g, h, i), func(item lo.Tuple9[A, B, C, D, E, F, G, H, I]) Out {
-		return iteratee(item.A, item.B, item.C, item.D, item.E, item.F, item.G, item.H, item.I)
+		return transform(item.A, item.B, item.C, item.D, item.E, item.F, item.G, item.H, item.I)
 	})
 }
 

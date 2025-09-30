@@ -157,14 +157,14 @@ func FindUniques[T comparable, I ~func(func(T) bool)](collection I) I {
 }
 
 // FindUniquesBy returns a sequence with all the elements that appear in the collection only once.
-// The order of result values is determined by the order they occur in the sequence. It accepts `iteratee` which is
+// The order of result values is determined by the order they occur in the sequence. A transform function is
 // invoked for each element in the sequence to generate the criterion by which uniqueness is computed.
-func FindUniquesBy[T any, U comparable, I ~func(func(T) bool)](collection I, iteratee func(item T) U) I {
+func FindUniquesBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I {
 	return func(yield func(T) bool) {
 		isDupl := make(map[U]bool)
 
 		for item := range collection {
-			key := iteratee(item)
+			key := transform(item)
 
 			if duplicated, ok := isDupl[key]; !ok {
 				isDupl[key] = false
@@ -174,7 +174,7 @@ func FindUniquesBy[T any, U comparable, I ~func(func(T) bool)](collection I, ite
 		}
 
 		for item := range collection {
-			key := iteratee(item)
+			key := transform(item)
 
 			if duplicated := isDupl[key]; !duplicated && !yield(item) {
 				return
@@ -190,15 +190,15 @@ func FindDuplicates[T comparable, I ~func(func(T) bool)](collection I) I {
 }
 
 // FindDuplicatesBy returns a sequence with the first occurrence of each duplicated element in the collection.
-// The order of result values is determined by the order duplicates occur in the sequence. It accepts `iteratee` which is
+// The order of result values is determined by the order duplicates occur in the sequence. A transform function is
 // invoked for each element in the sequence to generate the criterion by which uniqueness is computed.
-func FindDuplicatesBy[T any, U comparable, I ~func(func(T) bool)](collection I, iteratee func(item T) U) I {
+func FindDuplicatesBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I {
 	return func(yield func(T) bool) {
 		isDupl := make(map[U]bool)
 		first := make(map[U]T)
 
 		for item := range collection {
-			key := iteratee(item)
+			key := transform(item)
 
 			if duplicated, ok := isDupl[key]; !ok {
 				isDupl[key] = false
@@ -269,10 +269,10 @@ func Earliest(times iter.Seq[time.Time]) time.Time {
 	return MinBy(times, func(a, b time.Time) bool { return a.Before(b) })
 }
 
-// EarliestBy search the minimum time.Time of a collection using the given iteratee function.
+// EarliestBy search the minimum time.Time of a collection using the given transform function.
 // Returns zero value when the collection is empty.
-func EarliestBy[T any](collection iter.Seq[T], iteratee func(item T) time.Time) T {
-	return MinBy(collection, func(a, b T) bool { return iteratee(a).Before(iteratee(b)) })
+func EarliestBy[T any](collection iter.Seq[T], transform func(item T) time.Time) T {
+	return MinBy(collection, func(a, b T) bool { return transform(a).Before(transform(b)) })
 }
 
 // Max searches the maximum value of a collection.
@@ -331,10 +331,10 @@ func Latest(times iter.Seq[time.Time]) time.Time {
 	return MaxBy(times, func(a, b time.Time) bool { return a.After(b) })
 }
 
-// LatestBy search the maximum time.Time of a collection using the given iteratee function.
+// LatestBy search the maximum time.Time of a collection using the given transform function.
 // Returns zero value when the collection is empty.
-func LatestBy[T any](collection iter.Seq[T], iteratee func(item T) time.Time) T {
-	return MaxBy(collection, func(a, b T) bool { return iteratee(a).After(iteratee(b)) })
+func LatestBy[T any](collection iter.Seq[T], transform func(item T) time.Time) T {
+	return MaxBy(collection, func(a, b T) bool { return transform(a).After(transform(b)) })
 }
 
 // First returns the first element of a collection and check for availability of the first element.

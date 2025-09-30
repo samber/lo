@@ -170,12 +170,12 @@ func Without[T comparable, I ~func(func(T) bool)](collection I, exclude ...T) I 
 
 // WithoutBy filters a sequence by excluding elements whose extracted keys match any in the exclude list.
 // Returns a sequence containing only the elements whose keys are not in the exclude list.
-func WithoutBy[T any, K comparable, I ~func(func(T) bool)](collection I, iteratee func(item T) K, exclude ...K) I {
+func WithoutBy[T any, K comparable, I ~func(func(T) bool)](collection I, transform func(item T) K, exclude ...K) I {
 	return func(yield func(T) bool) {
 		set := lo.Keyify(exclude)
 
 		for item := range collection {
-			if _, ok := set[iteratee(item)]; !ok && !yield(item) {
+			if _, ok := set[transform(item)]; !ok && !yield(item) {
 				return
 			}
 		}
@@ -210,15 +210,15 @@ func ElementsMatch[T comparable](list1, list2 iter.Seq[T]) bool {
 // ElementsMatchBy returns true if lists contain the same set of elements' keys (including empty set).
 // If there are duplicate keys, the number of occurrences in each list should match.
 // The order of elements is not checked.
-func ElementsMatchBy[T any, K comparable](list1, list2 iter.Seq[T], iteratee func(item T) K) bool {
+func ElementsMatchBy[T any, K comparable](list1, list2 iter.Seq[T], transform func(item T) K) bool {
 	counters := make(map[K]int)
 
 	for item := range list1 {
-		counters[iteratee(item)]++
+		counters[transform(item)]++
 	}
 
 	for item := range list2 {
-		counters[iteratee(item)]--
+		counters[transform(item)]--
 	}
 
 	for _, count := range counters {

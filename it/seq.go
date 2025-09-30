@@ -48,16 +48,16 @@ func FilterI[T any, I ~func(func(T) bool)](collection I, predicate func(item T, 
 }
 
 // Map manipulates a sequence and transforms it to a sequence of another type.
-func Map[T, R any](collection iter.Seq[T], iteratee func(item T) R) iter.Seq[R] {
-	return MapI(collection, func(item T, _ int) R { return iteratee(item) })
+func Map[T, R any](collection iter.Seq[T], transform func(item T) R) iter.Seq[R] {
+	return MapI(collection, func(item T, _ int) R { return transform(item) })
 }
 
 // MapI manipulates a sequence and transforms it to a sequence of another type.
-func MapI[T, R any](collection iter.Seq[T], iteratee func(item T, index int) R) iter.Seq[R] {
+func MapI[T, R any](collection iter.Seq[T], transform func(item T, index int) R) iter.Seq[R] {
 	return func(yield func(R) bool) {
 		var i int
 		for item := range collection {
-			if !yield(iteratee(item, i)) {
+			if !yield(transform(item, i)) {
 				return
 			}
 			i++
@@ -66,17 +66,17 @@ func MapI[T, R any](collection iter.Seq[T], iteratee func(item T, index int) R) 
 }
 
 // UniqMap manipulates a sequence and transforms it to a sequence of another type with unique values.
-func UniqMap[T any, R comparable](collection iter.Seq[T], iteratee func(item T) R) iter.Seq[R] {
-	return UniqMapI(collection, func(item T, _ int) R { return iteratee(item) })
+func UniqMap[T any, R comparable](collection iter.Seq[T], transform func(item T) R) iter.Seq[R] {
+	return UniqMapI(collection, func(item T, _ int) R { return transform(item) })
 }
 
 // UniqMapI manipulates a sequence and transforms it to a sequence of another type with unique values.
-func UniqMapI[T any, R comparable](collection iter.Seq[T], iteratee func(item T, index int) R) iter.Seq[R] {
+func UniqMapI[T any, R comparable](collection iter.Seq[T], transform func(item T, index int) R) iter.Seq[R] {
 	return func(yield func(R) bool) {
 		seen := make(map[R]struct{})
 		var i int
 		for item := range collection {
-			r := iteratee(item, i)
+			r := transform(item, i)
 			if _, ok := seen[r]; !ok {
 				if !yield(r) {
 					return
@@ -115,18 +115,18 @@ func FilterMapI[T, R any](collection iter.Seq[T], callback func(item T, index in
 // FlatMap manipulates a sequence and transforms and flattens it to a sequence of another type.
 // The transform function can either return a sequence or a `nil`, and in the `nil` case
 // no value is yielded.
-func FlatMap[T, R any](collection iter.Seq[T], iteratee func(item T) iter.Seq[R]) iter.Seq[R] {
-	return FlatMapI(collection, func(item T, _ int) iter.Seq[R] { return iteratee(item) })
+func FlatMap[T, R any](collection iter.Seq[T], transform func(item T) iter.Seq[R]) iter.Seq[R] {
+	return FlatMapI(collection, func(item T, _ int) iter.Seq[R] { return transform(item) })
 }
 
 // FlatMapI manipulates a sequence and transforms and flattens it to a sequence of another type.
 // The transform function can either return a sequence or a `nil`, and in the `nil` case
 // no value is yielded.
-func FlatMapI[T, R any](collection iter.Seq[T], iteratee func(item T, index int) iter.Seq[R]) iter.Seq[R] {
+func FlatMapI[T, R any](collection iter.Seq[T], transform func(item T, index int) iter.Seq[R]) iter.Seq[R] {
 	return func(yield func(R) bool) {
 		var i int
 		for item := range collection {
-			for r := range iteratee(item, i) {
+			for r := range transform(item, i) {
 				if !yield(r) {
 					return
 				}
@@ -164,44 +164,44 @@ func ReduceLastI[T, R any](collection iter.Seq[T], accumulator func(agg R, item 
 	return ReduceI(Reverse(collection), accumulator, initial)
 }
 
-// ForEach iterates over elements of collection and invokes iteratee for each element.
-func ForEach[T any](collection iter.Seq[T], iteratee func(item T)) {
-	ForEachI(collection, func(item T, _ int) { iteratee(item) })
+// ForEach iterates over elements of collection and invokes transform for each element.
+func ForEach[T any](collection iter.Seq[T], transform func(item T)) {
+	ForEachI(collection, func(item T, _ int) { transform(item) })
 }
 
-// ForEachI iterates over elements of collection and invokes iteratee for each element.
-func ForEachI[T any](collection iter.Seq[T], iteratee func(item T, index int)) {
+// ForEachI iterates over elements of collection and invokes transform for each element.
+func ForEachI[T any](collection iter.Seq[T], transform func(item T, index int)) {
 	var i int
 	for item := range collection {
-		iteratee(item, i)
+		transform(item, i)
 		i++
 	}
 }
 
-// ForEachWhile iterates over elements of collection and invokes iteratee for each element
+// ForEachWhile iterates over elements of collection and invokes predicate for each element
 // collection return value decide to continue or break, like do while().
-func ForEachWhile[T any](collection iter.Seq[T], iteratee func(item T) bool) {
-	ForEachWhileI(collection, func(item T, _ int) bool { return iteratee(item) })
+func ForEachWhile[T any](collection iter.Seq[T], predicate func(item T) bool) {
+	ForEachWhileI(collection, func(item T, _ int) bool { return predicate(item) })
 }
 
-// ForEachWhileI iterates over elements of collection and invokes iteratee for each element
+// ForEachWhileI iterates over elements of collection and invokes predicate for each element
 // collection return value decide to continue or break, like do while().
-func ForEachWhileI[T any](collection iter.Seq[T], iteratee func(item T, index int) bool) {
+func ForEachWhileI[T any](collection iter.Seq[T], predicate func(item T, index int) bool) {
 	var i int
 	for item := range collection {
-		if !iteratee(item, i) {
+		if !predicate(item, i) {
 			return
 		}
 		i++
 	}
 }
 
-// Times invokes the iteratee n times, returning a sequence of the results of each invocation.
-// The iteratee is invoked with index as argument.
-func Times[T any](count int, iteratee func(index int) T) iter.Seq[T] {
+// Times invokes transform n times and returns a sequence of results.
+// The transform is invoked with index as argument.
+func Times[T any](count int, transform func(index int) T) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		for i := 0; i < count; i++ {
-			if !yield(iteratee(i)) {
+			if !yield(transform(i)) {
 				return
 			}
 		}
@@ -215,14 +215,14 @@ func Uniq[T comparable, I ~func(func(T) bool)](collection I) I {
 }
 
 // UniqBy returns a duplicate-free version of a sequence, in which only the first occurrence of each element is kept.
-// The order of result values is determined by the order they occur in the sequence. It accepts `iteratee` which is
+// The order of result values is determined by the order they occur in the sequence. A transform function is
 // invoked for each element in the sequence to generate the criterion by which uniqueness is computed.
-func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, iteratee func(item T) U) I {
+func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I {
 	return func(yield func(T) bool) {
 		seen := make(map[U]struct{})
 
 		for item := range collection {
-			key := iteratee(item)
+			key := transform(item)
 
 			if _, ok := seen[key]; !ok {
 				if !yield(item) {
@@ -234,17 +234,17 @@ func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, iteratee f
 	}
 }
 
-// GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
-func GroupBy[T any, U comparable](collection iter.Seq[T], iteratee func(item T) U) map[U][]T {
-	return GroupByMap(collection, func(item T) (U, T) { return iteratee(item), item })
+// GroupBy returns an object composed of keys generated from the results of running each element of collection through transform.
+func GroupBy[T any, U comparable](collection iter.Seq[T], transform func(item T) U) map[U][]T {
+	return GroupByMap(collection, func(item T) (U, T) { return transform(item), item })
 }
 
-// GroupByMap returns an object composed of keys generated from the results of running each element of collection through iteratee.
-func GroupByMap[T any, K comparable, V any](collection iter.Seq[T], iteratee func(item T) (K, V)) map[K][]V {
+// GroupByMap returns an object composed of keys generated from the results of running each element of collection through transform.
+func GroupByMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V)) map[K][]V {
 	result := make(map[K][]V)
 
 	for item := range collection {
-		k, v := iteratee(item)
+		k, v := transform(item)
 
 		result[k] = append(result[k], v)
 	}
@@ -278,13 +278,13 @@ func Chunk[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 
 // PartitionBy returns a sequence of elements split into groups. The order of grouped values is
 // determined by the order they occur in collection. The grouping is generated from the results
-// of running each element of collection through iteratee.
-func PartitionBy[T any, K comparable](collection iter.Seq[T], iteratee func(item T) K) [][]T {
+// of running each element of collection through transform.
+func PartitionBy[T any, K comparable](collection iter.Seq[T], transform func(item T) K) [][]T {
 	var result [][]T
 	seen := map[K]int{}
 
 	for item := range collection {
-		key := iteratee(item)
+		key := transform(item)
 
 		resultIndex, ok := seen[key]
 		if !ok {
@@ -368,23 +368,23 @@ func Repeat[T lo.Clonable[T]](count int, initial T) iter.Seq[T] {
 	return RepeatBy(count, func(int) T { return initial.Clone() })
 }
 
-// RepeatBy builds a sequence with values returned by N calls of callback.
-func RepeatBy[T any](count int, predicate func(index int) T) iter.Seq[T] {
+// RepeatBy builds a sequence with values returned by N calls of transform.
+func RepeatBy[T any](count int, transform func(index int) T) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		for i := range count {
-			if !yield(predicate(i)) {
+			if !yield(transform(i)) {
 				return
 			}
 		}
 	}
 }
 
-// KeyBy transforms a sequence to a map based on a pivot callback.
-func KeyBy[K comparable, V any](collection iter.Seq[V], iteratee func(item V) K) map[K]V {
+// KeyBy transforms a sequence to a map based on a pivot transform function.
+func KeyBy[K comparable, V any](collection iter.Seq[V], transform func(item V) K) map[K]V {
 	result := make(map[K]V)
 
 	for item := range collection {
-		k := iteratee(item)
+		k := transform(item)
 		result[k] = item
 	}
 
@@ -610,13 +610,13 @@ func CountValues[T comparable](collection iter.Seq[T]) map[T]int {
 	return CountValuesBy(collection, func(item T) T { return item })
 }
 
-// CountValuesBy counts the number of each element returned from mapper function.
+// CountValuesBy counts the number of each element returned from transform function.
 // Is equivalent to chaining Map and CountValues.
-func CountValuesBy[T any, U comparable](collection iter.Seq[T], mapper func(item T) U) map[U]int {
+func CountValuesBy[T any, U comparable](collection iter.Seq[T], transform func(item T) U) map[U]int {
 	result := make(map[U]int)
 
 	for item := range collection {
-		result[mapper(item)]++
+		result[transform(item)]++
 	}
 
 	return result
@@ -680,12 +680,12 @@ func IsSorted[T constraints.Ordered](collection iter.Seq[T]) bool {
 	return IsSortedByKey(collection, func(item T) T { return item })
 }
 
-// IsSortedByKey checks if a sequence is sorted by iteratee.
-func IsSortedByKey[T any, K constraints.Ordered](collection iter.Seq[T], iteratee func(item T) K) bool {
+// IsSortedByKey checks if a sequence is sorted by transform.
+func IsSortedByKey[T any, K constraints.Ordered](collection iter.Seq[T], transform func(item T) K) bool {
 	first := true
 	var prev K
 	for item := range collection {
-		key := iteratee(item)
+		key := transform(item)
 		if first {
 			first = false
 		} else if prev > key {

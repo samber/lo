@@ -157,25 +157,25 @@ func ChunkEntries[K comparable, V any](m map[K]V, size int) iter.Seq[map[K]V] {
 	}
 }
 
-// MapToSeq transforms a map into a sequence based on specified iteratee.
-func MapToSeq[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) R) iter.Seq[R] {
+// MapToSeq transforms a map into a sequence based on specified transform.
+func MapToSeq[K comparable, V, R any](in map[K]V, transform func(key K, value V) R) iter.Seq[R] {
 	return func(yield func(R) bool) {
 		for k, v := range in {
-			if !yield(iteratee(k, v)) {
+			if !yield(transform(k, v)) {
 				return
 			}
 		}
 	}
 }
 
-// FilterMapToSeq transforms a map into a sequence based on specified iteratee.
-// The iteratee returns a value and a boolean. If the boolean is true, the value is added to the result sequence.
+// FilterMapToSeq transforms a map into a sequence based on specified transform.
+// The transform returns a value and a boolean. If the boolean is true, the value is added to the result sequence.
 // If the boolean is false, the value is not added to the result sequence.
 // The order of the keys in the input map is not specified and the order of the keys in the output sequence is not guaranteed.
-func FilterMapToSeq[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) (R, bool)) iter.Seq[R] {
+func FilterMapToSeq[K comparable, V, R any](in map[K]V, transform func(key K, value V) (R, bool)) iter.Seq[R] {
 	return func(yield func(R) bool) {
 		for k, v := range in {
-			if v, ok := iteratee(k, v); ok && !yield(v) {
+			if v, ok := transform(k, v); ok && !yield(v) {
 				return
 			}
 		}

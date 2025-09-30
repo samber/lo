@@ -69,10 +69,10 @@ func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collec
 }
 
 // SumBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 0 is returned.
-func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], iteratee func(item T) R) R {
+func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], transform func(item T) R) R {
 	var sum R
 	for item := range collection {
-		sum += iteratee(item)
+		sum += transform(item)
 	}
 	return sum
 }
@@ -83,10 +83,10 @@ func Product[T constraints.Float | constraints.Integer | constraints.Complex](co
 }
 
 // ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 1 is returned.
-func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], iteratee func(item T) R) R {
+func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], transform func(item T) R) R {
 	var product R = 1
 	for item := range collection {
-		product *= iteratee(item)
+		product *= transform(item)
 	}
 	return product
 }
@@ -97,11 +97,11 @@ func Mean[T constraints.Float | constraints.Integer](collection iter.Seq[T]) T {
 }
 
 // MeanBy calculates the mean of a collection of numbers using the given return value from the iteration function.
-func MeanBy[T any, R constraints.Float | constraints.Integer](collection iter.Seq[T], iteratee func(item T) R) R {
+func MeanBy[T any, R constraints.Float | constraints.Integer](collection iter.Seq[T], transform func(item T) R) R {
 	var sum R
 	var length R
 	for item := range collection {
-		sum += iteratee(item)
+		sum += transform(item)
 		length++
 	}
 	if length == 0 {
