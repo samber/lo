@@ -274,31 +274,31 @@ func TestReduceI(t *testing.T) {
 	is.Equal(20, result2)
 }
 
-func TestReduceRight(t *testing.T) {
+func TestReduceLast(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := ReduceRight(values([]int{0, 1}, []int{2, 3}, []int{4, 5}), func(agg, item []int) []int {
+	result1 := ReduceLast(values([]int{0, 1}, []int{2, 3}, []int{4, 5}), func(agg, item []int) []int {
 		return append(agg, item...)
 	}, []int{})
 	is.Equal([]int{4, 5, 2, 3, 0, 1}, result1)
 
-	result2 := ReduceRight(values(1, 2, 3, 4), func(agg, item int) int {
+	result2 := ReduceLast(values(1, 2, 3, 4), func(agg, item int) int {
 		return agg + item
 	}, 10)
 	is.Equal(20, result2)
 }
 
-func TestReduceRightI(t *testing.T) {
+func TestReduceLastI(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := ReduceRightI(values([]int{0, 1}, []int{2, 3}, []int{4, 5}), func(agg, item []int, _ int) []int {
+	result1 := ReduceLastI(values([]int{0, 1}, []int{2, 3}, []int{4, 5}), func(agg, item []int, _ int) []int {
 		return append(agg, item...)
 	}, []int{})
 	is.Equal([]int{4, 5, 2, 3, 0, 1}, result1)
 
-	result2 := ReduceRightI(values(1, 2, 3, 4), func(agg, item, _ int) int {
+	result2 := ReduceLastI(values(1, 2, 3, 4), func(agg, item, _ int) int {
 		return agg + item
 	}, 10)
 	is.Equal(20, result2)
@@ -757,25 +757,25 @@ func TestDrop(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-func TestDropRight(t *testing.T) {
+func TestDropLast(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{0, 1, 2, 3, 4}, slices.Collect(DropRight(values(0, 1, 2, 3, 4), 0)))
-	is.Equal([]int{0, 1, 2, 3}, slices.Collect(DropRight(values(0, 1, 2, 3, 4), 1)))
-	is.Equal([]int{0, 1, 2}, slices.Collect(DropRight(values(0, 1, 2, 3, 4), 2)))
-	is.Equal([]int{0, 1}, slices.Collect(DropRight(values(0, 1, 2, 3, 4), 3)))
-	is.Equal([]int{0}, slices.Collect(DropRight(values(0, 1, 2, 3, 4), 4)))
-	is.Empty(slices.Collect(DropRight(values(0, 1, 2, 3, 4), 5)))
-	is.Empty(slices.Collect(DropRight(values(0, 1, 2, 3, 4), 6)))
+	is.Equal([]int{0, 1, 2, 3, 4}, slices.Collect(DropLast(values(0, 1, 2, 3, 4), 0)))
+	is.Equal([]int{0, 1, 2, 3}, slices.Collect(DropLast(values(0, 1, 2, 3, 4), 1)))
+	is.Equal([]int{0, 1, 2}, slices.Collect(DropLast(values(0, 1, 2, 3, 4), 2)))
+	is.Equal([]int{0, 1}, slices.Collect(DropLast(values(0, 1, 2, 3, 4), 3)))
+	is.Equal([]int{0}, slices.Collect(DropLast(values(0, 1, 2, 3, 4), 4)))
+	is.Empty(slices.Collect(DropLast(values(0, 1, 2, 3, 4), 5)))
+	is.Empty(slices.Collect(DropLast(values(0, 1, 2, 3, 4), 6)))
 
-	is.PanicsWithValue("it.DropRight: n must not be negative", func() {
-		DropRight(values(0, 1, 2, 3, 4), -1)
+	is.PanicsWithValue("it.DropLast: n must not be negative", func() {
+		DropLast(values(0, 1, 2, 3, 4), -1)
 	})
 
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := DropRight(allStrings, 2)
+	nonempty := DropLast(allStrings, 2)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
@@ -803,29 +803,29 @@ func TestDropWhile(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-func TestDropRightWhile(t *testing.T) {
+func TestDropLastWhile(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{0, 1, 2, 3}, slices.Collect(DropRightWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+	is.Equal([]int{0, 1, 2, 3}, slices.Collect(DropLastWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
 		return t != 3
 	})))
 
-	is.Equal([]int{0, 1}, slices.Collect(DropRightWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+	is.Equal([]int{0, 1}, slices.Collect(DropLastWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
 		return t != 1
 	})))
 
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, slices.Collect(DropRightWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, slices.Collect(DropLastWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
 		return t == 10
 	})))
 
-	is.Empty(slices.Collect(DropRightWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+	is.Empty(slices.Collect(DropLastWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
 		return t != 10
 	})))
 
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := DropRightWhile(allStrings, func(t string) bool {
+	nonempty := DropLastWhile(allStrings, func(t string) bool {
 		return t != "foo"
 	})
 	is.IsType(nonempty, allStrings, "type preserved")

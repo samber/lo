@@ -154,13 +154,13 @@ func ReduceI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, i
 	return initial
 }
 
-// ReduceRight is like Reduce except that it iterates over elements of collection from right to left.
-func ReduceRight[T, R any](collection iter.Seq[T], accumulator func(agg R, item T) R, initial R) R {
+// ReduceLast is like Reduce except that it iterates over elements of collection in reverse.
+func ReduceLast[T, R any](collection iter.Seq[T], accumulator func(agg R, item T) R, initial R) R {
 	return Reduce(Reverse(collection), accumulator, initial)
 }
 
-// ReduceRightI is like Reduce except that it iterates over elements of collection from right to left.
-func ReduceRightI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, index int) R, initial R) R {
+// ReduceLastI is like Reduce except that it iterates over elements of collection in reverse.
+func ReduceLastI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, index int) R, initial R) R {
 	return ReduceI(Reverse(collection), accumulator, initial)
 }
 
@@ -464,10 +464,10 @@ func Drop[T any, I ~func(func(T) bool)](collection I, n int) I {
 	}
 }
 
-// DropRight drops n elements from the end of a sequence.
-func DropRight[T any, I ~func(func(T) bool)](collection I, n int) I {
+// DropLast drops n elements from the end of a sequence.
+func DropLast[T any, I ~func(func(T) bool)](collection I, n int) I {
 	if n < 0 {
-		panic("it.DropRight: n must not be negative")
+		panic("it.DropLast: n must not be negative")
 	}
 
 	if n == 0 {
@@ -506,8 +506,8 @@ func DropWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T
 	}
 }
 
-// DropRightWhile drops elements from the end of a sequence while the predicate returns true.
-func DropRightWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I {
+// DropLastWhile drops elements from the end of a sequence while the predicate returns true.
+func DropLastWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I {
 	return func(yield func(T) bool) {
 		var buf []T
 		for item := range collection {

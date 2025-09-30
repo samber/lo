@@ -98,10 +98,10 @@ func ExampleReduce() {
 	// Output: 10
 }
 
-func ExampleReduceRight() {
+func ExampleReduceLast() {
 	list := slices.Values([][]int{{0, 1}, {2, 3}, {4, 5}})
 
-	result := ReduceRight(list, func(agg, item []int) []int {
+	result := ReduceLast(list, func(agg, item []int) []int {
 		return append(agg, item...)
 	}, []int{})
 
