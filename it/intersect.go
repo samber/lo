@@ -89,17 +89,57 @@ func NoneBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 	return true
 }
 
-// Intersect returns the intersection between two collections.
-func Intersect[T comparable, I ~func(func(T) bool)](list1, list2 I) I {
-	return func(yield func(T) bool) {
-		seen := Keyify(iter.Seq[T](list1))
+// Intersect returns the intersection between given collections.
+func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:gocyclo
+	if len(lists) == 0 {
+		return I(Empty[T]())
+	}
 
-		for item := range list2 {
-			if _, ok := seen[item]; ok {
-				if !yield(item) {
-					return
+	if len(lists) == 1 {
+		return lists[0]
+	}
+
+	return func(yield func(T) bool) {
+		seen := make(map[T]bool)
+
+		for i := len(lists) - 1; i >= 0; i-- {
+			if i == len(lists)-1 {
+				for item := range lists[i] {
+					seen[item] = true
 				}
-				delete(seen, item)
+				continue
+			}
+
+			if i == 0 {
+				for item := range lists[0] {
+					if _, ok := seen[item]; ok {
+						if !yield(item) {
+							return
+						}
+						delete(seen, item)
+					}
+				}
+				continue
+			}
+
+			for k := range seen {
+				seen[k] = false
+			}
+
+			for item := range lists[i] {
+				if _, ok := seen[item]; ok {
+					seen[item] = true
+				}
+			}
+
+			for k, v := range seen {
+				if !v {
+					delete(seen, k)
+				}
+			}
+
+			if len(seen) == 0 {
+				return
 			}
 		}
 	}
