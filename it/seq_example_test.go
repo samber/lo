@@ -10,6 +10,15 @@ import (
 	"strconv"
 )
 
+func ExampleLength() {
+	list := slices.Values([]int64{1, 2, 3, 4})
+
+	result := Length(list)
+
+	fmt.Printf("%v", result)
+	// Output: 4
+}
+
 func ExampleFilter() {
 	list := slices.Values([]int64{1, 2, 3, 4})
 

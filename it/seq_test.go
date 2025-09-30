@@ -14,6 +14,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestLength(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := Length(values[int]())
+	r2 := Length(values(1, 2, 3, 4))
+
+	is.Zero(r1)
+	is.Equal(4, r2)
+}
+
 func TestFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

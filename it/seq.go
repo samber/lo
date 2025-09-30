@@ -12,6 +12,17 @@ import (
 	"github.com/samber/lo/mutable"
 )
 
+// Length returns the length of collection.
+func Length[T any](collection iter.Seq[T]) int {
+	var count int
+
+	for range collection {
+		count++
+	}
+
+	return count
+}
+
 // Filter iterates over elements of collection, returning a sequence of all elements predicate returns true for.
 func Filter[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I {
 	return FilterI(collection, func(item T, _ int) bool { return predicate(item) })
