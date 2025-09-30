@@ -128,7 +128,7 @@ func Mode[T constraints.Integer | constraints.Float](collection iter.Seq[T]) []T
 
 		if count > maxFreq {
 			maxFreq = count
-			mode = []T{item}
+			mode = append(mode[:0], item)
 		} else if count == maxFreq {
 			mode = append(mode, item)
 		}
