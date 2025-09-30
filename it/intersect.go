@@ -33,13 +33,21 @@ func ContainsBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool
 
 // Every returns true if all elements of a subset are contained in a collection or if the subset is empty.
 func Every[T comparable](collection iter.Seq[T], subset ...T) bool {
-	for i := range subset {
-		if !Contains(collection, subset[i]) {
-			return false
+	if len(subset) == 0 {
+		return true
+	}
+
+	set := lo.Keyify(subset)
+	for item := range collection {
+		if _, ok := set[item]; ok {
+			delete(set, item)
+			if len(set) == 0 {
+				return true
+			}
 		}
 	}
 
-	return true
+	return false
 }
 
 // EveryBy returns true if the predicate returns true for all elements in the collection or if the collection is empty.
