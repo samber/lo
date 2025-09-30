@@ -12,12 +12,7 @@ func ChunkString[T ~string](str T, size int) iter.Seq[T] {
 	}
 
 	return func(yield func(T) bool) {
-		if len(str) == 0 {
-			yield("")
-			return
-		}
-
-		if size >= len(str) {
+		if len(str) == 0 || size >= len(str) {
 			yield(str)
 			return
 		}

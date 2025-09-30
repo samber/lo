@@ -224,13 +224,11 @@ func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, iteratee f
 		for item := range collection {
 			key := iteratee(item)
 
-			if _, ok := seen[key]; ok {
-				continue
-			}
-
-			seen[key] = struct{}{}
-			if !yield(item) {
-				return
+			if _, ok := seen[key]; !ok {
+				if !yield(item) {
+					return
+				}
+				seen[key] = struct{}{}
 			}
 		}
 	}
@@ -243,7 +241,7 @@ func GroupBy[T any, U comparable](collection iter.Seq[T], iteratee func(item T) 
 
 // GroupByMap returns an object composed of keys generated from the results of running each element of collection through iteratee.
 func GroupByMap[T any, K comparable, V any](collection iter.Seq[T], iteratee func(item T) (K, V)) map[K][]V {
-	result := map[K][]V{}
+	result := make(map[K][]V)
 
 	for item := range collection {
 		k, v := iteratee(item)
@@ -282,7 +280,7 @@ func Chunk[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through iteratee.
 func PartitionBy[T any, K comparable](collection iter.Seq[T], iteratee func(item T) K) [][]T {
-	result := [][]T{}
+	var result [][]T
 	seen := map[K]int{}
 
 	for item := range collection {
@@ -423,8 +421,7 @@ func FilterSeqToMap[T any, K comparable, V any](collection iter.Seq[T], transfor
 	result := make(map[K]V)
 
 	for item := range collection {
-		k, v, ok := transform(item)
-		if ok {
+		if k, v, ok := transform(item); ok {
 			result[k] = v
 		}
 	}

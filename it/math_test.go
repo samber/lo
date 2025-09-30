@@ -121,7 +121,6 @@ func TestProductBy(t *testing.T) {
 	result5 := ProductBy(values[uint32](2, 3, 4, 5), func(n uint32) uint32 { return n })
 	result6 := ProductBy(values[uint32](), func(n uint32) uint32 { return n })
 	result7 := ProductBy(values[complex128](4_4, 2_2), func(n complex128) complex128 { return n })
-	result8 := ProductBy(nil, func(n uint32) uint32 { return n })
 
 	is.InEpsilon(160.908, result1, 1e-7)
 	is.Equal(int32(120), result2)
@@ -130,7 +129,6 @@ func TestProductBy(t *testing.T) {
 	is.Equal(uint32(120), result5)
 	is.Equal(uint32(1), result6)
 	is.Equal(complex128(96_8), result7)
-	is.Equal(uint32(1), result8)
 }
 
 func TestMean(t *testing.T) {

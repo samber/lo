@@ -185,7 +185,7 @@ func WithoutBy[T any, K comparable, I ~func(func(T) bool)](collection I, iterate
 // WithoutNth returns a sequence excluding the nth value.
 func WithoutNth[T comparable, I ~func(func(T) bool)](collection I, nths ...int) I {
 	return func(yield func(T) bool) {
-		nths = lo.Filter(lo.Uniq(nths), func(item, _ int) bool { return item >= 0 })
+		nths = lo.Uniq(lo.Filter(nths, func(item, _ int) bool { return item >= 0 }))
 		sort.Ints(nths)
 
 		var i int

@@ -30,13 +30,12 @@ func UniqKeys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 
 		for i := range in {
 			for k := range in[i] {
-				if _, exists := seen[k]; exists {
-					continue
+				if _, ok := seen[k]; !ok {
+					if !yield(k) {
+						return
+					}
+					seen[k] = struct{}{}
 				}
-				if !yield(k) {
-					return
-				}
-				seen[k] = struct{}{}
 			}
 		}
 	}
@@ -63,13 +62,12 @@ func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V] {
 
 		for i := range in {
 			for _, v := range in[i] {
-				if _, exists := seen[v]; exists {
-					continue
+				if _, ok := seen[v]; !ok {
+					if !yield(v) {
+						return
+					}
+					seen[v] = struct{}{}
 				}
-				if !yield(v) {
-					return
-				}
-				seen[v] = struct{}{}
 			}
 		}
 	}

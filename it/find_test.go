@@ -4,7 +4,7 @@ package it
 
 import (
 	"iter"
-	"math/rand"
+	"math/rand/v2"
 	"slices"
 	"testing"
 	"time"
@@ -687,10 +687,8 @@ func TestSampleBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r := rand.New(rand.NewSource(42))
-
-	result1 := SampleBy(values("a", "b", "c"), r.Intn)
-	result2 := SampleBy(values[string](), rand.Intn)
+	result1 := SampleBy(values("a", "b", "c"), rand.IntN)
+	result2 := SampleBy(values[string](), rand.IntN)
 
 	is.True(Contains(values("a", "b", "c"), result1))
 	is.Empty(result2)
@@ -716,16 +714,14 @@ func TestSamplesBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r := rand.New(rand.NewSource(42))
-
-	result1 := SamplesBy(values("a", "b", "c"), 3, r.Intn)
-	result2 := SamplesBy(values[string](), 3, r.Intn)
+	result1 := SamplesBy(values("a", "b", "c"), 3, rand.IntN)
+	result2 := SamplesBy(values[string](), 3, rand.IntN)
 
 	is.ElementsMatch(slices.Collect(result1), []string{"a", "b", "c"})
 	is.Empty(slices.Collect(result2))
 
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := SamplesBy(allStrings, 2, r.Intn)
+	nonempty := SamplesBy(allStrings, 2, rand.IntN)
 	is.IsType(nonempty, allStrings, "type preserved")
 }

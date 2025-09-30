@@ -49,6 +49,7 @@ func HasPrefix[T comparable](collection iter.Seq[T], prefix ...T) bool {
 	}
 
 	var i int
+
 	for item := range collection {
 		if item != prefix[i] {
 			return false
@@ -58,6 +59,7 @@ func HasPrefix[T comparable](collection iter.Seq[T], prefix ...T) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -164,8 +166,7 @@ func FindUniquesBy[T any, U comparable, I ~func(func(T) bool)](collection I, ite
 		for item := range collection {
 			key := iteratee(item)
 
-			duplicated, ok := isDupl[key]
-			if !ok {
+			if duplicated, ok := isDupl[key]; !ok {
 				isDupl[key] = false
 			} else if !duplicated {
 				isDupl[key] = true
@@ -199,8 +200,7 @@ func FindDuplicatesBy[T any, U comparable, I ~func(func(T) bool)](collection I, 
 		for item := range collection {
 			key := iteratee(item)
 
-			duplicated, ok := isDupl[key]
-			if !ok {
+			if duplicated, ok := isDupl[key]; !ok {
 				isDupl[key] = false
 				first[key] = item
 			} else if !duplicated {
@@ -354,12 +354,11 @@ func FirstOrEmpty[T any](collection iter.Seq[T]) T {
 
 // FirstOr returns the first element of a collection or the fallback value if empty.
 func FirstOr[T any](collection iter.Seq[T], fallback T) T {
-	i, ok := First(collection)
-	if !ok {
-		return fallback
+	if i, ok := First(collection); ok {
+		return i
 	}
 
-	return i
+	return fallback
 }
 
 // Last returns the last element of a collection or error if empty.
@@ -382,12 +381,11 @@ func LastOrEmpty[T any](collection iter.Seq[T]) T {
 
 // LastOr returns the last element of a collection or the fallback value if empty.
 func LastOr[T any](collection iter.Seq[T], fallback T) T {
-	i, ok := Last(collection)
-	if !ok {
-		return fallback
+	if i, ok := Last(collection); ok {
+		return i
 	}
 
-	return i
+	return fallback
 }
 
 // Nth returns the element at index `nth` of collection. An error is returned when nth is out of bounds.
@@ -418,10 +416,7 @@ func NthOr[T any, N constraints.Integer](collection iter.Seq[T], nth N, fallback
 // NthOrEmpty returns the element at index `nth` of collection.
 // If `nth` is out of bounds, it returns the zero value (empty value) for that type.
 func NthOrEmpty[T any, N constraints.Integer](collection iter.Seq[T], nth N) T {
-	value, err := Nth(collection, nth)
-	if err != nil {
-		return lo.Empty[T]()
-	}
+	value, _ := Nth(collection, nth)
 	return value
 }
 

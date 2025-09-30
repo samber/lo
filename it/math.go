@@ -84,10 +84,6 @@ func Product[T constraints.Float | constraints.Integer | constraints.Complex](co
 
 // ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 1 is returned.
 func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], iteratee func(item T) R) R {
-	if collection == nil {
-		return 1
-	}
-
 	var product R = 1
 	for item := range collection {
 		product *= iteratee(item)
@@ -118,7 +114,7 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection iter.Se
 // If multiple values have the same highest frequency, then multiple values are returned.
 // If the collection is empty, then the zero value of T is returned.
 func Mode[T constraints.Integer | constraints.Float](collection iter.Seq[T]) []T {
-	mode := make([]T, 0)
+	var mode []T
 	maxFreq := 0
 	frequency := make(map[T]int)
 

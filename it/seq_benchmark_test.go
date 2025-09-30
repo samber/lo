@@ -5,7 +5,7 @@ package it
 import (
 	"fmt"
 	"iter"
-	"math/rand"
+	"math/rand/v2"
 	"strconv"
 	"testing"
 )
@@ -35,7 +35,7 @@ func BenchmarkChunk(b *testing.B) {
 func genStrings(n int) iter.Seq[string] {
 	return func(yield func(string) bool) {
 		for range n {
-			if !yield(strconv.Itoa(rand.Intn(100_000))) {
+			if !yield(strconv.Itoa(rand.IntN(100_000))) {
 				break
 			}
 		}
@@ -45,7 +45,7 @@ func genStrings(n int) iter.Seq[string] {
 func genInts(n int) iter.Seq[int] {
 	return func(yield func(int) bool) {
 		for range n {
-			if !yield(rand.Intn(100_000)) {
+			if !yield(rand.IntN(100_000)) {
 				break
 			}
 		}
