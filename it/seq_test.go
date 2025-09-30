@@ -47,6 +47,28 @@ func TestFilter(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestFilterI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := FilterI(values(1, 2, 3, 4), func(x, _ int) bool {
+		return x%2 == 0
+	})
+	is.Equal([]int{2, 4}, slices.Collect(r1))
+
+	r2 := FilterI(values("", "foo", "", "bar", ""), func(x string, _ int) bool {
+		return len(x) > 0
+	})
+	is.Equal([]string{"foo", "bar"}, slices.Collect(r2))
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := FilterI(allStrings, func(x string, _ int) bool {
+		return len(x) > 0
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
 func TestMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -55,6 +77,21 @@ func TestMap(t *testing.T) {
 		return "Hello"
 	})
 	result2 := Map(values[int64](1, 2, 3, 4), func(x int64) string {
+		return strconv.FormatInt(x, 10)
+	})
+
+	is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, slices.Collect(result1))
+	is.Equal([]string{"1", "2", "3", "4"}, slices.Collect(result2))
+}
+
+func TestMapI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := MapI(values(1, 2, 3, 4), func(x, _ int) string {
+		return "Hello"
+	})
+	result2 := MapI(values[int64](1, 2, 3, 4), func(x int64, _ int) string {
 		return strconv.FormatInt(x, 10)
 	})
 
@@ -79,6 +116,23 @@ func TestUniqMap(t *testing.T) {
 	is.Equal([]string{"Alice", "Alex"}, slices.Collect(result))
 }
 
+func TestUniqMapI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type User struct {
+		Name string
+		age  int
+	}
+
+	users := values(User{Name: "Alice", age: 20}, User{Name: "Alex", age: 21}, User{Name: "Alex", age: 22})
+	result := UniqMapI(users, func(item User, _ int) string {
+		return item.Name
+	})
+
+	is.Equal([]string{"Alice", "Alex"}, slices.Collect(result))
+}
+
 func TestFilterMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -90,6 +144,27 @@ func TestFilterMap(t *testing.T) {
 		return "", false
 	})
 	r2 := FilterMap(values("cpu", "gpu", "mouse", "keyboard"), func(x string) (string, bool) {
+		if strings.HasSuffix(x, "pu") {
+			return "xpu", true
+		}
+		return "", false
+	})
+
+	is.Equal([]string{"2", "4"}, slices.Collect(r1))
+	is.Equal([]string{"xpu", "xpu"}, slices.Collect(r2))
+}
+
+func TestFilterMapI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := FilterMapI(values[int64](1, 2, 3, 4), func(x int64, _ int) (string, bool) {
+		if x%2 == 0 {
+			return strconv.FormatInt(x, 10), true
+		}
+		return "", false
+	})
+	r2 := FilterMapI(values("cpu", "gpu", "mouse", "keyboard"), func(x string, _ int) (string, bool) {
 		if strings.HasSuffix(x, "pu") {
 			return "xpu", true
 		}
@@ -121,6 +196,27 @@ func TestFlatMap(t *testing.T) {
 	is.Equal([]string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"}, slices.Collect(result2))
 }
 
+func TestFlatMapI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := FlatMapI(values(0, 1, 2, 3, 4), func(x, _ int) iter.Seq[string] {
+		return values("Hello")
+	})
+	result2 := FlatMapI(values[int64](0, 1, 2, 3, 4), func(x int64, _ int) iter.Seq[string] {
+		return func(yield func(string) bool) {
+			for range x {
+				if !yield(strconv.FormatInt(x, 10)) {
+					return
+				}
+			}
+		}
+	})
+
+	is.Equal([]string{"Hello", "Hello", "Hello", "Hello", "Hello"}, slices.Collect(result1))
+	is.Equal([]string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"}, slices.Collect(result2))
+}
+
 func TestTimes(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -139,6 +235,21 @@ func TestReduce(t *testing.T) {
 		return agg + item
 	}, 0)
 	result2 := Reduce(values(1, 2, 3, 4), func(agg, item int) int {
+		return agg + item
+	}, 10)
+
+	is.Equal(10, result1)
+	is.Equal(20, result2)
+}
+
+func TestReduceI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := ReduceI(values(1, 2, 3, 4), func(agg, item, _ int) int {
+		return agg + item
+	}, 0)
+	result2 := ReduceI(values(1, 2, 3, 4), func(agg, item, _ int) int {
 		return agg + item
 	}, 10)
 
@@ -750,6 +861,30 @@ func TestReject(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestRejectI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := RejectI(values(1, 2, 3, 4), func(x, _ int) bool {
+		return x%2 == 0
+	})
+
+	is.Equal([]int{1, 3}, slices.Collect(r1))
+
+	r2 := RejectI(values("Smith", "foo", "Domin", "bar", "Olivia"), func(x string, _ int) bool {
+		return len(x) > 3
+	})
+
+	is.Equal([]string{"foo", "bar"}, slices.Collect(r2))
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := RejectI(allStrings, func(x string, _ int) bool {
+		return len(x) > 0
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
 func TestRejectMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -761,6 +896,27 @@ func TestRejectMap(t *testing.T) {
 		return "", true
 	})
 	r2 := RejectMap(values("cpu", "gpu", "mouse", "keyboard"), func(x string) (string, bool) {
+		if strings.HasSuffix(x, "pu") {
+			return "xpu", false
+		}
+		return "", true
+	})
+
+	is.Equal([]string{"2", "4"}, slices.Collect(r1))
+	is.Equal([]string{"xpu", "xpu"}, slices.Collect(r2))
+}
+
+func TestRejectMapI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := RejectMapI(values[int64](1, 2, 3, 4), func(x int64, _ int) (string, bool) {
+		if x%2 == 0 {
+			return strconv.FormatInt(x, 10), false
+		}
+		return "", true
+	})
+	r2 := RejectMapI(values("cpu", "gpu", "mouse", "keyboard"), func(x string, _ int) (string, bool) {
 		if strings.HasSuffix(x, "pu") {
 			return "xpu", false
 		}
