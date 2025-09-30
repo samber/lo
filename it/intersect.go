@@ -11,13 +11,7 @@ import (
 
 // Contains returns true if an element is present in a collection.
 func Contains[T comparable](collection iter.Seq[T], element T) bool {
-	for item := range collection {
-		if item == element {
-			return true
-		}
-	}
-
-	return false
+	return ContainsBy(collection, func(item T) bool { return item == element })
 }
 
 // ContainsBy returns true if predicate function return true.
@@ -64,13 +58,7 @@ func EveryBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 // Some returns true if at least 1 element of a subset is contained in a collection.
 // If the subset is empty Some returns false.
 func Some[T comparable](collection iter.Seq[T], subset ...T) bool {
-	for i := range subset {
-		if Contains(collection, subset[i]) {
-			return true
-		}
-	}
-
-	return false
+	return SomeBy(collection, func(item T) bool { return lo.Contains(subset, item) })
 }
 
 // SomeBy returns true if the predicate returns true for any of the elements in the collection.
@@ -87,13 +75,7 @@ func SomeBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 
 // None returns true if no element of a subset is contained in a collection or if the subset is empty.
 func None[T comparable](collection iter.Seq[T], subset ...T) bool {
-	for i := range subset {
-		if Contains(collection, subset[i]) {
-			return false
-		}
-	}
-
-	return true
+	return NoneBy(collection, func(item T) bool { return lo.Contains(subset, item) })
 }
 
 // NoneBy returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
@@ -110,11 +92,7 @@ func NoneBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 // Intersect returns the intersection between two collections.
 func Intersect[T comparable, I ~func(func(T) bool)](list1, list2 I) I {
 	return func(yield func(T) bool) {
-		seen := map[T]struct{}{}
-
-		for item := range list1 {
-			seen[item] = struct{}{}
-		}
+		seen := Keyify(iter.Seq[T](list1))
 
 		for item := range list2 {
 			if _, ok := seen[item]; ok && !yield(item) {
@@ -144,31 +122,17 @@ func Union[T comparable, I ~func(func(T) bool)](lists ...I) I {
 
 // Without returns a sequence excluding all given values.
 func Without[T comparable, I ~func(func(T) bool)](collection I, exclude ...T) I {
-	return func(yield func(T) bool) {
-		excludeMap := make(map[T]struct{}, len(exclude))
-		for i := range exclude {
-			excludeMap[exclude[i]] = struct{}{}
-		}
-
-		for item := range collection {
-			if _, ok := excludeMap[item]; !ok && !yield(item) {
-				return
-			}
-		}
-	}
+	return WithoutBy(collection, func(item T) T { return item }, exclude...)
 }
 
 // WithoutBy filters a sequence by excluding elements whose extracted keys match any in the exclude list.
 // Returns a sequence containing only the elements whose keys are not in the exclude list.
 func WithoutBy[T any, K comparable, I ~func(func(T) bool)](collection I, iteratee func(item T) K, exclude ...K) I {
 	return func(yield func(T) bool) {
-		excludeMap := make(map[K]struct{}, len(exclude))
-		for _, e := range exclude {
-			excludeMap[e] = struct{}{}
-		}
+		set := lo.Keyify(exclude)
 
 		for item := range collection {
-			if _, ok := excludeMap[iteratee(item)]; !ok && !yield(item) {
+			if _, ok := set[iteratee(item)]; !ok && !yield(item) {
 				return
 			}
 		}

@@ -14,13 +14,7 @@ import (
 
 // Filter iterates over elements of collection, returning a sequence of all elements predicate returns true for.
 func Filter[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I {
-	return func(yield func(T) bool) {
-		for item := range collection {
-			if predicate(item) && !yield(item) {
-				return
-			}
-		}
-	}
+	return FilterI(collection, func(item T, _ int) bool { return predicate(item) })
 }
 
 // FilterI iterates over elements of collection, returning a sequence of all elements predicate returns true for.
@@ -38,13 +32,7 @@ func FilterI[T any, I ~func(func(T) bool)](collection I, predicate func(item T, 
 
 // Map manipulates a sequence and transforms it to a sequence of another type.
 func Map[T, R any](collection iter.Seq[T], iteratee func(item T) R) iter.Seq[R] {
-	return func(yield func(R) bool) {
-		for item := range collection {
-			if !yield(iteratee(item)) {
-				return
-			}
-		}
-	}
+	return MapI(collection, func(item T, _ int) R { return iteratee(item) })
 }
 
 // MapI manipulates a sequence and transforms it to a sequence of another type.
@@ -62,18 +50,7 @@ func MapI[T, R any](collection iter.Seq[T], iteratee func(item T, index int) R) 
 
 // UniqMap manipulates a sequence and transforms it to a sequence of another type with unique values.
 func UniqMap[T any, R comparable](collection iter.Seq[T], iteratee func(item T) R) iter.Seq[R] {
-	return func(yield func(R) bool) {
-		seen := make(map[R]struct{})
-		for item := range collection {
-			r := iteratee(item)
-			if _, ok := seen[r]; !ok {
-				if !yield(r) {
-					return
-				}
-				seen[r] = struct{}{}
-			}
-		}
-	}
+	return UniqMapI(collection, func(item T, _ int) R { return iteratee(item) })
 }
 
 // UniqMapI manipulates a sequence and transforms it to a sequence of another type with unique values.
@@ -99,13 +76,7 @@ func UniqMapI[T any, R comparable](collection iter.Seq[T], iteratee func(item T,
 //   - the result of the mapping operation and
 //   - whether the result element should be included or not.
 func FilterMap[T, R any](collection iter.Seq[T], callback func(item T) (R, bool)) iter.Seq[R] {
-	return func(yield func(R) bool) {
-		for item := range collection {
-			if r, ok := callback(item); ok && !yield(r) {
-				return
-			}
-		}
-	}
+	return FilterMapI(collection, func(item T, _ int) (R, bool) { return callback(item) })
 }
 
 // FilterMapI returns a sequence obtained after both filtering and mapping using the given callback function.
@@ -128,15 +99,7 @@ func FilterMapI[T, R any](collection iter.Seq[T], callback func(item T, index in
 // The transform function can either return a sequence or a `nil`, and in the `nil` case
 // no value is yielded.
 func FlatMap[T, R any](collection iter.Seq[T], iteratee func(item T) iter.Seq[R]) iter.Seq[R] {
-	return func(yield func(R) bool) {
-		for item := range collection {
-			for r := range iteratee(item) {
-				if !yield(r) {
-					return
-				}
-			}
-		}
-	}
+	return FlatMapI(collection, func(item T, _ int) iter.Seq[R] { return iteratee(item) })
 }
 
 // FlatMapI manipulates a sequence and transforms and flattens it to a sequence of another type.
@@ -159,11 +122,7 @@ func FlatMapI[T, R any](collection iter.Seq[T], iteratee func(item T, index int)
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
 func Reduce[T, R any](collection iter.Seq[T], accumulator func(agg R, item T) R, initial R) R {
-	for item := range collection {
-		initial = accumulator(initial, item)
-	}
-
-	return initial
+	return ReduceI(collection, func(agg R, item T, _ int) R { return accumulator(agg, item) }, initial)
 }
 
 // ReduceI reduces collection to a value which is the accumulated result of running each element in collection
@@ -190,11 +149,7 @@ func ReduceRightI[T, R any](collection iter.Seq[T], accumulator func(agg R, item
 
 // ForEach iterates over elements of collection and invokes iteratee for each element.
 func ForEach[T any](collection iter.Seq[T], iteratee func(item T)) {
-	var i int
-	for item := range collection {
-		iteratee(item)
-		i++
-	}
+	ForEachI(collection, func(item T, _ int) { iteratee(item) })
 }
 
 // ForEachI iterates over elements of collection and invokes iteratee for each element.
@@ -209,11 +164,7 @@ func ForEachI[T any](collection iter.Seq[T], iteratee func(item T, index int)) {
 // ForEachWhile iterates over elements of collection and invokes iteratee for each element
 // collection return value decide to continue or break, like do while().
 func ForEachWhile[T any](collection iter.Seq[T], iteratee func(item T) bool) {
-	for item := range collection {
-		if !iteratee(item) {
-			return
-		}
-	}
+	ForEachWhileI(collection, func(item T, _ int) bool { return iteratee(item) })
 }
 
 // ForEachWhileI iterates over elements of collection and invokes iteratee for each element
@@ -243,20 +194,7 @@ func Times[T any](count int, iteratee func(index int) T) iter.Seq[T] {
 // Uniq returns a duplicate-free version of a sequence, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the sequence.
 func Uniq[T comparable, I ~func(func(T) bool)](collection I) I {
-	return func(yield func(T) bool) {
-		seen := make(map[T]struct{})
-
-		for item := range collection {
-			if _, ok := seen[item]; ok {
-				continue
-			}
-
-			seen[item] = struct{}{}
-			if !yield(item) {
-				return
-			}
-		}
-	}
+	return UniqBy(collection, func(item T) T { return item })
 }
 
 // UniqBy returns a duplicate-free version of a sequence, in which only the first occurrence of each element is kept.
@@ -283,15 +221,7 @@ func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, iteratee f
 
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 func GroupBy[T any, U comparable](collection iter.Seq[T], iteratee func(item T) U) map[U][]T {
-	result := map[U][]T{}
-
-	for item := range collection {
-		key := iteratee(item)
-
-		result[key] = append(result[key], item)
-	}
-
-	return result
+	return GroupByMap(collection, func(item T) (U, T) { return iteratee(item), item })
 }
 
 // GroupByMap returns an object composed of keys generated from the results of running each element of collection through iteratee.
@@ -420,13 +350,7 @@ func Fill[T lo.Clonable[T], I ~func(func(T) bool)](collection I, initial T) I {
 
 // Repeat builds a sequence with N copies of initial value.
 func Repeat[T lo.Clonable[T]](count int, initial T) iter.Seq[T] {
-	return func(yield func(T) bool) {
-		for range count {
-			if !yield(initial.Clone()) {
-				return
-			}
-		}
-	}
+	return RepeatBy(count, func(int) T { return initial.Clone() })
 }
 
 // RepeatBy builds a sequence with values returned by N calls of callback.
@@ -609,13 +533,7 @@ func DropByIndex[T any, I ~func(func(T) bool)](collection I, indexes ...int) I {
 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return true for.
 func Reject[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I {
-	return func(yield func(T) bool) {
-		for item := range collection {
-			if !predicate(item) && !yield(item) {
-				return
-			}
-		}
-	}
+	return RejectI(collection, func(item T, _ int) bool { return predicate(item) })
 }
 
 // RejectI is the opposite of Filter, this method returns the elements of collection that predicate does not return true for.
@@ -636,13 +554,7 @@ func RejectI[T any, I ~func(func(T) bool)](collection I, predicate func(item T, 
 //   - the result of the mapping operation and
 //   - whether the result element should be included or not.
 func RejectMap[T, R any](collection iter.Seq[T], callback func(item T) (R, bool)) iter.Seq[R] {
-	return func(yield func(R) bool) {
-		for item := range collection {
-			if r, ok := callback(item); !ok && !yield(r) {
-				return
-			}
-		}
-	}
+	return RejectMapI(collection, func(item T, _ int) (R, bool) { return callback(item) })
 }
 
 // RejectMapI is the opposite of FilterMap, this method returns a sequence obtained after both filtering and mapping using the given callback function.
@@ -663,15 +575,7 @@ func RejectMapI[T, R any](collection iter.Seq[T], callback func(item T, index in
 
 // Count counts the number of elements in the collection that equal value.
 func Count[T comparable](collection iter.Seq[T], value T) int {
-	var count int
-
-	for item := range collection {
-		if item == value {
-			count++
-		}
-	}
-
-	return count
+	return CountBy(collection, func(item T) bool { return item == value })
 }
 
 // CountBy counts the number of elements in the collection for which predicate is true.
@@ -689,13 +593,7 @@ func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int {
 
 // CountValues counts the number of each element in the collection.
 func CountValues[T comparable](collection iter.Seq[T]) map[T]int {
-	result := make(map[T]int)
-
-	for item := range collection {
-		result[item]++
-	}
-
-	return result
+	return CountValuesBy(collection, func(item T) T { return item })
 }
 
 // CountValuesBy counts the number of each element returned from mapper function.
@@ -719,15 +617,7 @@ func Subset[T any, I ~func(func(T) bool)](collection I, offset, length int) I {
 		panic("it.Subset: length must not be negative")
 	}
 
-	return func(yield func(T) bool) {
-		var i int
-		for item := range collection {
-			if i >= offset && i < offset+length && !yield(item) {
-				return
-			}
-			i++
-		}
-	}
+	return Slice(collection, offset, offset+length)
 }
 
 // Slice returns a subset of a sequence from `start` up to, but not including `end`.
@@ -752,20 +642,13 @@ func Slice[T any, I ~func(func(T) bool)](collection I, start, end int) I {
 
 // Replace returns a sequence with the first n non-overlapping instances of old replaced by new.
 func Replace[T comparable, I ~func(func(T) bool)](collection I, old, nEw T, n int) I {
-	return func(yield func(T) bool) {
-		for item := range collection {
-			if n == 0 || item != old {
-				if !yield(item) {
-					return
-				}
-			} else {
-				if !yield(nEw) {
-					return
-				}
-				n--
-			}
+	return I(Map(iter.Seq[T](collection), func(item T) T {
+		if n != 0 && item == old {
+			n--
+			return nEw
 		}
-	}
+		return item
+	}))
 }
 
 // ReplaceAll returns a sequence with all non-overlapping instances of old replaced by new.
@@ -775,30 +658,12 @@ func ReplaceAll[T comparable, I ~func(func(T) bool)](collection I, old, nEw T) I
 
 // Compact returns a sequence of all non-zero elements.
 func Compact[T comparable, I ~func(func(T) bool)](collection I) I {
-	return func(yield func(T) bool) {
-		var zero T
-
-		for item := range collection {
-			if item != zero && !yield(item) {
-				return
-			}
-		}
-	}
+	return Filter(collection, lo.IsNotEmpty)
 }
 
 // IsSorted checks if a sequence is sorted.
 func IsSorted[T constraints.Ordered](collection iter.Seq[T]) bool {
-	first := true
-	var prev T
-	for item := range collection {
-		if first {
-			first = false
-		} else if prev > item {
-			return false
-		}
-		prev = item
-	}
-	return true
+	return IsSortedByKey(collection, func(item T) T { return item })
 }
 
 // IsSortedByKey checks if a sequence is sorted by iteratee.

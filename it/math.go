@@ -65,11 +65,7 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 
 // Sum sums the values in a collection. If collection is empty 0 is returned.
 func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T]) T {
-	var sum T
-	for item := range collection {
-		sum += item
-	}
-	return sum
+	return SumBy(collection, func(item T) T { return item })
 }
 
 // SumBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 0 is returned.
@@ -83,11 +79,7 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 
 // Product gets the product of the values in a collection. If collection is empty 1 is returned.
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T]) T {
-	var product T = 1
-	for item := range collection {
-		product *= item
-	}
-	return product
+	return ProductBy(collection, func(item T) T { return item })
 }
 
 // ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 1 is returned.
@@ -105,16 +97,7 @@ func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Co
 
 // Mean calculates the mean of a collection of numbers.
 func Mean[T constraints.Float | constraints.Integer](collection iter.Seq[T]) T {
-	var sum T
-	var length T
-	for item := range collection {
-		sum += item
-		length++
-	}
-	if length == 0 {
-		return 0
-	}
-	return sum / length
+	return MeanBy(collection, func(item T) T { return item })
 }
 
 // MeanBy calculates the mean of a collection of numbers using the given return value from the iteration function.

@@ -102,8 +102,7 @@ func Find[T any](collection iter.Seq[T], predicate func(item T) bool) (T, bool) 
 		}
 	}
 
-	var result T
-	return result, false
+	return lo.Empty[T](), false
 }
 
 // FindIndexOf searches for an element in a sequence based on a predicate and returns the index and true.
@@ -117,8 +116,7 @@ func FindIndexOf[T any](collection iter.Seq[T], predicate func(item T) bool) (T,
 		i++
 	}
 
-	var result T
-	return result, -1, false
+	return lo.Empty[T](), -1, false
 }
 
 // FindLastIndexOf searches for the last element in a sequence based on a predicate and returns the index and true.
@@ -143,10 +141,8 @@ func FindLastIndexOf[T any](collection iter.Seq[T], predicate func(item T) bool)
 
 // FindOrElse searches for an element in a sequence based on a predicate. Returns the element if found or a given fallback value otherwise.
 func FindOrElse[T any](collection iter.Seq[T], fallback T, predicate func(item T) bool) T {
-	for item := range collection {
-		if predicate(item) {
-			return item
-		}
+	if result, ok := Find(collection, predicate); ok {
+		return result
 	}
 
 	return fallback
@@ -155,24 +151,7 @@ func FindOrElse[T any](collection iter.Seq[T], fallback T, predicate func(item T
 // FindUniques returns a sequence with all the elements that appear in the collection only once.
 // The order of result values is determined by the order they occur in the collection.
 func FindUniques[T comparable, I ~func(func(T) bool)](collection I) I {
-	return func(yield func(T) bool) {
-		isDupl := make(map[T]bool)
-
-		for item := range collection {
-			duplicated, ok := isDupl[item]
-			if !ok {
-				isDupl[item] = false
-			} else if !duplicated {
-				isDupl[item] = true
-			}
-		}
-
-		for item := range collection {
-			if duplicated := isDupl[item]; !duplicated && !yield(item) {
-				return
-			}
-		}
-	}
+	return FindUniquesBy(collection, func(item T) T { return item })
 }
 
 // FindUniquesBy returns a sequence with all the elements that appear in the collection only once.
@@ -206,21 +185,7 @@ func FindUniquesBy[T any, U comparable, I ~func(func(T) bool)](collection I, ite
 // FindDuplicates returns a sequence with the first occurrence of each duplicated element in the collection.
 // The order of result values is determined by the order duplicates occur in the collection.
 func FindDuplicates[T comparable, I ~func(func(T) bool)](collection I) I {
-	return func(yield func(T) bool) {
-		isDupl := make(map[T]bool)
-
-		for item := range collection {
-			duplicated, ok := isDupl[item]
-			if !ok {
-				isDupl[item] = false
-			} else if !duplicated {
-				if !yield(item) {
-					return
-				}
-				isDupl[item] = true
-			}
-		}
-	}
+	return FindDuplicatesBy(collection, func(item T) T { return item })
 }
 
 // FindDuplicatesBy returns a sequence with the first occurrence of each duplicated element in the collection.
@@ -251,37 +216,13 @@ func FindDuplicatesBy[T any, U comparable, I ~func(func(T) bool)](collection I, 
 // Min search the minimum value of a collection.
 // Returns zero value when the collection is empty.
 func Min[T constraints.Ordered](collection iter.Seq[T]) T {
-	first := true
-	var mIn T
-
-	for item := range collection {
-		if first {
-			mIn = item
-			first = false
-		} else if item < mIn {
-			mIn = item
-		}
-	}
-
-	return mIn
+	return MinBy(collection, func(a, b T) bool { return a < b })
 }
 
 // MinIndex search the minimum value of a collection and the index of the minimum value.
 // Returns (zero value, -1) when the collection is empty.
 func MinIndex[T constraints.Ordered](collection iter.Seq[T]) (T, int) {
-	var mIn T
-	index := -1
-
-	var i int
-	for item := range collection {
-		if i == 0 || item < mIn {
-			mIn = item
-			index = i
-		}
-		i++
-	}
-
-	return mIn, index
+	return MinIndexBy(collection, func(a, b T) bool { return a < b })
 }
 
 // MinBy search the minimum value of a collection using the given comparison function.
@@ -337,37 +278,13 @@ func EarliestBy[T any](collection iter.Seq[T], iteratee func(item T) time.Time) 
 // Max searches the maximum value of a collection.
 // Returns zero value when the collection is empty.
 func Max[T constraints.Ordered](collection iter.Seq[T]) T {
-	first := true
-	var mAx T
-
-	for item := range collection {
-		if first {
-			mAx = item
-			first = false
-		} else if item > mAx {
-			mAx = item
-		}
-	}
-
-	return mAx
+	return MaxBy(collection, func(a, b T) bool { return a > b })
 }
 
 // MaxIndex searches the maximum value of a collection and the index of the maximum value.
 // Returns (zero value, -1) when the collection is empty.
 func MaxIndex[T constraints.Ordered](collection iter.Seq[T]) (T, int) {
-	var mAx T
-	index := -1
-
-	var i int
-	for item := range collection {
-		if i == 0 || item > mAx {
-			mAx = item
-			index = i
-		}
-		i++
-	}
-
-	return mAx, index
+	return MaxIndexBy(collection, func(a, b T) bool { return a > b })
 }
 
 // MaxBy search the maximum value of a collection using the given comparison function.
@@ -426,8 +343,7 @@ func First[T any](collection iter.Seq[T]) (T, bool) {
 		return item, true
 	}
 
-	var t T
-	return t, false
+	return lo.Empty[T](), false
 }
 
 // FirstOrEmpty returns the first element of a collection or zero value if empty.
@@ -486,8 +402,7 @@ func Nth[T any, N constraints.Integer](collection iter.Seq[T], nth N) (T, error)
 		}
 	}
 
-	var t T
-	return t, fmt.Errorf("nth: %d out of bounds", nth)
+	return lo.Empty[T](), fmt.Errorf("nth: %d out of bounds", nth)
 }
 
 // NthOr returns the element at index `nth` of collection.
@@ -505,8 +420,7 @@ func NthOr[T any, N constraints.Integer](collection iter.Seq[T], nth N, fallback
 func NthOrEmpty[T any, N constraints.Integer](collection iter.Seq[T], nth N) T {
 	value, err := Nth(collection, nth)
 	if err != nil {
-		var zeroValue T
-		return zeroValue
+		return lo.Empty[T]()
 	}
 	return value
 }

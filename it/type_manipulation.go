@@ -26,27 +26,18 @@ func FromSeqPtrOr[T any](collection iter.Seq[*T], fallback T) iter.Seq[T] {
 
 // ToAnySeq returns a sequence with all elements mapped to `any` type.
 func ToAnySeq[T any](collection iter.Seq[T]) iter.Seq[any] {
-	return func(yield func(any) bool) {
-		for item := range collection {
-			if !yield(item) {
-				return
-			}
-		}
-	}
+	return Map(collection, func(x T) any { return x })
 }
 
 // FromAnySeq returns a sequence with all elements mapped to a type.
 // Panics on type conversion failure.
 func FromAnySeq[T any](collection iter.Seq[any]) iter.Seq[T] {
-	return func(yield func(T) bool) {
-		for item := range collection {
-			if t, ok := item.(T); !ok {
-				panic("it.FromAnySeq: type conversion failed")
-			} else if !yield(t) {
-				return
-			}
+	return Map(collection, func(item any) T {
+		if t, ok := item.(T); ok {
+			return t
 		}
-	}
+		panic("it.FromAnySeq: type conversion failed")
+	})
 }
 
 // Empty returns an empty sequence.
@@ -74,15 +65,11 @@ func CoalesceSeq[T any](v ...iter.Seq[T]) (iter.Seq[T], bool) {
 			return v[i], true
 		}
 	}
-	return func(yield func(T) bool) {}, false
+	return Empty[T](), false
 }
 
 // CoalesceSeqOrEmpty returns the first non-empty sequence.
 func CoalesceSeqOrEmpty[T any](v ...iter.Seq[T]) iter.Seq[T] {
-	for i := range v {
-		for range v[i] {
-			return v[i]
-		}
-	}
-	return func(yield func(T) bool) {}
+	result, _ := CoalesceSeq(v...)
+	return result
 }

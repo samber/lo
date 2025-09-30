@@ -5,6 +5,8 @@ package it
 import (
 	"iter"
 	"maps"
+
+	"github.com/samber/lo"
 )
 
 // Keys creates a sequence of the map keys.
@@ -23,11 +25,7 @@ func Keys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 // UniqKeys creates a sequence of unique keys in the map.
 func UniqKeys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 	return func(yield func(K) bool) {
-		size := 0
-		for i := range in {
-			size += len(in[i])
-		}
-
+		size := lo.SumBy(in, func(m map[K]V) int { return len(m) })
 		seen := make(map[K]struct{}, size)
 
 		for i := range in {
@@ -60,11 +58,7 @@ func Values[K comparable, V any](in ...map[K]V) iter.Seq[V] {
 // UniqValues creates a sequence of unique values in the map.
 func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V] {
 	return func(yield func(V) bool) {
-		size := 0
-		for i := range in {
-			size += len(in[i])
-		}
-
+		size := lo.SumBy(in, func(m map[K]V) int { return len(m) })
 		seen := make(map[V]struct{}, size)
 
 		for i := range in {
