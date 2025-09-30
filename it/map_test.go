@@ -265,6 +265,39 @@ func TestFilterValues(t *testing.T) {
 	is.Empty(slices.Collect(result2))
 }
 
+func TestSeqToSeq2(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := maps.Collect(SeqToSeq2(values("foo", "bar")))
+	is.Equal(map[int]string{0: "foo", 1: "bar"}, r1)
+
+	r2 := maps.Collect(SeqToSeq2(values[string]()))
+	is.Empty(r2)
+}
+
+func TestSeq2KeyToSeq(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := slices.Collect(Seq2KeyToSeq(maps.All(map[string]int{"foo": 4, "bar": 5})))
+	is.ElementsMatch([]string{"foo", "bar"}, r1)
+
+	r2 := slices.Collect(Seq2KeyToSeq(maps.All(map[string]int{})))
+	is.Empty(r2)
+}
+
+func TestSeq2ValueToSeq(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := slices.Collect(Seq2ValueToSeq(maps.All(map[string]int{"foo": 4, "bar": 5})))
+	is.ElementsMatch([]int{4, 5}, r1)
+
+	r2 := slices.Collect(Seq2ValueToSeq(maps.All(map[string]int{})))
+	is.Empty(r2)
+}
+
 func BenchmarkAssign(b *testing.B) {
 	counts := []int{32768, 1024, 128, 32, 2}
 

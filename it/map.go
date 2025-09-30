@@ -207,3 +207,38 @@ func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V
 		}
 	}
 }
+
+// SeqToSeq2 converts a sequence into a sequence of key-value pairs keyed by index.
+func SeqToSeq2[T any](in iter.Seq[T]) iter.Seq2[int, T] {
+	return func(yield func(int, T) bool) {
+		var i int
+		for item := range in {
+			if !yield(i, item) {
+				return
+			}
+			i++
+		}
+	}
+}
+
+// Seq2KeyToSeq converts a sequence of key-value pairs into a sequence of keys.
+func Seq2KeyToSeq[K, V any](in iter.Seq2[K, V]) iter.Seq[K] {
+	return func(yield func(K) bool) {
+		for k := range in {
+			if !yield(k) {
+				return
+			}
+		}
+	}
+}
+
+// Seq2ValueToSeq converts a sequence of key-value pairs into a sequence of values.
+func Seq2ValueToSeq[K, V any](in iter.Seq2[K, V]) iter.Seq[V] {
+	return func(yield func(V) bool) {
+		for _, v := range in {
+			if !yield(v) {
+				return
+			}
+		}
+	}
+}
