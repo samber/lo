@@ -185,12 +185,14 @@ func TestIntersect(t *testing.T) {
 	result3 := Intersect(values(0, 1, 2, 3, 4, 5), values(-1, 6))
 	result4 := Intersect(values(0, 6), values(0, 1, 2, 3, 4, 5))
 	result5 := Intersect(values(0, 6, 0), values(0, 1, 2, 3, 4, 5))
+	result6 := Intersect(values(0, 1, 2, 3, 4, 5), values(0, 6, 0))
 
 	is.Equal([]int{0, 2}, slices.Collect(result1))
 	is.Equal([]int{0}, slices.Collect(result2))
 	is.Empty(slices.Collect(result3))
 	is.Equal([]int{0}, slices.Collect(result4))
 	is.Equal([]int{0}, slices.Collect(result5))
+	is.Equal([]int{0}, slices.Collect(result6))
 
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar"))

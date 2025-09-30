@@ -95,8 +95,11 @@ func Intersect[T comparable, I ~func(func(T) bool)](list1, list2 I) I {
 		seen := Keyify(iter.Seq[T](list1))
 
 		for item := range list2 {
-			if _, ok := seen[item]; ok && !yield(item) {
-				return
+			if _, ok := seen[item]; ok {
+				if !yield(item) {
+					return
+				}
+				delete(seen, item)
 			}
 		}
 	}
