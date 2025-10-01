@@ -1241,3 +1241,61 @@ func TestSplice(t *testing.T) {
 	nonempty := Splice(allStrings, 1, "1", "2")
 	is.IsType(nonempty, allStrings, "type preserved")
 }
+
+func TestCutPrefix(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual, result := CutPrefix(values("a", "a", "b"), []string{"a"})
+	is.True(result)
+	is.Equal([]string{"a", "b"}, slices.Collect(actual))
+
+	actual, result = CutPrefix(values("a", "a", "b"), []string{"a"})
+	is.True(result)
+	is.Equal([]string{"a", "b"}, slices.Collect(actual))
+
+	actual, result = CutPrefix(values("a", "a", "b"), []string{"b"})
+	is.False(result)
+	is.Equal([]string{"a", "a", "b"}, slices.Collect(actual))
+
+	actual, result = CutPrefix(values[string](), []string{"b"})
+	is.False(result)
+	is.Empty(slices.Collect(actual))
+
+	actual, result = CutPrefix(values("a", "a", "b"), []string{})
+	is.True(result)
+	is.Equal([]string{"a", "a", "b"}, slices.Collect(actual))
+
+	actual, result = CutPrefix(values("a", "a", "b"), []string{"a", "a", "b", "b"})
+	is.False(result)
+	is.Equal([]string{"a", "a", "b"}, slices.Collect(actual))
+
+	actual, result = CutPrefix(values("a", "a", "b"), []string{"a", "b"})
+	is.False(result)
+	is.Equal([]string{"a", "a", "b"}, slices.Collect(actual))
+}
+
+func TestCutSuffix(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual, result := CutSuffix(values("a", "a", "b"), []string{"c"})
+	is.False(result)
+	is.Equal([]string{"a", "a", "b"}, slices.Collect(actual))
+
+	actual, result = CutSuffix(values("a", "a", "b"), []string{"b"})
+	is.True(result)
+	is.Equal([]string{"a", "a"}, slices.Collect(actual))
+
+	actual, result = CutSuffix(values("a", "a", "b"), []string{})
+	is.True(result)
+	is.Equal([]string{"a", "a", "b"}, slices.Collect(actual))
+
+	actual, result = CutSuffix(values("a", "a", "b"), []string{"a"})
+	is.False(result)
+	is.Equal([]string{"a", "a", "b"}, slices.Collect(actual))
+
+	actual, result = CutSuffix(values("a", "a", "b"), []string{})
+	is.True(result)
+	is.Equal([]string{"a", "a", "b"}, slices.Collect(actual))
+}

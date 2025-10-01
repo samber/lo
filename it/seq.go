@@ -707,3 +707,65 @@ func Splice[T any, I ~func(func(T) bool)](collection I, index int, elements ...T
 		}
 	}
 }
+
+// CutPrefix returns collection without the provided leading prefix
+// and reports whether it found the prefix.
+// If collection doesn't start with prefix, CutPrefix returns collection, false.
+// If prefix is empty, CutPrefix returns collection, true.
+func CutPrefix[T comparable, I ~func(func(T) bool)](collection I, separator []T) (after I, found bool) { //nolint:gocyclo
+	if len(separator) == 0 {
+		return collection, true
+	}
+
+	next, stop := iter.Pull(iter.Seq[T](collection))
+	for i := range separator {
+		item, ok := next()
+		if !ok {
+			return func(yield func(T) bool) {
+				defer stop()
+				for j := 0; j < i; j++ {
+					if !yield(separator[j]) {
+						return
+					}
+				}
+			}, false
+		}
+
+		if item != separator[i] {
+			return func(yield func(T) bool) {
+				defer stop()
+				for j := 0; j < i; j++ {
+					if !yield(separator[j]) {
+						return
+					}
+				}
+				if ok && !yield(item) {
+					return
+				}
+				for {
+					if item, ok := next(); !ok || !yield(item) {
+						return
+					}
+				}
+			}, false
+		}
+	}
+
+	return func(yield func(T) bool) {
+		defer stop()
+		for {
+			if item, ok := next(); !ok || !yield(item) {
+				return
+			}
+		}
+	}, true
+}
+
+// CutSuffix returns collection without the provided ending suffix and reports
+// whether it found the suffix. If collection doesn't end with suffix, CutSuffix returns collection, false.
+// If suffix is empty, CutSuffix returns collection, true.
+func CutSuffix[T comparable, I ~func(func(T) bool)](collection I, separator []T) (before I, found bool) {
+	slice := slices.Collect(iter.Seq[T](collection))
+	result, ok := lo.CutSuffix(slice, separator)
+	return I(slices.Values(result)), ok
+}

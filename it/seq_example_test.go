@@ -538,3 +538,45 @@ func ExampleIsSortedBy() {
 
 	// Output: true
 }
+
+func ExampleCutPrefix() {
+	collection := slices.Values([]string{"a", "b", "c", "d", "e", "f", "g"})
+
+	// Test with valid prefix
+	after, found := CutPrefix(collection, []string{"a", "b", "c"})
+	fmt.Printf("After: %v, Found: %t\n", slices.Collect(after), found)
+
+	// Test with prefix not found
+	after2, found2 := CutPrefix(collection, []string{"b"})
+	fmt.Printf("After: %v, Found: %t\n", slices.Collect(after2), found2)
+
+	// Test with empty prefix
+	after3, found3 := CutPrefix(collection, []string{})
+	fmt.Printf("After: %v, Found: %t\n", slices.Collect(after3), found3)
+
+	// Output:
+	// After: [d e f g], Found: true
+	// After: [a b c d e f g], Found: false
+	// After: [a b c d e f g], Found: true
+}
+
+func ExampleCutSuffix() {
+	collection := slices.Values([]string{"a", "b", "c", "d", "e", "f", "g"})
+
+	// Test with valid suffix
+	before, found := CutSuffix(collection, []string{"f", "g"})
+	fmt.Printf("Before: %v, Found: %t\n", slices.Collect(before), found)
+
+	// Test with suffix not found
+	before2, found2 := CutSuffix(collection, []string{"b"})
+	fmt.Printf("Before: %v, Found: %t\n", slices.Collect(before2), found2)
+
+	// Test with empty suffix
+	before3, found3 := CutSuffix(collection, []string{})
+	fmt.Printf("Before: %v, Found: %t\n", slices.Collect(before3), found3)
+
+	// Output:
+	// Before: [a b c d e], Found: true
+	// Before: [a b c d e f g], Found: false
+	// Before: [a b c d e f g], Found: true
+}
