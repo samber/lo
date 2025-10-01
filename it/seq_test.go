@@ -1299,3 +1299,91 @@ func TestCutSuffix(t *testing.T) {
 	is.True(result)
 	is.Equal([]string{"a", "a", "b"}, slices.Collect(actual))
 }
+
+func TestTrim(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual := Trim(values("a", "b", "c", "d", "e", "f", "g"), "a", "b")
+	is.Equal([]string{"c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = Trim(values("a", "b", "c", "d", "e", "f", "g"), "g", "f")
+	is.Equal([]string{"a", "b", "c", "d", "e"}, slices.Collect(actual))
+	actual = Trim(values("a", "b", "c", "d", "e", "f", "g"), "a", "b", "c", "d", "e", "f", "g")
+	is.Empty(slices.Collect(actual))
+	actual = Trim(values("a", "b", "c", "d", "e", "f", "g"), "a", "b", "c", "d", "e", "f", "g", "h")
+	is.Empty(slices.Collect(actual))
+	actual = Trim(values("a", "b", "c", "d", "e", "f", "g"))
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+}
+
+func TestTrimFirst(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual := TrimFirst(values("a", "a", "b", "c", "d", "e", "f", "g"), "a", "b")
+	is.Equal([]string{"c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = TrimFirst(values("a", "b", "c", "d", "e", "f", "g"), "b", "a")
+	is.Equal([]string{"c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = TrimFirst(values("a", "b", "c", "d", "e", "f", "g"), "g", "f")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = TrimFirst(values("a", "b", "c", "d", "e", "f", "g"), "a", "b", "c", "d", "e", "f", "g")
+	is.Empty(slices.Collect(actual))
+	actual = TrimFirst(values("a", "b", "c", "d", "e", "f", "g"), "a", "b", "c", "d", "e", "f", "g", "h")
+	is.Empty(slices.Collect(actual))
+	actual = TrimFirst(values("a", "b", "c", "d", "e", "f", "g"))
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+}
+
+func TestTrimPrefix(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual := TrimPrefix(values("a", "b", "a", "b", "c", "d", "e", "f", "g"), []string{"a", "b"})
+	is.Equal([]string{"c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = TrimPrefix(values("a", "b", "c", "d", "e", "f", "g"), []string{"b", "a"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = TrimPrefix(values("a", "b", "c", "d", "e", "f", "g"), []string{"g", "f"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = TrimPrefix(values("a", "b", "c", "d", "e", "f", "g"), []string{"a", "b", "c", "d", "e", "f", "g"})
+	is.Empty(slices.Collect(actual))
+	actual = TrimPrefix(values("a", "b", "c", "d", "e", "f", "g"), []string{"a", "b", "c", "d", "e", "f", "g", "h"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = TrimPrefix(values("a", "b", "c", "d", "e", "f", "g"), []string{})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+}
+
+func TestTrimLast(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual := TrimLast(values("a", "b", "c", "d", "e", "f", "g"), "a", "b")
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = TrimLast(values("a", "b", "c", "d", "e", "f", "g", "g"), "g", "f")
+	is.Equal([]string{"a", "b", "c", "d", "e"}, slices.Collect(actual))
+	actual = TrimLast(values("a", "b", "c", "d", "e", "f", "g"), "a", "b", "c", "d", "e", "f", "g")
+	is.Empty(slices.Collect(actual))
+	actual = TrimLast(values("a", "b", "c", "d", "e", "f", "g"), "a", "b", "c", "d", "e", "f", "g", "h")
+	is.Empty(slices.Collect(actual))
+	actual = TrimLast(values("a", "b", "c", "d", "e", "f", "g"))
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+}
+
+func TestTrimSuffix(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	actual := TrimSuffix(values("a", "b", "c", "d", "e", "f", "g"), []string{"a", "b"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = TrimSuffix(values("a", "b", "c", "d", "e", "f", "g", "f", "g"), []string{"f", "g"})
+	is.Equal([]string{"a", "b", "c", "d", "e"}, slices.Collect(actual))
+	actual = TrimSuffix(values("a", "b", "c", "d", "e", "f", "g", "f", "g"), []string{"g", "f"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g", "f", "g"}, slices.Collect(actual))
+	actual = TrimSuffix(values("a", "b", "c", "d", "e", "f", "f", "g"), []string{"f", "g"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f"}, slices.Collect(actual))
+	actual = TrimSuffix(values("a", "b", "c", "d", "e", "f", "g"), []string{"a", "b", "c", "d", "e", "f", "g"})
+	is.Empty(slices.Collect(actual))
+	actual = TrimSuffix(values("a", "b", "c", "d", "e", "f", "g"), []string{"a", "b", "c", "d", "e", "f", "g", "h"})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+	actual = TrimSuffix(values("a", "b", "c", "d", "e", "f", "g"), []string{})
+	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
+}

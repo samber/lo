@@ -580,3 +580,113 @@ func ExampleCutSuffix() {
 	// Before: [a b c d e f g], Found: false
 	// Before: [a b c d e f g], Found: true
 }
+
+func ExampleTrim() {
+	collection := slices.Values([]int{0, 1, 2, 0, 3, 0})
+
+	// Test with valid cutset
+	result := Trim(collection, 0)
+	fmt.Printf("Trim with cutset {0}: %v\n", slices.Collect(result))
+
+	// Test with string collection
+	words := slices.Values([]string{"  hello  ", "world", "  "})
+	result2 := Trim(words, " ")
+	fmt.Printf("Trim with string cutset: %v\n", slices.Collect(result2))
+
+	// Test with no cutset elements
+	result3 := Trim(collection, 5)
+	fmt.Printf("Trim with cutset {5} (not present): %v\n", slices.Collect(result3))
+
+	// Output:
+	// Trim with cutset {0}: [1 2 0 3]
+	// Trim with string cutset: [  hello   world   ]
+	// Trim with cutset {5} (not present): [0 1 2 0 3 0]
+}
+
+func ExampleTrimFirst() {
+	collection := slices.Values([]int{0, 1, 2, 0, 3, 0})
+
+	// Test with valid cutset
+	result := TrimFirst(collection, 0)
+	fmt.Printf("TrimFirst with cutset {0}: %v\n", slices.Collect(result))
+
+	// Test with string collection
+	words := slices.Values([]string{"  hello  ", "world", "  "})
+	result2 := TrimFirst(words, " ")
+	fmt.Printf("TrimFirst with string cutset: %v\n", slices.Collect(result2))
+
+	// Test with no cutset elements
+	result3 := TrimFirst(collection, 5)
+	fmt.Printf("TrimFirst with cutset {5} (not present): %v\n", slices.Collect(result3))
+
+	// Output:
+	// TrimFirst with cutset {0}: [1 2 0 3 0]
+	// TrimFirst with string cutset: [  hello   world   ]
+	// TrimFirst with cutset {5} (not present): [0 1 2 0 3 0]
+}
+
+func ExampleTrimPrefix() {
+	collection := slices.Values([]int{1, 2, 1, 2, 3})
+
+	// Test with valid prefix
+	result := TrimPrefix(collection, []int{1, 2})
+	fmt.Printf("TrimPrefix with prefix {1,2}: %v\n", slices.Collect(result))
+
+	// Test with string collection
+	words := slices.Values([]string{"hello", "hello", "world"})
+	result2 := TrimPrefix(words, []string{"hello"})
+	fmt.Printf("TrimPrefix with string prefix: %v\n", slices.Collect(result2))
+
+	// Test with prefix not present
+	result3 := TrimPrefix(collection, []int{5, 6})
+	fmt.Printf("TrimPrefix with prefix {5,6} (not present): %v\n", slices.Collect(result3))
+
+	// Output:
+	// TrimPrefix with prefix {1,2}: [3]
+	// TrimPrefix with string prefix: [world]
+	// TrimPrefix with prefix {5,6} (not present): [1 2 1 2 3]
+}
+
+func ExampleTrimLast() {
+	collection := slices.Values([]int{0, 1, 2, 0, 3, 0})
+
+	// Test with valid cutset
+	result := TrimLast(collection, 0)
+	fmt.Printf("TrimLast with cutset {0}: %v\n", slices.Collect(result))
+
+	// Test with string collection
+	words := slices.Values([]string{"  hello  ", "world", "  "})
+	result2 := TrimLast(words, " ")
+	fmt.Printf("TrimLast with string cutset: %v\n", slices.Collect(result2))
+
+	// Test with no cutset elements
+	result3 := TrimLast(collection, 5)
+	fmt.Printf("TrimLast with cutset {5} (not present): %v\n", slices.Collect(result3))
+
+	// Output:
+	// TrimLast with cutset {0}: [0 1 2 0 3]
+	// TrimLast with string cutset: [  hello   world   ]
+	// TrimLast with cutset {5} (not present): [0 1 2 0 3 0]
+}
+
+func ExampleTrimSuffix() {
+	collection := slices.Values([]int{1, 2, 1, 2, 3})
+
+	// Test with valid suffix
+	result := TrimSuffix(collection, []int{1, 2})
+	fmt.Printf("TrimSuffix with suffix {1,2}: %v\n", slices.Collect(result))
+
+	// Test with string collection
+	words := slices.Values([]string{"hello", "world", "test"})
+	result2 := TrimSuffix(words, []string{"test"})
+	fmt.Printf("TrimSuffix with string suffix: %v\n", slices.Collect(result2))
+
+	// Test with suffix not present
+	result3 := TrimSuffix(collection, []int{5, 6})
+	fmt.Printf("TrimSuffix with suffix {5,6} (not present): %v\n", slices.Collect(result3))
+
+	// Output:
+	// TrimSuffix with suffix {1,2}: [1 2 1 2 3]
+	// TrimSuffix with string suffix: [hello world]
+	// TrimSuffix with suffix {5,6} (not present): [1 2 1 2 3]
+}

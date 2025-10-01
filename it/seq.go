@@ -769,3 +769,95 @@ func CutSuffix[T comparable, I ~func(func(T) bool)](collection I, separator []T)
 	result, ok := lo.CutSuffix(slice, separator)
 	return I(slices.Values(result)), ok
 }
+
+// Trim removes all the leading and trailing cutset from the collection.
+func Trim[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
+	predicate := lo.Partial(lo.HasKey, lo.Keyify(cutset))
+	return DropWhile(DropLastWhile(collection, predicate), predicate)
+}
+
+// TrimFirst removes all the leading cutset from the collection.
+func TrimFirst[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
+	return DropWhile(collection, lo.Partial(lo.HasKey, lo.Keyify(cutset)))
+}
+
+// TrimPrefix removes all the leading prefix from the collection.
+func TrimPrefix[T comparable, I ~func(func(T) bool)](collection I, prefix []T) I {
+	n := len(prefix)
+	if n == 0 {
+		return collection
+	}
+
+	return func(yield func(T) bool) {
+		var i int
+		for item := range collection {
+			if i < 0 {
+				if !yield(item) {
+					return
+				}
+				continue
+			}
+
+			if item == prefix[i] {
+				i = (i + 1) % n
+				continue
+			}
+
+			for j := 0; j < i; j++ {
+				if !yield(prefix[j]) {
+					return
+				}
+			}
+			if !yield(item) {
+				return
+			}
+			i = -1
+		}
+		for j := 0; j < i; j++ {
+			if !yield(prefix[j]) {
+				return
+			}
+		}
+	}
+}
+
+// TrimLast removes all the trailing cutset from the collection.
+func TrimLast[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
+	return DropLastWhile(collection, lo.Partial(lo.HasKey, lo.Keyify(cutset)))
+}
+
+// TrimSuffix removes all the trailing suffix from the collection.
+func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I {
+	n := len(suffix)
+	if n == 0 {
+		return collection
+	}
+
+	return func(yield func(T) bool) {
+		var i int
+		for item := range collection {
+			if item == suffix[i%n] {
+				i++
+			} else {
+				for j := 0; j < i; j++ {
+					if !yield(suffix[j%n]) {
+						return
+					}
+				}
+				i = 0
+				if item == suffix[i] {
+					i++
+				} else if !yield(item) {
+					return
+				}
+			}
+		}
+		if i%n != 0 {
+			for j := 0; j < i; j++ {
+				if !yield(suffix[j%n]) {
+					return
+				}
+			}
+		}
+	}
+}
