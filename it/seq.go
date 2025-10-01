@@ -677,11 +677,11 @@ func Compact[T comparable, I ~func(func(T) bool)](collection I) I {
 
 // IsSorted checks if a sequence is sorted.
 func IsSorted[T constraints.Ordered](collection iter.Seq[T]) bool {
-	return IsSortedByKey(collection, func(item T) T { return item })
+	return IsSortedBy(collection, func(item T) T { return item })
 }
 
-// IsSortedByKey checks if a sequence is sorted by transform.
-func IsSortedByKey[T any, K constraints.Ordered](collection iter.Seq[T], transform func(item T) K) bool {
+// IsSortedBy checks if a sequence is sorted by transform.
+func IsSortedBy[T any, K constraints.Ordered](collection iter.Seq[T], transform func(item T) K) bool {
 	first := true
 	var prev K
 	for item := range collection {

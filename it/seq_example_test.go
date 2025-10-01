@@ -527,10 +527,10 @@ func ExampleIsSorted() {
 	// Output: true
 }
 
-func ExampleIsSortedByKey() {
+func ExampleIsSortedBy() {
 	list := slices.Values([]string{"a", "bb", "ccc"})
 
-	result := IsSortedByKey(list, func(s string) int {
+	result := IsSortedBy(list, func(s string) int {
 		return len(s)
 	})
 

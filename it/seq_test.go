@@ -1195,19 +1195,19 @@ func TestIsSorted(t *testing.T) {
 	is.False(IsSorted(values("a", "b", "d", "c", "e", "f", "g", "h", "i", "j")))
 }
 
-func TestIsSortedByKey(t *testing.T) {
+func TestIsSortedBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.True(IsSortedByKey(values("a", "bb", "ccc"), func(s string) int {
+	is.True(IsSortedBy(values("a", "bb", "ccc"), func(s string) int {
 		return len(s)
 	}))
 
-	is.False(IsSortedByKey(values("aa", "b", "ccc"), func(s string) int {
+	is.False(IsSortedBy(values("aa", "b", "ccc"), func(s string) int {
 		return len(s)
 	}))
 
-	is.True(IsSortedByKey(values("1", "2", "3", "11"), func(s string) int {
+	is.True(IsSortedBy(values("1", "2", "3", "11"), func(s string) int {
 		ret, _ := strconv.Atoi(s)
 		return ret
 	}))
