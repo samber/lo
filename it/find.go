@@ -98,13 +98,7 @@ func HasSuffix[T comparable](collection iter.Seq[T], suffix ...T) bool {
 
 // Find searches for an element in a sequence based on a predicate. Returns element and true if element was found.
 func Find[T any](collection iter.Seq[T], predicate func(item T) bool) (T, bool) {
-	for item := range collection {
-		if predicate(item) {
-			return item, true
-		}
-	}
-
-	return lo.Empty[T](), false
+	return First(Filter(collection, predicate))
 }
 
 // FindIndexOf searches for an element in a sequence based on a predicate and returns the index and true.

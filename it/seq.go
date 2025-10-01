@@ -67,25 +67,12 @@ func MapI[T, R any](collection iter.Seq[T], transform func(item T, index int) R)
 
 // UniqMap manipulates a sequence and transforms it to a sequence of another type with unique values.
 func UniqMap[T any, R comparable](collection iter.Seq[T], transform func(item T) R) iter.Seq[R] {
-	return UniqMapI(collection, func(item T, _ int) R { return transform(item) })
+	return Uniq(Map(collection, transform))
 }
 
 // UniqMapI manipulates a sequence and transforms it to a sequence of another type with unique values.
 func UniqMapI[T any, R comparable](collection iter.Seq[T], transform func(item T, index int) R) iter.Seq[R] {
-	return func(yield func(R) bool) {
-		seen := make(map[R]struct{})
-		var i int
-		for item := range collection {
-			r := transform(item, i)
-			if _, ok := seen[r]; !ok {
-				if !yield(r) {
-					return
-				}
-				seen[r] = struct{}{}
-			}
-			i++
-		}
-	}
+	return Uniq(MapI(collection, transform))
 }
 
 // FilterMap returns a sequence obtained after both filtering and mapping using the given callback function.
@@ -450,15 +437,7 @@ func Drop[T any, I ~func(func(T) bool)](collection I, n int) I {
 		return collection
 	}
 
-	return func(yield func(T) bool) {
-		var i int
-		for item := range collection {
-			if i >= n && !yield(item) {
-				return
-			}
-			i++
-		}
-	}
+	return FilterI(collection, func(item T, index int) bool { return index >= n })
 }
 
 // DropLast drops n elements from the end of a sequence.
@@ -596,10 +575,8 @@ func Count[T comparable](collection iter.Seq[T], value T) int {
 func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int {
 	var count int
 
-	for item := range collection {
-		if predicate(item) {
-			count++
-		}
+	for range Filter(collection, predicate) {
+		count++
 	}
 
 	return count

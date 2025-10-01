@@ -16,13 +16,7 @@ func Contains[T comparable](collection iter.Seq[T], element T) bool {
 
 // ContainsBy returns true if predicate function return true.
 func ContainsBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
-	for item := range collection {
-		if predicate(item) {
-			return true
-		}
-	}
-
-	return false
+	return IsNotEmpty(Filter(collection, predicate))
 }
 
 // Every returns true if all elements of a subset are contained in a collection or if the subset is empty.
@@ -46,13 +40,7 @@ func Every[T comparable](collection iter.Seq[T], subset ...T) bool {
 
 // EveryBy returns true if the predicate returns true for all elements in the collection or if the collection is empty.
 func EveryBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
-	for item := range collection {
-		if !predicate(item) {
-			return false
-		}
-	}
-
-	return true
+	return IsEmpty(Reject(collection, predicate))
 }
 
 // Some returns true if at least 1 element of a subset is contained in a collection.
@@ -64,13 +52,7 @@ func Some[T comparable](collection iter.Seq[T], subset ...T) bool {
 // SomeBy returns true if the predicate returns true for any of the elements in the collection.
 // If the collection is empty SomeBy returns false.
 func SomeBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
-	for item := range collection {
-		if predicate(item) {
-			return true
-		}
-	}
-
-	return false
+	return IsNotEmpty(Filter(collection, predicate))
 }
 
 // None returns true if no element of a subset is contained in a collection or if the subset is empty.
@@ -80,13 +62,7 @@ func None[T comparable](collection iter.Seq[T], subset ...T) bool {
 
 // NoneBy returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
 func NoneBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
-	for item := range collection {
-		if predicate(item) {
-			return false
-		}
-	}
-
-	return true
+	return IsEmpty(Filter(collection, predicate))
 }
 
 // Intersect returns the intersection between given collections.
@@ -171,15 +147,8 @@ func Without[T comparable, I ~func(func(T) bool)](collection I, exclude ...T) I 
 // WithoutBy filters a sequence by excluding elements whose extracted keys match any in the exclude list.
 // Returns a sequence containing only the elements whose keys are not in the exclude list.
 func WithoutBy[T any, K comparable, I ~func(func(T) bool)](collection I, transform func(item T) K, exclude ...K) I {
-	return func(yield func(T) bool) {
-		set := lo.Keyify(exclude)
-
-		for item := range collection {
-			if _, ok := set[transform(item)]; !ok && !yield(item) {
-				return
-			}
-		}
-	}
+	set := lo.Keyify(exclude)
+	return Reject(collection, func(item T) bool { return lo.HasKey(set, transform(item)) })
 }
 
 // WithoutNth returns a sequence excluding the nth value.
