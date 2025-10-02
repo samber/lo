@@ -529,6 +529,38 @@ func TestAssociate(t *testing.T) {
 	}
 }
 
+func TestAssociateI(t *testing.T) {
+	t.Parallel()
+
+	transform := func(s string, i int) (int, string) {
+		return i % 2, s
+	}
+	testCases := []struct {
+		in   []string
+		want map[int]string
+	}{
+		{
+			in:   []string{"zero"},
+			want: map[int]string{0: "zero"},
+		},
+		{
+			in:   []string{"zero", "one"},
+			want: map[int]string{0: "zero", 1: "one"},
+		},
+		{
+			in:   []string{"two", "one", "zero"},
+			want: map[int]string{0: "zero", 1: "one"},
+		},
+	}
+	for i, tc := range testCases {
+		tc := tc
+		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tc.want, AssociateI(tc.in, transform))
+		})
+	}
+}
+
 func TestSliceToMap(t *testing.T) {
 	t.Parallel()
 
@@ -565,6 +597,38 @@ func TestSliceToMap(t *testing.T) {
 	}
 }
 
+func TestSliceToMapI(t *testing.T) {
+	t.Parallel()
+
+	transform := func(s string, i int) (int, string) {
+		return i % 2, s
+	}
+	testCases := []struct {
+		in   []string
+		want map[int]string
+	}{
+		{
+			in:   []string{"zero"},
+			want: map[int]string{0: "zero"},
+		},
+		{
+			in:   []string{"zero", "one"},
+			want: map[int]string{0: "zero", 1: "one"},
+		},
+		{
+			in:   []string{"two", "one", "zero"},
+			want: map[int]string{0: "zero", 1: "one"},
+		},
+	}
+	for i, tc := range testCases {
+		tc := tc
+		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tc.want, SliceToMapI(tc.in, transform))
+		})
+	}
+}
+
 func TestFilterSliceToMap(t *testing.T) {
 	t.Parallel()
 
@@ -597,6 +661,38 @@ func TestFilterSliceToMap(t *testing.T) {
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tc.want, FilterSliceToMap(tc.in, transform))
+		})
+	}
+}
+
+func TestFilterSliceToMapI(t *testing.T) {
+	t.Parallel()
+
+	transform := func(s string, i int) (int, string, bool) {
+		return i % 5, s, i%2 == 0
+	}
+	testCases := []struct {
+		in   []string
+		want map[int]string
+	}{
+		{
+			in:   []string{"zero"},
+			want: map[int]string{0: "zero"},
+		},
+		{
+			in:   []string{"zero", "one", "two", "three", "four"},
+			want: map[int]string{0: "zero", 2: "two", 4: "four"},
+		},
+		{
+			in:   []string{"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"},
+			want: map[int]string{0: "ten", 1: "six", 2: "two", 3: "eight", 4: "four"},
+		},
+	}
+	for i, tc := range testCases {
+		tc := tc
+		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tc.want, FilterSliceToMapI(tc.in, transform))
 		})
 	}
 }

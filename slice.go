@@ -397,6 +397,21 @@ func Associate[T any, K comparable, V any](collection []T, transform func(item T
 	return result
 }
 
+// AssociateI returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// If any of two pairs have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original slice.
+// Play: https://go.dev/play/p/Ugmz6S22rRO
+func AssociateI[T any, K comparable, V any](collection []T, transform func(item T, index int) (K, V)) map[K]V {
+	result := make(map[K]V, len(collection))
+
+	for index, item := range collection {
+		k, v := transform(item, index)
+		result[k] = v
+	}
+
+	return result
+}
+
 // SliceToMap returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 // If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original slice.
@@ -404,6 +419,15 @@ func Associate[T any, K comparable, V any](collection []T, transform func(item T
 // Play: https://go.dev/play/p/WHa2CfMO3Lr
 func SliceToMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K]V {
 	return Associate(collection, transform)
+}
+
+// SliceToMapI returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// If any of two pairs have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original slice.
+// Alias of AssociateI().
+// Play: https://go.dev/play/p/mMBm5GV3_eq
+func SliceToMapI[T any, K comparable, V any](collection []T, transform func(item T, index int) (K, V)) map[K]V {
+	return AssociateI(collection, transform)
 }
 
 // FilterSliceToMap returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
@@ -416,6 +440,24 @@ func FilterSliceToMap[T any, K comparable, V any](collection []T, transform func
 
 	for i := range collection {
 		k, v, ok := transform(collection[i])
+		if ok {
+			result[k] = v
+		}
+	}
+
+	return result
+}
+
+// FilterSliceToMapI returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
+// If any of two pairs have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original slice.
+// The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
+// Play: https://go.dev/play/p/mSz_bUIk9aJ
+func FilterSliceToMapI[T any, K comparable, V any](collection []T, transform func(item T, index int) (K, V, bool)) map[K]V {
+	result := make(map[K]V, len(collection))
+
+	for index, item := range collection {
+		k, v, ok := transform(item, index)
 		if ok {
 			result[k] = v
 		}
