@@ -4,7 +4,6 @@ package it
 
 import (
 	"iter"
-	"sort"
 
 	"github.com/samber/lo"
 )
@@ -153,20 +152,8 @@ func WithoutBy[T any, K comparable, I ~func(func(T) bool)](collection I, transfo
 
 // WithoutNth returns a sequence excluding the nth value.
 func WithoutNth[T comparable, I ~func(func(T) bool)](collection I, nths ...int) I {
-	return func(yield func(T) bool) {
-		nths = lo.Uniq(lo.Filter(nths, func(item, _ int) bool { return item >= 0 }))
-		sort.Ints(nths)
-
-		var i int
-		for item := range collection {
-			if len(nths) > 0 && nths[0] == i {
-				nths = nths[1:]
-			} else if !yield(item) {
-				return
-			}
-			i++
-		}
-	}
+	set := lo.Keyify(nths)
+	return RejectI(collection, func(_ T, index int) bool { return lo.HasKey(set, index) })
 }
 
 // ElementsMatch returns true if lists contain the same set of elements (including empty set).

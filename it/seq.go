@@ -5,7 +5,6 @@ package it
 import (
 	"iter"
 	"slices"
-	"sort"
 
 	"github.com/samber/lo"
 	"github.com/samber/lo/internal/constraints"
@@ -247,17 +246,20 @@ func Chunk[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 	}
 
 	return func(yield func([]T) bool) {
-		newSlice := make([]T, 0, size)
+		var newSlice []T
 		for item := range collection {
+			if newSlice == nil {
+				newSlice = make([]T, 0, size)
+			}
 			newSlice = append(newSlice, item)
 			if len(newSlice) == size {
 				if !yield(newSlice) {
 					return
 				}
-				newSlice = make([]T, 0, size)
+				newSlice = nil
 			}
 		}
-		if len(newSlice) > 0 {
+		if newSlice != nil {
 			yield(newSlice)
 		}
 	}
@@ -508,20 +510,8 @@ func DropLastWhile[T any, I ~func(func(T) bool)](collection I, predicate func(it
 
 // DropByIndex drops elements from a sequence by the index.
 func DropByIndex[T any, I ~func(func(T) bool)](collection I, indexes ...int) I {
-	return func(yield func(T) bool) {
-		indexes = lo.Filter(lo.Uniq(indexes), func(item, _ int) bool { return item >= 0 })
-		sort.Ints(indexes)
-
-		var i int
-		for item := range collection {
-			if len(indexes) > 0 && indexes[0] == i {
-				indexes = indexes[1:]
-			} else if !yield(item) {
-				return
-			}
-			i++
-		}
-	}
+	set := lo.Keyify(indexes)
+	return RejectI(collection, func(_ T, index int) bool { return lo.HasKey(set, index) })
 }
 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return true for.

@@ -5,8 +5,6 @@ package it
 import (
 	"iter"
 	"maps"
-
-	"github.com/samber/lo"
 )
 
 // Keys creates a sequence of the map keys.
@@ -25,8 +23,7 @@ func Keys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 // UniqKeys creates a sequence of unique keys in the map.
 func UniqKeys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 	return func(yield func(K) bool) {
-		size := lo.SumBy(in, func(m map[K]V) int { return len(m) })
-		seen := make(map[K]struct{}, size)
+		seen := make(map[K]struct{})
 
 		for i := range in {
 			for k := range in[i] {
@@ -57,8 +54,7 @@ func Values[K comparable, V any](in ...map[K]V) iter.Seq[V] {
 // UniqValues creates a sequence of unique values in the map.
 func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V] {
 	return func(yield func(V) bool) {
-		size := lo.SumBy(in, func(m map[K]V) int { return len(m) })
-		seen := make(map[V]struct{}, size)
+		seen := make(map[V]struct{})
 
 		for i := range in {
 			for _, v := range in[i] {
@@ -141,17 +137,20 @@ func ChunkEntries[K comparable, V any](m map[K]V, size int) iter.Seq[map[K]V] {
 	}
 
 	return func(yield func(map[K]V) bool) {
-		result := make(map[K]V, size)
+		var result map[K]V
 		for k, v := range m {
+			if result == nil {
+				result = make(map[K]V, size)
+			}
 			result[k] = v
 			if len(result) == size {
 				if !yield(result) {
 					return
 				}
-				result = make(map[K]V, size)
+				result = nil
 			}
 		}
-		if len(result) > 0 {
+		if result != nil {
 			yield(result)
 		}
 	}

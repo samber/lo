@@ -188,20 +188,18 @@ func FindDuplicates[T comparable, I ~func(func(T) bool)](collection I) I {
 // invoked for each element in the sequence to generate the criterion by which uniqueness is computed.
 func FindDuplicatesBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I {
 	return func(yield func(T) bool) {
-		isDupl := make(map[U]bool)
-		first := make(map[U]T)
+		isDupl := make(map[U]lo.Tuple2[T, bool])
 
 		for item := range collection {
 			key := transform(item)
 
 			if duplicated, ok := isDupl[key]; !ok {
-				isDupl[key] = false
-				first[key] = item
-			} else if !duplicated {
-				if !yield(first[key]) {
+				isDupl[key] = lo.Tuple2[T, bool]{A: item}
+			} else if !duplicated.B {
+				if !yield(duplicated.A) {
 					return
 				}
-				isDupl[key] = true
+				isDupl[key] = lo.Tuple2[T, bool]{A: item, B: true}
 			}
 		}
 	}
