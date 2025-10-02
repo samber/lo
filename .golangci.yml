@@ -30,6 +30,13 @@ linters:
     # - wsl_v5
     - testifylint
     - whitespace
+    - perfsprint
+    - nolintlint
+    - godot
+    - thelper
+    - tparallel
+    - paralleltest
+    - predeclared
 
   # disable noisy/controversial ones which you might enable later
   disable:
@@ -86,6 +93,9 @@ formatters:
   enable:
     - gofmt
     - gofumpt
+  settings:
+    gofumpt:
+      extra-rules: true
   exclusions:
     generated: lax
     paths:

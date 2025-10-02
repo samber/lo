@@ -3,7 +3,7 @@ package lo
 // Ternary is a single line if/else statement.
 // Take care to avoid dereferencing potentially nil pointers in your A/B expressions, because they are both evaluated. See TernaryF to avoid this problem.
 // Play: https://go.dev/play/p/t-D7WBL44h2
-func Ternary[T any](condition bool, ifOutput T, elseOutput T) T {
+func Ternary[T any](condition bool, ifOutput, elseOutput T) T {
 	if condition {
 		return ifOutput
 	}
@@ -13,7 +13,7 @@ func Ternary[T any](condition bool, ifOutput T, elseOutput T) T {
 
 // TernaryF is a single line if/else statement whose options are functions.
 // Play: https://go.dev/play/p/AO4VW20JoqM
-func TernaryF[T any](condition bool, ifFunc func() T, elseFunc func() T) T {
+func TernaryF[T any](condition bool, ifFunc, elseFunc func() T) T {
 	if condition {
 		return ifFunc()
 	}

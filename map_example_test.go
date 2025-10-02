@@ -191,7 +191,7 @@ func ExampleChunkEntries() {
 func ExampleMapKeys() {
 	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
 
-	result := MapKeys(kv, func(_ int, k int) string {
+	result := MapKeys(kv, func(_, k int) string {
 		return strconv.FormatInt(int64(k), 10)
 	})
 
@@ -202,7 +202,7 @@ func ExampleMapKeys() {
 func ExampleMapValues() {
 	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
 
-	result := MapValues(kv, func(v int, _ int) string {
+	result := MapValues(kv, func(v, _ int) string {
 		return strconv.FormatInt(int64(v), 10)
 	})
 

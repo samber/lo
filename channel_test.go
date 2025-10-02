@@ -112,6 +112,7 @@ func TestDispatchingStrategyRoundRobin(t *testing.T) {
 }
 
 func TestDispatchingStrategyRandom(t *testing.T) {
+	t.Parallel()
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
 

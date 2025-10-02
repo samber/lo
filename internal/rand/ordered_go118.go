@@ -1,7 +1,5 @@
 //go:build !go1.22
 
-//nolint:revive
-
 package rand
 
 import "math/rand"

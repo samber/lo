@@ -23,7 +23,7 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // Play: https://go.dev/play/p/OkPcYAhBo0D
-func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
+func Map[T, R any](collection []T, iteratee func(item T, index int) R) []R {
 	result := make([]R, len(collection))
 
 	for i := range collection {
@@ -55,7 +55,7 @@ func UniqMap[T any, R comparable](collection []T, iteratee func(item T, index in
 //   - whether the result element should be included or not.
 //
 // Play: https://go.dev/play/p/CgHYNUpOd1I
-func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
+func FilterMap[T, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
 	result := make([]R, 0, len(collection))
 
 	for i := range collection {
@@ -71,7 +71,7 @@ func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R
 // The transform function can either return a slice or a `nil`, and in the `nil` case
 // no value is added to the final slice.
 // Play: https://go.dev/play/p/pFCF5WVB225
-func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R) []R {
+func FlatMap[T, R any](collection []T, iteratee func(item T, index int) []R) []R {
 	result := make([]R, 0, len(collection))
 
 	for i := range collection {
@@ -84,7 +84,7 @@ func FlatMap[T any, R any](collection []T, iteratee func(item T, index int) []R)
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
 // Play: https://go.dev/play/p/CgHYNUpOd1I
-func Reduce[T any, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R {
+func Reduce[T, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R {
 	for i := range collection {
 		initial = accumulator(initial, collection[i], i)
 	}
@@ -94,7 +94,7 @@ func Reduce[T any, R any](collection []T, accumulator func(agg R, item T, index 
 
 // ReduceRight is like Reduce except that it iterates over elements of collection from right to left.
 // Play: https://go.dev/play/p/Fq3W70l7wXF
-func ReduceRight[T any, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R {
+func ReduceRight[T, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R {
 	for i := len(collection) - 1; i >= 0; i-- {
 		initial = accumulator(initial, collection[i], i)
 	}
@@ -439,6 +439,10 @@ func Keyify[T comparable, Slice ~[]T](collection Slice) map[T]struct{} {
 // Drop drops n elements from the beginning of a slice.
 // Play: https://go.dev/play/p/JswS7vXRJP2
 func Drop[T any, Slice ~[]T](collection Slice, n int) Slice {
+	if n < 0 {
+		panic("lo.Drop: n must not be negative")
+	}
+
 	if len(collection) <= n {
 		return make(Slice, 0)
 	}
@@ -451,6 +455,10 @@ func Drop[T any, Slice ~[]T](collection Slice, n int) Slice {
 // DropRight drops n elements from the end of a slice.
 // Play: https://go.dev/play/p/GG0nXkSJJa3
 func DropRight[T any, Slice ~[]T](collection Slice, n int) Slice {
+	if n < 0 {
+		panic("lo.DropRight: n must not be negative")
+	}
+
 	if len(collection) <= n {
 		return Slice{}
 	}
@@ -539,7 +547,7 @@ func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 //   - whether the result element should be included or not.
 //
 // Play: https://go.dev/play/p/W9Ug9r0QFkL
-func RejectMap[T any, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
+func RejectMap[T, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
 	result := []R{}
 
 	for i := range collection {
@@ -554,7 +562,7 @@ func RejectMap[T any, R any](collection []T, callback func(item T, index int) (R
 // FilterReject mixes Filter and Reject, this method returns two slices, one for the elements of collection that
 // predicate returns true for and one for the elements that predicate does not return true for.
 // Play: https://go.dev/play/p/lHSEGSznJjB
-func FilterReject[T any, Slice ~[]T](collection Slice, predicate func(T, int) bool) (kept Slice, rejected Slice) {
+func FilterReject[T any, Slice ~[]T](collection Slice, predicate func(T, int) bool) (kept, rejected Slice) {
 	kept = make(Slice, 0, len(collection))
 	rejected = make(Slice, 0, len(collection))
 
@@ -647,7 +655,7 @@ func Subset[T any, Slice ~[]T](collection Slice, offset int, length uint) Slice 
 
 // Slice returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
 // Play: https://go.dev/play/p/8XWYhfMMA1h
-func Slice[T any, Slice ~[]T](collection Slice, start int, end int) Slice {
+func Slice[T any, Slice ~[]T](collection Slice, start, end int) Slice {
 	size := len(collection)
 
 	if start >= end {
@@ -673,7 +681,7 @@ func Slice[T any, Slice ~[]T](collection Slice, start int, end int) Slice {
 
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
 // Play: https://go.dev/play/p/XfPzmf9gql6
-func Replace[T comparable, Slice ~[]T](collection Slice, old T, nEw T, n int) Slice {
+func Replace[T comparable, Slice ~[]T](collection Slice, old, nEw T, n int) Slice {
 	result := make(Slice, len(collection))
 	copy(result, collection)
 
@@ -689,7 +697,7 @@ func Replace[T comparable, Slice ~[]T](collection Slice, old T, nEw T, n int) Sl
 
 // ReplaceAll returns a copy of the slice with all non-overlapping instances of old replaced by new.
 // Play: https://go.dev/play/p/a9xZFUHfYcV
-func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old T, nEw T) Slice {
+func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old, nEw T) Slice {
 	return Replace(collection, old, nEw, -1)
 }
 
@@ -763,7 +771,7 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 // before and after separator. The found result reports whether separator appears in collection.
 // If separator does not appear in s, cut returns collection, empty slice of []T, false.
 // Play: https://go.dev/play/p/GiL3qhpIP3f
-func Cut[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Slice, after Slice, found bool) {
+func Cut[T comparable, Slice ~[]T](collection, separator Slice) (before, after Slice, found bool) {
 	if len(separator) == 0 {
 		return make(Slice, 0), collection, true
 	}
@@ -789,7 +797,7 @@ func Cut[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Sl
 // If s doesn't start with prefix, CutPrefix returns collection, false.
 // If prefix is the empty []T, CutPrefix returns collection, true.
 // Play: https://go.dev/play/p/7Plak4a1ICl
-func CutPrefix[T comparable, Slice ~[]T](collection Slice, separator Slice) (after Slice, found bool) {
+func CutPrefix[T comparable, Slice ~[]T](collection, separator Slice) (after Slice, found bool) {
 	if len(separator) == 0 {
 		return collection, true
 	}
@@ -810,7 +818,7 @@ func CutPrefix[T comparable, Slice ~[]T](collection Slice, separator Slice) (aft
 // whether it found the suffix. If s doesn't end with suffix, CutSuffix returns collection, false.
 // If suffix is the empty []T, CutSuffix returns collection, true.
 // Play: https://go.dev/play/p/7FKfBFvPTaT
-func CutSuffix[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Slice, found bool) {
+func CutSuffix[T comparable, Slice ~[]T](collection, separator Slice) (before Slice, found bool) {
 	if len(separator) == 0 {
 		return collection, true
 	}
@@ -830,13 +838,34 @@ func CutSuffix[T comparable, Slice ~[]T](collection Slice, separator Slice) (bef
 
 // Trim removes all the leading and trailing cutset from the collection.
 // Play: https://go.dev/play/p/1an9mxLdRG5
-func Trim[T comparable, Slice ~[]T](collection Slice, cutset Slice) Slice {
-	return TrimLeft(TrimRight(collection, cutset), cutset)
+func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	set := Keyify(cutset)
+
+	i := 0
+	for ; i < len(collection); i++ {
+		if _, ok := set[collection[i]]; !ok {
+			break
+		}
+	}
+
+	if i >= len(collection) {
+		return Slice{}
+	}
+
+	j := len(collection) - 1
+	for ; j >= 0; j-- {
+		if _, ok := set[collection[j]]; !ok {
+			break
+		}
+	}
+
+	result := make(Slice, 0, j+1-i)
+	return append(result, collection[i:j+1]...)
 }
 
 // TrimLeft removes all the leading cutset from the collection.
 // Play: https://go.dev/play/p/74aqfAYLmyi
-func TrimLeft[T comparable, Slice ~[]T](collection Slice, cutset Slice) Slice {
+func TrimLeft[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	return DropWhile(collection, func(item T) bool {
@@ -847,7 +876,7 @@ func TrimLeft[T comparable, Slice ~[]T](collection Slice, cutset Slice) Slice {
 
 // TrimPrefix removes all the leading prefix from the collection.
 // Play: https://go.dev/play/p/SHO6X-YegPg
-func TrimPrefix[T comparable, Slice ~[]T](collection Slice, prefix Slice) Slice {
+func TrimPrefix[T comparable, Slice ~[]T](collection, prefix Slice) Slice {
 	if len(prefix) == 0 {
 		return collection
 	}
@@ -862,7 +891,7 @@ func TrimPrefix[T comparable, Slice ~[]T](collection Slice, prefix Slice) Slice 
 
 // TrimRight removes all the trailing cutset from the collection.
 // Play: https://go.dev/play/p/MRpAfR6sf0g
-func TrimRight[T comparable, Slice ~[]T](collection Slice, cutset Slice) Slice {
+func TrimRight[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	return DropRightWhile(collection, func(item T) bool {
@@ -873,7 +902,7 @@ func TrimRight[T comparable, Slice ~[]T](collection Slice, cutset Slice) Slice {
 
 // TrimSuffix removes all the trailing suffix from the collection.
 // Play: https://go.dev/play/p/IjEUrV0iofq
-func TrimSuffix[T comparable, Slice ~[]T](collection Slice, suffix Slice) Slice {
+func TrimSuffix[T comparable, Slice ~[]T](collection, suffix Slice) Slice {
 	if len(suffix) == 0 {
 		return collection
 	}

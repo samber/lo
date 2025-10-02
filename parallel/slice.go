@@ -5,7 +5,7 @@ import "sync"
 // Map manipulates a slice and transforms it to a slice of another type.
 // `iteratee` is called in parallel. Result keep the same order.
 // Play: https://go.dev/play/p/sCJaB3quRMC
-func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
+func Map[T, R any](collection []T, iteratee func(item T, index int) R) []R {
 	result := make([]R, len(collection))
 
 	var wg sync.WaitGroup

@@ -18,6 +18,7 @@ func TestTernary(t *testing.T) {
 }
 
 func TestTernaryF(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	result1 := TernaryF(true, func() string { return "a" }, func() string { return "b" })

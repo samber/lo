@@ -42,7 +42,7 @@ func ExampleMap() {
 func ExampleMapI() {
 	list := []int{1, 2, 3, 4}
 
-	MapI(list, func(nbr int, index int) int {
+	MapI(list, func(nbr, index int) int {
 		return nbr * index
 	})
 

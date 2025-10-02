@@ -2,13 +2,13 @@ package lo
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestValidate(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	slice := []string{"a"}
@@ -264,7 +264,7 @@ func TestTry(t *testing.T) {
 		return nil
 	}))
 	is.False(Try(func() error {
-		return fmt.Errorf("fail")
+		return errors.New("fail")
 	}))
 }
 
@@ -587,7 +587,7 @@ func TestErrorsAs(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	err, ok := ErrorsAs[*internalError](fmt.Errorf("hello world"))
+	err, ok := ErrorsAs[*internalError](errors.New("hello world"))
 	is.False(ok)
 	is.Nil(err)
 

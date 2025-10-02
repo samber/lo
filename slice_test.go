@@ -14,7 +14,7 @@ func TestFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Filter([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+	r1 := Filter([]int{1, 2, 3, 4}, func(x, _ int) bool {
 		return x%2 == 0
 	})
 	is.Equal([]int{2, 4}, r1)
@@ -36,7 +36,7 @@ func TestMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Map([]int{1, 2, 3, 4}, func(x int, _ int) string {
+	result1 := Map([]int{1, 2, 3, 4}, func(x, _ int) string {
 		return "Hello"
 	})
 	result2 := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
@@ -89,7 +89,7 @@ func TestFlatMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := FlatMap([]int{0, 1, 2, 3, 4}, func(x int, _ int) []string {
+	result1 := FlatMap([]int{0, 1, 2, 3, 4}, func(x, _ int) []string {
 		return []string{"Hello"}
 	})
 	result2 := FlatMap([]int64{0, 1, 2, 3, 4}, func(x int64, _ int) []string {
@@ -118,10 +118,10 @@ func TestReduce(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Reduce([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+	result1 := Reduce([]int{1, 2, 3, 4}, func(agg, item, _ int) int {
 		return agg + item
 	}, 0)
-	result2 := Reduce([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+	result2 := Reduce([]int{1, 2, 3, 4}, func(agg, item, _ int) int {
 		return agg + item
 	}, 10)
 
@@ -133,14 +133,14 @@ func TestReduceRight(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item []int, _ int) []int {
+	result1 := ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg, item []int, _ int) []int {
 		return append(agg, item...)
 	}, []int{})
 
 	is.Equal([]int{4, 5, 2, 3, 0, 1}, result1)
 
 	type collection []int
-	result3 := ReduceRight(collection{1, 2, 3, 4}, func(agg int, item int, _ int) int {
+	result3 := ReduceRight(collection{1, 2, 3, 4}, func(agg, item, _ int) int {
 		return agg + item
 	}, 10)
 	is.Equal(20, result3)
@@ -355,6 +355,7 @@ func TestFlatten(t *testing.T) {
 }
 
 func TestInterleave(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	testCases := []struct {
@@ -394,8 +395,8 @@ func TestInterleave(t *testing.T) {
 		},
 	}
 	for _, tc := range testCases {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			assert.Equal(t, tc.want, Interleave(tc.in...))
 		})
@@ -520,8 +521,8 @@ func TestAssociate(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
+		tc := tc
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			assert.Equal(t, tc.want, Associate(tc.in, transform))
 		})
@@ -556,8 +557,8 @@ func TestSliceToMap(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
+		tc := tc
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			assert.Equal(t, tc.want, SliceToMap(tc.in, transform))
 		})
@@ -592,8 +593,8 @@ func TestFilterSliceToMap(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
+		tc := tc
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
-			tc := tc
 			t.Parallel()
 			assert.Equal(t, tc.want, FilterSliceToMap(tc.in, transform))
 		})
@@ -616,12 +617,17 @@ func TestDrop(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
+	is.Equal([]int{0, 1, 2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 0))
 	is.Equal([]int{1, 2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 1))
 	is.Equal([]int{2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 2))
 	is.Equal([]int{3, 4}, Drop([]int{0, 1, 2, 3, 4}, 3))
 	is.Equal([]int{4}, Drop([]int{0, 1, 2, 3, 4}, 4))
 	is.Empty(Drop([]int{0, 1, 2, 3, 4}, 5))
 	is.Empty(Drop([]int{0, 1, 2, 3, 4}, 6))
+
+	is.PanicsWithValue("lo.Drop: n must not be negative", func() {
+		Drop([]int{0, 1, 2, 3, 4}, -1)
+	})
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -633,12 +639,17 @@ func TestDropRight(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
+	is.Equal([]int{0, 1, 2, 3, 4}, DropRight([]int{0, 1, 2, 3, 4}, 0))
 	is.Equal([]int{0, 1, 2, 3}, DropRight([]int{0, 1, 2, 3, 4}, 1))
 	is.Equal([]int{0, 1, 2}, DropRight([]int{0, 1, 2, 3, 4}, 2))
 	is.Equal([]int{0, 1}, DropRight([]int{0, 1, 2, 3, 4}, 3))
 	is.Equal([]int{0}, DropRight([]int{0, 1, 2, 3, 4}, 4))
 	is.Empty(DropRight([]int{0, 1, 2, 3, 4}, 5))
 	is.Empty(DropRight([]int{0, 1, 2, 3, 4}, 6))
+
+	is.PanicsWithValue("lo.DropRight: n must not be negative", func() {
+		DropRight([]int{0, 1, 2, 3, 4}, -1)
+	})
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -728,7 +739,7 @@ func TestReject(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Reject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+	r1 := Reject([]int{1, 2, 3, 4}, func(x, _ int) bool {
 		return x%2 == 0
 	})
 
@@ -773,7 +784,7 @@ func TestFilterReject(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	left1, right1 := FilterReject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
+	left1, right1 := FilterReject([]int{1, 2, 3, 4}, func(x, _ int) bool {
 		return x%2 == 0
 	})
 
