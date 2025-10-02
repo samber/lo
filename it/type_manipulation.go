@@ -46,6 +46,7 @@ func Empty[T any]() iter.Seq[T] {
 }
 
 // IsEmpty returns true if the sequence is empty.
+// Will iterate at most once.
 func IsEmpty[T any](collection iter.Seq[T]) bool {
 	for range collection {
 		return false
@@ -54,11 +55,13 @@ func IsEmpty[T any](collection iter.Seq[T]) bool {
 }
 
 // IsNotEmpty returns true if the sequence is not empty.
+// Will iterate at most once.
 func IsNotEmpty[T any](collection iter.Seq[T]) bool {
 	return !IsEmpty(collection)
 }
 
 // CoalesceSeq returns the first non-empty sequence.
+// Will iterate through each sub-sequence at most once.
 func CoalesceSeq[T any](v ...iter.Seq[T]) (iter.Seq[T], bool) {
 	for i := range v {
 		for range v[i] {
@@ -69,6 +72,7 @@ func CoalesceSeq[T any](v ...iter.Seq[T]) (iter.Seq[T], bool) {
 }
 
 // CoalesceSeqOrEmpty returns the first non-empty sequence.
+// Will iterate through each sub-sequence at most once.
 func CoalesceSeqOrEmpty[T any](v ...iter.Seq[T]) iter.Seq[T] {
 	result, _ := CoalesceSeq(v...)
 	return result

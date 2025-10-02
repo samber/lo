@@ -12,6 +12,7 @@ import (
 )
 
 // Length returns the length of collection.
+// Will iterate through the entire sequence.
 func Length[T any](collection iter.Seq[T]) int {
 	var count int
 
@@ -65,11 +66,15 @@ func MapI[T, R any](collection iter.Seq[T], transform func(item T, index int) R)
 }
 
 // UniqMap manipulates a sequence and transforms it to a sequence of another type with unique values.
+// Will allocate a map large enough to hold all distinct transformed elements.
+// Long heterogeneous input sequences can cause excessive memory usage.
 func UniqMap[T any, R comparable](collection iter.Seq[T], transform func(item T) R) iter.Seq[R] {
 	return Uniq(Map(collection, transform))
 }
 
 // UniqMapI manipulates a sequence and transforms it to a sequence of another type with unique values.
+// Will allocate a map large enough to hold all distinct transformed elements.
+// Long heterogeneous input sequences can cause excessive memory usage.
 func UniqMapI[T any, R comparable](collection iter.Seq[T], transform func(item T, index int) R) iter.Seq[R] {
 	return Uniq(MapI(collection, transform))
 }
@@ -124,12 +129,14 @@ func FlatMapI[T, R any](collection iter.Seq[T], transform func(item T, index int
 
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
+// Will iterate through the entire sequence.
 func Reduce[T, R any](collection iter.Seq[T], accumulator func(agg R, item T) R, initial R) R {
 	return ReduceI(collection, func(agg R, item T, _ int) R { return accumulator(agg, item) }, initial)
 }
 
 // ReduceI reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
+// Will iterate through the entire sequence.
 func ReduceI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, index int) R, initial R) R {
 	var i int
 	for item := range collection {
@@ -141,21 +148,27 @@ func ReduceI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, i
 }
 
 // ReduceLast is like Reduce except that it iterates over elements of collection in reverse.
+// Will iterate through the entire sequence and allocate a slice large enough to hold all elements.
+// Long input sequences can cause excessive memory usage.
 func ReduceLast[T, R any](collection iter.Seq[T], accumulator func(agg R, item T) R, initial R) R {
 	return Reduce(Reverse(collection), accumulator, initial)
 }
 
 // ReduceLastI is like Reduce except that it iterates over elements of collection in reverse.
+// Will iterate through the entire sequence and allocate a slice large enough to hold all elements.
+// Long input sequences can cause excessive memory usage.
 func ReduceLastI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, index int) R, initial R) R {
 	return ReduceI(Reverse(collection), accumulator, initial)
 }
 
 // ForEach iterates over elements of collection and invokes transform for each element.
+// Will iterate through the entire sequence.
 func ForEach[T any](collection iter.Seq[T], transform func(item T)) {
 	ForEachI(collection, func(item T, _ int) { transform(item) })
 }
 
 // ForEachI iterates over elements of collection and invokes transform for each element.
+// Will iterate through the entire sequence.
 func ForEachI[T any](collection iter.Seq[T], transform func(item T, index int)) {
 	var i int
 	for item := range collection {
@@ -166,12 +179,14 @@ func ForEachI[T any](collection iter.Seq[T], transform func(item T, index int)) 
 
 // ForEachWhile iterates over elements of collection and invokes predicate for each element
 // collection return value decide to continue or break, like do while().
+// Will iterate through the entire sequence.
 func ForEachWhile[T any](collection iter.Seq[T], predicate func(item T) bool) {
 	ForEachWhileI(collection, func(item T, _ int) bool { return predicate(item) })
 }
 
 // ForEachWhileI iterates over elements of collection and invokes predicate for each element
 // collection return value decide to continue or break, like do while().
+// Will iterate through the entire sequence.
 func ForEachWhileI[T any](collection iter.Seq[T], predicate func(item T, index int) bool) {
 	var i int
 	for item := range collection {
@@ -196,6 +211,8 @@ func Times[T any](count int, transform func(index int) T) iter.Seq[T] {
 
 // Uniq returns a duplicate-free version of a sequence, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the sequence.
+// Will allocate a map large enough to hold all distinct elements.
+// Long heterogeneous input sequences can cause excessive memory usage.
 func Uniq[T comparable, I ~func(func(T) bool)](collection I) I {
 	return UniqBy(collection, func(item T) T { return item })
 }
@@ -203,6 +220,8 @@ func Uniq[T comparable, I ~func(func(T) bool)](collection I) I {
 // UniqBy returns a duplicate-free version of a sequence, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the sequence. A transform function is
 // invoked for each element in the sequence to generate the criterion by which uniqueness is computed.
+// Will allocate a map large enough to hold all distinct transformed elements.
+// Long heterogeneous input sequences can cause excessive memory usage.
 func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I {
 	return func(yield func(T) bool) {
 		seen := make(map[U]struct{})
@@ -221,11 +240,13 @@ func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform 
 }
 
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through transform.
+// Will iterate through the entire sequence.
 func GroupBy[T any, U comparable](collection iter.Seq[T], transform func(item T) U) map[U][]T {
 	return GroupByMap(collection, func(item T) (U, T) { return transform(item), item })
 }
 
 // GroupByMap returns an object composed of keys generated from the results of running each element of collection through transform.
+// Will iterate through the entire sequence.
 func GroupByMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V)) map[K][]V {
 	result := make(map[K][]V)
 
@@ -268,6 +289,8 @@ func Chunk[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 // PartitionBy returns a sequence of elements split into groups. The order of grouped values is
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through transform.
+// Will allocate a map large enough to hold all distinct transformed elements.
+// Long heterogeneous input sequences can cause excessive memory usage.
 func PartitionBy[T any, K comparable](collection iter.Seq[T], transform func(item T) K) [][]T {
 	var result [][]T
 	seen := map[K]int{}
@@ -302,6 +325,7 @@ func Flatten[T any, I ~func(func(T) bool)](collection []I) I {
 }
 
 // Interleave round-robin alternating input sequences and sequentially appending value at index into result.
+// Will allocate a slice the size of collections.
 func Interleave[T any](collections ...iter.Seq[T]) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		next := make([]func() (T, bool), len(collections))
@@ -328,6 +352,8 @@ func Interleave[T any](collections ...iter.Seq[T]) iter.Seq[T] {
 }
 
 // Shuffle returns a sequence of shuffled values. Uses the Fisher-Yates shuffle algorithm.
+// Will iterate through the entire sequence and allocate a slice large enough to hold all elements.
+// Long input sequences can cause excessive memory usage.
 func Shuffle[T any, I ~func(func(T) bool)](collection I) I {
 	slice := slices.Collect(iter.Seq[T](collection))
 	mutable.Shuffle(slice)
@@ -335,6 +361,8 @@ func Shuffle[T any, I ~func(func(T) bool)](collection I) I {
 }
 
 // Reverse reverses a sequence so that the first element becomes the last, the second element becomes the second to last, and so on.
+// Will iterate through the entire sequence and allocate a slice large enough to hold all elements.
+// Long input sequences can cause excessive memory usage.
 func Reverse[T any, I ~func(func(T) bool)](collection I) I {
 	slice := slices.Collect(iter.Seq[T](collection))
 	mutable.Reverse(slice)
@@ -369,6 +397,7 @@ func RepeatBy[T any](count int, transform func(index int) T) iter.Seq[T] {
 }
 
 // KeyBy transforms a sequence to a map based on a pivot transform function.
+// Will iterate through the entire sequence.
 func KeyBy[K comparable, V any](collection iter.Seq[V], transform func(item V) K) map[K]V {
 	result := make(map[K]V)
 
@@ -383,6 +412,7 @@ func KeyBy[K comparable, V any](collection iter.Seq[V], transform func(item V) K
 // Associate returns a map containing key-value pairs provided by transform function applied to elements of the given sequence.
 // If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original sequence.
+// Will iterate through the entire sequence.
 func Associate[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V)) map[K]V {
 	result := make(map[K]V)
 
@@ -398,6 +428,7 @@ func Associate[T any, K comparable, V any](collection iter.Seq[T], transform fun
 // If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original sequence.
 // Alias of Associate().
+// Will iterate through the entire sequence.
 func SeqToMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V)) map[K]V {
 	return Associate(collection, transform)
 }
@@ -406,6 +437,7 @@ func SeqToMap[T any, K comparable, V any](collection iter.Seq[T], transform func
 // If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original sequence.
 // The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
+// Will iterate through the entire sequence.
 func FilterSeqToMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V, bool)) map[K]V {
 	result := make(map[K]V)
 
@@ -419,6 +451,7 @@ func FilterSeqToMap[T any, K comparable, V any](collection iter.Seq[T], transfor
 }
 
 // Keyify returns a map with each unique element of the sequence as a key.
+// Will iterate through the entire sequence.
 func Keyify[T comparable](collection iter.Seq[T]) map[T]struct{} {
 	result := make(map[T]struct{})
 
@@ -443,6 +476,7 @@ func Drop[T any, I ~func(func(T) bool)](collection I, n int) I {
 }
 
 // DropLast drops n elements from the end of a sequence.
+// Will allocate a slice of length n.
 func DropLast[T any, I ~func(func(T) bool)](collection I, n int) I {
 	if n < 0 {
 		panic("it.DropLast: n must not be negative")
@@ -485,6 +519,8 @@ func DropWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T
 }
 
 // DropLastWhile drops elements from the end of a sequence while the predicate returns true.
+// Will allocate a slice large enough to hold the longest sequence of matching elements.
+// Long input sequences of consecutive matches can cause excessive memory usage.
 func DropLastWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I {
 	return func(yield func(T) bool) {
 		var buf []T
@@ -509,6 +545,7 @@ func DropLastWhile[T any, I ~func(func(T) bool)](collection I, predicate func(it
 }
 
 // DropByIndex drops elements from a sequence by the index.
+// Will allocate a map large enough to hold all distinct indexes.
 func DropByIndex[T any, I ~func(func(T) bool)](collection I, indexes ...int) I {
 	set := lo.Keyify(indexes)
 	return RejectI(collection, func(_ T, index int) bool { return lo.HasKey(set, index) })
@@ -557,11 +594,13 @@ func RejectMapI[T, R any](collection iter.Seq[T], callback func(item T, index in
 }
 
 // Count counts the number of elements in the collection that equal value.
+// Will iterate through the entire sequence.
 func Count[T comparable](collection iter.Seq[T], value T) int {
 	return CountBy(collection, func(item T) bool { return item == value })
 }
 
 // CountBy counts the number of elements in the collection for which predicate is true.
+// Will iterate through the entire sequence.
 func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int {
 	var count int
 
@@ -573,12 +612,14 @@ func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int {
 }
 
 // CountValues counts the number of each element in the collection.
+// Will iterate through the entire sequence.
 func CountValues[T comparable](collection iter.Seq[T]) map[T]int {
 	return CountValuesBy(collection, func(item T) T { return item })
 }
 
 // CountValuesBy counts the number of each element returned from transform function.
 // Is equivalent to chaining Map and CountValues.
+// Will iterate through the entire sequence.
 func CountValuesBy[T any, U comparable](collection iter.Seq[T], transform func(item T) U) map[U]int {
 	result := make(map[U]int)
 
@@ -590,6 +631,7 @@ func CountValuesBy[T any, U comparable](collection iter.Seq[T], transform func(i
 }
 
 // Subset returns a subset of a sequence from `offset` up to `length` elements.
+// Will iterate at most offset+length times.
 func Subset[T any, I ~func(func(T) bool)](collection I, offset, length int) I {
 	if offset < 0 {
 		panic("it.Subset: offset must not be negative")
@@ -602,6 +644,7 @@ func Subset[T any, I ~func(func(T) bool)](collection I, offset, length int) I {
 }
 
 // Slice returns a subset of a sequence from `start` up to, but not including `end`.
+// Will iterate at most end times.
 func Slice[T any, I ~func(func(T) bool)](collection I, start, end int) I {
 	if start < 0 {
 		start = 0
@@ -643,11 +686,13 @@ func Compact[T comparable, I ~func(func(T) bool)](collection I) I {
 }
 
 // IsSorted checks if a sequence is sorted.
+// Will iterate through the entire sequence.
 func IsSorted[T constraints.Ordered](collection iter.Seq[T]) bool {
 	return IsSortedBy(collection, func(item T) T { return item })
 }
 
 // IsSortedBy checks if a sequence is sorted by transform.
+// Will iterate through the entire sequence.
 func IsSortedBy[T any, K constraints.Ordered](collection iter.Seq[T], transform func(item T) K) bool {
 	first := true
 	var prev K
@@ -702,6 +747,7 @@ func Splice[T any, I ~func(func(T) bool)](collection I, index int, elements ...T
 // and reports whether it found the prefix.
 // If collection doesn't start with prefix, CutPrefix returns collection, false.
 // If prefix is empty, CutPrefix returns collection, true.
+// Will iterate at most the size of separator before returning.
 func CutPrefix[T comparable, I ~func(func(T) bool)](collection I, separator []T) (after I, found bool) { //nolint:gocyclo
 	if len(separator) == 0 {
 		return collection, true
@@ -754,6 +800,8 @@ func CutPrefix[T comparable, I ~func(func(T) bool)](collection I, separator []T)
 // CutSuffix returns collection without the provided ending suffix and reports
 // whether it found the suffix. If collection doesn't end with suffix, CutSuffix returns collection, false.
 // If suffix is empty, CutSuffix returns collection, true.
+// Will iterate through the entire sequence and allocate a slice large enough to hold all elements.
+// Long input sequences can cause excessive memory usage.
 func CutSuffix[T comparable, I ~func(func(T) bool)](collection I, separator []T) (before I, found bool) {
 	slice := slices.Collect(iter.Seq[T](collection))
 	result, ok := lo.CutSuffix(slice, separator)
@@ -761,12 +809,14 @@ func CutSuffix[T comparable, I ~func(func(T) bool)](collection I, separator []T)
 }
 
 // Trim removes all the leading and trailing cutset from the collection.
+// Will allocate a map large enough to hold all distinct cutset elements.
 func Trim[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
 	predicate := lo.Partial(lo.HasKey, lo.Keyify(cutset))
 	return DropWhile(DropLastWhile(collection, predicate), predicate)
 }
 
 // TrimFirst removes all the leading cutset from the collection.
+// Will allocate a map large enough to hold all distinct cutset elements.
 func TrimFirst[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
 	return DropWhile(collection, lo.Partial(lo.HasKey, lo.Keyify(cutset)))
 }
@@ -812,6 +862,7 @@ func TrimPrefix[T comparable, I ~func(func(T) bool)](collection I, prefix []T) I
 }
 
 // TrimLast removes all the trailing cutset from the collection.
+// Will allocate a map large enough to hold all distinct cutset elements.
 func TrimLast[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
 	return DropLastWhile(collection, lo.Partial(lo.HasKey, lo.Keyify(cutset)))
 }

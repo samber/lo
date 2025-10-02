@@ -21,6 +21,8 @@ func Keys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 }
 
 // UniqKeys creates a sequence of unique keys in the map.
+// Will allocate a map large enough to hold all distinct input keys.
+// Long input sequences with heterogeneous keys can cause excessive memory usage.
 func UniqKeys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 	return func(yield func(K) bool) {
 		seen := make(map[K]struct{})
@@ -52,6 +54,8 @@ func Values[K comparable, V any](in ...map[K]V) iter.Seq[V] {
 }
 
 // UniqValues creates a sequence of unique values in the map.
+// Will allocate a map large enough to hold all distinct input values.
+// Long input sequences with heterogeneous values can cause excessive memory usage.
 func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V] {
 	return func(yield func(V) bool) {
 		seen := make(map[V]struct{})

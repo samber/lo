@@ -64,11 +64,13 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 }
 
 // Sum sums the values in a collection. If collection is empty 0 is returned.
+// Will iterate through the entire sequence.
 func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T]) T {
 	return SumBy(collection, func(item T) T { return item })
 }
 
 // SumBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 0 is returned.
+// Will iterate through the entire sequence.
 func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], transform func(item T) R) R {
 	var sum R
 	for item := range collection {
@@ -78,11 +80,13 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 }
 
 // Product gets the product of the values in a collection. If collection is empty 1 is returned.
+// Will iterate through the entire sequence.
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T]) T {
 	return ProductBy(collection, func(item T) T { return item })
 }
 
 // ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 1 is returned.
+// Will iterate through the entire sequence.
 func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], transform func(item T) R) R {
 	var product R = 1
 	for item := range collection {
@@ -92,11 +96,13 @@ func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Co
 }
 
 // Mean calculates the mean of a collection of numbers.
+// Will iterate through the entire sequence.
 func Mean[T constraints.Float | constraints.Integer](collection iter.Seq[T]) T {
 	return MeanBy(collection, func(item T) T { return item })
 }
 
 // MeanBy calculates the mean of a collection of numbers using the given return value from the iteration function.
+// Will iterate through the entire sequence.
 func MeanBy[T any, R constraints.Float | constraints.Integer](collection iter.Seq[T], transform func(item T) R) R {
 	var sum R
 	var length R
@@ -113,6 +119,8 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection iter.Se
 // Mode returns the mode (most frequent value) of a collection.
 // If multiple values have the same highest frequency, then multiple values are returned.
 // If the collection is empty, then the zero value of T is returned.
+// Will iterate through the entire sequence and allocate a map large enough to hold all distinct elements.
+// Long heterogeneous input sequences can cause excessive memory usage.
 func Mode[T constraints.Integer | constraints.Float](collection iter.Seq[T]) []T {
 	var mode []T
 	maxFreq := 0
