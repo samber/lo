@@ -416,6 +416,7 @@ func TestShuffle(t *testing.T) {
 	result2 := Shuffle([]int{})
 
 	is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result1)
+	is.ElementsMatch([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result1)
 	is.Empty(result2)
 
 	type myStrings []string

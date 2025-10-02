@@ -2,7 +2,6 @@ package lo
 
 import (
 	"context"
-	"math/rand"
 	"testing"
 	"time"
 
@@ -116,9 +115,6 @@ func TestDispatchingStrategyRandom(t *testing.T) {
 	t.Parallel()
 	testWithTimeout(t, 10*time.Millisecond)
 	is := assert.New(t)
-
-	// with this seed, the order of random channels are: 1 - 0
-	rand.Seed(14)
 
 	children := createChannels[int](2, 2)
 	rochildren := channelsToReadOnly(children)

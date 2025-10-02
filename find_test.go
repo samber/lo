@@ -36,6 +36,7 @@ func TestHasPrefix(t *testing.T) {
 
 	is.True(HasPrefix([]int{1, 2, 3, 4}, []int{1, 2}))
 	is.False(HasPrefix([]int{1, 2, 3, 4}, []int{42}))
+	is.True(HasPrefix([]int{1, 2, 3, 4}, nil))
 }
 
 func TestHasSuffix(t *testing.T) {
@@ -44,6 +45,7 @@ func TestHasSuffix(t *testing.T) {
 
 	is.True(HasSuffix([]int{1, 2, 3, 4}, []int{3, 4}))
 	is.False(HasSuffix([]int{1, 2, 3, 4}, []int{42}))
+	is.True(HasSuffix([]int{1, 2, 3, 4}, nil))
 }
 
 func TestFind(t *testing.T) {
@@ -721,8 +723,6 @@ func TestSample(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	rand.Seed(time.Now().UnixNano())
-
 	result1 := Sample([]string{"a", "b", "c"})
 	result2 := Sample([]string{})
 
@@ -746,8 +746,6 @@ func TestSampleBy(t *testing.T) {
 func TestSamples(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-
-	rand.Seed(time.Now().UnixNano())
 
 	result1 := Samples([]string{"a", "b", "c"}, 3)
 	result2 := Samples([]string{}, 3)
