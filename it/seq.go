@@ -414,11 +414,21 @@ func KeyBy[K comparable, V any](collection iter.Seq[V], transform func(item V) K
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original sequence.
 // Will iterate through the entire sequence.
 func Associate[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V)) map[K]V {
+	return AssociateI(collection, func(item T, _ int) (K, V) { return transform(item) })
+}
+
+// AssociateI returns a map containing key-value pairs provided by transform function applied to elements of the given sequence.
+// If any of two pairs have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original sequence.
+// Will iterate through the entire sequence.
+func AssociateI[T any, K comparable, V any](collection iter.Seq[T], transform func(item T, index int) (K, V)) map[K]V {
 	result := make(map[K]V)
 
+	var i int
 	for item := range collection {
-		k, v := transform(item)
+		k, v := transform(item, i)
 		result[k] = v
+		i++
 	}
 
 	return result
@@ -433,18 +443,40 @@ func SeqToMap[T any, K comparable, V any](collection iter.Seq[T], transform func
 	return Associate(collection, transform)
 }
 
+// SeqToMapI returns a map containing key-value pairs provided by transform function applied to elements of the given sequence.
+// If any of two pairs have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original sequence.
+// Alias of AssociateI().
+// Will iterate through the entire sequence.
+func SeqToMapI[T any, K comparable, V any](collection iter.Seq[T], transform func(item T, index int) (K, V)) map[K]V {
+	return AssociateI(collection, transform)
+}
+
 // FilterSeqToMap returns a map containing key-value pairs provided by transform function applied to elements of the given sequence.
 // If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original sequence.
 // The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
 // Will iterate through the entire sequence.
 func FilterSeqToMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V, bool)) map[K]V {
+	return FilterSeqToMapI(collection, func(item T, _ int) (K, V, bool) {
+		return transform(item)
+	})
+}
+
+// FilterSeqToMapI returns a map containing key-value pairs provided by transform function applied to elements of the given sequence.
+// If any of two pairs have the same key the last one gets added to the map.
+// The order of keys in returned map is not specified and is not guaranteed to be the same from the original sequence.
+// The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
+// Will iterate through the entire sequence.
+func FilterSeqToMapI[T any, K comparable, V any](collection iter.Seq[T], transform func(item T, index int) (K, V, bool)) map[K]V {
 	result := make(map[K]V)
 
+	var i int
 	for item := range collection {
-		if k, v, ok := transform(item); ok {
+		if k, v, ok := transform(item, i); ok {
 			result[k] = v
 		}
+		i++
 	}
 
 	return result
