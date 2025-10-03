@@ -1,0 +1,48 @@
+{{- define "decl-args-types" }}
+	{{- if .Ctx }}context.Context, {{ end -}}
+	{{- range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end -}}
+{{ end -}}
+{{- define "call-args" }}
+    {{- if .Ctx }}ctx{{ if .N }}, {{ end }}{{ end -}}
+    {{- range $i := .N }}{{ if ne $i 0 }}, {{ end }}t{{ add $i 1 }}{{ end -}}
+{{ end -}}
+{{- define "decl-offset-args" }}{{ $INC := add .P 1 }}
+	{{- if .Right }}{{ $INC = 1 }}{{ end -}}
+    {{- if .Ctx }}ctx context.Context{{ if ne .N .P}}, {{ end }}{{ end -}}
+    {{- range $i := (sub .N .P) }}{{ if ne $i 0 }}, {{ end }}t{{ add $i $INC }} T{{ add $i $INC }}{{ end -}}
+{{ end -}}
+{{- define "decl-offset-types" }}{{ $INC := add .P 1 }}
+	{{- if .Right }}{{ $INC = 1 }}{{ end -}}
+	{{- if .Ctx }}context.Context{{ if ne .N .P}}, {{ end }}{{ end -}}
+	{{- range $i := (sub .N .P) }}{{ if ne $i 0 }}, {{ end }}T{{ add $i $INC }}{{ end -}}
+{{ end -}}
+{{- define "decl-part-args" }}{{ $INC := 1 }}
+	{{- if .Right }}{{ $INC = add 1 (sub .N .P) }}{{ end -}}
+    {{- range $i := .P }}{{ if ne $i 0 }}, {{ end }}t{{ add $i $INC }} T{{ add $i $INC }}{{ end -}}
+{{ end -}}
+{{- define "decl-res" }}
+	{{- if .R }} {{ if gt .R 1 }}({{ end }}
+		{{- range $i := .R }}{{ if ne $i 0 }}, {{ end }}R{{ add $i 1 }}{{ end -}}
+		{{- if gt .R 1 }}){{ end -}}
+	{{ end -}}
+{{ end -}}
+{{- define "name-suffix" }}
+    {{- if ne 1 .N }}{{ .N }}{{ end -}}
+	{{- if ne 1 .P }}{{ .P }}{{ end -}}
+	{{- if eq 0 .R }}Void
+	{{- else if ne 1 .R }}R{{ .R }}{{ end -}}
+	{{- if .Ctx }}Ctx{{ end -}}
+{{ end -}}
+{{- define "types" }}
+	{{- range $i := .R }}R{{ add $i 1 }}, {{ end -}}
+	{{- range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end -}}
+{{ end -}}
+{{- $N := .N }}{{ $R := .R }}{{ $P := .P}}
+func {{ if .Right }}R{{ end }}Partial{{ template "name-suffix" . }}[{{ template "types" . }} any](
+	fn func({{ template "decl-args-types" . }}){{ template "decl-res" . }},
+	{{ template "decl-part-args" . }},
+) func({{ template "decl-offset-types" . }}){{ template "decl-res" . }} {
+	return func({{ template "decl-offset-args" . }}){{ template "decl-res" . }} {
+		{{ if .R }}return {{ end }}fn({{ template "call-args" . }})
+	}
+}
