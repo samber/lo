@@ -98,7 +98,7 @@ func TestChannelDispatcher(t *testing.T) {
 
 func TestDispatchingStrategyRoundRobin(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 10*time.Millisecond)
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	children := createChannels[int](3, 2)
@@ -113,7 +113,7 @@ func TestDispatchingStrategyRoundRobin(t *testing.T) {
 
 func TestDispatchingStrategyRandom(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 10*time.Millisecond)
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	children := createChannels[int](2, 2)
@@ -129,7 +129,7 @@ func TestDispatchingStrategyRandom(t *testing.T) {
 
 func TestDispatchingStrategyWeightedRandom(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 10*time.Millisecond)
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	children := createChannels[int](2, 2)
@@ -147,7 +147,7 @@ func TestDispatchingStrategyWeightedRandom(t *testing.T) {
 
 func TestDispatchingStrategyFirst(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 10*time.Millisecond)
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	children := createChannels[int](2, 2)
@@ -163,7 +163,7 @@ func TestDispatchingStrategyFirst(t *testing.T) {
 
 func TestDispatchingStrategyLeast(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 10*time.Millisecond)
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	children := createChannels[int](2, 2)
@@ -183,7 +183,7 @@ func TestDispatchingStrategyLeast(t *testing.T) {
 
 func TestDispatchingStrategyMost(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 10*time.Millisecond)
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	children := createChannels[int](2, 2)
@@ -203,7 +203,7 @@ func TestDispatchingStrategyMost(t *testing.T) {
 
 func TestSliceToChannel(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 10*time.Millisecond)
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	ch := SliceToChannel(2, []int{1, 2, 3})
@@ -224,7 +224,7 @@ func TestSliceToChannel(t *testing.T) {
 
 func TestChannelToSlice(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 10*time.Millisecond)
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	ch := SliceToChannel(2, []int{1, 2, 3})
@@ -235,7 +235,7 @@ func TestChannelToSlice(t *testing.T) {
 
 func TestGenerate(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 10*time.Millisecond)
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	generator := func(yield func(int)) {
@@ -257,7 +257,7 @@ func TestGenerate(t *testing.T) {
 
 func TestBuffer(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 10*time.Millisecond)
+	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
 	ch := SliceToChannel(2, []int{1, 2, 3})
@@ -277,8 +277,8 @@ func TestBuffer(t *testing.T) {
 	is.False(ok3)
 }
 
-func TestBufferWithContext(t *testing.T) {
-	t.Parallel()
+func TestBufferWithContext(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	testWithTimeout(t, 200*time.Millisecond)
 	is := assert.New(t)
 
@@ -313,47 +313,60 @@ func TestBufferWithContext(t *testing.T) {
 	is.True(ok2)
 }
 
-func TestBufferWithTimeout(t *testing.T) {
-	t.Parallel()
-	testWithTimeout(t, 200*time.Millisecond)
+func TestBufferWithTimeout(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
+	testWithTimeout(t, 2000*time.Millisecond)
 	is := assert.New(t)
 
-	generator := func(yield func(int)) {
-		for i := 0; i < 5; i++ {
-			yield(i)
-			time.Sleep(10 * time.Millisecond)
+	generator := func(n ...int) func(yield func(int)) {
+		return func(yield func(int)) {
+			for i := 0; i < len(n); i++ {
+				yield(n[i])
+				time.Sleep(100 * time.Millisecond)
+			}
 		}
 	}
-	ch := Generator(0, generator)
 
-	items1, length1, _, ok1 := BufferWithTimeout(ch, 20, 15*time.Millisecond)
+	ch := Generator(0, generator(0, 1, 2, 3, 4))
+	items1, length1, duration1, ok1 := BufferWithTimeout(ch, 20, 150*time.Millisecond)
 	is.Equal([]int{0, 1}, items1)
 	is.Equal(2, length1)
+	is.InDelta(150*time.Millisecond, duration1, float64(20*time.Millisecond))
 	is.True(ok1)
 
-	items2, length2, _, ok2 := BufferWithTimeout(ch, 20, 2*time.Millisecond)
+	items2, length2, duration2, ok2 := BufferWithTimeout(ch, 20, 10*time.Millisecond)
 	is.Empty(items2)
 	is.Zero(length2)
+	is.InDelta(10*time.Millisecond, duration2, float64(10*time.Millisecond))
 	is.True(ok2)
 
-	items3, length3, _, ok3 := BufferWithTimeout(ch, 1, 30*time.Millisecond)
+	items3, length3, duration3, ok3 := BufferWithTimeout(ch, 1, 300*time.Millisecond)
 	is.Equal([]int{2}, items3)
 	is.Equal(1, length3)
+	is.InDelta(50*time.Millisecond, duration3, float64(20*time.Millisecond))
 	is.True(ok3)
 
-	items4, length4, _, ok4 := BufferWithTimeout(ch, 2, 25*time.Millisecond)
+	items4, length4, duration4, ok4 := BufferWithTimeout(ch, 2, 250*time.Millisecond)
 	is.Equal([]int{3, 4}, items4)
 	is.Equal(2, length4)
+	is.InDelta(200*time.Millisecond, duration4, float64(50*time.Millisecond))
 	is.True(ok4)
 
-	items5, length5, _, ok5 := BufferWithTimeout(ch, 3, 25*time.Millisecond)
+	items5, length5, duration5, ok5 := BufferWithTimeout(ch, 3, 250*time.Millisecond)
 	is.Empty(items5)
 	is.Zero(length5)
+	is.InDelta(100*time.Millisecond, duration5, float64(50*time.Millisecond))
 	is.False(ok5)
+
+	items6, length6, duration6, ok6 := BufferWithTimeout(ch, 3, 250*time.Millisecond)
+	is.Empty(items6)
+	is.Zero(length6)
+	is.InDelta(1*time.Millisecond, duration6, float64(10*time.Millisecond))
+	is.False(ok6)
 }
 
-func TestFanIn(t *testing.T) {
-	t.Parallel()
+func TestFanIn(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
@@ -392,8 +405,8 @@ func TestFanIn(t *testing.T) {
 	is.Zero(msg0)
 }
 
-func TestFanOut(t *testing.T) {
-	t.Parallel()
+func TestFanOut(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 

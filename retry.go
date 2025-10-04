@@ -3,6 +3,8 @@ package lo
 import (
 	"sync"
 	"time"
+
+	"github.com/samber/lo/internal/xtime"
 )
 
 type debounce struct {
@@ -172,20 +174,20 @@ func Attempt(maxIteration int, f func(index int) error) (int, error) {
 func AttemptWithDelay(maxIteration int, delay time.Duration, f func(index int, duration time.Duration) error) (int, time.Duration, error) {
 	var err error
 
-	start := time.Now()
+	start := xtime.Now()
 
 	for i := 0; maxIteration <= 0 || i < maxIteration; i++ {
-		err = f(i, time.Since(start))
+		err = f(i, xtime.Since(start))
 		if err == nil {
-			return i + 1, time.Since(start), nil
+			return i + 1, xtime.Since(start), nil
 		}
 
 		if maxIteration <= 0 || i+1 < maxIteration {
-			time.Sleep(delay)
+			xtime.Sleep(delay)
 		}
 	}
 
-	return maxIteration, time.Since(start), err
+	return maxIteration, xtime.Since(start), err
 }
 
 // AttemptWhile invokes a function N times until it returns valid output.
@@ -224,23 +226,23 @@ func AttemptWhileWithDelay(maxIteration int, delay time.Duration, f func(int, ti
 	var err error
 	var shouldContinueInvoke bool
 
-	start := time.Now()
+	start := xtime.Now()
 
 	for i := 0; maxIteration <= 0 || i < maxIteration; i++ {
-		err, shouldContinueInvoke = f(i, time.Since(start))
+		err, shouldContinueInvoke = f(i, xtime.Since(start))
 		if !shouldContinueInvoke { // if shouldContinueInvoke is false, then return immediately
-			return i + 1, time.Since(start), err
+			return i + 1, xtime.Since(start), err
 		}
 		if err == nil {
-			return i + 1, time.Since(start), nil
+			return i + 1, xtime.Since(start), nil
 		}
 
 		if maxIteration <= 0 || i+1 < maxIteration {
-			time.Sleep(delay)
+			xtime.Sleep(delay)
 		}
 	}
 
-	return maxIteration, time.Since(start), err
+	return maxIteration, xtime.Since(start), err
 }
 
 type transactionStep[T any] struct {
