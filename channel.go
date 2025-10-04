@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/samber/lo/internal/rand"
+	"github.com/samber/lo/internal/xrand"
 )
 
 // DispatchingStrategy is a function that distributes messages to channels.
@@ -92,7 +92,7 @@ func DispatchingStrategyRoundRobin[T any](msg T, index uint64, channels []<-chan
 // Play: https://go.dev/play/p/GEyGn3TdGk4
 func DispatchingStrategyRandom[T any](msg T, index uint64, channels []<-chan T) int {
 	for {
-		i := rand.IntN(len(channels))
+		i := xrand.IntN(len(channels))
 		if channelIsNotFull(channels[i]) {
 			return i
 		}
@@ -115,7 +115,7 @@ func DispatchingStrategyWeightedRandom[T any](weights []int) DispatchingStrategy
 
 	return func(msg T, index uint64, channels []<-chan T) int {
 		for {
-			i := seq[rand.IntN(len(seq))]
+			i := seq[xrand.IntN(len(seq))]
 			if channelIsNotFull(channels[i]) {
 				return i
 			}

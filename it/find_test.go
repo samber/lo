@@ -4,11 +4,11 @@ package it
 
 import (
 	"iter"
-	"math/rand/v2"
 	"slices"
 	"testing"
 	"time"
 
+	"github.com/samber/lo/internal/xrand"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -687,8 +687,8 @@ func TestSampleBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := SampleBy(values("a", "b", "c"), rand.IntN)
-	result2 := SampleBy(values[string](), rand.IntN)
+	result1 := SampleBy(values("a", "b", "c"), xrand.IntN)
+	result2 := SampleBy(values[string](), xrand.IntN)
 
 	is.True(Contains(values("a", "b", "c"), result1))
 	is.Empty(result2)
@@ -714,14 +714,14 @@ func TestSamplesBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := SamplesBy(values("a", "b", "c"), 3, rand.IntN)
-	result2 := SamplesBy(values[string](), 3, rand.IntN)
+	result1 := SamplesBy(values("a", "b", "c"), 3, xrand.IntN)
+	result2 := SamplesBy(values[string](), 3, xrand.IntN)
 
 	is.ElementsMatch(slices.Collect(result1), []string{"a", "b", "c"})
 	is.Empty(slices.Collect(result2))
 
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := SamplesBy(allStrings, 2, rand.IntN)
+	nonempty := SamplesBy(allStrings, 2, xrand.IntN)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
