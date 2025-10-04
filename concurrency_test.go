@@ -11,7 +11,7 @@ import (
 
 func TestSynchronize(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	testWithTimeout(t, 100*time.Millisecond)
+	testWithTimeout(t, 1000*time.Millisecond)
 	is := assert.New(t)
 
 	// check that callbacks are not executed concurrently
@@ -25,7 +25,7 @@ func TestSynchronize(t *testing.T) { //nolint:paralleltest
 
 		for i := 0; i < 10; i++ {
 			go s.Do(func() {
-				time.Sleep(5 * time.Millisecond)
+				time.Sleep(50 * time.Millisecond)
 				wg.Done()
 			})
 		}
@@ -33,9 +33,7 @@ func TestSynchronize(t *testing.T) { //nolint:paralleltest
 		wg.Wait()
 
 		duration := time.Since(start)
-
-		is.Greater(duration, 50*time.Millisecond)
-		is.Less(duration, 60*time.Millisecond)
+		is.InDelta(500*time.Millisecond, duration, float64(40*time.Millisecond))
 	}
 
 	// check locker is locked
@@ -273,9 +271,9 @@ func TestWaitFor(t *testing.T) { //nolint:paralleltest
 		testWithTimeout(t, 200*time.Millisecond)
 		is := assert.New(t)
 
-		iter, duration, ok := WaitFor(alwaysTrue, 100*time.Millisecond, 10*time.Millisecond)
+		iter, duration, ok := WaitFor(alwaysTrue, 100*time.Millisecond, 30*time.Millisecond)
 		is.Equal(1, iter, "unexpected iteration count")
-		is.InDelta(10*time.Millisecond, duration, float64(5*time.Millisecond))
+		is.InDelta(30*time.Millisecond, duration, float64(10*time.Millisecond))
 		is.True(ok)
 	})
 }

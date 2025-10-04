@@ -1,6 +1,8 @@
 package lo
 
-import "time"
+import (
+	"time"
+)
 
 // Duration returns the time taken to execute a function.
 // Play: https://go.dev/play/p/HQfbBbAXaFP
