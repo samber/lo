@@ -229,7 +229,7 @@ func TestWaitFor(t *testing.T) { //nolint:paralleltest
 
 		iter, duration, ok := WaitFor(laterTrue, 200*time.Millisecond, 10*time.Millisecond)
 		is.Equal(6, iter, "unexpected iteration count")
-		is.InEpsilon(60*time.Millisecond, duration, float64(5*time.Millisecond))
+		is.InDelta(60*time.Millisecond, duration, float64(5*time.Millisecond))
 		is.True(ok)
 	})
 
@@ -248,7 +248,7 @@ func TestWaitFor(t *testing.T) { //nolint:paralleltest
 
 		iter, duration, ok := WaitFor(alwaysFalse, 40*time.Millisecond, 10*time.Millisecond)
 		is.Equal(counter, iter, "unexpected iteration count")
-		is.InEpsilon(40*time.Millisecond, duration, float64(5*time.Millisecond))
+		is.InDelta(40*time.Millisecond, duration, float64(5*time.Millisecond))
 		is.False(ok)
 	})
 
@@ -263,7 +263,7 @@ func TestWaitFor(t *testing.T) { //nolint:paralleltest
 
 		iter, duration, ok := WaitFor(alwaysFalse, 50*time.Millisecond, 100*time.Millisecond)
 		is.Zero(iter, "unexpected iteration count")
-		is.InEpsilon(50*time.Millisecond, duration, float64(10*time.Millisecond))
+		is.InDelta(50*time.Millisecond, duration, float64(10*time.Millisecond))
 		is.False(ok)
 	})
 
@@ -275,7 +275,7 @@ func TestWaitFor(t *testing.T) { //nolint:paralleltest
 
 		iter, duration, ok := WaitFor(alwaysTrue, 100*time.Millisecond, 10*time.Millisecond)
 		is.Equal(1, iter, "unexpected iteration count")
-		is.InEpsilon(10*time.Millisecond, duration, float64(5*time.Millisecond))
+		is.InDelta(10*time.Millisecond, duration, float64(5*time.Millisecond))
 		is.True(ok)
 	})
 }
@@ -295,7 +295,7 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 
 		iter, duration, ok := WaitForWithContext(context.Background(), laterTrue, 200*time.Millisecond, 10*time.Millisecond)
 		is.Equal(6, iter, "unexpected iteration count")
-		is.InEpsilon(60*time.Millisecond, duration, float64(5*time.Millisecond))
+		is.InDelta(60*time.Millisecond, duration, float64(5*time.Millisecond))
 		is.True(ok)
 	})
 
@@ -314,7 +314,7 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 
 		iter, duration, ok := WaitForWithContext(context.Background(), alwaysFalse, 40*time.Millisecond, 10*time.Millisecond)
 		is.Equal(counter, iter, "unexpected iteration count")
-		is.InEpsilon(40*time.Millisecond, duration, float64(5*time.Millisecond))
+		is.InDelta(40*time.Millisecond, duration, float64(5*time.Millisecond))
 		is.False(ok)
 	})
 
@@ -329,7 +329,7 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 
 		iter, duration, ok := WaitForWithContext(context.Background(), alwaysFalse, 50*time.Millisecond, 100*time.Millisecond)
 		is.Zero(iter, "unexpected iteration count")
-		is.InEpsilon(50*time.Millisecond, duration, float64(10*time.Millisecond))
+		is.InDelta(50*time.Millisecond, duration, float64(10*time.Millisecond))
 		is.False(ok)
 	})
 
@@ -341,7 +341,7 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 
 		iter, duration, ok := WaitForWithContext(context.Background(), alwaysTrue, 100*time.Millisecond, 10*time.Millisecond)
 		is.Equal(1, iter, "unexpected iteration count")
-		is.InEpsilon(10*time.Millisecond, duration, float64(5*time.Millisecond))
+		is.InDelta(10*time.Millisecond, duration, float64(5*time.Millisecond))
 		is.True(ok)
 	})
 
@@ -358,7 +358,7 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 
 		iter, duration, ok := WaitForWithContext(expiringCtx, alwaysFalse, 100*time.Millisecond, 30*time.Millisecond)
 		is.Equal(1, iter, "unexpected iteration count")
-		is.InEpsilon(45*time.Millisecond, duration, float64(10*time.Millisecond))
+		is.InDelta(45*time.Millisecond, duration, float64(10*time.Millisecond))
 		is.False(ok)
 	})
 
@@ -373,7 +373,7 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 
 		iter, duration, ok := WaitForWithContext(canceledCtx, alwaysFalse, 100*time.Millisecond, 30*time.Millisecond)
 		is.Zero(iter, "unexpected iteration count")
-		is.InEpsilon(30*time.Millisecond, duration, float64(10*time.Millisecond))
+		is.InDelta(1*time.Millisecond, duration, float64(1*time.Millisecond))
 		is.False(ok)
 	})
 }
