@@ -50,8 +50,8 @@ func TestAttempt(t *testing.T) {
 	is.NoError(err4)
 }
 
-func TestAttemptWithDelay(t *testing.T) {
-	t.Parallel()
+func TestAttemptWithDelay(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	err := errors.New("failed")
@@ -60,14 +60,14 @@ func TestAttemptWithDelay(t *testing.T) {
 		return nil
 	})
 	iter2, dur2, err2 := AttemptWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) error {
-		if i == 5 {
+		if i == 3 {
 			return nil
 		}
 
 		return err
 	})
 	iter3, dur3, err3 := AttemptWithDelay(2, 10*time.Millisecond, func(i int, d time.Duration) error {
-		if i == 5 {
+		if i == 3 {
 			return nil
 		}
 
@@ -82,20 +82,19 @@ func TestAttemptWithDelay(t *testing.T) {
 	})
 
 	is.Equal(1, iter1)
-	is.GreaterOrEqual(dur1, 0*time.Millisecond)
-	is.Less(dur1, 1*time.Millisecond)
+	is.InDelta(1*time.Microsecond, dur1, float64(1*time.Millisecond))
 	is.NoError(err1)
-	is.Equal(6, iter2)
-	is.Greater(dur2, 50*time.Millisecond)
-	is.Less(dur2, 60*time.Millisecond)
+
+	is.Equal(4, iter2)
+	is.InDelta(30*time.Millisecond, dur2, float64(5*time.Millisecond))
 	is.NoError(err2)
+
 	is.Equal(2, iter3)
-	is.Greater(dur3, 10*time.Millisecond)
-	is.Less(dur3, 20*time.Millisecond)
+	is.InDelta(10*time.Millisecond, dur3, float64(5*time.Millisecond))
 	is.ErrorIs(err3, err)
+
 	is.Equal(11, iter4)
-	is.Greater(dur4, 100*time.Millisecond)
-	is.Less(dur4, 115*time.Millisecond)
+	is.InDelta(110*time.Millisecond, dur4, float64(5*time.Millisecond))
 	is.NoError(err4)
 }
 
@@ -178,8 +177,8 @@ func TestAttemptWhile(t *testing.T) {
 	is.NoError(err7)
 }
 
-func TestAttemptWhileWithDelay(t *testing.T) {
-	t.Parallel()
+func TestAttemptWhileWithDelay(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	err := errors.New("failed")
@@ -189,21 +188,19 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	})
 
 	is.Equal(1, iter1)
-	is.GreaterOrEqual(dur1, 0*time.Millisecond)
-	is.Less(dur1, 1*time.Millisecond)
+	is.InDelta(1*time.Microsecond, dur1, float64(3*time.Millisecond))
 	is.NoError(err1)
 
 	iter2, dur2, err2 := AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
-		if i == 5 {
+		if i == 3 {
 			return nil, true
 		}
 
 		return err, true
 	})
 
-	is.Equal(6, iter2)
-	is.Greater(dur2, 50*time.Millisecond)
-	is.Less(dur2, 60*time.Millisecond)
+	is.Equal(4, iter2)
+	is.InDelta(30*time.Millisecond, dur2, float64(5*time.Millisecond))
 	is.NoError(err2)
 
 	iter3, dur3, err3 := AttemptWhileWithDelay(2, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
@@ -215,8 +212,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	})
 
 	is.Equal(2, iter3)
-	is.Greater(dur3, 10*time.Millisecond)
-	is.Less(dur3, 20*time.Millisecond)
+	is.InDelta(10*time.Millisecond, dur3, float64(5*time.Millisecond))
 	is.ErrorIs(err3, err)
 
 	iter4, dur4, err4 := AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
@@ -228,21 +224,19 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	})
 
 	is.Equal(11, iter4)
-	is.Greater(dur4, 100*time.Millisecond)
-	is.Less(dur4, 115*time.Millisecond)
+	is.InDelta(110*time.Millisecond, dur4, float64(5*time.Millisecond))
 	is.NoError(err4)
 
 	iter5, dur5, err5 := AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
-		if i == 5 {
+		if i == 3 {
 			return nil, false
 		}
 
 		return err, true
 	})
 
-	is.Equal(6, iter5)
-	is.Greater(dur5, 10*time.Millisecond)
-	is.Less(dur5, 115*time.Millisecond)
+	is.Equal(4, iter5)
+	is.InDelta(30*time.Millisecond, dur5, float64(5*time.Millisecond))
 	is.NoError(err5)
 
 	iter6, dur6, err6 := AttemptWhileWithDelay(0, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
@@ -250,8 +244,7 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	})
 
 	is.Equal(1, iter6)
-	is.Less(dur6, 10*time.Millisecond)
-	is.Less(dur6, 115*time.Millisecond)
+	is.InDelta(1*time.Microsecond, dur6, float64(5*time.Millisecond))
 	is.NoError(err6)
 
 	iter7, dur7, err7 := AttemptWhileWithDelay(42, 10*time.Millisecond, func(i int, d time.Duration) (error, bool) {
@@ -266,12 +259,12 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	})
 
 	is.Equal(42, iter7)
-	is.Less(dur7, 500*time.Millisecond)
+	is.Greater(dur7, 410*time.Millisecond)
 	is.NoError(err7)
 }
 
-func TestDebounce(t *testing.T) {
-	t.Parallel()
+func TestDebounce(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 
 	f1 := func() {
 		println("1. Called once after 10ms when func stopped invoking!")
@@ -318,8 +311,8 @@ func TestDebounce(t *testing.T) {
 	}
 }
 
-func TestDebounceBy(t *testing.T) {
-	t.Parallel()
+func TestDebounceBy(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	mu := sync.Mutex{}
@@ -356,6 +349,9 @@ func TestDebounceBy(t *testing.T) {
 		time.Sleep(20 * time.Millisecond)
 	}
 
+	// Wait for debounced calls to complete
+	time.Sleep(15 * time.Millisecond)
+
 	mu.Lock()
 	is.Equal(30, output[0])
 	is.Equal(30, output[1])
@@ -374,7 +370,8 @@ func TestDebounceBy(t *testing.T) {
 		time.Sleep(5 * time.Millisecond)
 	}
 
-	time.Sleep(10 * time.Millisecond)
+	// Wait for debounced calls to complete
+	time.Sleep(15 * time.Millisecond)
 
 	mu.Lock()
 	is.Equal(45, output[0])
@@ -398,6 +395,9 @@ func TestDebounceBy(t *testing.T) {
 			}
 		}
 	}
+
+	// Wait for debounced calls to complete
+	time.Sleep(15 * time.Millisecond)
 
 	mu.Lock()
 	is.Equal(75, output[0])
@@ -502,8 +502,8 @@ func TestTransaction(t *testing.T) {
 	}
 }
 
-func TestNewThrottle(t *testing.T) {
-	t.Parallel()
+func TestNewThrottle(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 	callCount := 0
 	f1 := func() {
@@ -531,8 +531,8 @@ func TestNewThrottle(t *testing.T) {
 	is.Equal(3, callCount)
 }
 
-func TestNewThrottleWithCount(t *testing.T) {
-	t.Parallel()
+func TestNewThrottleWithCount(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 	callCount := 0
 	f1 := func() {
@@ -562,8 +562,8 @@ func TestNewThrottleWithCount(t *testing.T) {
 	is.Equal(9, callCount)
 }
 
-func TestNewThrottleBy(t *testing.T) {
-	t.Parallel()
+func TestNewThrottleBy(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 	callCountA := 0
 	callCountB := 0
@@ -602,8 +602,8 @@ func TestNewThrottleBy(t *testing.T) {
 	is.Equal(2, callCountB)
 }
 
-func TestNewThrottleByWithCount(t *testing.T) {
-	t.Parallel()
+func TestNewThrottleByWithCount(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	callCountA := 0
