@@ -7,7 +7,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/samber/lo/internal/rand"
+	"github.com/samber/lo/internal/xrand"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -60,14 +60,14 @@ func RandomString(size int, charset []rune) string {
 	// Determine the corresponding bitmask,
 	// e.g., for 62 characters, the bitmask would be 111111.
 	var letterIDMask int64 = 1<<letterIDBits - 1
-	// Available count, since rand.Int64() returns a non-negative number, the first bit is fixed, so there are 63 random bits
+	// Available count, since xrand.Int64() returns a non-negative number, the first bit is fixed, so there are 63 random bits
 	// e.g., for 62 characters, this value is 10 (63 / 6).
 	letterIDMax := 63 / letterIDBits
 	// Generate the random string in a loop.
-	for i, cache, remain := size-1, rand.Int64(), letterIDMax; i >= 0; {
+	for i, cache, remain := size-1, xrand.Int64(), letterIDMax; i >= 0; {
 		// Regenerate the random number if all available bits have been used
 		if remain == 0 {
-			cache, remain = rand.Int64(), letterIDMax
+			cache, remain = xrand.Int64(), letterIDMax
 		}
 		// Select a character from the charset
 		if idx := int(cache & letterIDMask); idx < len(charset) {
