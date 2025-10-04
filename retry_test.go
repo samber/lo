@@ -50,8 +50,8 @@ func TestAttempt(t *testing.T) {
 	is.NoError(err4)
 }
 
-func TestAttemptWithDelay(t *testing.T) {
-	t.Parallel()
+func TestAttemptWithDelay(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	err := errors.New("failed")
@@ -178,8 +178,8 @@ func TestAttemptWhile(t *testing.T) {
 	is.NoError(err7)
 }
 
-func TestAttemptWhileWithDelay(t *testing.T) {
-	t.Parallel()
+func TestAttemptWhileWithDelay(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	err := errors.New("failed")
@@ -270,8 +270,8 @@ func TestAttemptWhileWithDelay(t *testing.T) {
 	is.NoError(err7)
 }
 
-func TestDebounce(t *testing.T) {
-	t.Parallel()
+func TestDebounce(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 
 	f1 := func() {
 		println("1. Called once after 10ms when func stopped invoking!")
@@ -318,8 +318,8 @@ func TestDebounce(t *testing.T) {
 	}
 }
 
-func TestDebounceBy(t *testing.T) {
-	t.Parallel()
+func TestDebounceBy(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	mu := sync.Mutex{}
@@ -356,6 +356,9 @@ func TestDebounceBy(t *testing.T) {
 		time.Sleep(20 * time.Millisecond)
 	}
 
+	// Wait for debounced calls to complete
+	time.Sleep(15 * time.Millisecond)
+
 	mu.Lock()
 	is.Equal(30, output[0])
 	is.Equal(30, output[1])
@@ -374,7 +377,8 @@ func TestDebounceBy(t *testing.T) {
 		time.Sleep(5 * time.Millisecond)
 	}
 
-	time.Sleep(10 * time.Millisecond)
+	// Wait for debounced calls to complete
+	time.Sleep(15 * time.Millisecond)
 
 	mu.Lock()
 	is.Equal(45, output[0])
@@ -398,6 +402,9 @@ func TestDebounceBy(t *testing.T) {
 			}
 		}
 	}
+
+	// Wait for debounced calls to complete
+	time.Sleep(15 * time.Millisecond)
 
 	mu.Lock()
 	is.Equal(75, output[0])
@@ -502,8 +509,8 @@ func TestTransaction(t *testing.T) {
 	}
 }
 
-func TestNewThrottle(t *testing.T) {
-	t.Parallel()
+func TestNewThrottle(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 	callCount := 0
 	f1 := func() {
@@ -531,8 +538,8 @@ func TestNewThrottle(t *testing.T) {
 	is.Equal(3, callCount)
 }
 
-func TestNewThrottleWithCount(t *testing.T) {
-	t.Parallel()
+func TestNewThrottleWithCount(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 	callCount := 0
 	f1 := func() {
@@ -562,8 +569,8 @@ func TestNewThrottleWithCount(t *testing.T) {
 	is.Equal(9, callCount)
 }
 
-func TestNewThrottleBy(t *testing.T) {
-	t.Parallel()
+func TestNewThrottleBy(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 	callCountA := 0
 	callCountB := 0
@@ -602,8 +609,8 @@ func TestNewThrottleBy(t *testing.T) {
 	is.Equal(2, callCountB)
 }
 
-func TestNewThrottleByWithCount(t *testing.T) {
-	t.Parallel()
+func TestNewThrottleByWithCount(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	callCountA := 0

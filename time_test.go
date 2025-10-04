@@ -7,16 +7,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDuration(t *testing.T) {
-	t.Parallel()
+func TestDuration(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	result := Duration(func() { time.Sleep(10 * time.Millisecond) })
 	is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
 }
 
-func TestDurationX(t *testing.T) {
-	t.Parallel()
+func TestDurationX(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	{
