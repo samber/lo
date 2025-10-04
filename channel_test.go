@@ -277,8 +277,8 @@ func TestBuffer(t *testing.T) {
 	is.False(ok3)
 }
 
-func TestBufferWithContext(t *testing.T) {
-	t.Parallel()
+func TestBufferWithContext(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	testWithTimeout(t, 200*time.Millisecond)
 	is := assert.New(t)
 
@@ -313,8 +313,8 @@ func TestBufferWithContext(t *testing.T) {
 	is.True(ok2)
 }
 
-func TestBufferWithTimeout(t *testing.T) {
-	t.Parallel()
+func TestBufferWithTimeout(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	testWithTimeout(t, 200*time.Millisecond)
 	is := assert.New(t)
 
@@ -352,8 +352,8 @@ func TestBufferWithTimeout(t *testing.T) {
 	is.False(ok5)
 }
 
-func TestFanIn(t *testing.T) {
-	t.Parallel()
+func TestFanIn(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 
@@ -392,8 +392,8 @@ func TestFanIn(t *testing.T) {
 	is.Zero(msg0)
 }
 
-func TestFanOut(t *testing.T) {
-	t.Parallel()
+func TestFanOut(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	testWithTimeout(t, 100*time.Millisecond)
 	is := assert.New(t)
 

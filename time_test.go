@@ -7,39 +7,39 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDuration(t *testing.T) {
-	t.Parallel()
+func TestDuration(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	result := Duration(func() { time.Sleep(10 * time.Millisecond) })
-	is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+	is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 }
 
-func TestDurationX(t *testing.T) {
-	t.Parallel()
+func TestDurationX(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	{
 		result := Duration0(func() { time.Sleep(10 * time.Millisecond) })
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 	}
 
 	{
 		a, result := Duration1(func() string { time.Sleep(10 * time.Millisecond); return "a" })
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 		is.Equal("a", a)
 	}
 
 	{
 		a, b, result := Duration2(func() (string, string) { time.Sleep(10 * time.Millisecond); return "a", "b" })
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 		is.Equal("a", a)
 		is.Equal("b", b)
 	}
 
 	{
 		a, b, c, result := Duration3(func() (string, string, string) { time.Sleep(10 * time.Millisecond); return "a", "b", "c" })
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 		is.Equal("a", a)
 		is.Equal("b", b)
 		is.Equal("c", c)
@@ -47,7 +47,7 @@ func TestDurationX(t *testing.T) {
 
 	{
 		a, b, c, d, result := Duration4(func() (string, string, string, string) { time.Sleep(10 * time.Millisecond); return "a", "b", "c", "d" })
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 		is.Equal("a", a)
 		is.Equal("b", b)
 		is.Equal("c", c)
@@ -59,7 +59,7 @@ func TestDurationX(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 			return "a", "b", "c", "d", "e"
 		})
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 		is.Equal("a", a)
 		is.Equal("b", b)
 		is.Equal("c", c)
@@ -72,7 +72,7 @@ func TestDurationX(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 			return "a", "b", "c", "d", "e", "f"
 		})
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 		is.Equal("a", a)
 		is.Equal("b", b)
 		is.Equal("c", c)
@@ -86,7 +86,7 @@ func TestDurationX(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 			return "a", "b", "c", "d", "e", "f", "g"
 		})
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 		is.Equal("a", a)
 		is.Equal("b", b)
 		is.Equal("c", c)
@@ -101,7 +101,7 @@ func TestDurationX(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 			return "a", "b", "c", "d", "e", "f", "g", "h"
 		})
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 		is.Equal("a", a)
 		is.Equal("b", b)
 		is.Equal("c", c)
@@ -117,7 +117,7 @@ func TestDurationX(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 			return "a", "b", "c", "d", "e", "f", "g", "h", "i"
 		})
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 		is.Equal("a", a)
 		is.Equal("b", b)
 		is.Equal("c", c)
@@ -134,7 +134,7 @@ func TestDurationX(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 			return "a", "b", "c", "d", "e", "f", "g", "h", "i", "j"
 		})
-		is.InEpsilon(10*time.Millisecond, result, float64(2*time.Millisecond))
+		is.InDelta(10*time.Millisecond, result, float64(2*time.Millisecond))
 		is.Equal("a", a)
 		is.Equal("b", b)
 		is.Equal("c", c)
