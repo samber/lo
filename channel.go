@@ -192,7 +192,7 @@ func ChannelToSlice[T any](ch <-chan T) []T {
 // Generator implements the generator design pattern.
 // Play: https://go.dev/play/p/lIbSY3QmiEg
 //
-// Deprecated: use "iter" package instead (Go >= 1.23)
+// Deprecated: use "iter" package instead (Go >= 1.23).
 func Generator[T any](bufferSize int, generator func(yield func(T))) <-chan T {
 	ch := make(chan T, bufferSize)
 
