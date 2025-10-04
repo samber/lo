@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/samber/lo/internal/constraints"
-	"github.com/samber/lo/internal/rand"
+	"github.com/samber/lo/internal/xrand"
 )
 
 // IndexOf returns the index at which the first occurrence of a value is found in a slice or -1
@@ -660,7 +660,7 @@ type randomIntGenerator func(n int) int
 // Sample returns a random item from collection.
 // Play: https://go.dev/play/p/vCcSJbh5s6l
 func Sample[T any](collection []T) T {
-	result := SampleBy(collection, rand.IntN)
+	result := SampleBy(collection, xrand.IntN)
 	return result
 }
 
@@ -677,7 +677,7 @@ func SampleBy[T any](collection []T, randomIntGenerator randomIntGenerator) T {
 // Samples returns N random unique items from collection.
 // Play: https://go.dev/play/p/vCcSJbh5s6l
 func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
-	results := SamplesBy(collection, count, rand.IntN)
+	results := SamplesBy(collection, count, xrand.IntN)
 	return results
 }
 

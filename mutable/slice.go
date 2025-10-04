@@ -1,6 +1,6 @@
 package mutable
 
-import "github.com/samber/lo/internal/rand"
+import "github.com/samber/lo/internal/xrand"
 
 // Filter is a generic function that modifies the input slice in-place to contain only the elements
 // that satisfy the provided predicate function. The predicate function takes an element of the slice and its index,
@@ -55,7 +55,7 @@ func MapI[T any, Slice ~[]T](collection Slice, fn func(item T, index int) T) {
 // Shuffle returns a slice of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 // Play: https://go.dev/play/p/2xb3WdLjeSJ
 func Shuffle[T any, Slice ~[]T](collection Slice) {
-	rand.Shuffle(len(collection), func(i, j int) {
+	xrand.Shuffle(len(collection), func(i, j int) {
 		collection[i], collection[j] = collection[j], collection[i]
 	})
 }
