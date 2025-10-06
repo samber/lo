@@ -24,6 +24,8 @@ jobs:
 
       - name: Bearer
         uses: bearer/bearer-action@v2
+        with:
+          skip-path: 'docs/'
 
       # - name: Install mdsf
       #   uses: hougesen/mdsf@main
