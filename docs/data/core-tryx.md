@@ -30,17 +30,6 @@ position: 20
 
 Calls a function and returns false in case of error or panic. Variants cover callbacks returning 0 to 6 values.
 
-Variants:
-
-- Try: `func Try(callback func() error) bool`
-- Try0: `func Try0(callback func()) bool`
-- Try1: `func Try1(callback func() error) bool`
-- Try2: `func Try2[T any](callback func() (T, error)) bool`
-- Try3: `func Try3[T, R any](callback func() (T, R, error)) bool`
-- Try4: `func Try4[T, R, S any](callback func() (T, R, S, error)) bool`
-- Try5: `func Try5[T, R, S, Q any](callback func() (T, R, S, Q, error)) bool`
-- Try6: `func Try6[T, R, S, Q, U any](callback func() (T, R, S, Q, U, error)) bool`
-
 ```go
 ok := lo.Try(func() error {
     // return an error to mark failure

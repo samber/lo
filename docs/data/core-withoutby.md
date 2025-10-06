@@ -19,8 +19,17 @@ signatures:
 Filters a slice by excluding elements whose extracted keys match any in the exclude list.
 
 ```go
-type User struct { ID int; Name string }
-users := []User{{1, "Alice"}, {2, "Bob"}, {3, "Charlie"}}
+type User struct {
+  ID int
+  Name string
+}
+
+users := []User{
+  {1, "Alice"},
+  {2, "Bob"},
+  {3, "Charlie"},
+}
+
 filtered := lo.WithoutBy(users, func(u User) int {
     return u.ID
 }, 2, 3)

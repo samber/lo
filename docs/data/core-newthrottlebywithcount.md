@@ -21,8 +21,18 @@ signatures:
 Creates a throttled function per key with a per-interval invocation limit.
 
 ```go
-throttle, reset := lo.NewThrottleByWithCount[string](100*time.Millisecond, 3, func(key string) { println(key) })
-for i := 0; i < 10; i++ { throttle("foo") }
+throttle, reset := lo.NewThrottleByWithCount[string](
+    100*time.Millisecond,
+    3,
+    func(key string) {
+        println(key)
+    },
+)
+
+for i := 0; i < 10; i++ {
+    throttle("foo")
+}
+
 reset()
 ```
 

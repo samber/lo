@@ -23,9 +23,12 @@ signatures:
 Returns a map of the same type excluding entries that match the predicate.
 
 ```go
-m := lo.OmitBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) bool {
-    return value%2 == 1
-})
+m := lo.OmitBy(
+    map[string]int{"foo": 1, "bar": 2, "baz": 3},
+    func(key string, value int) bool {
+        return value%2 == 1
+    },
+)
 // map[string]int{"bar": 2}
 ```
 

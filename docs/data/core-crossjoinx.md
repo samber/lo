@@ -21,7 +21,7 @@ similarHelpers:
   - core#intersect#product
   - core#intersect#productby
   - core#map#entries
-position: 10
+position: 50
 ---
 
 Computes the cartesian product of input slices, returning tuples of all combinations. Variants support 2 up to 9 input slices.

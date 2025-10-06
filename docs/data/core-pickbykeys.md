@@ -21,7 +21,10 @@ signatures:
 Returns a map of the same type filtered by the provided keys.
 
 ```go
-m := lo.PickByKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, []string{"foo", "baz"})
+m := lo.PickByKeys(
+    map[string]int{"foo": 1, "bar": 2, "baz": 3},
+    []string{"foo", "baz"},
+)
 // map[string]int{"foo": 1, "baz": 3}
 ```
 

@@ -28,9 +28,7 @@ position: 0
 
 Constructors for tuple values from 2 up to 9 elements.
 
-Variants:
-
-- T2..T9: `TX` creates a `TupleX` from its `X` inputs.
+Variants: `T2..T9`
 
 ```go
 t := lo.T3(1, "a", true)

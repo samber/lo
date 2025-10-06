@@ -19,9 +19,13 @@ signatures:
 Like AttemptWhile, but pauses between attempts and returns elapsed time.
 
 ```go
-count, dur, err := lo.AttemptWhileWithDelay(5, time.Millisecond, func(i int, d time.Duration) (error, bool) {
-    return errors.New("x"), i < 1
-})
+count, dur, err := lo.AttemptWhileWithDelay(
+    5,
+    time.Millisecond,
+    func(i int, d time.Duration) (error, bool) {
+        return errors.New("x"), i < 1
+    },
+)
 ```
 
 

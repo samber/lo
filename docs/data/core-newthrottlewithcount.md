@@ -21,8 +21,19 @@ signatures:
 Creates a throttled function with a per-interval invocation limit.
 
 ```go
-throttle, reset := lo.NewThrottleWithCount(100*time.Millisecond, 3, func() { println("tick") })
-for i := 0; i < 10; i++ { throttle(); time.Sleep(30*time.Millisecond) }
+throttle, reset := lo.NewThrottleWithCount(
+    100*time.Millisecond,
+    3,
+    func() {
+        println("tick")
+    },
+)
+
+for i := 0; i < 10; i++ {
+    throttle();
+    time.Sleep(30*time.Millisecond)
+}
+
 reset()
 ```
 

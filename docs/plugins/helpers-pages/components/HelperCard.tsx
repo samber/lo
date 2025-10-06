@@ -214,30 +214,30 @@ function SimilarHelpers({
           {similarHelpers
             .map((originalLabel) => {
               const parts = String(originalLabel).split('#');
-              const categoryRaw = parts[0];
-              const subCategoryRaw = parts[1];
+              const typeRaw = parts[0];
+              const categoryRaw = parts[1];
               const nameRaw = parts[2];
+              const fallbackType = currentType || '';
               const fallbackCategory = currentCategory || '';
-              const fallbackSubCategory = currentType || '';
+              const type = (typeRaw || fallbackType).toLowerCase();
               const category = (categoryRaw || fallbackCategory).toLowerCase();
-              const subCategory = (subCategoryRaw || fallbackSubCategory).toLowerCase();
-              // Fallback for legacy 2-part labels: category#name
+              // Fallback for legacy 2-part labels: type#name
               const legacyName = parts.length === 2 ? parts[1] : undefined;
               const name = (nameRaw || legacyName || '').toLowerCase();
-              return { originalLabel, category, subCategory, name, nameRaw };
+              return { originalLabel, type, category, name, nameRaw };
             })
             .sort((a, b) => {
-              const currentCategoryLower = (currentCategory || '').toLowerCase();
-              const aSame = a.category === currentCategoryLower ? 0 : 1;
-              const bSame = b.category === currentCategoryLower ? 0 : 1;
-              if (aSame !== bSame) return aSame - bSame; // same category first
+              const currentTypeLower = (currentType || '').toLowerCase();
+              const aSame = a.type === currentTypeLower ? 0 : 1;
+              const bSame = b.type === currentTypeLower ? 0 : 1;
+              if (aSame !== bSame) return aSame - bSame; // same type first
               return a.name.localeCompare(b.name);
             })
-            .map(({ originalLabel, category, subCategory, name, nameRaw }, index) => {
-              const currentCategoryLower = (currentCategory || '').toLowerCase();
-              const href = `/docs/${category}/${subCategory}#${name}`;
+            .map(({ originalLabel, type, category, name, nameRaw }, index) => {
+              const currentTypeLower = (currentType || '').toLowerCase();
+              const href = `/docs/${type}/${category}#${name}`;
               const displayName = nameRaw || name;
-              const isSameSection = category === currentCategoryLower; // compare only category for label
+              const isSameSection = type === currentTypeLower; // compare only type for label
               return (
                 <a 
                   key={index}
@@ -248,7 +248,7 @@ function SimilarHelpers({
                     displayName
                   ) : (
                     <>
-                      <span className="helper-card__similar-prefix">{category}›</span>{' '}
+                      <span className="helper-card__similar-prefix">{type}›</span>{' '}
                       {displayName}
                     </>
                   )}

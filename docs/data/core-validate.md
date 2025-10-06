@@ -21,6 +21,10 @@ Creates an error when a condition is not met; returns nil when it is.
 
 ```go
 slice := []string{"a"}
+
+err := lo.Validate(len(slice) == 0, "Slice should be empty")
+// error("Slice should be empty")
+
 err := lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", slice)
 // error("Slice should be empty but contains [a]")
 ```

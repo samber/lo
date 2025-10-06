@@ -21,8 +21,17 @@ signatures:
 Creates a debounced function that delays invoking the callbacks until after the wait duration has elapsed since the last call. Returns the debounced function and a cancel function.
 
 ```go
-debounce, cancel := lo.NewDebounce(100 * time.Millisecond, func() { println("Called once after debounce!") })
-for i := 0; i < 10; i++ { debounce() }
+debounce, cancel := lo.NewDebounce(
+    100 * time.Millisecond,
+    func() {
+        println("Called once after debounce!")
+    },
+)
+
+for i := 0; i < 10; i++ {
+    debounce()
+}
+
 time.Sleep(200 * time.Millisecond)
 cancel()
 ```

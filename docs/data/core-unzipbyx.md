@@ -24,7 +24,7 @@ similarHelpers:
   - core#tuple#unzipx
   - core#slice#map
   - core#slice#filtermap
-position: 50
+position: 40
 ---
 
 Transforms each input element into a tuple and splits results into parallel slices. Variants support arities from 2 to 9.

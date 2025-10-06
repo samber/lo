@@ -33,6 +33,7 @@ people := it.Slice([]Person{
     {Name: "Charlie", Age: 35},
     {Name: "Diana", Age: 30},  // Same age as Alice
 })
+
 filtered := it.WithoutBy(people, func(p Person) int { return p.Age }, 30)
 // filtered: sequence with Bob (age 25) and Charlie (age 35)
 

@@ -20,7 +20,9 @@ Invokes a function up to N times until it returns nil. The second return value c
 
 ```go
 count, err := lo.AttemptWhile(5, func(i int) (error, bool) {
-    if i == 2 { return nil, false }
+    if i == 2 {
+        return nil, false
+    }
     return errors.New("fail"), true
 })
 // count == 3, err == nil

@@ -28,10 +28,17 @@ signatures:
 Returns true if lists contain the same set of keys computed by the predicate, with matching multiplicities. Order is not checked.
 
 ```go
-type Item struct{ ID string }
-lo.ElementsMatchBy([]Item{{"a"}, {"b"}}, []Item{{"b"}, {"a"}}, func(i Item) string {
-    return i.ID
-})
+type Item struct{
+    ID string
+}
+
+lo.ElementsMatchBy(
+    []Item{{"a"}, {"b"}},
+    []Item{{"b"}, {"a"}},
+    func(i Item) string {
+        return i.ID
+    },
+)
 // true
 ```
 

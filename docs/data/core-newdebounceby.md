@@ -20,8 +20,17 @@ signatures:
 Creates a debounced function per key that delays invoking callbacks until after the wait duration has elapsed for that key. Returns a per-key debounced function and a per-key cancel function.
 
 ```go
-debounce, cancel := lo.NewDebounceBy[string](100*time.Millisecond, func(key string, count int) { println(key, count) })
-for i := 0; i < 10; i++ { debounce("first") }
+debounce, cancel := lo.NewDebounceBy[string](
+    100*time.Millisecond,
+    func(key string, count int) {
+        println(key, count)
+    },
+)
+
+for i := 0; i < 10; i++ {
+    debounce("first")
+}
+
 time.Sleep(200 * time.Millisecond)
 cancel("first")
 ```
