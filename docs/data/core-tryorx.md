@@ -15,12 +15,7 @@ signatures:
 playUrl: https://go.dev/play/p/B4F7Wg2Zh9X
 variantHelpers:
   - core#error-handling#tryor
-  - core#error-handling#tryor1
-  - core#error-handling#tryor2
-  - core#error-handling#tryor3
-  - core#error-handling#tryor4
-  - core#error-handling#tryor5
-  - core#error-handling#tryor6
+  - core#error-handling#tryorx
 similarHelpers:
   - core#error-handling#validate
   - core#error-handling#mustx

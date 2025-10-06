@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Time helpers
+## Core - Time helpers
 
 This page lists all time operations available in the core package of lo.
 

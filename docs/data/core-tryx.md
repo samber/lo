@@ -16,13 +16,7 @@ signatures:
 playUrl:
 variantHelpers:
   - core#error-handling#try
-  - core#error-handling#try0
-  - core#error-handling#try1
-  - core#error-handling#try2
-  - core#error-handling#try3
-  - core#error-handling#try4
-  - core#error-handling#try5
-  - core#error-handling#try6
+  - core#error-handling#tryx
 similarHelpers:
   - core#error-handling#validate
   - core#error-handling#mustx

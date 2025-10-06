@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Channel helpers
+## Core - Channel helpers
 
 This page lists all operations on channels, available in the core package of lo.
 

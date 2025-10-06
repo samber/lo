@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Find helpers
+## Core - Find helpers
 
 This page lists all search helpers, available in the core package of lo.
 

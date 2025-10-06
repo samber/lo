@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Channel helpers
+## Iterator - Channel helpers
 
 This page lists all operations on channels, available in the `it` lo sub-package.
 

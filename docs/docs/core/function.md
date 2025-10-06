@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Function helpers
+## Core - Function helpers
 
 This page lists all operations on functions, available in the core package of lo.
 

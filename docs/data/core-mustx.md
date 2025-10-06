@@ -16,13 +16,7 @@ signatures:
 playUrl: https://go.dev/play/p/TMoWrRp3DyC
 variantHelpers:
   - core#error-handling#must
-  - core#error-handling#must0
-  - core#error-handling#must1
-  - core#error-handling#must2
-  - core#error-handling#must3
-  - core#error-handling#must4
-  - core#error-handling#must5
-  - core#error-handling#must6
+  - core#error-handling#mustx
 similarHelpers:
   - core#error-handling#validate
   - core#error-handling#tryx

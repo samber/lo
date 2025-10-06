@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Error handling helpers
+## Core - Error handling helpers
 
 This page lists all error handling operations available in the core package of lo.
 

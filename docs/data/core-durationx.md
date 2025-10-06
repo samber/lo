@@ -20,17 +20,7 @@ signatures:
 playUrl: https://go.dev/play/p/HQfbBbAXaFP
 variantHelpers:
   - core#time#duration
-  - core#time#duration0
-  - core#time#duration1
-  - core#time#duration2
-  - core#time#duration3
-  - core#time#duration4
-  - core#time#duration5
-  - core#time#duration6
-  - core#time#duration7
-  - core#time#duration8
-  - core#time#duration9
-  - core#time#duration10
+  - core#time#durationx
 similarHelpers:
   - core#concurrency#waitfor
   - core#retry#attemptwithdelay

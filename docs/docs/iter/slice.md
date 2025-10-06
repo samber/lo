@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Map helpers
+## Iterator - Map helpers
 
 This page lists all operations on slice, available in the `it` lo sub-package.
 

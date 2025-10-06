@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Map helpers
+## Core - Map helpers
 
 This page lists all operations on maps, available in the core package of lo.
 

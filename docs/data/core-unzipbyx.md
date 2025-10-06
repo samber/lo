@@ -15,14 +15,7 @@ signatures:
   - "func UnzipBy9[In any, A any, B any, C any, D any, E any, F any, G any, H any, I any](items []In, predicate func(In) (a A, b B, c C, d D, e E, f F, g G, h H, i I)) ([]A, []B, []C, []D, []E, []F, []G, []H, []I)"
 playUrl: https://go.dev/play/p/tN8yqaRZz0r
 variantHelpers:
-  - core#tuple#unzipby2
-  - core#tuple#unzipby3
-  - core#tuple#unzipby4
-  - core#tuple#unzipby5
-  - core#tuple#unzipby6
-  - core#tuple#unzipby7
-  - core#tuple#unzipby8
-  - core#tuple#unzipby9
+  - core#tuple#unzipbyx
 similarHelpers:
   - core#tuple#tuplex
   - core#tuple#unpackx

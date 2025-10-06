@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Tuple helpers
+## Core - Tuple helpers
 
 This page lists all tuple operations available in the core package of lo.
 

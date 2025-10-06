@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Conditional helpers
+## Core - Conditional helpers
 
 This page lists all conditional operations available in the core package of lo.
 

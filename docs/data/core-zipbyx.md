@@ -15,14 +15,7 @@ signatures:
   - "func ZipBy9[A any, B any, C any, D any, E any, F any, G any, H any, I any, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, i []I, predicate func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) []Out"
 playUrl: https://go.dev/play/p/wlHur6yO8rR
 variantHelpers:
-  - core#tuple#zipby2
-  - core#tuple#zipby3
-  - core#tuple#zipby4
-  - core#tuple#zipby5
-  - core#tuple#zipby6
-  - core#tuple#zipby7
-  - core#tuple#zipby8
-  - core#tuple#zipby9
+  - core#tuple#zipbyx
 similarHelpers:
   - core#tuple#tuplex
   - core#tuple#unpackx

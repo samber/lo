@@ -8,14 +8,7 @@ signatures:
   - "func Unpack2[A, B any](tuple Tuple2[A, B]) (A, B)"
 playUrl: https://go.dev/play/p/xVP_k0kJ96W
 variantHelpers:
-  - core#tuple#unpack2
-  - core#tuple#unpack3
-  - core#tuple#unpack4
-  - core#tuple#unpack5
-  - core#tuple#unpack6
-  - core#tuple#unpack7
-  - core#tuple#unpack8
-  - core#tuple#unpack9
+  - core#tuple#unpackx
 similarHelpers:
   - core#tuple#tuplex
   - core#tuple#zipx

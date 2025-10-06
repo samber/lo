@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Map helpers
+## Parallel - Slice helpers
 
 This page lists all operations on slices, available in the `parallel` lo sub-package.
 

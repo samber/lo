@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## String helpers
+## Iterator - String helpers
 
 This page lists all operations on strings, available in the `it` lo sub-package.
 

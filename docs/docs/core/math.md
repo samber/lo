@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Math helpers
+## Core - Math helpers
 
 This page lists all math operations available in the core package of lo.
 

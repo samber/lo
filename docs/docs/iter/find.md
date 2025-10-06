@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Find helpers
+## Iterator - Find helpers
 
 This page lists all search helpers, available in the `it` lo sub-package.
 

@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Intersection helpers
+## Core - Intersection helpers
 
 This page lists all intersection helpers, available in the core package of lo.
 

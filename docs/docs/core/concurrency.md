@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Concurrency helpers
+## Core - Concurrency helpers
 
 This page lists all concurrency operations available in the core package of lo.
 

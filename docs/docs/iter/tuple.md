@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Tuple helpers
+## Iterator - Tuple helpers
 
 This page lists all tuple operations, available in the `it` lo sub-package.
 

@@ -11,7 +11,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Slice helpers
+## Mutable - Slice helpers
 
 This page lists all operations on slices, available in the `mutable` lo sub-package.
 

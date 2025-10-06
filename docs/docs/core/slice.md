@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Slice helpers
+## Core - Slice helpers
 
 This page lists all operations on slices, available in the core package of lo.
 

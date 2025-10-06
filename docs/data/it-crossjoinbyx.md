@@ -15,14 +15,7 @@ signatures:
   - "func CrossJoinBy9[T1, T2, T3, T4, T5, T6, T7, T8, T9, R any](seq1 iter.Seq[T1], seq2 iter.Seq[T2], seq3 iter.Seq[T3], seq4 iter.Seq[T4], seq5 iter.Seq[T5], seq6 iter.Seq[T6], seq7 iter.Seq[T7], seq8 iter.Seq[T8], seq9 iter.Seq[T9], project func(T1, T2, T3, T4, T5, T6, T7, T8, T9) R) iter.Seq[R]"
 playUrl: ""
 variantHelpers:
-  - it#tuple#crossjoinby2
-  - it#tuple#crossjoinby3
-  - it#tuple#crossjoinby4
-  - it#tuple#crossjoinby5
-  - it#tuple#crossjoinby6
-  - it#tuple#crossjoinby7
-  - it#tuple#crossjoinby8
-  - it#tuple#crossjoinby9
+  - it#tuple#crossjoinbyx
 similarHelpers:
   - core#tuple#crossjoinbyx
   - it#tuple#crossjoinx

@@ -14,11 +14,7 @@ signatures:
 playUrl: https://go.dev/play/p/Sy1gAQiQZ3v
 variantHelpers:
   - core#function#partial
-  - core#function#partial1
-  - core#function#partial2
-  - core#function#partial3
-  - core#function#partial4
-  - core#function#partial5
+  - core#function#partialx
 similarHelpers:
   - core#condition#if
   - core#condition#ternary

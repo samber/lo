@@ -15,14 +15,7 @@ signatures:
   - "func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, listI []I, project func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) []Out"
 playUrl: https://go.dev/play/p/8Y7btpvuA-C
 variantHelpers:
-  - core#tuple#crossjoinby2
-  - core#tuple#crossjoinby3
-  - core#tuple#crossjoinby4
-  - core#tuple#crossjoinby5
-  - core#tuple#crossjoinby6
-  - core#tuple#crossjoinby7
-  - core#tuple#crossjoinby8
-  - core#tuple#crossjoinby9
+  - core#tuple#crossjoinbyx
 similarHelpers:
   - core#tuple#zipx
   - core#tuple#unzipx

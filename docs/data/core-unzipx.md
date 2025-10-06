@@ -15,14 +15,7 @@ signatures:
   - "func Unzip9[A, B, C, D, E, F, G, H, I any](tuples []Tuple9[A, B, C, D, E, F, G, H, I]) ([]A, []B, []C, []D, []E, []F, []G, []H, []I)"
 playUrl: https://go.dev/play/p/ciHugugvaAW
 variantHelpers:
-  - core#tuple#unzip2
-  - core#tuple#unzip3
-  - core#tuple#unzip4
-  - core#tuple#unzip5
-  - core#tuple#unzip6
-  - core#tuple#unzip7
-  - core#tuple#unzip8
-  - core#tuple#unzip9
+  - core#tuple#unzipx
 similarHelpers:
   - core#tuple#tuplex
   - core#tuple#unpackx

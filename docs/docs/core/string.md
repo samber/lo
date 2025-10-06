@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## String helpers
+## Core - String helpers
 
 This page lists all string operations available in the core package of lo.
 

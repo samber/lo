@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Type manipulation helpers
+## Iterator - Type manipulation helpers
 
 This page lists all type operations available in the `it` lo sub-package.
 

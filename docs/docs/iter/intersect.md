@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Intersection helpers
+## Iterator - Intersection helpers
 
 This page lists all intersection helpers, available in the `it` lo sub-package.
 

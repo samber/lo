@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Sequence helpers
+## Iterator - Sequence helpers
 
 This page lists all operations on sequences, available in the `it` lo sub-package.
 

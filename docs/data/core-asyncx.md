@@ -16,13 +16,7 @@ signatures:
 playUrl: https://go.dev/play/p/uo35gosuTLw
 variantHelpers:
   - core#concurrency#async
-  - core#concurrency#async0
-  - core#concurrency#async1
-  - core#concurrency#async2
-  - core#concurrency#async3
-  - core#concurrency#async4
-  - core#concurrency#async5
-  - core#concurrency#async6
+  - core#concurrency#asyncx
 similarHelpers:
   - core#concurrency#synchronize
   - core#concurrency#waitfor

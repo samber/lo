@@ -8,14 +8,7 @@ signatures:
   - "func Zip2[A, B any](a []A, b []B) []Tuple2[A, B]"
 playUrl: https://go.dev/play/p/jujaA6GaJTp
 variantHelpers:
-  - core#tuple#zip2
-  - core#tuple#zip3
-  - core#tuple#zip4
-  - core#tuple#zip5
-  - core#tuple#zip6
-  - core#tuple#zip7
-  - core#tuple#zip8
-  - core#tuple#zip9
+  - core#tuple#zipx
 similarHelpers:
   - core#tuple#tuplex
   - core#tuple#unpackx
