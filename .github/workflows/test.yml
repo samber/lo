@@ -2,8 +2,6 @@ name: Tests
 
 on:
   push:
-    tags:
-    branches:
   pull_request:
 
 jobs:
@@ -22,6 +20,7 @@ jobs:
           - "1.24"
           - "1.25"
           - "1.x"
+
     steps:
       - uses: actions/checkout@v5
 

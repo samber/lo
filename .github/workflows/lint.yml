@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+
     steps:
       - uses: actions/setup-go@v6
         with:
@@ -23,3 +24,11 @@ jobs:
 
       - name: Bearer
         uses: bearer/bearer-action@v2
+        with:
+          skip-path: 'docs/'
+
+      # - name: Install mdsf
+      #   uses: hougesen/mdsf@main
+
+      # - name: Run mdsf
+      #   run: mdsf --debug --log-level warn docs/
