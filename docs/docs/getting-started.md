@@ -29,7 +29,7 @@ squared := lo.Map(numbers, func(x int, _ int) int {
 // Result: [1, 4, 9, 16, 25]
 ```
 
-## Iter Package (`lo/iter`)
+## Iter Package (`lo/it`)
 
 The  `it` package provides Go 1.23+ sequence helpers with lazy evaluation, offering over 100 functions for efficient iteration without buffering.
 
