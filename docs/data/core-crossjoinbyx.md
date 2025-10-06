@@ -23,7 +23,7 @@ similarHelpers:
   - core#tuple#unzipbyx
   - core#slice#product
   - core#slice#productby
-position: 0
+position: 60
 ---
 
 Computes a cartesian product and projects each combination through a function. Variants support 2 up to 9 input slices.

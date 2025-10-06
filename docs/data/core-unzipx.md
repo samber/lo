@@ -24,7 +24,7 @@ similarHelpers:
   - core#tuple#unzipbyx
   - core#slice#mapkeys
   - core#slice#mapvalues
-position: 40
+position: 30
 ---
 
 Splits a slice of tuples back into multiple parallel slices. Variants support tuple sizes from 2 to 9.

@@ -11,7 +11,7 @@ sidebar_position: 1
 ## Installation
 
 ```bash
-go get -u github.com/samber/lo
+go get -u github.com/samber/lo@v1
 ```
 
 ## Base Package (`lo`)
@@ -40,8 +40,10 @@ import (
     loit "github.com/samber/lo/it"
 )
 
+seqIn := iter.Range(0, 1000)
+
 // Lazy iteration without buffering
-seq := loit.Filter(iter.Range(0, 1000), func(x int) bool {
+seqOut := loit.Filter(seqIn, func(x int) bool {
     return x%2 == 0
 })
 ```
@@ -82,6 +84,7 @@ results := lop.Map(numbers, 4, func(x int) int {
 - **Performance** optimized with parallel and mutable variants
 - **Comprehensive** with 500+ utility functions
 - **Lazy evaluation** with `iter` std package (Go >= 1.23)
+- **Minimal dependencies** zero dependencies outside the Go standard library
 
 ## Next Steps
 
