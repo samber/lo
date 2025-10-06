@@ -62,7 +62,7 @@ import (
 
 I take no responsibility for this junk. 😁 💩
 
-## Community and Evolution
+## 🙋‍♂️ Community and Evolution
 
 `lo` embraces Go's evolution:
 - **Go 1.18**: Leveraged generics for type safety
@@ -71,7 +71,7 @@ I take no responsibility for this junk. 😁 💩
 
 The library is actively maintained and welcomes contributions. It follows semantic versioning strictly, ensuring stability for production applications.
 
-## When to Use `lo`
+## 📍 When to Use `lo`
 
 Use `lo` when you need to:
 - Transform complex data structures concisely
@@ -82,7 +82,7 @@ Use `lo` when you need to:
 
 For simple operations, Go's standard library may suffice. But when you find yourself writing nested loops or complex data manipulation logic, `lo` provides the abstractions you need.
 
-## Design Philosophy
+## 🏛️ Design Philosophy
 
 ### 1. **Type Safety Through Generics**
 Every function in `lo` is built on Go 1.18+ generics, ensuring compile-time type safety without sacrificing flexibility. This eliminates runtime type assertions and reduces bugs.

@@ -35,6 +35,8 @@ Iterators can be unbounded and run for a very long time. If you expect a big mem
 ## Documentation
 Functions must be properly commented, with a Go Playground link. New helpers must be created with a markdown documentation in `docs/data/`. In markdown header, please link to similar helpers (and update other markdowns accordingly).
 
+Add your helper to `docs/static/llms.txt`.
+
 ## Examples
 Every function includes a "Play" link to the Go Playground, allowing developers to quickly experiment and understand behavior without setting up a local environment.
 

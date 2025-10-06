@@ -43,7 +43,7 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 7. **Error Handling Respect**: Helpers don't hide errors; they integrate naturally with Go's error handling patterns
 8. **Practical Over Pure**: Prioritizes solving real-world problems over theoretical purity
 
-## Root Package Helpers
+## Core Package Helpers
 
 ### Condition
 - If: Conditional statement that returns a value
@@ -323,7 +323,7 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 
 ## Additional Resources
 
-- **Documentation**: Comprehensive documentation with examples for every helper
+- **Documentation**: https://lo.samber.dev
 - **GoDoc**: https://pkg.go.dev/github.com/samber/lo
 - **GitHub**: https://github.com/samber/lo
 - **Playground**: Every helper includes a Go Playground example for quick testing

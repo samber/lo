@@ -54,6 +54,7 @@ const sidebars: SidebarsConfig = {
       ],
     },
     'glossary',
+    'contributing',
   ],
 };
 
