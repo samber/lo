@@ -2,7 +2,7 @@
 id: glossary
 title: 📚 Glossary
 description: Comprehensive glossary of samber/lo library terms and concepts
-sidebar_position: 10
+sidebar_position: 100
 ---
 
 # Glossary
