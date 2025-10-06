@@ -8,3 +8,16 @@ updates:
     directory: /
     schedule:
       interval: weekly
+  - package-ecosystem: npm
+    directory: /docs
+    schedule:
+      interval: monthly
+    groups:
+      docusaurus:
+        patterns:
+          - "@docusaurus/*"
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
