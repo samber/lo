@@ -320,20 +320,20 @@ const config: Config = {
         },
       ],
     },
-    // algolia: {
-    //   appId: '',
-    //   // bearer:disable javascript_lang_hardcoded_secret
-    //   apiKey: '',
-    //   externalUrlRegex: 'lo\\.samber\\.dev',
-    //   indexName: 'lo',
-    //   contextualSearch: true,
-    //   searchParameters: {
-    //     // facetFilters: ['type:lvl1'],
-    //   },
-    //   searchPagePath: 'search',
-    //   // Enhanced search features from 3.8+
-    //   insights: false,
-    // },
+    algolia: {
+      appId: 'XKJFLJJWS2',
+      // bearer:disable javascript_lang_hardcoded_secret
+      apiKey: 'a1c30d9a943ef77d4cd26ac3aca68be7',
+      externalUrlRegex: 'lo\\.samber\\.dev',
+      indexName: 'lo.samber.dev',
+      contextualSearch: true,
+      searchParameters: {
+        // facetFilters: ['type:lvl1'],
+      },
+      searchPagePath: 'search',
+      // Enhanced search features from 3.8+
+      insights: true,
+    },
   } satisfies Preset.ThemeConfig,
 
   themes: ['@docusaurus/theme-mermaid'],
