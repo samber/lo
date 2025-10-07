@@ -243,7 +243,13 @@ const config: Config = {
           position: 'right',
         },
         {
+          to: 'https://github.com/sponsors/samber',
+          label: '💖 Sponsor',
+          position: 'right',
+        },
+        {
           href: 'https://github.com/samber/lo',
+          label: 'GitHub',
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
@@ -275,6 +281,10 @@ const config: Config = {
             {
               label: 'License',
               to: 'https://github.com/samber/ro/blob/master/LICENSE',
+            },
+            {
+              label: '💖 Sponsor',
+              to: 'https://github.com/sponsors/samber',
             },
           ],
         },

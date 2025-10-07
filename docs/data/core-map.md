@@ -24,11 +24,31 @@ signatures:
   - "func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R"
 ---
 
-Manipulates a slice and transforms it to a slice of another type.
+Transforms each element in a slice to a new type using a function. Takes both the element and its index, making it useful for transformations that need positional context.
 
 ```go
+// Basic type transformation
 transformed := lo.Map([]int64{1, 2, 3, 4}, func(x int64, index int) string {
     return strconv.FormatInt(x, 10)
 })
-// []string{"1", "2", "3", "4"}
+// transformed: []string{"1", "2", "3", "4"}
+```
+
+```go
+// Transforming structs
+type Person struct {
+    FirstName string
+    LastName  string
+    Age       int
+}
+
+people := []Person{
+    {FirstName: "John", LastName: "Doe", Age: 25},
+    {FirstName: "Jane", LastName: "Smith", Age: 30},
+}
+
+fullNames := lo.Map(people, func(p Person, index int) string {
+    return fmt.Sprintf("%s %s", p.FirstName, p.LastName)
+})
+// fullNames: []string{"John Doe", "Jane Smith"}
 ```
