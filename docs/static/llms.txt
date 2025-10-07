@@ -321,6 +321,215 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - DispatchingStrategyRoundRobin: Round robin dispatch strategy
 - DispatchingStrategyWeightedRandom: Weighted random dispatch strategy
 
+## Mutable Package Helpers
+
+The lo/mutable package provides in-place mutation helpers for memory-efficient operations on slices:
+
+- Filter: Filter collection in-place, removing elements that don't match predicate
+- FilterI: Filter collection in-place with index predicate
+- Map: Apply function to collection elements in-place
+- MapI: Apply function to collection elements with index in-place
+- Shuffle: Shuffle collection in-place using Fisher-Yates algorithm
+- Reverse: Reverse collection in-place
+
+## Parallel Package Helpers
+
+The lo/parallel package provides parallel processing helpers for concurrent operations on slices:
+
+- Map: Transform collection using parallel processing, maintaining order
+- ForEach: Apply function to each element in parallel
+- Times: Call function n times in parallel, returning slice of results
+- GroupBy: Group collection by key using parallel processing
+- PartitionBy: Partition collection by predicate using parallel processing
+
+## Iterator Package Helpers
+
+The lo/it package provides iterator helpers for lazy evaluation and streaming operations on sequences:
+
+### Channel Operations
+- SeqToChannel: Convert sequence to buffered channel
+- SeqToChannel2: Convert key-value sequence to buffered channel
+- ChannelToSeq: Convert channel to sequence
+
+### Find Operations
+- IndexOf: Find index of element in sequence
+- LastIndexOf: Find last index of element in sequence
+- Find: Find element by predicate
+- FindIndexOf: Find element and index by predicate
+- FindLastIndexOf: Find last element and index by predicate
+- FindOrElse: Find element or return fallback
+- FindUniques: Find unique elements in sequence
+- FindUniquesBy: Find unique elements by transform
+- FindDuplicates: Find duplicate elements in sequence
+- FindDuplicatesBy: Find duplicates by transform
+- Min: Find minimum value in sequence
+- MinBy: Find minimum by comparison function
+- MinIndex: Find minimum value and index
+- MinIndexBy: Find minimum and index by comparison
+- Max: Find maximum value in sequence
+- MaxBy: Find maximum by comparison function
+- MaxIndex: Find maximum value and index
+- MaxIndexBy: Find maximum and index by comparison
+- Earliest: Find earliest time in sequence
+- EarliestBy: Find earliest by transform
+- Latest: Find latest time in sequence
+- LatestBy: Find latest by transform
+- First: Get first element of sequence
+- FirstOrEmpty: Get first element or zero value
+- FirstOr: Get first element or fallback
+- Last: Get last element of sequence
+- LastOrEmpty: Get last element or zero value
+- LastOr: Get last element or fallback
+- Nth: Get nth element by index
+- NthOr: Get nth element or fallback
+- NthOrEmpty: Get nth element or zero value
+- Sample: Get random element from sequence
+- SampleBy: Get random element using custom generator
+- Samples: Get N random unique elements
+- SamplesBy: Get N random elements using custom generator
+
+### Intersect Operations
+- Contains: Check if sequence contains element
+- ContainsBy: Check if sequence contains element by predicate
+- Every: Check if sequence contains all subset elements
+- EveryBy: Check if predicate returns true for all elements
+- Some: Check if sequence contains any subset elements
+- SomeBy: Check if predicate returns true for any element
+- None: Check if sequence contains no subset elements
+- NoneBy: Check if predicate returns true for no elements
+- Intersect: Find intersection of multiple sequences
+- Union: Find union of multiple sequences
+- Without: Exclude elements from sequence
+- WithoutBy: Exclude elements by key transform
+- WithoutNth: Exclude elements by index
+- ElementsMatch: Check if sequences contain same elements
+- ElementsMatchBy: Check if sequences match by transform
+
+### Map Operations
+- Keys: Create sequence of map keys
+- UniqKeys: Create sequence of unique map keys
+- Values: Create sequence of map values
+- UniqValues: Create sequence of unique map values
+- Entries: Transform map to key-value sequence
+- ToPairs: Alias for Entries
+- FromEntries: Transform key-value sequence to map
+- FromPairs: Alias for FromEntries
+- Invert: Create inverted key-value sequence
+- Assign: Merge multiple map sequences
+- ChunkEntries: Split map into chunks
+- MapToSeq: Transform map to sequence by function
+- FilterMapToSeq: Filter and transform map to sequence
+- FilterKeys: Filter map keys to sequence
+- FilterValues: Filter map values to sequence
+- SeqToSeq2: Convert sequence to indexed sequence
+- Seq2KeyToSeq: Extract keys from key-value sequence
+- Seq2ValueToSeq: Extract values from key-value sequence
+
+### Math Operations
+- Range: Generate range of numbers
+- RangeFrom: Generate range from start
+- RangeWithSteps: Generate range with custom steps
+- Sum: Sum numbers in sequence
+- SumBy: Sum by transform function
+- Product: Calculate product of numbers
+- ProductBy: Calculate product by transform
+- Mean: Calculate mean of numbers
+- MeanBy: Calculate mean by transform
+- Mode: Find most frequent values
+
+### Sequence Operations
+- Length: Get length of sequence
+- Drain: Consume entire sequence
+- Filter: Filter sequence by predicate
+- FilterI: Filter sequence with index predicate
+- Map: Transform sequence elements
+- MapI: Transform elements with index
+- UniqMap: Transform with unique results
+- UniqMapI: Transform with unique results and index
+- FilterMap: Filter and transform sequence
+- FilterMapI: Filter and transform with index
+- FlatMap: Transform and flatten sequence
+- FlatMapI: Transform and flatten with index
+- Reduce: Reduce sequence to single value
+- ReduceI: Reduce with index awareness
+- ReduceLast: Reduce from right to left
+- ReduceLastI: Reduce from right with index
+- ForEach: Apply function to each element
+- ForEachI: Apply function with index
+- ForEachWhile: Apply while predicate returns true
+- ForEachWhileI: Apply while predicate with index
+- Times: Generate sequence by calling function
+- Uniq: Get unique elements
+- UniqBy: Get unique elements by transform
+- GroupBy: Group elements by key
+- GroupByMap: Group elements to map by transform
+- Chunk: Split sequence into chunks
+- PartitionBy: Partition by predicate
+- Flatten: Flatten nested sequences
+- Interleave: Interleave multiple sequences
+- Shuffle: Shuffle sequence randomly
+- Reverse: Reverse sequence order
+- Fill: Fill sequence with value
+- Repeat: Repeat value N times
+- RepeatBy: Repeat by calling function
+- KeyBy: Create map from sequence
+- Associate: Create map from sequence with transform
+- AssociateI: Create map with index-aware transform
+- SeqToMap: Convert sequence to map
+- SeqToMapI: Convert with index-aware transform
+- FilterSeqToMap: Filter and convert to map
+- FilterSeqToMapI: Filter and convert with index
+- Keyify: Create set from sequence
+- Drop: Drop first N elements
+- DropLast: Drop last N elements
+- DropWhile: Drop while predicate is true
+- DropLastWhile: Drop from end while predicate is true
+- DropByIndex: Drop elements by index
+- Reject: Reject elements by predicate
+- RejectI: Reject with index predicate
+- RejectMap: Reject and transform
+- RejectMapI: Reject and transform with index
+- Count: Count occurrences of value
+- CountBy: Count elements matching predicate
+- CountValues: Count all value frequencies
+- CountValuesBy: Count frequencies by transform
+- Subset: Get subset by offset and length
+- Slice: Get slice by start and end
+- Replace: Replace N occurrences of value
+- ReplaceAll: Replace all occurrences
+- Compact: Remove zero values
+- IsSorted: Check if sequence is sorted
+- IsSortedBy: Check if sorted by key
+- Splice: Insert elements at index
+- CutPrefix: Remove prefix if present
+- CutSuffix: Remove suffix if present
+- Trim: Remove elements from both ends
+- TrimFirst: Remove from start
+- TrimPrefix: Remove prefix
+- TrimLast: Remove from end
+- TrimSuffix: Remove suffix
+
+### String Operations
+- ChunkString: Split string into chunks
+
+### Tuple Operations
+- Zip2-Zip9: Zip 2-9 sequences together
+- ZipBy2-ZipBy9: Zip with custom transform
+- CrossJoin2-CrossJoin9: Cross join 2-9 sequences
+- CrossJoinBy2-CrossJoinBy9: Cross join with custom transform
+
+### Type Manipulation
+- ToSeqPtr: Convert sequence to pointer sequence
+- FromSeqPtr: Convert pointer sequence back
+- FromSeqPtrOr: Convert with fallback value
+- ToAnySeq: Convert to any type sequence
+- FromAnySeq: Convert from any type sequence
+- Empty: Create empty sequence
+- IsEmpty: Check if sequence is empty
+- IsNotEmpty: Check if sequence is not empty
+- CoalesceSeq: Return first non-empty sequence
+- CoalesceSeqOrEmpty: Return first non-empty or empty
+
 ## Additional Resources
 
 - **Documentation**: https://lo.samber.dev
@@ -461,7 +670,7 @@ BenchmarkManualUniq-8       5000000     240 ns/op     0 B/op   0 allocs/op  (whe
 ```
 
 ### Production Optimization Tips
-1. **Use `lo/mutable`** for large datasets when memory is a concern
+1. **Use `lo/it`** for large datasets when memory is a concern
 2. **Leverage `lo/parallel`** for CPU-bound operations on large collections
 3. **Choose appropriate helpers** - some have specialized variants for specific use cases
 4. **Profile your code** - use Go's built-in profiling tools to identify bottlenecks
@@ -472,21 +681,15 @@ BenchmarkManualUniq-8       5000000     240 ns/op     0 B/op   0 allocs/op  (whe
 ### Related Projects
 Lo is part of a growing ecosystem of Go libraries that enhance developer productivity:
 
+- **[samber/ro](https://github.com/samber/ro)**: Reactive Programming library for Go
 - **[samber/do](https://github.com/samber/do)**: A dependency injection toolkit based on Go 1.18+ Generics
 - **[samber/mo](https://github.com/samber/mo)**: Monads based on Go 1.18+ Generics (Option, Result, Either...)
-- **[samber/lo-logrus](https://github.com/samber/lo-logrus)**: Lo helpers for logrus structured logging
 
 ### Community and Contributions
 - **Active development**: Regular updates and improvements from maintainers
 - **Community contributions**: Hundreds of contributors from around the world
 - **Corporate adoption**: Used by major companies including startups, fintech, and enterprise organizations
 - **Discussions**: Active GitHub discussions for feature requests and support
-
-### Learning Resources
-- **Documentation**: Comprehensive docs with examples for every helper
-- **GoDoc**: https://pkg.go.dev/github.com/samber/lo
-- **GitHub Discussions**: Community support and discussions
-- **Examples**: Real-world usage examples in the repository
 
 ## Migration and Adoption
 
