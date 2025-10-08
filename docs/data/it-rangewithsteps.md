@@ -6,7 +6,7 @@ category: it
 subCategory: math
 signatures:
   - "func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step T) iter.Seq[T]"
-playUrl: ""
+playUrl: "https://go.dev/play/p/qxm2YNLG0vT"
 variantHelpers:
   - it#math#rangewithsteps
 similarHelpers:

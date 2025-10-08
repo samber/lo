@@ -6,7 +6,7 @@ category: it
 subCategory: math
 signatures:
   - "func Mode[T constraints.Integer | constraints.Float](collection iter.Seq[T]) []T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/c_cmMMA5EhH"
 variantHelpers:
   - it#math#mode
 similarHelpers:

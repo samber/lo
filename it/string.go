@@ -6,6 +6,7 @@ import "iter"
 
 // ChunkString returns a sequence of strings split into groups of length size. If the string can't be split evenly,
 // the final chunk will be the remaining characters.
+// Play: https://go.dev/play/p/Y4mN8bB2cXw
 func ChunkString[T ~string](str T, size int) iter.Seq[T] {
 	if size <= 0 {
 		panic("it.ChunkString: size must be greater than 0")

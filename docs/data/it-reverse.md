@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Reverse[T any, I ~func(func(T) bool)](collection I) I"
-playUrl: ""
+playUrl: https://go.dev/play/p/9jthUzgF-u
 variantHelpers:
   - it#sequence#reverse
 similarHelpers:

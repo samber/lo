@@ -7,7 +7,7 @@ subCategory: sequence
 signatures:
   - "func Map[T, R any](collection iter.Seq[T], transform func(item T) R) iter.Seq[R]"
   - "func MapI[T, R any](collection iter.Seq[T], transform func(item T, index int) R) iter.Seq[R]"
-playUrl: ""
+playUrl: "https://go.dev/play/p/rWZiPB-RZOo"
 variantHelpers:
   - it#sequence#map
   - it#sequence#mapi

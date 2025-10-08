@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func Contains[T comparable](collection iter.Seq[T], element T) bool"
-playUrl: ""
+playUrl: "https://go.dev/play/p/1edj7hH3TS2"
 variantHelpers:
   - it#intersect#contains
 similarHelpers:

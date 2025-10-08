@@ -7,6 +7,7 @@ subCategory: channel
 signatures:
   - "func SeqToChannel2[K, V any](bufferSize int, collection iter.Seq2[K, V]) <-chan lo.Tuple2[K, V]"
   - "func ChannelToSeq[T any](ch <-chan T) iter.Seq[T]"
+playUrl: "https://go.dev/play/p/IXqSs2Ooqpm"
 variantHelpers:
   - it#channel#seqtochannel
   - it#channel#seqtochannel2

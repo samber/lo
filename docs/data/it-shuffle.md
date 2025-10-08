@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Shuffle[T any, I ~func(func(T) bool)](collection I) I"
-playUrl: ""
+playUrl: https://go.dev/play/p/8isgTsyfL-t
 variantHelpers:
   - it#sequence#shuffle
 similarHelpers:

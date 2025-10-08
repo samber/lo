@@ -6,7 +6,7 @@ category: it
 subCategory: map
 signatures:
   - "func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V]"
-playUrl: ""
+playUrl: "https://go.dev/play/p/M7qV2xP4yG8"
 variantHelpers:
   - it#map#uniqvalues
 similarHelpers:

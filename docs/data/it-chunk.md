@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Chunk[T any](collection iter.Seq[T], size int) iter.Seq[[]T]"
-playUrl: ""
+playUrl: https://go.dev/play/p/4VpIM8-zu
 variantHelpers:
   - it#sequence#chunk
 similarHelpers:

@@ -7,7 +7,7 @@ subCategory: math
 signatures:
   - "func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T]) T"
   - "func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], iteratee func(item T) R) R"
-playUrl: ""
+playUrl: "https://go.dev/play/p/nHbGFOEIeTa"
 variantHelpers:
   - it#math#sum
   - it#math#sumby

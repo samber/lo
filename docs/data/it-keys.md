@@ -6,7 +6,7 @@ category: it
 subCategory: map
 signatures:
   - "func Keys[K comparable, V any](in ...map[K]V) iter.Seq[K]"
-playUrl: ""
+playUrl: "https://go.dev/play/p/Fu7h-eW18QM"
 variantHelpers:
   - it#map#keys
 similarHelpers:

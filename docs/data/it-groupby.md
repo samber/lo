@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func GroupBy[T any, U comparable](collection iter.Seq[T], transform func(item T) U) map[U][]T"
-playUrl: ""
+playUrl: https://go.dev/play/p/2TnGK6-zs
 variantHelpers:
   - it#sequence#groupby
 similarHelpers:

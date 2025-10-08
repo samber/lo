@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Filter[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I"
-playUrl: ""
+playUrl: "https://go.dev/play/p/psenko2KKsX"
 variantHelpers:
   - it#sequence#filter
   - it#sequence#filteri
