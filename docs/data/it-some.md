@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func Some[T comparable](collection iter.Seq[T], subset ...T) bool"
-playUrl: ""
+playUrl: "https://go.dev/play/p/KmX-fXictQl"
 variantHelpers:
   - it#intersect#some
 similarHelpers:

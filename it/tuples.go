@@ -11,6 +11,7 @@ import (
 // Zip2 creates a sequence of grouped elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/U5nBWvR8eUZ
 func Zip2[A, B any](a iter.Seq[A], b iter.Seq[B]) iter.Seq[lo.Tuple2[A, B]] {
 	return func(yield func(lo.Tuple2[A, B]) bool) {
 		var next lo.Tuple2[func() (A, bool), func() (B, bool)]
@@ -36,6 +37,7 @@ func Zip2[A, B any](a iter.Seq[A], b iter.Seq[B]) iter.Seq[lo.Tuple2[A, B]] {
 // Zip3 creates a sequence of grouped elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/V5wL9xY8nQr
 func Zip3[A, B, C any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C]) iter.Seq[lo.Tuple3[A, B, C]] {
 	return func(yield func(lo.Tuple3[A, B, C]) bool) {
 		var next lo.Tuple3[func() (A, bool), func() (B, bool), func() (C, bool)]
@@ -64,6 +66,7 @@ func Zip3[A, B, C any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C]) iter.Seq[lo.
 // Zip4 creates a sequence of grouped elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/W6xM7zZ9oSt
 func Zip4[A, B, C, D any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D]) iter.Seq[lo.Tuple4[A, B, C, D]] {
 	return func(yield func(lo.Tuple4[A, B, C, D]) bool) {
 		var next lo.Tuple4[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool)]
@@ -95,6 +98,7 @@ func Zip4[A, B, C, D any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Se
 // Zip5 creates a sequence of grouped elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/X7yN8aA1pUv
 func Zip5[A, B, C, D, E any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E]) iter.Seq[lo.Tuple5[A, B, C, D, E]] {
 	return func(yield func(lo.Tuple5[A, B, C, D, E]) bool) {
 		var next lo.Tuple5[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool), func() (E, bool)]
@@ -129,6 +133,7 @@ func Zip5[A, B, C, D, E any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter
 // Zip6 creates a sequence of grouped elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/Y4mN8bB2cXw
 func Zip6[A, B, C, D, E, F any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F]) iter.Seq[lo.Tuple6[A, B, C, D, E, F]] {
 	return func(yield func(lo.Tuple6[A, B, C, D, E, F]) bool) {
 		var next lo.Tuple6[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool), func() (E, bool), func() (F, bool)]
@@ -166,6 +171,7 @@ func Zip6[A, B, C, D, E, F any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d i
 // Zip7 creates a sequence of grouped elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/Z9nA8cC3dXw
 func Zip7[A, B, C, D, E, F, G any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G]) iter.Seq[lo.Tuple7[A, B, C, D, E, F, G]] {
 	return func(yield func(lo.Tuple7[A, B, C, D, E, F, G]) bool) {
 		var next lo.Tuple7[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool), func() (E, bool), func() (F, bool), func() (G, bool)]
@@ -206,6 +212,7 @@ func Zip7[A, B, C, D, E, F, G any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], 
 // Zip8 creates a sequence of grouped elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/0XrQKOk-vw
 func Zip8[A, B, C, D, E, F, G, H any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], h iter.Seq[H]) iter.Seq[lo.Tuple8[A, B, C, D, E, F, G, H]] {
 	return func(yield func(lo.Tuple8[A, B, C, D, E, F, G, H]) bool) {
 		var next lo.Tuple8[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool), func() (E, bool), func() (F, bool), func() (G, bool), func() (H, bool)]
@@ -249,6 +256,7 @@ func Zip8[A, B, C, D, E, F, G, H any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C
 // Zip9 creates a sequence of grouped elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/1SmFJ5-zr
 func Zip9[A, B, C, D, E, F, G, H, I any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], h iter.Seq[H], i iter.Seq[I]) iter.Seq[lo.Tuple9[A, B, C, D, E, F, G, H, I]] {
 	return func(yield func(lo.Tuple9[A, B, C, D, E, F, G, H, I]) bool) {
 		var next lo.Tuple9[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool), func() (E, bool), func() (F, bool), func() (G, bool), func() (H, bool), func() (I, bool)]
@@ -295,6 +303,7 @@ func Zip9[A, B, C, D, E, F, G, H, I any](a iter.Seq[A], b iter.Seq[B], c iter.Se
 // ZipBy2 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/2TnGK6-zs
 func ZipBy2[A, B, Out any](a iter.Seq[A], b iter.Seq[B], transform func(a A, b B) Out) iter.Seq[Out] {
 	return Map(Zip2(a, b), func(item lo.Tuple2[A, B]) Out {
 		return transform(item.A, item.B)
@@ -304,6 +313,7 @@ func ZipBy2[A, B, Out any](a iter.Seq[A], b iter.Seq[B], transform func(a A, b B
 // ZipBy3 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/3UoHL7-zt
 func ZipBy3[A, B, C, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], transform func(a A, b B, c C) Out) iter.Seq[Out] {
 	return Map(Zip3(a, b, c), func(item lo.Tuple3[A, B, C]) Out {
 		return transform(item.A, item.B, item.C)
@@ -313,6 +323,7 @@ func ZipBy3[A, B, C, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], trans
 // ZipBy4 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/4VpIM8-zu
 func ZipBy4[A, B, C, D, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], transform func(a A, b B, c C, d D) Out) iter.Seq[Out] {
 	return Map(Zip4(a, b, c, d), func(item lo.Tuple4[A, B, C, D]) Out {
 		return transform(item.A, item.B, item.C, item.D)
@@ -322,6 +333,7 @@ func ZipBy4[A, B, C, D, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d 
 // ZipBy5 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/5WqJN9-zv
 func ZipBy5[A, B, C, D, E, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], transform func(a A, b B, c C, d D, e E) Out) iter.Seq[Out] {
 	return Map(Zip5(a, b, c, d, e), func(item lo.Tuple5[A, B, C, D, E]) Out {
 		return transform(item.A, item.B, item.C, item.D, item.E)
@@ -331,6 +343,7 @@ func ZipBy5[A, B, C, D, E, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C],
 // ZipBy6 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/6XrKO0-zw
 func ZipBy6[A, B, C, D, E, F, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], transform func(a A, b B, c C, d D, e E, f F) Out) iter.Seq[Out] {
 	return Map(Zip6(a, b, c, d, e, f), func(item lo.Tuple6[A, B, C, D, E, F]) Out {
 		return transform(item.A, item.B, item.C, item.D, item.E, item.F)
@@ -340,6 +353,7 @@ func ZipBy6[A, B, C, D, E, F, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[
 // ZipBy7 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/7YsLP1-zx
 func ZipBy7[A, B, C, D, E, F, G, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], transform func(a A, b B, c C, d D, e E, f F, g G) Out) iter.Seq[Out] {
 	return Map(Zip7(a, b, c, d, e, f, g), func(item lo.Tuple7[A, B, C, D, E, F, G]) Out {
 		return transform(item.A, item.B, item.C, item.D, item.E, item.F, item.G)
@@ -349,6 +363,7 @@ func ZipBy7[A, B, C, D, E, F, G, Out any](a iter.Seq[A], b iter.Seq[B], c iter.S
 // ZipBy8 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/8isgTsyfL-t
 func ZipBy8[A, B, C, D, E, F, G, H, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], h iter.Seq[H], transform func(a A, b B, c C, d D, e E, f F, g G, h H) Out) iter.Seq[Out] {
 	return Map(Zip8(a, b, c, d, e, f, g, h), func(item lo.Tuple8[A, B, C, D, E, F, G, H]) Out {
 		return transform(item.A, item.B, item.C, item.D, item.E, item.F, item.G, item.H)
@@ -358,6 +373,7 @@ func ZipBy8[A, B, C, D, E, F, G, H, Out any](a iter.Seq[A], b iter.Seq[B], c ite
 // ZipBy9 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
+// Play: https://go.dev/play/p/9jthUzgF-u
 func ZipBy9[A, B, C, D, E, F, G, H, I, Out any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], h iter.Seq[H], i iter.Seq[I], transform func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) iter.Seq[Out] {
 	return Map(Zip9(a, b, c, d, e, f, g, h, i), func(item lo.Tuple9[A, B, C, D, E, F, G, H, I]) Out {
 		return transform(item.A, item.B, item.C, item.D, item.E, item.F, item.G, item.H, item.I)
@@ -367,6 +383,7 @@ func ZipBy9[A, B, C, D, E, F, G, H, I, Out any](a iter.Seq[A], b iter.Seq[B], c 
 // CrossJoin2 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/ZBDEXBYj6nU
 func CrossJoin2[A, B any](listA iter.Seq[A], listB iter.Seq[B]) iter.Seq[lo.Tuple2[A, B]] {
 	return CrossJoinBy2(listA, listB, lo.T2[A, B])
 }
@@ -374,6 +391,7 @@ func CrossJoin2[A, B any](listA iter.Seq[A], listB iter.Seq[B]) iter.Seq[lo.Tupl
 // CrossJoin3 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/0XrQKOk-vw
 func CrossJoin3[A, B, C any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C]) iter.Seq[lo.Tuple3[A, B, C]] {
 	return CrossJoinBy3(listA, listB, listC, lo.T3[A, B, C])
 }
@@ -381,6 +399,7 @@ func CrossJoin3[A, B, C any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Se
 // CrossJoin4 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/1SmFJ5-zr
 func CrossJoin4[A, B, C, D any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D]) iter.Seq[lo.Tuple4[A, B, C, D]] {
 	return CrossJoinBy4(listA, listB, listC, listD, lo.T4[A, B, C, D])
 }
@@ -388,6 +407,7 @@ func CrossJoin4[A, B, C, D any](listA iter.Seq[A], listB iter.Seq[B], listC iter
 // CrossJoin5 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/2TnGK6-zs
 func CrossJoin5[A, B, C, D, E any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E]) iter.Seq[lo.Tuple5[A, B, C, D, E]] {
 	return CrossJoinBy5(listA, listB, listC, listD, listE, lo.T5[A, B, C, D, E])
 }
@@ -395,6 +415,7 @@ func CrossJoin5[A, B, C, D, E any](listA iter.Seq[A], listB iter.Seq[B], listC i
 // CrossJoin6 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/3UoHL7-zt
 func CrossJoin6[A, B, C, D, E, F any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F]) iter.Seq[lo.Tuple6[A, B, C, D, E, F]] {
 	return CrossJoinBy6(listA, listB, listC, listD, listE, listF, lo.T6[A, B, C, D, E, F])
 }
@@ -402,6 +423,7 @@ func CrossJoin6[A, B, C, D, E, F any](listA iter.Seq[A], listB iter.Seq[B], list
 // CrossJoin7 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/4VpIM8-zu
 func CrossJoin7[A, B, C, D, E, F, G any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G]) iter.Seq[lo.Tuple7[A, B, C, D, E, F, G]] {
 	return CrossJoinBy7(listA, listB, listC, listD, listE, listF, listG, lo.T7[A, B, C, D, E, F, G])
 }
@@ -409,6 +431,7 @@ func CrossJoin7[A, B, C, D, E, F, G any](listA iter.Seq[A], listB iter.Seq[B], l
 // CrossJoin8 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/5WqJN9-zv
 func CrossJoin8[A, B, C, D, E, F, G, H any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], listH iter.Seq[H]) iter.Seq[lo.Tuple8[A, B, C, D, E, F, G, H]] {
 	return CrossJoinBy8(listA, listB, listC, listD, listE, listF, listG, listH, lo.T8[A, B, C, D, E, F, G, H])
 }
@@ -416,6 +439,7 @@ func CrossJoin8[A, B, C, D, E, F, G, H any](listA iter.Seq[A], listB iter.Seq[B]
 // CrossJoin9 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/6XrKO0-zw
 func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], listH iter.Seq[H], listI iter.Seq[I]) iter.Seq[lo.Tuple9[A, B, C, D, E, F, G, H, I]] {
 	return CrossJoinBy9(listA, listB, listC, listD, listE, listF, listG, listH, listI, lo.T9[A, B, C, D, E, F, G, H, I])
 }
@@ -424,6 +448,7 @@ func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA iter.Seq[A], listB iter.Seq
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/7YsLP1-zx
 func CrossJoinBy2[A, B, Out any](listA iter.Seq[A], listB iter.Seq[B], project func(a A, b B) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
@@ -440,6 +465,7 @@ func CrossJoinBy2[A, B, Out any](listA iter.Seq[A], listB iter.Seq[B], project f
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/8isgTsyfL-t
 func CrossJoinBy3[A, B, C, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], project func(a A, b B, c C) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
@@ -458,6 +484,7 @@ func CrossJoinBy3[A, B, C, Out any](listA iter.Seq[A], listB iter.Seq[B], listC 
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/9jthUzgF-u
 func CrossJoinBy4[A, B, C, D, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], project func(a A, b B, c C, d D) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
@@ -478,6 +505,7 @@ func CrossJoinBy4[A, B, C, D, Out any](listA iter.Seq[A], listB iter.Seq[B], lis
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/0XrQKOk-vw
 func CrossJoinBy5[A, B, C, D, E, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], project func(a A, b B, c C, d D, e E) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
@@ -500,6 +528,7 @@ func CrossJoinBy5[A, B, C, D, E, Out any](listA iter.Seq[A], listB iter.Seq[B], 
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/1SmFJ5-zr
 func CrossJoinBy6[A, B, C, D, E, F, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], project func(a A, b B, c C, d D, e E, f F) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
@@ -524,6 +553,7 @@ func CrossJoinBy6[A, B, C, D, E, F, Out any](listA iter.Seq[A], listB iter.Seq[B
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/2TnGK6-zs
 func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], project func(a A, b B, c C, d D, e E, f F, g G) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
@@ -550,6 +580,7 @@ func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA iter.Seq[A], listB iter.Se
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/3UoHL7-zt
 func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], listH iter.Seq[H], project func(a A, b B, c C, d D, e E, f F, g G, h H) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
@@ -578,6 +609,7 @@ func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA iter.Seq[A], listB iter
 // It is the cartesian product of lists received as arguments. The project function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
+// Play: https://go.dev/play/p/4VpIM8-zu
 func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], listH iter.Seq[H], listI iter.Seq[I], project func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {

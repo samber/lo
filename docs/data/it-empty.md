@@ -6,7 +6,7 @@ category: it
 subCategory: type
 signatures:
   - "func Empty[T any]() iter.Seq[T]"
-playUrl: ""
+playUrl: "https://go.dev/play/p/E5fF1hH8Bc3"
 variantHelpers:
   - it#type#empty
 similarHelpers:

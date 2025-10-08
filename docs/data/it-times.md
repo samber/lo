@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Times[T any](count int, transform func(index int) T) iter.Seq[T]"
-playUrl: ""
+playUrl: https://go.dev/play/p/9QkDH3-zp
 variantHelpers:
   - it#sequence#times
 similarHelpers:

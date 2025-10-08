@@ -6,7 +6,7 @@ category: it
 subCategory: map
 signatures:
   - "func FromEntries[K comparable, V any](entries ...iter.Seq2[K, V]) map[K]V"
-playUrl: ""
+playUrl: "https://go.dev/play/p/K3wL9j7TmXs"
 variantHelpers:
   - it#map#fromentries
   - it#map#frompairs

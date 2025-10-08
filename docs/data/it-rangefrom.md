@@ -6,7 +6,7 @@ category: it
 subCategory: math
 signatures:
   - "func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum int) iter.Seq[T]"
-playUrl: ""
+playUrl: "https://go.dev/play/p/WHP_NI5scj9"
 variantHelpers:
   - it#math#rangefrom
 similarHelpers:

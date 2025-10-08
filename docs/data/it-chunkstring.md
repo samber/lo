@@ -4,7 +4,7 @@ slug: chunkstring
 sourceRef: it/string.go#L130
 category: it
 subCategory: string
-playUrl: ""
+playUrl: "https://go.dev/play/p/Y4mN8bB2cXw"
 variantHelpers:
   - it#string#chunkstring
 similarHelpers:
@@ -41,5 +41,3 @@ seq2 := it.ChunkString("1", 2)
 // seq1 yields ""
 // seq2 yields "1"
 ```
-
-

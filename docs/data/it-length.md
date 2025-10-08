@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Length[T any](collection iter.Seq[T]) int"
-playUrl: ""
+playUrl: "https://go.dev/play/p/3dnbOjTbL-o"
 variantHelpers:
   - it#sequence#length
 similarHelpers:

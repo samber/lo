@@ -10,6 +10,7 @@ import (
 )
 
 // Range creates a sequence of numbers (positive and/or negative) with given length.
+// Play: https://go.dev/play/p/6ksL0W6KEuQ
 func Range(elementNum int) iter.Seq[int] {
 	length := lo.If(elementNum < 0, -elementNum).Else(elementNum)
 	step := lo.If(elementNum < 0, -1).Else(1)
@@ -23,6 +24,7 @@ func Range(elementNum int) iter.Seq[int] {
 }
 
 // RangeFrom creates a sequence of numbers from start with specified length.
+// Play: https://go.dev/play/p/WHP_NI5scj9
 func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum int) iter.Seq[T] {
 	length := lo.If(elementNum < 0, -elementNum).Else(elementNum)
 	step := lo.If(elementNum < 0, -1).Else(1)
@@ -37,6 +39,7 @@ func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum in
 
 // RangeWithSteps creates a sequence of numbers (positive and/or negative) progressing from start up to, but not including end.
 // step set to zero will return an empty sequence.
+// Play: https://go.dev/play/p/qxm2YNLG0vT
 func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step T) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		if start == end || step == 0 {
@@ -65,12 +68,14 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 
 // Sum sums the values in a collection. If collection is empty 0 is returned.
 // Will iterate through the entire sequence.
+// Play: https://go.dev/play/p/nHbGFOEIeTa
 func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T]) T {
 	return SumBy(collection, func(item T) T { return item })
 }
 
 // SumBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 0 is returned.
 // Will iterate through the entire sequence.
+// Play: https://go.dev/play/p/ZNiqXNMu5QP
 func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], transform func(item T) R) R {
 	var sum R
 	for item := range collection {
@@ -81,12 +86,14 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 
 // Product gets the product of the values in a collection. If collection is empty 1 is returned.
 // Will iterate through the entire sequence.
+// Play: https://go.dev/play/p/ebgxKxJmhLj
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T]) T {
 	return ProductBy(collection, func(item T) T { return item })
 }
 
 // ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 1 is returned.
 // Will iterate through the entire sequence.
+// Play: https://go.dev/play/p/BkRYS0NG42b
 func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], transform func(item T) R) R {
 	var product R = 1
 	for item := range collection {
@@ -97,12 +104,14 @@ func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Co
 
 // Mean calculates the mean of a collection of numbers.
 // Will iterate through the entire sequence.
+// Play: https://go.dev/play/p/Lez0CsvVRl_l
 func Mean[T constraints.Float | constraints.Integer](collection iter.Seq[T]) T {
 	return MeanBy(collection, func(item T) T { return item })
 }
 
 // MeanBy calculates the mean of a collection of numbers using the given return value from the iteration function.
 // Will iterate through the entire sequence.
+// Play: https://go.dev/play/p/Ked4rpztH5Y
 func MeanBy[T any, R constraints.Float | constraints.Integer](collection iter.Seq[T], transform func(item T) R) R {
 	var sum R
 	var length R
@@ -121,6 +130,7 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection iter.Se
 // If the collection is empty, then the zero value of T is returned.
 // Will iterate through the entire sequence and allocate a map large enough to hold all distinct elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
+// Play: https://go.dev/play/p/c_cmMMA5EhH
 func Mode[T constraints.Integer | constraints.Float](collection iter.Seq[T]) []T {
 	var mode []T
 	maxFreq := 0

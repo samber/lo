@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func ElementsMatch[T comparable](list1, list2 iter.Seq[T]) bool"
-playUrl: ""
+playUrl: "https://go.dev/play/p/yGpdBGaWPCA"
 variantHelpers:
   - it#intersect#elementsmatch
 similarHelpers:

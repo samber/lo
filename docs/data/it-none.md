@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func None[T comparable](collection iter.Seq[T], subset ...T) bool"
-playUrl: ""
+playUrl: "https://go.dev/play/p/KmX-fXictQl"
 variantHelpers:
   - it#intersect#none
 similarHelpers:

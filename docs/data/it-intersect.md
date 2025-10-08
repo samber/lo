@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I"
-playUrl: ""
+playUrl: "https://go.dev/play/p/kz3cGhGZZWF"
 variantHelpers:
   - it#intersect#intersect
 similarHelpers:

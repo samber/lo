@@ -10,6 +10,7 @@ import (
 
 // Contains returns true if an element is present in a collection.
 // Will iterate through the entire sequence if element is not found.
+// Play: https://go.dev/play/p/1edj7hH3TS2
 func Contains[T comparable](collection iter.Seq[T], element T) bool {
 	return ContainsBy(collection, func(item T) bool { return item == element })
 }
@@ -22,6 +23,7 @@ func ContainsBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool
 
 // Every returns true if all elements of a subset are contained in a collection or if the subset is empty.
 // Will iterate through the entire sequence if subset elements always match.
+// Play: https://go.dev/play/p/rwM9Y353aIC
 func Every[T comparable](collection iter.Seq[T], subset ...T) bool {
 	if len(subset) == 0 {
 		return true
@@ -49,6 +51,7 @@ func EveryBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 // Some returns true if at least 1 element of a subset is contained in a collection.
 // If the subset is empty Some returns false.
 // Will iterate through the entire sequence if subset elements never match.
+// Play: https://go.dev/play/p/KmX-fXictQl
 func Some[T comparable](collection iter.Seq[T], subset ...T) bool {
 	return SomeBy(collection, func(item T) bool { return lo.Contains(subset, item) })
 }
@@ -62,6 +65,7 @@ func SomeBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 
 // None returns true if no element of a subset is contained in a collection or if the subset is empty.
 // Will iterate through the entire sequence if subset elements never match.
+// Play: https://go.dev/play/p/KmX-fXictQl
 func None[T comparable](collection iter.Seq[T], subset ...T) bool {
 	return NoneBy(collection, func(item T) bool { return lo.Contains(subset, item) })
 }
@@ -75,6 +79,7 @@ func NoneBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 // Intersect returns the intersection between given collections.
 // Will allocate a map large enough to hold all distinct elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
+// Play: https://go.dev/play/p/kz3cGhGZZWF
 func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:gocyclo
 	if len(lists) == 0 {
 		return I(Empty[T]())
@@ -133,6 +138,7 @@ func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:goc
 // Union returns all distinct elements from given collections.
 // Will allocate a map large enough to hold all distinct elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
+// Play: https://go.dev/play/p/ImIoFNpSUUB
 func Union[T comparable, I ~func(func(T) bool)](lists ...I) I {
 	return func(yield func(T) bool) {
 		seen := make(map[T]struct{})
@@ -152,6 +158,7 @@ func Union[T comparable, I ~func(func(T) bool)](lists ...I) I {
 
 // Without returns a sequence excluding all given values.
 // Will allocate a map large enough to hold all distinct excludes.
+// Play: https://go.dev/play/p/eAOoUsQnrZf
 func Without[T comparable, I ~func(func(T) bool)](collection I, exclude ...T) I {
 	return WithoutBy(collection, func(item T) T { return item }, exclude...)
 }
@@ -176,6 +183,7 @@ func WithoutNth[T comparable, I ~func(func(T) bool)](collection I, nths ...int) 
 // The order of elements is not checked.
 // Will iterate through each sequence before returning and allocate a map large enough to hold all distinct elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
+// Play: https://go.dev/play/p/yGpdBGaWPCA
 func ElementsMatch[T comparable](list1, list2 iter.Seq[T]) bool {
 	return ElementsMatchBy(list1, list2, func(item T) T { return item })
 }

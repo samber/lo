@@ -6,7 +6,7 @@ category: it
 subCategory: map
 signatures:
   - "func Values[K comparable, V any](in ...map[K]V) iter.Seq[V]"
-playUrl: ""
+playUrl: "https://go.dev/play/p/L9KcJ3h8E4f"
 variantHelpers:
   - it#map#values
 similarHelpers:

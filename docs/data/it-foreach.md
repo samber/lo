@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func ForEach[T any](collection iter.Seq[T], transform func(item T))"
-playUrl: ""
+playUrl: https://go.dev/play/p/agIsKpG-S-P
 variantHelpers:
   - it#sequence#foreach
   - it#sequence#foreachi
