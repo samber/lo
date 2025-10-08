@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func Samples[T any, I ~func(func(T) bool)](collection I, count int) I"
-playUrl: ""
+playUrl: "https://go.dev/play/p/6XrKO0-zw"
 variantHelpers:
   - it#find#samples
 similarHelpers:

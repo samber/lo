@@ -249,7 +249,7 @@ const config: Config = {
         },
         {
           href: 'https://github.com/samber/lo',
-          label: 'GitHub',
+          // label: 'GitHub',
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
@@ -306,6 +306,10 @@ const config: Config = {
             {
               label: 'Twitter',
               to: 'https://twitter.com/samuelberthe',
+            },
+            {
+              label: 'Substack',
+              to: 'https://samuelberthe.substack.com',
             },
           ],
         },

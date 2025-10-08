@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func FindLastIndexOf[T any](collection iter.Seq[T], predicate func(item T) bool) (T, int, bool)"
-playUrl: ""
+playUrl: "https://go.dev/play/p/7UfON8lh-s"
 variantHelpers:
   - it#find#findlastindexof
 similarHelpers:

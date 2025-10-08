@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func EarliestBy[T any](collection iter.Seq[T], transform func(item T) time.Time) T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/8FzSW2-ze"
 variantHelpers:
   - it#find#earliestby
 similarHelpers:

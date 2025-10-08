@@ -7,7 +7,7 @@ subCategory: sequence
 signatures:
   - "func FlatMap[T, R any](collection iter.Seq[T], transform func(item T) iter.Seq[R]) iter.Seq[R]"
   - "func FlatMapI[T, R any](collection iter.Seq[T], transform func(item T, index int) iter.Seq[R]) iter.Seq[R]"
-playUrl: https://go.dev/play/p/1YsRLPl-wx
+playUrl: "https://go.dev/play/p/1YsRLPl-wx"
 variantHelpers:
   - it#sequence#flatmap
   - it#sequence#flatmapi

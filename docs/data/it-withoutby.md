@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func WithoutBy[T any, K comparable, I ~func(func(T) bool)](collection I, transform func(item T) K, exclude ...K) I"
-playUrl: ""
+playUrl: "https://go.dev/play/p/6XrQKOk-vw"
 variantHelpers:
   - it#intersect#withoutby
 similarHelpers:

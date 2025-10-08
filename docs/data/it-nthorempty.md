@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func NthOrEmpty[T any, N constraints.Integer](collection iter.Seq[T], nth N) T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/3UoHL7-zt"
 variantHelpers:
   - it#find#nthorempty
 similarHelpers:

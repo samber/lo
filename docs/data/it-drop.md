@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Drop[T any, I ~func(func(T) bool)](collection I, n int) I"
-playUrl: https://go.dev/play/p/1SmFJ5-zr
+playUrl: "https://go.dev/play/p/1SmFJ5-zr"
 variantHelpers:
   - it#sequence#drop
 similarHelpers:

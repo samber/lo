@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func LastIndexOf[T comparable](collection iter.Seq[T], element T) int"
-playUrl: ""
+playUrl: "https://go.dev/play/p/2PaIZ3gc-n"
 variantHelpers:
   - it#find#lastindexof
 similarHelpers:

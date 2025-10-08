@@ -6,7 +6,7 @@ category: it
 subCategory: condition
 signatures:
   - "func IsNotEmpty[T any](collection iter.Seq[T]) bool"
-playUrl: 
+playUrl: "https://go.dev/play/p/G7hH3jJ0De5" 
 variantHelpers:
   - it#condition#isempty
 similarHelpers:

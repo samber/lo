@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func First[T any](collection iter.Seq[T]) (T, bool)"
-playUrl: https://go.dev/play/p/5MgZD9-zl
+playUrl: "https://go.dev/play/p/5MgZD9-zl"
 variantHelpers:
   - it#find#first
 similarHelpers:

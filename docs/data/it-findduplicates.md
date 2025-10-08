@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func FindDuplicates[T comparable, I ~func(func(T) bool)](collection I) I"
-playUrl: ""
+playUrl: "https://go.dev/play/p/1YsRLPl-wx"
 variantHelpers:
   - it#find#findduplicates
 similarHelpers:

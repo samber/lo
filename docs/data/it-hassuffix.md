@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func HasSuffix[T comparable](collection iter.Seq[T], suffix ...T) bool"
-playUrl: ""
+playUrl: "https://go.dev/play/p/4RcKL5ie-p"
 variantHelpers:
   - it#find#hassuffix
 similarHelpers:

@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func SampleBy[T any](collection iter.Seq[T], randomIntGenerator func(int) int) T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/5WqJN9-zv"
 variantHelpers:
   - it#find#sampleby
 similarHelpers:

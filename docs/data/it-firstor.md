@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func FirstOr[T any](collection iter.Seq[T], fallback T) T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/7OiBF1-zn"
 variantHelpers:
   - it#find#firstor
 similarHelpers:

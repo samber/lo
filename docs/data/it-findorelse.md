@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func FindOrElse[T any](collection iter.Seq[T], fallback T, predicate func(item T) bool) T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/8VgPO9mi-t"
 variantHelpers:
   - it#find#findorelse
 similarHelpers:

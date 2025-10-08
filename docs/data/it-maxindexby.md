@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func MaxIndexBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) (T, int)"
-playUrl: ""
+playUrl: "https://go.dev/play/p/2JdWA6-zi"
 variantHelpers:
   - it#find#maxindexby
 similarHelpers:

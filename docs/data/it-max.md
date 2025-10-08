@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func Max[T constraints.Ordered](collection iter.Seq[T]) T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/9GaTX3-zf"
 variantHelpers:
   - it#find#max
 similarHelpers:

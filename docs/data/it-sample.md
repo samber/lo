@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func Sample[T any](collection iter.Seq[T]) T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/4VpIM8-zu"
 variantHelpers:
   - it#find#sample
 similarHelpers:

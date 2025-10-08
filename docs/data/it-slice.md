@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Slice[T any, I ~func(func(T) bool)](collection I, start, end int) I"
-playUrl: 
+playUrl: "https://go.dev/play/p/5WqJN9-zv" 
 variantHelpers:
   - it#slice#drop
 similarHelpers:

@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func FirstOrEmpty[T any](collection iter.Seq[T]) T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/6NhAE0-zm"
 variantHelpers:
   - it#find#firstorempty
 similarHelpers:

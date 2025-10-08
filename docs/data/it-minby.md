@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func MinBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/5CwPTPz-zb"
 variantHelpers:
   - it#find#minby
 similarHelpers:

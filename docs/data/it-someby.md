@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func SomeBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool"
-playUrl: ""
+playUrl: "https://go.dev/play/p/5edj7hH3TS2"
 variantHelpers:
   - it#intersect#someby
 similarHelpers:

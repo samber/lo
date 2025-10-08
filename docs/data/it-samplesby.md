@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func SamplesBy[T any, I ~func(func(T) bool)](collection I, count int, randomIntGenerator func(int) int) I"
-playUrl: ""
+playUrl: "https://go.dev/play/p/7YsLP1-zx"
 variantHelpers:
   - it#find#samplesby
 similarHelpers:

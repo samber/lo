@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func LatestBy[T any](collection iter.Seq[T], transform func(item T) time.Time) T"
-playUrl: ""
+playUrl: "https://go.dev/play/p/4LfYC8-zk"
 variantHelpers:
   - it#find#latestby
 similarHelpers:

@@ -6,7 +6,7 @@ category: it
 subCategory: channel
 signatures:
   - "func ChannelToSeq[T any](ch <-chan T) iter.Seq[T]"
-playUrl: ""
+playUrl: "https://go.dev/play/p/IXqSs2Ooqpm"
 variantHelpers:
   - it#channel#channeltoseq
 similarHelpers:
