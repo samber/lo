@@ -21,7 +21,11 @@ signatures:
   - "func SliceToMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K]V"
 ---
 
-Builds a map from a slice using a transform that yields key/value for each item.
+Builds a map from a slice using a transform function that yields key/value pairs for each item. Perfect for converting collections to lookup maps.
+
+### Associate
+
+Transforms each element into a key-value pair. Later items with the same key will overwrite earlier ones.
 
 ```go
 type foo struct {
@@ -34,10 +38,12 @@ in := []*foo{{baz: "apple", bar: 1}, {baz: "banana", bar: 2}}
 m := lo.Associate(in, func(f *foo) (string, int) {
     return f.baz, f.bar
 })
-// map[string]int{"apple": 1, "banana": 2}
+// m: map[string]int{"apple": 1, "banana": 2}
 ```
 
-### With index
+### AssociateI
+
+Variant that includes the element index in the transform function, useful when you need the position in the original slice.
 
 ```go
 type User struct {
@@ -53,5 +59,18 @@ users := []User{
 result := lo.AssociateI(users, func(user User, index int) (string, int) {
     return fmt.Sprintf("%s-%d", user.Name, index), user.Age
 })
-// map[string]int{"Alice-0": 25, "Bob-1": 30}
+// result: map[string]int{"Alice-0": 25, "Bob-1": 30}
+```
+
+### SliceToMap
+
+Alias for Associate - provides the same functionality with a more explicit name.
+
+```go
+products := []string{"apple", "banana", "cherry"}
+
+result := lo.SliceToMap(products, func(product string) (string, int) {
+    return product, len(product)
+})
+// result: map[string]int{"apple": 5, "banana": 6, "cherry": 6}
 ```

@@ -3,7 +3,6 @@
 
 [![tag](https://img.shields.io/github/tag/samber/lo.svg)](https://github.com/samber/lo/releases)
 ![Go Version](https://img.shields.io/badge/Go-%3E%3D%201.18-%23007d9c)
-[![Doc](https://img.shields.io/badge/Official-doc-007d9c)](https://lo.samber.dev)
 [![GoDoc](https://godoc.org/github.com/samber/lo?status.svg)](https://pkg.go.dev/github.com/samber/lo)
 ![Build Status](https://github.com/samber/lo/actions/workflows/test.yml/badge.svg)
 [![Go report](https://goreportcard.com/badge/github.com/samber/lo)](https://goreportcard.com/report/github.com/samber/lo)
@@ -86,7 +85,9 @@ I take no responsibility for this junk. 😁 💩
 
 ## 🤠 Spec
 
-GoDoc: [https://godoc.org/github.com/samber/lo](https://godoc.org/github.com/samber/lo)
+GoDoc: [godoc.org/github.com/samber/lo](https://godoc.org/github.com/samber/lo)
+
+Documentation: [lo.samber.dev](https://lo.samber.dev/docs/about)
 
 Supported helpers for slices:
 

@@ -89,14 +89,18 @@ export default function HelperCard({
     return elements;
   }, [helper.content]);
 
+  const signatures = useMemo(() => {
+    return helper.signatures.join('\n');
+  }, [helper.signatures]);
+
   // Post-process prototype code to colorize generic type parameters locally
   const prototypeRowRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    // Ensure highlighting even if Prism updates asynchronously
-    const raf = requestAnimationFrame(() => {
-      ensurePrototypeGenericsHighlighted(prototypeRowRef.current as unknown as HTMLElement);
-    });
-    return () => cancelAnimationFrame(raf);
+    // // Ensure highlighting even if Prism updates asynchronously
+    // const raf = requestAnimationFrame(() => {
+    //   ensurePrototypeGenericsHighlighted(prototypeRowRef.current as unknown as HTMLElement);
+    // });
+    // return () => cancelAnimationFrame(raf);
   }, [helper.signatures]);
 
   return (
@@ -177,7 +181,7 @@ export default function HelperCard({
       <div className="helper-card__prototype">
         <div className="helper-card__prototype-row" ref={prototypeRowRef}>
           <span className="helper-card__prototype-label">Prototype{helper.signatures.length > 1 ? 's' : ''}:</span>
-          <CodeBlock language="go" className="helper-card__prototype-code" children={helper.signatures.join('\n')} />
+          <CodeBlock language="go" className="helper-card__prototype-code" children={signatures} />
         </div>
       </div>
     </div>
