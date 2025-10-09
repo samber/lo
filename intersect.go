@@ -102,11 +102,7 @@ func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 // Play: https://go.dev/play/p/uuElL9X9e58
 func Intersect[T comparable, Slice ~[]T](list1, list2 Slice) Slice {
 	result := Slice{}
-	seen := map[T]struct{}{}
-
-	for i := range list1 {
-		seen[list1[i]] = struct{}{}
-	}
+	seen := Keyify(list1)
 
 	for i := range list2 {
 		if _, ok := seen[list2[i]]; ok {
@@ -125,16 +121,8 @@ func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
 	left := Slice{}
 	right := Slice{}
 
-	seenLeft := map[T]struct{}{}
-	seenRight := map[T]struct{}{}
-
-	for i := range list1 {
-		seenLeft[list1[i]] = struct{}{}
-	}
-
-	for i := range list2 {
-		seenRight[list2[i]] = struct{}{}
-	}
+	seenLeft := Keyify(list1)
+	seenRight := Keyify(list2)
 
 	for i := range list1 {
 		if _, ok := seenRight[list1[i]]; !ok {
@@ -179,10 +167,7 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 // Without returns a slice excluding all given values.
 // Play: https://go.dev/play/p/5j30Ux8TaD0
 func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
-	excludeMap := make(map[T]struct{}, len(exclude))
-	for i := range exclude {
-		excludeMap[exclude[i]] = struct{}{}
-	}
+	excludeMap := Keyify(exclude)
 
 	result := make(Slice, 0, len(collection))
 	for i := range collection {
@@ -197,10 +182,7 @@ func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
 // Returns a new slice containing only the elements whose keys are not in the exclude list.
 // Play: https://go.dev/play/p/VgWJOF01NbJ
 func WithoutBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K, exclude ...K) Slice {
-	excludeMap := make(map[K]struct{}, len(exclude))
-	for _, e := range exclude {
-		excludeMap[e] = struct{}{}
-	}
+	excludeMap := Keyify(exclude)
 
 	result := make(Slice, 0, len(collection))
 	for _, item := range collection {
@@ -221,14 +203,7 @@ func WithoutEmpty[T comparable, Slice ~[]T](collection Slice) Slice {
 // WithoutNth returns a slice excluding the nth value.
 // Play: https://go.dev/play/p/5g3F9R2H1xL
 func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice {
-	length := len(collection)
-
-	toRemove := make(map[int]struct{}, len(nths))
-	for i := range nths {
-		if nths[i] >= 0 && nths[i] <= length-1 {
-			toRemove[nths[i]] = struct{}{}
-		}
-	}
+	toRemove := Keyify(nths)
 
 	result := make(Slice, 0, len(collection))
 	for i := range collection {
