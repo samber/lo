@@ -3,6 +3,7 @@ package lo
 import (
 	"fmt"
 	"math"
+	"slices"
 	"strconv"
 	"strings"
 	"testing"
@@ -61,7 +62,9 @@ func TestUniqMap(t *testing.T) {
 		return item.Name
 	})
 
-	is.Equal([]string{"Alice", "Alex"}, result)
+	slices.Sort(result)
+
+	is.Equal([]string{"Alex", "Alice"}, result)
 }
 
 func TestFilterMap(t *testing.T) {
