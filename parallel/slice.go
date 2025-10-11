@@ -109,3 +109,29 @@ func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee fun
 
 	return result
 }
+
+// Filter iterates over elements of collection, returning an array of all elements predicate returns truthy for not particularly in same order.
+// `iteratee` is call in parallel
+func Filter[T any](collection []T, iteratee func(item T, index int) bool) []T {
+	result := make([]T, 0, len(collection))
+
+	var mu sync.Mutex
+	var wg sync.WaitGroup
+	wg.Add(len(collection))
+
+	for i, item := range collection {
+		go func(_item T, _i int) {
+			if iteratee(_item, _i) {
+				mu.Lock()
+				result = append(result, _item)
+				mu.Unlock()
+			}
+
+			wg.Done()
+		}(item, i)
+	}
+
+	wg.Wait()
+
+	return result
+}
