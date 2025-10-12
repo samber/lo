@@ -3,7 +3,7 @@ package lo
 import (
 	"fmt"
 	"math"
-	"slices"
+	"sort"
 	"strconv"
 )
 

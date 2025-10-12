@@ -3,7 +3,7 @@ package lo
 import (
 	"fmt"
 	"math"
-	"slices"
+	"sort"
 	"strconv"
 	"strings"
 	"testing"
@@ -62,7 +62,7 @@ func TestUniqMap(t *testing.T) {
 		return item.Name
 	})
 
-	slices.Sort(result)
+	sort.Strings(result)
 
 	is.Equal([]string{"Alex", "Alice"}, result)
 }
