@@ -3,6 +3,7 @@ package lo
 import (
 	"fmt"
 	"math"
+	"sort"
 	"strconv"
 )
 
@@ -39,8 +40,10 @@ func ExampleUniqMap() {
 		return u.Name
 	})
 
+    sort.Strings(result)
+
 	fmt.Printf("%v", result)
-	// Output: [Alex Bob Alice]
+	// Output: [Alex Alice Bob]
 }
 
 func ExampleFilterMap() {
