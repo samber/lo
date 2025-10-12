@@ -32,7 +32,7 @@ This library has no dependencies outside the Go standard library.
 
 ## 💡 Usage
 
-You can import lo using:
+You can import `lo` using:
 
 ```go
 import (
@@ -52,7 +52,7 @@ names := lo.Uniq([]string{"Samuel", "John", "Samuel"})
 
 ### Tips for lazy developers
 
-I cannot recommend it, but in case you are too lazy for repeating lo. everywhere, you can import the entire library into the namespace.
+I cannot recommend it, but in case you are too lazy for repeating `lo.` everywhere, you can import the entire library into the namespace. 😅 🤮
 
 ```go
 import (
