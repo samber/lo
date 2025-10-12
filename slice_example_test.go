@@ -40,7 +40,7 @@ func ExampleUniqMap() {
 		return u.Name
 	})
 
-	slices.Sort(result)
+    sort.Strings(result)
 
 	fmt.Printf("%v", result)
 	// Output: [Alex Alice Bob]
