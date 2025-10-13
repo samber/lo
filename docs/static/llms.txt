@@ -681,6 +681,7 @@ BenchmarkManualUniq-8       5000000     240 ns/op     0 B/op   0 allocs/op  (whe
 ### Related Projects
 Lo is part of a growing ecosystem of Go libraries that enhance developer productivity:
 
+- **[samber/ro](https://github.com/samber/ro)**: Reactive Programming library for Go
 - **[samber/do](https://github.com/samber/do)**: A dependency injection toolkit based on Go 1.18+ Generics
 - **[samber/mo](https://github.com/samber/mo)**: Monads based on Go 1.18+ Generics (Option, Result, Either...)
 
