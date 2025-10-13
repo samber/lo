@@ -272,15 +272,15 @@ const config: Config = {
             },
             {
               label: 'Changelog',
-              to: 'https://github.com/samber/ro/releases',
+              to: 'https://github.com/samber/lo/releases',
             },
             {
               label: 'Godoc',
-              to: 'https://pkg.go.dev/github.com/samber/ro',
+              to: 'https://pkg.go.dev/github.com/samber/lo',
             },
             {
               label: 'License',
-              to: 'https://github.com/samber/ro/blob/master/LICENSE',
+              to: 'https://github.com/samber/lo/blob/master/LICENSE',
             },
             {
               label: '💖 Sponsor',
