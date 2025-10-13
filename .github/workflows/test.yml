@@ -28,7 +28,6 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
-          stable: false
 
       - name: Build
         run: make build

@@ -19,7 +19,6 @@ jobs:
       uses: actions/setup-go@v6
       with:
         go-version: 1.18
-        stable: false
 
     - name: Test
       run: make test

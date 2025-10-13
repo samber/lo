@@ -15,7 +15,6 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version: 1.18
-          stable: false
       - uses: actions/checkout@v5
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8
