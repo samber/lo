@@ -42,7 +42,6 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./cover.out
           flags: unittests
           verbose: true
         if: matrix.go == '1.18'

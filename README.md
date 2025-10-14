@@ -22,6 +22,22 @@ A utility library based on Go 1.18+ generics that makes it easier to work with s
 - [samber/do](https://github.com/samber/do): A dependency injection toolkit based on Go 1.18+ Generics
 - [samber/mo](https://github.com/samber/mo): Monads based on Go 1.18+ Generics (Option, Result, Either...)
 
+**`samber/lo` vs `samber/ro` ?**
+
+Both libraries have `Map()`, `Filter()`... helpers. How are they different?
+
+|                    | `samber/lo`                 | `samber/ro`                                              |
+| ------------------ | --------------------------- | -------------------------------------------------------- |
+| **Usage**          | loop over in-memory objects | manipulate event driven objects, produced asynchronously |
+| **Data structure** | slices, maps, iterator...   | stream, observables, observers                           |
+| **Model**          | synchronous                 | asynchronous                                             |
+| **Size**           | finite sequence             | infinite stream                                          |
+| **Flow control**   | pull-based (iterators)      | push-based                                               |
+
+`lo` is a bunch of helpers for looping across finite sequences (maps, slices...)
+
+`ro` is focused on processing of infinite data streams in event-driven applications.
+
 ----
 
 <h3 align="center">💖 Support This Project</h3>
