@@ -261,6 +261,7 @@ func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee fun
 }
 
 // Flatten returns a slice a single level deep.
+// See also: Concat
 // Play: https://go.dev/play/p/rbp9ORaMpjw
 func Flatten[T any, Slice ~[]T](collection []Slice) Slice {
 	totalLen := 0
@@ -274,6 +275,12 @@ func Flatten[T any, Slice ~[]T](collection []Slice) Slice {
 	}
 
 	return result
+}
+
+// Concat assembles >=1 slice’s members into a single slice.
+// See also: Flatten, Union.
+func Concat[T any, Slice ~[]T](collections ...Slice) Slice {
+	return Flatten(collections)
 }
 
 // Interleave round-robin alternating input slices and sequentially appending value at index into result.
