@@ -3,6 +3,7 @@ package lo
 import (
 	"fmt"
 	"math"
+	"sort"
 	"strconv"
 )
 
@@ -26,6 +27,23 @@ func ExampleMap() {
 
 	fmt.Printf("%v", result)
 	// Output: [2 4 6 8]
+}
+
+func ExampleUniqMap() {
+	type User struct {
+		Name string
+		Age  int
+	}
+	users := []User{{Name: "Alex", Age: 10}, {Name: "Alex", Age: 12}, {Name: "Bob", Age: 11}, {Name: "Alice", Age: 20}}
+
+	result := UniqMap(users, func(u User, index int) string {
+		return u.Name
+	})
+
+	sort.Strings(result)
+
+	fmt.Printf("%v", result)
+	// Output: [Alex Alice Bob]
 }
 
 func ExampleFilterMap() {
@@ -56,7 +74,7 @@ func ExampleFlatMap() {
 func ExampleReduce() {
 	list := []int64{1, 2, 3, 4}
 
-	result := Reduce(list, func(agg int64, item int64, index int) int64 {
+	result := Reduce(list, func(agg, item int64, index int) int64 {
 		return agg + item
 	}, 0)
 
@@ -67,7 +85,7 @@ func ExampleReduce() {
 func ExampleReduceRight() {
 	list := [][]int{{0, 1}, {2, 3}, {4, 5}}
 
-	result := ReduceRight(list, func(agg []int, item []int, index int) []int {
+	result := ReduceRight(list, func(agg, item []int, index int) []int {
 		return append(agg, item...)
 	}, []int{})
 
@@ -87,6 +105,22 @@ func ExampleForEach() {
 	// 2
 	// 3
 	// 4
+}
+
+func ExampleForEachWhile() {
+	list := []int64{1, 2, -math.MaxInt, 4}
+
+	ForEachWhile(list, func(x int64, _ int) bool {
+		if x < 0 {
+			return false
+		}
+		fmt.Println(x)
+		return true
+	})
+
+	// Output:
+	// 1
+	// 2
 }
 
 func ExampleTimes() {
@@ -132,6 +166,22 @@ func ExampleGroupBy() {
 	// [0 3]
 	// [1 4]
 	// [2 5]
+}
+
+func ExampleGroupByMap() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := GroupByMap(list, func(i int) (int, int) {
+		return i % 3, i * 2
+	})
+
+	fmt.Printf("%v\n", result[0])
+	fmt.Printf("%v\n", result[1])
+	fmt.Printf("%v\n", result[2])
+	// Output:
+	// [0 6]
+	// [2 8]
+	// [4 10]
 }
 
 func ExampleChunk() {
@@ -245,15 +295,42 @@ func ExampleKeyBy() {
 	// Output: map[1:a 2:aa 3:aaa]
 }
 
-func ExampleAssociate() {
+func ExampleSliceToMap() {
 	list := []string{"a", "aa", "aaa"}
 
-	result := Associate(list, func(str string) (string, int) {
+	result := SliceToMap(list, func(str string) (string, int) {
 		return str, len(str)
 	})
 
 	fmt.Printf("%v", result)
 	// Output: map[a:1 aa:2 aaa:3]
+}
+
+func ExampleFilterSliceToMap() {
+	list := []string{"a", "aa", "aaa"}
+
+	result := FilterSliceToMap(list, func(str string) (string, int, bool) {
+		return str, len(str), len(str) > 1
+	})
+
+	fmt.Printf("%v", result)
+	// Output: map[aa:2 aaa:3]
+}
+
+func ExampleKeyify() {
+	list := []string{"a", "a", "b", "b", "d"}
+
+	set := Keyify(list)
+	_, ok1 := set["a"]
+	_, ok2 := set["c"]
+	fmt.Printf("%v\n", ok1)
+	fmt.Printf("%v\n", ok2)
+	fmt.Printf("%v\n", set)
+
+	// Output:
+	// true
+	// false
+	// map[a:{} b:{} d:{}]
 }
 
 func ExampleDrop() {
@@ -296,10 +373,19 @@ func ExampleDropRightWhile() {
 	// Output: [0 1 2]
 }
 
+func ExampleDropByIndex() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := DropByIndex(list, 2)
+
+	fmt.Printf("%v", result)
+	// Output: [0 1 3 4 5]
+}
+
 func ExampleReject() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
-	result := Reject(list, func(x int, _ int) bool {
+	result := Reject(list, func(x, _ int) bool {
 		return x%2 == 0
 	})
 
@@ -425,7 +511,7 @@ func ExampleReplace() {
 	// [42 1 42 1 2 3 42]
 }
 
-func ExampleReplaceAll() {
+func ExampleCompact() {
 	list := []string{"", "foo", "", "bar", ""}
 
 	result := Compact(list)
@@ -455,4 +541,177 @@ func ExampleIsSortedByKey() {
 	fmt.Printf("%v", result)
 
 	// Output: true
+}
+
+func ExampleCut() {
+	collection := []string{"a", "b", "c", "d", "e", "f", "g"}
+
+	// Test with valid separator
+	before, after, found := Cut(collection, []string{"b", "c", "d"})
+	fmt.Printf("Before: %v, After: %v, Found: %t\n", before, after, found)
+
+	// Test with separator not found
+	before2, after2, found2 := Cut(collection, []string{"z"})
+	fmt.Printf("Before: %v, After: %v, Found: %t\n", before2, after2, found2)
+
+	// Test with separator at beginning
+	before3, after3, found3 := Cut(collection, []string{"a", "b"})
+	fmt.Printf("Before: %v, After: %v, Found: %t\n", before3, after3, found3)
+
+	// Output:
+	// Before: [a], After: [e f g], Found: true
+	// Before: [a b c d e f g], After: [], Found: false
+	// Before: [], After: [c d e f g], Found: true
+}
+
+func ExampleCutPrefix() {
+	collection := []string{"a", "b", "c", "d", "e", "f", "g"}
+
+	// Test with valid prefix
+	after, found := CutPrefix(collection, []string{"a", "b", "c"})
+	fmt.Printf("After: %v, Found: %t\n", after, found)
+
+	// Test with prefix not found
+	after2, found2 := CutPrefix(collection, []string{"b"})
+	fmt.Printf("After: %v, Found: %t\n", after2, found2)
+
+	// Test with empty prefix
+	after3, found3 := CutPrefix(collection, []string{})
+	fmt.Printf("After: %v, Found: %t\n", after3, found3)
+
+	// Output:
+	// After: [d e f g], Found: true
+	// After: [a b c d e f g], Found: false
+	// After: [a b c d e f g], Found: true
+}
+
+func ExampleCutSuffix() {
+	collection := []string{"a", "b", "c", "d", "e", "f", "g"}
+
+	// Test with valid suffix
+	before, found := CutSuffix(collection, []string{"f", "g"})
+	fmt.Printf("Before: %v, Found: %t\n", before, found)
+
+	// Test with suffix not found
+	before2, found2 := CutSuffix(collection, []string{"b"})
+	fmt.Printf("Before: %v, Found: %t\n", before2, found2)
+
+	// Test with empty suffix
+	before3, found3 := CutSuffix(collection, []string{})
+	fmt.Printf("Before: %v, Found: %t\n", before3, found3)
+
+	// Output:
+	// Before: [a b c d e], Found: true
+	// Before: [a b c d e f g], Found: false
+	// Before: [a b c d e f g], Found: true
+}
+
+func ExampleTrim() {
+	collection := []int{0, 1, 2, 0, 3, 0}
+
+	// Test with valid cutset
+	result := Trim(collection, []int{0})
+	fmt.Printf("Trim with cutset {0}: %v\n", result)
+
+	// Test with string collection
+	words := []string{"  hello  ", "world", "  "}
+	result2 := Trim(words, []string{" "})
+	fmt.Printf("Trim with string cutset: %v\n", result2)
+
+	// Test with no cutset elements
+	result3 := Trim(collection, []int{5})
+	fmt.Printf("Trim with cutset {5} (not present): %v\n", result3)
+
+	// Output:
+	// Trim with cutset {0}: [1 2 0 3]
+	// Trim with string cutset: [  hello   world   ]
+	// Trim with cutset {5} (not present): [0 1 2 0 3 0]
+}
+
+func ExampleTrimLeft() {
+	collection := []int{0, 1, 2, 0, 3, 0}
+
+	// Test with valid cutset
+	result := TrimLeft(collection, []int{0})
+	fmt.Printf("TrimLeft with cutset {0}: %v\n", result)
+
+	// Test with string collection
+	words := []string{"  hello  ", "world", "  "}
+	result2 := TrimLeft(words, []string{" "})
+	fmt.Printf("TrimLeft with string cutset: %v\n", result2)
+
+	// Test with no cutset elements
+	result3 := TrimLeft(collection, []int{5})
+	fmt.Printf("TrimLeft with cutset {5} (not present): %v\n", result3)
+
+	// Output:
+	// TrimLeft with cutset {0}: [1 2 0 3 0]
+	// TrimLeft with string cutset: [  hello   world   ]
+	// TrimLeft with cutset {5} (not present): [0 1 2 0 3 0]
+}
+
+func ExampleTrimPrefix() {
+	collection := []int{1, 2, 1, 2, 3}
+
+	// Test with valid prefix
+	result := TrimPrefix(collection, []int{1, 2})
+	fmt.Printf("TrimPrefix with prefix {1,2}: %v\n", result)
+
+	// Test with string collection
+	words := []string{"hello", "hello", "world"}
+	result2 := TrimPrefix(words, []string{"hello"})
+	fmt.Printf("TrimPrefix with string prefix: %v\n", result2)
+
+	// Test with prefix not present
+	result3 := TrimPrefix(collection, []int{5, 6})
+	fmt.Printf("TrimPrefix with prefix {5,6} (not present): %v\n", result3)
+
+	// Output:
+	// TrimPrefix with prefix {1,2}: [3]
+	// TrimPrefix with string prefix: [world]
+	// TrimPrefix with prefix {5,6} (not present): [1 2 1 2 3]
+}
+
+func ExampleTrimRight() {
+	collection := []int{0, 1, 2, 0, 3, 0}
+
+	// Test with valid cutset
+	result := TrimRight(collection, []int{0})
+	fmt.Printf("TrimRight with cutset {0}: %v\n", result)
+
+	// Test with string collection
+	words := []string{"  hello  ", "world", "  "}
+	result2 := TrimRight(words, []string{" "})
+	fmt.Printf("TrimRight with string cutset: %v\n", result2)
+
+	// Test with no cutset elements
+	result3 := TrimRight(collection, []int{5})
+	fmt.Printf("TrimRight with cutset {5} (not present): %v\n", result3)
+
+	// Output:
+	// TrimRight with cutset {0}: [0 1 2 0 3]
+	// TrimRight with string cutset: [  hello   world   ]
+	// TrimRight with cutset {5} (not present): [0 1 2 0 3 0]
+}
+
+func ExampleTrimSuffix() {
+	collection := []int{1, 2, 1, 2, 3}
+
+	// Test with valid suffix
+	result := TrimSuffix(collection, []int{1, 2})
+	fmt.Printf("TrimSuffix with suffix {1,2}: %v\n", result)
+
+	// Test with string collection
+	words := []string{"hello", "world", "test"}
+	result2 := TrimSuffix(words, []string{"test"})
+	fmt.Printf("TrimSuffix with string suffix: %v\n", result2)
+
+	// Test with suffix not present
+	result3 := TrimSuffix(collection, []int{5, 6})
+	fmt.Printf("TrimSuffix with suffix {5,6} (not present): %v\n", result3)
+
+	// Output:
+	// TrimSuffix with suffix {1,2}: [1 2 1 2 3]
+	// TrimSuffix with string suffix: [hello world]
+	// TrimSuffix with suffix {5,6} (not present): [1 2 1 2 3]
 }

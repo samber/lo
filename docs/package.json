@@ -1,0 +1,64 @@
+{
+  "name": "lo",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "typecheck": "tsc",
+    "sync-function-signatures": "node ./scripts/sync-function-signatures.js",
+    "check-function-signatures": "node ./scripts/sync-function-signatures.js --check",
+    "check-cross-references": "node ./scripts/check-cross-references.js",
+    "check-duplicates-in-category": "node ./scripts/check-duplicates-in-category.js",
+    "check-filename-matches-frontmatter": "node ./scripts/check-filename-matches-frontmatter.js",
+    "check-similar-exists": "node ./scripts/check-similar-exists.js",
+    "check-similar-keys-exist-in-directory": "node ./scripts/check-similar-keys-exist-in-directory.js"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.9.1",
+    "@docusaurus/faster": "^3.9.1",
+    "@docusaurus/plugin-css-cascade-layers": "^3.9.1",
+    "@docusaurus/plugin-ideal-image": "^3.9.1",
+    "@docusaurus/plugin-svgr": "^3.9.1",
+    "@docusaurus/plugin-vercel-analytics": "^3.9.1",
+    "@docusaurus/preset-classic": "3.9.1",
+    "@docusaurus/theme-mermaid": "^3.9.1",
+    "@mdx-js/react": "^3.0.0",
+    "@mermaid-js/layout-elk": "^0.1.9",
+    "classnames": "^2.3.2",
+    "clsx": "^2.0.0",
+    "marked": "^16.3.0",
+    "prism-react-renderer": "^2.3.0",
+    "prismjs": "^1.29.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.9.1",
+    "@docusaurus/tsconfig": "3.9.1",
+    "@docusaurus/types": "3.9.1",
+    "typescript": "~5.9.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=20.0"
+  }
+}

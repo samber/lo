@@ -2,13 +2,13 @@ package lo
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestValidate(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	slice := []string{"a"}
@@ -53,7 +53,7 @@ func TestMust(t *testing.T) {
 	is.PanicsWithValue("operation should fail: assert.AnError general error for testing", func() {
 		Must0(cb(), "operation should fail")
 	})
-	
+
 	is.PanicsWithValue("must: invalid err type 'int', should either be a bool or an error", func() {
 		Must0(0)
 	})
@@ -264,18 +264,18 @@ func TestTry(t *testing.T) {
 		return nil
 	}))
 	is.False(Try(func() error {
-		return fmt.Errorf("fail")
+		return errors.New("fail")
 	}))
 }
 
 func TestTryX(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
-	
+
 	is.True(Try1(func() error {
 		return nil
 	}))
-	
+
 	is.True(Try2(func() (string, error) {
 		return "", nil
 	}))
@@ -295,11 +295,11 @@ func TestTryX(t *testing.T) {
 	is.True(Try6(func() (string, string, string, string, string, error) {
 		return "", "", "", "", "", nil
 	}))
-	
+
 	is.False(Try1(func() error {
 		panic("error")
 	}))
-	
+
 	is.False(Try2(func() (string, error) {
 		panic("error")
 	}))
@@ -319,11 +319,11 @@ func TestTryX(t *testing.T) {
 	is.False(Try6(func() (string, string, string, string, string, error) {
 		panic("error")
 	}))
-	
+
 	is.False(Try1(func() error {
 		return errors.New("foo")
 	}))
-	
+
 	is.False(Try2(func() (string, error) {
 		return "", errors.New("foo")
 	}))
@@ -407,17 +407,17 @@ func TestTryOrX(t *testing.T) {
 
 		is.Equal(42, a1)
 		is.Equal("hello", b1)
-		is.Equal(false, c1)
+		is.False(c1)
 		is.False(ok1)
 
 		is.Equal(42, a2)
 		is.Equal("hello", b2)
-		is.Equal(false, c2)
+		is.False(c2)
 		is.False(ok2)
 
 		is.Equal(21, a3)
 		is.Equal("world", b3)
-		is.Equal(true, c3)
+		is.True(c3)
 		is.True(ok3)
 	}
 
@@ -428,19 +428,19 @@ func TestTryOrX(t *testing.T) {
 
 		is.Equal(42, a1)
 		is.Equal("hello", b1)
-		is.Equal(false, c1)
+		is.False(c1)
 		is.Equal(42, d1)
 		is.False(ok1)
 
 		is.Equal(42, a2)
 		is.Equal("hello", b2)
-		is.Equal(false, c2)
+		is.False(c2)
 		is.Equal(42, d2)
 		is.False(ok2)
 
 		is.Equal(21, a3)
 		is.Equal("world", b3)
-		is.Equal(true, c3)
+		is.True(c3)
 		is.Equal(21, d3)
 		is.True(ok3)
 	}
@@ -452,21 +452,21 @@ func TestTryOrX(t *testing.T) {
 
 		is.Equal(42, a1)
 		is.Equal("hello", b1)
-		is.Equal(false, c1)
+		is.False(c1)
 		is.Equal(42, d1)
 		is.Equal(42, e1)
 		is.False(ok1)
 
 		is.Equal(42, a2)
 		is.Equal("hello", b2)
-		is.Equal(false, c2)
+		is.False(c2)
 		is.Equal(42, d2)
 		is.Equal(42, e2)
 		is.False(ok2)
 
 		is.Equal(21, a3)
 		is.Equal("world", b3)
-		is.Equal(true, c3)
+		is.True(c3)
 		is.Equal(21, d3)
 		is.Equal(21, e3)
 		is.True(ok3)
@@ -479,7 +479,7 @@ func TestTryOrX(t *testing.T) {
 
 		is.Equal(42, a1)
 		is.Equal("hello", b1)
-		is.Equal(false, c1)
+		is.False(c1)
 		is.Equal(42, d1)
 		is.Equal(42, e1)
 		is.Equal(42, f1)
@@ -487,7 +487,7 @@ func TestTryOrX(t *testing.T) {
 
 		is.Equal(42, a2)
 		is.Equal("hello", b2)
-		is.Equal(false, c2)
+		is.False(c2)
 		is.Equal(42, d2)
 		is.Equal(42, e2)
 		is.Equal(42, f2)
@@ -495,7 +495,7 @@ func TestTryOrX(t *testing.T) {
 
 		is.Equal(21, a3)
 		is.Equal("world", b3)
-		is.Equal(true, c3)
+		is.True(c3)
 		is.Equal(21, d3)
 		is.Equal(21, e3)
 		is.Equal(21, f3)
@@ -513,18 +513,20 @@ func TestTryWithErrorValue(t *testing.T) {
 	})
 	is.False(ok)
 	is.Equal("error", err)
-	
+
 	err, ok = TryWithErrorValue(func() error {
 		return errors.New("foo")
 	})
 	is.False(ok)
-	is.EqualError(err.(error), "foo")
-	
+	e, isError := err.(error)
+	is.True(isError)
+	is.EqualError(e, "foo")
+
 	err, ok = TryWithErrorValue(func() error {
 		return nil
 	})
 	is.True(ok)
-	is.Equal(nil, err)
+	is.Nil(err)
 }
 
 func TestTryCatch(t *testing.T) {
@@ -535,7 +537,7 @@ func TestTryCatch(t *testing.T) {
 	TryCatch(func() error {
 		panic("error")
 	}, func() {
-		//error was caught
+		// error was caught
 		caught = true
 	})
 	is.True(caught)
@@ -544,7 +546,7 @@ func TestTryCatch(t *testing.T) {
 	TryCatch(func() error {
 		return nil
 	}, func() {
-		//no error to be caught
+		// no error to be caught
 		caught = true
 	})
 	is.False(caught)
@@ -558,7 +560,7 @@ func TestTryCatchWithErrorValue(t *testing.T) {
 	TryCatchWithErrorValue(func() error {
 		panic("error")
 	}, func(val any) {
-		//error was caught
+		// error was caught
 		caught = val == "error"
 	})
 	is.True(caught)
@@ -567,7 +569,7 @@ func TestTryCatchWithErrorValue(t *testing.T) {
 	TryCatchWithErrorValue(func() error {
 		return nil
 	}, func(val any) {
-		//no error to be caught
+		// no error to be caught
 		caught = true
 	})
 	is.False(caught)
@@ -585,9 +587,9 @@ func TestErrorsAs(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	err, ok := ErrorsAs[*internalError](fmt.Errorf("hello world"))
+	err, ok := ErrorsAs[*internalError](errors.New("hello world"))
 	is.False(ok)
-	is.Nil(nil, err)
+	is.Nil(err)
 
 	err, ok = ErrorsAs[*internalError](&internalError{foobar: "foobar"})
 	is.True(ok)
@@ -595,5 +597,66 @@ func TestErrorsAs(t *testing.T) {
 
 	err, ok = ErrorsAs[*internalError](nil)
 	is.False(ok)
-	is.Nil(nil, err)
+	is.Nil(err)
+}
+
+func TestAssert(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.NotPanics(func() {
+		Assert(true)
+	})
+
+	is.NotPanics(func() {
+		Assert(true, "user defined message")
+	})
+
+	is.PanicsWithValue("assertion failed", func() {
+		Assert(false)
+	})
+
+	is.PanicsWithValue("assertion failed: user defined message", func() {
+		Assert(false, "user defined message")
+	})
+
+	// checks that the examples in `README.md` compile
+	{
+		age := 20
+		is.NotPanics(func() {
+			Assert(age >= 15)
+		})
+		is.NotPanics(func() {
+			Assert(age >= 15, "user age must be >= 15")
+		})
+	}
+}
+
+func TestAssertf(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.NotPanics(func() {
+		Assertf(true, "user defined message")
+	})
+
+	is.NotPanics(func() {
+		Assertf(true, "user defined message %d %d", 1, 2)
+	})
+
+	is.PanicsWithValue("assertion failed: user defined message", func() {
+		Assertf(false, "user defined message")
+	})
+
+	is.PanicsWithValue("assertion failed: user defined message 1 2", func() {
+		Assertf(false, "user defined message %d %d", 1, 2)
+	})
+
+	// checks that the example in `README.md` compiles
+	{
+		age := 7
+		is.PanicsWithValue("assertion failed: user age must be >= 15, got 7", func() {
+			Assertf(age >= 15, "user age must be >= 15, got %d", age)
+		})
+	}
 }
