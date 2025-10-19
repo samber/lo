@@ -1109,7 +1109,7 @@ sub := lo.Subset(in, 2, 3)
 sub := lo.Subset(in, -4, 3)
 // []int{1, 2, 3}
 
-sub := lo.Subset(in, -2, math.MaxUint)
+sub := lo.Subset(in, -2, math.MaxInt)
 // []int{3, 4}
 ```
 
@@ -1913,7 +1913,7 @@ sub := lo.Substring("hello", 2, 3)
 sub := lo.Substring("hello", -4, 3)
 // "ell"
 
-sub := lo.Substring("hello", -2, math.MaxUint)
+sub := lo.Substring("hello", -2, math.MaxInt)
 // "lo"
 ```
 

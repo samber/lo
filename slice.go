@@ -661,7 +661,11 @@ func CountValuesBy[T any, U comparable](collection []T, mapper func(item T) U) m
 
 // Subset returns a copy of a slice from `offset` up to `length` elements. Like `slice[start:start+length]`, but does not panic on overflow.
 // Play: https://go.dev/play/p/tOQu1GhFcog
-func Subset[T any, Slice ~[]T](collection Slice, offset int, length uint) Slice {
+func Subset[T any, Slice ~[]T](collection Slice, offset, length int) Slice {
+	if length < 0 {
+		panic("lo.Subset: length must not be negative")
+	}
+
 	size := len(collection)
 
 	if offset < 0 {
@@ -675,11 +679,11 @@ func Subset[T any, Slice ~[]T](collection Slice, offset int, length uint) Slice 
 		return Slice{}
 	}
 
-	if length > uint(size)-uint(offset) {
-		length = uint(size - offset)
+	if length > size-offset {
+		length = size - offset
 	}
 
-	return collection[offset : offset+int(length)]
+	return collection[offset : offset+length]
 }
 
 // Slice returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
