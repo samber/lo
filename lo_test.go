@@ -3,7 +3,15 @@ package lo
 import (
 	"testing"
 	"time"
+
+	"github.com/samber/lo/internal/xtime"
+	"go.uber.org/goleak"
 )
+
+func TestMain(m *testing.M) {
+	xtime.SetClock(xtime.NewFakeClock())
+	goleak.VerifyTestMain(m)
+}
 
 // https://github.com/stretchr/testify/issues/1101
 func testWithTimeout(t *testing.T, timeout time.Duration) {

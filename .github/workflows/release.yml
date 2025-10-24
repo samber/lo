@@ -25,7 +25,7 @@ jobs:
 
     # remove tests to clean dependencies
     - name: Remove xxx_test.go files
-      run: rm -rf $(find . -type f -name "*_test.go" ! -name "*_example_test.go") img/ docs/
+      run: rm -rf $(find . -type f -name "*_test.go" ! -name "*_example_test.go") img/ docs/ benchmark/
 
     # cleanup test dependencies
     - name: Cleanup dependencies
