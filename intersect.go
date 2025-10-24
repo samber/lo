@@ -98,23 +98,31 @@ func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 	return true
 }
 
-// Intersect returns the intersection between two collections.
+// Intersect returns the intersection between collections.
 // Play: https://go.dev/play/p/uuElL9X9e58
-func Intersect[T comparable, Slice ~[]T](list1, list2 Slice) Slice {
+func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	result := Slice{}
+	if len(lists) == 0 {
+		return result
+	}
+	if len(lists) == 1 {
+		return lists[0]
+	}
 	seen := map[T]struct{}{}
 
-	for i := range list1 {
-		seen[list1[i]] = struct{}{}
+	for _, elem := range lists[0] {
+		seen[elem] = struct{}{}
 	}
 
-	for i := range list2 {
-		if _, ok := seen[list2[i]]; ok {
-			result = append(result, list2[i])
+	for _, elem := range lists[len(lists)-1] {
+		if _, ok := seen[elem]; ok {
+			result = append(result, elem)
 		}
 	}
 
-	return result
+	lists[0] = result
+
+	return Intersect(lists[:len(lists)-1]...)
 }
 
 // Difference returns the difference between two collections.
