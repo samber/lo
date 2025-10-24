@@ -1,10 +1,12 @@
-package lo
+package benchmark
 
 import (
 	"fmt"
 	"math/rand"
 	"strconv"
 	"testing"
+
+	"github.com/samber/lo"
 )
 
 var lengths = []int{10, 100, 1000}
@@ -14,7 +16,7 @@ func BenchmarkChunk(b *testing.B) {
 		strs := genSliceString(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = Chunk(strs, 5)
+				_ = lo.Chunk(strs, 5)
 			}
 		})
 	}
@@ -23,7 +25,7 @@ func BenchmarkChunk(b *testing.B) {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = Chunk(ints, 5)
+				_ = lo.Chunk(ints, 5)
 			}
 		})
 	}
@@ -53,7 +55,7 @@ func BenchmarkFlatten(b *testing.B) {
 		}
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = Flatten(ints)
+				_ = lo.Flatten(ints)
 			}
 		})
 	}
@@ -65,7 +67,7 @@ func BenchmarkFlatten(b *testing.B) {
 		}
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = Flatten(strs)
+				_ = lo.Flatten(strs)
 			}
 		})
 	}
@@ -76,7 +78,7 @@ func BenchmarkDrop(b *testing.B) {
 		strs := genSliceString(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = Drop(strs, n/4)
+				_ = lo.Drop(strs, n/4)
 			}
 		})
 	}
@@ -85,7 +87,7 @@ func BenchmarkDrop(b *testing.B) {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = Drop(ints, n/4)
+				_ = lo.Drop(ints, n/4)
 			}
 		})
 	}
@@ -96,7 +98,7 @@ func BenchmarkDropRight(b *testing.B) {
 		strs := genSliceString(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = DropRight(strs, n/4)
+				_ = lo.DropRight(strs, n/4)
 			}
 		})
 	}
@@ -105,7 +107,7 @@ func BenchmarkDropRight(b *testing.B) {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = DropRight(ints, n/4)
+				_ = lo.DropRight(ints, n/4)
 			}
 		})
 	}
@@ -116,7 +118,7 @@ func BenchmarkDropWhile(b *testing.B) {
 		strs := genSliceString(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = DropWhile(strs, func(v string) bool { return len(v) < 4 })
+				_ = lo.DropWhile(strs, func(v string) bool { return len(v) < 4 })
 			}
 		})
 	}
@@ -125,7 +127,7 @@ func BenchmarkDropWhile(b *testing.B) {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = DropWhile(ints, func(v int) bool { return i < 10_000 })
+				_ = lo.DropWhile(ints, func(v int) bool { return i < 10_000 })
 			}
 		})
 	}
@@ -136,7 +138,7 @@ func BenchmarkDropRightWhile(b *testing.B) {
 		strs := genSliceString(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = DropRightWhile(strs, func(v string) bool { return len(v) < 4 })
+				_ = lo.DropRightWhile(strs, func(v string) bool { return len(v) < 4 })
 			}
 		})
 	}
@@ -145,7 +147,7 @@ func BenchmarkDropRightWhile(b *testing.B) {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = DropRightWhile(ints, func(v int) bool { return i < 10_000 })
+				_ = lo.DropRightWhile(ints, func(v int) bool { return i < 10_000 })
 			}
 		})
 	}
@@ -156,7 +158,7 @@ func BenchmarkDropByIndex(b *testing.B) {
 		strs := genSliceString(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = DropByIndex(strs, n/4)
+				_ = lo.DropByIndex(strs, n/4)
 			}
 		})
 	}
@@ -165,7 +167,7 @@ func BenchmarkDropByIndex(b *testing.B) {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = DropByIndex(ints, n/4)
+				_ = lo.DropByIndex(ints, n/4)
 			}
 		})
 	}
@@ -177,7 +179,7 @@ func BenchmarkReplace(b *testing.B) {
 		strs := genSliceString(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = Replace(strs, strs[n/4], "123123", 10)
+				_ = lo.Replace(strs, strs[n/4], "123123", 10)
 			}
 		})
 	}
@@ -186,7 +188,7 @@ func BenchmarkReplace(b *testing.B) {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = Replace(ints, ints[n/4], 123123, 10)
+				_ = lo.Replace(ints, ints[n/4], 123123, 10)
 			}
 		})
 	}
@@ -195,6 +197,6 @@ func BenchmarkReplace(b *testing.B) {
 func BenchmarkToSlicePtr(b *testing.B) {
 	preallocated := make([]int, 100000)
 	for i := 0; i < b.N; i++ {
-		_ = ToSlicePtr(preallocated)
+		_ = lo.ToSlicePtr(preallocated)
 	}
 }

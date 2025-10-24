@@ -8,10 +8,12 @@ sidebar_position: 110
 
 Hey! We are happy to have you as a new contributor. ✌️
 
-For your first contribution please follow some guidelines:
+For your contribution please follow some guidelines:
 
 ## Function Naming
-Function naming: helpers must be self-explanatory and respect standards (other languages, libraries...). Feel free to suggest many names in your contributions.
+Helpers must be self-explanatory and respect standards (other languages, libraries...). Feel free to suggest many names in your contributions or the related issue.
+
+We hate breaking changes, so better think twice ;)
 
 ## Variadic functions
 Many functions accept variadic parameters (like `lo.Keys(...map[K]V)` accepting multiple maps), providing flexibility while maintaining type safety.
