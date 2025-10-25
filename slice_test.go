@@ -363,7 +363,7 @@ func TestConcat(t *testing.T) {
 
 	result1 := Concat([][]int{{0, 1}, {2, 3, 4, 5}}...)
 
-	is.Equal(result1, []int{0, 1, 2, 3, 4, 5})
+	is.Equal([]int{0, 1, 2, 3, 4, 5}, result1)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
