@@ -42,7 +42,7 @@ What makes it different from **samber/ro**?
 
 I wanted a **short name**, similar to "Lodash", and no Go package uses this name.
 
-![lo](img/logo-full.png)
+![lo](docs/static/img/logo-full.png)
 
 ## 🚀 Install
 
