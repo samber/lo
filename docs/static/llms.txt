@@ -46,306 +46,306 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 ## Core Package Helpers
 
 ### Condition
-- Ternary: Ternary operator
-- TernaryF: Ternary operator with function execution
-- If: Conditional statement that returns a value
-- IfF: Conditional statement with function execution
-- ElseIf: Else-if conditional statement
-- ElseIfF: Else-if conditional statement with function execution
-- Else: Else conditional statement
-- ElseF: Else conditional statement with function execution
-- Switch: Switch statement that returns a value
-- Case: Case statement
-- CaseF: Case statement with function execution
-- Default: Default case statement
-- DefaultF: Default case statement with function execution
+- Ternary: Return value based on condition
+- TernaryF: Return value from function based on condition
+- If: Return value if condition is true
+- IfF: Return value from function if condition is true
+- ElseIf: Return value if previous condition was false and this condition is true
+- ElseIfF: Return value from function if previous condition was false and this condition is true
+- Else: Return value if all previous conditions were false
+- ElseF: Return value from function if all previous conditions were false
+- Switch: Return value based on first matching case
+- Case: Define a case for switch statement
+- CaseF: Define a case with function execution for switch statement
+- Default: Define default case for switch statement
+- DefaultF: Define default case with function execution for switch statement
 
 ### Concurrency
-- Synchronize: Synchronize goroutines
-- Async: Execute function asynchronously
-- Async0-Async6: Execute functions with 0-6 return values asynchronously
-- WaitFor: Wait for condition to be true
-- WaitForWithContext: Wait for condition with context
+- Synchronize: Coordinate multiple goroutines with mutex
+- Async: Execute function in goroutine and return channel
+- Async0-Async6: Execute functions with 0-6 return values in goroutines
+- WaitFor: Block until condition becomes true
+- WaitForWithContext: Block until condition becomes true with context cancellation
 
 ### Error Handling
-- Validate: Validate condition and return error
-- Must: Must helper with panic on error
-- Must0-Must6: Must helpers with 0-6 return values
-- Try: Try helper with panic on error
-- Try0-Try6: Try helpers with 0-6 return values
-- TryOr: Try with fallback value
-- TryOr1-TryOr6: Try with fallback values for 1-6 return values
-- TryWithErrorValue: Try with error value
-- TryCatch: Try-catch block
-- TryCatchWithErrorValue: Try-catch with error value
-- ErrorsAs: Convert errors
-- Assert: Assert condition
-- Assertf: Assert condition with formatting
+- Validate: Return error if condition is false
+- Must: Panic if error is not nil, otherwise return value
+- Must0-Must6: Panic if error is not nil, otherwise return 0-6 values
+- Try: Execute function and panic on error
+- Try0-Try6: Execute function with 0-6 return values and panic on error
+- TryOr: Execute function and return fallback value on error
+- TryOr1-TryOr6: Execute function with 1-6 return values and return fallback on error
+- TryWithErrorValue: Execute function and return error value on panic
+- TryCatch: Execute function with panic recovery
+- TryCatchWithErrorValue: Execute function with panic recovery and error value
+- ErrorsAs: Convert error to target type
+- Assert: Panic if condition is false
+- Assertf: Panic with formatted message if condition is false
 
 ### Find
-- IndexOf: Find index of element
-- LastIndexOf: Find last index of element
-- HasPrefix: Check if collection has prefix
-- HasSuffix: Check if collection has suffix
-- Find: Find element in collection
-- FindIndexOf: Find element and its index
-- FindLastIndexOf: Find last occurrence and its index
-- FindOrElse: Find element or return fallback
-- FindKey: Find key in map by value
-- FindKeyBy: Find key by predicate
-- FindUniques: Find unique elements
-- FindUniquesBy: Find unique elements by predicate
-- FindDuplicates: Find duplicate elements
-- FindDuplicatesBy: Find duplicates by predicate
-- Min: Find minimum value
-- MinIndex: Find minimum index
-- MinBy: Find minimum by predicate
-- MinIndexBy: Find minimum index by predicate
-- Earliest: Find earliest time
-- EarliestBy: Find earliest by predicate
-- Max: Find maximum value
-- MaxIndex: Find maximum index
-- MaxBy: Find maximum by predicate
-- MaxIndexBy: Find maximum index by predicate
-- Latest: Find latest time
-- LatestBy: Find latest by predicate
-- First: Get first element
-- FirstOrEmpty: Get first element or empty value
-- FirstOr: Get first element or fallback
-- Last: Get last element
-- LastOrEmpty: Get last element or empty value
-- LastOr: Get last element or fallback
-- Nth: Get nth element
-- NthOr: Get nth element or fallback
-- NthOrEmpty: Get nth element or empty value
-- Sample: Sample random element
-- SampleBy: Sample by predicate
-- Samples: Sample multiple elements
-- SamplesBy: Sample multiple by predicate
+- IndexOf: Get index of first matching element
+- LastIndexOf: Get index of last matching element
+- HasPrefix: Check if collection starts with elements
+- HasSuffix: Check if collection ends with elements
+- Find: Get first element matching predicate
+- FindIndexOf: Get first element and its index matching predicate
+- FindLastIndexOf: Get last element and its index matching predicate
+- FindOrElse: Get first element matching predicate or fallback value
+- FindKey: Get first key in map with matching value
+- FindKeyBy: Get first key in map matching predicate
+- FindUniques: Get slice of unique elements
+- FindUniquesBy: Get slice of unique elements by transform
+- FindDuplicates: Get slice of duplicate elements
+- FindDuplicatesBy: Get slice of duplicate elements by transform
+- Min: Get minimum value in collection
+- MinIndex: Get index of minimum value
+- MinBy: Get minimum value by comparison function
+- MinIndexBy: Get index of minimum value by comparison function
+- Earliest: Get earliest time value
+- EarliestBy: Get earliest value by time comparison
+- Max: Get maximum value in collection
+- MaxIndex: Get index of maximum value
+- MaxBy: Get maximum value by comparison function
+- MaxIndexBy: Get index of maximum value by comparison function
+- Latest: Get latest time value
+- LatestBy: Get latest value by time comparison
+- First: Get first element from collection
+- FirstOrEmpty: Get first element or zero value
+- FirstOr: Get first element or fallback value
+- Last: Get last element from collection
+- LastOrEmpty: Get last element or zero value
+- LastOr: Get last element or fallback value
+- Nth: Get element at index
+- NthOr: Get element at index or fallback value
+- NthOrEmpty: Get element at index or zero value
+- Sample: Get random element from collection
+- SampleBy: Get random element using custom generator
+- Samples: Get N random unique elements
+- SamplesBy: Get N random elements using custom generator
 
 ### Function
-- Partial: Create partial function
-- Partial1-Partial5: Create partial functions with 1-5 arguments
+- Partial: Create function with some arguments pre-filled
+- Partial1-Partial5: Create functions with 1-5 arguments pre-filled
 
 ### Intersect
 - Contains: Check if collection contains element
-- ContainsBy: Check if collection contains by predicate
-- Every: Check if collection contains all elements
-- EveryBy: Check if collection contains all by predicate
-- Some: Check if collection contains some elements
-- SomeBy: Check if collection contains some by predicate
-- None: Check if collection contains none
-- NoneBy: Check if collection contains none by predicate
-- Intersect: Find intersection of collections
-- Difference: Find difference between collections
-- Union: Find union of collections
-- Without: Remove elements from collection
-- WithoutBy: Remove elements by predicate
-- WithoutNth: Remove nth element
-- ElementsMatch: Check if elements match
-- ElementsMatchBy: Check if elements match by predicate
+- ContainsBy: Check if collection contains element matching predicate
+- Every: Check if all elements in collection match subset
+- EveryBy: Check if all elements match predicate
+- Some: Check if any elements in collection match subset
+- SomeBy: Check if any elements match predicate
+- None: Check if no elements in collection match subset
+- NoneBy: Check if no elements match predicate
+- Intersect: Get elements common to all collections
+- Difference: Get elements in first collection but not in others
+- Union: Get all unique elements from collections
+- Without: Get collection with specified elements removed
+- WithoutBy: Get collection with elements removed by predicate
+- WithoutNth: Get collection with element at index removed
+- ElementsMatch: Check if collections contain same elements
+- ElementsMatchBy: Check if collections match by transform function
 
 ### Map
-- Keys: Get keys from map
-- UniqKeys: Get unique keys from map
-- HasKey: Check if map has key
-- Values: Get values from map
-- UniqValues: Get unique values from map
-- ValueOr: Get value or fallback
-- PickBy: Pick entries by predicate
-- PickByKeys: Pick entries by keys
-- PickByValues: Pick entries by values
-- OmitBy: Omit entries by predicate
-- OmitByKeys: Omit entries by keys
-- OmitByValues: Omit entries by values
-- Entries: Get entries from map
-- ToPairs: Convert map to pairs
-- FromEntries: Create map from entries
-- FromPairs: Create map from pairs
-- Invert: Invert map keys and values
-- Assign: Assign multiple maps
-- ChunkEntries: Split map entries into chunks
-- MapKeys: Apply function to map keys
-- MapValues: Apply function to map values
-- MapEntries: Apply function to map entries
-- MapToSlice: Convert map to slice
-- FilterMapToSlice: Filter and map to slice
-- FilterKeys: Filter map keys
-- FilterValues: Filter map values
+- Keys: Get slice of map keys
+- UniqKeys: Get slice of unique map keys
+- HasKey: Check if map contains key
+- Values: Get slice of map values
+- UniqValues: Get slice of unique map values
+- ValueOr: Get map value or fallback if key not found
+- PickBy: Create map with entries matching predicate
+- PickByKeys: Create map with specified keys
+- PickByValues: Create map with specified values
+- OmitBy: Create map without entries matching predicate
+- OmitByKeys: Create map without specified keys
+- OmitByValues: Create map without specified values
+- Entries: Get slice of key-value pairs from map
+- ToPairs: Alias for Entries
+- FromEntries: Create map from key-value pairs
+- FromPairs: Alias for FromEntries
+- Invert: Create map with keys and values swapped
+- Assign: Merge multiple maps into one
+- ChunkEntries: Split map entries into chunks of specified size
+- MapKeys: Transform map keys using function
+- MapValues: Transform map values using function
+- MapEntries: Transform map entries using function
+- MapToSlice: Convert map to slice using function
+- FilterMapToSlice: Filter and convert map to slice
+- FilterKeys: Get slice of keys matching predicate
+- FilterValues: Get slice of values matching predicate
 
 ### Math
-- Range: Generate range of numbers
-- RangeFrom: Generate range from start
-- RangeWithSteps: Generate range with steps
-- Clamp: Clamp value between min and max
-- Sum: Sum numbers
-- SumBy: Sum by predicate
-- Product: Product of numbers
-- ProductBy: Product by predicate
-- Mean: Mean of numbers
-- MeanBy: Mean by predicate
-- Mode: Mode of numbers
+- Range: Generate slice of numbers from 0 to n-1
+- RangeFrom: Generate slice of numbers from start to end
+- RangeWithSteps: Generate slice of numbers with custom step size
+- Clamp: Constrain value between minimum and maximum
+- Sum: Calculate sum of numbers
+- SumBy: Calculate sum by applying function to each element
+- Product: Calculate product of numbers
+- ProductBy: Calculate product by applying function to each element
+- Mean: Calculate arithmetic mean of numbers
+- MeanBy: Calculate mean by applying function to each element
+- Mode: Find most frequently occurring value
 
 ### Retry
-- NewDebounce: Create debounced function
-- NewDebounceBy: Create debounced function by key
-- Attempt: Attempt operation with retries
-- AttemptWithDelay: Attempt with delay
-- AttemptWhile: Attempt while condition
-- AttemptWhileWithDelay: Attempt while with delay
-- NewTransaction: Create transaction
-- NewThrottle: Create throttled function
-- NewThrottleWithCount: Create throttled function with count
-- NewThrottleBy: Create throttled function by key
-- NewThrottleByWithCount: Create throttled function by key with count
+- NewDebounce: Create function that delays execution until after calls stop
+- NewDebounceBy: Create debounced function with key-based grouping
+- Attempt: Execute function with specified number of retries
+- AttemptWithDelay: Execute function with retries and delay between attempts
+- AttemptWhile: Execute function while condition is true
+- AttemptWhileWithDelay: Execute function while condition is true with delay
+- NewTransaction: Create transaction with rollback capability
+- NewThrottle: Create function that limits execution frequency
+- NewThrottleWithCount: Create throttled function with execution count limit
+- NewThrottleBy: Create throttled function with key-based grouping
+- NewThrottleByWithCount: Create throttled function with key-based grouping and count limit
 
 ### Slice
-- Filter: Filter collection
-- Map: Apply function to collection
-- UniqMap: Apply function and get unique results
-- FilterMap: Filter and map collection
-- FlatMap: Apply function and flatten
-- Reduce: Reduce collection
-- ReduceRight: Reduce from right
-- ForEach: Apply function to each element
-- ForEachWhile: Apply function while condition
-- Times: Call function n times
-- Uniq: Get unique elements
-- UniqBy: Get unique by predicate
-- GroupBy: Group elements by key
-- GroupByMap: Group elements by key to map
-- Chunk: Split slice into chunks
-- PartitionBy: Partition elements by predicate
-- Flatten: Flatten nested sequences
-- Concat: Concat iterators
-- Interleave: Interleave collections
-- Fill: Fill collection
-- Repeat: Repeat element
-- RepeatBy: Repeat by predicate
-- KeyBy: Key collection by field
-- Associate: Create map from collection
-- AssociateI: Create map from collection with index
-- SliceToMap: Convert slice to map
-- SliceToMapI: Convert slice to map with index
+- Filter: Get elements matching predicate
+- Map: Transform each element using function
+- UniqMap: Transform elements and remove duplicates
+- FilterMap: Filter and transform elements in one operation
+- FlatMap: Transform elements and flatten result
+- Reduce: Combine elements into single value
+- ReduceRight: Combine elements from right to left
+- ForEach: Execute function for each element
+- ForEachWhile: Execute function while predicate returns true
+- Times: Execute function n times and collect results
+- Uniq: Remove duplicate elements
+- UniqBy: Remove duplicates by key function
+- GroupBy: Group elements by key function
+- GroupByMap: Group elements by key function into map
+- Chunk: Split slice into chunks of specified size
+- PartitionBy: Split elements into two groups by predicate
+- Flatten: Flatten nested slices into single slice
+- Concat: Combine multiple slices into one
+- Interleave: Interleave elements from multiple slices
+- Fill: Fill slice with specified value
+- Repeat: Create slice with element repeated n times
+- RepeatBy: Create slice by calling function n times
+- KeyBy: Create map from slice using key function
+- Associate: Create map from slice using key-value function
+- AssociateI: Create map from slice with index-aware function
+- SliceToMap: Convert slice to map using key function
+- SliceToMapI: Convert slice to map with index-aware function
 - FilterSliceToMap: Filter and convert slice to map
 - FilterSliceToMapI: Filter and convert slice to map with index
-- Keyify: Create set from collection
-- Drop: Drop first n elements
-- DropRight: Drop last n elements
-- DropWhile: Drop while condition
-- DropRightWhile: Drop right while condition
-- DropByIndex: Drop elements by index
-- Reject: Reject elements
-- RejectMap: Reject and map elements
-- FilterReject: Filter and reject elements
-- Count: Count elements
-- CountBy: Count by predicate
-- CountValues: Count values
-- CountValuesBy: Count values by predicate
-- Subset: Get subset of collection
-- Slice: Slice collection
-- Replace: Replace elements
-- ReplaceAll: Replace all elements
-- Compact: Compact collection
-- IsSorted: Check if collection is sorted
-- IsSortedByKey: Check if sorted by key
-- Splice: Splice collection
-- Cut: Cut string at separator
-- CutPrefix: Cut prefix from string
-- CutSuffix: Cut suffix from string
-- Trim: Trim string
-- TrimLeft: Trim left
-- TrimPrefix: Trim prefix
-- TrimRight: Trim right
-- TrimSuffix: Trim suffix
+- Keyify: Create set from slice elements
+- Drop: Remove first n elements
+- DropRight: Remove last n elements
+- DropWhile: Remove elements from start while predicate is true
+- DropRightWhile: Remove elements from end while predicate is true
+- DropByIndex: Remove elements at specified indices
+- Reject: Remove elements matching predicate
+- RejectMap: Remove and transform elements matching predicate
+- FilterReject: Split elements into matching and non-matching groups
+- Count: Count occurrences of value
+- CountBy: Count elements matching predicate
+- CountValues: Count frequency of each value
+- CountValuesBy: Count frequency by key function
+- Subset: Get slice of elements from offset with length
+- Slice: Get slice of elements from start to end
+- Replace: Replace first n occurrences of value
+- ReplaceAll: Replace all occurrences of value
+- Compact: Remove zero values from slice
+- IsSorted: Check if slice is sorted in ascending order
+- IsSortedByKey: Check if slice is sorted by key function
+- Splice: Insert elements at specified index
+- Cut: Split string at first occurrence of separator
+- CutPrefix: Remove prefix from string if present
+- CutSuffix: Remove suffix from string if present
+- Trim: Remove whitespace from both ends of string
+- TrimLeft: Remove whitespace from start of string
+- TrimPrefix: Remove prefix from string if present
+- TrimRight: Remove whitespace from end of string
+- TrimSuffix: Remove suffix from string if present
 
 ### String
-- RandomString: Generate random string
-- Substring: Get substring
-- ChunkString: Split string into chunks
-- RuneLength: Get rune length
-- PascalCase: Convert to pascal case
-- CamelCase: Convert to camel case
-- KebabCase: Convert to kebab case
-- SnakeCase: Convert to snake case
-- Words: Split string into words
-- Capitalize: Capitalize string
-- Ellipsis: Truncate string with ellipsis
+- RandomString: Generate random string of specified length
+- Substring: Extract substring from start to end
+- ChunkString: Split string into chunks of specified size
+- RuneLength: Get number of runes in string
+- PascalCase: Convert string to PascalCase
+- CamelCase: Convert string to camelCase
+- KebabCase: Convert string to kebab-case
+- SnakeCase: Convert string to snake_case
+- Words: Split string into slice of words
+- Capitalize: Capitalize first letter of string
+- Ellipsis: Truncate string to length with ellipsis
 
 ### Time
-- Duration: Measure duration
-- Duration0-Duration10: Measure duration with 0-10 return values
-- EarliestBy: Find earliest by predicate
-- Latest: Find latest time
-- LatestBy: Find latest by predicate
+- Duration: Measure execution time of function
+- Duration0-Duration10: Measure execution time of function with 0-10 return values
+- EarliestBy: Find earliest time value by comparison function
+- Latest: Find latest time value
+- LatestBy: Find latest time value by comparison function
 
 ### Tuple
-- T2-T9: Create tuples with 2-9 elements
-- Unpack2-Unpack9: Unpack tuples with 2-9 elements
-- Zip2-Zip9: Zip 2-9 collections
-- ZipBy2-ZipBy9: Zip 2-9 collections by predicate
-- CrossJoin2-CrossJoin9: Cross join 2-9 collections
-- CrossJoinBy2-CrossJoinBy9: Cross join 2-9 collections by predicate
+- T2-T9: Create tuple with 2-9 elements
+- Unpack2-Unpack9: Unpack tuple with 2-9 elements into variables
+- Zip2-Zip9: Combine 2-9 collections into tuples
+- ZipBy2-ZipBy9: Combine 2-9 collections into tuples using function
+- CrossJoin2-CrossJoin9: Create cartesian product of 2-9 collections
+- CrossJoinBy2-CrossJoinBy9: Create cartesian product of 2-9 collections using function
 
 ### Type
-- IsNil: Check if nil
-- IsNotNil: Check if not nil
-- ToPtr: Convert to pointer
-- Nil: Get nil value
-- EmptyableToPtr: Convert emptyable to pointer
-- FromPtr: Convert from pointer
-- FromPtrOr: Convert from pointer or fallback
-- ToSlicePtr: Convert slice to pointer slice
-- FromSlicePtr: Convert pointer slice to slice
-- FromSlicePtrOr: Convert pointer slice or fallback
-- ToAnySlice: Convert to any slice
-- FromAnySlice: Convert from any slice
-- Empty: Get empty value
-- IsEmpty: Check if value is empty
-- IsNotEmpty: Check if value is not empty
-- Coalesce: Return first non-empty value
-- CoalesceOrEmpty: Return first non-empty or empty
+- IsNil: Check if value is nil
+- IsNotNil: Check if value is not nil
+- ToPtr: Convert value to pointer
+- Nil: Get nil value of type
+- EmptyableToPtr: Convert emptyable value to pointer
+- FromPtr: Get value from pointer
+- FromPtrOr: Get value from pointer or fallback if nil
+- ToSlicePtr: Convert slice to slice of pointers
+- FromSlicePtr: Convert slice of pointers to slice
+- FromSlicePtrOr: Convert slice of pointers to slice or fallback
+- ToAnySlice: Convert slice to []any
+- FromAnySlice: Convert []any to typed slice
+- Empty: Get zero value of type
+- IsEmpty: Check if value is zero/empty
+- IsNotEmpty: Check if value is not zero/empty
+- Coalesce: Return first non-zero value
+- CoalesceOrEmpty: Return first non-zero value or zero value
 - CoalesceSlice: Return first non-empty slice
-- CoalesceSliceOrEmpty: Return first non-empty slice or empty
+- CoalesceSliceOrEmpty: Return first non-empty slice or empty slice
 - CoalesceMap: Return first non-empty map
-- CoalesceMapOrEmpty: Return first non-empty map or empty
+- CoalesceMapOrEmpty: Return first non-empty map or empty map
 
 ### Channel
-- ChannelDispatcher: Channel dispatcher interface
-- DispatchingStrategyRoundRobin: Round robin dispatching strategy
-- DispatchingStrategyRandom: Random dispatching strategy
-- DispatchingStrategyWeightedRandom: Weighted random dispatching strategy
-- DispatchingStrategyFirst: First available dispatching strategy
-- DispatchingStrategyLeast: Least busy dispatching strategy
-- DispatchingStrategyMost: Most busy dispatching strategy
-- SliceToChannel: Convert slice to channel
-- ChannelToSlice: Convert channel to slice
-- Buffer: Buffer channel values
-- BufferWithContext: Buffer with context
-- BufferWithTimeout: Buffer with timeout
-- FanIn: Fan in multiple channels
-- FanOut: Fan out to multiple channels
+- ChannelDispatcher: Interface for dispatching values to channels
+- DispatchingStrategyRoundRobin: Distribute values evenly across channels
+- DispatchingStrategyRandom: Distribute values randomly across channels
+- DispatchingStrategyWeightedRandom: Distribute values with weighted randomness
+- DispatchingStrategyFirst: Send to first available channel
+- DispatchingStrategyLeast: Send to least busy channel
+- DispatchingStrategyMost: Send to most busy channel
+- SliceToChannel: Convert slice to buffered channel
+- ChannelToSlice: Collect all values from channel into slice
+- Buffer: Buffer channel values with specified capacity
+- BufferWithContext: Buffer channel values with context cancellation
+- BufferWithTimeout: Buffer channel values with timeout
+- FanIn: Combine multiple channels into single channel
+- FanOut: Distribute single channel to multiple channels
 
 ## Mutable Package Helpers
 
 The lo/mutable package provides in-place mutation helpers for memory-efficient operations on slices:
 
-- Filter: Filter collection in-place, removing elements that don't match predicate
-- FilterI: Filter collection in-place with index predicate
-- Map: Apply function to collection elements in-place
-- MapI: Apply function to collection elements with index in-place
-- Shuffle: Shuffle collection in-place using Fisher-Yates algorithm
-- Reverse: Reverse collection in-place
+- Filter: Remove elements that don't match predicate in-place
+- FilterI: Remove elements that don't match index predicate in-place
+- Map: Transform collection elements in-place
+- MapI: Transform collection elements with index in-place
+- Shuffle: Randomly shuffle collection in-place using Fisher-Yates algorithm
+- Reverse: Reverse order of collection elements in-place
 
 ## Parallel Package Helpers
 
 The lo/parallel package provides parallel processing helpers for concurrent operations on slices:
 
-- Map: Transform collection using parallel processing, maintaining order
-- ForEach: Apply function to each element in parallel
-- Times: Call function n times in parallel, returning slice of results
-- GroupBy: Group collection by key using parallel processing
-- PartitionBy: Partition collection by predicate using parallel processing
+- Map: Transform collection elements in parallel while maintaining order
+- ForEach: Execute function on each element in parallel
+- Times: Execute function n times in parallel and collect results
+- GroupBy: Group collection elements by key using parallel processing
+- PartitionBy: Split collection into two groups by predicate using parallel processing
 
 ## Iterator Package Helpers
 
@@ -357,184 +357,184 @@ The lo/it package provides iterator helpers for lazy evaluation and streaming op
 - ChannelToSeq: Convert channel to sequence
 
 ### Find Operations
-- IndexOf: Find index of element in sequence
-- LastIndexOf: Find last index of element in sequence
-- Find: Find element by predicate
-- FindIndexOf: Find element and index by predicate
-- FindLastIndexOf: Find last element and index by predicate
-- FindOrElse: Find element or return fallback
-- FindUniques: Find unique elements in sequence
-- FindUniquesBy: Find unique elements by transform
-- FindDuplicates: Find duplicate elements in sequence
-- FindDuplicatesBy: Find duplicates by transform
-- Min: Find minimum value in sequence
-- MinBy: Find minimum by comparison function
-- MinIndex: Find minimum value and index
-- MinIndexBy: Find minimum and index by comparison
-- Max: Find maximum value in sequence
-- MaxBy: Find maximum by comparison function
-- MaxIndex: Find maximum value and index
-- MaxIndexBy: Find maximum and index by comparison
-- Earliest: Find earliest time in sequence
-- EarliestBy: Find earliest by transform
-- Latest: Find latest time in sequence
-- LatestBy: Find latest by transform
-- First: Get first element of sequence
+- IndexOf: Get index of first matching element in sequence
+- LastIndexOf: Get index of last matching element in sequence
+- Find: Get first element matching predicate
+- FindIndexOf: Get first element and its index matching predicate
+- FindLastIndexOf: Get last element and its index matching predicate
+- FindOrElse: Get first element matching predicate or fallback value
+- FindUniques: Get slice of unique elements from sequence
+- FindUniquesBy: Get slice of unique elements by transform function
+- FindDuplicates: Get slice of duplicate elements from sequence
+- FindDuplicatesBy: Get slice of duplicate elements by transform function
+- Min: Get minimum value from sequence
+- MinBy: Get minimum value by comparison function
+- MinIndex: Get minimum value and its index
+- MinIndexBy: Get minimum value and index by comparison function
+- Max: Get maximum value from sequence
+- MaxBy: Get maximum value by comparison function
+- MaxIndex: Get maximum value and its index
+- MaxIndexBy: Get maximum value and index by comparison function
+- Earliest: Get earliest time value from sequence
+- EarliestBy: Get earliest value by time comparison function
+- Latest: Get latest time value from sequence
+- LatestBy: Get latest value by time comparison function
+- First: Get first element from sequence
 - FirstOrEmpty: Get first element or zero value
-- FirstOr: Get first element or fallback
-- Last: Get last element of sequence
+- FirstOr: Get first element or fallback value
+- Last: Get last element from sequence
 - LastOrEmpty: Get last element or zero value
-- LastOr: Get last element or fallback
-- Nth: Get nth element by index
-- NthOr: Get nth element or fallback
-- NthOrEmpty: Get nth element or zero value
+- LastOr: Get last element or fallback value
+- Nth: Get element at index from sequence
+- NthOr: Get element at index or fallback value
+- NthOrEmpty: Get element at index or zero value
 - Sample: Get random element from sequence
 - SampleBy: Get random element using custom generator
-- Samples: Get N random unique elements
+- Samples: Get N random unique elements from sequence
 - SamplesBy: Get N random elements using custom generator
 
 ### Intersect Operations
 - Contains: Check if sequence contains element
-- ContainsBy: Check if sequence contains element by predicate
-- Every: Check if sequence contains all subset elements
-- EveryBy: Check if predicate returns true for all elements
-- Some: Check if sequence contains any subset elements
-- SomeBy: Check if predicate returns true for any element
-- None: Check if sequence contains no subset elements
-- NoneBy: Check if predicate returns true for no elements
-- Intersect: Find intersection of multiple sequences
-- Union: Find union of multiple sequences
-- Without: Exclude elements from sequence
-- WithoutBy: Exclude elements by key transform
-- WithoutNth: Exclude elements by index
+- ContainsBy: Check if sequence contains element matching predicate
+- Every: Check if all elements in sequence match subset
+- EveryBy: Check if all elements match predicate
+- Some: Check if any elements in sequence match subset
+- SomeBy: Check if any elements match predicate
+- None: Check if no elements in sequence match subset
+- NoneBy: Check if no elements match predicate
+- Intersect: Get elements common to all sequences
+- Union: Get all unique elements from sequences
+- Without: Get sequence with specified elements excluded
+- WithoutBy: Get sequence with elements excluded by key transform
+- WithoutNth: Get sequence with element at index excluded
 - ElementsMatch: Check if sequences contain same elements
-- ElementsMatchBy: Check if sequences match by transform
+- ElementsMatchBy: Check if sequences match by transform function
 
 ### Map Operations
-- Keys: Create sequence of map keys
-- UniqKeys: Create sequence of unique map keys
-- Values: Create sequence of map values
-- UniqValues: Create sequence of unique map values
+- Keys: Create sequence from map keys
+- UniqKeys: Create sequence from unique map keys
+- Values: Create sequence from map values
+- UniqValues: Create sequence from unique map values
 - Entries: Transform map to key-value sequence
 - ToPairs: Alias for Entries
 - FromEntries: Transform key-value sequence to map
 - FromPairs: Alias for FromEntries
-- Invert: Create inverted key-value sequence
-- Assign: Merge multiple map sequences
-- ChunkEntries: Split map into chunks
-- MapToSeq: Transform map to sequence by function
+- Invert: Create sequence with keys and values swapped
+- Assign: Merge multiple map sequences into one
+- ChunkEntries: Split map entries into chunks of specified size
+- MapToSeq: Transform map to sequence using function
 - FilterMapToSeq: Filter and transform map to sequence
-- FilterKeys: Filter map keys to sequence
-- FilterValues: Filter map values to sequence
+- FilterKeys: Get sequence of keys matching predicate
+- FilterValues: Get sequence of values matching predicate
 - SeqToSeq2: Convert sequence to indexed sequence
 - Seq2KeyToSeq: Extract keys from key-value sequence
 - Seq2ValueToSeq: Extract values from key-value sequence
 
 ### Math Operations
-- Range: Generate range of numbers
-- RangeFrom: Generate range from start
-- RangeWithSteps: Generate range with custom steps
-- Sum: Sum numbers in sequence
-- SumBy: Sum by transform function
-- Product: Calculate product of numbers
-- ProductBy: Calculate product by transform
-- Mean: Calculate mean of numbers
-- MeanBy: Calculate mean by transform
-- Mode: Find most frequent values
+- Range: Generate sequence of numbers from 0 to n-1
+- RangeFrom: Generate sequence of numbers from start to end
+- RangeWithSteps: Generate sequence of numbers with custom step size
+- Sum: Calculate sum of numbers in sequence
+- SumBy: Calculate sum by applying function to each element
+- Product: Calculate product of numbers in sequence
+- ProductBy: Calculate product by applying function to each element
+- Mean: Calculate arithmetic mean of numbers in sequence
+- MeanBy: Calculate mean by applying function to each element
+- Mode: Find most frequently occurring values in sequence
 
 ### Sequence Operations
-- Length: Get length of sequence
-- Drain: Consume entire sequence
-- Filter: Filter sequence by predicate
-- FilterI: Filter sequence with index predicate
-- Map: Transform sequence elements
-- MapI: Transform elements with index
-- UniqMap: Transform with unique results
-- UniqMapI: Transform with unique results and index
-- FilterMap: Filter and transform sequence
-- FilterMapI: Filter and transform with index
-- FlatMap: Transform and flatten sequence
-- FlatMapI: Transform and flatten with index
-- Reduce: Reduce sequence to single value
-- ReduceI: Reduce with index awareness
-- ReduceLast: Reduce from right to left
-- ReduceLastI: Reduce from right with index
-- ForEach: Apply function to each element
-- ForEachI: Apply function with index
-- ForEachWhile: Apply while predicate returns true
-- ForEachWhileI: Apply while predicate with index
-- Times: Generate sequence by calling function
-- Uniq: Get unique elements
-- UniqBy: Get unique elements by transform
-- GroupBy: Group elements by key
-- GroupByMap: Group elements to map by transform
-- Chunk: Split sequence into chunks
-- PartitionBy: Partition by predicate
-- Flatten: Flatten nested sequences
-- Concat: Concat iterators
-- Interleave: Interleave multiple sequences
-- Shuffle: Shuffle sequence randomly
-- Reverse: Reverse sequence order
-- Fill: Fill sequence with value
-- Repeat: Repeat value N times
-- RepeatBy: Repeat by calling function
-- KeyBy: Create map from sequence
-- Associate: Create map from sequence with transform
-- AssociateI: Create map with index-aware transform
-- SeqToMap: Convert sequence to map
-- SeqToMapI: Convert with index-aware transform
-- FilterSeqToMap: Filter and convert to map
-- FilterSeqToMapI: Filter and convert with index
-- Keyify: Create set from sequence
-- Drop: Drop first N elements
-- DropLast: Drop last N elements
-- DropWhile: Drop while predicate is true
-- DropLastWhile: Drop from end while predicate is true
-- DropByIndex: Drop elements by index
-- Reject: Reject elements by predicate
-- RejectI: Reject with index predicate
-- RejectMap: Reject and transform
-- RejectMapI: Reject and transform with index
-- Count: Count occurrences of value
+- Length: Get number of elements in sequence
+- Drain: Consume entire sequence and return slice
+- Filter: Get elements matching predicate
+- FilterI: Get elements matching index predicate
+- Map: Transform each element using function
+- MapI: Transform elements with index using function
+- UniqMap: Transform elements and remove duplicates
+- UniqMapI: Transform elements with index and remove duplicates
+- FilterMap: Filter and transform elements in one operation
+- FilterMapI: Filter and transform elements with index in one operation
+- FlatMap: Transform elements and flatten result
+- FlatMapI: Transform elements with index and flatten result
+- Reduce: Combine elements into single value
+- ReduceI: Combine elements with index awareness
+- ReduceLast: Combine elements from right to left
+- ReduceLastI: Combine elements from right with index
+- ForEach: Execute function for each element
+- ForEachI: Execute function with index for each element
+- ForEachWhile: Execute function while predicate returns true
+- ForEachWhileI: Execute function with index while predicate returns true
+- Times: Execute function n times and collect results
+- Uniq: Remove duplicate elements
+- UniqBy: Remove duplicates by key function
+- GroupBy: Group elements by key function
+- GroupByMap: Group elements by key function into map
+- Chunk: Split sequence into chunks of specified size
+- PartitionBy: Split elements into two groups by predicate
+- Flatten: Flatten nested sequences into single sequence
+- Concat: Combine multiple sequences into one
+- Interleave: Interleave elements from multiple sequences
+- Shuffle: Randomly shuffle sequence elements
+- Reverse: Reverse order of sequence elements
+- Fill: Fill sequence with specified value
+- Repeat: Create sequence with value repeated n times
+- RepeatBy: Create sequence by calling function n times
+- KeyBy: Create map from sequence using key function
+- Associate: Create map from sequence using key-value function
+- AssociateI: Create map from sequence with index-aware function
+- SeqToMap: Convert sequence to map using key function
+- SeqToMapI: Convert sequence to map with index-aware function
+- FilterSeqToMap: Filter and convert sequence to map
+- FilterSeqToMapI: Filter and convert sequence to map with index
+- Keyify: Create set from sequence elements
+- Drop: Remove first n elements
+- DropLast: Remove last n elements
+- DropWhile: Remove elements from start while predicate is true
+- DropLastWhile: Remove elements from end while predicate is true
+- DropByIndex: Remove elements at specified indices
+- Reject: Remove elements matching predicate
+- RejectI: Remove elements matching index predicate
+- RejectMap: Remove and transform elements matching predicate
+- RejectMapI: Remove and transform elements matching index predicate
+- Count: Count occurrences of value in sequence
 - CountBy: Count elements matching predicate
-- CountValues: Count all value frequencies
-- CountValuesBy: Count frequencies by transform
-- Subset: Get subset by offset and length
-- Slice: Get slice by start and end
-- Replace: Replace N occurrences of value
-- ReplaceAll: Replace all occurrences
-- Compact: Remove zero values
-- IsSorted: Check if sequence is sorted
-- IsSortedBy: Check if sorted by key
-- Splice: Insert elements at index
-- CutPrefix: Remove prefix if present
-- CutSuffix: Remove suffix if present
-- Trim: Remove elements from both ends
-- TrimFirst: Remove from start
-- TrimPrefix: Remove prefix
-- TrimLast: Remove from end
-- TrimSuffix: Remove suffix
+- CountValues: Count frequency of each value in sequence
+- CountValuesBy: Count frequency by key function
+- Subset: Get slice of elements from offset with length
+- Slice: Get slice of elements from start to end
+- Replace: Replace first n occurrences of value
+- ReplaceAll: Replace all occurrences of value
+- Compact: Remove zero values from sequence
+- IsSorted: Check if sequence is sorted in ascending order
+- IsSortedBy: Check if sequence is sorted by key function
+- Splice: Insert elements at specified index
+- CutPrefix: Remove prefix from sequence if present
+- CutSuffix: Remove suffix from sequence if present
+- Trim: Remove elements from both ends of sequence
+- TrimFirst: Remove elements from start of sequence
+- TrimPrefix: Remove prefix from sequence if present
+- TrimLast: Remove elements from end of sequence
+- TrimSuffix: Remove suffix from sequence if present
 
 ### String Operations
-- ChunkString: Split string into chunks
+- ChunkString: Split string into chunks of specified size
 
 ### Tuple Operations
-- Zip2-Zip9: Zip 2-9 sequences together
-- ZipBy2-ZipBy9: Zip 2-9 sequences with custom transform
-- CrossJoin2-CrossJoin9: Cross join 2-9 sequences
-- CrossJoinBy2-CrossJoinBy9: Cross join 2-9 sequences with custom transform
+- Zip2-Zip9: Combine 2-9 sequences into tuples
+- ZipBy2-ZipBy9: Combine 2-9 sequences into tuples using function
+- CrossJoin2-CrossJoin9: Create cartesian product of 2-9 sequences
+- CrossJoinBy2-CrossJoinBy9: Create cartesian product of 2-9 sequences using function
 
 ### Type Manipulation
-- ToSeqPtr: Convert sequence to pointer sequence
-- FromSeqPtr: Convert pointer sequence back
-- FromSeqPtrOr: Convert with fallback value
-- ToAnySeq: Convert to any type sequence
-- FromAnySeq: Convert from any type sequence
+- ToSeqPtr: Convert sequence to sequence of pointers
+- FromSeqPtr: Convert sequence of pointers to sequence
+- FromSeqPtrOr: Convert sequence of pointers to sequence or fallback
+- ToAnySeq: Convert sequence to []any
+- FromAnySeq: Convert []any to typed sequence
 - Empty: Create empty sequence
 - IsEmpty: Check if sequence is empty
 - IsNotEmpty: Check if sequence is not empty
 - CoalesceSeq: Return first non-empty sequence
-- CoalesceSeqOrEmpty: Return first non-empty or empty
+- CoalesceSeqOrEmpty: Return first non-empty sequence or empty sequence
 
 ## Additional Resources
 
