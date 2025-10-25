@@ -352,6 +352,11 @@ func Flatten[T any, I ~func(func(T) bool)](collection []I) I {
 	}
 }
 
+// Concat returns a sequence of all the elements in iterators. Concat conserves the order of the elements.
+func Concat[T any, I ~func(func(T) bool)](collection ...I) I {
+	return Flatten(collection)
+}
+
 // Interleave round-robin alternating input sequences and sequentially appending value at index into result.
 // Will allocate a slice the size of collections.
 // Play: https://go.dev/play/p/7YsLP1-zx

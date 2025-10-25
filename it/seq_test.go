@@ -486,6 +486,19 @@ func TestFlatten(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestConcat(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Concat(values(0, 1), values(2, 3, 4, 5))
+	is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result1))
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := Concat(allStrings, allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
 func TestInterleave(t *testing.T) {
 	t.Parallel()
 
