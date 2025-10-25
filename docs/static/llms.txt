@@ -46,25 +46,35 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 ## Core Package Helpers
 
 ### Condition
-- If: Conditional statement that returns a value
-- IfF: Conditional statement with function execution
-- Switch: Switch statement that returns a value
 - Ternary: Ternary operator
 - TernaryF: Ternary operator with function execution
+- If: Conditional statement that returns a value
+- IfF: Conditional statement with function execution
+- ElseIf: Else-if conditional statement
+- ElseIfF: Else-if conditional statement with function execution
+- Else: Else conditional statement
+- ElseF: Else conditional statement with function execution
+- Switch: Switch statement that returns a value
+- Case: Case statement
+- CaseF: Case statement with function execution
+- Default: Default case statement
+- DefaultF: Default case statement with function execution
 
 ### Concurrency
+- Synchronize: Synchronize goroutines
 - Async: Execute function asynchronously
 - Async0-Async6: Execute functions with 0-6 return values asynchronously
-- Synchronize: Synchronize goroutines
 - WaitFor: Wait for condition to be true
 - WaitForWithContext: Wait for condition with context
 
 ### Error Handling
 - Validate: Validate condition and return error
+- Must: Must helper with panic on error
 - Must0-Must6: Must helpers with 0-6 return values
+- Try: Try helper with panic on error
 - Try0-Try6: Try helpers with 0-6 return values
 - TryOr: Try with fallback value
-- TryOr1-TryOr6: Try with fallback values
+- TryOr1-TryOr6: Try with fallback values for 1-6 return values
 - TryWithErrorValue: Try with error value
 - TryCatch: Try-catch block
 - TryCatchWithErrorValue: Try-catch with error value
@@ -73,22 +83,38 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - Assertf: Assert condition with formatting
 
 ### Find
+- IndexOf: Find index of element
+- LastIndexOf: Find last index of element
+- HasPrefix: Check if collection has prefix
+- HasSuffix: Check if collection has suffix
 - Find: Find element in collection
-- FindOrElse: Find element or return fallback
 - FindIndexOf: Find element and its index
 - FindLastIndexOf: Find last occurrence and its index
+- FindOrElse: Find element or return fallback
 - FindKey: Find key in map by value
 - FindKeyBy: Find key by predicate
 - FindUniques: Find unique elements
 - FindUniquesBy: Find unique elements by predicate
 - FindDuplicates: Find duplicate elements
 - FindDuplicatesBy: Find duplicates by predicate
+- Min: Find minimum value
+- MinIndex: Find minimum index
+- MinBy: Find minimum by predicate
+- MinIndexBy: Find minimum index by predicate
+- Earliest: Find earliest time
+- EarliestBy: Find earliest by predicate
+- Max: Find maximum value
+- MaxIndex: Find maximum index
+- MaxBy: Find maximum by predicate
+- MaxIndexBy: Find maximum index by predicate
+- Latest: Find latest time
+- LatestBy: Find latest by predicate
 - First: Get first element
-- FirstOr: Get first element or fallback
 - FirstOrEmpty: Get first element or empty value
+- FirstOr: Get first element or fallback
 - Last: Get last element
-- LastOr: Get last element or fallback
 - LastOrEmpty: Get last element or empty value
+- LastOr: Get last element or fallback
 - Nth: Get nth element
 - NthOr: Get nth element or fallback
 - NthOrEmpty: Get nth element or empty value
@@ -96,61 +122,56 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - SampleBy: Sample by predicate
 - Samples: Sample multiple elements
 - SamplesBy: Sample multiple by predicate
-- Min: Find minimum value
-- MinBy: Find minimum by predicate
-- MinIndex: Find minimum index
-- MinIndexBy: Find minimum index by predicate
-- Max: Find maximum value
-- MaxBy: Find maximum by predicate
-- MaxIndex: Find maximum index
-- MaxIndexBy: Find maximum index by predicate
-- Earliest: Find earliest time
-- EarliestBy: Find earliest by predicate
-- Latest: Find latest time
-- LatestBy: Find latest by predicate
 
 ### Function
 - Partial: Create partial function
 - Partial1-Partial5: Create partial functions with 1-5 arguments
-- NewDebounce: Create debounced function
-- NewDebounceBy: Create debounced function by key
-- NewThrottle: Create throttled function
-- NewThrottleBy: Create throttled function by key
-- NewThrottleWithCount: Create throttled function with count
-- NewThrottleByWithCount: Create throttled function by key with count
-- NewTransaction: Create transaction
-- Duration: Measure execution duration
-- Duration0-Duration10: Measure duration with 0-10 return values
 
 ### Intersect
+- Contains: Check if collection contains element
+- ContainsBy: Check if collection contains by predicate
+- Every: Check if collection contains all elements
+- EveryBy: Check if collection contains all by predicate
+- Some: Check if collection contains some elements
+- SomeBy: Check if collection contains some by predicate
+- None: Check if collection contains none
+- NoneBy: Check if collection contains none by predicate
 - Intersect: Find intersection of collections
 - Difference: Find difference between collections
 - Union: Find union of collections
+- Without: Remove elements from collection
+- WithoutBy: Remove elements by predicate
+- WithoutNth: Remove nth element
 - ElementsMatch: Check if elements match
 - ElementsMatchBy: Check if elements match by predicate
-- Contains: Check if collection contains element
-- ContainsBy: Check if collection contains by predicate
-- HasPrefix: Check if collection has prefix
-- HasSuffix: Check if collection has suffix
-- Some: Check if collection contains some elements
-- SomeBy: Check if collection contains some by predicate
-- Every: Check if collection contains all elements
-- EveryBy: Check if collection contains all by predicate
-- None: Check if collection contains none
-- NoneBy: Check if collection contains none by predicate
-- IndexOf: Find index of element
-- LastIndexOf: Find last index of element
 
 ### Map
-- Map: Apply function to collection
-- MapValues: Apply function to map values
+- Keys: Get keys from map
+- UniqKeys: Get unique keys from map
+- HasKey: Check if map has key
+- Values: Get values from map
+- UniqValues: Get unique values from map
+- ValueOr: Get value or fallback
+- PickBy: Pick entries by predicate
+- PickByKeys: Pick entries by keys
+- PickByValues: Pick entries by values
+- OmitBy: Omit entries by predicate
+- OmitByKeys: Omit entries by keys
+- OmitByValues: Omit entries by values
+- Entries: Get entries from map
+- ToPairs: Convert map to pairs
+- FromEntries: Create map from entries
+- FromPairs: Create map from pairs
+- Invert: Invert map keys and values
+- Assign: Assign multiple maps
+- ChunkEntries: Split map entries into chunks
 - MapKeys: Apply function to map keys
+- MapValues: Apply function to map values
 - MapEntries: Apply function to map entries
 - MapToSlice: Convert map to slice
 - FilterMapToSlice: Filter and map to slice
-- FlatMap: Apply function and flatten
-- FilterMap: Filter and map
-- RejectMap: Reject and map
+- FilterKeys: Filter map keys
+- FilterValues: Filter map values
 
 ### Math
 - Range: Generate range of numbers
@@ -166,118 +187,119 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - Mode: Mode of numbers
 
 ### Retry
+- NewDebounce: Create debounced function
+- NewDebounceBy: Create debounced function by key
 - Attempt: Attempt operation with retries
-- AttemptWhile: Attempt while condition
 - AttemptWithDelay: Attempt with delay
+- AttemptWhile: Attempt while condition
 - AttemptWhileWithDelay: Attempt while with delay
+- NewTransaction: Create transaction
+- NewThrottle: Create throttled function
+- NewThrottleWithCount: Create throttled function with count
+- NewThrottleBy: Create throttled function by key
+- NewThrottleByWithCount: Create throttled function by key with count
 
 ### Slice
+- Filter: Filter collection
+- Map: Apply function to collection
+- UniqMap: Apply function and get unique results
+- FilterMap: Filter and map collection
+- FlatMap: Apply function and flatten
+- Reduce: Reduce collection
+- ReduceRight: Reduce from right
+- ForEach: Apply function to each element
+- ForEachWhile: Apply function while condition
+- Times: Call function n times
+- Uniq: Get unique elements
+- UniqBy: Get unique by predicate
+- GroupBy: Group elements by key
+- GroupByMap: Group elements by key to map
 - Chunk: Split slice into chunks
-- ChunkString: Split string into chunks
+- PartitionBy: Partition elements by predicate
+- Flatten: Flatten nested sequences
+- Concat: Concat iterators
+- Interleave: Interleave collections
+- Fill: Fill collection
+- Repeat: Repeat element
+- RepeatBy: Repeat by predicate
+- KeyBy: Key collection by field
+- Associate: Create map from collection
+- AssociateI: Create map from collection with index
+- SliceToMap: Convert slice to map
+- SliceToMapI: Convert slice to map with index
+- FilterSliceToMap: Filter and convert slice to map
+- FilterSliceToMapI: Filter and convert slice to map with index
+- Keyify: Create set from collection
 - Drop: Drop first n elements
 - DropRight: Drop last n elements
 - DropWhile: Drop while condition
 - DropRightWhile: Drop right while condition
 - DropByIndex: Drop elements by index
-- Filter: Filter collection
-- FilterReject: Filter and reject
 - Reject: Reject elements
-- Compact: Compact collection
-- Fill: Fill collection
-- ForEach: Apply function to each element
-- ForEachWhile: Apply function while condition
-- GroupBy: Group elements by key
-- GroupByMap: Group elements by key to map
-- PartitionBy: Partition elements by predicate
+- RejectMap: Reject and map elements
+- FilterReject: Filter and reject elements
 - Count: Count elements
 - CountBy: Count by predicate
 - CountValues: Count values
 - CountValuesBy: Count values by predicate
-- Reduce: Reduce collection
-- ReduceRight: Reduce from right
-- Repeat: Repeat element
-- RepeatBy: Repeat by predicate
-- Times: Call function n times
+- Subset: Get subset of collection
+- Slice: Slice collection
 - Replace: Replace elements
 - ReplaceAll: Replace all elements
-- Reverse: Reverse collection
-- Slice: Slice collection
-- Splice: Splice collection
-- Subset: Get subset of collection
-- Shuffle: Shuffle collection
-- Uniq: Get unique elements
-- UniqBy: Get unique by predicate
-- Without: Remove elements
-- WithoutBy: Remove elements by predicate
-- WithoutNth: Remove nth element
-- WithoutEmpty: Remove empty elements
+- Compact: Compact collection
 - IsSorted: Check if collection is sorted
 - IsSortedByKey: Check if sorted by key
-- Interleave: Interleave collections
-
-### String
-- Substring: Get substring
-- CamelCase: Convert to camel case
-- PascalCase: Convert to pascal case
-- KebabCase: Convert to kebab case
-- SnakeCase: Convert to snake case
-- Capitalize: Capitalize string
-- Words: Split string into words
-- Ellipsis: Truncate string with ellipsis
-- Elipse: Alias for Ellipsis
-- RandomString: Generate random string
-- RuneLength: Get rune length
-- Trim: Trim string
-- TrimLeft: Trim left
-- TrimRight: Trim right
-- TrimPrefix: Trim prefix
-- TrimSuffix: Trim suffix
+- Splice: Splice collection
 - Cut: Cut string at separator
 - CutPrefix: Cut prefix from string
 - CutSuffix: Cut suffix from string
+- Trim: Trim string
+- TrimLeft: Trim left
+- TrimPrefix: Trim prefix
+- TrimRight: Trim right
+- TrimSuffix: Trim suffix
+
+### String
+- RandomString: Generate random string
+- Substring: Get substring
+- ChunkString: Split string into chunks
+- RuneLength: Get rune length
+- PascalCase: Convert to pascal case
+- CamelCase: Convert to camel case
+- KebabCase: Convert to kebab case
+- SnakeCase: Convert to snake case
+- Words: Split string into words
+- Capitalize: Capitalize string
+- Ellipsis: Truncate string with ellipsis
 
 ### Time
 - Duration: Measure duration
-- Duration0-Duration10: Measure duration with return values
-- WaitFor: Wait for condition
-- WaitForWithContext: Wait for condition with context
-- Earliest: Find earliest time
+- Duration0-Duration10: Measure duration with 0-10 return values
 - EarliestBy: Find earliest by predicate
 - Latest: Find latest time
 - LatestBy: Find latest by predicate
 
 ### Tuple
 - T2-T9: Create tuples with 2-9 elements
-- Unzip2-Unzip9: Unzip tuples with 2-9 elements
-- UnzipBy2-UnzipBy9: Unzip by predicate with 2-9 elements
-- Zip2-Zip9: Zip collections with 2-9 elements
-- ZipBy2-ZipBy9: Zip by predicate with 2-9 elements
-- CrossJoin2-CrossJoin9: Cross join with 2-9 collections
-- CrossJoinBy2-CrossJoinBy9: Cross join by predicate with 2-9 collections
+- Unpack2-Unpack9: Unpack tuples with 2-9 elements
+- Zip2-Zip9: Zip 2-9 collections
+- ZipBy2-ZipBy9: Zip 2-9 collections by predicate
+- CrossJoin2-CrossJoin9: Cross join 2-9 collections
+- CrossJoinBy2-CrossJoinBy9: Cross join 2-9 collections by predicate
 
 ### Type
-- KeyBy: Key collection by field
-- Keys: Get keys from map
-- Values: Get values from map
-- Entries: Get entries from map
-- FromEntries: Create map from entries
-- ToPairs: Convert map to pairs
-- FromPairs: Create map from pairs
-- HasKey: Check if map has key
-- PickBy: Pick by predicate
-- PickByKeys: Pick by keys
-- PickByValues: Pick by values
-- OmitBy: Omit by predicate
-- OmitByKeys: Omit by keys
-- OmitByValues: Omit by values
-- Invert: Invert map
-- Assign: Assign maps
-- ChunkEntries: Split map entries into chunks
-- Associate: Create map from collection
-- SliceToMap: Convert slice to map
-- FilterSliceToMap: Filter and convert slice to map
-- ValueOr: Get value or fallback
-- Keyify: Create set from collection
+- IsNil: Check if nil
+- IsNotNil: Check if not nil
+- ToPtr: Convert to pointer
+- Nil: Get nil value
+- EmptyableToPtr: Convert emptyable to pointer
+- FromPtr: Convert from pointer
+- FromPtrOr: Convert from pointer or fallback
+- ToSlicePtr: Convert slice to pointer slice
+- FromSlicePtr: Convert pointer slice to slice
+- FromSlicePtrOr: Convert pointer slice or fallback
+- ToAnySlice: Convert to any slice
+- FromAnySlice: Convert from any slice
 - Empty: Get empty value
 - IsEmpty: Check if value is empty
 - IsNotEmpty: Check if value is not empty
@@ -287,39 +309,22 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - CoalesceSliceOrEmpty: Return first non-empty slice or empty
 - CoalesceMap: Return first non-empty map
 - CoalesceMapOrEmpty: Return first non-empty map or empty
-- ToPtr: Convert to pointer
-- FromPtr: Convert from pointer
-- FromPtrOr: Convert from pointer or fallback
-- ToSlicePtr: Convert slice to pointer slice
-- FromSlicePtr: Convert pointer slice to slice
-- FromSlicePtrOr: Convert pointer slice or fallback
-- ToAnySlice: Convert to any slice
-- FromAnySlice: Convert from any slice
-- IsNil: Check if nil
-- IsNotNil: Check if not nil
-- Nil: Return nil pointer
-- EmptyableToPtr: Convert emptyable to pointer
-- Validate: Validate condition
 
 ### Channel
-- ChannelToSlice: Convert channel to slice
+- ChannelDispatcher: Channel dispatcher interface
+- DispatchingStrategyRoundRobin: Round robin dispatching strategy
+- DispatchingStrategyRandom: Random dispatching strategy
+- DispatchingStrategyWeightedRandom: Weighted random dispatching strategy
+- DispatchingStrategyFirst: First available dispatching strategy
+- DispatchingStrategyLeast: Least busy dispatching strategy
+- DispatchingStrategyMost: Most busy dispatching strategy
 - SliceToChannel: Convert slice to channel
-- Batch: Batch channel values
-- BatchWithTimeout: Batch with timeout
+- ChannelToSlice: Convert channel to slice
 - Buffer: Buffer channel values
-- BufferWithTimeout: Buffer with timeout
 - BufferWithContext: Buffer with context
-- ChannelMerge: Merge channels
-- ChannelDispatcher: Dispatch to multiple channels
-- FanIn: Fan in channels
-- FanOut: Fan out channels
-- Generator: Generate channel values
-- DispatchingStrategyFirst: First dispatch strategy
-- DispatchingStrategyLeast: Least dispatch strategy
-- DispatchingStrategyMost: Most dispatch strategy
-- DispatchingStrategyRandom: Random dispatch strategy
-- DispatchingStrategyRoundRobin: Round robin dispatch strategy
-- DispatchingStrategyWeightedRandom: Weighted random dispatch strategy
+- BufferWithTimeout: Buffer with timeout
+- FanIn: Fan in multiple channels
+- FanOut: Fan out to multiple channels
 
 ## Mutable Package Helpers
 
@@ -466,6 +471,7 @@ The lo/it package provides iterator helpers for lazy evaluation and streaming op
 - Chunk: Split sequence into chunks
 - PartitionBy: Partition by predicate
 - Flatten: Flatten nested sequences
+- Concat: Concat iterators
 - Interleave: Interleave multiple sequences
 - Shuffle: Shuffle sequence randomly
 - Reverse: Reverse sequence order
@@ -514,9 +520,9 @@ The lo/it package provides iterator helpers for lazy evaluation and streaming op
 
 ### Tuple Operations
 - Zip2-Zip9: Zip 2-9 sequences together
-- ZipBy2-ZipBy9: Zip with custom transform
+- ZipBy2-ZipBy9: Zip 2-9 sequences with custom transform
 - CrossJoin2-CrossJoin9: Cross join 2-9 sequences
-- CrossJoinBy2-CrossJoinBy9: Cross join with custom transform
+- CrossJoinBy2-CrossJoinBy9: Cross join 2-9 sequences with custom transform
 
 ### Type Manipulation
 - ToSeqPtr: Convert sequence to pointer sequence
