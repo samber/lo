@@ -277,7 +277,7 @@ func Flatten[T any, Slice ~[]T](collection []Slice) Slice {
 	return result
 }
 
-// Concat assembles >=1 slice’s members into a single slice.
+// Concat returns a new slice containing all the elements in collections. Concat conserves the order of the elements.
 // See also: Flatten, Union.
 func Concat[T any, Slice ~[]T](collections ...Slice) Slice {
 	return Flatten(collections)

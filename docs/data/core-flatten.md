@@ -22,5 +22,3 @@ Flattens a slice of slices by one level.
 flat := lo.Flatten([][]int{{0, 1}, {2, 3, 4, 5}})
 // []int{0, 1, 2, 3, 4, 5}
 ```
-
-

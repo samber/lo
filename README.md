@@ -113,6 +113,7 @@ Supported helpers for slices:
 - [Chunk](#chunk)
 - [PartitionBy](#partitionby)
 - [Flatten](#flatten)
+- [Concat](#concat)
 - [Interleave](#interleave)
 - [Shuffle](#shuffle)
 - [Reverse](#reverse)
@@ -724,6 +725,20 @@ flat := lo.Flatten([][]int{{0, 1}, {2, 3, 4, 5}})
 
 [[play](https://go.dev/play/p/rbp9ORaMpjw)]
 
+### Concat
+
+Returns a new slice containing all the elements in collections. Concat conserves the order of the elements.
+
+```go
+slice := lo.Concat([]int{1, 2}, []int{3, 4})
+// []int{1, 2, 3, 4}
+
+slice := lo.Concat(nil, []int{1, 2}, nil, []int{3, 4}, nil)
+// []int{1, 2, 3, 4}
+
+slice := lo.Concat[int]()
+// []int{}
+```
 ### Interleave
 
 Round-robin alternating input slices and sequentially appending value at index into result.

@@ -2211,6 +2211,15 @@ func ExampleFlatten() {
 	// Output: [0 1 2 3 4 5]
 }
 
+func ExampleConcat() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := Concat(list, list)
+
+	fmt.Printf("%v", result)
+	// Output: [0 1 2 3 4 5 0 1 2 3 4 5]
+}
+
 func ExampleInterleave() {
 	list1 := [][]int{{1, 4, 7}, {2, 5, 8}, {3, 6, 9}}
 	list2 := [][]int{{1}, {2, 5, 8}, {3, 6}, {4, 7, 9, 10}}
