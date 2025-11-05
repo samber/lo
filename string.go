@@ -41,7 +41,7 @@ func RandomString(size int, charset []rune) string {
 	}
 
 	// see https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
-	sb := strings.Builder{}
+	var sb strings.Builder
 	sb.Grow(size)
 
 	if len(charset) == 1 {
@@ -212,6 +212,7 @@ func Words(str string) []string {
 	// example: Int8Value => Int 8Value => Int 8 Value
 	str = splitNumberLetterReg.ReplaceAllString(str, "$1 $2")
 	var result strings.Builder
+	result.Grow(len(str))
 	for _, r := range str {
 		if unicode.IsLetter(r) || unicode.IsDigit(r) {
 			result.WriteRune(r)
