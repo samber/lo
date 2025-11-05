@@ -2570,7 +2570,7 @@ b := NoneBy([]int{1, 2, 3, 4}, func(x int) bool {
 
 ### Intersect
 
-Returns the intersection between two collections.
+Returns the intersection between collections.
 
 ```go
 result1 := lo.Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
@@ -2581,6 +2581,10 @@ result2 := lo.Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 
 result3 := lo.Intersect([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // []int{}
+
+
+result4 := lo.Intersect([]int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0})
+// []int{3}
 ```
 
 ### Difference

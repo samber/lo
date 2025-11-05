@@ -3331,3 +3331,9 @@ func ExampleCrossJoinBy9() {
 	// b-4-true-{bar}-4.2-plop-false-42-hello world
 	// b-4-false-{bar}-4.2-plop-false-42-hello world
 }
+
+func ExampleIntersect() {
+	fmt.Printf("%v", Intersect([]int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0}))
+	// Output:
+	// [3]
+}
