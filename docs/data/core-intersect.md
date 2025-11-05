@@ -14,14 +14,14 @@ similarHelpers:
   - core#slice#uniq
 position: 80
 signatures:
-  - "func Intersect[T comparable, Slice ~[]T](list1 Slice, list2 Slice) Slice"
+  - "func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice"
 ---
 
-Returns the intersection between two collections.
+Returns the intersection between collections.
 
 ```go
-lo.Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
-// []int{0, 2}
+lo.Intersect([]int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0}))
+// []int{3}
 ```
 
 
