@@ -3057,6 +3057,8 @@ max := lo.MaxBy([]string{}, func(item string, max string) bool {
 // ""
 ```
 
+[[play](https://go.dev/play/p/JW1qu-ECwF7)]
+
 ### MaxIndexBy
 
 Search the maximum value of a collection using the given comparison function and the index of the maximum value.
@@ -3076,6 +3078,8 @@ max, index := lo.MaxIndexBy([]string{}, func(item string, max string) bool {
 })
 // "", -1
 ```
+
+[[play](https://go.dev/play/p/uaUszc-c9QK)]
 
 ### Latest
 
