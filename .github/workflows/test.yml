@@ -35,8 +35,9 @@ jobs:
       - name: Test
         run: make test
 
-      - name: Test
+      - name: Test coverage
         run: make coverage
+        if: matrix.go == '1.18'
 
       - name: Codecov
         uses: codecov/codecov-action@v5
