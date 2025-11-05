@@ -53,7 +53,15 @@ func EveryBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 // Will iterate through the entire sequence if subset elements never match.
 // Play: https://go.dev/play/p/KmX-fXictQl
 func Some[T comparable](collection iter.Seq[T], subset ...T) bool {
-	return SomeBy(collection, func(item T) bool { return lo.Contains(subset, item) })
+	if len(subset) == 0 {
+		return false
+	}
+
+	seen := lo.Keyify(subset)
+	return SomeBy(collection, func(item T) bool {
+		_, ok := seen[item]
+		return ok
+	})
 }
 
 // SomeBy returns true if the predicate returns true for any of the elements in the collection.
@@ -67,7 +75,15 @@ func SomeBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 // Will iterate through the entire sequence if subset elements never match.
 // Play: https://go.dev/play/p/KmX-fXictQl
 func None[T comparable](collection iter.Seq[T], subset ...T) bool {
-	return NoneBy(collection, func(item T) bool { return lo.Contains(subset, item) })
+	if len(subset) == 0 {
+		return true
+	}
+
+	seen := lo.Keyify(subset)
+	return NoneBy(collection, func(item T) bool {
+		_, ok := seen[item]
+		return ok
+	})
 }
 
 // NoneBy returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
