@@ -12,7 +12,7 @@ Your feedback helps us improve!
 :::
 
 #
-## Core - Math helpers
+## Core - Retry helpers
 
 This page lists all retry operations available in the core package of lo.
 

@@ -4,7 +4,7 @@ slug: maxindexby
 sourceRef: find.go#L482
 category: core
 subCategory: find
-playUrl:
+playUrl: https://go.dev/play/p/uaUszc-c9QK
 variantHelpers:
   - core#find#maxindexby
 similarHelpers:
@@ -34,4 +34,6 @@ value, idx := lo.MaxIndexBy([]Point{{1}, {5}, {3}}, func(a, b Point) bool {
 // value == {5}, idx == 1
 ```
 
+Note: the comparison function is inconsistent with most languages, since we use the opposite of the usual convention.
 
+See https://github.com/samber/lo/issues/129

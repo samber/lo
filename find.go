@@ -311,7 +311,7 @@ func MinIndex[T constraints.Ordered](collection []T) (T, int) {
 // MinBy search the minimum value of a collection using the given comparison function.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns zero value when the collection is empty.
-func MinBy[T any](collection []T, comparison func(a, b T) bool) T {
+func MinBy[T any](collection []T, less func(a, b T) bool) T {
 	var mIn T
 
 	if len(collection) == 0 {
@@ -323,7 +323,7 @@ func MinBy[T any](collection []T, comparison func(a, b T) bool) T {
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if comparison(item, mIn) {
+		if less(item, mIn) {
 			mIn = item
 		}
 	}
@@ -334,7 +334,7 @@ func MinBy[T any](collection []T, comparison func(a, b T) bool) T {
 // MinIndexBy search the minimum value of a collection using the given comparison function and the index of the minimum value.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
-func MinIndexBy[T any](collection []T, comparison func(a, b T) bool) (T, int) {
+func MinIndexBy[T any](collection []T, less func(a, b T) bool) (T, int) {
 	var (
 		mIn   T
 		index int
@@ -349,7 +349,7 @@ func MinIndexBy[T any](collection []T, comparison func(a, b T) bool) (T, int) {
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if comparison(item, mIn) {
+		if less(item, mIn) {
 			mIn = item
 			index = i
 		}
@@ -456,7 +456,12 @@ func MaxIndex[T constraints.Ordered](collection []T) (T, int) {
 // MaxBy search the maximum value of a collection using the given comparison function.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns zero value when the collection is empty.
-func MaxBy[T any](collection []T, comparison func(a, b T) bool) T {
+//
+// Note: the comparison function is inconsistent with most languages, since we use the opposite of the usual convention.
+// See https://github.com/samber/lo/issues/129
+//
+// Play: https://go.dev/play/p/JW1qu-ECwF7
+func MaxBy[T any](collection []T, greater func(a, b T) bool) T {
 	var mAx T
 
 	if len(collection) == 0 {
@@ -468,7 +473,7 @@ func MaxBy[T any](collection []T, comparison func(a, b T) bool) T {
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if comparison(item, mAx) {
+		if greater(item, mAx) {
 			mAx = item
 		}
 	}
@@ -479,7 +484,12 @@ func MaxBy[T any](collection []T, comparison func(a, b T) bool) T {
 // MaxIndexBy search the maximum value of a collection using the given comparison function and the index of the maximum value.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
-func MaxIndexBy[T any](collection []T, comparison func(a, b T) bool) (T, int) {
+//
+// Note: the comparison function is inconsistent with most languages, since we use the opposite of the usual convention.
+// See https://github.com/samber/lo/issues/129
+//
+// Play: https://go.dev/play/p/uaUszc-c9QK
+func MaxIndexBy[T any](collection []T, greater func(a, b T) bool) (T, int) {
 	var (
 		mAx   T
 		index int
@@ -494,7 +504,7 @@ func MaxIndexBy[T any](collection []T, comparison func(a, b T) bool) (T, int) {
 	for i := 1; i < len(collection); i++ {
 		item := collection[i]
 
-		if comparison(item, mAx) {
+		if greater(item, mAx) {
 			mAx = item
 			index = i
 		}

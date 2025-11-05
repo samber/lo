@@ -22,21 +22,9 @@ A utility library based on Go 1.18+ generics that makes it easier to work with s
 - [samber/do](https://github.com/samber/do): A dependency injection toolkit based on Go 1.18+ Generics
 - [samber/mo](https://github.com/samber/mo): Monads based on Go 1.18+ Generics (Option, Result, Either...)
 
-**`samber/lo` vs `samber/ro` ?**
-
-Both libraries have `Map()`, `Filter()`... helpers. How are they different?
-
-|                    | `samber/lo`                 | `samber/ro`                                              |
-| ------------------ | --------------------------- | -------------------------------------------------------- |
-| **Usage**          | loop over in-memory objects | manipulate event driven objects, produced asynchronously |
-| **Data structure** | slices, maps, iterator...   | stream, observables, observers                           |
-| **Model**          | synchronous                 | asynchronous                                             |
-| **Size**           | finite sequence             | infinite stream                                          |
-| **Flow control**   | pull-based (iterators)      | push-based                                               |
-
-`lo` is a bunch of helpers for looping across finite sequences (maps, slices...)
-
-`ro` is focused on processing of infinite data streams in event-driven applications.
+What makes it different from **samber/ro**?
+- lo: synchronous helpers across finite sequences (maps, slices...)
+- ro: processing of infinite data streams for event-driven scenarios
 
 ----
 
@@ -54,7 +42,7 @@ Both libraries have `Map()`, `Filter()`... helpers. How are they different?
 
 I wanted a **short name**, similar to "Lodash", and no Go package uses this name.
 
-![lo](img/logo-full.png)
+![lo](docs/static/img/logo-full.png)
 
 ## 🚀 Install
 
@@ -125,6 +113,7 @@ Supported helpers for slices:
 - [Chunk](#chunk)
 - [PartitionBy](#partitionby)
 - [Flatten](#flatten)
+- [Concat](#concat)
 - [Interleave](#interleave)
 - [Shuffle](#shuffle)
 - [Reverse](#reverse)
@@ -736,6 +725,20 @@ flat := lo.Flatten([][]int{{0, 1}, {2, 3, 4, 5}})
 
 [[play](https://go.dev/play/p/rbp9ORaMpjw)]
 
+### Concat
+
+Returns a new slice containing all the elements in collections. Concat conserves the order of the elements.
+
+```go
+slice := lo.Concat([]int{1, 2}, []int{3, 4})
+// []int{1, 2, 3, 4}
+
+slice := lo.Concat(nil, []int{1, 2}, nil, []int{3, 4}, nil)
+// []int{1, 2, 3, 4}
+
+slice := lo.Concat[int]()
+// []int{}
+```
 ### Interleave
 
 Round-robin alternating input slices and sequentially appending value at index into result.
@@ -3054,6 +3057,8 @@ max := lo.MaxBy([]string{}, func(item string, max string) bool {
 // ""
 ```
 
+[[play](https://go.dev/play/p/JW1qu-ECwF7)]
+
 ### MaxIndexBy
 
 Search the maximum value of a collection using the given comparison function and the index of the maximum value.
@@ -3073,6 +3078,8 @@ max, index := lo.MaxIndexBy([]string{}, func(item string, max string) bool {
 })
 // "", -1
 ```
+
+[[play](https://go.dev/play/p/uaUszc-c9QK)]
 
 ### Latest
 
