@@ -185,6 +185,7 @@ func TestIntersect(t *testing.T) {
 	result6 := Intersect([]int{0, 6, 0}, []int{0, 1, 2, 3, 4, 5})
 	result7 := Intersect([]int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 	result8 := Intersect([]int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{1, 6})
+	result9 := Intersect([]int{0, 1, 1}, []int{2})
 
 	is.Empty(result0)
 	is.Equal([]int{1}, result1)
@@ -195,6 +196,7 @@ func TestIntersect(t *testing.T) {
 	is.Equal([]int{0}, result6)
 	is.Equal([]int{0}, result7)
 	is.Empty(result8)
+	is.Empty(result9)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
