@@ -27,8 +27,14 @@ func ContainsBy[T any](collection []T, predicate func(item T) bool) bool {
 // Every returns true if all elements of a subset are contained in a collection or if the subset is empty.
 // Play: https://go.dev/play/p/W1EvyqY6t9j
 func Every[T comparable](collection, subset []T) bool {
-	for i := range subset {
-		if !Contains(collection, subset[i]) {
+	if len(subset) == 0 {
+		return true
+	}
+
+	seen := Keyify(collection)
+
+	for _, item := range subset {
+		if _, ok := seen[item]; !ok {
 			return false
 		}
 	}
@@ -52,8 +58,13 @@ func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 // If the subset is empty Some returns false.
 // Play: https://go.dev/play/p/Lj4ceFkeT9V
 func Some[T comparable](collection, subset []T) bool {
-	for i := range subset {
-		if Contains(collection, subset[i]) {
+	if len(subset) == 0 {
+		return false
+	}
+
+	seen := Keyify(subset)
+	for i := range collection {
+		if _, ok := seen[collection[i]]; ok {
 			return true
 		}
 	}
@@ -77,8 +88,13 @@ func SomeBy[T any](collection []T, predicate func(item T) bool) bool {
 // None returns true if no element of a subset is contained in a collection or if the subset is empty.
 // Play: https://go.dev/play/p/fye7JsmxzPV
 func None[T comparable](collection, subset []T) bool {
-	for i := range subset {
-		if Contains(collection, subset[i]) {
+	if len(subset) == 0 {
+		return true
+	}
+
+	seen := Keyify(subset)
+	for i := range collection {
+		if _, ok := seen[collection[i]]; ok {
 			return false
 		}
 	}

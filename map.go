@@ -128,8 +128,10 @@ func PickByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
 // Play: https://go.dev/play/p/1zdzSvbfsJc
 func PickByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
 	r := Map{}
+
+	seen := Keyify(values)
 	for k, v := range in {
-		if Contains(values, v) {
+		if _, ok := seen[v]; ok {
 			r[k] = v
 		}
 	}
@@ -165,11 +167,14 @@ func OmitByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
 // Play: https://go.dev/play/p/9UYZi-hrs8j
 func OmitByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
 	r := Map{}
+
+	seen := Keyify(values)
 	for k, v := range in {
-		if !Contains(values, v) {
+		if _, ok := seen[v]; !ok {
 			r[k] = v
 		}
 	}
+
 	return r
 }
 
