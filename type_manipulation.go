@@ -71,45 +71,26 @@ func FromPtrOr[T any](x *T, fallback T) T {
 // ToSlicePtr returns a slice of pointers to each value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func ToSlicePtr[T any](collection []T) []*T {
-	result := make([]*T, len(collection))
-
-	for i := range collection {
-		result[i] = &collection[i]
-	}
-	return result
+	return _map(collection, ToPtr)
 }
 
 // FromSlicePtr returns a slice with the pointer values.
 // Returns a zero value in case of a nil pointer element.
 // Play: https://go.dev/play/p/lbunFvzlUDX
 func FromSlicePtr[T any](collection []*T) []T {
-	return Map(collection, func(x *T, _ int) T {
-		if x == nil {
-			return Empty[T]()
-		}
-		return *x
-	})
+	return _map(collection, FromPtr)
 }
 
 // FromSlicePtrOr returns a slice with the pointer values or the fallback value.
 // Play: https://go.dev/play/p/lbunFvzlUDX
 func FromSlicePtrOr[T any](collection []*T, fallback T) []T {
-	return Map(collection, func(x *T, _ int) T {
-		if x == nil {
-			return fallback
-		}
-		return *x
-	})
+	return _map(collection, func(x *T) T { return FromPtrOr(x, fallback) })
 }
 
 // ToAnySlice returns a slice with all elements mapped to `any` type.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func ToAnySlice[T any](collection []T) []any {
-	result := make([]any, len(collection))
-	for i := range collection {
-		result[i] = collection[i]
-	}
-	return result
+	return _map(collection, func(x T) any { return x })
 }
 
 // FromAnySlice returns a slice with all elements mapped to a type.
@@ -137,29 +118,25 @@ func Empty[T any]() T {
 // IsEmpty returns true if argument is a zero value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func IsEmpty[T comparable](v T) bool {
-	var zero T
-	return zero == v
+	return v == Empty[T]()
 }
 
 // IsNotEmpty returns true if argument is not a zero value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func IsNotEmpty[T comparable](v T) bool {
-	var zero T
-	return zero != v
+	return !IsEmpty(v)
 }
 
 // Coalesce returns the first non-empty arguments. Arguments must be comparable.
 // Play: https://go.dev/play/p/Gyo9otyvFHH
 func Coalesce[T comparable](values ...T) (T, bool) {
-	var zero T
-
 	for i := range values {
-		if values[i] != zero {
+		if IsNotEmpty(values[i]) {
 			return values[i], true
 		}
 	}
 
-	return zero, false
+	return Empty[T](), false
 }
 
 // CoalesceOrEmpty returns the first non-empty arguments. Arguments must be comparable.
@@ -183,12 +160,8 @@ func CoalesceSlice[T any](v ...[]T) ([]T, bool) {
 // CoalesceSliceOrEmpty returns the first non-zero slice.
 // Play: https://go.dev/play/p/Gyo9otyvFHH
 func CoalesceSliceOrEmpty[T any](v ...[]T) []T {
-	for i := range v {
-		if v[i] != nil && len(v[i]) > 0 {
-			return v[i]
-		}
-	}
-	return []T{}
+	result, _ := CoalesceSlice(v...)
+	return result
 }
 
 // CoalesceMap returns the first non-zero map.
@@ -205,10 +178,6 @@ func CoalesceMap[K comparable, V any](v ...map[K]V) (map[K]V, bool) {
 // CoalesceMapOrEmpty returns the first non-zero map.
 // Play: https://go.dev/play/p/Gyo9otyvFHH
 func CoalesceMapOrEmpty[K comparable, V any](v ...map[K]V) map[K]V {
-	for i := range v {
-		if v[i] != nil && len(v[i]) > 0 {
-			return v[i]
-		}
-	}
-	return map[K]V{}
+	result, _ := CoalesceMap(v...)
+	return result
 }

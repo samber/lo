@@ -5,6 +5,8 @@ package it
 import (
 	"iter"
 	"maps"
+
+	"github.com/samber/lo"
 )
 
 // Keys creates a sequence of the map keys.
@@ -31,7 +33,7 @@ func UniqKeys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 
 		for i := range in {
 			for k := range in[i] {
-				if _, ok := seen[k]; !ok {
+				if !lo.HasKey(seen, k) {
 					if !yield(k) {
 						return
 					}
@@ -66,7 +68,7 @@ func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V] {
 
 		for i := range in {
 			for _, v := range in[i] {
-				if _, ok := seen[v]; !ok {
+				if !lo.HasKey(seen, v) {
 					if !yield(v) {
 						return
 					}

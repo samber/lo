@@ -31,7 +31,7 @@ func Every[T comparable](collection iter.Seq[T], subset ...T) bool {
 
 	set := lo.Keyify(subset)
 	for item := range collection {
-		if _, ok := set[item]; ok {
+		if lo.HasKey(set, item) {
 			delete(set, item)
 			if len(set) == 0 {
 				return true
@@ -53,15 +53,7 @@ func EveryBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 // Will iterate through the entire sequence if subset elements never match.
 // Play: https://go.dev/play/p/KmX-fXictQl
 func Some[T comparable](collection iter.Seq[T], subset ...T) bool {
-	if len(subset) == 0 {
-		return false
-	}
-
-	seen := lo.Keyify(subset)
-	return SomeBy(collection, func(item T) bool {
-		_, ok := seen[item]
-		return ok
-	})
+	return len(subset) > 0 && SomeBy(collection, lo.Partial(lo.HasKey, lo.Keyify(subset)))
 }
 
 // SomeBy returns true if the predicate returns true for any of the elements in the collection.
@@ -75,15 +67,7 @@ func SomeBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 // Will iterate through the entire sequence if subset elements never match.
 // Play: https://go.dev/play/p/KmX-fXictQl
 func None[T comparable](collection iter.Seq[T], subset ...T) bool {
-	if len(subset) == 0 {
-		return true
-	}
-
-	seen := lo.Keyify(subset)
-	return NoneBy(collection, func(item T) bool {
-		_, ok := seen[item]
-		return ok
-	})
+	return len(subset) == 0 || NoneBy(collection, lo.Partial(lo.HasKey, lo.Keyify(subset)))
 }
 
 // NoneBy returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
@@ -96,59 +80,8 @@ func NoneBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 // Will allocate a map large enough to hold all distinct elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/kz3cGhGZZWF
-func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:gocyclo
-	if len(lists) == 0 {
-		return I(Empty[T]())
-	}
-
-	if len(lists) == 1 {
-		return lists[0]
-	}
-
-	return func(yield func(T) bool) {
-		seen := make(map[T]bool)
-
-		for i := len(lists) - 1; i >= 0; i-- {
-			if i == len(lists)-1 {
-				for item := range lists[i] {
-					seen[item] = true
-				}
-				continue
-			}
-
-			if i == 0 {
-				for item := range lists[0] {
-					if _, ok := seen[item]; ok {
-						if !yield(item) {
-							return
-						}
-						delete(seen, item)
-					}
-				}
-				continue
-			}
-
-			for k := range seen {
-				seen[k] = false
-			}
-
-			for item := range lists[i] {
-				if _, ok := seen[item]; ok {
-					seen[item] = true
-				}
-			}
-
-			for k, v := range seen {
-				if !v {
-					delete(seen, k)
-				}
-			}
-
-			if len(seen) == 0 {
-				return
-			}
-		}
-	}
+func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I {
+	return IntersectBy(func(item T) T { return item }, lists...)
 }
 
 // IntersectBy returns the intersection between given collections using a
@@ -179,7 +112,7 @@ func IntersectBy[T any, K comparable, I ~func(func(T) bool)](transform func(T) K
 			if i == 0 {
 				for item := range lists[0] {
 					k := transform(item)
-					if _, ok := seen[k]; ok {
+					if lo.HasKey(seen, k) {
 						if !yield(item) {
 							return
 						}
@@ -195,7 +128,7 @@ func IntersectBy[T any, K comparable, I ~func(func(T) bool)](transform func(T) K
 
 			for item := range lists[i] {
 				k := transform(item)
-				if _, ok := seen[k]; ok {
+				if lo.HasKey(seen, k) {
 					seen[k] = true
 				}
 			}
@@ -223,7 +156,7 @@ func Union[T comparable, I ~func(func(T) bool)](lists ...I) I {
 
 		for i := range lists {
 			for item := range lists[i] {
-				if _, ok := seen[item]; !ok {
+				if !lo.HasKey(seen, item) {
 					if !yield(item) {
 						return
 					}
@@ -252,8 +185,7 @@ func WithoutBy[T any, K comparable, I ~func(func(T) bool)](collection I, transfo
 // WithoutNth returns a sequence excluding the nth value.
 // Will allocate a map large enough to hold all distinct nths.
 func WithoutNth[T comparable, I ~func(func(T) bool)](collection I, nths ...int) I {
-	set := lo.Keyify(nths)
-	return RejectI(collection, func(_ T, index int) bool { return lo.HasKey(set, index) })
+	return DropByIndex(collection, nths...)
 }
 
 // ElementsMatch returns true if lists contain the same set of elements (including empty set).

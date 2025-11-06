@@ -68,11 +68,7 @@ func Clamp[T constraints.Ordered](value, mIn, mAx T) T {
 // Sum sums the values in a collection. If collection is empty 0 is returned.
 // Play: https://go.dev/play/p/upfeJVqs4Bt
 func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
-	var sum T
-	for i := range collection {
-		sum += collection[i]
-	}
-	return sum
+	return SumBy(collection, func(item T) T { return item })
 }
 
 // SumBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 0 is returned.
@@ -88,19 +84,7 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 // Product gets the product of the values in a collection. If collection is empty 1 is returned.
 // Play: https://go.dev/play/p/2_kjM_smtAH
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
-	if collection == nil {
-		return 1
-	}
-
-	if len(collection) == 0 {
-		return 1
-	}
-
-	var product T = 1
-	for i := range collection {
-		product *= collection[i]
-	}
-	return product
+	return ProductBy(collection, func(item T) T { return item })
 }
 
 // ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 1 is returned.
@@ -124,12 +108,7 @@ func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Co
 // Mean calculates the mean of a collection of numbers.
 // Play: https://go.dev/play/p/tPURSuteUsP
 func Mean[T constraints.Float | constraints.Integer](collection []T) T {
-	length := T(len(collection))
-	if length == 0 {
-		return 0
-	}
-	sum := Sum(collection)
-	return sum / length
+	return MeanBy(collection, func(item T) T { return item })
 }
 
 // MeanBy calculates the mean of a collection of numbers using the given return value from the iteration function.

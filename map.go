@@ -31,7 +31,7 @@ func UniqKeys[K comparable, V any](in ...map[K]V) []K {
 
 	for i := range in {
 		for k := range in[i] {
-			if _, exists := seen[k]; exists {
+			if HasKey(seen, k) {
 				continue
 			}
 			seen[k] = struct{}{}
@@ -80,7 +80,7 @@ func UniqValues[K, V comparable](in ...map[K]V) []V {
 
 	for i := range in {
 		for _, v := range in[i] {
-			if _, exists := seen[v]; exists {
+			if HasKey(seen, v) {
 				continue
 			}
 			seen[v] = struct{}{}
@@ -127,15 +127,8 @@ func PickByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
 // PickByValues returns same map type filtered by given values.
 // Play: https://go.dev/play/p/1zdzSvbfsJc
 func PickByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
-	r := Map{}
-
 	seen := Keyify(values)
-	for k, v := range in {
-		if _, ok := seen[v]; ok {
-			r[k] = v
-		}
-	}
-	return r
+	return PickBy(in, func(_ K, value V) bool { return HasKey(seen, value) })
 }
 
 // OmitBy returns same map type filtered by given predicate.
@@ -166,16 +159,8 @@ func OmitByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
 // OmitByValues returns same map type filtered by given values.
 // Play: https://go.dev/play/p/9UYZi-hrs8j
 func OmitByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
-	r := Map{}
-
 	seen := Keyify(values)
-	for k, v := range in {
-		if _, ok := seen[v]; !ok {
-			r[k] = v
-		}
-	}
-
-	return r
+	return OmitBy(in, func(_ K, value V) bool { return HasKey(seen, value) })
 }
 
 // Entries transforms a map into a slice of key/value pairs.

@@ -153,11 +153,8 @@ func FindLastIndexOf[T any](collection iter.Seq[T], predicate func(item T) bool)
 // Will iterate through the entire sequence if predicate never returns true.
 // Play: https://go.dev/play/p/8VgPO9mi-t
 func FindOrElse[T any](collection iter.Seq[T], fallback T, predicate func(item T) bool) T {
-	if result, ok := Find(collection, predicate); ok {
-		return result
-	}
-
-	return fallback
+	result, ok := Find(collection, predicate)
+	return lo.Ternary(ok, result, fallback)
 }
 
 // FindUniques returns a sequence with all the elements that appear in the collection only once.

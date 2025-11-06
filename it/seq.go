@@ -252,7 +252,7 @@ func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform 
 		for item := range collection {
 			key := transform(item)
 
-			if _, ok := seen[key]; !ok {
+			if !lo.HasKey(seen, key) {
 				if !yield(item) {
 					return
 				}
@@ -503,9 +503,7 @@ func SeqToMapI[T any, K comparable, V any](collection iter.Seq[T], transform fun
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/8PjCG2-zo
 func FilterSeqToMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V, bool)) map[K]V {
-	return FilterSeqToMapI(collection, func(item T, _ int) (K, V, bool) {
-		return transform(item)
-	})
+	return FilterSeqToMapI(collection, func(item T, _ int) (K, V, bool) { return transform(item) })
 }
 
 // FilterSeqToMapI returns a map containing key-value pairs provided by transform function applied to elements of the given sequence.

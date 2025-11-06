@@ -26,6 +26,10 @@ func Map[T, R any](collection []T, transform func(item T, index int) R) []R {
 	return result
 }
 
+func _map[T, R any](collection []T, transform func(item T) R) []R {
+	return Map(collection, func(item T, _ int) R { return transform(item) })
+}
+
 // ForEach iterates over elements of collection and invokes callback for each element.
 // `iteratee` is called in parallel.
 // Play: https://go.dev/play/p/sCJaB3quRMC
@@ -73,9 +77,7 @@ func Times[T any](count int, iteratee func(index int) T) []T {
 func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) map[U]Slice {
 	result := map[U]Slice{}
 
-	keys := Map(collection, func(item T, _ int) U {
-		return iteratee(item)
-	})
+	keys := _map(collection, iteratee)
 
 	for i, item := range collection {
 		result[keys[i]] = append(result[keys[i]], item)
@@ -93,9 +95,7 @@ func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee fun
 	result := []Slice{}
 	seen := map[K]int{}
 
-	keys := Map(collection, func(item T, _ int) K {
-		return iteratee(item)
-	})
+	keys := _map(collection, iteratee)
 
 	for i, item := range collection {
 		if resultIndex, ok := seen[keys[i]]; ok {
