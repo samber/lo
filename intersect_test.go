@@ -241,10 +241,7 @@ func TestIntersectBy(t *testing.T) {
 	}, list1, list2)
 	is.ElementsMatch(intersectByIDAndName, []User{{ID: 3, Name: "Charlie"}})
 
-	transform := func(x int) string {
-		return strconv.Itoa(x)
-	}
-	result := IntersectBy(transform, []int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+	result := IntersectBy(strconv.Itoa, []int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 	is.ElementsMatch(result, []int{0})
 }
 

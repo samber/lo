@@ -211,9 +211,7 @@ func TestIntersectBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	transform := func(x int) string {
-		return strconv.Itoa(x)
-	}
+	transform := strconv.Itoa
 
 	result1 := IntersectBy(transform, []iter.Seq[int]{}...)
 	result2 := IntersectBy(transform, values(0, 1, 2, 3, 4, 5))
