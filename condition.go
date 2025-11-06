@@ -121,9 +121,9 @@ func (s *switchCase[T, R]) Case(val T, result R) *switchCase[T, R] {
 
 // CaseF.
 // Play: https://go.dev/play/p/TGbKUMAeRUd
-func (s *switchCase[T, R]) CaseF(val T, cb func() R) *switchCase[T, R] {
+func (s *switchCase[T, R]) CaseF(val T, callback func() R) *switchCase[T, R] {
 	if !s.done && s.predicate == val {
-		s.result = cb()
+		s.result = callback()
 		s.done = true
 	}
 
@@ -142,9 +142,9 @@ func (s *switchCase[T, R]) Default(result R) R {
 
 // DefaultF.
 // Play: https://go.dev/play/p/TGbKUMAeRUd
-func (s *switchCase[T, R]) DefaultF(cb func() R) R {
+func (s *switchCase[T, R]) DefaultF(callback func() R) R {
 	if !s.done {
-		s.result = cb()
+		s.result = callback()
 	}
 
 	return s.result

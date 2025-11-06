@@ -15,7 +15,7 @@ similarHelpers:
   - parallel#slice#groupby
 position: 130
 signatures:
-  - "func GroupByMap[T any, K comparable, V any](collection []T, iteratee func(item T) (K, V)) map[K][]V"
+  - "func GroupByMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K][]V"
 ---
 
 Groups items by a key computed from each element and maps each element to a value.

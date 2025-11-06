@@ -416,7 +416,7 @@ lo.Map([]int64{1, 2, 3, 4}, func(x int64, index int) string {
 
 [[play](https://go.dev/play/p/OkPcYAhBo0D)]
 
-Parallel processing: like `lo.Map()`, but the mapper function is called in a goroutine. Results are returned in the same order.
+Parallel processing: like `lo.Map()`, but the transform function is called in a goroutine. Results are returned in the same order.
 
 ```go
 import lop "github.com/samber/lo/parallel"
@@ -2154,7 +2154,7 @@ result := lo.CrossJoin2([]string{"hello", "john", "doe"}, []int{1, 2})
 
 ### CrossJoinBy2 -> CrossJoinBy9
 
-Combines every item from one list with every item from others. It is the cartesian product of lists received as arguments. The project function is used to create the output values. Returns an empty list if a list is empty.
+Combines every item from one list with every item from others. It is the cartesian product of lists received as arguments. The transform function is used to create the output values. Returns an empty list if a list is empty.
 
 ```go
 result := lo.CrossJoinBy2([]string{"hello", "john", "doe"}, []int{1, 2}, func(a A, b B) string {

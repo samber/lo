@@ -5,7 +5,7 @@ sourceRef: it/seq.go#L202
 category: it
 subCategory: sequence
 signatures:
-  - "func Times[T any](count int, transform func(index int) T) iter.Seq[T]"
+  - "func Times[T any](count int, callback func(index int) T) iter.Seq[T]"
 playUrl: "https://go.dev/play/p/9QkDH3-zp"
 variantHelpers:
   - it#sequence#times
@@ -15,7 +15,7 @@ similarHelpers:
 position: 70
 ---
 
-Invokes a transform function n times and returns a sequence of the results.
+Invokes a callback function n times and returns a sequence of the results.
 
 Examples:
 

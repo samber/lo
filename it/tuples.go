@@ -445,15 +445,15 @@ func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA iter.Seq[A], listB iter.Seq
 }
 
 // CrossJoinBy2 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/7YsLP1-zx
-func CrossJoinBy2[A, B, Out any](listA iter.Seq[A], listB iter.Seq[B], project func(a A, b B) Out) iter.Seq[Out] {
+func CrossJoinBy2[A, B, Out any](listA iter.Seq[A], listB iter.Seq[B], transform func(a A, b B) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
 			for b := range listB {
-				if !yield(project(a, b)) {
+				if !yield(transform(a, b)) {
 					return
 				}
 			}
@@ -462,16 +462,16 @@ func CrossJoinBy2[A, B, Out any](listA iter.Seq[A], listB iter.Seq[B], project f
 }
 
 // CrossJoinBy3 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/8isgTsyfL-t
-func CrossJoinBy3[A, B, C, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], project func(a A, b B, c C) Out) iter.Seq[Out] {
+func CrossJoinBy3[A, B, C, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], transform func(a A, b B, c C) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
 			for b := range listB {
 				for c := range listC {
-					if !yield(project(a, b, c)) {
+					if !yield(transform(a, b, c)) {
 						return
 					}
 				}
@@ -481,17 +481,17 @@ func CrossJoinBy3[A, B, C, Out any](listA iter.Seq[A], listB iter.Seq[B], listC 
 }
 
 // CrossJoinBy4 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/9jthUzgF-u
-func CrossJoinBy4[A, B, C, D, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], project func(a A, b B, c C, d D) Out) iter.Seq[Out] {
+func CrossJoinBy4[A, B, C, D, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], transform func(a A, b B, c C, d D) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
 			for b := range listB {
 				for c := range listC {
 					for d := range listD {
-						if !yield(project(a, b, c, d)) {
+						if !yield(transform(a, b, c, d)) {
 							return
 						}
 					}
@@ -502,18 +502,18 @@ func CrossJoinBy4[A, B, C, D, Out any](listA iter.Seq[A], listB iter.Seq[B], lis
 }
 
 // CrossJoinBy5 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/0XrQKOk-vw
-func CrossJoinBy5[A, B, C, D, E, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], project func(a A, b B, c C, d D, e E) Out) iter.Seq[Out] {
+func CrossJoinBy5[A, B, C, D, E, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], transform func(a A, b B, c C, d D, e E) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
 			for b := range listB {
 				for c := range listC {
 					for d := range listD {
 						for e := range listE {
-							if !yield(project(a, b, c, d, e)) {
+							if !yield(transform(a, b, c, d, e)) {
 								return
 							}
 						}
@@ -525,11 +525,11 @@ func CrossJoinBy5[A, B, C, D, E, Out any](listA iter.Seq[A], listB iter.Seq[B], 
 }
 
 // CrossJoinBy6 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/1SmFJ5-zr
-func CrossJoinBy6[A, B, C, D, E, F, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], project func(a A, b B, c C, d D, e E, f F) Out) iter.Seq[Out] {
+func CrossJoinBy6[A, B, C, D, E, F, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], transform func(a A, b B, c C, d D, e E, f F) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
 			for b := range listB {
@@ -537,7 +537,7 @@ func CrossJoinBy6[A, B, C, D, E, F, Out any](listA iter.Seq[A], listB iter.Seq[B
 					for d := range listD {
 						for e := range listE {
 							for f := range listF {
-								if !yield(project(a, b, c, d, e, f)) {
+								if !yield(transform(a, b, c, d, e, f)) {
 									return
 								}
 							}
@@ -550,11 +550,11 @@ func CrossJoinBy6[A, B, C, D, E, F, Out any](listA iter.Seq[A], listB iter.Seq[B
 }
 
 // CrossJoinBy7 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/2TnGK6-zs
-func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], project func(a A, b B, c C, d D, e E, f F, g G) Out) iter.Seq[Out] {
+func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], transform func(a A, b B, c C, d D, e E, f F, g G) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
 			for b := range listB {
@@ -563,7 +563,7 @@ func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA iter.Seq[A], listB iter.Se
 						for e := range listE {
 							for f := range listF {
 								for g := range listG {
-									if !yield(project(a, b, c, d, e, f, g)) {
+									if !yield(transform(a, b, c, d, e, f, g)) {
 										return
 									}
 								}
@@ -577,11 +577,11 @@ func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA iter.Seq[A], listB iter.Se
 }
 
 // CrossJoinBy8 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/3UoHL7-zt
-func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], listH iter.Seq[H], project func(a A, b B, c C, d D, e E, f F, g G, h H) Out) iter.Seq[Out] {
+func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], listH iter.Seq[H], transform func(a A, b B, c C, d D, e E, f F, g G, h H) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
 			for b := range listB {
@@ -591,7 +591,7 @@ func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA iter.Seq[A], listB iter
 							for f := range listF {
 								for g := range listG {
 									for h := range listH {
-										if !yield(project(a, b, c, d, e, f, g, h)) {
+										if !yield(transform(a, b, c, d, e, f, g, h)) {
 											return
 										}
 									}
@@ -606,11 +606,11 @@ func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA iter.Seq[A], listB iter
 }
 
 // CrossJoinBy9 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/4VpIM8-zu
-func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], listH iter.Seq[H], listI iter.Seq[I], project func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) iter.Seq[Out] {
+func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA iter.Seq[A], listB iter.Seq[B], listC iter.Seq[C], listD iter.Seq[D], listE iter.Seq[E], listF iter.Seq[F], listG iter.Seq[G], listH iter.Seq[H], listI iter.Seq[I], transform func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {
 			for b := range listB {
@@ -621,7 +621,7 @@ func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA iter.Seq[A], listB i
 								for g := range listG {
 									for h := range listH {
 										for i := range listI {
-											if !yield(project(a, b, c, d, e, f, g, h, i)) {
+											if !yield(transform(a, b, c, d, e, f, g, h, i)) {
 												return
 											}
 										}

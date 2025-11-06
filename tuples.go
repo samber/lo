@@ -949,11 +949,11 @@ func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA []A, listB []B, listC []C, 
 }
 
 // CrossJoinBy2 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/8Y7btpvuA-C
-func CrossJoinBy2[A, B, Out any](listA []A, listB []B, project func(a A, b B) Out) []Out {
+func CrossJoinBy2[A, B, Out any](listA []A, listB []B, transform func(a A, b B) Out) []Out {
 	size := len(listA) * len(listB)
 	if size == 0 {
 		return []Out{}
@@ -963,7 +963,7 @@ func CrossJoinBy2[A, B, Out any](listA []A, listB []B, project func(a A, b B) Ou
 
 	for _, a := range listA {
 		for _, b := range listB {
-			result = append(result, project(a, b))
+			result = append(result, transform(a, b))
 		}
 	}
 
@@ -971,11 +971,11 @@ func CrossJoinBy2[A, B, Out any](listA []A, listB []B, project func(a A, b B) Ou
 }
 
 // CrossJoinBy3 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/3z4y5x6w7v8
-func CrossJoinBy3[A, B, C, Out any](listA []A, listB []B, listC []C, project func(a A, b B, c C) Out) []Out {
+func CrossJoinBy3[A, B, C, Out any](listA []A, listB []B, listC []C, transform func(a A, b B, c C) Out) []Out {
 	size := len(listA) * len(listB) * len(listC)
 	if size == 0 {
 		return []Out{}
@@ -986,7 +986,7 @@ func CrossJoinBy3[A, B, C, Out any](listA []A, listB []B, listC []C, project fun
 	for _, a := range listA {
 		for _, b := range listB {
 			for _, c := range listC {
-				result = append(result, project(a, b, c))
+				result = append(result, transform(a, b, c))
 			}
 		}
 	}
@@ -995,11 +995,11 @@ func CrossJoinBy3[A, B, C, Out any](listA []A, listB []B, listC []C, project fun
 }
 
 // CrossJoinBy4 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/8b9c0d1e2f3
-func CrossJoinBy4[A, B, C, D, Out any](listA []A, listB []B, listC []C, listD []D, project func(a A, b B, c C, d D) Out) []Out {
+func CrossJoinBy4[A, B, C, D, Out any](listA []A, listB []B, listC []C, listD []D, transform func(a A, b B, c C, d D) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD)
 	if size == 0 {
 		return []Out{}
@@ -1011,7 +1011,7 @@ func CrossJoinBy4[A, B, C, D, Out any](listA []A, listB []B, listC []C, listD []
 		for _, b := range listB {
 			for _, c := range listC {
 				for _, d := range listD {
-					result = append(result, project(a, b, c, d))
+					result = append(result, transform(a, b, c, d))
 				}
 			}
 		}
@@ -1021,11 +1021,11 @@ func CrossJoinBy4[A, B, C, D, Out any](listA []A, listB []B, listC []C, listD []
 }
 
 // CrossJoinBy5 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/4g5h6i7j8k9
-func CrossJoinBy5[A, B, C, D, E, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, project func(a A, b B, c C, d D, e E) Out) []Out {
+func CrossJoinBy5[A, B, C, D, E, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, transform func(a A, b B, c C, d D, e E) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE)
 	if size == 0 {
 		return []Out{}
@@ -1038,7 +1038,7 @@ func CrossJoinBy5[A, B, C, D, E, Out any](listA []A, listB []B, listC []C, listD
 			for _, c := range listC {
 				for _, d := range listD {
 					for _, e := range listE {
-						result = append(result, project(a, b, c, d, e))
+						result = append(result, transform(a, b, c, d, e))
 					}
 				}
 			}
@@ -1049,11 +1049,11 @@ func CrossJoinBy5[A, B, C, D, E, Out any](listA []A, listB []B, listC []C, listD
 }
 
 // CrossJoinBy6 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/1l2m3n4o5p6
-func CrossJoinBy6[A, B, C, D, E, F, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, project func(a A, b B, c C, d D, e E, f F) Out) []Out {
+func CrossJoinBy6[A, B, C, D, E, F, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, transform func(a A, b B, c C, d D, e E, f F) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF)
 	if size == 0 {
 		return []Out{}
@@ -1067,7 +1067,7 @@ func CrossJoinBy6[A, B, C, D, E, F, Out any](listA []A, listB []B, listC []C, li
 				for _, d := range listD {
 					for _, e := range listE {
 						for _, f := range listF {
-							result = append(result, project(a, b, c, d, e, f))
+							result = append(result, transform(a, b, c, d, e, f))
 						}
 					}
 				}
@@ -1079,11 +1079,11 @@ func CrossJoinBy6[A, B, C, D, E, F, Out any](listA []A, listB []B, listC []C, li
 }
 
 // CrossJoinBy7 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/7q8r9s0t1u2
-func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, project func(a A, b B, c C, d D, e E, f F, g G) Out) []Out {
+func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, transform func(a A, b B, c C, d D, e E, f F, g G) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG)
 	if size == 0 {
 		return []Out{}
@@ -1098,7 +1098,7 @@ func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA []A, listB []B, listC []C,
 					for _, e := range listE {
 						for _, f := range listF {
 							for _, g := range listG {
-								result = append(result, project(a, b, c, d, e, f, g))
+								result = append(result, transform(a, b, c, d, e, f, g))
 							}
 						}
 					}
@@ -1111,11 +1111,11 @@ func CrossJoinBy7[A, B, C, D, E, F, G, Out any](listA []A, listB []B, listC []C,
 }
 
 // CrossJoinBy8 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/3v4w5x6y7z8
-func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, project func(a A, b B, c C, d D, e E, f F, g G, h H) Out) []Out {
+func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, transform func(a A, b B, c C, d D, e E, f F, g G, h H) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG) * len(listH)
 	if size == 0 {
 		return []Out{}
@@ -1131,7 +1131,7 @@ func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA []A, listB []B, listC [
 						for _, f := range listF {
 							for _, g := range listG {
 								for _, h := range listH {
-									result = append(result, project(a, b, c, d, e, f, g, h))
+									result = append(result, transform(a, b, c, d, e, f, g, h))
 								}
 							}
 						}
@@ -1145,11 +1145,11 @@ func CrossJoinBy8[A, B, C, D, E, F, G, H, Out any](listA []A, listB []B, listC [
 }
 
 // CrossJoinBy9 combines every item from one list with every item from others.
-// It is the cartesian product of lists received as arguments. The project function
+// It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
 // Play: https://go.dev/play/p/9a0b1c2d3e4
-func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, listI []I, project func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) []Out {
+func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, listI []I, transform func(a A, b B, c C, d D, e E, f F, g G, h H, i I) Out) []Out {
 	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG) * len(listH) * len(listI)
 	if size == 0 {
 		return []Out{}
@@ -1166,7 +1166,7 @@ func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA []A, listB []B, list
 							for _, g := range listG {
 								for _, h := range listH {
 									for _, i := range listI {
-										result = append(result, project(a, b, c, d, e, f, g, h, i))
+										result = append(result, transform(a, b, c, d, e, f, g, h, i))
 									}
 								}
 							}

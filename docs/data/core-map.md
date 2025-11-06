@@ -21,7 +21,7 @@ variantHelpers:
   - core#slice#map
 position: 10
 signatures:
-  - "func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R"
+  - "func Map[T any, R any](collection []T, transform func(item T, index int) R) []R"
 ---
 
 Transforms each element in a slice to a new type using a function. Takes both the element and its index, making it useful for transformations that need positional context.

@@ -177,20 +177,20 @@ func ReduceLastI[T, R any](collection iter.Seq[T], accumulator func(agg R, item 
 	return ReduceI(Reverse(collection), accumulator, initial)
 }
 
-// ForEach iterates over elements of collection and invokes transform for each element.
+// ForEach iterates over elements of collection and invokes callback for each element.
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/agIsKpG-S-P
-func ForEach[T any](collection iter.Seq[T], transform func(item T)) {
-	ForEachI(collection, func(item T, _ int) { transform(item) })
+func ForEach[T any](collection iter.Seq[T], callback func(item T)) {
+	ForEachI(collection, func(item T, _ int) { callback(item) })
 }
 
-// ForEachI iterates over elements of collection and invokes transform for each element.
+// ForEachI iterates over elements of collection and invokes callback for each element.
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/6NhAE0-zm
-func ForEachI[T any](collection iter.Seq[T], transform func(item T, index int)) {
+func ForEachI[T any](collection iter.Seq[T], callback func(item T, index int)) {
 	var i int
 	for item := range collection {
-		transform(item, i)
+		callback(item, i)
 		i++
 	}
 }
@@ -217,13 +217,13 @@ func ForEachWhileI[T any](collection iter.Seq[T], predicate func(item T, index i
 	}
 }
 
-// Times invokes transform n times and returns a sequence of results.
+// Times invokes callback n times and returns a sequence of results.
 // The transform is invoked with index as argument.
 // Play: https://go.dev/play/p/9QkDH3-zp
-func Times[T any](count int, transform func(index int) T) iter.Seq[T] {
+func Times[T any](count int, callback func(index int) T) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		for i := 0; i < count; i++ {
-			if !yield(transform(i)) {
+			if !yield(callback(i)) {
 				return
 			}
 		}
@@ -425,10 +425,10 @@ func Repeat[T lo.Clonable[T]](count int, initial T) iter.Seq[T] {
 
 // RepeatBy builds a sequence with values returned by N calls of transform.
 // Play: https://go.dev/play/p/2ZtSMQm-xy
-func RepeatBy[T any](count int, transform func(index int) T) iter.Seq[T] {
+func RepeatBy[T any](count int, callback func(index int) T) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		for i := range count {
-			if !yield(transform(i)) {
+			if !yield(callback(i)) {
 				return
 			}
 		}
