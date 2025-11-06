@@ -151,6 +151,68 @@ func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:goc
 	}
 }
 
+// IntersectBy returns the intersection between given collections using a
+// custom key selector function.
+// Will allocate a map large enough to hold all distinct elements.
+// Long heterogeneous input sequences can cause excessive memory usage.
+func IntersectBy[T any, K comparable, I ~func(func(T) bool)](transform func(T) K, lists ...I) I { //nolint:gocyclo
+	if len(lists) == 0 {
+		return I(Empty[T]())
+	}
+
+	if len(lists) == 1 {
+		return lists[0]
+	}
+
+	return func(yield func(T) bool) {
+		seen := make(map[K]bool)
+
+		for i := len(lists) - 1; i >= 0; i-- {
+			if i == len(lists)-1 {
+				for item := range lists[i] {
+					k := transform(item)
+					seen[k] = true
+				}
+				continue
+			}
+
+			if i == 0 {
+				for item := range lists[0] {
+					k := transform(item)
+					if _, ok := seen[k]; ok {
+						if !yield(item) {
+							return
+						}
+						delete(seen, k)
+					}
+				}
+				continue
+			}
+
+			for k := range seen {
+				seen[k] = false
+			}
+
+			for item := range lists[i] {
+				k := transform(item)
+				if _, ok := seen[k]; ok {
+					seen[k] = true
+				}
+			}
+
+			for k, v := range seen {
+				if !v {
+					delete(seen, k)
+				}
+			}
+
+			if len(seen) == 0 {
+				return
+			}
+		}
+	}
+}
+
 // Union returns all distinct elements from given collections.
 // Will allocate a map large enough to hold all distinct elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
