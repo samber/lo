@@ -10,9 +10,9 @@ type synchronize struct {
 	locker sync.Locker
 }
 
-func (s *synchronize) Do(cb func()) {
+func (s *synchronize) Do(callback func()) {
 	s.locker.Lock()
-	Try0(cb)
+	Try0(callback)
 	s.locker.Unlock()
 }
 

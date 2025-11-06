@@ -5,18 +5,18 @@ sourceRef: time.go#L7
 category: core
 subCategory: time
 signatures:
-  - "func Duration(cb func()) time.Duration"
-  - "func Duration0(cb func()) time.Duration"
-  - "func Duration1[T any](cb func() T) (T, time.Duration)"
-  - "func Duration2[T, U any](cb func() (T, U)) (T, U, time.Duration)"
-  - "func Duration3[T, U, V any](cb func() (T, U, V)) (T, U, V, time.Duration)"
-  - "func Duration4[T, U, V, W any](cb func() (T, U, V, W)) (T, U, V, W, time.Duration)"
-  - "func Duration5[T, U, V, W, X any](cb func() (T, U, V, W, X)) (T, U, V, W, X, time.Duration)"
-  - "func Duration6[T, U, V, W, X, Y any](cb func() (T, U, V, W, X, Y)) (T, U, V, W, X, Y, time.Duration)"
-  - "func Duration7[T, U, V, W, X, Y, Z any](cb func() (T, U, V, W, X, Y, Z)) (T, U, V, W, X, Y, Z, time.Duration)"
-  - "func Duration8[T, U, V, W, X, Y, Z, A any](cb func() (T, U, V, W, X, Y, Z, A)) (T, U, V, W, X, Y, Z, A, time.Duration)"
-  - "func Duration9[T, U, V, W, X, Y, Z, A, B any](cb func() (T, U, V, W, X, Y, Z, A, B)) (T, U, V, W, X, Y, Z, A, B, time.Duration)"
-  - "func Duration10[T, U, V, W, X, Y, Z, A, B, C any](cb func() (T, U, V, W, X, Y, Z, A, B, C)) (T, U, V, W, X, Y, Z, A, B, C, time.Duration)"
+  - "func Duration(callback func()) time.Duration"
+  - "func Duration0(callback func()) time.Duration"
+  - "func Duration1[T any](callback func() T) (T, time.Duration)"
+  - "func Duration2[T, U any](callback func() (T, U)) (T, U, time.Duration)"
+  - "func Duration3[T, U, V any](callback func() (T, U, V)) (T, U, V, time.Duration)"
+  - "func Duration4[T, U, V, W any](callback func() (T, U, V, W)) (T, U, V, W, time.Duration)"
+  - "func Duration5[T, U, V, W, X any](callback func() (T, U, V, W, X)) (T, U, V, W, X, time.Duration)"
+  - "func Duration6[T, U, V, W, X, Y any](callback func() (T, U, V, W, X, Y)) (T, U, V, W, X, Y, time.Duration)"
+  - "func Duration7[T, U, V, W, X, Y, Z any](callback func() (T, U, V, W, X, Y, Z)) (T, U, V, W, X, Y, Z, time.Duration)"
+  - "func Duration8[T, U, V, W, X, Y, Z, A any](callback func() (T, U, V, W, X, Y, Z, A)) (T, U, V, W, X, Y, Z, A, time.Duration)"
+  - "func Duration9[T, U, V, W, X, Y, Z, A, B any](callback func() (T, U, V, W, X, Y, Z, A, B)) (T, U, V, W, X, Y, Z, A, B, time.Duration)"
+  - "func Duration10[T, U, V, W, X, Y, Z, A, B, C any](callback func() (T, U, V, W, X, Y, Z, A, B, C)) (T, U, V, W, X, Y, Z, A, B, C, time.Duration)"
 playUrl: https://go.dev/play/p/HQfbBbAXaFP
 variantHelpers:
   - core#time#duration
