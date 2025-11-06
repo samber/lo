@@ -226,23 +226,26 @@ func TestIntersectBy(t *testing.T) {
 		{ID: 4, Name: "Alice"},
 	}
 
-	intersectByID := IntersectBy(list1, list2, func(u User) int {
+	intersectByID := IntersectBy(func(u User) int {
 		return u.ID
-	})
-	is.Equal(intersectByID, []User{{ID: 2, Name: "Robert"}, {ID: 3, Name: "Charlie"}})
-	// output: [{2 Robert} {3 Charlie}]
+	}, list1, list2)
+	is.ElementsMatch(intersectByID, []User{{ID: 2, Name: "Bob"}, {ID: 3, Name: "Charlie"}})
 
-	intersectByName := IntersectBy(list1, list2, func(u User) string {
+	intersectByName := IntersectBy(func(u User) string {
 		return u.Name
-	})
-	is.Equal(intersectByName, []User{{ID: 3, Name: "Charlie"}, {ID: 4, Name: "Alice"}})
-	// output: [{3 Charlie} {4 Alice}]
+	}, list1, list2)
+	is.ElementsMatch(intersectByName, []User{{ID: 3, Name: "Charlie"}, {ID: 1, Name: "Alice"}})
 
-	intersectByIDAndName := IntersectBy(list1, list2, func(u User) string {
+	intersectByIDAndName := IntersectBy(func(u User) string {
 		return strconv.Itoa(u.ID) + u.Name
-	})
-	is.Equal(intersectByIDAndName, []User{{ID: 3, Name: "Charlie"}})
-	// output: [{3 Charlie}]
+	}, list1, list2)
+	is.ElementsMatch(intersectByIDAndName, []User{{ID: 3, Name: "Charlie"}})
+
+	transform := func(x int) string {
+		return strconv.Itoa(x)
+	}
+	result := IntersectBy(transform, []int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+	is.ElementsMatch(result, []int{0})
 }
 
 func TestDifference(t *testing.T) {
