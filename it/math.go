@@ -148,5 +148,5 @@ func Mode[T constraints.Integer | constraints.Float](collection iter.Seq[T]) []T
 		}
 	}
 
-	return mode[:len(mode):len(mode)]
+	return mode
 }
