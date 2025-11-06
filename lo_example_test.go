@@ -3343,7 +3343,15 @@ func ExampleCrossJoinBy9() {
 }
 
 func ExampleIntersect() {
-	fmt.Printf("%v", Intersect([]int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0}))
+	result := Intersect([]int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0})
+	fmt.Printf("%v", result)
 	// Output:
 	// [3]
+}
+
+func ExampleIntersectBy() {
+	result := IntersectBy(strconv.Itoa, []int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+	fmt.Printf("%v", result)
+	// Output:
+	// [0]
 }
