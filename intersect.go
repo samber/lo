@@ -121,32 +121,53 @@ func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 		return Slice{}
 	}
 
-	// Create a map to count occurrences of each element across lists
-	counts := make(map[T]int)
-	for i, list := range lists {
-		// Use a set to avoid counting duplicates within a single list
-		seen := make(map[T]struct{})
-		for _, elem := range list {
-			if _, ok := seen[elem]; !ok {
-				seen[elem] = struct{}{}
-				counts[elem]++
+	if len(lists) == 1 {
+		return lists[0]
+	}
+
+	seen := make(map[T]bool)
+
+	for i := len(lists) - 1; i >= 0; i-- {
+		if i == len(lists)-1 {
+			for _, item := range lists[i] {
+				seen[item] = true
+			}
+			continue
+		}
+
+		if i == 0 {
+			result := make(Slice, 0, len(seen))
+			for _, item := range lists[0] {
+				if _, ok := seen[item]; ok {
+					result = append(result, item)
+					delete(seen, item)
+				}
+			}
+			return result
+		}
+
+		for k := range seen {
+			seen[k] = false
+		}
+
+		for _, item := range lists[i] {
+			if _, ok := seen[item]; ok {
+				seen[item] = true
 			}
 		}
-		// Optimization: if at any point the current list is empty, intersection will be empty
-		if i > 0 && len(counts) == 0 {
-			return []T{}
+
+		for k, v := range seen {
+			if !v {
+				delete(seen, k)
+			}
+		}
+
+		if len(seen) == 0 {
+			break
 		}
 	}
 
-	// Collect elements that appear in all lists
-	result := []T{}
-	for elem, c := range counts {
-		if c == len(lists) {
-			result = append(result, elem)
-		}
-	}
-
-	return result
+	return Slice{}
 }
 
 // Difference returns the difference between two collections.
