@@ -2503,6 +2503,15 @@ func ExampleReplace() {
 	// [42 1 42 1 2 3 42]
 }
 
+func ExampleClone() {
+	list := []int{1, 2, 3, 4, 5}
+
+	result := Clone(list)
+
+	fmt.Printf("%v", result)
+	// Output: [1 2 3 4 5]
+}
+
 func ExampleCompact() {
 	list := []string{"", "foo", "", "bar", ""}
 

@@ -1170,8 +1170,8 @@ func TestClone(t *testing.T) {
 	original6 := myStrings{"", "foo", "bar"}
 	result6 := Clone(original6)
 	result6[0] = "baz"
-	is.Equal(original6, []int{"", "foo", "bar"}) // Original unchanged
-	is.Equal(result6, []int{"baz", "foo", "bar"})  // Clone changed
+	is.Equal(original6, myStrings{"", "foo", "bar"})  // Original unchanged
+	is.Equal(result6, myStrings{"baz", "foo", "bar"}) // Clone changed
 }
 
 func TestCompact(t *testing.T) {

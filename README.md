@@ -140,6 +140,7 @@ Supported helpers for slices:
 - [Slice](#slice)
 - [Replace](#replace)
 - [ReplaceAll](#replaceall)
+- [Clone](#clone)
 - [Compact](#compact)
 - [IsSorted](#issorted)
 - [IsSortedByKey](#issortedbykey)
@@ -1177,6 +1178,20 @@ slice := lo.ReplaceAll(in, -1, 42)
 ```
 
 [[play](https://go.dev/play/p/a9xZFUHfYcV)]
+
+### Clone
+
+returns a shallow copy of the collection.
+
+```go
+in := []int{1, 2, 3, 4, 5}
+cloned := lo.Clone(in)
+// Verify it's a different slice by checking that modifying one doesn't affect the other
+in[0] = 99
+// cloned is []int{1, 2, 3, 4, 5}
+```
+
+[[play](https://go.dev/play/p/tXiy-iK6PAc)]
 
 ### Compact
 
