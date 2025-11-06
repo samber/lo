@@ -140,9 +140,10 @@ Supported helpers for slices:
 - [Slice](#slice)
 - [Replace](#replace)
 - [ReplaceAll](#replaceall)
+- [Clone](#clone)
 - [Compact](#compact)
 - [IsSorted](#issorted)
-- [IsSortedByKey](#issortedbykey)
+- [IsSortedBy](#issortedby)
 - [Splice](#Splice)
 - [Cut](#Cut)
 - [CutPrefix](#CutPrefix)
@@ -1178,6 +1179,20 @@ slice := lo.ReplaceAll(in, -1, 42)
 
 [[play](https://go.dev/play/p/a9xZFUHfYcV)]
 
+### Clone
+
+Returns a shallow copy of the collection.
+
+```go
+in := []int{1, 2, 3, 4, 5}
+cloned := lo.Clone(in)
+// Verify it's a different slice by checking that modifying one doesn't affect the other
+in[0] = 99
+// cloned is []int{1, 2, 3, 4, 5}
+```
+
+[[play](https://go.dev/play/p/tXiy-iK6PAc)]
+
 ### Compact
 
 Returns a slice of all non-zero elements.
@@ -1202,12 +1217,12 @@ slice := lo.IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 [[play](https://go.dev/play/p/mc3qR-t4mcx)]
 
-### IsSortedByKey
+### IsSortedBy
 
 Checks if a slice is sorted by iteratee.
 
 ```go
-slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
+slice := lo.IsSortedBy([]string{"a", "bb", "ccc"}, func(s string) int {
     return len(s)
 })
 // true

@@ -8,7 +8,7 @@ playUrl: https://go.dev/play/p/mc3qR-t4mcx
 variantHelpers:
   - core#slice#issorted
 similarHelpers:
-  - core#slice#issortedbykey
+  - core#slice#issortedby
   - core#slice#min
   - core#slice#max
   - core#slice#reverse

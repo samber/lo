@@ -185,7 +185,7 @@ func TestIntersect(t *testing.T) {
 	result6 := Intersect([]int{0, 6, 0}, []int{0, 1, 2, 3, 4, 5})
 	result7 := Intersect([]int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 	result8 := Intersect([]int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{1, 6})
-	result9 := Intersect([]int{0, 1, 1}, []int{2})
+	result9 := Intersect([]int{0, 1, 1}, []int{2}, []int{3})
 
 	is.Empty(result0)
 	is.ElementsMatch([]int{1}, result1)

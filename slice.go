@@ -737,6 +737,11 @@ func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old, nEw T) Slice {
 	return Replace(collection, old, nEw, -1)
 }
 
+// Clone returns a shallow copy of the collection.
+func Clone[T any, Slice ~[]T](collection Slice) Slice {
+	return append(collection[:0:0], collection...)
+}
+
 // Compact returns a slice of all non-zero elements.
 // Play: https://go.dev/play/p/tXiy-iK6PAc
 func Compact[T comparable, Slice ~[]T](collection Slice) Slice {
@@ -765,8 +770,8 @@ func IsSorted[T constraints.Ordered](collection []T) bool {
 	return true
 }
 
-// IsSortedByKey checks if a slice is sorted by iteratee.
-func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(item T) K) bool {
+// IsSortedBy checks if a slice is sorted by iteratee.
+func IsSortedBy[T any, K constraints.Ordered](collection []T, iteratee func(item T) K) bool {
 	size := len(collection)
 
 	for i := 0; i < size-1; i++ {
@@ -776,6 +781,13 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 	}
 
 	return true
+}
+
+// IsSortedByKey checks if a slice is sorted by iteratee.
+//
+// Deprecated: Use lo.IsSortedBy instead.
+func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(item T) K) bool {
+	return IsSortedBy(collection, iteratee)
 }
 
 // Splice inserts multiple elements at index i. A negative index counts back
