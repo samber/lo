@@ -14,10 +14,10 @@ similarHelpers:
   - core#slice#mapvalues
 position: 0
 signatures:
-  - "func CountValuesBy[T any, U comparable](collection []T, mapper func(item T) U) map[U]int"
+  - "func CountValuesBy[T any, U comparable](collection []T, transform func(item T) U) map[U]int"
 ---
 
-Counts the number of each mapped value (equivalent to Map followed by CountValues).
+Counts the number of each transformed value (equivalent to Map followed by CountValues).
 
 ```go
 isEven := func(v int) bool {

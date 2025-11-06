@@ -5,7 +5,7 @@ sourceRef: it/seq.go#L388
 category: it
 subCategory: sequence
 signatures:
-  - "func RepeatBy[T any](count int, transform func(index int) T) iter.Seq[T]"
+  - "func RepeatBy[T any](count int, callback func(index int) T) iter.Seq[T]"
 variantHelpers:
   - it#sequence#repeatby
 similarHelpers:
@@ -15,7 +15,7 @@ similarHelpers:
 position: 130
 ---
 
-Builds a sequence with values returned by N calls of transform.
+Builds a sequence with values returned by N calls of callback.
 
 ```go
 result := it.RepeatBy(3, func(index int) string {

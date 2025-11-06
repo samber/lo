@@ -5,7 +5,7 @@ sourceRef: it/seq.go#L166
 category: it
 subCategory: sequence
 signatures:
-  - "func ForEach[T any](collection iter.Seq[T], transform func(item T))"
+  - "func ForEach[T any](collection iter.Seq[T], callback func(item T))"
 playUrl: "https://go.dev/play/p/agIsKpG-S-P"
 variantHelpers:
   - it#sequence#foreach
@@ -16,7 +16,7 @@ similarHelpers:
 position: 40
 ---
 
-Iterates over elements and invokes a transform function for each element.
+Iterates over elements and invokes a callback function for each element.
 
 Examples:
 

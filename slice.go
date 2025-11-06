@@ -109,12 +109,12 @@ func ForEach[T any](collection []T, iteratee func(item T, index int)) {
 	}
 }
 
-// ForEachWhile iterates over elements of collection and invokes iteratee for each element
+// ForEachWhile iterates over elements of collection and invokes predicate for each element
 // collection return value decide to continue or break, like do while().
 // Play: https://go.dev/play/p/QnLGt35tnow
-func ForEachWhile[T any](collection []T, iteratee func(item T, index int) bool) {
+func ForEachWhile[T any](collection []T, predicate func(item T, index int) bool) {
 	for i := range collection {
-		if !iteratee(collection[i], i) {
+		if !predicate(collection[i], i) {
 			break
 		}
 	}
@@ -365,11 +365,11 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 
 // RepeatBy builds a slice with values returned by N calls of callback.
 // Play: https://go.dev/play/p/ozZLCtX_hNU
-func RepeatBy[T any](count int, predicate func(index int) T) []T {
+func RepeatBy[T any](count int, callback func(index int) T) []T {
 	result := make([]T, 0, count)
 
 	for i := 0; i < count; i++ {
-		result = append(result, predicate(i))
+		result = append(result, callback(i))
 	}
 
 	return result
@@ -653,14 +653,14 @@ func CountValues[T comparable](collection []T) map[T]int {
 	return result
 }
 
-// CountValuesBy counts the number of each element returned from mapper function.
+// CountValuesBy counts the number of each element returned from transform function.
 // Is equivalent to chaining lo.Map and lo.CountValues.
 // Play: https://go.dev/play/p/2U0dG1SnOmS
-func CountValuesBy[T any, U comparable](collection []T, mapper func(item T) U) map[U]int {
+func CountValuesBy[T any, U comparable](collection []T, transform func(item T) U) map[U]int {
 	result := make(map[U]int)
 
 	for i := range collection {
-		result[mapper(collection[i])]++
+		result[transform(collection[i])]++
 	}
 
 	return result
