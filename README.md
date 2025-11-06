@@ -246,6 +246,7 @@ Supported intersection helpers:
 - [None](#none)
 - [NoneBy](#noneby)
 - [Intersect](#intersect)
+- [IntersectBy](#intersectby)
 - [Difference](#difference)
 - [Union](#union)
 - [Without](#without)
@@ -2597,8 +2598,29 @@ result2 := lo.Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 result3 := lo.Intersect([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // []int{}
 
-
 result4 := lo.Intersect([]int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0})
+// []int{3}
+```
+
+### IntersectBy
+
+Returns the intersection between two collections using a custom key selector function.
+
+```go
+transform := func(v int) string {
+    return strconv.Itoa(v)
+}
+
+result1 := lo.IntersectBy(transform, []int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+// []int{0, 2}
+
+result2 := lo.IntersectBy(transform, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+// []int{0}
+
+result3 := lo.IntersectBy(transform, []int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+// []int{}
+
+result4 := lo.IntersectBy(transform, []int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0})
 // []int{3}
 ```
 

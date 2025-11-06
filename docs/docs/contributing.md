@@ -51,3 +51,7 @@ Please add an example of your helper in the file named `xxxx_example_test.go`. I
 1- If a callback returns a single bool then it should probably be called "predicate".
 2- If a callback is used to change a collection element into something else then it should probably be called "transform".
 3- If a callback returns nothing (void) then it should probably be called "callback".
+
+### Types
+
+1- Generic functions must preserve the underlying type of collections so that the returned values maintain the same type as the input. See [#365](https://github.com/samber/lo/pull/365/files).
