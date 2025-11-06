@@ -15,11 +15,11 @@ similarHelpers:
   - parallel#slice#map
 position: 10
 signatures:
-  - "func Map[T any, Slice ~[]T](collection Slice, fn func(item T) T)"
-  - "func MapI[T any, Slice ~[]T](collection Slice, fn func(item T, index int) T)"
+  - "func Map[T any, Slice ~[]T](collection Slice, transform func(item T) T)"
+  - "func MapI[T any, Slice ~[]T](collection Slice, transform func(item T, index int) T)"
 ---
 
-Transforms each element in the slice by applying the mapper function in place. The length remains unchanged; values are overwritten in the same backing array.
+Transforms each element in the slice by applying the transform function in place. The length remains unchanged; values are overwritten in the same backing array.
 
 Variants: `MapI` accepts an index-aware mapper `(item T, index int) T`.
 

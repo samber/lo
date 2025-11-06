@@ -23,11 +23,11 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // Play: https://go.dev/play/p/OkPcYAhBo0D
-func Map[T, R any](collection []T, iteratee func(item T, index int) R) []R {
+func Map[T, R any](collection []T, transform func(item T, index int) R) []R {
 	result := make([]R, len(collection))
 
 	for i := range collection {
-		result[i] = iteratee(collection[i], i)
+		result[i] = transform(collection[i], i)
 	}
 
 	return result
@@ -35,11 +35,11 @@ func Map[T, R any](collection []T, iteratee func(item T, index int) R) []R {
 
 // UniqMap manipulates a slice and transforms it to a slice of another type with unique values.
 // Play: https://go.dev/play/p/fygzLBhvUdB
-func UniqMap[T any, R comparable](collection []T, iteratee func(item T, index int) R) []R {
+func UniqMap[T any, R comparable](collection []T, transform func(item T, index int) R) []R {
 	seen := make(map[R]struct{}, len(collection))
 
 	for i := range collection {
-		r := iteratee(collection[i], i)
+		r := transform(collection[i], i)
 		if _, ok := seen[r]; !ok {
 			seen[r] = struct{}{}
 		}
@@ -70,11 +70,11 @@ func FilterMap[T, R any](collection []T, callback func(item T, index int) (R, bo
 // The transform function can either return a slice or a `nil`, and in the `nil` case
 // no value is added to the final slice.
 // Play: https://go.dev/play/p/pFCF5WVB225
-func FlatMap[T, R any](collection []T, iteratee func(item T, index int) []R) []R {
+func FlatMap[T, R any](collection []T, transform func(item T, index int) []R) []R {
 	result := make([]R, 0, len(collection))
 
 	for i := range collection {
-		result = append(result, iteratee(collection[i], i)...)
+		result = append(result, transform(collection[i], i)...)
 	}
 
 	return result
@@ -101,20 +101,20 @@ func ReduceRight[T, R any](collection []T, accumulator func(agg R, item T, index
 	return initial
 }
 
-// ForEach iterates over elements of collection and invokes iteratee for each element.
+// ForEach iterates over elements of collection and invokes callback for each element.
 // Play: https://go.dev/play/p/oofyiUPRf8t
-func ForEach[T any](collection []T, iteratee func(item T, index int)) {
+func ForEach[T any](collection []T, callback func(item T, index int)) {
 	for i := range collection {
-		iteratee(collection[i], i)
+		callback(collection[i], i)
 	}
 }
 
-// ForEachWhile iterates over elements of collection and invokes iteratee for each element
+// ForEachWhile iterates over elements of collection and invokes predicate for each element
 // collection return value decide to continue or break, like do while().
 // Play: https://go.dev/play/p/QnLGt35tnow
-func ForEachWhile[T any](collection []T, iteratee func(item T, index int) bool) {
+func ForEachWhile[T any](collection []T, predicate func(item T, index int) bool) {
 	for i := range collection {
-		if !iteratee(collection[i], i) {
+		if !predicate(collection[i], i) {
 			break
 		}
 	}
@@ -188,13 +188,13 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 	return result
 }
 
-// GroupByMap returns an object composed of keys generated from the results of running each element of collection through iteratee.
+// GroupByMap returns an object composed of keys generated from the results of running each element of collection through transform.
 // Play: https://go.dev/play/p/iMeruQ3_W80
-func GroupByMap[T any, K comparable, V any](collection []T, iteratee func(item T) (K, V)) map[K][]V {
+func GroupByMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K][]V {
 	result := map[K][]V{}
 
 	for i := range collection {
-		k, v := iteratee(collection[i])
+		k, v := transform(collection[i])
 
 		result[k] = append(result[k], v)
 	}
@@ -365,11 +365,11 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 
 // RepeatBy builds a slice with values returned by N calls of callback.
 // Play: https://go.dev/play/p/ozZLCtX_hNU
-func RepeatBy[T any](count int, predicate func(index int) T) []T {
+func RepeatBy[T any](count int, callback func(index int) T) []T {
 	result := make([]T, 0, count)
 
 	for i := 0; i < count; i++ {
-		result = append(result, predicate(i))
+		result = append(result, callback(i))
 	}
 
 	return result
@@ -653,14 +653,14 @@ func CountValues[T comparable](collection []T) map[T]int {
 	return result
 }
 
-// CountValuesBy counts the number of each element returned from mapper function.
+// CountValuesBy counts the number of each element returned from transform function.
 // Is equivalent to chaining lo.Map and lo.CountValues.
 // Play: https://go.dev/play/p/2U0dG1SnOmS
-func CountValuesBy[T any, U comparable](collection []T, mapper func(item T) U) map[U]int {
+func CountValuesBy[T any, U comparable](collection []T, transform func(item T) U) map[U]int {
 	result := make(map[U]int)
 
 	for i := range collection {
-		result[mapper(collection[i])]++
+		result[transform(collection[i])]++
 	}
 
 	return result
@@ -737,6 +737,11 @@ func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old, nEw T) Slice {
 	return Replace(collection, old, nEw, -1)
 }
 
+// Clone returns a shallow copy of the collection.
+func Clone[T any, Slice ~[]T](collection Slice) Slice {
+	return append(collection[:0:0], collection...)
+}
+
 // Compact returns a slice of all non-zero elements.
 // Play: https://go.dev/play/p/tXiy-iK6PAc
 func Compact[T comparable, Slice ~[]T](collection Slice) Slice {
@@ -765,8 +770,8 @@ func IsSorted[T constraints.Ordered](collection []T) bool {
 	return true
 }
 
-// IsSortedByKey checks if a slice is sorted by iteratee.
-func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(item T) K) bool {
+// IsSortedBy checks if a slice is sorted by iteratee.
+func IsSortedBy[T any, K constraints.Ordered](collection []T, iteratee func(item T) K) bool {
 	size := len(collection)
 
 	for i := 0; i < size-1; i++ {
@@ -776,6 +781,13 @@ func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(i
 	}
 
 	return true
+}
+
+// IsSortedByKey checks if a slice is sorted by iteratee.
+//
+// Deprecated: Use lo.IsSortedBy instead.
+func IsSortedByKey[T any, K constraints.Ordered](collection []T, iteratee func(item T) K) bool {
+	return IsSortedBy(collection, iteratee)
 }
 
 // Splice inserts multiple elements at index i. A negative index counts back

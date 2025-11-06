@@ -14,7 +14,7 @@ similarHelpers:
   - parallel#slice#foreach
 position: 70
 signatures:
-  - "func ForEach[T any](collection []T, iteratee func(item T, index int))"
+  - "func ForEach[T any](collection []T, callback func(item T, index int))"
 ---
 
 Iterates over elements of a collection and invokes the callback for each element.

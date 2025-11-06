@@ -242,7 +242,7 @@ sourceRef: map.go#L123
 category: core
 subCategory: map
 signatures:
-  - "func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R"
+  - "func Map[T any, R any](collection []T, transform func(item T, index int) R) []R"
 playUrl: https://go.dev/play/p/EXAMPLE
 similarHelpers: []
 position: 0

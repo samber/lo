@@ -140,9 +140,10 @@ Supported helpers for slices:
 - [Slice](#slice)
 - [Replace](#replace)
 - [ReplaceAll](#replaceall)
+- [Clone](#clone)
 - [Compact](#compact)
 - [IsSorted](#issorted)
-- [IsSortedByKey](#issortedbykey)
+- [IsSortedBy](#issortedby)
 - [Splice](#Splice)
 - [Cut](#Cut)
 - [CutPrefix](#CutPrefix)
@@ -415,7 +416,7 @@ lo.Map([]int64{1, 2, 3, 4}, func(x int64, index int) string {
 
 [[play](https://go.dev/play/p/OkPcYAhBo0D)]
 
-Parallel processing: like `lo.Map()`, but the mapper function is called in a goroutine. Results are returned in the same order.
+Parallel processing: like `lo.Map()`, but the transform function is called in a goroutine. Results are returned in the same order.
 
 ```go
 import lop "github.com/samber/lo/parallel"
@@ -1178,6 +1179,20 @@ slice := lo.ReplaceAll(in, -1, 42)
 
 [[play](https://go.dev/play/p/a9xZFUHfYcV)]
 
+### Clone
+
+Returns a shallow copy of the collection.
+
+```go
+in := []int{1, 2, 3, 4, 5}
+cloned := lo.Clone(in)
+// Verify it's a different slice by checking that modifying one doesn't affect the other
+in[0] = 99
+// cloned is []int{1, 2, 3, 4, 5}
+```
+
+[[play](https://go.dev/play/p/tXiy-iK6PAc)]
+
 ### Compact
 
 Returns a slice of all non-zero elements.
@@ -1202,12 +1217,12 @@ slice := lo.IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 [[play](https://go.dev/play/p/mc3qR-t4mcx)]
 
-### IsSortedByKey
+### IsSortedBy
 
 Checks if a slice is sorted by iteratee.
 
 ```go
-slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
+slice := lo.IsSortedBy([]string{"a", "bb", "ccc"}, func(s string) int {
     return len(s)
 })
 // true
@@ -2139,7 +2154,7 @@ result := lo.CrossJoin2([]string{"hello", "john", "doe"}, []int{1, 2})
 
 ### CrossJoinBy2 -> CrossJoinBy9
 
-Combines every item from one list with every item from others. It is the cartesian product of lists received as arguments. The project function is used to create the output values. Returns an empty list if a list is empty.
+Combines every item from one list with every item from others. It is the cartesian product of lists received as arguments. The transform function is used to create the output values. Returns an empty list if a list is empty.
 
 ```go
 result := lo.CrossJoinBy2([]string{"hello", "john", "doe"}, []int{1, 2}, func(a A, b B) string {

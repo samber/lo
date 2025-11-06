@@ -1129,6 +1129,51 @@ func TestReplaceAll(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestClone(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Test with int slice
+	original1 := []int{1, 2, 3, 4, 5}
+	result1 := Clone(original1)
+	is.Equal([]int{1, 2, 3, 4, 5}, result1)
+
+	// Verify it's a different slice by checking that modifying one doesn't affect the other
+	original1[0] = 99
+	is.Equal([]int{99, 2, 3, 4, 5}, original1)
+	is.Equal([]int{1, 2, 3, 4, 5}, result1)
+
+	// Test with string slice
+	original2 := []string{"a", "b", "c"}
+	result2 := Clone(original2)
+	is.Equal([]string{"a", "b", "c"}, result2)
+
+	// Test with empty slice
+	original3 := []int{}
+	result3 := Clone(original3)
+	is.Equal([]int{}, result3)
+	is.Empty(result3)
+
+	// Test with nil slice
+	var original4 []int
+	result4 := Clone(original4)
+	is.Nil(result4)
+
+	// Verify shallow copy behavior - modifying clone doesn't affect original
+	original5 := []int{1, 2, 3}
+	result5 := Clone(original5)
+	result5[0] = 99
+	is.Equal([]int{1, 2, 3}, original5) // Original unchanged
+	is.Equal([]int{99, 2, 3}, result5)  // Clone changed
+
+	type myStrings []string
+	original6 := myStrings{"", "foo", "bar"}
+	result6 := Clone(original6)
+	result6[0] = "baz"
+	is.Equal(myStrings{"", "foo", "bar"}, original6)  // Original unchanged
+	is.Equal(myStrings{"baz", "foo", "bar"}, result6) // Clone changed
+}
+
 func TestCompact(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -1187,19 +1232,19 @@ func TestIsSorted(t *testing.T) {
 	is.False(IsSorted([]string{"a", "b", "d", "c", "e", "f", "g", "h", "i", "j"}))
 }
 
-func TestIsSortedByKey(t *testing.T) {
+func TestIsSortedBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.True(IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
+	is.True(IsSortedBy([]string{"a", "bb", "ccc"}, func(s string) int {
 		return len(s)
 	}))
 
-	is.False(IsSortedByKey([]string{"aa", "b", "ccc"}, func(s string) int {
+	is.False(IsSortedBy([]string{"aa", "b", "ccc"}, func(s string) int {
 		return len(s)
 	}))
 
-	is.True(IsSortedByKey([]string{"1", "2", "3", "11"}, func(s string) int {
+	is.True(IsSortedBy([]string{"1", "2", "3", "11"}, func(s string) int {
 		ret, _ := strconv.Atoi(s)
 		return ret
 	}))

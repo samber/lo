@@ -246,9 +246,10 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - Slice: Get slice of elements from start to end
 - Replace: Replace first n occurrences of value
 - ReplaceAll: Replace all occurrences of value
+- Clone: Perform a shallow copy of the collection
 - Compact: Remove zero values from slice
 - IsSorted: Check if slice is sorted in ascending order
-- IsSortedByKey: Check if slice is sorted by key function
+- IsSortedBy: Check if slice is sorted by key function
 - Splice: Insert elements at specified index
 - Cut: Split string at first occurrence of separator
 - CutPrefix: Remove prefix from string if present

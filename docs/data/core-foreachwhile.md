@@ -5,7 +5,7 @@ sourceRef: slice.go#L116
 category: core
 subCategory: slice
 signatures:
-  - "func ForEachWhile[T any](collection []T, iteratee func(item T, index int) bool)"
+  - "func ForEachWhile[T any](collection []T, predicate func(item T, index int) bool)"
 playUrl: https://go.dev/play/p/dG7h9H4nJQf
 variantHelpers:
   - core#slice#foreachwhile
@@ -20,7 +20,7 @@ similarHelpers:
 position: 80
 ---
 
-Iterates over elements of a collection and invokes the callback for each element until the callback returns false.
+Iterates over elements of a collection and invokes the predicate for each element until false is returned.
 
 ```go
 numbers := []int64{1, 2, -9223372036854775808, 4}

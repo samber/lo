@@ -10,12 +10,12 @@ similarHelpers:
   - parallel#slice#map
 position: 10
 signatures:
-  - "func ForEach[T any](collection []T, iteratee func(item T, index int))"
+  - "func ForEach[T any](collection []T, callback func(item T, index int))"
 variantHelpers:
   - parallel#slice#foreach
 ---
 
-Iterates over elements of a collection and invokes the predicate for each element. The predicate is called in parallel.
+Iterates over elements of a collection and invokes the callback for each element in parallel.
 
 ```go
 import (

@@ -43,3 +43,11 @@ Add your helper to `docs/static/llms.txt`.
 Every function includes a "Play" link to the Go Playground, allowing developers to quickly experiment and understand behavior without setting up a local environment.
 
 Please add an example of your helper in the file named `xxxx_example_test.go`. It will be available from Godoc website: https://pkg.go.dev/github.com/samber/lo
+
+## Other conventions
+
+### Naming
+
+1- If a callback returns a single bool then it should probably be called "predicate".
+2- If a callback is used to change a collection element into something else then it should probably be called "transform".
+3- If a callback returns nothing (void) then it should probably be called "callback".

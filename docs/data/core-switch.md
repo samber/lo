@@ -19,9 +19,9 @@ position: 20
 signatures:
   - "func Switch[T comparable, R any](predicate T) *switchCase[T, R]"
   - "func (s *switchCase[T, R]) Case(val T, result R) *switchCase[T, R]"
-  - "func (s *switchCase[T, R]) CaseF(val T, cb func() R) *switchCase[T, R]"
+  - "func (s *switchCase[T, R]) CaseF(val T, callback func() R) *switchCase[T, R]"
   - "func (s *switchCase[T, R]) Default(result R) R"
-  - "func (s *switchCase[T, R]) DefaultF(cb func() R) R"
+  - "func (s *switchCase[T, R]) DefaultF(callback func() R) R"
 ---
 
 Starts a functional switch/case/default chain using a predicate value.

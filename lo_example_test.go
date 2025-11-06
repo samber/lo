@@ -2503,6 +2503,16 @@ func ExampleReplace() {
 	// [42 1 42 1 2 3 42]
 }
 
+func ExampleClone() {
+	input := []int{1, 2, 3, 4, 5}
+
+	output := Clone(input)
+	input[0] = 42
+
+	fmt.Printf("%v", output)
+	// Output: [1 2 3 4 5]
+}
+
 func ExampleCompact() {
 	list := []string{"", "foo", "", "bar", ""}
 
@@ -2523,10 +2533,10 @@ func ExampleIsSorted() {
 	// Output: true
 }
 
-func ExampleIsSortedByKey() {
+func ExampleIsSortedBy() {
 	list := []string{"a", "bb", "ccc"}
 
-	result := IsSortedByKey(list, func(s string) int {
+	result := IsSortedBy(list, func(s string) int {
 		return len(s)
 	})
 

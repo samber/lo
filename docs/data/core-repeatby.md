@@ -12,10 +12,10 @@ similarHelpers:
   - core#slice#repeat
 position: 220
 signatures:
-  - "func RepeatBy[T any](count int, predicate func(index int) T) []T"
+  - "func RepeatBy[T any](count int, callback func(index int) T) []T"
 ---
 
-Builds a slice by calling the predicate N times with the current index.
+Builds a slice by calling the callback N times with the current index.
 
 ```go
 lo.RepeatBy(5, func(i int) string {
