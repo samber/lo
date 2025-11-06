@@ -21,7 +21,7 @@ func ContainsBy[T any](collection []T, predicate func(item T) bool) bool {
 // Every returns true if all elements of a subset are contained in a collection or if the subset is empty.
 // Play: https://go.dev/play/p/W1EvyqY6t9j
 func Every[T comparable](collection, subset []T) bool {
-	return len(subset) == 0 || EveryBy(subset, Partial(HasKey, Keyify(collection)))
+	return len(subset) == 0 || EveryBy(subset, Partial(HasKey[T, struct{}], Keyify(collection)))
 }
 
 // EveryBy returns true if the predicate returns true for all elements in the collection or if the collection is empty.
@@ -40,7 +40,7 @@ func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 // If the subset is empty Some returns false.
 // Play: https://go.dev/play/p/Lj4ceFkeT9V
 func Some[T comparable](collection, subset []T) bool {
-	return len(subset) > 0 && SomeBy(collection, Partial(HasKey, Keyify(subset)))
+	return len(subset) > 0 && SomeBy(collection, Partial(HasKey[T, struct{}], Keyify(subset)))
 }
 
 // SomeBy returns true if the predicate returns true for any of the elements in the collection.
@@ -59,7 +59,7 @@ func SomeBy[T any](collection []T, predicate func(item T) bool) bool {
 // None returns true if no element of a subset is contained in a collection or if the subset is empty.
 // Play: https://go.dev/play/p/fye7JsmxzPV
 func None[T comparable](collection, subset []T) bool {
-	return len(subset) == 0 || NoneBy(collection, Partial(HasKey, Keyify(subset)))
+	return len(subset) == 0 || NoneBy(collection, Partial(HasKey[T, struct{}], Keyify(subset)))
 }
 
 // NoneBy returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
@@ -143,8 +143,8 @@ func IntersectBy[T any, K comparable, Slice ~[]T](transform func(T) K, lists ...
 // The second value is the collection of elements absent from list1.
 // Play: https://go.dev/play/p/pKE-JgzqRpz
 func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
-	result1 := _reject(list1, Partial(HasKey, Keyify(list2)))
-	result2 := _reject(list2, Partial(HasKey, Keyify(list1)))
+	result1 := _reject(list1, Partial(HasKey[T, struct{}], Keyify(list2)))
+	result2 := _reject(list2, Partial(HasKey[T, struct{}], Keyify(list1)))
 	return result1, result2
 }
 

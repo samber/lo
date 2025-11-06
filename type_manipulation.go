@@ -71,14 +71,14 @@ func FromPtrOr[T any](x *T, fallback T) T {
 // ToSlicePtr returns a slice of pointers to each value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
 func ToSlicePtr[T any](collection []T) []*T {
-	return _map(collection, ToPtr)
+	return _map(collection, ToPtr[T])
 }
 
 // FromSlicePtr returns a slice with the pointer values.
 // Returns a zero value in case of a nil pointer element.
 // Play: https://go.dev/play/p/lbunFvzlUDX
 func FromSlicePtr[T any](collection []*T) []T {
-	return _map(collection, FromPtr)
+	return _map(collection, FromPtr[T])
 }
 
 // FromSlicePtrOr returns a slice with the pointer values or the fallback value.

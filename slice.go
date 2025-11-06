@@ -715,7 +715,7 @@ func Clone[T any, Slice ~[]T](collection Slice) Slice {
 // Compact returns a slice of all non-zero elements.
 // Play: https://go.dev/play/p/tXiy-iK6PAc
 func Compact[T comparable, Slice ~[]T](collection Slice) Slice {
-	return _filter(collection, IsNotEmpty)
+	return _filter(collection, IsNotEmpty[T])
 }
 
 // IsSorted checks if a slice is sorted.
@@ -868,7 +868,7 @@ func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 // TrimLeft removes all the leading cutset from the collection.
 // Play: https://go.dev/play/p/74aqfAYLmyi
 func TrimLeft[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
-	return DropWhile(collection, Partial(HasKey, Keyify(cutset)))
+	return DropWhile(collection, Partial(HasKey[T, struct{}], Keyify(cutset)))
 }
 
 // TrimPrefix removes all the leading prefix from the collection.
@@ -889,7 +889,7 @@ func TrimPrefix[T comparable, Slice ~[]T](collection, prefix Slice) Slice {
 // TrimRight removes all the trailing cutset from the collection.
 // Play: https://go.dev/play/p/MRpAfR6sf0g
 func TrimRight[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
-	return DropRightWhile(collection, Partial(HasKey, Keyify(cutset)))
+	return DropRightWhile(collection, Partial(HasKey[T, struct{}], Keyify(cutset)))
 }
 
 // TrimSuffix removes all the trailing suffix from the collection.
