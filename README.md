@@ -143,7 +143,7 @@ Supported helpers for slices:
 - [Clone](#clone)
 - [Compact](#compact)
 - [IsSorted](#issorted)
-- [IsSortedByKey](#issortedbykey)
+- [IsSortedBy](#issortedby)
 - [Splice](#Splice)
 - [Cut](#Cut)
 - [CutPrefix](#CutPrefix)
@@ -1217,12 +1217,12 @@ slice := lo.IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 [[play](https://go.dev/play/p/mc3qR-t4mcx)]
 
-### IsSortedByKey
+### IsSortedBy
 
 Checks if a slice is sorted by iteratee.
 
 ```go
-slice := lo.IsSortedByKey([]string{"a", "bb", "ccc"}, func(s string) int {
+slice := lo.IsSortedBy([]string{"a", "bb", "ccc"}, func(s string) int {
     return len(s)
 })
 // true
