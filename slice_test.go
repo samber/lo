@@ -1136,23 +1136,23 @@ func TestClone(t *testing.T) {
 	// Test with int slice
 	original1 := []int{1, 2, 3, 4, 5}
 	result1 := Clone(original1)
-	is.Equal(result1, []int{1, 2, 3, 4, 5})
+	is.Equal([]int{1, 2, 3, 4, 5}, result1)
 
 	// Verify it's a different slice by checking that modifying one doesn't affect the other
 	original1[0] = 99
-	is.Equal(original1, []int{99, 2, 3, 4, 5})
-	is.Equal(result1, []int{1, 2, 3, 4, 5})
+	is.Equal([]int{99, 2, 3, 4, 5}, original1)
+	is.Equal([]int{1, 2, 3, 4, 5}, result1)
 
 	// Test with string slice
 	original2 := []string{"a", "b", "c"}
 	result2 := Clone(original2)
-	is.Equal(result2, []string{"a", "b", "c"})
+	is.Equal([]string{"a", "b", "c"}, result2)
 
 	// Test with empty slice
 	original3 := []int{}
 	result3 := Clone(original3)
-	is.Equal(result3, []int{})
-	is.Equal(len(result3), 0)
+	is.Equal([]int{}, result3)
+	is.Empty(result3)
 
 	// Test with nil slice
 	var original4 []int
@@ -1163,15 +1163,15 @@ func TestClone(t *testing.T) {
 	original5 := []int{1, 2, 3}
 	result5 := Clone(original5)
 	result5[0] = 99
-	is.Equal(original5, []int{1, 2, 3}) // Original unchanged
-	is.Equal(result5, []int{99, 2, 3})  // Clone changed
+	is.Equal([]int{1, 2, 3}, original5) // Original unchanged
+	is.Equal([]int{99, 2, 3}, result5)  // Clone changed
 
 	type myStrings []string
 	original6 := myStrings{"", "foo", "bar"}
 	result6 := Clone(original6)
 	result6[0] = "baz"
-	is.Equal(original6, myStrings{"", "foo", "bar"})  // Original unchanged
-	is.Equal(result6, myStrings{"baz", "foo", "bar"}) // Clone changed
+	is.Equal(myStrings{"", "foo", "bar"}, original6)  // Original unchanged
+	is.Equal(myStrings{"baz", "foo", "bar"}, result6) // Clone changed
 }
 
 func TestCompact(t *testing.T) {
