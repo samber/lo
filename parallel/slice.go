@@ -26,16 +26,16 @@ func Map[T, R any](collection []T, transform func(item T, index int) R) []R {
 	return result
 }
 
-// ForEach iterates over elements of collection and invokes iteratee for each element.
+// ForEach iterates over elements of collection and invokes callback for each element.
 // `iteratee` is called in parallel.
 // Play: https://go.dev/play/p/sCJaB3quRMC
-func ForEach[T any](collection []T, iteratee func(item T, index int)) {
+func ForEach[T any](collection []T, callback func(item T, index int)) {
 	var wg sync.WaitGroup
 	wg.Add(len(collection))
 
 	for i, item := range collection {
 		go func(_item T, _i int) {
-			iteratee(_item, _i)
+			callback(_item, _i)
 			wg.Done()
 		}(item, i)
 	}

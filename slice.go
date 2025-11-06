@@ -101,11 +101,11 @@ func ReduceRight[T, R any](collection []T, accumulator func(agg R, item T, index
 	return initial
 }
 
-// ForEach iterates over elements of collection and invokes iteratee for each element.
+// ForEach iterates over elements of collection and invokes callback for each element.
 // Play: https://go.dev/play/p/oofyiUPRf8t
-func ForEach[T any](collection []T, iteratee func(item T, index int)) {
+func ForEach[T any](collection []T, callback func(item T, index int)) {
 	for i := range collection {
-		iteratee(collection[i], i)
+		callback(collection[i], i)
 	}
 }
 
