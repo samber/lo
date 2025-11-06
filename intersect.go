@@ -147,7 +147,6 @@ func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	}
 
 	return result
-
 }
 
 // Difference returns the difference between two collections.
