@@ -14,7 +14,7 @@ similarHelpers:
   - core#slice#filtermap
 position: 20
 signatures:
-  - "func UniqMap[T any, R comparable](collection []T, iteratee func(item T, index int) R) []R"
+  - "func UniqMap[T any, R comparable](collection []T, transform func(item T, index int) R) []R"
 ---
 
 Manipulates a slice and transforms it to a slice of another type with unique values.

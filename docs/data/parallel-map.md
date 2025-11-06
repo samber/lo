@@ -11,12 +11,12 @@ similarHelpers:
   - parallel#slice#foreach
 position: 0
 signatures:
-  - "func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R"
+  - "func Map[T any, R any](collection []T, transform func(item T, index int) R) []R"
 variantHelpers:
   - parallel#slice#map
 ---
 
-Manipulates a slice and transforms it into a slice of another type. The predicate is called in parallel and results are written back in the original order.
+Manipulates a slice and transforms it into a slice of another type. The transform is called in parallel and results are written back in the original order.
 
 ```go
 import (

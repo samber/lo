@@ -415,7 +415,7 @@ lo.Map([]int64{1, 2, 3, 4}, func(x int64, index int) string {
 
 [[play](https://go.dev/play/p/OkPcYAhBo0D)]
 
-Parallel processing: like `lo.Map()`, but the mapper function is called in a goroutine. Results are returned in the same order.
+Parallel processing: like `lo.Map()`, but the transform function is called in a goroutine. Results are returned in the same order.
 
 ```go
 import lop "github.com/samber/lo/parallel"

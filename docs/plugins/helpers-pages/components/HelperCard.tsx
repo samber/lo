@@ -16,7 +16,7 @@ export default function HelperCard({
   // Extract function name from signature for godoc link
   const functionName = useMemo(() => {
     if (!helper.signatures) return '';
-    // Extract function name from signature like "func Map[T any, R any](collection []T, iteratee func(T, int) R) []R"
+    // Extract function name from signature like "func Map[T any, R any](collection []T, transform func(T, int) R) []R"
     const match = helper.signatures.find(signature => signature.match(/func\s+(\w+)/))?.match(/func\s+(\w+)/);
     return match ? match[1] : '';
   }, [helper.signatures]);

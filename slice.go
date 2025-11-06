@@ -23,11 +23,11 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // Play: https://go.dev/play/p/OkPcYAhBo0D
-func Map[T, R any](collection []T, iteratee func(item T, index int) R) []R {
+func Map[T, R any](collection []T, transform func(item T, index int) R) []R {
 	result := make([]R, len(collection))
 
 	for i := range collection {
-		result[i] = iteratee(collection[i], i)
+		result[i] = transform(collection[i], i)
 	}
 
 	return result
@@ -35,11 +35,11 @@ func Map[T, R any](collection []T, iteratee func(item T, index int) R) []R {
 
 // UniqMap manipulates a slice and transforms it to a slice of another type with unique values.
 // Play: https://go.dev/play/p/fygzLBhvUdB
-func UniqMap[T any, R comparable](collection []T, iteratee func(item T, index int) R) []R {
+func UniqMap[T any, R comparable](collection []T, transform func(item T, index int) R) []R {
 	seen := make(map[R]struct{}, len(collection))
 
 	for i := range collection {
-		r := iteratee(collection[i], i)
+		r := transform(collection[i], i)
 		if _, ok := seen[r]; !ok {
 			seen[r] = struct{}{}
 		}
@@ -70,11 +70,11 @@ func FilterMap[T, R any](collection []T, callback func(item T, index int) (R, bo
 // The transform function can either return a slice or a `nil`, and in the `nil` case
 // no value is added to the final slice.
 // Play: https://go.dev/play/p/pFCF5WVB225
-func FlatMap[T, R any](collection []T, iteratee func(item T, index int) []R) []R {
+func FlatMap[T, R any](collection []T, transform func(item T, index int) []R) []R {
 	result := make([]R, 0, len(collection))
 
 	for i := range collection {
-		result = append(result, iteratee(collection[i], i)...)
+		result = append(result, transform(collection[i], i)...)
 	}
 
 	return result
@@ -188,13 +188,13 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 	return result
 }
 
-// GroupByMap returns an object composed of keys generated from the results of running each element of collection through iteratee.
+// GroupByMap returns an object composed of keys generated from the results of running each element of collection through transform.
 // Play: https://go.dev/play/p/iMeruQ3_W80
-func GroupByMap[T any, K comparable, V any](collection []T, iteratee func(item T) (K, V)) map[K][]V {
+func GroupByMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K][]V {
 	result := map[K][]V{}
 
 	for i := range collection {
-		k, v := iteratee(collection[i])
+		k, v := transform(collection[i])
 
 		result[k] = append(result[k], v)
 	}
