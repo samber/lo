@@ -8,8 +8,8 @@ playUrl:
 variantHelpers:
   - core#slice#clone
 similarHelpers:
-  - core#slice#flatten
-  - core#intersection#union
+  - core#slice#repeat
+  - core#slice#fill
 position: 160
 signatures:
   - "func Clone[T any, Slice ~[]T](collection Slice) Slice"

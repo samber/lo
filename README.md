@@ -1181,7 +1181,7 @@ slice := lo.ReplaceAll(in, -1, 42)
 
 ### Clone
 
-returns a shallow copy of the collection.
+Returns a shallow copy of the collection.
 
 ```go
 in := []int{1, 2, 3, 4, 5}

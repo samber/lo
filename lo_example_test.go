@@ -2504,11 +2504,12 @@ func ExampleReplace() {
 }
 
 func ExampleClone() {
-	list := []int{1, 2, 3, 4, 5}
+	input := []int{1, 2, 3, 4, 5}
 
-	result := Clone(list)
+	output := Clone(input)
+	input[0] = 42
 
-	fmt.Printf("%v", result)
+	fmt.Printf("%v", output)
 	// Output: [1 2 3 4 5]
 }
 
