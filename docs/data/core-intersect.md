@@ -8,6 +8,9 @@ playUrl: https://go.dev/play/p/uuElL9X9e58
 variantHelpers:
   - core#intersect#intersect
 similarHelpers:
+  - core#intersect#intersectby
+  - it#intersect#intersect
+  - it#intersect#intersectby
   - core#intersect#difference
   - core#intersect#union
   - core#intersect#without
@@ -20,8 +23,6 @@ signatures:
 Returns the intersection between collections.
 
 ```go
-lo.Intersect([]int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0}))
+lo.Intersect([]int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0})
 // []int{3}
 ```
-
-

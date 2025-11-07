@@ -1,23 +1,23 @@
 ---
-name: Intersect
-slug: intersect
+name: IntersectBy
+slug: intersectby
 sourceRef: it/intersect.go#L78
 category: it
 subCategory: intersect
 signatures:
-  - "func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I"
-playUrl: "https://go.dev/play/p/kz3cGhGZZWF"
+  - "func IntersectBy[T any, K comparable, I ~func(func(T) bool)](func(T) K, lists ...I) I"
+playUrl:
 variantHelpers:
-  - it#intersect#intersect
-similarHelpers:
   - it#intersect#intersectby
+similarHelpers:
+  - it#intersect#intersect
   - core#slice#intersect
   - core#slice#intersectby
   - it#intersect#union
 position: 10
 ---
 
-Returns the intersection between given collections (elements present in all collections).
+Returns the intersection between given collections using a custom key selector function.
 
 Examples:
 
@@ -38,7 +38,13 @@ seq3 := func(yield func(int) bool) {
     _ = yield(2)
     _ = yield(6)
 }
-intersection := it.Intersect(seq1, seq2, seq3)
+
+transform := func(v int) string {
+  return strconv.Itoa(v)
+}
+
+intersection := it.IntersectBy(transform, seq1, seq2, seq3)
+
 var result []int
 for v := range intersection {
     result = append(result, v)

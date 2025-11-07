@@ -137,6 +137,7 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - None: Check if no elements in collection match subset
 - NoneBy: Check if no elements match predicate
 - Intersect: Get elements common to all collections
+- IntersectBy: Get elements common to all collections with key selector
 - Difference: Get elements in first collection but not in others
 - Union: Get all unique elements from collections
 - Without: Get collection with specified elements removed
@@ -404,6 +405,7 @@ The lo/it package provides iterator helpers for lazy evaluation and streaming op
 - None: Check if no elements in sequence match subset
 - NoneBy: Check if no elements match predicate
 - Intersect: Get elements common to all sequences
+- IntersectBy: Get elements common to all sequences with key selector
 - Union: Get all unique elements from sequences
 - Without: Get sequence with specified elements excluded
 - WithoutBy: Get sequence with elements excluded by key transform

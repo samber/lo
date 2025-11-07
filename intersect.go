@@ -171,24 +171,61 @@ func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 }
 
 // IntersectBy returns the intersection between two collections using a custom key selector function.
-// It preserves the order of elements from the second list (list2).
-func IntersectBy[T any, K comparable, Slice ~[]T](list1 Slice, list2 Slice, iteratee func(T) K) Slice {
-	result := make(Slice, 0)
-	seen := make(map[K]struct{})
-
-	for _, item := range list1 {
-		key := iteratee(item)
-		seen[key] = struct{}{}
+func IntersectBy[T any, K comparable, Slice ~[]T](transform func(T) K, lists ...Slice) Slice {
+	if len(lists) == 0 {
+		return Slice{}
 	}
 
-	for _, item := range list2 {
-		key := iteratee(item)
-		if _, exists := seen[key]; exists {
-			result = append(result, item)
+	if len(lists) == 1 {
+		return lists[0]
+	}
+
+	seen := make(map[K]bool)
+
+	for i := len(lists) - 1; i >= 0; i-- {
+		if i == len(lists)-1 {
+			for _, item := range lists[i] {
+				k := transform(item)
+				seen[k] = true
+			}
+			continue
+		}
+
+		if i == 0 {
+			result := make(Slice, 0, len(seen))
+			for _, item := range lists[0] {
+				k := transform(item)
+				if _, ok := seen[k]; ok {
+					result = append(result, item)
+					delete(seen, k)
+				}
+			}
+			return result
+		}
+
+		for k := range seen {
+			seen[k] = false
+		}
+
+		for _, item := range lists[i] {
+			k := transform(item)
+			if _, ok := seen[k]; ok {
+				seen[k] = true
+			}
+		}
+
+		for k, v := range seen {
+			if !v {
+				delete(seen, k)
+			}
+		}
+
+		if len(seen) == 0 {
+			break
 		}
 	}
 
-	return result
+	return Slice{}
 }
 
 // Difference returns the difference between two collections.

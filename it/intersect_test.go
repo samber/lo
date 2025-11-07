@@ -5,6 +5,7 @@ package it
 import (
 	"iter"
 	"slices"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -203,6 +204,38 @@ func TestIntersect(t *testing.T) {
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar"))
 	nonempty := Intersect(allStrings, allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestIntersectBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	transform := strconv.Itoa
+
+	result1 := IntersectBy(transform, []iter.Seq[int]{}...)
+	result2 := IntersectBy(transform, values(0, 1, 2, 3, 4, 5))
+	result3 := IntersectBy(transform, values(0, 1, 2, 3, 4, 5), values(0, 6))
+	result4 := IntersectBy(transform, values(0, 1, 2, 3, 4, 5), values(-1, 6))
+	result5 := IntersectBy(transform, values(0, 6, 0), values(0, 1, 2, 3, 4, 5))
+	result6 := IntersectBy(transform, values(0, 1, 2, 3, 4, 5), values(0, 6, 0))
+	result7 := IntersectBy(transform, values(0, 1, 2), values(1, 2, 3), values(2, 3, 4))
+	result8 := IntersectBy(transform, values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5))
+	result9 := IntersectBy(transform, values(0, 1, 2), values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5))
+
+	is.Empty(slices.Collect(result1))
+	is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result2))
+	is.Equal([]int{0}, slices.Collect(result3))
+	is.Empty(slices.Collect(result4))
+	is.Equal([]int{0}, slices.Collect(result5))
+	is.Equal([]int{0}, slices.Collect(result6))
+	is.Equal([]int{2}, slices.Collect(result7))
+	is.Empty(slices.Collect(result8))
+	is.Empty(slices.Collect(result9))
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := IntersectBy(func(s string) string { return s + s }, allStrings, allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
