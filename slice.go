@@ -739,7 +739,16 @@ func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old, nEw T) Slice {
 
 // Clone returns a shallow copy of the collection.
 func Clone[T any, Slice ~[]T](collection Slice) Slice {
-	return append(collection[:0:0], collection...)
+	// backporting from slices.Clone in Go 1.21
+	// when we drop support for Go 1.20, this can be replaced with: return slices.Clone(collection)
+
+	// Preserve nilness in case it matters.
+	if collection == nil {
+		return nil
+	}
+	// Avoid s[:0:0] as it leads to unwanted liveness when cloning a
+	// zero-length slice of a large array; see https://go.dev/issue/68488.
+	return append(Slice{}, collection...)
 }
 
 // Compact returns a slice of all non-zero elements.
