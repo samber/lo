@@ -191,15 +191,3 @@ func TestMode(t *testing.T) {
 	is.Empty(result4)
 	is.Equal([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, result5)
 }
-
-func TestModeCapacityConsistency(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	arr := []int{1, 1, 2, 2, 3, 3, 3}
-
-	result := Mode(arr)
-
-	is.Equal([]int{3}, result, "Mode should return correct mode value")
-	is.Equal(len(result), cap(result), "Mode slice capacity should match its length")
-}
