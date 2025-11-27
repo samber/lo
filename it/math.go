@@ -132,7 +132,7 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection iter.Se
 // Long heterogeneous input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/c_cmMMA5EhH
 func Mode[T constraints.Integer | constraints.Float](collection iter.Seq[T]) []T {
-	mode := make([]T, 0)
+	var mode []T
 	maxFreq := 0
 	frequency := make(map[T]int)
 
