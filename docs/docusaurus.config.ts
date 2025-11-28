@@ -94,7 +94,7 @@ const config: Config = {
       tagName: 'meta',
       attributes: {
         name: 'keywords',
-        content: 'go, golang, lo, slices, maps, strings, channels, functions, helpers, concurrency, error handling, resusable, utility, framework, library, samber',
+        content: 'go, golang, lo, slices, maps, strings, channels, functions, helpers, concurrency, error handling, reusable, utility, framework, library, samber',
       },
     },
     {
