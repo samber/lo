@@ -140,7 +140,7 @@ similarHelpers:
 
 When you add similarHelpers to a new helper, please update the linked similar helpers documentation, and add the one you're adding.
 
-Don't link helpers having numeric declinaison (eg: use core#slice#zipx instead of core#slice#zip2).
+Don't link helpers having numeric declensions (eg: use core#slice#zipx instead of core#slice#zip2).
 
 ### Key Differences
 - **variantHelpers**: Same helper, different signatures/parameters (same package)

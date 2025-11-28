@@ -40,7 +40,7 @@ linters:
 
   # disable noisy/controversial ones which you might enable later
   disable:
-    - lll          # line length — handled by gfmt/gofumpt
+    - lll          # line length — handled by gofmt/gofumpt
 
   settings:
     dupl:
