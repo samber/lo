@@ -313,6 +313,44 @@ func TestBufferWithContext(t *testing.T) { //nolint:paralleltest
 	is.True(ok2)
 }
 
+func TestBufferWithIdleTimeout(t *testing.T) {
+	testWithTimeout(t, 2000*time.Millisecond)
+	is := assert.New(t)
+
+	generator := func(n ...int) func(yield func(int)) {
+		return func(yield func(int)) {
+			for i := 0; i < len(n); i++ {
+				yield(n[i])
+
+				sleepFor := 100 * time.Millisecond
+				if i >= 3 {
+					sleepFor = 200 * time.Millisecond
+				}
+
+				time.Sleep(sleepFor)
+			}
+		}
+	}
+
+	ch := Generator(0, generator(0, 1, 2, 3, 4, 5, 6, 7, 8, 9))
+	items1, length1, duration1, ok1 := BufferWithIdleTimeout(ch, 20, 150*time.Millisecond)
+	is.Equal([]int{0, 1, 2, 3}, items1)
+	is.Equal(4, length1)
+	is.InDelta(100*time.Millisecond*4, duration1, float64(60*time.Millisecond))
+	is.True(ok1)
+
+	items2, length2, duration2, ok2 := BufferWithIdleTimeout(ch, 20, 250*time.Millisecond)
+	is.Equal([]int{4, 5, 6, 7, 8, 9}, items2)
+	is.Equal(6, length2)
+	is.InDelta(200*time.Millisecond*6, duration2, float64(60*time.Millisecond))
+	is.False(ok2)
+
+	items3, length3, _, ok3 := BufferWithIdleTimeout(ch, 20, 250*time.Millisecond)
+	is.Equal([]int{}, items3)
+	is.Equal(0, length3)
+	is.False(ok3)
+}
+
 func TestBufferWithTimeout(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
 	testWithTimeout(t, 2000*time.Millisecond)
