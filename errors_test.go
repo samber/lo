@@ -2,9 +2,13 @@ package lo
 
 import (
 	"errors"
-	"testing"
-
+	"fmt"
+	stackErrors "github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
+	"io"
+	"net/url"
+	"reflect"
+	"testing"
 )
 
 func TestValidate(t *testing.T) {
@@ -251,6 +255,72 @@ func TestMustX(t *testing.T) {
 			Must6(1, 2, 3, 4, 5, 6, false, "operation shouldn't fail with %s", "foo")
 		})
 	}
+}
+
+func mustCheckerWithStack(err any, messageArgs ...any) {
+	if err == nil {
+		return
+	}
+
+	switch e := err.(type) {
+	case bool:
+		if !e {
+			message := messageFromMsgAndArgs(messageArgs...)
+			if message == "" {
+				message = "not ok"
+			}
+
+			panic(stackErrors.New(message))
+		}
+
+	case error:
+		message := messageFromMsgAndArgs(messageArgs...)
+		if message != "" {
+			panic(stackErrors.Wrap(e, message))
+		}
+		panic(stackErrors.WithStack(e))
+
+	default:
+		panic(stackErrors.New("must: invalid err type '" + reflect.TypeOf(err).Name() + "', should either be a bool or an error"))
+	}
+}
+
+func TestMustUserCustomHandler(t *testing.T) {
+	oldMustChecker := MustChecker
+	MustChecker = mustCheckerWithStack
+	defer func() {
+		MustChecker = oldMustChecker
+	}()
+
+	t.Run("wrap stack", func(t *testing.T) {
+		err, ok := TryWithErrorValue(func() error {
+			Must("foo", errors.New("wrap callstack"))
+			return nil
+		})
+		assert.False(t, ok)
+		fullErrStr := fmt.Sprintf("%+v", err)
+		assert.Contains(t, fullErrStr, "/errors_test.go:", fullErrStr)
+	})
+	t.Run("wrap as", func(t *testing.T) {
+
+		e, ok := TryWithErrorValue(func() error {
+			Must("foo", errors.Join(io.EOF, &url.Error{
+				Op:  "test op",
+				URL: "test url",
+				Err: io.ErrUnexpectedEOF,
+			}))
+			return nil
+		})
+		assert.False(t, ok)
+		err, ok := e.(error)
+		assert.True(t, ok)
+		errUrl, ok := ErrorsAs[*url.Error](err)
+		assert.True(t, ok)
+		assert.Equal(t, errUrl.URL, "test url")
+		assert.Equal(t, errUrl.Op, "test op")
+		assert.True(t, errors.Is(err, io.EOF))
+		assert.True(t, errors.Is(err, io.ErrUnexpectedEOF))
+	})
 }
 
 func TestTry(t *testing.T) {
