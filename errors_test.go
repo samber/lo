@@ -3,11 +3,11 @@ package lo
 import (
 	"errors"
 	"fmt"
-	stackErrors "github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/url"
 	"reflect"
+	"runtime/debug"
 	"testing"
 )
 
@@ -270,18 +270,23 @@ func mustCheckerWithStack(err any, messageArgs ...any) {
 				message = "not ok"
 			}
 
-			panic(stackErrors.New(message))
+			//panic(stackErrors.New(message))
+			panic(errors.Join(errors.New(message), errors.New(string(debug.Stack()))))
 		}
 
 	case error:
 		message := messageFromMsgAndArgs(messageArgs...)
 		if message != "" {
-			panic(stackErrors.Wrap(e, message))
+			//panic(stackErrors.Wrap(e, message))
+			panic(errors.Join(e, errors.New(message), errors.New(string(debug.Stack()))))
 		}
-		panic(stackErrors.WithStack(e))
+		//panic(stackErrors.WithStack(e))
+		panic(errors.Join(e, errors.New(string(debug.Stack()))))
 
 	default:
-		panic(stackErrors.New("must: invalid err type '" + reflect.TypeOf(err).Name() + "', should either be a bool or an error"))
+		//panic(stackErrors.New("must: invalid err type '" + reflect.TypeOf(err).Name() + "', should either be a bool or an error"))
+		panic(errors.Join(errors.New("must: invalid err type '"+reflect.TypeOf(err).Name()+"', should either be a bool or an error"),
+			errors.New(string(debug.Stack()))))
 	}
 }
 
