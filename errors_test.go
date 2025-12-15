@@ -660,3 +660,25 @@ func TestAssertf(t *testing.T) {
 		})
 	}
 }
+
+func TestAssertfWithCustom(t *testing.T) {
+	oldAssertf := Assertf
+	Assertf = func(condition bool, format string, args ...any) {
+		if !condition {
+			panic(fmt.Errorf("%s: %s", "customErr", fmt.Sprintf(format, args...)))
+		}
+	}
+	defer func() {
+		Assertf = oldAssertf
+	}()
+
+	e, ok := TryWithErrorValue(func() error {
+		Assertf(false, "user defined message")
+		return nil
+	})
+	assert.False(t, ok)
+	assert.NotNil(t, e)
+	err, ok := e.(error)
+	assert.True(t, ok)
+	assert.Equal(t, err.Error(), "customErr: user defined message")
+}
