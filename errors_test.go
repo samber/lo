@@ -2,6 +2,7 @@ package lo
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -601,7 +602,7 @@ func TestErrorsAs(t *testing.T) {
 }
 
 func TestAssert(t *testing.T) {
-	t.Parallel()
+	//t.Parallel()
 	is := assert.New(t)
 
 	is.NotPanics(func() {
@@ -633,7 +634,7 @@ func TestAssert(t *testing.T) {
 }
 
 func TestAssertf(t *testing.T) {
-	t.Parallel()
+	//t.Parallel()
 	is := assert.New(t)
 
 	is.NotPanics(func() {
