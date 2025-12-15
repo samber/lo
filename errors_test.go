@@ -26,7 +26,7 @@ func TestValidate(t *testing.T) {
 }
 
 func TestMust(t *testing.T) {
-	t.Parallel()
+	//t.Parallel()
 	is := assert.New(t)
 
 	is.Equal("foo", Must("foo", nil))
@@ -67,7 +67,7 @@ func TestMust(t *testing.T) {
 }
 
 func TestMustX(t *testing.T) {
-	t.Parallel()
+	//t.Parallel()
 	is := assert.New(t)
 
 	{
