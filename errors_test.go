@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"reflect"
 	"runtime/debug"
+	"strings"
 	"testing"
 )
 
@@ -271,23 +272,53 @@ func mustCheckerWithStack(err any, messageArgs ...any) {
 			}
 
 			//panic(stackErrors.New(message))
-			panic(errors.Join(errors.New(message), errors.New(string(debug.Stack()))))
+			panic(errorsJoin(errors.New(message), errors.New(string(debug.Stack()))))
 		}
 
 	case error:
 		message := messageFromMsgAndArgs(messageArgs...)
 		if message != "" {
 			//panic(stackErrors.Wrap(e, message))
-			panic(errors.Join(e, errors.New(message), errors.New(string(debug.Stack()))))
+			panic(errorsJoin(e, errors.New(message), errors.New(string(debug.Stack()))))
 		}
 		//panic(stackErrors.WithStack(e))
-		panic(errors.Join(e, errors.New(string(debug.Stack()))))
+		panic(errorsJoin(e, errors.New(string(debug.Stack()))))
 
 	default:
 		//panic(stackErrors.New("must: invalid err type '" + reflect.TypeOf(err).Name() + "', should either be a bool or an error"))
-		panic(errors.Join(errors.New("must: invalid err type '"+reflect.TypeOf(err).Name()+"', should either be a bool or an error"),
+		panic(errorsJoin(errors.New("must: invalid err type '"+reflect.TypeOf(err).Name()+"', should either be a bool or an error"),
 			errors.New(string(debug.Stack()))))
 	}
+}
+
+// errorsJoin: var errorsJoin = errors.Join // only go 1.20+, not in go 1.18
+func errorsJoin(es ...error) joinErrors { return joinErrors(es) }
+
+type joinErrors []error
+
+func (es joinErrors) Is(target error) bool {
+	for _, e := range es {
+		if errors.Is(e, target) {
+			return true
+		}
+	}
+	return error(es) == target
+}
+func (es joinErrors) Error() string {
+	sb := strings.Builder{}
+	for _, e := range es {
+		sb.WriteString(e.Error())
+		sb.WriteRune('\n')
+	}
+	return sb.String()
+}
+func (es joinErrors) As(t any) bool {
+	for _, e := range es {
+		if errors.As(e, t) {
+			return true
+		}
+	}
+	return false
 }
 
 func TestMustUserCustomHandler(t *testing.T) {
@@ -309,7 +340,7 @@ func TestMustUserCustomHandler(t *testing.T) {
 	t.Run("wrap as", func(t *testing.T) {
 
 		e, ok := TryWithErrorValue(func() error {
-			Must("foo", errors.Join(io.EOF, &url.Error{
+			Must("foo", errorsJoin(io.EOF, &url.Error{
 				Op:  "test op",
 				URL: "test url",
 				Err: io.ErrUnexpectedEOF,
@@ -321,10 +352,13 @@ func TestMustUserCustomHandler(t *testing.T) {
 		assert.True(t, ok)
 		errUrl, ok := ErrorsAs[*url.Error](err)
 		assert.True(t, ok)
-		assert.Equal(t, errUrl.URL, "test url")
-		assert.Equal(t, errUrl.Op, "test op")
-		assert.True(t, errors.Is(err, io.EOF))
-		assert.True(t, errors.Is(err, io.ErrUnexpectedEOF))
+		assert.NotNil(t, errUrl)
+		if errUrl != nil {
+			assert.Equal(t, errUrl.URL, "test url")
+			assert.Equal(t, errUrl.Op, "test op")
+			assert.True(t, errors.Is(err, io.EOF))
+			assert.True(t, errors.Is(err, io.ErrUnexpectedEOF))
+		}
 	})
 }
 
