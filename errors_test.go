@@ -601,8 +601,8 @@ func TestErrorsAs(t *testing.T) {
 	is.Nil(err)
 }
 
-func TestAssert(t *testing.T) {
-	//t.Parallel()
+func TestAssert(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	is.NotPanics(func() {
@@ -633,8 +633,8 @@ func TestAssert(t *testing.T) {
 	}
 }
 
-func TestAssertf(t *testing.T) {
-	//t.Parallel()
+func TestAssertf(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	is.NotPanics(func() {
@@ -662,7 +662,7 @@ func TestAssertf(t *testing.T) {
 	}
 }
 
-func TestAssertfWithCustom(t *testing.T) {
+func TestAssertfWithCustom(t *testing.T) { //nolint:paralleltest
 	oldAssertf := Assertf
 	Assertf = func(condition bool, format string, args ...any) {
 		if !condition {
@@ -681,5 +681,5 @@ func TestAssertfWithCustom(t *testing.T) {
 	assert.NotNil(t, e)
 	err, ok := e.(error)
 	assert.True(t, ok)
-	assert.Equal(t, err.Error(), "customErr: user defined message")
+	assert.Equal(t, "customErr: user defined message", err.Error())
 }
