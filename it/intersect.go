@@ -106,32 +106,15 @@ func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:goc
 	}
 
 	return func(yield func(T) bool) {
+		last := lists[len(lists)-1]
+
 		seen := make(map[T]bool)
 
-		for i := len(lists) - 1; i >= 0; i-- {
-			if i == len(lists)-1 {
-				for item := range lists[i] {
-					seen[item] = true
-				}
-				continue
-			}
+		for item := range last {
+			seen[item] = false
+		}
 
-			if i == 0 {
-				for item := range lists[0] {
-					if _, ok := seen[item]; ok {
-						if !yield(item) {
-							return
-						}
-						delete(seen, item)
-					}
-				}
-				continue
-			}
-
-			for k := range seen {
-				seen[k] = false
-			}
-
+		for i := len(lists) - 2; i > 0 && len(seen) != 0; i-- {
 			for item := range lists[i] {
 				if _, ok := seen[item]; ok {
 					seen[item] = true
@@ -139,13 +122,20 @@ func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:goc
 			}
 
 			for k, v := range seen {
-				if !v {
+				if v {
+					seen[k] = false
+				} else {
 					delete(seen, k)
 				}
 			}
+		}
 
-			if len(seen) == 0 {
-				return
+		for item := range lists[0] {
+			if _, ok := seen[item]; ok {
+				if !yield(item) {
+					return
+				}
+				delete(seen, item)
 			}
 		}
 	}
@@ -165,34 +155,16 @@ func IntersectBy[T any, K comparable, I ~func(func(T) bool)](transform func(T) K
 	}
 
 	return func(yield func(T) bool) {
+		last := lists[len(lists)-1]
+
 		seen := make(map[K]bool)
 
-		for i := len(lists) - 1; i >= 0; i-- {
-			if i == len(lists)-1 {
-				for item := range lists[i] {
-					k := transform(item)
-					seen[k] = true
-				}
-				continue
-			}
+		for item := range last {
+			k := transform(item)
+			seen[k] = false
+		}
 
-			if i == 0 {
-				for item := range lists[0] {
-					k := transform(item)
-					if _, ok := seen[k]; ok {
-						if !yield(item) {
-							return
-						}
-						delete(seen, k)
-					}
-				}
-				continue
-			}
-
-			for k := range seen {
-				seen[k] = false
-			}
-
+		for i := len(lists) - 2; i > 0 && len(seen) != 0; i-- {
 			for item := range lists[i] {
 				k := transform(item)
 				if _, ok := seen[k]; ok {
@@ -201,13 +173,21 @@ func IntersectBy[T any, K comparable, I ~func(func(T) bool)](transform func(T) K
 			}
 
 			for k, v := range seen {
-				if !v {
+				if v {
+					seen[k] = false
+				} else {
 					delete(seen, k)
 				}
 			}
+		}
 
-			if len(seen) == 0 {
-				return
+		for item := range lists[0] {
+			k := transform(item)
+			if _, ok := seen[k]; ok {
+				if !yield(item) {
+					return
+				}
+				delete(seen, k)
 			}
 		}
 	}
