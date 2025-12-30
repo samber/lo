@@ -31,9 +31,8 @@ func TestDrain(t *testing.T) {
 
 	var done bool
 	list := iter.Seq[int](func(yield func(int) bool) {
-		yield(1)
-		yield(2)
-		yield(3)
+		_ = yield(1) && yield(2) && yield(3)
+
 		done = true
 	})
 

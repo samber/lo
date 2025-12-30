@@ -6,8 +6,9 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/samber/lo"
 )
 
 func TestZip(t *testing.T) {
@@ -81,6 +82,15 @@ func TestZip(t *testing.T) {
 		values[int16](1, 2, 3, 4, 5, 6, 7, 8, 9),
 		values[int32](1, 2, 3, 4, 5, 6, 7, 8, 9),
 	)
+
+	assertSeqSupportBreak(t, r1)
+	assertSeqSupportBreak(t, r2)
+	assertSeqSupportBreak(t, r3)
+	assertSeqSupportBreak(t, r4)
+	assertSeqSupportBreak(t, r5)
+	assertSeqSupportBreak(t, r6)
+	assertSeqSupportBreak(t, r7)
+	assertSeqSupportBreak(t, r8)
 
 	is.Equal([]lo.Tuple2[string, int]{
 		{A: "a", B: 1},
@@ -230,6 +240,15 @@ func TestZipBy(t *testing.T) {
 		values[int32](1, 2, 3, 4, 5, 6, 7, 8, 9),
 		lo.T9[string, int, int, bool, float32, float64, int8, int16, int32],
 	)
+
+	assertSeqSupportBreak(t, r1)
+	assertSeqSupportBreak(t, r2)
+	assertSeqSupportBreak(t, r3)
+	assertSeqSupportBreak(t, r4)
+	assertSeqSupportBreak(t, r5)
+	assertSeqSupportBreak(t, r6)
+	assertSeqSupportBreak(t, r7)
+	assertSeqSupportBreak(t, r8)
 
 	is.Equal([]lo.Tuple2[string, int]{
 		{A: "a", B: 1},
