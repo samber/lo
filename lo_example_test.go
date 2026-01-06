@@ -2181,6 +2181,41 @@ func ExampleChunk() {
 	// [4]
 }
 
+func ExampleWindow() {
+	list := []int{1, 2, 3, 4, 5}
+
+	result := Window(list, 3)
+
+	for _, item := range result {
+		fmt.Printf("%v\n", item)
+	}
+	// Output:
+	// [1 2 3]
+	// [2 3 4]
+	// [3 4 5]
+}
+
+func ExampleSliding() {
+	list := []int{1, 2, 3, 4, 5, 6, 7, 8}
+
+	// Overlapping windows (step < size)
+	result1 := Sliding(list, 3, 1)
+	fmt.Printf("Overlapping: %v\n", result1)
+
+	// Non-overlapping windows (step == size, like Chunk)
+	result2 := Sliding(list, 3, 3)
+	fmt.Printf("Non-overlapping: %v\n", result2)
+
+	// Step > size (skipping elements)
+	result3 := Sliding(list, 2, 3)
+	fmt.Printf("With step: %v\n", result3)
+
+	// Output:
+	// Overlapping: [[1 2 3] [2 3 4] [3 4 5] [4 5 6] [5 6 7] [6 7 8]]
+	// Non-overlapping: [[1 2 3] [4 5 6]]
+	// With step: [[1 2] [4 5] [7 8]]
+}
+
 func ExamplePartitionBy() {
 	list := []int{-2, -1, 0, 1, 2, 3, 4}
 
@@ -2363,6 +2398,37 @@ func ExampleDropRightWhile() {
 
 	fmt.Printf("%v", result)
 	// Output: [0 1 2]
+}
+
+func ExampleTake() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := Take(list, 3)
+
+	fmt.Printf("%v", result)
+	// Output: [0 1 2]
+}
+
+func ExampleTakeWhile() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result := TakeWhile(list, func(val int) bool {
+		return val < 3
+	})
+
+	fmt.Printf("%v", result)
+	// Output: [0 1 2]
+}
+
+func ExampleFilterTake() {
+	list := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+	result := FilterTake(list, 3, func(val int, index int) bool {
+		return val%2 == 0
+	})
+
+	fmt.Printf("%v", result)
+	// Output: [2 4 6]
 }
 
 func ExampleDropByIndex() {

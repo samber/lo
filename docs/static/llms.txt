@@ -216,6 +216,8 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - GroupBy: Group elements by key function
 - GroupByMap: Group elements by key function into map
 - Chunk: Split slice into chunks of specified size
+- Window: Create sliding windows of specified size (overlapping)
+- Sliding: Create sliding windows with specified size and step
 - PartitionBy: Split elements into two groups by predicate
 - Flatten: Flatten nested slices into single slice
 - Concat: Combine multiple slices into one
@@ -231,6 +233,9 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - FilterSliceToMap: Filter and convert slice to map
 - FilterSliceToMapI: Filter and convert slice to map with index
 - Keyify: Create set from slice elements
+- Take: Get first n elements from slice
+- TakeWhile: Get elements from start while predicate is true
+- FilterTake: Filter and take first n matching elements (efficient)
 - Drop: Remove first n elements
 - DropRight: Remove last n elements
 - DropWhile: Remove elements from start while predicate is true

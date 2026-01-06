@@ -14,6 +14,7 @@ similarHelpers:
   - core#slice#dropbyindex
   - core#slice#filterreject
   - core#slice#partitionby
+  - core#slice#takewhile
 position: 190
 signatures:
   - "func DropWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice"
