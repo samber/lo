@@ -200,3 +200,121 @@ func BenchmarkToSlicePtr(b *testing.B) {
 		_ = lo.ToSlicePtr(preallocated)
 	}
 }
+
+func BenchmarkFilterTakeVsFilterAndTake(b *testing.B) {
+	n := 1000
+	ints := genSliceInt(n)
+
+	b.Run("lo.FilterTake", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.FilterTake(ints, 5, func(v int, _ int) bool { return v%2 == 0 })
+		}
+	})
+
+	b.Run("lo.Filter+lo.Take", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.Take(lo.Filter(ints, func(v int, _ int) bool { return v%2 == 0 }), 5)
+		}
+	})
+
+	b.Run("lo.Filter+native_slice", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			filtered := lo.Filter(ints, func(v int, _ int) bool { return v%2 == 0 })
+			takeN := 5
+			if takeN > len(filtered) {
+				_ = filtered[:]
+			} else {
+				_ = filtered[:takeN]
+			}
+		}
+	})
+
+	b.Run("manual_loop", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			result := make([]int, 0, 5)
+			count := 0
+			for _, v := range ints {
+				if v%2 == 0 {
+					result = append(result, v)
+					count++
+					if count >= 5 {
+						break
+					}
+				}
+			}
+			_ = result
+		}
+	})
+}
+
+func BenchmarkWindow(b *testing.B) {
+	windowSize := 5
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("lo.Window_strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Window(strs, windowSize)
+			}
+		})
+		b.Run(fmt.Sprintf("lo.Sliding_strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Sliding(strs, windowSize, 1)
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("lo.Window_ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Window(ints, windowSize)
+			}
+		})
+		b.Run(fmt.Sprintf("lo.Sliding_ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Sliding(ints, windowSize, 1)
+			}
+		})
+	}
+}
+
+func BenchmarkSliding(b *testing.B) {
+	windowSize := 5
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("lo.Sliding_overlap_strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Sliding(strs, windowSize, 1) // overlapping
+			}
+		})
+		b.Run(fmt.Sprintf("lo.Sliding_nonoverlap_strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Sliding(strs, windowSize, windowSize) // non-overlapping (like Chunk)
+			}
+		})
+		b.Run(fmt.Sprintf("lo.Chunk_strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Chunk(strs, windowSize) // similar to Sliding with step=size
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("lo.Sliding_overlap_ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Sliding(ints, windowSize, 1) // overlapping
+			}
+		})
+		b.Run(fmt.Sprintf("lo.Sliding_nonoverlap_ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Sliding(ints, windowSize, windowSize) // non-overlapping (like Chunk)
+			}
+		})
+		b.Run(fmt.Sprintf("lo.Chunk_ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Chunk(ints, windowSize) // similar to Sliding with step=size
+			}
+		})
+	}
+}

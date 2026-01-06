@@ -574,14 +574,23 @@ func Take[T any, Slice ~[]T](collection Slice, n int) Slice {
 		panic("lo.Take: n must not be negative")
 	}
 
-	if len(collection) <= n {
-		result := make(Slice, len(collection))
+	if n == 0 {
+		return make(Slice, 0)
+	}
+
+	size := len(collection)
+	if size == 0 {
+		return make(Slice, 0)
+	}
+
+	if n >= size {
+		result := make(Slice, size)
 		copy(result, collection)
 		return result
 	}
 
 	result := make(Slice, n)
-	copy(result, collection[:n])
+	copy(result, collection)
 	return result
 }
 
