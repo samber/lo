@@ -207,19 +207,21 @@ func BenchmarkFilterTakeVsFilterAndTake(b *testing.B) {
 
 	b.Run("lo.TakeFilter", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = lo.TakeFilter(ints, 5, func(v int, _ int) bool { return v%2 == 0 })
+			_ = lo.TakeFilter(ints, 5, func(v, _ int) bool {
+				return v%2 == 0
+			})
 		}
 	})
 
 	b.Run("lo.Filter+lo.Take", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = lo.Take(lo.Filter(ints, func(v int, _ int) bool { return v%2 == 0 }), 5)
+			_ = lo.Take(lo.Filter(ints, func(v, _ int) bool { return v%2 == 0 }), 5)
 		}
 	})
 
 	b.Run("lo.Filter+native_slice", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			filtered := lo.Filter(ints, func(v int, _ int) bool { return v%2 == 0 })
+			filtered := lo.Filter(ints, func(v, _ int) bool { return v%2 == 0 })
 			takeN := 5
 			if takeN > len(filtered) {
 				_ = filtered

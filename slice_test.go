@@ -967,28 +967,30 @@ func TestTakeFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{2, 4}, TakeFilter([]int{1, 2, 3, 4, 5, 6}, 2, func(item int, index int) bool {
+	is.Equal(
+		[]int{2, 4}, TakeFilter([]int{1, 2, 3, 4, 5, 6}, 2, func(item, index int) bool {
+			return item%2 == 0
+		}),
+	)
+
+	is.Equal([]int{2, 4, 6}, TakeFilter([]int{1, 2, 3, 4, 5, 6}, 10, func(item, index int) bool {
 		return item%2 == 0
 	}))
 
-	is.Equal([]int{2, 4, 6}, TakeFilter([]int{1, 2, 3, 4, 5, 6}, 10, func(item int, index int) bool {
+	is.Empty(TakeFilter([]int{1, 2, 3, 4, 5, 6}, 0, func(item, index int) bool {
 		return item%2 == 0
 	}))
 
-	is.Empty(TakeFilter([]int{1, 2, 3, 4, 5, 6}, 0, func(item int, index int) bool {
+	is.Empty(TakeFilter([]int{1, 3, 5}, 2, func(item, index int) bool {
 		return item%2 == 0
 	}))
 
-	is.Empty(TakeFilter([]int{1, 3, 5}, 2, func(item int, index int) bool {
-		return item%2 == 0
-	}))
-
-	is.Equal([]int{1}, TakeFilter([]int{1, 2, 3, 4, 5}, 1, func(item int, index int) bool {
+	is.Equal([]int{1}, TakeFilter([]int{1, 2, 3, 4, 5}, 1, func(item, index int) bool {
 		return item%2 != 0
 	}))
 
 	is.PanicsWithValue("lo.TakeFilter: n must not be negative", func() {
-		TakeFilter([]int{1, 2, 3}, -1, func(item int, index int) bool { return true })
+		TakeFilter([]int{1, 2, 3}, -1, func(item, index int) bool { return true })
 	})
 
 	type myStrings []string
