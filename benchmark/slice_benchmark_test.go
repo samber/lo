@@ -222,7 +222,7 @@ func BenchmarkFilterTakeVsFilterAndTake(b *testing.B) {
 			filtered := lo.Filter(ints, func(v int, _ int) bool { return v%2 == 0 })
 			takeN := 5
 			if takeN > len(filtered) {
-				_ = filtered[:]
+				_ = filtered
 			} else {
 				_ = filtered[:takeN]
 			}
