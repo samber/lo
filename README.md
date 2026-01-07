@@ -1192,7 +1192,7 @@ in[0] = 99
 // cloned is []int{1, 2, 3, 4, 5}
 ```
 
-[[play](https://go.dev/play/p/tXiy-iK6PAc)]
+[[play](https://go.dev/play/p/hgHmoOIxmuH)]
 
 ### Compact
 
