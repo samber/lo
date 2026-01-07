@@ -963,37 +963,37 @@ func TestTakeWhile(t *testing.T) {
 	is.Equal(myStrings{"foo", "bar"}, taken)
 }
 
-func TestFilterTake(t *testing.T) {
+func TestTakeFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{2, 4}, FilterTake([]int{1, 2, 3, 4, 5, 6}, 2, func(item int, index int) bool {
+	is.Equal([]int{2, 4}, TakeFilter([]int{1, 2, 3, 4, 5, 6}, 2, func(item int, index int) bool {
 		return item%2 == 0
 	}))
 
-	is.Equal([]int{2, 4, 6}, FilterTake([]int{1, 2, 3, 4, 5, 6}, 10, func(item int, index int) bool {
+	is.Equal([]int{2, 4, 6}, TakeFilter([]int{1, 2, 3, 4, 5, 6}, 10, func(item int, index int) bool {
 		return item%2 == 0
 	}))
 
-	is.Empty(FilterTake([]int{1, 2, 3, 4, 5, 6}, 0, func(item int, index int) bool {
+	is.Empty(TakeFilter([]int{1, 2, 3, 4, 5, 6}, 0, func(item int, index int) bool {
 		return item%2 == 0
 	}))
 
-	is.Empty(FilterTake([]int{1, 3, 5}, 2, func(item int, index int) bool {
+	is.Empty(TakeFilter([]int{1, 3, 5}, 2, func(item int, index int) bool {
 		return item%2 == 0
 	}))
 
-	is.Equal([]int{1}, FilterTake([]int{1, 2, 3, 4, 5}, 1, func(item int, index int) bool {
+	is.Equal([]int{1}, TakeFilter([]int{1, 2, 3, 4, 5}, 1, func(item int, index int) bool {
 		return item%2 != 0
 	}))
 
-	is.PanicsWithValue("lo.FilterTake: n must not be negative", func() {
-		FilterTake([]int{1, 2, 3}, -1, func(item int, index int) bool { return true })
+	is.PanicsWithValue("lo.TakeFilter: n must not be negative", func() {
+		TakeFilter([]int{1, 2, 3}, -1, func(item int, index int) bool { return true })
 	})
 
 	type myStrings []string
 	allStrings := myStrings{"foo", "bar", "baz", "qux"}
-	filtered := FilterTake(allStrings, 2, func(item string, index int) bool {
+	filtered := TakeFilter(allStrings, 2, func(item string, index int) bool {
 		return len(item) == 3
 	})
 	is.IsType(filtered, allStrings, "type preserved")

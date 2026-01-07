@@ -13,7 +13,7 @@ similarHelpers:
   - core#slice#dropwhile
   - core#slice#first
   - core#slice#filtermap
-  - core#slice#filtertake
+  - core#slice#takefilter
 position: 175
 signatures:
   - "func Take[T any, Slice ~[]T](collection Slice, n int) Slice"

@@ -640,11 +640,11 @@ func DropByIndex[T any, Slice ~[]T](collection Slice, indexes ...int) Slice {
 	return result
 }
 
-// FilterTake filters elements and takes the first n elements that match the predicate.
-// This is more efficient than chaining Filter and Take, as it stops after finding n matches.
-func FilterTake[T any, Slice ~[]T](collection Slice, n int, predicate func(item T, index int) bool) Slice {
+// TakeFilter filters elements and takes the first n elements that match the predicate.
+// Equivalent to calling Take(Filter(...)), but more efficient as it stops after finding n matches.
+func TakeFilter[T any, Slice ~[]T](collection Slice, n int, predicate func(item T, index int) bool) Slice {
 	if n < 0 {
-		panic("lo.FilterTake: n must not be negative")
+		panic("lo.TakeFilter: n must not be negative")
 	}
 
 	if n == 0 {

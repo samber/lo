@@ -11,7 +11,7 @@ similarHelpers:
   - core#slice#dropwhile
   - core#slice#droprightwhile
   - core#slice#filter
-  - core#slice#filtertake
+  - core#slice#takefilter
   - core#slice#first
 position: 195
 signatures:

@@ -205,9 +205,9 @@ func BenchmarkFilterTakeVsFilterAndTake(b *testing.B) {
 	n := 1000
 	ints := genSliceInt(n)
 
-	b.Run("lo.FilterTake", func(b *testing.B) {
+	b.Run("lo.TakeFilter", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = lo.FilterTake(ints, 5, func(v int, _ int) bool { return v%2 == 0 })
+			_ = lo.TakeFilter(ints, 5, func(v int, _ int) bool { return v%2 == 0 })
 		}
 	})
 

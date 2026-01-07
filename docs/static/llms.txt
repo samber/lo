@@ -235,7 +235,7 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - Keyify: Create set from slice elements
 - Take: Get first n elements from slice
 - TakeWhile: Get elements from start while predicate is true
-- FilterTake: Filter and take first n matching elements (efficient)
+- TakeFilter: Filter and take first n matching elements (efficient)
 - Drop: Remove first n elements
 - DropRight: Remove last n elements
 - DropWhile: Remove elements from start while predicate is true

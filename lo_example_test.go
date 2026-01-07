@@ -2420,10 +2420,10 @@ func ExampleTakeWhile() {
 	// Output: [0 1 2]
 }
 
-func ExampleFilterTake() {
+func ExampleTakeFilter() {
 	list := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
-	result := FilterTake(list, 3, func(val int, index int) bool {
+	result := TakeFilter(list, 3, func(val int, index int) bool {
 		return val%2 == 0
 	})
 

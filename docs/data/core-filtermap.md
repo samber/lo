@@ -13,7 +13,7 @@ similarHelpers:
   - core#slice#uniqmap
   - core#slice#rejectmap
   - core#slice#filtermaptoslice
-  - core#slice#filtertake
+  - core#slice#takefilter
   - parallel#slice#filtermap
 position: 30
 signatures:
