@@ -356,7 +356,7 @@ func ErrorsAs[T error](err error) (T, bool) {
 
 // Assert does nothing when the condition is true, otherwise it panics with an optional message.
 // Play: https://go.dev/play/p/Xv8LLKBMNwI
-func Assert(condition bool, message ...string) {
+var Assert = func(condition bool, message ...string) {
 	if condition {
 		return
 	}
@@ -370,7 +370,7 @@ func Assert(condition bool, message ...string) {
 
 // Assertf does nothing when the condition is true, otherwise it panics with a formatted message.
 // Play: https://go.dev/play/p/TVPEmVcyrdY
-func Assertf(condition bool, format string, args ...any) {
+var Assertf = func(condition bool, format string, args ...any) {
 	if condition {
 		return
 	}

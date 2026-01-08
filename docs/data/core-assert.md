@@ -45,4 +45,14 @@ lo.Assert(age >= 15, "user age must be >= 15")
 // continues normally
 ```
 
+## Custom handler
 
+Replace `lo.Assert` and `lo.Assertf` with your own statement:
+
+```go
+lo.Assertf = func(condition bool, format string, args ...any) {
+		if !condition {
+			  panic(fmt.Errorf("%s: %s", "customErr", fmt.Sprintf(format, args...)))
+		}
+}
+```

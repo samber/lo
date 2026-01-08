@@ -2,6 +2,7 @@ package lo
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -600,8 +601,8 @@ func TestErrorsAs(t *testing.T) {
 	is.Nil(err)
 }
 
-func TestAssert(t *testing.T) {
-	t.Parallel()
+func TestAssert(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	is.NotPanics(func() {
@@ -632,8 +633,8 @@ func TestAssert(t *testing.T) {
 	}
 }
 
-func TestAssertf(t *testing.T) {
-	t.Parallel()
+func TestAssertf(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	is.NotPanics(func() {
@@ -659,4 +660,26 @@ func TestAssertf(t *testing.T) {
 			Assertf(age >= 15, "user age must be >= 15, got %d", age)
 		})
 	}
+}
+
+func TestAssertfWithCustom(t *testing.T) { //nolint:paralleltest
+	oldAssertf := Assertf
+	Assertf = func(condition bool, format string, args ...any) {
+		if !condition {
+			panic(fmt.Errorf("%s: %s", "customErr", fmt.Sprintf(format, args...)))
+		}
+	}
+	defer func() {
+		Assertf = oldAssertf
+	}()
+
+	e, ok := TryWithErrorValue(func() error {
+		Assertf(false, "user defined message")
+		return nil
+	})
+	assert.False(t, ok)
+	assert.NotNil(t, e)
+	err, ok := e.(error)
+	assert.True(t, ok)
+	assert.Equal(t, "customErr: user defined message", err.Error())
 }
