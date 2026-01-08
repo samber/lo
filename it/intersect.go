@@ -101,10 +101,6 @@ func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:goc
 		return I(Empty[T]())
 	}
 
-	if len(lists) == 1 {
-		return lists[0]
-	}
-
 	return func(yield func(T) bool) {
 		last := lists[len(lists)-1]
 
@@ -148,10 +144,6 @@ func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:goc
 func IntersectBy[T any, K comparable, I ~func(func(T) bool)](transform func(T) K, lists ...I) I { //nolint:gocyclo
 	if len(lists) == 0 {
 		return I(Empty[T]())
-	}
-
-	if len(lists) == 1 {
-		return lists[0]
 	}
 
 	return func(yield func(T) bool) {

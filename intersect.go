@@ -121,10 +121,6 @@ func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 		return Slice{}
 	}
 
-	if len(lists) == 1 {
-		return lists[0]
-	}
-
 	last := lists[len(lists)-1]
 
 	seen := make(map[T]bool, len(last))
@@ -165,10 +161,6 @@ func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 func IntersectBy[T any, K comparable, Slice ~[]T](transform func(T) K, lists ...Slice) Slice {
 	if len(lists) == 0 {
 		return Slice{}
-	}
-
-	if len(lists) == 1 {
-		return lists[0]
 	}
 
 	last := lists[len(lists)-1]
