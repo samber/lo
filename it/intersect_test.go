@@ -190,6 +190,7 @@ func TestIntersect(t *testing.T) {
 	result7 := Intersect(values(0, 1, 2), values(1, 2, 3), values(2, 3, 4))
 	result8 := Intersect(values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5))
 	result9 := Intersect(values(0, 1, 2), values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5))
+	resultA := Intersect(values(0, 1, 1))
 
 	is.Empty(slices.Collect(result1))
 	is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result2))
@@ -200,6 +201,7 @@ func TestIntersect(t *testing.T) {
 	is.Equal([]int{2}, slices.Collect(result7))
 	is.Empty(slices.Collect(result8))
 	is.Empty(slices.Collect(result9))
+	is.Equal([]int{0, 1}, slices.Collect(resultA))
 
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar"))
@@ -222,6 +224,7 @@ func TestIntersectBy(t *testing.T) {
 	result7 := IntersectBy(transform, values(0, 1, 2), values(1, 2, 3), values(2, 3, 4))
 	result8 := IntersectBy(transform, values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5))
 	result9 := IntersectBy(transform, values(0, 1, 2), values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5))
+	resultA := IntersectBy(transform, values(0, 1, 1))
 
 	is.Empty(slices.Collect(result1))
 	is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result2))
@@ -232,6 +235,7 @@ func TestIntersectBy(t *testing.T) {
 	is.Equal([]int{2}, slices.Collect(result7))
 	is.Empty(slices.Collect(result8))
 	is.Empty(slices.Collect(result9))
+	is.Equal([]int{0, 1}, slices.Collect(resultA))
 
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar"))

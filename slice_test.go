@@ -316,6 +316,96 @@ func TestChunk(t *testing.T) {
 	is.Equal([]int{0, 1, 2, 3, 4, 5}, original)
 }
 
+func TestWindow(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Window([]int{1, 2, 3, 4, 5}, 3)
+	result2 := Window([]int{1, 2, 3, 4, 5, 6}, 3)
+	result3 := Window([]int{1, 2}, 3)
+	result4 := Window([]int{1, 2, 3}, 3)
+	result5 := Window([]int{1, 2, 3, 4}, 1)
+
+	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}}, result1)
+	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}, result2)
+	is.Empty(result3)
+	is.Equal([][]int{{1, 2, 3}}, result4)
+	is.Equal([][]int{{1}, {2}, {3}, {4}}, result5)
+
+	is.PanicsWithValue("lo.Window: size must be greater than 0", func() {
+		Window([]int{1, 2, 3}, 0)
+	})
+
+	is.PanicsWithValue("lo.Window: size must be greater than 0", func() {
+		Window([]int{1, 2, 3}, -1)
+	})
+
+	type myStrings []string
+	allStrings := myStrings{"a", "b", "c", "d"}
+	windows := Window(allStrings, 2)
+	is.IsType(windows[0], allStrings, "type preserved")
+	is.Equal(myStrings{"a", "b"}, windows[0])
+
+	// appending to a window should not affect original slice
+	original := []int{1, 2, 3, 4, 5}
+	windows2 := Window(original, 3)
+	windows2[0] = append(windows2[0], 6)
+	is.Equal([]int{1, 2, 3, 4, 5}, original)
+}
+
+func TestSliding(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Overlapping windows (step < size)
+	result1 := Sliding([]int{1, 2, 3, 4, 5, 6}, 3, 1)
+	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}, result1)
+
+	// Non-overlapping windows (step == size, like Chunk)
+	result2 := Sliding([]int{1, 2, 3, 4, 5, 6}, 3, 3)
+	is.Equal([][]int{{1, 2, 3}, {4, 5, 6}}, result2)
+
+	// Step > size (skipping elements)
+	result3 := Sliding([]int{1, 2, 3, 4, 5, 6, 7, 8}, 2, 3)
+	is.Equal([][]int{{1, 2}, {4, 5}, {7, 8}}, result3)
+
+	// Single element windows
+	result4 := Sliding([]int{1, 2, 3, 4}, 1, 1)
+	is.Equal([][]int{{1}, {2}, {3}, {4}}, result4)
+
+	// Empty result when collection is too small
+	result5 := Sliding([]int{1, 2}, 3, 1)
+	is.Empty(result5)
+
+	// Step 2, size 2
+	result6 := Sliding([]int{1, 2, 3, 4, 5, 6}, 2, 2)
+	is.Equal([][]int{{1, 2}, {3, 4}, {5, 6}}, result6)
+
+	is.PanicsWithValue("lo.Sliding: size must be greater than 0", func() {
+		Sliding([]int{1, 2, 3}, 0, 1)
+	})
+
+	is.PanicsWithValue("lo.Sliding: step must be greater than 0", func() {
+		Sliding([]int{1, 2, 3}, 2, 0)
+	})
+
+	is.PanicsWithValue("lo.Sliding: step must be greater than 0", func() {
+		Sliding([]int{1, 2, 3}, 2, -1)
+	})
+
+	type myStrings []string
+	allStrings := myStrings{"a", "b", "c", "d", "e"}
+	windows := Sliding(allStrings, 2, 2)
+	is.IsType(windows[0], allStrings, "type preserved")
+	is.Equal(myStrings{"a", "b"}, windows[0])
+
+	// appending to a window should not affect original slice
+	original := []int{1, 2, 3, 4, 5, 6}
+	windows2 := Sliding(original, 2, 2)
+	windows2[0] = append(windows2[0], 7)
+	is.Equal([]int{1, 2, 3, 4, 5, 6}, original)
+}
+
 func TestPartitionBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -820,6 +910,96 @@ func TestDropRightWhile(t *testing.T) {
 		return t != "foo"
 	})
 	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestTake(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{0, 1, 2}, Take([]int{0, 1, 2, 3, 4}, 3))
+	is.Equal([]int{0, 1}, Take([]int{0, 1, 2, 3, 4}, 2))
+	is.Equal([]int{0}, Take([]int{0, 1, 2, 3, 4}, 1))
+	is.Empty(Take([]int{0, 1, 2, 3, 4}, 0))
+	is.Equal([]int{0, 1, 2, 3, 4}, Take([]int{0, 1, 2, 3, 4}, 5))
+	is.Equal([]int{0, 1, 2, 3, 4}, Take([]int{0, 1, 2, 3, 4}, 10))
+
+	is.PanicsWithValue("lo.Take: n must not be negative", func() {
+		Take([]int{0, 1, 2, 3, 4}, -1)
+	})
+
+	type myStrings []string
+	allStrings := myStrings{"foo", "bar", "baz"}
+	taken := Take(allStrings, 2)
+	is.IsType(taken, allStrings, "type preserved")
+	is.Equal(myStrings{"foo", "bar"}, taken)
+}
+
+func TestTakeWhile(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{0, 1, 2, 3}, TakeWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return t < 4
+	}))
+
+	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, TakeWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return t < 10
+	}))
+
+	is.Empty(TakeWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return t < 0
+	}))
+
+	is.Equal([]int{0, 1, 2}, TakeWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
+		return t != 3
+	}))
+
+	type myStrings []string
+	allStrings := myStrings{"foo", "bar", "baz", "qux"}
+	taken := TakeWhile(allStrings, func(t string) bool {
+		return t != "baz"
+	})
+	is.IsType(taken, allStrings, "type preserved")
+	is.Equal(myStrings{"foo", "bar"}, taken)
+}
+
+func TestTakeFilter(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal(
+		[]int{2, 4}, TakeFilter([]int{1, 2, 3, 4, 5, 6}, 2, func(item, index int) bool {
+			return item%2 == 0
+		}),
+	)
+
+	is.Equal([]int{2, 4, 6}, TakeFilter([]int{1, 2, 3, 4, 5, 6}, 10, func(item, index int) bool {
+		return item%2 == 0
+	}))
+
+	is.Empty(TakeFilter([]int{1, 2, 3, 4, 5, 6}, 0, func(item, index int) bool {
+		return item%2 == 0
+	}))
+
+	is.Empty(TakeFilter([]int{1, 3, 5}, 2, func(item, index int) bool {
+		return item%2 == 0
+	}))
+
+	is.Equal([]int{1}, TakeFilter([]int{1, 2, 3, 4, 5}, 1, func(item, index int) bool {
+		return item%2 != 0
+	}))
+
+	is.PanicsWithValue("lo.TakeFilter: n must not be negative", func() {
+		TakeFilter([]int{1, 2, 3}, -1, func(item, index int) bool { return true })
+	})
+
+	type myStrings []string
+	allStrings := myStrings{"foo", "bar", "baz", "qux"}
+	filtered := TakeFilter(allStrings, 2, func(item string, index int) bool {
+		return len(item) == 3
+	})
+	is.IsType(filtered, allStrings, "type preserved")
+	is.Equal(myStrings{"foo", "bar"}, filtered)
 }
 
 func TestDropByIndex(t *testing.T) {

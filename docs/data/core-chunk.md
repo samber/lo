@@ -12,6 +12,8 @@ similarHelpers:
   - core#slice#partitionby
   - core#slice#drop
   - core#slice#flatten
+  - core#slice#window
+  - core#slice#sliding
   - core#map#chunkentries
 position: 140
 signatures:

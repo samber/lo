@@ -15,6 +15,7 @@ similarHelpers:
   - core#slice#droprightwhile
   - core#slice#cutprefix
   - core#slice#take
+  - core#slice#takewhile
 position: 170
 signatures:
   - "func Drop[T any, Slice ~[]T](collection Slice, n int) Slice"

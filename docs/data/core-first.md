@@ -8,6 +8,8 @@ playUrl: https://go.dev/play/p/ul45Z0y2EFO
 variantHelpers:
   - core#find#first
 similarHelpers:
+  - core#slice#take
+  - core#slice#takewhile
   - core#find#firstor
   - core#find#firstorempty
   - core#find#last

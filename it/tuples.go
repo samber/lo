@@ -26,10 +26,9 @@ func Zip2[A, B any](a iter.Seq[A], b iter.Seq[B]) iter.Seq[lo.Tuple2[A, B]] {
 			var ok [2]bool
 			item.A, ok[0] = next.A()
 			item.B, ok[1] = next.B()
-			if ok == [2]bool{} {
+			if ok == [2]bool{} || !yield(item) {
 				return
 			}
-			yield(item)
 		}
 	}
 }
@@ -55,10 +54,9 @@ func Zip3[A, B, C any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C]) iter.Seq[lo.
 			item.A, ok[0] = next.A()
 			item.B, ok[1] = next.B()
 			item.C, ok[2] = next.C()
-			if ok == [3]bool{} {
+			if ok == [3]bool{} || !yield(item) {
 				return
 			}
-			yield(item)
 		}
 	}
 }
@@ -87,10 +85,9 @@ func Zip4[A, B, C, D any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Se
 			item.B, ok[1] = next.B()
 			item.C, ok[2] = next.C()
 			item.D, ok[3] = next.D()
-			if ok == [4]bool{} {
+			if ok == [4]bool{} || !yield(item) {
 				return
 			}
-			yield(item)
 		}
 	}
 }
@@ -122,10 +119,9 @@ func Zip5[A, B, C, D, E any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter
 			item.C, ok[2] = next.C()
 			item.D, ok[3] = next.D()
 			item.E, ok[4] = next.E()
-			if ok == [5]bool{} {
+			if ok == [5]bool{} || !yield(item) {
 				return
 			}
-			yield(item)
 		}
 	}
 }
@@ -160,10 +156,9 @@ func Zip6[A, B, C, D, E, F any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d i
 			item.D, ok[3] = next.D()
 			item.E, ok[4] = next.E()
 			item.F, ok[5] = next.F()
-			if ok == [6]bool{} {
+			if ok == [6]bool{} || !yield(item) {
 				return
 			}
-			yield(item)
 		}
 	}
 }
@@ -201,10 +196,9 @@ func Zip7[A, B, C, D, E, F, G any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], 
 			item.E, ok[4] = next.E()
 			item.F, ok[5] = next.F()
 			item.G, ok[6] = next.G()
-			if ok == [7]bool{} {
+			if ok == [7]bool{} || !yield(item) {
 				return
 			}
-			yield(item)
 		}
 	}
 }
@@ -245,10 +239,9 @@ func Zip8[A, B, C, D, E, F, G, H any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C
 			item.F, ok[5] = next.F()
 			item.G, ok[6] = next.G()
 			item.H, ok[7] = next.H()
-			if ok == [8]bool{} {
+			if ok == [8]bool{} || !yield(item) {
 				return
 			}
-			yield(item)
 		}
 	}
 }
@@ -292,10 +285,9 @@ func Zip9[A, B, C, D, E, F, G, H, I any](a iter.Seq[A], b iter.Seq[B], c iter.Se
 			item.G, ok[6] = next.G()
 			item.H, ok[7] = next.H()
 			item.I, ok[8] = next.I()
-			if ok == [9]bool{} {
+			if ok == [9]bool{} || !yield(item) {
 				return
 			}
-			yield(item)
 		}
 	}
 }
