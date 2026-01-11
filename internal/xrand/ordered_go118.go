@@ -35,11 +35,7 @@ func ResetSeed() {
 
 // Shuffle returns a slice of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 func Shuffle(n int, swap func(i, j int)) {
-	mu.Lock()
-	r := seededRand
-	mu.Unlock()
-
-	if r != nil {
+	if seededRand != nil {
 		r.Shuffle(n, swap)
 		return
 	}
@@ -51,11 +47,7 @@ func Shuffle(n int, swap func(i, j int)) {
 // from the default Source.
 // It panics if n <= 0.
 func IntN(n int) int {
-	mu.Lock()
-	r := seededRand
-	mu.Unlock()
-
-	if r != nil {
+	if seededRand != nil {
 		return r.Intn(n)
 	}
 
@@ -66,13 +58,10 @@ func IntN(n int) int {
 // Int64 returns a non-negative pseudo-random 63-bit integer as an int64
 // from the default Source.
 func Int64() int64 {
-	mu.Lock()
-	r := seededRand
-	mu.Unlock()
 
-	if r != nil {
-		n := r.Int63()
-		if r.Intn(2) == 0 {
+	if seededRand != nil {
+		n := seededRand.Int63()
+		if seededRand.Intn(2) == 0 {
 			return -n
 		}
 		return n
