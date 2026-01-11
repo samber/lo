@@ -3,13 +3,17 @@ package lo
 import (
 	"testing"
 
+	"github.com/samber/lo/mutable"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSetRandomSeed(t *testing.T) {
+func TestSetRandomSeed(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	t.Cleanup(func() {
 		ResetRandomSeed()
 	})
+
+	is := assert.New(t)
 
 	t.Run("reproducible RandomString", func(t *testing.T) {
 		SetRandomSeed(42)
@@ -18,7 +22,7 @@ func TestSetRandomSeed(t *testing.T) {
 		SetRandomSeed(42)
 		s2 := RandomString(20, AlphanumericCharset)
 
-		assert.Equal(t, s1, s2, "RandomString should produce the same result with the same seed")
+		is.Equal(s1, s2, "RandomString should produce the same result with the same seed")
 	})
 
 	t.Run("different seeds produce different results", func(t *testing.T) {
@@ -28,7 +32,7 @@ func TestSetRandomSeed(t *testing.T) {
 		SetRandomSeed(123)
 		s2 := RandomString(20, AlphanumericCharset)
 
-		assert.NotEqual(t, s1, s2, "Different seeds should produce different results")
+		is.NotEqual(s1, s2, "Different seeds should produce different results")
 	})
 
 	t.Run("reproducible Shuffle", func(t *testing.T) {
@@ -37,14 +41,14 @@ func TestSetRandomSeed(t *testing.T) {
 		SetRandomSeed(42)
 		slice1 := make([]int, len(original))
 		copy(slice1, original)
-		Shuffle(slice1)
+		mutable.Shuffle(slice1)
 
 		SetRandomSeed(42)
 		slice2 := make([]int, len(original))
 		copy(slice2, original)
-		Shuffle(slice2)
+		mutable.Shuffle(slice2)
 
-		assert.Equal(t, slice1, slice2, "Shuffle should produce the same result with the same seed")
+		is.Equal(slice1, slice2, "mutable.Shuffle should produce the same result with the same seed")
 	})
 
 	t.Run("reset returns to non-reproducible behavior", func(t *testing.T) {
@@ -57,12 +61,12 @@ func TestSetRandomSeed(t *testing.T) {
 
 		// After reset, consecutive calls should produce different results (with very high probability)
 		// Note: There's an astronomically small chance this could fail if truly random
-		assert.NotEqual(t, s2, s3, "After reset, RandomString should produce different results")
+		is.NotEqual(s2, s3, "After reset, RandomString should produce different results")
 
 		// And it should not match the seeded result
 		SetRandomSeed(42)
 		s4 := RandomString(20, AlphanumericCharset)
-		assert.Equal(t, s1, s4, "Re-seeding with 42 should reproduce the original result")
+		is.Equal(s1, s4, "Re-seeding with 42 should reproduce the original result")
 	})
 
 	t.Run("negative seed resets", func(t *testing.T) {
@@ -74,14 +78,17 @@ func TestSetRandomSeed(t *testing.T) {
 		SetRandomSeed(42)
 		s2 := RandomString(20, AlphanumericCharset)
 
-		assert.Equal(t, s1, s2, "Negative seed should reset, then re-seeding should work")
+		is.Equal(s1, s2, "Negative seed should reset, then re-seeding should work")
 	})
 }
 
-func TestSetRandomSeed_MultipleOperations(t *testing.T) {
+func TestSetRandomSeed_MultipleOperations(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	t.Cleanup(func() {
 		ResetRandomSeed()
 	})
+
+	is := assert.New(t)
 
 	// Test that a sequence of operations is reproducible
 	SetRandomSeed(999)
@@ -98,5 +105,5 @@ func TestSetRandomSeed_MultipleOperations(t *testing.T) {
 		RandomString(15, NumbersCharset),
 	}
 
-	assert.Equal(t, results1, results2, "A sequence of operations should be reproducible")
+	is.Equal(results1, results2, "A sequence of operations should be reproducible")
 }

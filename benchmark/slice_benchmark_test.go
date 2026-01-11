@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/samber/lo"
+	"github.com/samber/lo/mutable"
 )
 
 var lengths = []int{10, 100, 1000}
@@ -207,7 +208,7 @@ func BenchmarkShuffle(b *testing.B) {
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			b.ReportAllocs() // This reports memory allocations
 			for i := 0; i < b.N; i++ {
-				lo.Shuffle(ints)
+				mutable.Shuffle(ints)
 			}
 		})
 	}
@@ -217,7 +218,7 @@ func BenchmarkShuffle(b *testing.B) {
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
 			b.ReportAllocs()
 			for i := 0; i < b.N; i++ {
-				lo.Shuffle(strs)
+				mutable.Shuffle(strs)
 			}
 		})
 	}

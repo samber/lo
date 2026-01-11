@@ -36,7 +36,7 @@ func ResetSeed() {
 // Shuffle returns a slice of shuffled values. Uses the Fisher-Yates shuffle algorithm.
 func Shuffle(n int, swap func(i, j int)) {
 	if seededRand != nil {
-		r.Shuffle(n, swap)
+		seededRand.Shuffle(n, swap)
 		return
 	}
 
@@ -48,17 +48,18 @@ func Shuffle(n int, swap func(i, j int)) {
 // It panics if n <= 0.
 func IntN(n int) int {
 	if seededRand != nil {
-		return r.Intn(n)
+		return seededRand.Intn(n)
 	}
 
 	// bearer:disable go_gosec_crypto_weak_random
 	return rand.Intn(n)
 }
 
-// Int64 returns a non-negative pseudo-random 63-bit integer as an int64
+// Int64 returns a pseudo-random 63-bit integer as an int64
 // from the default Source.
+// For Go < 1.22, this simulates the full int64 range by randomly
+// negating the result of Int63().
 func Int64() int64 {
-
 	if seededRand != nil {
 		n := seededRand.Int63()
 		if seededRand.Intn(2) == 0 {
