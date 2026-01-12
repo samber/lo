@@ -182,10 +182,9 @@ func FindUniquesBy[T any, U comparable, I ~func(func(T) bool)](collection I, tra
 		for item := range collection {
 			key := transform(item)
 
-			if duplicated, ok := isDupl[key]; !ok {
-				isDupl[key] = false
-			} else if !duplicated {
-				isDupl[key] = true
+			duplicated, seen := isDupl[key]
+			if !duplicated {
+				isDupl[key] = seen
 			}
 		}
 
