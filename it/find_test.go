@@ -8,8 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/samber/lo/internal/xrand"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/samber/lo/internal/xrand"
 )
 
 func TestIndexOf(t *testing.T) {
@@ -38,6 +39,7 @@ func TestHasPrefix(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
+	is.True(HasPrefix(values(1, 2, 3, 4), 1, 2, 3, 4))
 	is.True(HasPrefix(values(1, 2, 3, 4), 1, 2))
 	is.False(HasPrefix(values(1, 2, 3, 4), 42))
 	is.False(HasPrefix(values(1, 2), 1, 2, 3, 4))
@@ -48,11 +50,13 @@ func TestHasSuffix(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
+	is.True(HasSuffix(values(1, 2, 3, 4), 1, 2, 3, 4))
 	is.True(HasSuffix(values(1, 2, 3, 4), 3, 4))
 	is.True(HasSuffix(values(1, 2, 3, 4, 5), 3, 4, 5))
 	is.False(HasSuffix(values(1, 2, 3, 4), 42))
 	is.False(HasSuffix(values(1, 2), 1, 2, 3, 4))
 	is.True(HasSuffix(values(1, 2, 3, 4)))
+	is.False(HasSuffix(values(0), 0, 0))
 }
 
 func TestFind(t *testing.T) {

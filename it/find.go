@@ -78,23 +78,17 @@ func HasSuffix[T comparable](collection iter.Seq[T], suffix ...T) bool {
 	}
 
 	n := len(suffix)
-	buf := make([]T, 0, n)
+	buf := make([]T, n)
 	var i int
 
-	for item := range collection {
-		if len(buf) < n {
-			buf = append(buf, item)
-		} else {
-			buf[i] = item
-		}
-		i = (i + 1) % n
+	for buf[i%n] = range collection {
+		i++
 	}
 
-	if len(buf) < n {
+	if i < n {
 		return false
 	}
 
-	i += n
 	for j := range suffix {
 		if suffix[j] != buf[(i+j)%n] {
 			return false
