@@ -361,7 +361,7 @@ func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (throt
 		}
 	})
 
-	throttleFn, reset := NewThrottleByWithCount[struct{}](interval, count, callbacks...)
+	throttleFn, reset := NewThrottleByWithCount(interval, count, callbacks...)
 	return func() {
 		throttleFn(struct{}{})
 	}, reset
@@ -371,7 +371,7 @@ func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (throt
 // This returns 2 functions, First one is throttled function and Second one is a function to reset interval.
 // Play: https://go.dev/play/p/0Wv6oX7dHdC
 func NewThrottleBy[T comparable](interval time.Duration, f ...func(key T)) (throttle func(key T), reset func()) {
-	return NewThrottleByWithCount[T](interval, 1, f...)
+	return NewThrottleByWithCount(interval, 1, f...)
 }
 
 // NewThrottleByWithCount is NewThrottleBy with count limit, throttled function will be invoked count times in every interval.
