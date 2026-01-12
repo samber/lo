@@ -483,6 +483,10 @@ func TestEllipsis(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
+	is.Equal("...", Ellipsis("12", 0))
+	is.Equal("...", Ellipsis("12", 1))
+	is.Equal("12", Ellipsis("12", 2))
+	is.Equal("12", Ellipsis("12", 3))
 	is.Equal("12345", Ellipsis("12345", 5))
 	is.Equal("1...", Ellipsis("12345", 4))
 	is.Equal("1...", Ellipsis("	12345  ", 4))
