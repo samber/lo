@@ -222,7 +222,7 @@ func ForEachWhileI[T any](collection iter.Seq[T], predicate func(item T, index i
 // Play: https://go.dev/play/p/9QkDH3-zp
 func Times[T any](count int, callback func(index int) T) iter.Seq[T] {
 	return func(yield func(T) bool) {
-		for i := 0; i < count; i++ {
+		for i := range count {
 			if !yield(callback(i)) {
 				return
 			}
