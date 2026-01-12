@@ -27,11 +27,15 @@ func TestRangeFrom(t *testing.T) {
 	result3 := RangeFrom(10, 0)
 	result4 := RangeFrom(2.0, 3)
 	result5 := RangeFrom(-2.0, -3)
+	result6 := RangeFrom(2.5, 3)
+	result7 := RangeFrom(-2.5, -3)
 	is.Equal([]int{1, 2, 3, 4, 5}, result1)
 	is.Equal([]int{-1, -2, -3, -4, -5}, result2)
 	is.Empty(result3)
 	is.Equal([]float64{2.0, 3.0, 4.0}, result4)
 	is.Equal([]float64{-2.0, -3.0, -4.0}, result5)
+	is.Equal([]float64{2.5, 3.5, 4.5}, result6)
+	is.Equal([]float64{-2.5, -3.5, -4.5}, result7)
 }
 
 func TestRangeClose(t *testing.T) {
