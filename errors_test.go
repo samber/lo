@@ -2,6 +2,12 @@ package lo
 
 import (
 	"errors"
+	"fmt"
+	"io"
+	"net/url"
+	"reflect"
+	"runtime/debug"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -21,8 +27,8 @@ func TestValidate(t *testing.T) {
 	is.NoError(result2)
 }
 
-func TestMust(t *testing.T) {
-	t.Parallel()
+func TestMust(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	is.Equal("foo", Must("foo", nil))
@@ -62,8 +68,8 @@ func TestMust(t *testing.T) {
 	})
 }
 
-func TestMustX(t *testing.T) {
-	t.Parallel()
+func TestMustX(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	{
@@ -251,6 +257,111 @@ func TestMustX(t *testing.T) {
 			Must6(1, 2, 3, 4, 5, 6, false, "operation shouldn't fail with %s", "foo")
 		})
 	}
+}
+
+func mustCheckerWithStack(err any, messageArgs ...any) {
+	if err == nil {
+		return
+	}
+
+	switch e := err.(type) {
+	case bool:
+		if !e {
+			message := messageFromMsgAndArgs(messageArgs...)
+			if message == "" {
+				message = "not ok"
+			}
+
+			// panic(stackErrors.New(message))
+			panic(errorsJoin(errors.New(message), errors.New(string(debug.Stack()))))
+		}
+
+	case error:
+		message := messageFromMsgAndArgs(messageArgs...)
+		if message != "" {
+			// panic(stackErrors.Wrap(e, message))
+			panic(errorsJoin(e, errors.New(message), errors.New(string(debug.Stack()))))
+		}
+		// panic(stackErrors.WithStack(e))
+		panic(errorsJoin(e, errors.New(string(debug.Stack()))))
+
+	default:
+		// panic(stackErrors.New("must: invalid err type '" + reflect.TypeOf(err).Name() + "', should either be a bool or an error"))
+		panic(errorsJoin(errors.New("must: invalid err type '"+reflect.TypeOf(err).Name()+"', should either be a bool or an error"),
+			errors.New(string(debug.Stack()))))
+	}
+}
+
+// errorsJoin: var errorsJoin = errors.Join // only go 1.20+, not in go 1.18 .
+func errorsJoin(es ...error) joinErrors { return joinErrors(es) }
+
+type joinErrors []error
+
+func (es joinErrors) Is(target error) bool {
+	for _, e := range es {
+		if errors.Is(e, target) {
+			return true
+		}
+	}
+	return error(es) == target
+}
+
+func (es joinErrors) Error() string {
+	sb := strings.Builder{}
+	for _, e := range es {
+		sb.WriteString(e.Error())
+		sb.WriteRune('\n')
+	}
+	return sb.String()
+}
+
+func (es joinErrors) As(t any) bool {
+	for _, e := range es {
+		if errors.As(e, t) {
+			return true
+		}
+	}
+	return false
+}
+
+func TestMustUserCustomHandler(t *testing.T) { //nolint:paralleltest
+	oldMustChecker := MustChecker
+	MustChecker = mustCheckerWithStack
+	defer func() {
+		MustChecker = oldMustChecker
+	}()
+
+	t.Run("wrap stack", func(t *testing.T) { //nolint:paralleltest
+		err, ok := TryWithErrorValue(func() error {
+			Must("foo", errors.New("wrap callstack"))
+			return nil
+		})
+		assert.False(t, ok)
+		fullErrStr := fmt.Sprintf("%+v", err)
+		assert.Contains(t, fullErrStr, "/errors_test.go:", fullErrStr)
+	})
+	t.Run("wrap as", func(t *testing.T) { //nolint:paralleltest
+		e, ok := TryWithErrorValue(func() error {
+			Must("foo", errorsJoin(io.EOF, &url.Error{
+				Op:  "test op",
+				URL: "test url",
+				Err: io.ErrUnexpectedEOF,
+			}))
+			return nil
+		})
+		assert.False(t, ok)
+		err, ok := e.(error)
+		assert.True(t, ok)
+		errURL, ok := ErrorsAs[*url.Error](err)
+		assert.True(t, ok)
+		assert.NotNil(t, errURL)
+		if errURL != nil {
+			assert.Equal(t, "test url", errURL.URL)
+			assert.Equal(t, "test op", errURL.Op)
+			assert.ErrorIs(t, err, io.EOF)
+			assert.ErrorIs(t, err, io.ErrUnexpectedEOF)
+		}
+	})
 }
 
 func TestTry(t *testing.T) {
@@ -600,8 +711,8 @@ func TestErrorsAs(t *testing.T) {
 	is.Nil(err)
 }
 
-func TestAssert(t *testing.T) {
-	t.Parallel()
+func TestAssert(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	is.NotPanics(func() {
@@ -632,8 +743,8 @@ func TestAssert(t *testing.T) {
 	}
 }
 
-func TestAssertf(t *testing.T) {
-	t.Parallel()
+func TestAssertf(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
 	is := assert.New(t)
 
 	is.NotPanics(func() {
@@ -659,4 +770,26 @@ func TestAssertf(t *testing.T) {
 			Assertf(age >= 15, "user age must be >= 15, got %d", age)
 		})
 	}
+}
+
+func TestAssertfWithCustom(t *testing.T) { //nolint:paralleltest
+	oldAssertf := Assertf
+	Assertf = func(condition bool, format string, args ...any) {
+		if !condition {
+			panic(fmt.Errorf("%s: %s", "customErr", fmt.Sprintf(format, args...)))
+		}
+	}
+	defer func() {
+		Assertf = oldAssertf
+	}()
+
+	e, ok := TryWithErrorValue(func() error {
+		Assertf(false, "user defined message")
+		return nil
+	})
+	assert.False(t, ok)
+	assert.NotNil(t, e)
+	err, ok := e.(error)
+	assert.True(t, ok)
+	assert.Equal(t, "customErr: user defined message", err.Error())
 }

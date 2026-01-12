@@ -283,6 +283,43 @@ func Concat[T any, Slice ~[]T](collections ...Slice) Slice {
 	return Flatten(collections)
 }
 
+// Window creates a slice of sliding windows of a given size.
+// Each window overlaps with the previous one by size-1 elements.
+// This is equivalent to Sliding(collection, size, 1).
+func Window[T any, Slice ~[]T](collection Slice, size int) []Slice {
+	if size <= 0 {
+		panic("lo.Window: size must be greater than 0")
+	}
+	return Sliding(collection, size, 1)
+}
+
+// Sliding creates a slice of sliding windows of a given size with a given step.
+// If step is equal to size, windows don't overlap (similar to Chunk).
+// If step is less than size, windows overlap.
+func Sliding[T any, Slice ~[]T](collection Slice, size, step int) []Slice {
+	if size <= 0 {
+		panic("lo.Sliding: size must be greater than 0")
+	}
+
+	if step <= 0 {
+		panic("lo.Sliding: step must be greater than 0")
+	}
+
+	if len(collection) < size {
+		return []Slice{}
+	}
+
+	result := make([]Slice, 0)
+
+	for i := 0; i <= len(collection)-size; i += step {
+		window := make(Slice, size)
+		copy(window, collection[i:i+size])
+		result = append(result, window)
+	}
+
+	return result
+}
+
 // Interleave round-robin alternating input slices and sequentially appending value at index into result.
 // Play: https://go.dev/play/p/-RJkTLQEDVt
 func Interleave[T any, Slice ~[]T](collections ...Slice) Slice {
@@ -531,6 +568,46 @@ func DropRightWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) 
 	return append(result, collection[:i+1]...)
 }
 
+// Take takes the first n elements from a slice.
+func Take[T any, Slice ~[]T](collection Slice, n int) Slice {
+	if n < 0 {
+		panic("lo.Take: n must not be negative")
+	}
+
+	if n == 0 {
+		return make(Slice, 0)
+	}
+
+	size := len(collection)
+	if size == 0 {
+		return make(Slice, 0)
+	}
+
+	if n >= size {
+		result := make(Slice, size)
+		copy(result, collection)
+		return result
+	}
+
+	result := make(Slice, n)
+	copy(result, collection)
+	return result
+}
+
+// TakeWhile takes elements from the beginning of a slice while the predicate returns true.
+func TakeWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
+	i := 0
+	for ; i < len(collection); i++ {
+		if !predicate(collection[i]) {
+			break
+		}
+	}
+
+	result := make(Slice, i)
+	copy(result, collection[:i])
+	return result
+}
+
 // DropByIndex drops elements from a slice by the index.
 // A negative index will drop elements from the end of the slice.
 // Play: https://go.dev/play/p/bPIH4npZRxS
@@ -558,6 +635,33 @@ func DropByIndex[T any, Slice ~[]T](collection Slice, indexes ...int) Slice {
 		}
 
 		result = append(result[:indexes[i]-i], result[indexes[i]-i+1:]...)
+	}
+
+	return result
+}
+
+// TakeFilter filters elements and takes the first n elements that match the predicate.
+// Equivalent to calling Take(Filter(...)), but more efficient as it stops after finding n matches.
+func TakeFilter[T any, Slice ~[]T](collection Slice, n int, predicate func(item T, index int) bool) Slice {
+	if n < 0 {
+		panic("lo.TakeFilter: n must not be negative")
+	}
+
+	if n == 0 {
+		return make(Slice, 0)
+	}
+
+	result := make(Slice, 0, n)
+	count := 0
+
+	for i := range collection {
+		if predicate(collection[i], i) {
+			result = append(result, collection[i])
+			count++
+			if count >= n {
+				break
+			}
+		}
 	}
 
 	return result

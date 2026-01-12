@@ -10,6 +10,7 @@ similarHelpers:
   - core#slice#filtermap
   - core#slice#filterreject
   - core#slice#rejectmap
+  - core#slice#takefilter
   - parallel#slice#filter
   - mutable#slice#filter
 variantHelpers:

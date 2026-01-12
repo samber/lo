@@ -111,6 +111,8 @@ Supported helpers for slices:
 - [GroupBy](#groupby)
 - [GroupByMap](#groupbymap)
 - [Chunk](#chunk)
+- [Window](#window)
+- [Sliding](#sliding)
 - [PartitionBy](#partitionby)
 - [Flatten](#flatten)
 - [Concat](#concat)
@@ -124,6 +126,9 @@ Supported helpers for slices:
 - [SliceToMap / Associate](#slicetomap-alias-associate)
 - [FilterSliceToMap](#filterslicetomap)
 - [Keyify](#keyify)
+- [Take](#take)
+- [TakeWhile](#takewhile)
+- [TakeFilter](#takefilter)
 - [Drop](#drop)
 - [DropRight](#dropright)
 - [DropWhile](#dropwhile)
@@ -680,6 +685,36 @@ lo.Chunk([]int{0}, 2)
 
 [[play](https://go.dev/play/p/kEMkFbdu85g)]
 
+### Window
+
+Creates a slice of sliding windows of a given size. Each window shares size-1 elements with the previous one. This is equivalent to `Sliding(collection, size, 1)`.
+
+```go
+lo.Window([]int{1, 2, 3, 4, 5}, 3)
+// [][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}}
+
+lo.Window([]float64{20, 22, 21, 23, 24}, 3)
+// [][]float64{{20, 22, 21}, {22, 21, 23}, {21, 23, 24}}
+```
+
+### Sliding
+
+Creates a slice of sliding windows of a given size with a given step. If step is equal to size, windows have no common elements (similar to Chunk). If step is less than size, windows share common elements.
+
+```go
+// Windows with shared elements (step < size)
+lo.Sliding([]int{1, 2, 3, 4, 5, 6}, 3, 1)
+// [][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}
+
+// Windows with no shared elements (step == size, like Chunk)
+lo.Sliding([]int{1, 2, 3, 4, 5, 6}, 3, 3)
+// [][]int{{1, 2, 3}, {4, 5, 6}}
+
+// Step > size (skipping elements)
+lo.Sliding([]int{1, 2, 3, 4, 5, 6, 7, 8}, 2, 3)
+// [][]int{{1, 2}, {4, 5}, {7, 8}}
+```
+
 ### PartitionBy
 
 Returns a slice of elements split into groups. The order of grouped values is determined by the order they occur in collection. The grouping is generated from the results of running each element of collection through iteratee.
@@ -922,6 +957,50 @@ set := lo.Keyify([]int{1, 1, 2, 3, 4})
 ```
 
 [[play](https://go.dev/play/p/RYhhM_csqIG)]
+
+### Take
+
+Takes the first n elements from a slice.
+
+```go
+l := lo.Take([]int{0, 1, 2, 3, 4, 5}, 3)
+// []int{0, 1, 2}
+
+l := lo.Take([]int{0, 1, 2}, 5)
+// []int{0, 1, 2}
+```
+
+### TakeWhile
+
+Takes elements from the beginning while the predicate returns true.
+
+```go
+l := lo.TakeWhile([]int{0, 1, 2, 3, 4, 5}, func(val int) bool {
+    return val < 3
+})
+// []int{0, 1, 2}
+
+l := lo.TakeWhile([]string{"a", "aa", "aaa", "aa"}, func(val string) bool {
+    return len(val) <= 2
+})
+// []string{"a", "aa"}
+```
+
+### TakeFilter
+
+Filters elements and takes the first n elements that match the predicate. Equivalent to calling Take(Filter(...)), but more efficient as it stops after finding n matches.
+
+```go
+l := lo.TakeFilter([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 3, func(val int, index int) bool {
+    return val%2 == 0
+})
+// []int{2, 4, 6}
+
+l := lo.TakeFilter([]string{"a", "aa", "aaa", "aaaa"}, 2, func(val string, index int) bool {
+    return len(val) > 1
+})
+// []string{"aa", "aaa"}
+```
 
 ### Drop
 
@@ -1192,7 +1271,7 @@ in[0] = 99
 // cloned is []int{1, 2, 3, 4, 5}
 ```
 
-[[play](https://go.dev/play/p/tXiy-iK6PAc)]
+[[play](https://go.dev/play/p/hgHmoOIxmuH)]
 
 ### Compact
 

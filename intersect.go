@@ -121,35 +121,15 @@ func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 		return Slice{}
 	}
 
-	if len(lists) == 1 {
-		return lists[0]
+	last := lists[len(lists)-1]
+
+	seen := make(map[T]bool, len(last))
+
+	for _, item := range last {
+		seen[item] = false
 	}
 
-	seen := make(map[T]bool)
-
-	for i := len(lists) - 1; i >= 0; i-- {
-		if i == len(lists)-1 {
-			for _, item := range lists[i] {
-				seen[item] = true
-			}
-			continue
-		}
-
-		if i == 0 {
-			result := make(Slice, 0, len(seen))
-			for _, item := range lists[0] {
-				if _, ok := seen[item]; ok {
-					result = append(result, item)
-					delete(seen, item)
-				}
-			}
-			return result
-		}
-
-		for k := range seen {
-			seen[k] = false
-		}
-
+	for i := len(lists) - 2; i > 0 && len(seen) != 0; i-- {
 		for _, item := range lists[i] {
 			if _, ok := seen[item]; ok {
 				seen[item] = true
@@ -157,17 +137,24 @@ func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 		}
 
 		for k, v := range seen {
-			if !v {
+			if v {
+				seen[k] = false
+			} else {
 				delete(seen, k)
 			}
 		}
+	}
 
-		if len(seen) == 0 {
-			break
+	result := make(Slice, 0, len(seen))
+
+	for _, item := range lists[0] {
+		if _, ok := seen[item]; ok {
+			result = append(result, item)
+			delete(seen, item)
 		}
 	}
 
-	return Slice{}
+	return result
 }
 
 // IntersectBy returns the intersection between two collections using a custom key selector function.
@@ -176,37 +163,16 @@ func IntersectBy[T any, K comparable, Slice ~[]T](transform func(T) K, lists ...
 		return Slice{}
 	}
 
-	if len(lists) == 1 {
-		return lists[0]
+	last := lists[len(lists)-1]
+
+	seen := make(map[K]bool, len(last))
+
+	for _, item := range last {
+		k := transform(item)
+		seen[k] = false
 	}
 
-	seen := make(map[K]bool)
-
-	for i := len(lists) - 1; i >= 0; i-- {
-		if i == len(lists)-1 {
-			for _, item := range lists[i] {
-				k := transform(item)
-				seen[k] = true
-			}
-			continue
-		}
-
-		if i == 0 {
-			result := make(Slice, 0, len(seen))
-			for _, item := range lists[0] {
-				k := transform(item)
-				if _, ok := seen[k]; ok {
-					result = append(result, item)
-					delete(seen, k)
-				}
-			}
-			return result
-		}
-
-		for k := range seen {
-			seen[k] = false
-		}
-
+	for i := len(lists) - 2; i > 0 && len(seen) != 0; i-- {
 		for _, item := range lists[i] {
 			k := transform(item)
 			if _, ok := seen[k]; ok {
@@ -215,17 +181,25 @@ func IntersectBy[T any, K comparable, Slice ~[]T](transform func(T) K, lists ...
 		}
 
 		for k, v := range seen {
-			if !v {
+			if v {
+				seen[k] = false
+			} else {
 				delete(seen, k)
 			}
 		}
+	}
 
-		if len(seen) == 0 {
-			break
+	result := make(Slice, 0, len(seen))
+
+	for _, item := range lists[0] {
+		k := transform(item)
+		if _, ok := seen[k]; ok {
+			result = append(result, item)
+			delete(seen, k)
 		}
 	}
 
-	return Slice{}
+	return result
 }
 
 // Difference returns the difference between two collections.
