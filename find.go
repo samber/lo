@@ -687,8 +687,7 @@ func SampleBy[T any](collection []T, randomIntGenerator randomIntGenerator) T {
 // Samples returns N random unique items from collection.
 // Play: https://go.dev/play/p/vCcSJbh5s6l
 func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
-	results := SamplesBy(collection, count, xrand.IntN)
-	return results
+	return SamplesBy(collection, count, xrand.IntN)
 }
 
 // SamplesBy returns N random unique items from collection, using randomIntGenerator as the random index generator.
@@ -696,15 +695,19 @@ func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
 func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerator randomIntGenerator) Slice {
 	size := len(collection)
 
+	if size < count {
+		count = size
+	}
+
 	cOpy := append(Slice{}, collection...)
 
-	results := Slice{}
+	results := make(Slice, count)
 
-	for i := 0; i < size && i < count; i++ {
+	for i := 0; i < count; i++ {
 		copyLength := size - i
 
-		index := randomIntGenerator(size - i)
-		results = append(results, cOpy[index])
+		index := randomIntGenerator(copyLength)
+		results[i] = cOpy[index]
 
 		// Removes element.
 		// It is faster to swap with last element and remove it.
