@@ -26,12 +26,7 @@ func ChannelDispatcher[T any](stream <-chan T, count, channelBufferCap int, stra
 
 		var i uint64
 
-		for {
-			msg, ok := <-stream
-			if !ok {
-				return
-			}
-
+		for msg := range stream {
 			destination := strategy(msg, i, roChildren) % count
 			children[destination] <- msg
 
