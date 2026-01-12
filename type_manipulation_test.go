@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -132,6 +133,29 @@ func TestFromPtrOr(t *testing.T) {
 	is.Equal(fallbackStr, FromPtrOr(nil, fallbackStr))
 	is.Equal(i, FromPtrOr(ptrInt, fallbackInt))
 	is.Equal(fallbackInt, FromPtrOr(nil, fallbackInt))
+}
+
+func TestMapPtr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var (
+		fourtytwo = 42
+
+		ptr1 = &fourtytwo
+		ptr2 *int
+
+		fourtytwostring = "42"
+
+		expected1 = &fourtytwostring
+		expected2 *string
+	)
+
+	result1 := MapPtr(ptr1, strconv.Itoa)
+	result2 := MapPtr(ptr2, strconv.Itoa)
+
+	is.Equal(expected1, result1)
+	is.Equal(expected2, result2)
 }
 
 func TestToSlicePtr(t *testing.T) {
