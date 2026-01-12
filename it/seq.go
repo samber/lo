@@ -326,13 +326,12 @@ func PartitionBy[T any, K comparable](collection iter.Seq[T], transform func(ite
 		key := transform(item)
 
 		resultIndex, ok := seen[key]
-		if !ok {
-			resultIndex = len(result)
-			seen[key] = resultIndex
-			result = append(result, []T{})
+		if ok {
+			result[resultIndex] = append(result[resultIndex], item)
+		} else {
+			seen[key] = len(result)
+			result = append(result, []T{item})
 		}
-
-		result[resultIndex] = append(result[resultIndex], item)
 	}
 
 	return result
