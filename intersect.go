@@ -291,7 +291,7 @@ func WithoutEmpty[T comparable, Slice ~[]T](collection Slice) Slice {
 
 // WithoutNth returns a slice excluding the nth value.
 // Play: https://go.dev/play/p/5g3F9R2H1xL
-func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice {
+func WithoutNth[T any, Slice ~[]T](collection Slice, nths ...int) Slice {
 	toRemove := Keyify(nths)
 
 	result := make(Slice, 0, len(collection))
