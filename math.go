@@ -7,9 +7,9 @@ import (
 // Range creates a slice of numbers (positive and/or negative) with given length.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func Range(elementNum int) []int {
-	length := If(elementNum < 0, -elementNum).Else(elementNum)
+	step := Ternary(elementNum < 0, -1, 1)
+	length := elementNum * step
 	result := make([]int, length)
-	step := If(elementNum < 0, -1).Else(1)
 	for i, j := 0, 0; i < length; i, j = i+1, j+step {
 		result[i] = j
 	}
@@ -19,9 +19,9 @@ func Range(elementNum int) []int {
 // RangeFrom creates a slice of numbers from start with specified length.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum int) []T {
-	length := If(elementNum < 0, -elementNum).Else(elementNum)
+	step := Ternary(elementNum < 0, -1, 1)
+	length := elementNum * step
 	result := make([]T, length)
-	step := If(elementNum < 0, -1).Else(1)
 	for i, j := 0, start; i < length; i, j = i+1, j+T(step) {
 		result[i] = j
 	}
