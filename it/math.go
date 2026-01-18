@@ -12,8 +12,8 @@ import (
 // Range creates a sequence of numbers (positive and/or negative) with given length.
 // Play: https://go.dev/play/p/6ksL0W6KEuQ
 func Range(elementNum int) iter.Seq[int] {
-	length := lo.If(elementNum < 0, -elementNum).Else(elementNum)
-	step := lo.If(elementNum < 0, -1).Else(1)
+	step := lo.Ternary(elementNum < 0, -1, 1)
+	length := elementNum * step
 	return func(yield func(int) bool) {
 		for i, j := 0, 0; i < length; i, j = i+1, j+step {
 			if !yield(j) {
@@ -26,8 +26,8 @@ func Range(elementNum int) iter.Seq[int] {
 // RangeFrom creates a sequence of numbers from start with specified length.
 // Play: https://go.dev/play/p/WHP_NI5scj9
 func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum int) iter.Seq[T] {
-	length := lo.If(elementNum < 0, -elementNum).Else(elementNum)
-	step := lo.If(elementNum < 0, -1).Else(1)
+	step := lo.Ternary(elementNum < 0, -1, 1)
+	length := elementNum * step
 	return func(yield func(T) bool) {
 		for i, j := 0, start; i < length; i, j = i+1, j+T(step) {
 			if !yield(j) {

@@ -222,7 +222,7 @@ func ForEachWhileI[T any](collection iter.Seq[T], predicate func(item T, index i
 // Play: https://go.dev/play/p/9QkDH3-zp
 func Times[T any](count int, callback func(index int) T) iter.Seq[T] {
 	return func(yield func(T) bool) {
-		for i := 0; i < count; i++ {
+		for i := range count {
 			if !yield(callback(i)) {
 				return
 			}
@@ -326,13 +326,12 @@ func PartitionBy[T any, K comparable](collection iter.Seq[T], transform func(ite
 		key := transform(item)
 
 		resultIndex, ok := seen[key]
-		if !ok {
-			resultIndex = len(result)
-			seen[key] = resultIndex
-			result = append(result, []T{})
+		if ok {
+			result[resultIndex] = append(result[resultIndex], item)
+		} else {
+			seen[key] = len(result)
+			result = append(result, []T{item})
 		}
-
-		result[resultIndex] = append(result[resultIndex], item)
 	}
 
 	return result

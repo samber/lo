@@ -244,13 +244,12 @@ func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee fun
 		key := iteratee(collection[i])
 
 		resultIndex, ok := seen[key]
-		if !ok {
-			resultIndex = len(result)
-			seen[key] = resultIndex
-			result = append(result, Slice{})
+		if ok {
+			result[resultIndex] = append(result[resultIndex], collection[i])
+		} else {
+			seen[key] = len(result)
+			result = append(result, Slice{collection[i]})
 		}
-
-		result[resultIndex] = append(result[resultIndex], collection[i])
 	}
 
 	return result

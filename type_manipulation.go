@@ -173,7 +173,7 @@ func CoalesceOrEmpty[T comparable](v ...T) T {
 // Play: https://go.dev/play/p/Gyo9otyvFHH
 func CoalesceSlice[T any](v ...[]T) ([]T, bool) {
 	for i := range v {
-		if v[i] != nil && len(v[i]) > 0 {
+		if len(v[i]) > 0 {
 			return v[i], true
 		}
 	}
@@ -184,7 +184,7 @@ func CoalesceSlice[T any](v ...[]T) ([]T, bool) {
 // Play: https://go.dev/play/p/Gyo9otyvFHH
 func CoalesceSliceOrEmpty[T any](v ...[]T) []T {
 	for i := range v {
-		if v[i] != nil && len(v[i]) > 0 {
+		if len(v[i]) > 0 {
 			return v[i]
 		}
 	}
@@ -195,7 +195,7 @@ func CoalesceSliceOrEmpty[T any](v ...[]T) []T {
 // Play: https://go.dev/play/p/Gyo9otyvFHH
 func CoalesceMap[K comparable, V any](v ...map[K]V) (map[K]V, bool) {
 	for i := range v {
-		if v[i] != nil && len(v[i]) > 0 {
+		if len(v[i]) > 0 {
 			return v[i], true
 		}
 	}
@@ -206,7 +206,7 @@ func CoalesceMap[K comparable, V any](v ...map[K]V) (map[K]V, bool) {
 // Play: https://go.dev/play/p/Gyo9otyvFHH
 func CoalesceMapOrEmpty[K comparable, V any](v ...map[K]V) map[K]V {
 	for i := range v {
-		if v[i] != nil && len(v[i]) > 0 {
+		if len(v[i]) > 0 {
 			return v[i]
 		}
 	}

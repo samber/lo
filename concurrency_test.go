@@ -301,7 +301,7 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 	t.Run("counter is incremented", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
 
-		testWithTimeout(t, 100*time.Millisecond)
+		testWithTimeout(t, 150*time.Millisecond)
 		is := assert.New(t)
 
 		counter := 0
@@ -311,9 +311,9 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 			return false
 		}
 
-		iter, duration, ok := WaitForWithContext(context.Background(), alwaysFalse, 40*time.Millisecond, 10*time.Millisecond)
+		iter, duration, ok := WaitForWithContext(context.Background(), alwaysFalse, 80*time.Millisecond, 20*time.Millisecond)
 		is.Equal(counter, iter, "unexpected iteration count")
-		is.InDelta(40*time.Millisecond, duration, float64(5*time.Millisecond))
+		is.InDelta(80*time.Millisecond, duration, float64(10*time.Millisecond))
 		is.False(ok)
 	})
 

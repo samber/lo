@@ -7,9 +7,9 @@ import (
 // Range creates a slice of numbers (positive and/or negative) with given length.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func Range(elementNum int) []int {
-	length := If(elementNum < 0, -elementNum).Else(elementNum)
+	step := Ternary(elementNum < 0, -1, 1)
+	length := elementNum * step
 	result := make([]int, length)
-	step := If(elementNum < 0, -1).Else(1)
 	for i, j := 0, 0; i < length; i, j = i+1, j+step {
 		result[i] = j
 	}
@@ -19,9 +19,9 @@ func Range(elementNum int) []int {
 // RangeFrom creates a slice of numbers from start with specified length.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum int) []T {
-	length := If(elementNum < 0, -elementNum).Else(elementNum)
+	step := Ternary(elementNum < 0, -1, 1)
+	length := elementNum * step
 	result := make([]T, length)
-	step := If(elementNum < 0, -1).Else(1)
 	for i, j := 0, start; i < length; i, j = i+1, j+T(step) {
 		result[i] = j
 	}
@@ -88,14 +88,6 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 // Product gets the product of the values in a collection. If collection is empty 1 is returned.
 // Play: https://go.dev/play/p/2_kjM_smtAH
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
-	if collection == nil {
-		return 1
-	}
-
-	if len(collection) == 0 {
-		return 1
-	}
-
 	var product T = 1
 	for i := range collection {
 		product *= collection[i]
@@ -106,14 +98,6 @@ func Product[T constraints.Float | constraints.Integer | constraints.Complex](co
 // ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 1 is returned.
 // Play: https://go.dev/play/p/wadzrWr9Aer
 func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) R) R {
-	if collection == nil {
-		return 1
-	}
-
-	if len(collection) == 0 {
-		return 1
-	}
-
 	var product R = 1
 	for i := range collection {
 		product *= iteratee(collection[i])

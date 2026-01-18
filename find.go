@@ -152,16 +152,20 @@ func FindKeyBy[K comparable, V any](object map[K]V, predicate func(key K, value 
 func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
 	isDupl := make(map[T]bool, len(collection))
 
+	duplicates := 0
+
 	for i := range collection {
-		duplicated, ok := isDupl[collection[i]]
-		if !ok {
-			isDupl[collection[i]] = false
-		} else if !duplicated {
-			isDupl[collection[i]] = true
+		duplicated, seen := isDupl[collection[i]]
+		if !duplicated {
+			isDupl[collection[i]] = seen
+
+			if seen {
+				duplicates++
+			}
 		}
 	}
 
-	result := make(Slice, 0, len(collection)-len(isDupl))
+	result := make(Slice, 0, len(isDupl)-duplicates)
 
 	for i := range collection {
 		if duplicated := isDupl[collection[i]]; !duplicated {
@@ -178,18 +182,22 @@ func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
 func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
+	duplicates := 0
+
 	for i := range collection {
 		key := iteratee(collection[i])
 
-		duplicated, ok := isDupl[key]
-		if !ok {
-			isDupl[key] = false
-		} else if !duplicated {
-			isDupl[key] = true
+		duplicated, seen := isDupl[key]
+		if !duplicated {
+			isDupl[key] = seen
+
+			if seen {
+				duplicates++
+			}
 		}
 	}
 
-	result := make(Slice, 0, len(collection)-len(isDupl))
+	result := make(Slice, 0, len(isDupl)-duplicates)
 
 	for i := range collection {
 		key := iteratee(collection[i])
@@ -207,16 +215,20 @@ func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee f
 func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
 	isDupl := make(map[T]bool, len(collection))
 
+	duplicates := 0
+
 	for i := range collection {
-		duplicated, ok := isDupl[collection[i]]
-		if !ok {
-			isDupl[collection[i]] = false
-		} else if !duplicated {
-			isDupl[collection[i]] = true
+		duplicated, seen := isDupl[collection[i]]
+		if !duplicated {
+			isDupl[collection[i]] = seen
+
+			if seen {
+				duplicates++
+			}
 		}
 	}
 
-	result := make(Slice, 0, len(collection)-len(isDupl))
+	result := make(Slice, 0, duplicates)
 
 	for i := range collection {
 		if duplicated := isDupl[collection[i]]; duplicated {
@@ -234,18 +246,22 @@ func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
 func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
+	duplicates := 0
+
 	for i := range collection {
 		key := iteratee(collection[i])
 
-		duplicated, ok := isDupl[key]
-		if !ok {
-			isDupl[key] = false
-		} else if !duplicated {
-			isDupl[key] = true
+		duplicated, seen := isDupl[key]
+		if !duplicated {
+			isDupl[key] = seen
+
+			if seen {
+				duplicates++
+			}
 		}
 	}
 
-	result := make(Slice, 0, len(collection)-len(isDupl))
+	result := make(Slice, 0, duplicates)
 
 	for i := range collection {
 		key := iteratee(collection[i])
@@ -687,8 +703,7 @@ func SampleBy[T any](collection []T, randomIntGenerator randomIntGenerator) T {
 // Samples returns N random unique items from collection.
 // Play: https://go.dev/play/p/vCcSJbh5s6l
 func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
-	results := SamplesBy(collection, count, xrand.IntN)
-	return results
+	return SamplesBy(collection, count, xrand.IntN)
 }
 
 // SamplesBy returns N random unique items from collection, using randomIntGenerator as the random index generator.
@@ -696,15 +711,19 @@ func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
 func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerator randomIntGenerator) Slice {
 	size := len(collection)
 
+	if size < count {
+		count = size
+	}
+
 	cOpy := append(Slice{}, collection...)
 
-	results := Slice{}
+	results := make(Slice, count)
 
-	for i := 0; i < size && i < count; i++ {
+	for i := 0; i < count; i++ {
 		copyLength := size - i
 
-		index := randomIntGenerator(size - i)
-		results = append(results, cOpy[index])
+		index := randomIntGenerator(copyLength)
+		results[i] = cOpy[index]
 
 		// Removes element.
 		// It is faster to swap with last element and remove it.

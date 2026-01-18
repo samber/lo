@@ -394,6 +394,10 @@ func TestWithoutNth(t *testing.T) {
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := WithoutNth(allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
+
+	// This works for non-comparable as well
+	result5 := WithoutNth([]func() int{func() int { return 1 }, func() int { return 2 }, func() int { return 3 }}, 1)
+	is.Equal([]int{1, 3}, Map(result5, func(f func() int, _ int) int { return f() }))
 }
 
 func TestElementsMatch(t *testing.T) {

@@ -132,10 +132,6 @@ func ChunkString[T ~string](str T, size int) []T {
 		panic("lo.ChunkString: size must be greater than 0")
 	}
 
-	if len(str) == 0 {
-		return []T{""}
-	}
-
 	if size >= len(str) {
 		return []T{str}
 	}
@@ -237,10 +233,10 @@ func Ellipsis(str string, length int) string {
 	str = strings.TrimSpace(str)
 
 	if len(str) > length {
-		if len(str) < 3 || length < 3 {
+		if length < 3 {
 			return "..."
 		}
-		return strings.TrimSpace(str[0:length-3]) + "..."
+		return strings.TrimSpace(str[:length-3]) + "..."
 	}
 
 	return str
