@@ -2,6 +2,7 @@ package lo
 
 import (
 	"context"
+	"fmt"
 	"sync"
 	"testing"
 	"time"
@@ -374,4 +375,27 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 		is.InDelta(1*time.Millisecond, duration, float64(1*time.Millisecond))
 		is.False(ok)
 	})
+}
+
+func TestBatchParallelProcess(t *testing.T) {
+	//is := assert.New(t)
+
+	t1 := time.Now()
+	fmt.Println(t1)
+	arr := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	ch := BatchParallelProcess(ctx, 20, arr, func(index int, arr []int) {
+		if index+1 >= len(arr) {
+			return
+		}
+		arr[index], arr[index+1] = arr[index+1], arr[index]
+		time.Sleep(10 * time.Millisecond)
+	})
+	<-ch
+	t2 := time.Now()
+	fmt.Println(t2)
+	fmt.Println(t2.Sub(t1))
+	fmt.Println(arr)
+	//is.InDelta(400*time.Millisecond, time.Since(t1), float64(50*time.Millisecond))
 }

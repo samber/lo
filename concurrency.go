@@ -145,3 +145,30 @@ func WaitForWithContext(ctx context.Context, condition func(ctx context.Context,
 		}
 	}
 }
+
+func BatchParallelProcess[T any](ctx context.Context, maxConcurrency int, collections []T, processor func(index int, collection []T)) <-chan struct{} {
+	done := make(chan struct{})
+	sem := make(chan struct{}, maxConcurrency)
+	var wg sync.WaitGroup
+	go func() {
+		for i, _ := range collections {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+			}
+			sem <- struct{}{}
+			wg.Add(1)
+			go func(index int) {
+				defer func() {
+					wg.Done()
+					<-sem
+				}()
+				processor(index, collections)
+			}(i)
+		}
+		wg.Wait()
+		close(done)
+	}()
+	return done
+}
