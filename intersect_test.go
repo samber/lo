@@ -273,6 +273,36 @@ func TestDifference(t *testing.T) {
 	is.IsType(b, allStrings, "type preserved")
 }
 
+func TestDifferenceBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type a struct {
+		A int
+		B string
+	}
+
+	left1, right1 := DifferenceBy([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6}, func(item int) int {
+		return item
+	})
+	is.Equal(left1, []int{1, 3, 4, 5})
+	is.Equal(right1, []int{6})
+
+	a1, a2, a3, a4 := a{A: 1, B: "1"}, a{A: 2, B: "2"}, a{A: 3, B: "3"}, a{A: 4, B: "4"}
+	left2, right2 := DifferenceBy([]a{a1, a2, a3}, []a{a1, a4}, func(item a) a {
+		return item
+	})
+	is.Equal(left2, []a{a2, a3})
+	is.Equal(right2, []a{a4})
+
+	a12 := a{A: 1, B: "2"}
+	left3, right3 := DifferenceBy([]a{a1, a2, a3}, []a{a12, a4}, func(item a) int {
+		return item.A
+	})
+	is.Equal(left3, []a{a2, a3})
+	is.Equal(right3, []a{a4})
+}
+
 func TestUnion(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
