@@ -2,7 +2,9 @@ package lo
 
 import (
 	"fmt"
+	"maps"
 	"math"
+	"reflect"
 	"sort"
 	"strconv"
 	"strings"
@@ -10,6 +12,69 @@ import (
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestSliceToSeq2(t *testing.T) {
+	t.Run("Even length slice", func(t *testing.T) {
+		data := []string{"a", "1", "b", "2"}
+		expected := map[string]string{"a": "1", "b": "2"}
+
+		got := maps.Collect(SliceToSeq2(data))
+
+		if !reflect.DeepEqual(got, expected) {
+			t.Errorf("expected %v, got %v", expected, got)
+		}
+	})
+
+	t.Run("Odd length slice", func(t *testing.T) {
+		data := []string{"a", "1", "b"}
+		// 最后一个元素 b 应该对应零值 ""
+		expected := map[string]string{"a": "1", "b": ""}
+
+		got := maps.Collect(SliceToSeq2(data))
+
+		if !reflect.DeepEqual(got, expected) {
+			t.Errorf("expected %v, got %v", expected, got)
+		}
+	})
+
+	t.Run("Empty slice", func(t *testing.T) {
+		data := []string{}
+		got := maps.Collect(SliceToSeq2(data))
+
+		if len(got) != 0 {
+			t.Errorf("expected empty map, got %v", got)
+		}
+	})
+
+	t.Run("Early termination (Break)", func(t *testing.T) {
+		data := []string{"a", "1", "b", "2", "c", "3"}
+		count := 0
+
+		// 模拟只取前两个键值对的情况
+		for k, v := range SliceToSeq2(data) {
+			count++
+			if k == "b" {
+				break // 触发 yield 返回 false
+			}
+			_ = v
+		}
+
+		if count != 2 {
+			t.Errorf("expected to iterate 2 times, but got %d", count)
+		}
+	})
+
+	t.Run("Integer slice", func(t *testing.T) {
+		data := []int{1, 10, 2, 20}
+		expected := map[int]int{1: 10, 2: 20}
+
+		got := maps.Collect(SliceToSeq2(data))
+
+		if !reflect.DeepEqual(got, expected) {
+			t.Errorf("expected %v, got %v", expected, got)
+		}
+	})
+}
 
 func TestFilter(t *testing.T) {
 	t.Parallel()
