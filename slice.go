@@ -304,13 +304,14 @@ func Sliding[T any, Slice ~[]T](collection Slice, size, step int) []Slice {
 		panic("lo.Sliding: step must be greater than 0")
 	}
 
-	if len(collection) < size {
+	n := len(collection) - size
+	if n < 0 {
 		return []Slice{}
 	}
 
-	result := make([]Slice, 0)
+	result := make([]Slice, 0, n/step+1)
 
-	for i := 0; i <= len(collection)-size; i += step {
+	for i := 0; i <= n; i += step {
 		window := make(Slice, size)
 		copy(window, collection[i:i+size])
 		result = append(result, window)
