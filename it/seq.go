@@ -551,7 +551,7 @@ func Drop[T any, I ~func(func(T) bool)](collection I, n int) I {
 		return collection
 	}
 
-	return FilterI(collection, func(item T, index int) bool { return index >= n })
+	return FilterI(collection, func(_ T, index int) bool { return index >= n })
 }
 
 // DropLast drops n elements from the end of a sequence.
@@ -567,18 +567,18 @@ func DropLast[T any, I ~func(func(T) bool)](collection I, n int) I {
 	}
 
 	return func(yield func(T) bool) {
-		buf := make([]T, 0, n)
-		var i int
+		buf := make([]T, n)
+		var count int
+
 		for item := range collection {
-			if len(buf) < n {
-				buf = append(buf, item)
-			} else {
-				if !yield(buf[i]) {
-					return
-				}
-				buf[i] = item
-				i = (i + 1) % n
+			idx := count % n
+			count++
+
+			if count > n && !yield(buf[idx]) {
+				return
 			}
+
+			buf[idx] = item
 		}
 	}
 }
@@ -589,9 +589,7 @@ func DropWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T
 	return func(yield func(T) bool) {
 		dropping := true
 		for item := range collection {
-			if dropping && !predicate(item) {
-				dropping = false
-			}
+			dropping = dropping && predicate(item)
 			if !dropping && !yield(item) {
 				return
 			}
@@ -612,8 +610,8 @@ func DropLastWhile[T any, I ~func(func(T) bool)](collection I, predicate func(it
 				continue
 			}
 			if len(buf) > 0 {
-				for _, item := range buf {
-					if !yield(item) {
+				for i := range buf {
+					if !yield(buf[i]) {
 						return
 					}
 				}
@@ -861,7 +859,7 @@ func CutPrefix[T comparable, I ~func(func(T) bool)](collection I, separator []T)
 		if !ok {
 			return func(yield func(T) bool) {
 				defer stop()
-				for j := 0; j < i; j++ {
+				for j := range i {
 					if !yield(separator[j]) {
 						return
 					}
@@ -872,7 +870,7 @@ func CutPrefix[T comparable, I ~func(func(T) bool)](collection I, separator []T)
 		if item != separator[i] {
 			return func(yield func(T) bool) {
 				defer stop()
-				for j := 0; j < i; j++ {
+				for j := range i {
 					if !yield(separator[j]) {
 						return
 					}
@@ -937,29 +935,26 @@ func TrimPrefix[T comparable, I ~func(func(T) bool)](collection I, prefix []T) I
 	return func(yield func(T) bool) {
 		var i int
 		for item := range collection {
-			if i < 0 {
-				if !yield(item) {
-					return
+			if i >= 0 {
+				if item == prefix[i] {
+					i = (i + 1) % n
+					continue
 				}
-				continue
+
+				for j := range i {
+					if !yield(prefix[j]) {
+						return
+					}
+				}
+
+				i = -1
 			}
 
-			if item == prefix[i] {
-				i = (i + 1) % n
-				continue
-			}
-
-			for j := 0; j < i; j++ {
-				if !yield(prefix[j]) {
-					return
-				}
-			}
 			if !yield(item) {
 				return
 			}
-			i = -1
 		}
-		for j := 0; j < i; j++ {
+		for j := range i {
 			if !yield(prefix[j]) {
 				return
 			}
@@ -987,22 +982,27 @@ func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I
 		for item := range collection {
 			if item == suffix[i%n] {
 				i++
-			} else {
-				for j := 0; j < i; j++ {
-					if !yield(suffix[j%n]) {
-						return
-					}
-				}
-				i = 0
-				if item == suffix[i] {
-					i++
-				} else if !yield(item) {
+				continue
+			}
+
+			for j := range i {
+				if !yield(suffix[j%n]) {
 					return
 				}
 			}
+
+			i = 0
+			if item == suffix[0] {
+				i++
+				continue
+			}
+
+			if !yield(item) {
+				return
+			}
 		}
 		if i%n != 0 {
-			for j := 0; j < i; j++ {
+			for j := range i {
 				if !yield(suffix[j%n]) {
 					return
 				}
