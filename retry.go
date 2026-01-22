@@ -30,7 +30,7 @@ func (d *debounce) reset() {
 	d.timer = time.AfterFunc(d.after, func() {
 		// We need to lock the mutex here to avoid race conditions with 2 concurrent calls to reset()
 		d.mu.Lock()
-		callbacks := append([]func(){}, d.callbacks...)
+		callbacks := clone(d.callbacks)
 		d.mu.Unlock()
 
 		for i := range callbacks {
