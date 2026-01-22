@@ -916,7 +916,7 @@ func CutSuffix[T comparable, I ~func(func(T) bool)](collection I, separator []T)
 // Play: https://go.dev/play/p/4VpIM8-zu
 func Trim[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
 	predicate := lo.Partial(lo.HasKey, lo.Keyify(cutset))
-	return DropWhile(DropLastWhile(collection, predicate), predicate)
+	return DropLastWhile(DropWhile(collection, predicate), predicate)
 }
 
 // TrimFirst removes all the leading cutset from the collection.
