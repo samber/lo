@@ -613,30 +613,38 @@ func TakeWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool)
 func DropByIndex[T any, Slice ~[]T](collection Slice, indexes ...int) Slice {
 	initialSize := len(collection)
 	if initialSize == 0 {
-		return make(Slice, 0)
+		return Slice{}
 	}
 
-	for i := range indexes {
-		if indexes[i] < 0 {
-			indexes[i] = initialSize + indexes[i]
+	// do not change the input
+	indexes = append(make([]int, 0, len(indexes)), indexes...)
+
+	for i, index := range indexes {
+		if index < 0 {
+			indexes[i] += initialSize
 		}
 	}
 
-	indexes = Uniq(indexes)
 	sort.Ints(indexes)
 
-	result := make(Slice, 0, initialSize)
-	result = append(result, collection...)
+	prev := -1
+	indexes = mutable.Filter(indexes, func(index int) bool {
+		ok := index != prev && // uniq
+			uint(index) < uint(initialSize) // in range
 
-	for i := range indexes {
-		if indexes[i]-i < 0 || indexes[i]-i >= initialSize-i {
-			continue
-		}
+		prev = index
+		return ok
+	})
 
-		result = append(result[:indexes[i]-i], result[indexes[i]-i+1:]...)
+	result := make(Slice, 0, initialSize-len(indexes))
+
+	i := 0
+	for _, index := range indexes {
+		result = append(result, collection[i:index]...)
+		i = index + 1
 	}
 
-	return result
+	return append(result, collection[i:]...)
 }
 
 // TakeFilter filters elements and takes the first n elements that match the predicate.
