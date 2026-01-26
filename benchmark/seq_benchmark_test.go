@@ -18,8 +18,9 @@ func BenchmarkItChunk(b *testing.B) {
 	for _, n := range itLengths {
 		strs := genStrings(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.Chunk(strs, 5)
+			for range b.N {
+				for range it.Chunk(strs, 5) {
+				}
 			}
 		})
 	}
@@ -27,8 +28,9 @@ func BenchmarkItChunk(b *testing.B) {
 	for _, n := range itLengths {
 		ints := genInts(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.Chunk(ints, 5)
+			for range b.N {
+				for range it.Chunk(ints, 5) {
+				}
 			}
 		})
 	}
@@ -57,24 +59,26 @@ func genInts(n int) iter.Seq[int] {
 func BenchmarkItFlatten(b *testing.B) {
 	for _, n := range itLengths {
 		ints := make([]iter.Seq[int], 0, n)
-		for i := 0; i < n; i++ {
+		for range n {
 			ints = append(ints, genInts(n))
 		}
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.Flatten(ints)
+			for range b.N {
+				for range it.Flatten(ints) {
+				}
 			}
 		})
 	}
 
 	for _, n := range itLengths {
 		strs := make([]iter.Seq[string], 0, n)
-		for i := 0; i < n; i++ {
+		for range n {
 			strs = append(strs, genStrings(n))
 		}
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.Flatten(strs)
+			for range b.N {
+				for range it.Flatten(strs) {
+				}
 			}
 		})
 	}
@@ -84,8 +88,9 @@ func BenchmarkItDrop(b *testing.B) {
 	for _, n := range itLengths {
 		strs := genStrings(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.Drop(strs, n/4)
+			for range b.N {
+				for range it.Drop(strs, n/4) {
+				}
 			}
 		})
 	}
@@ -93,8 +98,9 @@ func BenchmarkItDrop(b *testing.B) {
 	for _, n := range itLengths {
 		ints := genInts(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.Drop(ints, n/4)
+			for range b.N {
+				for range it.Drop(ints, n/4) {
+				}
 			}
 		})
 	}
@@ -104,8 +110,9 @@ func BenchmarkItDropWhile(b *testing.B) {
 	for _, n := range itLengths {
 		strs := genStrings(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.DropWhile(strs, func(v string) bool { return len(v) < 4 })
+			for range b.N {
+				for range it.DropWhile(strs, func(v string) bool { return len(v) < 4 }) {
+				}
 			}
 		})
 	}
@@ -113,8 +120,31 @@ func BenchmarkItDropWhile(b *testing.B) {
 	for _, n := range itLengths {
 		ints := genInts(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.DropWhile(ints, func(v int) bool { return i < 10_000 })
+			for i := range b.N {
+				for range it.DropWhile(ints, func(v int) bool { return i < 10_000 }) {
+				}
+			}
+		})
+	}
+}
+
+func BenchmarkItDropLastWhile(b *testing.B) {
+	for _, n := range itLengths {
+		strs := genStrings(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for range b.N {
+				for range it.DropLastWhile(strs, func(v string) bool { return len(v) < 4 }) {
+				}
+			}
+		})
+	}
+
+	for _, n := range itLengths {
+		ints := genInts(n)
+		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
+			for range b.N {
+				for range it.DropLastWhile(ints, func(v int) bool { return v < 10_000 }) {
+				}
 			}
 		})
 	}
@@ -124,8 +154,9 @@ func BenchmarkItDropByIndex(b *testing.B) {
 	for _, n := range itLengths {
 		strs := genStrings(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.DropByIndex(strs, n/4)
+			for range b.N {
+				for range it.DropByIndex(strs, n/4) {
+				}
 			}
 		})
 	}
@@ -133,8 +164,9 @@ func BenchmarkItDropByIndex(b *testing.B) {
 	for _, n := range itLengths {
 		ints := genInts(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.DropByIndex(ints, n/4)
+			for range b.N {
+				for range it.DropByIndex(ints, n/4) {
+				}
 			}
 		})
 	}
@@ -146,8 +178,9 @@ func BenchmarkItReplace(b *testing.B) {
 	for _, n := range lengths {
 		strs := genStrings(n)
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.Replace(strs, "321321", "123123", 10)
+			for range b.N {
+				for range it.Replace(strs, "321321", "123123", 10) {
+				}
 			}
 		})
 	}
@@ -155,8 +188,53 @@ func BenchmarkItReplace(b *testing.B) {
 	for _, n := range lengths {
 		ints := genInts(n)
 		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = it.Replace(ints, 321321, 123123, 10)
+			for range b.N {
+				for range it.Replace(ints, 321321, 123123, 10) {
+				}
+			}
+		})
+	}
+}
+
+func BenchmarkItTrim(b *testing.B) {
+	for _, n := range itLengths {
+		strs := genStrings(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for range b.N {
+				for range it.Trim(strs, "123", "456") {
+				}
+			}
+		})
+	}
+
+	for _, n := range itLengths {
+		ints := genInts(n)
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for range b.N {
+				for range it.Trim(ints, 123, 456) {
+				}
+			}
+		})
+	}
+}
+
+func BenchmarkItTrimSuffix(b *testing.B) {
+	for _, n := range itLengths {
+		strs := genStrings(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for range b.N {
+				for range it.TrimSuffix(strs, []string{""}) {
+				}
+			}
+		})
+	}
+
+	for _, n := range itLengths {
+		ints := genInts(n)
+		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
+			for range b.N {
+				for range it.TrimSuffix(ints, []int{0}) {
+				}
 			}
 		})
 	}
