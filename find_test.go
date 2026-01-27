@@ -767,9 +767,11 @@ func TestSamplesBy(t *testing.T) {
 
 	result1 := SamplesBy([]string{"a", "b", "c"}, 3, r.Intn)
 	result2 := SamplesBy([]string{}, 3, r.Intn)
+	result3 := SamplesBy([]string{"a", "b", "c"}, 3, func(n int) int { return n - 1 })
 
 	is.ElementsMatch(result1, []string{"a", "b", "c"})
 	is.Empty(result2)
+	is.Equal([]string{"c", "b", "a"}, result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}

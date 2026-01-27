@@ -671,11 +671,7 @@ func NthOr[T any, N constraints.Integer](collection []T, nth N, fallback T) T {
 // If `nth` is out of slice bounds, it returns the zero value (empty value) for that type.
 // Play: https://go.dev/play/p/sHoh88KWt6B
 func NthOrEmpty[T any, N constraints.Integer](collection []T, nth N) T {
-	value, err := Nth(collection, nth)
-	if err != nil {
-		var zeroValue T
-		return zeroValue
-	}
+	value, _ := Nth(collection, nth)
 	return value
 }
 
@@ -686,8 +682,7 @@ type randomIntGenerator func(n int) int
 // Sample returns a random item from collection.
 // Play: https://go.dev/play/p/vCcSJbh5s6l
 func Sample[T any](collection []T) T {
-	result := SampleBy(collection, xrand.IntN)
-	return result
+	return SampleBy(collection, xrand.IntN)
 }
 
 // SampleBy returns a random item from collection, using randomIntGenerator as the random index generator.
@@ -715,20 +710,18 @@ func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerato
 		count = size
 	}
 
-	cOpy := append(Slice{}, collection...)
-
+	indexes := Range(size)
 	results := make(Slice, count)
 
-	for i := 0; i < count; i++ {
-		copyLength := size - i
+	for i := range results {
+		index := randomIntGenerator(size)
+		results[i] = collection[indexes[index]]
 
-		index := randomIntGenerator(copyLength)
-		results[i] = cOpy[index]
+		size--
 
-		// Removes element.
+		// Removes index.
 		// It is faster to swap with last element and remove it.
-		cOpy[index] = cOpy[copyLength-1]
-		cOpy = cOpy[:copyLength-1]
+		indexes[index] = indexes[size]
 	}
 
 	return results
