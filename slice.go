@@ -959,20 +959,10 @@ func Cut[T comparable, Slice ~[]T](collection, separator Slice) (before, after S
 // If prefix is the empty []T, CutPrefix returns collection, true.
 // Play: https://go.dev/play/p/7Plak4a1ICl
 func CutPrefix[T comparable, Slice ~[]T](collection, separator Slice) (after Slice, found bool) {
-	if len(separator) == 0 {
-		return collection, true
+	if HasPrefix(collection, separator) {
+		return collection[len(separator):], true
 	}
-	if len(separator) > len(collection) {
-		return collection, false
-	}
-
-	for i := range separator {
-		if collection[i] != separator[i] {
-			return collection, false
-		}
-	}
-
-	return collection[len(separator):], true
+	return collection, false
 }
 
 // CutSuffix returns collection without the provided ending suffix []T and reports
@@ -980,21 +970,10 @@ func CutPrefix[T comparable, Slice ~[]T](collection, separator Slice) (after Sli
 // If suffix is the empty []T, CutSuffix returns collection, true.
 // Play: https://go.dev/play/p/7FKfBFvPTaT
 func CutSuffix[T comparable, Slice ~[]T](collection, separator Slice) (before Slice, found bool) {
-	if len(separator) == 0 {
-		return collection, true
+	if HasSuffix(collection, separator) {
+		return collection[:len(collection)-len(separator)], true
 	}
-	if len(separator) > len(collection) {
-		return collection, false
-	}
-
-	start := len(collection) - len(separator)
-	for i := range separator {
-		if collection[start+i] != separator[i] {
-			return collection, false
-		}
-	}
-
-	return collection[:start], true
+	return collection, false
 }
 
 // Trim removes all the leading and trailing cutset from the collection.
@@ -1042,12 +1021,11 @@ func TrimPrefix[T comparable, Slice ~[]T](collection, prefix Slice) Slice {
 		return collection
 	}
 
-	for {
-		if !HasPrefix(collection, prefix) {
-			return collection
-		}
+	for HasPrefix(collection, prefix) {
 		collection = collection[len(prefix):]
 	}
+
+	return collection
 }
 
 // TrimRight removes all the trailing cutset from the collection.
@@ -1068,10 +1046,9 @@ func TrimSuffix[T comparable, Slice ~[]T](collection, suffix Slice) Slice {
 		return collection
 	}
 
-	for {
-		if !HasSuffix(collection, suffix) {
-			return collection
-		}
+	for HasSuffix(collection, suffix) {
 		collection = collection[:len(collection)-len(suffix)]
 	}
+
+	return collection
 }
