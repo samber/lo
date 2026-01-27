@@ -34,3 +34,9 @@ for chunk := range chunks {
 }
 // result contains [1, 2], [3, 4], [5]
 ```
+
+## Note
+
+`it.ChunkString` and `it.Chunk` functions behave inconsistently for empty input: `it.ChunkString("", n)` returns `[""]` instead of `[]`.
+
+See https://github.com/samber/lo/issues/788

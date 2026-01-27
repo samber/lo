@@ -30,4 +30,8 @@ lo.Chunk([]int{0, 1, 2, 3, 4, 5, 6}, 2)
 // [][]int{{0, 1}, {2, 3}, {4, 5}, {6}}
 ```
 
+## Note
 
+`lo.ChunkString` and `lo.Chunk` functions behave inconsistently for empty input: `lo.ChunkString("", n)` returns `[""]` instead of `[]`.
+
+See https://github.com/samber/lo/issues/788
