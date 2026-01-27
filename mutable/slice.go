@@ -10,9 +10,9 @@ import "github.com/samber/lo/internal/xrand"
 // Play: https://go.dev/play/p/0jY3Z0B7O_5
 func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	j := 0
-	for _, item := range collection {
-		if predicate(item) {
-			collection[j] = item
+	for i := range collection {
+		if predicate(collection[i]) {
+			collection[j] = collection[i]
 			j++
 		}
 	}
@@ -26,9 +26,9 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Sl
 // Note that the order of elements in the original slice is preserved in the output.
 func FilterI[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
 	j := 0
-	for i, item := range collection {
-		if predicate(item, i) {
-			collection[j] = item
+	for i := range collection {
+		if predicate(collection[i], i) {
+			collection[j] = collection[i]
 			j++
 		}
 	}
