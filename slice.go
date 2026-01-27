@@ -793,27 +793,24 @@ func Subset[T any, Slice ~[]T](collection Slice, offset int, length uint) Slice 
 	return collection[offset : offset+int(length)]
 }
 
-// Slice returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
+// Slice returns a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
 // Play: https://go.dev/play/p/8XWYhfMMA1h
 func Slice[T any, Slice ~[]T](collection Slice, start, end int) Slice {
-	size := len(collection)
-
 	if start >= end {
 		return Slice{}
 	}
 
-	if start > size {
-		start = size
-	}
+	size := len(collection)
 	if start < 0 {
 		start = 0
+	} else if start > size {
+		start = size
 	}
 
-	if end > size {
-		end = size
-	}
 	if end < 0 {
 		end = 0
+	} else if end > size {
+		end = size
 	}
 
 	return collection[start:end]
