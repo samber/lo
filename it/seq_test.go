@@ -309,8 +309,8 @@ func TestForEachI(t *testing.T) {
 
 	// check of callback is called for every element and in proper order
 
-	callParams1 := []string{}
-	callParams2 := []int{}
+	var callParams1 []string
+	var callParams2 []int
 
 	ForEachI(values("a", "b", "c"), func(item string, i int) {
 		callParams1 = append(callParams1, item)
