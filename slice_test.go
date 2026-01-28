@@ -1525,6 +1525,12 @@ func TestCutSuccess(t *testing.T) {
 	is.True(result)
 	is.Equal([]string{}, actualLeft)
 	is.Equal([]string{"b"}, actualRight)
+
+	// case 8
+	actualLeft, actualRight, result = Cut([]string{"a", "b"}, []string{})
+	is.True(result)
+	is.Equal([]string{}, actualLeft)
+	is.Equal([]string{"a", "b"}, actualRight)
 }
 
 func TestCutFail(t *testing.T) {

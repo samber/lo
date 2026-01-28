@@ -224,9 +224,7 @@ func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
 		}
 
 		// Copy chunk in a new slice, to prevent memory leak and free memory from initial collection.
-		newSlice := make(Slice, last-i*size)
-		copy(newSlice, collection[i*size:last])
-		result = append(result, newSlice)
+		result = append(result, clone(collection[i*size:last]))
 	}
 
 	return result
@@ -312,9 +310,7 @@ func Sliding[T any, Slice ~[]T](collection Slice, size, step int) []Slice {
 	result := make([]Slice, 0, n/step+1)
 
 	for i := 0; i <= n; i += step {
-		window := make(Slice, size)
-		copy(window, collection[i:i+size])
-		result = append(result, window)
+		result = append(result, clone(collection[i:i+size]))
 	}
 
 	return result
@@ -517,12 +513,10 @@ func Drop[T any, Slice ~[]T](collection Slice, n int) Slice {
 	}
 
 	if len(collection) <= n {
-		return make(Slice, 0)
+		return Slice{}
 	}
 
-	result := make(Slice, 0, len(collection)-n)
-
-	return append(result, collection[n:]...)
+	return clone(collection[n:])
 }
 
 // DropRight drops n elements from the end of a slice.
@@ -536,8 +530,7 @@ func DropRight[T any, Slice ~[]T](collection Slice, n int) Slice {
 		return Slice{}
 	}
 
-	result := make(Slice, 0, len(collection)-n)
-	return append(result, collection[:len(collection)-n]...)
+	return clone(collection[:len(collection)-n])
 }
 
 // DropWhile drops elements from the beginning of a slice while the predicate returns true.
@@ -550,8 +543,7 @@ func DropWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool)
 		}
 	}
 
-	result := make(Slice, 0, len(collection)-i)
-	return append(result, collection[i:]...)
+	return clone(collection[i:])
 }
 
 // DropRightWhile drops elements from the end of a slice while the predicate returns true.
@@ -564,8 +556,7 @@ func DropRightWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) 
 		}
 	}
 
-	result := make(Slice, 0, i+1)
-	return append(result, collection[:i+1]...)
+	return clone(collection[:i+1])
 }
 
 // Take takes the first n elements from a slice.
@@ -574,24 +565,11 @@ func Take[T any, Slice ~[]T](collection Slice, n int) Slice {
 		panic("lo.Take: n must not be negative")
 	}
 
-	if n == 0 {
-		return make(Slice, 0)
+	if len(collection) > n {
+		collection = collection[:n]
 	}
 
-	size := len(collection)
-	if size == 0 {
-		return make(Slice, 0)
-	}
-
-	if n >= size {
-		result := make(Slice, size)
-		copy(result, collection)
-		return result
-	}
-
-	result := make(Slice, n)
-	copy(result, collection)
-	return result
+	return clone(collection)
 }
 
 // TakeWhile takes elements from the beginning of a slice while the predicate returns true.
@@ -603,9 +581,7 @@ func TakeWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool)
 		}
 	}
 
-	result := make(Slice, i)
-	copy(result, collection[:i])
-	return result
+	return clone(collection[:i])
 }
 
 // DropByIndex drops elements from a slice by the index.
@@ -614,7 +590,7 @@ func TakeWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool)
 func DropByIndex[T any, Slice ~[]T](collection Slice, indexes ...int) Slice {
 	initialSize := len(collection)
 	if initialSize == 0 {
-		return make(Slice, 0)
+		return Slice{}
 	}
 
 	for i := range indexes {
@@ -648,7 +624,7 @@ func TakeFilter[T any, Slice ~[]T](collection Slice, n int, predicate func(item 
 	}
 
 	if n == 0 {
-		return make(Slice, 0)
+		return Slice{}
 	}
 
 	result := make(Slice, 0, n)
@@ -822,11 +798,10 @@ func Slice[T any, Slice ~[]T](collection Slice, start, end int) Slice {
 // Replace returns a copy of the slice with the first n non-overlapping instances of old replaced by new.
 // Play: https://go.dev/play/p/XfPzmf9gql6
 func Replace[T comparable, Slice ~[]T](collection Slice, old, nEw T, n int) Slice {
-	result := make(Slice, len(collection))
-	copy(result, collection)
+	result := clone(collection)
 
 	for i := range result {
-		if result[i] == old && n != 0 {
+		if n != 0 && result[i] == old {
 			result[i] = nEw
 			n--
 		}
@@ -850,6 +825,12 @@ func Clone[T any, Slice ~[]T](collection Slice) Slice {
 	if collection == nil {
 		return nil
 	}
+
+	return clone(collection)
+}
+
+// clone returns a shallow copy of the collection without preserving nilness.
+func clone[T any, Slice ~[]T](collection Slice) Slice {
 	// Avoid s[:0:0] as it leads to unwanted liveness when cloning a
 	// zero-length slice of a large array; see https://go.dev/issue/68488.
 	return append(Slice{}, collection...)
@@ -934,7 +915,7 @@ func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice {
 // Play: https://go.dev/play/p/GiL3qhpIP3f
 func Cut[T comparable, Slice ~[]T](collection, separator Slice) (before, after Slice, found bool) {
 	if len(separator) == 0 {
-		return make(Slice, 0), collection, true
+		return Slice{}, collection, true
 	}
 
 	for i := 0; i+len(separator) <= len(collection); i++ {
@@ -950,7 +931,7 @@ func Cut[T comparable, Slice ~[]T](collection, separator Slice) (before, after S
 		}
 	}
 
-	return collection, make(Slice, 0), false
+	return collection, Slice{}, false
 }
 
 // CutPrefix returns collection without the provided leading prefix []T
@@ -999,8 +980,7 @@ func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 		}
 	}
 
-	result := make(Slice, 0, j+1-i)
-	return append(result, collection[i:j+1]...)
+	return clone(collection[i : j+1])
 }
 
 // TrimLeft removes all the leading cutset from the collection.
