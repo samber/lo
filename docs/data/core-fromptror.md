@@ -1,7 +1,7 @@
 ---
 name: FromPtrOr
 slug: fromptror
-sourceRef: type_manipulation.go#L63
+sourceRef: type_manipulation.go#L66
 category: core
 subCategory: type
 signatures:

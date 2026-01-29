@@ -1,7 +1,7 @@
 ---
 name: CoalesceMap
 slug: coalescemap
-sourceRef: type_manipulation.go#L196
+sourceRef: type_manipulation.go#L199
 category: core
 subCategory: type
 signatures:

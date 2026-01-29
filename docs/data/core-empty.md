@@ -1,7 +1,7 @@
 ---
 name: Empty
 slug: empty
-sourceRef: type_manipulation.go#L132
+sourceRef: type_manipulation.go#L135
 category: core
 subCategory: type
 signatures:

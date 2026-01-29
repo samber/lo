@@ -1,7 +1,7 @@
 ---
 name: Coalesce
 slug: coalesce
-sourceRef: type_manipulation.go#L153
+sourceRef: type_manipulation.go#L156
 category: core
 subCategory: type
 signatures:

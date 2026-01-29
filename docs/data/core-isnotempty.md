@@ -1,7 +1,7 @@
 ---
 name: IsNotEmpty
 slug: isnotempty
-sourceRef: type_manipulation.go#L146
+sourceRef: type_manipulation.go#L149
 category: core
 subCategory: type
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: IsNotNil
 slug: isnil
-sourceRef: type_manipulation.go#L22
+sourceRef: type_manipulation.go#L25
 category: core
 subCategory: type
 signatures:

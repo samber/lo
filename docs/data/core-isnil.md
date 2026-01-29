@@ -1,7 +1,7 @@
 ---
 name: IsNil
 slug: isnil
-sourceRef: type_manipulation.go#L7
+sourceRef: type_manipulation.go#L10
 category: core
 subCategory: type
 signatures:
