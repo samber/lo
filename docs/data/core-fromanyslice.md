@@ -1,7 +1,7 @@
 ---
 name: FromAnySlice
 slug: fromanyslice
-sourceRef: type_manipulation.go#L121
+sourceRef: type_manipulation.go#L122
 category: core
 subCategory: type
 signatures:

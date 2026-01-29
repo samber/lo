@@ -1,7 +1,7 @@
 ---
 name: EqualPtr
 slug: equalptr
-sourceRef: type_manipulation.go#L219
+sourceRef: type_manipulation.go#L220
 category: core
 subCategory: type
 signatures:

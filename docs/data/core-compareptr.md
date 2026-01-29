@@ -1,11 +1,11 @@
 ---
 name: ComparePtr
 slug: compareptr
-sourceRef: type_manipulation.go#L228
+sourceRef: type_manipulation.go#L229
 category: core
 subCategory: type
 signatures:
-  - "func ComparePtr[T cmp.Ordered](a, b *T) bool"
+  - "func ComparePtr[T constraints.Ordered](a, b *T) bool"
 variantHelpers:
   - core#type#compareptr
 similarHelpers:

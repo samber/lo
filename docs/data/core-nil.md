@@ -1,7 +1,7 @@
 ---
 name: Nil
 slug: nil
-sourceRef: type_manipulation.go#L37
+sourceRef: type_manipulation.go#L38
 category: core
 subCategory: type
 playUrl: https://go.dev/play/p/P2sD0PMXw4F

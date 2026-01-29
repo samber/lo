@@ -1,7 +1,7 @@
 ---
 name: CoalesceSliceOrEmpty
 slug: coalescesliceorempty
-sourceRef: type_manipulation.go#L188
+sourceRef: type_manipulation.go#L189
 category: core
 subCategory: type
 signatures:

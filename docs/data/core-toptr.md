@@ -1,7 +1,7 @@
 ---
 name: ToPtr
 slug: toptr
-sourceRef: type_manipulation.go#L31
+sourceRef: type_manipulation.go#L32
 category: core
 subCategory: type
 signatures:

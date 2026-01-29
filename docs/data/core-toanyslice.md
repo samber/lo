@@ -1,7 +1,7 @@
 ---
 name: ToAnySlice
 slug: toanyslice
-sourceRef: type_manipulation.go#L110
+sourceRef: type_manipulation.go#L111
 category: core
 subCategory: type
 signatures:

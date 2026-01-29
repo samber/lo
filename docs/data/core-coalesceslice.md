@@ -1,7 +1,7 @@
 ---
 name: CoalesceSlice
 slug: coalesceslice
-sourceRef: type_manipulation.go#L177
+sourceRef: type_manipulation.go#L178
 category: core
 subCategory: type
 signatures:

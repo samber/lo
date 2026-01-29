@@ -1,7 +1,7 @@
 ---
 name: CoalesceOrEmpty
 slug: coalesceorempty
-sourceRef: type_manipulation.go#L170
+sourceRef: type_manipulation.go#L171
 category: core
 subCategory: type
 signatures:

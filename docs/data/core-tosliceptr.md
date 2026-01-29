@@ -1,7 +1,7 @@
 ---
 name: ToSlicePtr
 slug: tosliceptr
-sourceRef: type_manipulation.go#L76
+sourceRef: type_manipulation.go#L77
 category: core
 subCategory: type
 signatures:
