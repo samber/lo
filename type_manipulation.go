@@ -212,3 +212,12 @@ func CoalesceMapOrEmpty[K comparable, V any](v ...map[K]V) map[K]V {
 	}
 	return map[K]V{}
 }
+
+// EqualPtr compares two pointers by their dereferenced values, handling nil cases.
+// Play: https://go.dev/play/p/qMzVWWBMbNX
+func EqualPtr[T comparable](a, b *T) bool {
+	if a == nil || b == nil {
+		return a == b
+	}
+	return *a == *b
+}
