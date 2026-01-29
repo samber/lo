@@ -306,7 +306,7 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - FromSlicePtr: Convert slice of pointers to slice
 - FromSlicePtrOr: Convert slice of pointers to slice or fallback
 - EqualPtr: Check two pointers to equal values
-- ComparePtr: Compare two `cmp.Ordered` pointer values
+- ComparePtr: Compare two `constraints.Ordered` pointer values
 - ToAnySlice: Convert slice to []any
 - FromAnySlice: Convert []any to typed slice
 - Empty: Get zero value of type

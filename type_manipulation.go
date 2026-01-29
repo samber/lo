@@ -1,8 +1,9 @@
 package lo
 
 import (
-	"cmp"
 	"reflect"
+
+	"github.com/samber/lo/internal/constraints"
 )
 
 // IsNil checks if a value is nil or if it's a reference type with a nil underlying value.
@@ -227,7 +228,7 @@ func EqualPtr[T comparable](a, b *T) bool {
 
 // ComparePtr compares two pointers by their dereferenced values, handling nil cases.
 // Play: https://go.dev/play/p/-VYPXhng6lB
-func ComparePtr[T cmp.Ordered](a, b *T) int {
+func ComparePtr[T constraints.Ordered](a, b *T) int {
 	if a == nil && b == nil {
 		return 0
 	}
