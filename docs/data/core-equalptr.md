@@ -1,7 +1,7 @@
 ---
 name: EqualPtr
 slug: equalptr
-sourceRef: type_manipulation.go#L216
+sourceRef: type_manipulation.go#L219
 category: core
 subCategory: type
 signatures:
@@ -9,6 +9,7 @@ signatures:
 variantHelpers:
   - core#type#equalptr
 similarHelpers:
+  - core#type#compareptr
   - core#type#fromptr
   - core#type#toptr
 position: 100

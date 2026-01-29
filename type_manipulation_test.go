@@ -558,3 +558,17 @@ func TestEqualPtr(t *testing.T) {
 	is.True(EqualPtr[int](newInt(1), newInt(1)))
 	is.False(EqualPtr[int](newInt(1), newInt(2)))
 }
+
+func TestComparePtr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	newInt := func(v int) *int { return &v }
+
+	is.Equal(0, ComparePtr[int](nil, nil))
+	is.Equal(-1, ComparePtr[int](nil, newInt(1)))
+	is.Equal(1, ComparePtr[int](newInt(1), nil))
+	is.Equal(0, ComparePtr[int](newInt(1), newInt(1)))
+	is.Equal(-1, ComparePtr[int](newInt(1), newInt(2)))
+	is.Equal(1, ComparePtr[int](newInt(2), newInt(1)))
+}
