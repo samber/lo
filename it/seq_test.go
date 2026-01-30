@@ -451,6 +451,66 @@ func TestChunk(t *testing.T) {
 	})
 }
 
+func TestWindow(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Window(values(1, 2, 3, 4, 5), 3)
+	result2 := Window(values(1, 2, 3, 4, 5, 6), 3)
+	result3 := Window(values(1, 2), 3)
+	result4 := Window(values(1, 2, 3), 3)
+	result5 := Window(values(1, 2, 3, 4), 1)
+
+	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}}, slices.Collect(result1))
+	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}, slices.Collect(result2))
+	is.Empty(slices.Collect(result3))
+	is.Equal([][]int{{1, 2, 3}}, slices.Collect(result4))
+	is.Equal([][]int{{1}, {2}, {3}, {4}}, slices.Collect(result5))
+
+	is.PanicsWithValue("it.Window: size must be greater than 0", func() {
+		Window(values(1, 2, 3), 0)
+	})
+
+	is.PanicsWithValue("it.Window: size must be greater than 0", func() {
+		Window(values(1, 2, 3), -1)
+	})
+}
+
+func TestSliding(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Sliding(values(1, 2, 3, 4, 5, 6), 3, 1)
+	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}, slices.Collect(result1))
+
+	result2 := Sliding(values(1, 2, 3, 4, 5, 6), 3, 3)
+	is.Equal([][]int{{1, 2, 3}, {4, 5, 6}}, slices.Collect(result2))
+
+	result3 := Sliding(values(1, 2, 3, 4, 5, 6, 7, 8), 2, 3)
+	is.Equal([][]int{{1, 2}, {4, 5}, {7, 8}}, slices.Collect(result3))
+
+	result4 := Sliding(values(1, 2, 3, 4), 1, 1)
+	is.Equal([][]int{{1}, {2}, {3}, {4}}, slices.Collect(result4))
+
+	result5 := Sliding(values(1, 2), 3, 1)
+	is.Empty(slices.Collect(result5))
+
+	result6 := Sliding(values(1, 2, 3, 4, 5, 6), 2, 2)
+	is.Equal([][]int{{1, 2}, {3, 4}, {5, 6}}, slices.Collect(result6))
+
+	is.PanicsWithValue("it.Sliding: size must be greater than 0", func() {
+		Sliding(values(1, 2, 3), 0, 1)
+	})
+
+	is.PanicsWithValue("it.Sliding: step must be greater than 0", func() {
+		Sliding(values(1, 2, 3), 2, 0)
+	})
+
+	is.PanicsWithValue("it.Sliding: step must be greater than 0", func() {
+		Sliding(values(1, 2, 3), 2, -1)
+	})
+}
+
 func TestPartitionBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -935,6 +995,91 @@ func TestDropLastWhile(t *testing.T) {
 	allStrings := myStrings(values("", "foo", "bar"))
 	nonempty := DropLastWhile(allStrings, func(t string) bool {
 		return t != "foo"
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestTake(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{0, 1, 2}, slices.Collect(Take(values(0, 1, 2, 3, 4), 3)))
+	is.Equal([]int{0, 1}, slices.Collect(Take(values(0, 1, 2, 3, 4), 2)))
+	is.Equal([]int{0}, slices.Collect(Take(values(0, 1, 2, 3, 4), 1)))
+	is.Empty(slices.Collect(Take(values(0, 1, 2, 3, 4), 0)))
+	is.Equal([]int{0, 1, 2, 3, 4}, slices.Collect(Take(values(0, 1, 2, 3, 4), 5)))
+	is.Equal([]int{0, 1, 2, 3, 4}, slices.Collect(Take(values(0, 1, 2, 3, 4), 10)))
+
+	is.PanicsWithValue("it.Take: n must not be negative", func() {
+		Take(values(0, 1, 2, 3, 4), -1)
+	})
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := Take(allStrings, 2)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestTakeWhile(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{0, 1, 2, 3}, slices.Collect(TakeWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+		return t != 4
+	})))
+
+	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, slices.Collect(TakeWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+		return true
+	})))
+
+	is.Empty(slices.Collect(TakeWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+		return false
+	})))
+
+	is.Equal([]int{0, 1, 2}, slices.Collect(TakeWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+		return t < 3
+	})))
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := TakeWhile(allStrings, func(t string) bool {
+		return t != "bar"
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestTakeFilter(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{2, 4}, slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 2, func(item, index int) bool {
+		return item%2 == 0 && index < 4
+	})))
+
+	is.Equal([]int{2, 4, 6}, slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 10, func(item, _ int) bool {
+		return item%2 == 0
+	})))
+
+	is.Empty(slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 0, func(item, index int) bool {
+		return item%2 == 0 && index < 4
+	})))
+
+	is.Empty(slices.Collect(TakeFilter(values(1, 3, 5), 2, func(item, _ int) bool {
+		return item%2 == 0
+	})))
+
+	is.Equal([]int{1}, slices.Collect(TakeFilter(values(1, 2, 3, 4, 5), 1, func(item, _ int) bool {
+		return item%2 != 0
+	})))
+
+	is.PanicsWithValue("it.TakeFilter: n must not be negative", func() {
+		TakeFilter(values(1, 2, 3), -1, func(item, _ int) bool { return true })
+	})
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar", "baz"))
+	nonempty := TakeFilter(allStrings, 2, func(item string, _ int) bool {
+		return item != ""
 	})
 	is.IsType(nonempty, allStrings, "type preserved")
 }

@@ -435,3 +435,77 @@ func TestFanOut(t *testing.T) { //nolint:paralleltest
 		is.Zero(msg)
 	}
 }
+
+func TestDistinct(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	upstream := SliceToChannel(10, []int{1, 2, 1, 3, 2, 4, 4})
+	result := ChannelToSlice(Distinct(upstream))
+	is.Equal([]int{1, 2, 3, 4}, result)
+
+	empty := make(chan int)
+	close(empty)
+	is.Empty(ChannelToSlice(Distinct(empty)))
+}
+
+func TestDistinctBy(t *testing.T) {
+	t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	type user struct {
+		ID   int
+		Name string
+	}
+	upstream := SliceToChannel(10, []user{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+		{ID: 1, Name: "Alicia"},
+		{ID: 3, Name: "Eve"},
+		{ID: 2, Name: "Bobby"},
+	})
+	result := ChannelToSlice(DistinctBy(upstream, func(u user) int { return u.ID }))
+	is.Equal([]user{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+		{ID: 3, Name: "Eve"},
+	}, result)
+}
+
+func TestTee(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	upstream := SliceToChannel(10, []int{0, 1, 2, 3})
+	downstreams := Tee(2, 10, upstream)
+
+	time.Sleep(10 * time.Millisecond)
+	is.Len(downstreams, 2)
+	for i := range downstreams {
+		is.Equal([]int{0, 1, 2, 3}, ChannelToSlice(downstreams[i]))
+	}
+
+	time.Sleep(10 * time.Millisecond)
+	for i := range downstreams {
+		msg, ok := <-downstreams[i]
+		is.False(ok)
+		is.Zero(msg)
+	}
+}
+
+func TestTeeDropsWhenDownstreamNotReady(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
+	testWithTimeout(t, 100*time.Millisecond)
+	is := assert.New(t)
+
+	upstream := SliceToChannel(10, []int{0, 1, 2, 3})
+	downstreams := Tee(2, 0, upstream)
+
+	time.Sleep(10 * time.Millisecond)
+	for i := range downstreams {
+		is.Empty(ChannelToSlice(downstreams[i]))
+	}
+}
