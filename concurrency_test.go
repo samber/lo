@@ -2,7 +2,6 @@ package lo
 
 import (
 	"context"
-	"fmt"
 	"sync"
 	"testing"
 	"time"
@@ -378,24 +377,46 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 }
 
 func TestBatchParallelProcess(t *testing.T) {
-	//is := assert.New(t)
+	is := assert.New(t)
 
-	t1 := time.Now()
-	fmt.Println(t1)
 	arr := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	ch := BatchParallelProcess(ctx, 20, arr, func(index int, arr []int) {
-		if index+1 >= len(arr) {
-			return
-		}
-		arr[index], arr[index+1] = arr[index+1], arr[index]
+		arr[index] = arr[index] * 2
+		// some network call delay
 		time.Sleep(10 * time.Millisecond)
 	})
 	<-ch
-	t2 := time.Now()
-	fmt.Println(t2)
-	fmt.Println(t2.Sub(t1))
-	fmt.Println(arr)
-	//is.InDelta(400*time.Millisecond, time.Since(t1), float64(50*time.Millisecond))
+	is.Equal(arr, []int{2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40})
+}
+
+func TestBatchParallelProcess_MaxConcurrency(t *testing.T) {
+	is := assert.New(t)
+
+	arr := make([]int, 20)
+	ctx := context.Background()
+
+	var (
+		mu          sync.Mutex
+		current     int
+		maxObserved int
+	)
+
+	done := BatchParallelProcess(ctx, 5, arr, func(index int, _ []int) {
+		mu.Lock()
+		current++
+		if current > maxObserved {
+			maxObserved = current
+		}
+		mu.Unlock()
+
+		time.Sleep(20 * time.Millisecond)
+
+		mu.Lock()
+		current--
+		mu.Unlock()
+	})
+	<-done
+	is.LessOrEqual(maxObserved, 5, "concurrency exceeded limit")
 }
