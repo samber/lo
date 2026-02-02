@@ -362,7 +362,9 @@ func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
 				buffer = buffer[:0]
 				skip = skipDelta
 			} else {
-				buffer = buffer[step:]
+				overlap := len(buffer) - step
+				copy(buffer, buffer[step:])
+				buffer = buffer[:overlap]
 			}
 		}
 	}
