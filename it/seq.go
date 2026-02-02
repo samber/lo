@@ -691,11 +691,8 @@ func Take[T any, I ~func(func(T) bool)](collection I, n int) I {
 	return func(yield func(T) bool) {
 		count := 0
 		for item := range collection {
-			if !yield(item) {
-				return
-			}
 			count++
-			if count >= n {
+			if count > n || !yield(item) {
 				return
 			}
 		}

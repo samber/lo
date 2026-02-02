@@ -328,6 +328,7 @@ func FanOut[T any](count, channelsBufferCap int, upstream <-chan T) []<-chan T {
 
 // Distinct returns a channel with duplicate values removed.
 // The first occurrence is preserved, and ordering is maintained.
+// Memory usage grows with the number of distinct values and can be unbounded.
 func Distinct[T comparable](upstream <-chan T) <-chan T {
 	unique := make(chan T)
 
@@ -349,6 +350,7 @@ func Distinct[T comparable](upstream <-chan T) <-chan T {
 
 // DistinctBy returns a channel with duplicate values removed based on the provided key.
 // The first occurrence is preserved, and ordering is maintained.
+// Memory usage grows with the number of distinct keys and can be unbounded.
 func DistinctBy[T any, K comparable](upstream <-chan T, key func(item T) K) <-chan T {
 	unique := make(chan T)
 
