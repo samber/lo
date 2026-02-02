@@ -338,6 +338,8 @@ func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
 	return func(yield func([]T) bool) {
 		buffer := make([]T, 0, size)
 		skip := 0
+		stepGteSize := step >= size
+		skipDelta := step - size
 
 		for item := range collection {
 			if skip > 0 {
@@ -356,9 +358,9 @@ func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
 				return
 			}
 
-			if step >= size {
+			if stepGteSize {
 				buffer = buffer[:0]
-				skip = step - size
+				skip = skipDelta
 			} else {
 				buffer = buffer[step:]
 			}
@@ -692,7 +694,7 @@ func Take[T any, I ~func(func(T) bool)](collection I, n int) I {
 		count := 0
 		for item := range collection {
 			count++
-			if count > n || !yield(item) {
+			if !yield(item) || count >= n {
 				return
 			}
 		}
@@ -703,10 +705,7 @@ func Take[T any, I ~func(func(T) bool)](collection I, n int) I {
 func TakeWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I {
 	return func(yield func(T) bool) {
 		for item := range collection {
-			if !predicate(item) {
-				return
-			}
-			if !yield(item) {
+			if !predicate(item) || !yield(item) {
 				return
 			}
 		}
@@ -737,11 +736,8 @@ func TakeFilter[T any, I ~func(func(T) bool)](collection I, n int, predicate fun
 		var index int
 		for item := range collection {
 			if predicate(item, index) {
-				if !yield(item) {
-					return
-				}
 				count++
-				if count >= n {
+				if !yield(item) || count >= n {
 					return
 				}
 			}
