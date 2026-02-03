@@ -326,6 +326,7 @@ func Window[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 // Sliding creates a sequence of sliding windows of a given size with a given step.
 // If step is equal to size, windows don't overlap (similar to Chunk).
 // If step is less than size, windows overlap.
+// Uses a ring buffer to avoid forward shifts and reduce reallocations.
 func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
 	if size <= 0 {
 		panic("it.Sliding: size must be greater than 0")
@@ -336,35 +337,26 @@ func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
 	}
 
 	return func(yield func([]T) bool) {
-		buffer := make([]T, 0, size)
-		skip := 0
-		stepGteSize := step >= size
-		skipDelta := step - size
-
+		buffer := make([]T, size)
+		var count int
 		for item := range collection {
-			if skip > 0 {
-				skip--
+			buffer[count%size] = item
+			count++
+			if count < size {
 				continue
 			}
 
-			buffer = append(buffer, item)
-			if len(buffer) < size {
+			if (count-size)%step != 0 {
 				continue
 			}
 
 			window := make([]T, size)
-			copy(window, buffer)
+			start := (count - size) % size
+			for i := 0; i < size; i++ {
+				window[i] = buffer[(start+i)%size]
+			}
 			if !yield(window) {
 				return
-			}
-
-			if stepGteSize {
-				buffer = buffer[:0]
-				skip = skipDelta
-			} else {
-				overlap := len(buffer) - step
-				copy(buffer, buffer[step:])
-				buffer = buffer[:overlap]
 			}
 		}
 	}
