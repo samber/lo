@@ -378,10 +378,10 @@ func Reverse[T any, Slice ~[]T](collection Slice) Slice {
 
 // Fill fills elements of a slice with `initial` value.
 // Play: https://go.dev/play/p/VwR34GzqEub
-func Fill[T Clonable[T], Slice ~[]T](collection Slice, initial T) Slice {
-	result := make(Slice, 0, len(collection))
+func Fill[T Clonable[T]](count int, initial T) Slice {
+	result := make(Slice, 0, count)
 
-	for range collection {
+	for i := 0; i < count; i++ {
 		result = append(result, initial.Clone())
 	}
 
