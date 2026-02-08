@@ -27,7 +27,7 @@ seq := func(yield func(int) bool) {
     yield(3)
     yield(4)
 }
-result := lo.FilterMap(seq, func(x int) (string, bool) {
+result := it.FilterMap(seq, func(x int) (string, bool) {
     if x%2 == 0 {
         return fmt.Sprintf("even-%d", x), true
     }
@@ -41,7 +41,7 @@ seq = func(yield func(string) bool) {
     yield("c")
     yield("d")
 }
-result = lo.FilterMap(seq, func(s string) (int, bool) {
+result = it.FilterMap(seq, func(s string) (int, bool) {
     if s != "" {
         return len(s), true
     }
@@ -60,7 +60,7 @@ seq := func(yield func(string) bool) {
     yield("banana")
     yield("cherry")
 }
-result := lo.FilterMapI(seq, func(s string, index int) (string, bool) {
+result := it.FilterMapI(seq, func(s string, index int) (string, bool) {
     if index%2 == 0 {
         return fmt.Sprintf("%s-%d", s, index), true
     }

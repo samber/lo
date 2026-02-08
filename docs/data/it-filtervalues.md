@@ -25,31 +25,31 @@ m := map[string]int{
     "cherry": 2,
     "date":   0,
 }
-result := lo.FilterValues(m, func(key string, value int) bool {
+result := it.FilterValues(m, func(key string, value int) bool {
     return value > 2
 })
 // []int{3, 5} (values > 2, corresponds to "apple" and "banana")
 
 numberMap := map[int]string{1: "one", 2: "two", 3: "three", 4: "four"}
-result = lo.FilterValues(numberMap, func(key int, value string) bool {
+result = it.FilterValues(numberMap, func(key int, value string) bool {
     return len(value) == 3
 })
 // []string{"one", "two", "three"} (values with length 3)
 
 personMap := map[string]int{"alice": 25, "bob": 30, "charlie": 17}
-result = lo.FilterValues(personMap, func(key string, age int) bool {
+result = it.FilterValues(personMap, func(key string, age int) bool {
     return strings.HasPrefix(key, "a") && age >= 20
 })
 // []int{25} (value for "alice" only)
 
 emptyMap := map[string]int{}
-result = lo.FilterValues(emptyMap, func(key string, value int) bool {
+result = it.FilterValues(emptyMap, func(key string, value int) bool {
     return true
 })
 // []int{} (empty map)
 
 dataMap := map[string]float64{"a": 1.5, "b": -2.0, "c": 0.0, "d": 3.14}
-result = lo.FilterValues(dataMap, func(key string, value float64) bool {
+result = it.FilterValues(dataMap, func(key string, value float64) bool {
     return value > 0
 })
 // []float64{1.5, 3.14} (positive values only)

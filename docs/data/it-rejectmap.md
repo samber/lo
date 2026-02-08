@@ -25,7 +25,7 @@ seq := func(yield func(int) bool) {
     yield(3)
     yield(4)
 }
-result := lo.RejectMap(seq, func(x int) (string, bool) {
+result := it.RejectMap(seq, func(x int) (string, bool) {
     if x%2 == 0 {
         return fmt.Sprintf("even-%d", x), true // reject even numbers
     }
@@ -39,7 +39,7 @@ seq = func(yield func(string) bool) {
     yield("c")
     yield("d")
 }
-result = lo.RejectMap(seq, func(s string) (int, bool) {
+result = it.RejectMap(seq, func(s string) (int, bool) {
     if s == "" {
         return 0, true // reject empty strings
     }
