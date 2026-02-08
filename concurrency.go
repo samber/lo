@@ -146,12 +146,14 @@ func WaitForWithContext(ctx context.Context, condition func(ctx context.Context,
 	}
 }
 
-func BatchParallelProcess[T any](ctx context.Context, maxConcurrency int, collections []T, processor func(index int, collection []T)) <-chan struct{} {
+// BatchConcurrentProcess runs the processor function in batches (of max concurrency), for each element in the collection
+func BatchConcurrentProcess[T any](ctx context.Context, maxConcurrency int, collections []T, processor func(index int, item T)) <-chan struct{} {
 	done := make(chan struct{})
 	sem := make(chan struct{}, maxConcurrency)
 	var wg sync.WaitGroup
 	go func() {
-		for i, _ := range collections {
+		defer close(done)
+		for i, item := range collections {
 			select {
 			case <-ctx.Done():
 				return
@@ -159,16 +161,15 @@ func BatchParallelProcess[T any](ctx context.Context, maxConcurrency int, collec
 			}
 			sem <- struct{}{}
 			wg.Add(1)
-			go func(index int) {
+			go func(index int, item T) {
 				defer func() {
 					wg.Done()
 					<-sem
 				}()
-				processor(index, collections)
-			}(i)
+				processor(index, item)
+			}(i, item)
 		}
 		wg.Wait()
-		close(done)
 	}()
 	return done
 }
