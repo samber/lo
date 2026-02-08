@@ -47,6 +47,18 @@ func genSliceInt(n int) []int {
 	return res
 }
 
+type heavy = [100]int
+
+func genSliceHeavy(n int) []heavy {
+	result := make([]heavy, n)
+	for i := range result {
+		for j := range result[i] {
+			result[i][j] = i + j
+		}
+	}
+	return result
+}
+
 func BenchmarkFlatten(b *testing.B) {
 	for _, n := range lengths {
 		ints := make([][]int, 0, n)
@@ -155,21 +167,34 @@ func BenchmarkDropRightWhile(b *testing.B) {
 
 func BenchmarkDropByIndex(b *testing.B) {
 	for _, n := range lengths {
-		strs := genSliceString(n)
-		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.DropByIndex(strs, n/4)
-			}
-		})
-	}
+		for _, indexes := range [][]int{
+			{0},
+			{0, n / 2, n / 4, n - 1},
+			lo.Range(n),
+		} {
+			name := fmt.Sprintf("size_%d/indexes_%d/", n, len(indexes))
 
-	for _, n := range lengths {
-		ints := genSliceInt(n)
-		b.Run(fmt.Sprintf("ints%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.DropByIndex(ints, n/4)
-			}
-		})
+			strs := genSliceString(n)
+			b.Run(name+"strings", func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					_ = lo.DropByIndex(strs, indexes...)
+				}
+			})
+
+			ints := genSliceInt(n)
+			b.Run(name+"ints", func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					_ = lo.DropByIndex(ints, indexes...)
+				}
+			})
+
+			heavy := genSliceHeavy(n)
+			b.Run(name+"heavy", func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					_ = lo.DropByIndex(heavy, indexes...)
+				}
+			})
+		}
 	}
 }
 
