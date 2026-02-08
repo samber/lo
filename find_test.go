@@ -767,9 +767,22 @@ func TestSamplesBy(t *testing.T) {
 
 	result1 := SamplesBy([]string{"a", "b", "c"}, 3, r.Intn)
 	result2 := SamplesBy([]string{}, 3, r.Intn)
+	result3 := SamplesBy([]string{"a", "b", "c"}, 3, func(n int) int { return n - 1 })
+	result4 := SamplesBy([]string{"a", "b", "c"}, 3, func(int) int { return 0 })
+	result5 := SamplesBy([]string{"a", "b", "c"}, 0, func(int) int { return 1 })
+	result6 := SamplesBy([]string{"a", "b", "c"}, -1, nil)
+
+	// index out of range [1] with length 1
+	is.Panics(func() {
+		SamplesBy([]string{"a", "b", "c"}, 3, func(int) int { return 1 })
+	})
 
 	is.ElementsMatch(result1, []string{"a", "b", "c"})
 	is.Empty(result2)
+	is.Equal([]string{"c", "b", "a"}, result3)
+	is.Equal([]string{"a", "c", "b"}, result4)
+	is.Empty(result5)
+	is.Empty(result6)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
