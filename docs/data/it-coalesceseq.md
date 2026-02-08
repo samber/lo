@@ -21,8 +21,8 @@ Returns the first non-empty sequence from the provided arguments, with a boolean
 emptySeq := func(yield func(int) bool) bool {
     return false // empty sequence
 }
-nonEmptySeq := lo.Range(3)
-result, ok := lo.CoalesceSeq(emptySeq, nonEmptySeq, emptySeq)
+nonEmptySeq := it.Range(3)
+result, ok := it.CoalesceSeq(emptySeq, nonEmptySeq, emptySeq)
 // iter.Seq[int] yielding 0, 1, 2, true
 
 emptyStrSeq := func(yield func(string) bool) bool {
@@ -33,9 +33,9 @@ strSeq := func(yield func(string) bool) bool {
     yield("b")
     return true
 }
-result, ok = lo.CoalesceSeq(emptyStrSeq, strSeq)
+result, ok = it.CoalesceSeq(emptyStrSeq, strSeq)
 // iter.Seq[string] yielding "a", "b", true
 
-result, ok = lo.CoalesceSeq(emptySeq, emptyStrSeq)
+result, ok = it.CoalesceSeq(emptySeq, emptyStrSeq)
 // nil sequence, false
 ```
