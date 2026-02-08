@@ -1,11 +1,31 @@
 package lo
 
 import (
+	"iter"
 	"sort"
 
 	"github.com/samber/lo/internal/constraints"
 	"github.com/samber/lo/mutable"
 )
+
+// SliceToSeq2 converts a slice into a sequence of pairs (key, value).
+// Elements are paired consecutively: s[0] with s[1], s[2] with s[3], etc.
+// If the slice has an odd number of elements, the last element is paired with the zero value of type E.
+func SliceToSeq2[Slice ~[]E, E any](collection Slice) iter.Seq2[E, E] {
+	return func(yield func(E, E) bool) {
+		n := len(collection)
+		var zero E
+		for i := 0; i < n; i += 2 {
+			v := zero
+			if i+1 < n {
+				v = collection[i+1]
+			}
+			if !yield(collection[i], v) {
+				return
+			}
+		}
+	}
+}
 
 // Filter iterates over elements of collection, returning a slice of all elements predicate returns true for.
 // Play: https://go.dev/play/p/Apjg3WeSi7K
