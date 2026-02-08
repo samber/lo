@@ -305,7 +305,7 @@ func BenchmarkAssign(b *testing.B) {
 		b.Helper()
 		defer b.ResetTimer()
 		m := make([]map[string]int, 0, n)
-		for i := 0; i < n; i++ {
+		for i := range n {
 			m = append(m, map[string]int{
 				strconv.Itoa(i): i,
 				strconv.Itoa(i): i,
@@ -323,7 +323,7 @@ func BenchmarkAssign(b *testing.B) {
 		b.Helper()
 		defer b.ResetTimer()
 		m := make([]map[string]int, 0, n)
-		for i := 0; i < n; i++ {
+		for range n {
 			m = append(m, map[string]int{
 				"a": 1,
 				"b": 2,
@@ -353,7 +353,7 @@ func BenchmarkAssign(b *testing.B) {
 			for _, tc := range testCases {
 				b.Run(tc.name, func(b *testing.B) {
 					b.ResetTimer()
-					for n := 0; n < b.N; n++ {
+					for range b.N {
 						result := Assign(values(tc.in...))
 						_ = result
 					}

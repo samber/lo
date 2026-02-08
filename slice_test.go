@@ -1231,6 +1231,7 @@ func TestSlice(t *testing.T) {
 	out16 := Slice(in, -10, 1)
 	out17 := Slice(in, -1, 3)
 	out18 := Slice(in, -10, 7)
+	out19 := Slice(in, -10, -1)
 
 	is.Empty(out1)
 	is.Equal([]int{0}, out2)
@@ -1250,6 +1251,7 @@ func TestSlice(t *testing.T) {
 	is.Equal([]int{0}, out16)
 	is.Equal([]int{0, 1, 2}, out17)
 	is.Equal([]int{0, 1, 2, 3, 4}, out18)
+	is.Empty(out19)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}

@@ -22,7 +22,7 @@ list1 := slices.Values([]int{0, 1, 2})
 list2 := slices.Values([]int{3, 4, 5})
 list3 := slices.Values([]int{6, 7, 8})
 
-result := Concat(list1, list2, list3)
+result := it.Concat(list1, list2, list3)
 
 // result: []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
 ```

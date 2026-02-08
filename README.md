@@ -2035,6 +2035,8 @@ lo.ChunkString("1", 2)
 // []string{"1"}
 ```
 
+Note: `lo.ChunkString` and `lo.Chunk` functions behave inconsistently for empty input: `lo.ChunkString("", n)` returns `[""]` instead of `[]`. See [#788](https://github.com/samber/lo/issues/788).
+
 [[play](https://go.dev/play/p/__FLTuJVz54)]
 
 ### RuneLength

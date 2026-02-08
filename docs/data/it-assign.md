@@ -27,14 +27,14 @@ map2 := func(yield func(map[string]int) bool) {
 map3 := func(yield func(map[string]int) bool) {
     yield(map[string]int{"d": 5, "e": 6})
 }
-result := lo.Assign(map1, map2, map3)
+result := it.Assign(map1, map2, map3)
 // map[string]int{"a": 1, "b": 3, "c": 4, "d": 5, "e": 6}
 // Note: "b" is 3 (overwritten from map2)
 
 singleMap := func(yield func(map[int]string) bool) {
     yield(map[int]string{1: "one", 2: "two"})
 }
-result = lo.Assign(singleMap)
+result = it.Assign(singleMap)
 // map[int]string{1: "one", 2: "two"}
 
 emptyMap1 := func(yield func(map[string]bool) bool) {
@@ -43,6 +43,6 @@ emptyMap1 := func(yield func(map[string]bool) bool) {
 emptyMap2 := func(yield func(map[string]bool) bool) {
     yield(map[string]bool{"active": true})
 }
-result = lo.Assign(emptyMap1, emptyMap2)
+result = it.Assign(emptyMap1, emptyMap2)
 // map[string]bool{"active": true}
 ```
