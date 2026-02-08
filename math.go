@@ -32,7 +32,7 @@ func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum in
 // step set to zero will return an empty slice.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step T) []T {
-	result := []T{}
+	var result []T
 	if start == end || step == 0 {
 		return result
 	}
@@ -136,7 +136,7 @@ func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
 		return []T{}
 	}
 
-	mode := make([]T, 0)
+	var mode []T
 	maxFreq := 0
 	frequency := make(map[T]int)
 
