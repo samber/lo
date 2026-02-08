@@ -312,6 +312,56 @@ func Chunk[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 	}
 }
 
+// Window creates a sequence of sliding windows of a given size.
+// Each window overlaps with the previous one by size-1 elements.
+// This is equivalent to Sliding(collection, size, 1).
+func Window[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
+	if size <= 0 {
+		panic("it.Window: size must be greater than 0")
+	}
+
+	return Sliding(collection, size, 1)
+}
+
+// Sliding creates a sequence of sliding windows of a given size with a given step.
+// If step is equal to size, windows don't overlap (similar to Chunk).
+// If step is less than size, windows overlap.
+// Uses a ring buffer to avoid forward shifts and reduce reallocations.
+func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
+	if size <= 0 {
+		panic("it.Sliding: size must be greater than 0")
+	}
+
+	if step <= 0 {
+		panic("it.Sliding: step must be greater than 0")
+	}
+
+	return func(yield func([]T) bool) {
+		buffer := make([]T, size)
+		var count int
+		for item := range collection {
+			buffer[count%size] = item
+			count++
+			if count < size {
+				continue
+			}
+
+			if (count-size)%step != 0 {
+				continue
+			}
+
+			window := make([]T, size)
+			start := (count - size) % size
+			for i := 0; i < size; i++ {
+				window[i] = buffer[(start+i)%size]
+			}
+			if !yield(window) {
+				return
+			}
+		}
+	}
+}
+
 // PartitionBy returns a sequence of elements split into groups. The order of grouped values is
 // determined by the order they occur in collection. The grouping is generated from the results
 // of running each element of collection through transform.
@@ -624,12 +674,70 @@ func DropLastWhile[T any, I ~func(func(T) bool)](collection I, predicate func(it
 	}
 }
 
+// Take takes the first n elements from a sequence.
+func Take[T any, I ~func(func(T) bool)](collection I, n int) I {
+	if n < 0 {
+		panic("it.Take: n must not be negative")
+	}
+
+	if n == 0 {
+		return I(func(func(T) bool) {})
+	}
+
+	return func(yield func(T) bool) {
+		count := 0
+		for item := range collection {
+			count++
+			if !yield(item) || count >= n {
+				return
+			}
+		}
+	}
+}
+
+// TakeWhile takes elements from the beginning of a sequence while the predicate returns true.
+func TakeWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I {
+	return func(yield func(T) bool) {
+		for item := range collection {
+			if !predicate(item) || !yield(item) {
+				return
+			}
+		}
+	}
+}
+
 // DropByIndex drops elements from a sequence by the index.
 // Will allocate a map large enough to hold all distinct indexes.
 // Play: https://go.dev/play/p/5WqJN9-zv
 func DropByIndex[T any, I ~func(func(T) bool)](collection I, indexes ...int) I {
 	set := lo.Keyify(indexes)
 	return RejectI(collection, func(_ T, index int) bool { return lo.HasKey(set, index) })
+}
+
+// TakeFilter filters elements and takes the first n elements that match the predicate.
+// Equivalent to calling Take(FilterI(...)), but more efficient as it stops after finding n matches.
+func TakeFilter[T any, I ~func(func(T) bool)](collection I, n int, predicate func(item T, index int) bool) I {
+	if n < 0 {
+		panic("it.TakeFilter: n must not be negative")
+	}
+
+	if n == 0 {
+		return I(func(func(T) bool) {})
+	}
+
+	return func(yield func(T) bool) {
+		var count int
+		var index int
+		for item := range collection {
+			if predicate(item, index) {
+				count++
+				if !yield(item) || count >= n {
+					return
+				}
+			}
+			index++
+		}
+	}
 }
 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return true for.

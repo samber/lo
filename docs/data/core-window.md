@@ -11,6 +11,7 @@ similarHelpers:
   - core#slice#chunk
   - core#slice#partitionby
   - core#slice#flatten
+  - it#sequence#window
 position: 145
 signatures:
   - "func Window[T any, Slice ~[]T](collection Slice, size int) []Slice"

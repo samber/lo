@@ -10,6 +10,7 @@ similarHelpers:
   - core#channel#fanin
   - core#channel#channeldispatcher
   - it#channel#channelseq
+  - core#channel#tee
 position: 256
 ---
 

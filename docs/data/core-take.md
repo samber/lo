@@ -14,6 +14,7 @@ similarHelpers:
   - core#slice#first
   - core#slice#filtermap
   - core#slice#takefilter
+  - it#sequence#take
 position: 175
 signatures:
   - "func Take[T any, Slice ~[]T](collection Slice, n int) Slice"
