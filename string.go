@@ -228,18 +228,19 @@ func Capitalize(str string) string {
 	return cases.Title(language.English).String(str)
 }
 
-// Ellipsis trims and truncates a string to a specified length **in bytes** and appends an ellipsis
-// if truncated. If the string contains non-ASCII characters (which may occupy multiple bytes in UTF-8),
-// truncating by byte length may split a character in the middle, potentially resulting in garbled output.
+// Ellipsis trims and truncates a string to a specified length in runes and appends an ellipsis
+// if truncated. The length parameter counts Unicode code points (runes), not bytes, so multi-byte
+// characters such as emoji or CJK ideographs are never split in the middle.
 // Play: https://go.dev/play/p/qE93rgqe1TW
 func Ellipsis(str string, length int) string {
 	str = strings.TrimSpace(str)
 
-	if len(str) > length {
+	runes := []rune(str)
+	if len(runes) > length {
 		if length < 3 {
 			return "..."
 		}
-		return strings.TrimSpace(str[:length-3]) + "..."
+		return strings.TrimSpace(string(runes[:length-3])) + "..."
 	}
 
 	return str
