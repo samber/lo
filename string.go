@@ -235,16 +235,6 @@ func Capitalize(str string) string {
 func Ellipsis(str string, length int) string {
 	str = strings.TrimSpace(str)
 
-	if length < 3 {
-		// Can't fit any content before the ellipsis.
-		for range str {
-			if length--; length < 0 {
-				return "..."
-			}
-		}
-		return str
-	}
-
 	const ellipsis = "..."
 
 	cutPosition := 0
@@ -252,6 +242,7 @@ func Ellipsis(str string, length int) string {
 		if length == len(ellipsis) {
 			cutPosition = i
 		}
+
 		if length--; length < 0 {
 			return strings.TrimSpace(str[:cutPosition]) + ellipsis
 		}
