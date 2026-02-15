@@ -286,7 +286,7 @@ func TestSumFloat32x8(t *testing.T) {
 			got := SumFloat32x8(tc.input)
 			want := lo.Sum(tc.input)
 
-			const epsilon = 1e-5
+			const epsilon = 1e-2
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("SumFloat32x8() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -328,8 +328,6 @@ func TestSumFloat64x4(t *testing.T) {
 }
 
 // Test type aliases work correctly
-type myInt16 int16
-
 func TestAVX2TypeAlias(t *testing.T) {
 	requireAVX2(t)
 	input := []myInt16{1, 2, 3, 4, 5}

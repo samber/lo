@@ -328,8 +328,6 @@ func TestSumFloat64x8(t *testing.T) {
 }
 
 // Test type aliases work correctly
-type myInt32 int32
-
 func TestAVX512TypeAlias(t *testing.T) {
 	requireAVX512(t)
 	input := []myInt32{1, 2, 3, 4, 5}

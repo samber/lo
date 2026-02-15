@@ -9,7 +9,8 @@ import (
 	"github.com/samber/lo"
 )
 
-func TestSumInt8x16(t *testing.T) {
+func TestMeanInt8x64(t *testing.T) {
+	requireAVX512(t)
 	testCases := []struct {
 		name  string
 		input []int8
@@ -17,10 +18,9 @@ func TestSumInt8x16(t *testing.T) {
 		{"empty", []int8{}},
 		{"single", []int8{42}},
 		{"small", []int8{1, 2, 3, 4, 5}},
-		{"exactly 16", make([]int8, 16)},
+		{"exactly 64", make([]int8, 64)},
 		{"large", make([]int8, 1000)},
 		{"negative", []int8{-1, -2, -3, 4, 5}},
-		{"mixed", []int8{-128, 0, 127, 1, -1}},
 	}
 
 	for _, tc := range testCases {
@@ -31,17 +31,21 @@ func TestSumInt8x16(t *testing.T) {
 				}
 			}
 
-			got := SumInt8x16(tc.input)
-			want := lo.Sum(tc.input)
+			got := MeanInt8x64(tc.input)
+			want := int8(0)
+			if len(tc.input) > 0 {
+				want = int8(int64(lo.Sum(tc.input)) / int64(len(tc.input)))
+			}
 
 			if got != want {
-				t.Errorf("SumInt8x16() = %v, want %v", got, want)
+				t.Errorf("MeanInt8x64() = %v, want %v", got, want)
 			}
 		})
 	}
 }
 
-func TestSumInt16x8(t *testing.T) {
+func TestMeanInt16x32(t *testing.T) {
+	requireAVX512(t)
 	testCases := []struct {
 		name  string
 		input []int16
@@ -49,10 +53,9 @@ func TestSumInt16x8(t *testing.T) {
 		{"empty", []int16{}},
 		{"single", []int16{42}},
 		{"small", []int16{1, 2, 3, 4, 5}},
-		{"exactly 8", make([]int16, 8)},
+		{"exactly 32", make([]int16, 32)},
 		{"large", make([]int16, 1000)},
 		{"negative", []int16{-1, -2, -3, 4, 5}},
-		{"mixed", []int16{-32768, 0, 32767, 1, -1}},
 	}
 
 	for _, tc := range testCases {
@@ -63,17 +66,21 @@ func TestSumInt16x8(t *testing.T) {
 				}
 			}
 
-			got := SumInt16x8(tc.input)
-			want := lo.Sum(tc.input)
+			got := MeanInt16x32(tc.input)
+			want := int16(0)
+			if len(tc.input) > 0 {
+				want = int16(lo.Sum(tc.input) / int16(len(tc.input)))
+			}
 
 			if got != want {
-				t.Errorf("SumInt16x8() = %v, want %v", got, want)
+				t.Errorf("MeanInt16x32() = %v, want %v", got, want)
 			}
 		})
 	}
 }
 
-func TestSumInt32x4(t *testing.T) {
+func TestMeanInt32x16(t *testing.T) {
+	requireAVX512(t)
 	testCases := []struct {
 		name  string
 		input []int32
@@ -81,7 +88,7 @@ func TestSumInt32x4(t *testing.T) {
 		{"empty", []int32{}},
 		{"single", []int32{42}},
 		{"small", []int32{1, 2, 3, 4, 5}},
-		{"exactly 4", make([]int32, 4)},
+		{"exactly 16", make([]int32, 16)},
 		{"large", make([]int32, 1000)},
 		{"negative", []int32{-1, -2, -3, 4, 5}},
 	}
@@ -94,17 +101,21 @@ func TestSumInt32x4(t *testing.T) {
 				}
 			}
 
-			got := SumInt32x4(tc.input)
-			want := lo.Sum(tc.input)
+			got := MeanInt32x16(tc.input)
+			want := int32(0)
+			if len(tc.input) > 0 {
+				want = int32(lo.Sum(tc.input) / int32(len(tc.input)))
+			}
 
 			if got != want {
-				t.Errorf("SumInt32x4() = %v, want %v", got, want)
+				t.Errorf("MeanInt32x16() = %v, want %v", got, want)
 			}
 		})
 	}
 }
 
-func TestSumInt64x2(t *testing.T) {
+func TestMeanInt64x8(t *testing.T) {
+	requireAVX512(t)
 	testCases := []struct {
 		name  string
 		input []int64
@@ -112,7 +123,7 @@ func TestSumInt64x2(t *testing.T) {
 		{"empty", []int64{}},
 		{"single", []int64{42}},
 		{"small", []int64{1, 2, 3, 4, 5}},
-		{"exactly 2", []int64{1, 2}},
+		{"exactly 8", make([]int64, 8)},
 		{"large", make([]int64, 1000)},
 		{"negative", []int64{-1, -2, -3, 4, 5}},
 	}
@@ -125,17 +136,21 @@ func TestSumInt64x2(t *testing.T) {
 				}
 			}
 
-			got := SumInt64x2(tc.input)
-			want := lo.Sum(tc.input)
+			got := MeanInt64x8(tc.input)
+			want := int64(0)
+			if len(tc.input) > 0 {
+				want = int64(lo.Sum(tc.input) / int64(len(tc.input)))
+			}
 
 			if got != want {
-				t.Errorf("SumInt64x2() = %v, want %v", got, want)
+				t.Errorf("MeanInt64x8() = %v, want %v", got, want)
 			}
 		})
 	}
 }
 
-func TestSumUint8x16(t *testing.T) {
+func TestMeanUint8x64(t *testing.T) {
+	requireAVX512(t)
 	testCases := []struct {
 		name  string
 		input []uint8
@@ -143,9 +158,8 @@ func TestSumUint8x16(t *testing.T) {
 		{"empty", []uint8{}},
 		{"single", []uint8{42}},
 		{"small", []uint8{1, 2, 3, 4, 5}},
-		{"exactly 16", make([]uint8, 16)},
+		{"exactly 64", make([]uint8, 64)},
 		{"large", make([]uint8, 1000)},
-		{"max values", []uint8{255, 255, 1}},
 	}
 
 	for _, tc := range testCases {
@@ -156,17 +170,21 @@ func TestSumUint8x16(t *testing.T) {
 				}
 			}
 
-			got := SumUint8x16(tc.input)
-			want := lo.Sum(tc.input)
+			got := MeanUint8x64(tc.input)
+			want := uint8(0)
+			if len(tc.input) > 0 {
+				want = uint8(uint8(lo.Sum(tc.input)) / uint8(len(tc.input)))
+			}
 
 			if got != want {
-				t.Errorf("SumUint8x16() = %v, want %v", got, want)
+				t.Errorf("MeanUint8x64() = %v, want %v", got, want)
 			}
 		})
 	}
 }
 
-func TestSumUint16x8(t *testing.T) {
+func TestMeanUint16x32(t *testing.T) {
+	requireAVX512(t)
 	testCases := []struct {
 		name  string
 		input []uint16
@@ -174,9 +192,8 @@ func TestSumUint16x8(t *testing.T) {
 		{"empty", []uint16{}},
 		{"single", []uint16{42}},
 		{"small", []uint16{1, 2, 3, 4, 5}},
-		{"exactly 8", make([]uint16, 8)},
+		{"exactly 32", make([]uint16, 32)},
 		{"large", make([]uint16, 1000)},
-		{"max values", []uint16{65535, 1}},
 	}
 
 	for _, tc := range testCases {
@@ -187,17 +204,21 @@ func TestSumUint16x8(t *testing.T) {
 				}
 			}
 
-			got := SumUint16x8(tc.input)
-			want := lo.Sum(tc.input)
+			got := MeanUint16x32(tc.input)
+			want := uint16(0)
+			if len(tc.input) > 0 {
+				want = uint16(uint16(lo.Sum(tc.input)) / uint16(len(tc.input)))
+			}
 
 			if got != want {
-				t.Errorf("SumUint16x8() = %v, want %v", got, want)
+				t.Errorf("MeanUint16x32() = %v, want %v", got, want)
 			}
 		})
 	}
 }
 
-func TestSumUint32x4(t *testing.T) {
+func TestMeanUint32x16(t *testing.T) {
+	requireAVX512(t)
 	testCases := []struct {
 		name  string
 		input []uint32
@@ -205,7 +226,7 @@ func TestSumUint32x4(t *testing.T) {
 		{"empty", []uint32{}},
 		{"single", []uint32{42}},
 		{"small", []uint32{1, 2, 3, 4, 5}},
-		{"exactly 4", make([]uint32, 4)},
+		{"exactly 16", make([]uint32, 16)},
 		{"large", make([]uint32, 1000)},
 	}
 
@@ -217,17 +238,21 @@ func TestSumUint32x4(t *testing.T) {
 				}
 			}
 
-			got := SumUint32x4(tc.input)
-			want := lo.Sum(tc.input)
+			got := MeanUint32x16(tc.input)
+			want := uint32(0)
+			if len(tc.input) > 0 {
+				want = uint32(uint32(lo.Sum(tc.input)) / uint32(len(tc.input)))
+			}
 
 			if got != want {
-				t.Errorf("SumUint32x4() = %v, want %v", got, want)
+				t.Errorf("MeanUint32x16() = %v, want %v", got, want)
 			}
 		})
 	}
 }
 
-func TestSumUint64x2(t *testing.T) {
+func TestMeanUint64x8(t *testing.T) {
+	requireAVX512(t)
 	testCases := []struct {
 		name  string
 		input []uint64
@@ -235,7 +260,7 @@ func TestSumUint64x2(t *testing.T) {
 		{"empty", []uint64{}},
 		{"single", []uint64{42}},
 		{"small", []uint64{1, 2, 3, 4, 5}},
-		{"exactly 2", []uint64{1, 2}},
+		{"exactly 8", make([]uint64, 8)},
 		{"large", make([]uint64, 1000)},
 	}
 
@@ -247,17 +272,21 @@ func TestSumUint64x2(t *testing.T) {
 				}
 			}
 
-			got := SumUint64x2(tc.input)
-			want := lo.Sum(tc.input)
+			got := MeanUint64x8(tc.input)
+			want := uint64(0)
+			if len(tc.input) > 0 {
+				want = uint64(lo.Sum(tc.input) / uint64(len(tc.input)))
+			}
 
 			if got != want {
-				t.Errorf("SumUint64x2() = %v, want %v", got, want)
+				t.Errorf("MeanUint64x8() = %v, want %v", got, want)
 			}
 		})
 	}
 }
 
-func TestSumFloat32x4(t *testing.T) {
+func TestMeanFloat32x16(t *testing.T) {
+	requireAVX512(t)
 	testCases := []struct {
 		name  string
 		input []float32
@@ -265,10 +294,9 @@ func TestSumFloat32x4(t *testing.T) {
 		{"empty", []float32{}},
 		{"single", []float32{42.5}},
 		{"small", []float32{1.1, 2.2, 3.3, 4.4, 5.5}},
-		{"exactly 4", []float32{1.0, 2.0, 3.0, 4.0}},
+		{"exactly 16", make([]float32, 16)},
 		{"large", make([]float32, 1000)},
 		{"negative", []float32{-1.1, -2.2, 3.3, 4.4}},
-		{"zeros", []float32{0, 0, 0, 0}},
 	}
 
 	for _, tc := range testCases {
@@ -279,18 +307,22 @@ func TestSumFloat32x4(t *testing.T) {
 				}
 			}
 
-			got := SumFloat32x4(tc.input)
-			want := lo.Sum(tc.input)
+			got := MeanFloat32x16(tc.input)
+			want := float32(0)
+			if len(tc.input) > 0 {
+				want = float32(lo.Sum(tc.input) / float32(len(tc.input)))
+			}
 
-			const epsilon = 1e-2
+			const epsilon = 1e-5
 			if diff := got - want; diff < -epsilon || diff > epsilon {
-				t.Errorf("SumFloat32x4() = %v, want %v (diff: %v)", got, want, diff)
+				t.Errorf("MeanFloat32x16() = %v, want %v (diff: %v)", got, want, diff)
 			}
 		})
 	}
 }
 
-func TestSumFloat64x2(t *testing.T) {
+func TestMeanFloat64x8(t *testing.T) {
+	requireAVX512(t)
 	testCases := []struct {
 		name  string
 		input []float64
@@ -298,7 +330,7 @@ func TestSumFloat64x2(t *testing.T) {
 		{"empty", []float64{}},
 		{"single", []float64{42.5}},
 		{"small", []float64{1.1, 2.2, 3.3, 4.4, 5.5}},
-		{"exactly 2", []float64{1.0, 2.0}},
+		{"exactly 8", make([]float64, 8)},
 		{"large", make([]float64, 1000)},
 		{"negative", []float64{-1.1, -2.2, 3.3, 4.4}},
 	}
@@ -311,24 +343,32 @@ func TestSumFloat64x2(t *testing.T) {
 				}
 			}
 
-			got := SumFloat64x2(tc.input)
-			want := lo.Sum(tc.input)
+			got := MeanFloat64x8(tc.input)
+			want := float64(0)
+			if len(tc.input) > 0 {
+				want = float64(lo.Sum(tc.input) / float64(len(tc.input)))
+			}
 
 			const epsilon = 1e-10
 			if diff := got - want; diff < -epsilon || diff > epsilon {
-				t.Errorf("SumFloat64x2() = %v, want %v (diff: %v)", got, want, diff)
+				t.Errorf("MeanFloat64x8() = %v, want %v (diff: %v)", got, want, diff)
 			}
 		})
 	}
 }
 
 // Test type aliases work correctly
-func TestSSETypeAlias(t *testing.T) {
-	input := []myInt8{1, 2, 3, 4, 5}
-	got := SumInt8x16(input)
-	want := lo.Sum(input)
+func TestAVX512MeanTypeAlias(t *testing.T) {
+	requireAVX512(t)
+	input := []myInt32{1, 2, 3, 4, 5}
+	got := MeanInt32x16(input)
+	sum := int64(0)
+	for _, v := range input {
+		sum += int64(v)
+	}
+	want := myInt32(sum / int64(len(input)))
 
 	if got != want {
-		t.Errorf("SumInt8x16() with type alias = %v, want %v", got, want)
+		t.Errorf("MeanInt32x16() with type alias = %v, want %v", got, want)
 	}
 }
