@@ -760,13 +760,16 @@ func Slice[T any, I ~func(func(T) bool)](collection I, start, end int) I {
 // Replace returns a sequence with the first n non-overlapping instances of old replaced by new.
 // Play: https://go.dev/play/p/6XrKO0-zw
 func Replace[T comparable, I ~func(func(T) bool)](collection I, old, nEw T, n int) I {
-	return I(Map(iter.Seq[T](collection), func(item T) T {
-		if n != 0 && item == old {
-			n--
-			return nEw
-		}
-		return item
-	}))
+	return I(func(yield func(T) bool) {
+		n := n
+		Map(iter.Seq[T](collection), func(item T) T {
+			if n != 0 && item == old {
+				n--
+				return nEw
+			}
+			return item
+		})(yield)
+	})
 }
 
 // ReplaceAll returns a sequence with all non-overlapping instances of old replaced by new.
