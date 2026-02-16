@@ -331,80 +331,70 @@ func SumFloat64x2[T ~float64](collection []T) T {
 
 // MeanInt8x16 calculates the mean of a slice of int8 using SSE SIMD
 func MeanInt8x16[T ~int8](collection []T) T {
-	if len(collection) == 0 {
+	if T(len(collection)) == 0 {
 		return 0
 	}
-	// Sum in int64: SumInt8x16 returns int8 and overflows for large n (e.g. 1000 elements)
-	var sum64 int64
-	for _, v := range collection {
-		sum64 += int64(v)
-	}
-	return T(sum64 / int64(len(collection)))
+	sum := SumInt8x16(collection)
+	return sum / T(len(collection))
 }
 
 // MeanInt16x8 calculates the mean of a slice of int16 using SSE SIMD
 func MeanInt16x8[T ~int16](collection []T) T {
-	if len(collection) == 0 {
+	if T(len(collection)) == 0 {
 		return 0
 	}
 	sum := SumInt16x8(collection)
-	// Divide in int64 to avoid int16 overflow that would cause division by zero.
-	return T(int64(sum) / int64(len(collection)))
+	return sum / T(len(collection))
 }
 
 // MeanInt32x4 calculates the mean of a slice of int32 using SSE SIMD
 func MeanInt32x4[T ~int32](collection []T) T {
-	if len(collection) == 0 {
+	if T(len(collection)) == 0 {
 		return 0
 	}
 	sum := SumInt32x4(collection)
-	// Divide in int64 to avoid int32 overflow that would cause division by zero.
-	return T(int64(sum) / int64(len(collection)))
+	return sum / T(len(collection))
 }
 
 // MeanInt64x2 calculates the mean of a slice of int64 using SSE SIMD
 func MeanInt64x2[T ~int64](collection []T) T {
-	if len(collection) == 0 {
+	if T(len(collection)) == 0 {
 		return 0
 	}
 	sum := SumInt64x2(collection)
-	// Divide in int64 to avoid int64 overflow that would cause division by zero.
-	return T(int64(sum) / int64(len(collection)))
+	return sum / T(len(collection))
 }
 
 // MeanUint8x16 calculates the mean of a slice of uint8 using SSE SIMD
 func MeanUint8x16[T ~uint8](collection []T) T {
-	if len(collection) == 0 {
+	if T(len(collection)) == 0 {
 		return 0
 	}
 	sum := SumUint8x16(collection)
-	// Divide in uint64 to avoid uint8 overflow that would cause division by zero.
-	return T(uint64(sum) / uint64(len(collection)))
+	return sum / T(len(collection))
 }
 
 // MeanUint16x8 calculates the mean of a slice of uint16 using SSE SIMD
 func MeanUint16x8[T ~uint16](collection []T) T {
-	if len(collection) == 0 {
+	if T(len(collection)) == 0 {
 		return 0
 	}
 	sum := SumUint16x8(collection)
-	// Divide in uint64 to avoid uint16 overflow that would cause division by zero.
-	return T(uint64(sum) / uint64(len(collection)))
+	return sum / T(len(collection))
 }
 
 // MeanUint32x4 calculates the mean of a slice of uint32 using SSE SIMD
 func MeanUint32x4[T ~uint32](collection []T) T {
-	if len(collection) == 0 {
+	if T(len(collection)) == 0 {
 		return 0
 	}
 	sum := SumUint32x4(collection)
-	// Divide in uint64 to avoid uint32 overflow that would cause division by zero.
-	return T(uint64(sum) / uint64(len(collection)))
+	return sum / T(len(collection))
 }
 
 // MeanUint64x2 calculates the mean of a slice of uint64 using SSE SIMD
 func MeanUint64x2[T ~uint64](collection []T) T {
-	if len(collection) == 0 {
+	if T(len(collection)) == 0 {
 		return 0
 	}
 	sum := SumUint64x2(collection)
@@ -413,7 +403,7 @@ func MeanUint64x2[T ~uint64](collection []T) T {
 
 // MeanFloat32x4 calculates the mean of a slice of float32 using SSE SIMD
 func MeanFloat32x4[T ~float32](collection []T) T {
-	if len(collection) == 0 {
+	if T(len(collection)) == 0 {
 		return 0
 	}
 	sum := SumFloat32x4(collection)
@@ -423,7 +413,7 @@ func MeanFloat32x4[T ~float32](collection []T) T {
 
 // MeanFloat64x2 calculates the mean of a slice of float64 using SSE SIMD
 func MeanFloat64x2[T ~float64](collection []T) T {
-	if len(collection) == 0 {
+	if T(len(collection)) == 0 {
 		return 0
 	}
 	sum := SumFloat64x2(collection)

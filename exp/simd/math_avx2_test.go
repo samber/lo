@@ -362,10 +362,7 @@ func TestMeanInt8x32(t *testing.T) {
 			}
 
 			got := MeanInt8x32(tc.input)
-			want := int8(0)
-			if len(tc.input) > 0 {
-				want = int8(int64(lo.Sum(tc.input)) / int64(len(tc.input)))
-			}
+			want := lo.Mean(tc.input)
 
 			if got != want {
 				t.Errorf("MeanInt8x32() = %v, want %v", got, want)
@@ -397,10 +394,7 @@ func TestMeanInt16x16(t *testing.T) {
 			}
 
 			got := MeanInt16x16(tc.input)
-			want := int16(0)
-			if len(tc.input) > 0 {
-				want = int16(int64(lo.Sum(tc.input)) / int64(len(tc.input)))
-			}
+			want := lo.Mean(tc.input)
 
 			if got != want {
 				t.Errorf("MeanInt16x16() = %v, want %v", got, want)
@@ -432,10 +426,7 @@ func TestMeanInt32x8(t *testing.T) {
 			}
 
 			got := MeanInt32x8(tc.input)
-			want := int32(0)
-			if len(tc.input) > 0 {
-				want = int32(int64(lo.Sum(tc.input)) / int64(len(tc.input)))
-			}
+			want := lo.Mean(tc.input)
 
 			if got != want {
 				t.Errorf("MeanInt32x8() = %v, want %v", got, want)
@@ -467,10 +458,7 @@ func TestMeanInt64x4(t *testing.T) {
 			}
 
 			got := MeanInt64x4(tc.input)
-			want := int64(0)
-			if len(tc.input) > 0 {
-				want = int64(int64(lo.Sum(tc.input)) / int64(len(tc.input)))
-			}
+			want := lo.Mean(tc.input)
 
 			if got != want {
 				t.Errorf("MeanInt64x4() = %v, want %v", got, want)
@@ -501,11 +489,7 @@ func TestMeanUint8x32(t *testing.T) {
 			}
 
 			got := MeanUint8x32(tc.input)
-			sum := lo.Sum(tc.input)
-			want := uint8(0)
-			if len(tc.input) > 0 {
-				want = uint8(uint64(sum) / uint64(len(tc.input)))
-			}
+			want := lo.Mean(tc.input)
 
 			if got != want {
 				t.Errorf("MeanUint8x32() = %v, want %v", got, want)
@@ -536,11 +520,7 @@ func TestMeanUint16x16(t *testing.T) {
 			}
 
 			got := MeanUint16x16(tc.input)
-			sum := lo.Sum(tc.input)
-			want := uint16(0)
-			if len(tc.input) > 0 {
-				want = uint16(uint64(sum) / uint64(len(tc.input)))
-			}
+			want := lo.Mean(tc.input)
 
 			if got != want {
 				t.Errorf("MeanUint16x16() = %v, want %v", got, want)
@@ -571,11 +551,7 @@ func TestMeanUint32x8(t *testing.T) {
 			}
 
 			got := MeanUint32x8(tc.input)
-			sum := lo.Sum(tc.input)
-			want := uint32(0)
-			if len(tc.input) > 0 {
-				want = uint32(uint64(sum) / uint64(len(tc.input)))
-			}
+			want := lo.Mean(tc.input)
 
 			if got != want {
 				t.Errorf("MeanUint32x8() = %v, want %v", got, want)
@@ -606,10 +582,7 @@ func TestMeanUint64x4(t *testing.T) {
 			}
 
 			got := MeanUint64x4(tc.input)
-			want := uint64(0)
-			if len(tc.input) > 0 {
-				want = uint64(uint64(lo.Sum(tc.input)) / uint64(len(tc.input)))
-			}
+			want := lo.Mean(tc.input)
 
 			if got != want {
 				t.Errorf("MeanUint64x4() = %v, want %v", got, want)
@@ -641,10 +614,7 @@ func TestMeanFloat32x8(t *testing.T) {
 			}
 
 			got := MeanFloat32x8(tc.input)
-			want := float32(0)
-			if len(tc.input) > 0 {
-				want = float32(float64(lo.Sum(tc.input)) / float64(len(tc.input)))
-			}
+			want := lo.Mean(tc.input)
 
 			const epsilon = 1e-5
 			if diff := got - want; diff < -epsilon || diff > epsilon {
@@ -677,10 +647,7 @@ func TestMeanFloat64x4(t *testing.T) {
 			}
 
 			got := MeanFloat64x4(tc.input)
-			want := float64(0)
-			if len(tc.input) > 0 {
-				want = lo.Sum(tc.input) / float64(len(tc.input))
-			}
+			want := lo.Mean(tc.input)
 
 			const epsilon = 1e-10
 			if diff := got - want; diff < -epsilon || diff > epsilon {
@@ -695,11 +662,7 @@ func TestAVX2MeanTypeAlias(t *testing.T) {
 	requireAVX2(t)
 	input := []myInt16{1, 2, 3, 4, 5}
 	got := MeanInt16x16(input)
-	sum := int64(0)
-	for _, v := range input {
-		sum += int64(v)
-	}
-	want := myInt16(sum / int64(len(input)))
+	want := lo.Mean(input)
 
 	if got != want {
 		t.Errorf("MeanInt16x16() with type alias = %v, want %v", got, want)
