@@ -1,3 +1,4 @@
+export GOEXPERIMENT=simd
 
 build:
 	go build -v ./...
