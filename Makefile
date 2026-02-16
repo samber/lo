@@ -2,9 +2,11 @@ export GOEXPERIMENT=simd
 
 build:
 	go build -v ./...
+	cd ./exp/simd && go build -v ./
 
 test:
 	go test -race ./...
+	cd ./exp/simd && go test -race ./
 watch-test:
 	reflex -t 50ms -s -- sh -c 'gotest -race ./...'
 
@@ -33,9 +35,11 @@ tools:
 
 lint:
 	golangci-lint run --timeout 60s --max-same-issues 50 ./...
+	cd ./exp/simd && golangci-lint run --timeout 60s --max-same-issues 50 ./...
 	# mdsf verify --debug --log-level warn docs/
 lint-fix:
 	golangci-lint run --timeout 60s --max-same-issues 50 --fix ./...
+	cd ./exp/simd && golangci-lint run --timeout 60s --max-same-issues 50 --fix ./...
 	# mdsf format --debug --log-level warn docs/
 
 audit:
