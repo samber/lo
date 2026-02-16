@@ -1179,7 +1179,7 @@ func MinUint64x4[T ~uint64](collection []T) T {
 	lanes := 4
 
 	// bearer:disable go_gosec_unsafe_unsafe
-base := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[0])), length)
+	base := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[0])), length)
 	var minVec archsimd.Uint64x4
 	firstInitialized := false
 
