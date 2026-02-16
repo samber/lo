@@ -876,7 +876,7 @@ func TestMeanInt8x16(t *testing.T) {
 			got := MeanInt8x16(tc.input)
 			want := int8(0)
 			if len(tc.input) > 0 {
-				want = int8(lo.Sum(tc.input) / int8(len(tc.input)))
+				want = int8(int64(lo.Sum(tc.input)) / int64(len(tc.input)))
 			}
 
 			if got != want {
@@ -910,7 +910,7 @@ func TestMeanInt16x8(t *testing.T) {
 			got := MeanInt16x8(tc.input)
 			want := int16(0)
 			if len(tc.input) > 0 {
-				want = int16(lo.Sum(tc.input) / int16(len(tc.input)))
+				want = int16(int64(lo.Sum(tc.input)) / int64(len(tc.input)))
 			}
 
 			if got != want {
@@ -944,7 +944,7 @@ func TestMeanInt32x4(t *testing.T) {
 			got := MeanInt32x4(tc.input)
 			want := int32(0)
 			if len(tc.input) > 0 {
-				want = int32(lo.Sum(tc.input) / int32(len(tc.input)))
+				want = int32(int64(lo.Sum(tc.input)) / int64(len(tc.input)))
 			}
 
 			if got != want {
@@ -978,7 +978,7 @@ func TestMeanInt64x2(t *testing.T) {
 			got := MeanInt64x2(tc.input)
 			want := int64(0)
 			if len(tc.input) > 0 {
-				want = int64(lo.Sum(tc.input) / int64(len(tc.input)))
+				want = int64(int64(lo.Sum(tc.input)) / int64(len(tc.input)))
 			}
 
 			if got != want {
@@ -1081,7 +1081,7 @@ func TestMeanUint32x4(t *testing.T) {
 			got := MeanUint32x4(tc.input)
 			want := uint32(0)
 			if len(tc.input) > 0 {
-				want = uint32(uint32(lo.Sum(tc.input)) / uint32(len(tc.input)))
+				want = uint32(uint64(lo.Sum(tc.input)) / uint64(len(tc.input)))
 			}
 
 			if got != want {
@@ -1149,7 +1149,7 @@ func TestMeanFloat32x4(t *testing.T) {
 			got := MeanFloat32x4(tc.input)
 			want := float32(0)
 			if len(tc.input) > 0 {
-				want = float32(lo.Sum(tc.input) / float32(len(tc.input)))
+				want = float32(float64(lo.Sum(tc.input)) / float64(len(tc.input)))
 			}
 
 			const epsilon = 1e-5
@@ -1184,7 +1184,7 @@ func TestMeanFloat64x2(t *testing.T) {
 			got := MeanFloat64x2(tc.input)
 			want := float64(0)
 			if len(tc.input) > 0 {
-				want = float64(lo.Sum(tc.input) / float64(len(tc.input)))
+				want = lo.Sum(tc.input) / float64(len(tc.input))
 			}
 
 			const epsilon = 1e-10
