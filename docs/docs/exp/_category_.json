@@ -1,0 +1,8 @@
+{
+  "label": "💨 SIMD",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "SIMD operations"
+  }
+}
