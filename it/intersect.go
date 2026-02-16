@@ -96,7 +96,7 @@ func NoneBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool {
 // Will allocate a map large enough to hold all distinct elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/kz3cGhGZZWF
-func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:gocyclo
+func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I {
 	if len(lists) == 0 {
 		return I(Empty[T]())
 	}
@@ -141,7 +141,7 @@ func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I { //nolint:goc
 // custom key selector function.
 // Will allocate a map large enough to hold all distinct elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
-func IntersectBy[T any, K comparable, I ~func(func(T) bool)](transform func(T) K, lists ...I) I { //nolint:gocyclo
+func IntersectBy[T any, K comparable, I ~func(func(T) bool)](transform func(T) K, lists ...I) I {
 	if len(lists) == 0 {
 		return I(Empty[T]())
 	}
