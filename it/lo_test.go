@@ -10,8 +10,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// assertSeqSupportBreak checks whether it is possible to break iteration over a [iter.Seq]
+// assertSeqSupportBreak checks whether it is possible to break iteration over a [iter.Seq].
 func assertSeqSupportBreak[T any](t *testing.T, seq iter.Seq[T]) iter.Seq[T] {
+	t.Helper()
 	assert.NotPanics(t, func() {
 		for range seq {
 			break
