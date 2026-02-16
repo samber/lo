@@ -17,6 +17,7 @@ func ContainsInt8x16[T ~int8](collection []T, target T) bool {
 	lanes := 16
 	targetVec := archsimd.BroadcastInt8x16(int8(target))
 
+	// bearer:disable go_gosec_unsafe_unsafe
 	base := unsafe.Slice((*int8)(unsafe.Pointer(&collection[0])), length)
 
 	i := 0
@@ -51,6 +52,7 @@ func ContainsInt16x8[T ~int16](collection []T, target T) bool {
 	lanes := 8
 	targetVec := archsimd.BroadcastInt16x8(int16(target))
 
+	// bearer:disable go_gosec_unsafe_unsafe
 	base := unsafe.Slice((*int16)(unsafe.Pointer(&collection[0])), length)
 
 	i := 0
@@ -83,6 +85,7 @@ func ContainsInt32x4[T ~int32](collection []T, target T) bool {
 	lanes := 4
 	targetVec := archsimd.BroadcastInt32x4(int32(target))
 
+	// bearer:disable go_gosec_unsafe_unsafe
 	base := unsafe.Slice((*int32)(unsafe.Pointer(&collection[0])), length)
 
 	i := 0
@@ -115,6 +118,7 @@ func ContainsInt64x2[T ~int64](collection []T, target T) bool {
 	lanes := 2
 	targetVec := archsimd.BroadcastInt64x2(int64(target))
 
+	// bearer:disable go_gosec_unsafe_unsafe
 	base := unsafe.Slice((*int64)(unsafe.Pointer(&collection[0])), length)
 
 	i := 0
@@ -147,6 +151,7 @@ func ContainsUint8x16[T ~uint8](collection []T, target T) bool {
 	lanes := 16
 	targetVec := archsimd.BroadcastUint8x16(uint8(target))
 
+	// bearer:disable go_gosec_unsafe_unsafe
 	base := unsafe.Slice((*uint8)(unsafe.Pointer(&collection[0])), length)
 
 	i := 0
@@ -179,6 +184,7 @@ func ContainsUint16x8[T ~uint16](collection []T, target T) bool {
 	lanes := 8
 	targetVec := archsimd.BroadcastUint16x8(uint16(target))
 
+	// bearer:disable go_gosec_unsafe_unsafe
 	base := unsafe.Slice((*uint16)(unsafe.Pointer(&collection[0])), length)
 
 	i := 0
@@ -211,6 +217,7 @@ func ContainsUint32x4[T ~uint32](collection []T, target T) bool {
 	lanes := 4
 	targetVec := archsimd.BroadcastUint32x4(uint32(target))
 
+	// bearer:disable go_gosec_unsafe_unsafe
 	base := unsafe.Slice((*uint32)(unsafe.Pointer(&collection[0])), length)
 
 	i := 0
@@ -243,6 +250,7 @@ func ContainsUint64x2[T ~uint64](collection []T, target T) bool {
 	lanes := 2
 	targetVec := archsimd.BroadcastUint64x2(uint64(target))
 
+	// bearer:disable go_gosec_unsafe_unsafe
 	base := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[0])), length)
 
 	i := 0
@@ -275,6 +283,7 @@ func ContainsFloat32x4[T ~float32](collection []T, target T) bool {
 	lanes := 4
 	targetVec := archsimd.BroadcastFloat32x4(float32(target))
 
+	// bearer:disable go_gosec_unsafe_unsafe
 	base := unsafe.Slice((*float32)(unsafe.Pointer(&collection[0])), length)
 
 	i := 0
@@ -307,6 +316,7 @@ func ContainsFloat64x2[T ~float64](collection []T, target T) bool {
 	lanes := 2
 	targetVec := archsimd.BroadcastFloat64x2(float64(target))
 
+	// bearer:disable go_gosec_unsafe_unsafe
 	base := unsafe.Slice((*float64)(unsafe.Pointer(&collection[0])), length)
 
 	i := 0
