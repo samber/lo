@@ -38,11 +38,3 @@ If your environment does not support AVX2/AVX-512, you can still run the SSE tes
 ```bash
 GOEXPERIMENT=simd go test -run SSE ./...
 ```
-
-### Print detected CPU features (debug)
-
-```bash
-GOEXPERIMENT=simd go test -run PrintCPUFeatures -v ./...
-```
-
-This prints whether the runtime detected SSE2, AVX, AVX2, and AVX512F.
