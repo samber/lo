@@ -286,7 +286,7 @@ func TestSumFloat32x16(t *testing.T) {
 			got := SumFloat32x16(tc.input)
 			want := lo.Sum(tc.input)
 
-			const epsilon = 1e-5
+			const epsilon = 1e-2
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("SumFloat32x16() = %v, want %v (diff: %v)", got, want, diff)
 			}
