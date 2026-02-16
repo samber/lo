@@ -1,0 +1,1738 @@
+//go:build go1.26 && goexperiment.simd && amd64
+
+package simd
+
+import (
+	"simd/archsimd"
+	"unsafe"
+)
+
+// SSE (128-bit) SIMD sum functions - 16/8/4/2 lanes
+
+// SumInt8x16 sums a slice of int8 using SSE SIMD (Int8x16, 16 lanes)
+func SumInt8x16[T ~int8](collection []T) T {
+	length := len(collection)
+	lanes := 16
+
+	var acc archsimd.Int8x16
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int8)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt8x16Slice(s)
+		acc = acc.Add(v)
+	}
+
+	var buf [16]int8
+	acc.Store(&buf)
+	var sum T
+	for k := 0; k < lanes; k++ {
+		sum += T(buf[k])
+	}
+
+	for ; i < length; i++ {
+		sum += collection[i]
+	}
+
+	return sum
+}
+
+// SumInt16x8 sums a slice of int16 using SSE SIMD (Int16x8, 8 lanes)
+func SumInt16x8[T ~int16](collection []T) T {
+	length := len(collection)
+	lanes := 8
+
+	var acc archsimd.Int16x8
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int16)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt16x8Slice(s)
+		acc = acc.Add(v)
+	}
+
+	var buf [8]int16
+	acc.Store(&buf)
+	var sum T
+	for k := 0; k < lanes; k++ {
+		sum += T(buf[k])
+	}
+
+	for ; i < length; i++ {
+		sum += collection[i]
+	}
+
+	return sum
+}
+
+// SumInt32x4 sums a slice of int32 using SSE SIMD (Int32x4, 4 lanes)
+func SumInt32x4[T ~int32](collection []T) T {
+	length := len(collection)
+	lanes := 4
+
+	var acc archsimd.Int32x4
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt32x4Slice(s)
+		acc = acc.Add(v)
+	}
+
+	var buf [4]int32
+	acc.Store(&buf)
+	var sum T
+	for k := 0; k < lanes; k++ {
+		sum += T(buf[k])
+	}
+
+	for ; i < length; i++ {
+		sum += collection[i]
+	}
+
+	return sum
+}
+
+// SumInt64x2 sums a slice of int64 using SSE SIMD (Int64x2, 2 lanes)
+func SumInt64x2[T ~int64](collection []T) T {
+	length := len(collection)
+	lanes := 2
+
+	var acc archsimd.Int64x2
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt64x2Slice(s)
+		acc = acc.Add(v)
+	}
+
+	var buf [2]int64
+	acc.Store(&buf)
+	var sum T
+	for k := 0; k < lanes; k++ {
+		sum += T(buf[k])
+	}
+
+	for ; i < length; i++ {
+		sum += collection[i]
+	}
+
+	return sum
+}
+
+// SumUint8x16 sums a slice of uint8 using SSE SIMD (Uint8x16, 16 lanes)
+func SumUint8x16[T ~uint8](collection []T) T {
+	length := len(collection)
+	lanes := 16
+
+	var acc archsimd.Uint8x16
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint8)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint8x16Slice(s)
+		acc = acc.Add(v)
+	}
+
+	var buf [16]uint8
+	acc.Store(&buf)
+	var sum T
+	for k := 0; k < lanes; k++ {
+		sum += T(buf[k])
+	}
+
+	for ; i < length; i++ {
+		sum += collection[i]
+	}
+
+	return sum
+}
+
+// SumUint16x8 sums a slice of uint16 using SSE SIMD (Uint16x8, 8 lanes)
+func SumUint16x8[T ~uint16](collection []T) T {
+	length := len(collection)
+	lanes := 8
+
+	var acc archsimd.Uint16x8
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint16)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint16x8Slice(s)
+		acc = acc.Add(v)
+	}
+
+	var buf [8]uint16
+	acc.Store(&buf)
+	var sum T
+	for k := 0; k < lanes; k++ {
+		sum += T(buf[k])
+	}
+
+	for ; i < length; i++ {
+		sum += collection[i]
+	}
+
+	return sum
+}
+
+// SumUint32x4 sums a slice of uint32 using SSE SIMD (Uint32x4, 4 lanes)
+func SumUint32x4[T ~uint32](collection []T) T {
+	length := len(collection)
+	lanes := 4
+
+	var acc archsimd.Uint32x4
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint32x4Slice(s)
+		acc = acc.Add(v)
+	}
+
+	var buf [4]uint32
+	acc.Store(&buf)
+	var sum T
+	for k := 0; k < lanes; k++ {
+		sum += T(buf[k])
+	}
+
+	for ; i < length; i++ {
+		sum += collection[i]
+	}
+
+	return sum
+}
+
+// SumUint64x2 sums a slice of uint64 using SSE SIMD (Uint64x2, 2 lanes)
+func SumUint64x2[T ~uint64](collection []T) T {
+	length := len(collection)
+	lanes := 2
+
+	var acc archsimd.Uint64x2
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint64x2Slice(s)
+		acc = acc.Add(v)
+	}
+
+	var buf [2]uint64
+	acc.Store(&buf)
+	var sum T
+	for k := 0; k < lanes; k++ {
+		sum += T(buf[k])
+	}
+
+	for ; i < length; i++ {
+		sum += collection[i]
+	}
+
+	return sum
+}
+
+// SumFloat32x4 sums a slice of float32 using SSE SIMD (Float32x4, 4 lanes)
+func SumFloat32x4[T ~float32](collection []T) T {
+	length := len(collection)
+	lanes := 4
+
+	var acc archsimd.Float32x4
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*float32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadFloat32x4Slice(s)
+		acc = acc.Add(v)
+	}
+
+	var buf [4]float32
+	acc.Store(&buf)
+	var sum T
+	for k := 0; k < lanes; k++ {
+		sum += T(buf[k])
+	}
+
+	for ; i < length; i++ {
+		sum += collection[i]
+	}
+
+	return sum
+}
+
+// SumFloat64x2 sums a slice of float64 using SSE SIMD (Float64x2, 2 lanes)
+func SumFloat64x2[T ~float64](collection []T) T {
+	length := len(collection)
+	lanes := 2
+
+	var acc archsimd.Float64x2
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*float64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadFloat64x2Slice(s)
+		acc = acc.Add(v)
+	}
+
+	var buf [2]float64
+	acc.Store(&buf)
+	var sum T
+	for k := 0; k < lanes; k++ {
+		sum += T(buf[k])
+	}
+
+	for ; i < length; i++ {
+		sum += collection[i]
+	}
+
+	return sum
+}
+
+// MeanInt8x16 calculates the mean of a slice of int8 using SSE SIMD
+func MeanInt8x16[T ~int8](collection []T) T {
+	if len(collection) == 0 {
+		return 0
+	}
+	sum := SumInt8x16(collection)
+	return sum / T(len(collection))
+}
+
+// MeanInt16x8 calculates the mean of a slice of int16 using SSE SIMD
+func MeanInt16x8[T ~int16](collection []T) T {
+	if len(collection) == 0 {
+		return 0
+	}
+	sum := SumInt16x8(collection)
+	return sum / T(len(collection))
+}
+
+// MeanInt32x4 calculates the mean of a slice of int32 using SSE SIMD
+func MeanInt32x4[T ~int32](collection []T) T {
+	if len(collection) == 0 {
+		return 0
+	}
+	sum := SumInt32x4(collection)
+	return sum / T(len(collection))
+}
+
+// MeanInt64x2 calculates the mean of a slice of int64 using SSE SIMD
+func MeanInt64x2[T ~int64](collection []T) T {
+	if len(collection) == 0 {
+		return 0
+	}
+	sum := SumInt64x2(collection)
+	return sum / T(len(collection))
+}
+
+// MeanUint8x16 calculates the mean of a slice of uint8 using SSE SIMD
+func MeanUint8x16[T ~uint8](collection []T) T {
+	if len(collection) == 0 {
+		return 0
+	}
+	sum := SumUint8x16(collection)
+	return sum / T(len(collection))
+}
+
+// MeanUint16x8 calculates the mean of a slice of uint16 using SSE SIMD
+func MeanUint16x8[T ~uint16](collection []T) T {
+	if len(collection) == 0 {
+		return 0
+	}
+	sum := SumUint16x8(collection)
+	return sum / T(len(collection))
+}
+
+// MeanUint32x4 calculates the mean of a slice of uint32 using SSE SIMD
+func MeanUint32x4[T ~uint32](collection []T) T {
+	if len(collection) == 0 {
+		return 0
+	}
+	sum := SumUint32x4(collection)
+	return sum / T(len(collection))
+}
+
+// MeanUint64x2 calculates the mean of a slice of uint64 using SSE SIMD
+func MeanUint64x2[T ~uint64](collection []T) T {
+	if len(collection) == 0 {
+		return 0
+	}
+	sum := SumUint64x2(collection)
+	return sum / T(len(collection))
+}
+
+// MeanFloat32x4 calculates the mean of a slice of float32 using SSE SIMD
+func MeanFloat32x4[T ~float32](collection []T) T {
+	if len(collection) == 0 {
+		return 0
+	}
+	sum := SumFloat32x4(collection)
+	return sum / T(len(collection))
+}
+
+// MeanFloat64x2 calculates the mean of a slice of float64 using SSE SIMD
+func MeanFloat64x2[T ~float64](collection []T) T {
+	if len(collection) == 0 {
+		return 0
+	}
+	sum := SumFloat64x2(collection)
+	return sum / T(len(collection))
+}
+
+// ClampInt8x16 clamps each element in collection between min and max values using SSE SIMD
+func ClampInt8x16[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+
+	result := make(Slice, len(collection))
+	lanes := 16
+
+	minVec := archsimd.BroadcastInt8x16(int8(min))
+	maxVec := archsimd.BroadcastInt8x16(int8(max))
+
+	i := 0
+	for ; i+lanes <= len(collection); i += lanes {
+		c := unsafe.Slice((*int8)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt8x16Slice(c)
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		var buf [16]int8
+		clamped.Store(&buf)
+		for j := 0; j < lanes; j++ {
+			result[i+j] = T(buf[j])
+		}
+	}
+
+	for ; i < len(collection); i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// ClampInt16x8 clamps each element in collection between min and max values using SSE SIMD
+func ClampInt16x8[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+
+	result := make(Slice, len(collection))
+	lanes := 8
+
+	minVec := archsimd.BroadcastInt16x8(int16(min))
+	maxVec := archsimd.BroadcastInt16x8(int16(max))
+
+	i := 0
+	for ; i+lanes <= len(collection); i += lanes {
+		c := unsafe.Slice((*int16)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt16x8Slice(c)
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		var buf [8]int16
+		clamped.Store(&buf)
+		for j := 0; j < lanes; j++ {
+			result[i+j] = T(buf[j])
+		}
+	}
+
+	for ; i < len(collection); i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// ClampInt32x4 clamps each element in collection between min and max values using SSE SIMD
+func ClampInt32x4[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+
+	result := make(Slice, len(collection))
+	lanes := 4
+
+	minVec := archsimd.BroadcastInt32x4(int32(min))
+	maxVec := archsimd.BroadcastInt32x4(int32(max))
+
+	i := 0
+	for ; i+lanes <= len(collection); i += lanes {
+		c := unsafe.Slice((*int32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt32x4Slice(c)
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		var buf [4]int32
+		clamped.Store(&buf)
+		for j := 0; j < lanes; j++ {
+			result[i+j] = T(buf[j])
+		}
+	}
+
+	for ; i < len(collection); i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// ClampInt64x2 clamps each element in collection between min and max values using SSE SIMD and AVX-512 SIMD.
+func ClampInt64x2[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+
+	result := make(Slice, len(collection))
+	lanes := 2
+
+	minVec := archsimd.BroadcastInt64x2(int64(min))
+	maxVec := archsimd.BroadcastInt64x2(int64(max))
+
+	i := 0
+	for ; i+lanes <= len(collection); i += lanes {
+		c := unsafe.Slice((*int64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt64x2Slice(c)
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		var buf [2]int64
+		clamped.Store(&buf)
+		for j := 0; j < lanes; j++ {
+			result[i+j] = T(buf[j])
+		}
+	}
+
+	for ; i < len(collection); i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// ClampUint8x16 clamps each element in collection between min and max values using SSE SIMD
+func ClampUint8x16[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+
+	result := make(Slice, len(collection))
+	lanes := 16
+
+	minVec := archsimd.BroadcastUint8x16(uint8(min))
+	maxVec := archsimd.BroadcastUint8x16(uint8(max))
+
+	i := 0
+	for ; i+lanes <= len(collection); i += lanes {
+		c := unsafe.Slice((*uint8)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint8x16Slice(c)
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		var buf [16]uint8
+		clamped.Store(&buf)
+		for j := 0; j < lanes; j++ {
+			result[i+j] = T(buf[j])
+		}
+	}
+
+	for ; i < len(collection); i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// ClampUint16x8 clamps each element in collection between min and max values using SSE SIMD
+func ClampUint16x8[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+
+	result := make(Slice, len(collection))
+	lanes := 8
+
+	minVec := archsimd.BroadcastUint16x8(uint16(min))
+	maxVec := archsimd.BroadcastUint16x8(uint16(max))
+
+	i := 0
+	for ; i+lanes <= len(collection); i += lanes {
+		c := unsafe.Slice((*uint16)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint16x8Slice(c)
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		var buf [8]uint16
+		clamped.Store(&buf)
+		for j := 0; j < lanes; j++ {
+			result[i+j] = T(buf[j])
+		}
+	}
+
+	for ; i < len(collection); i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// ClampUint32x4 clamps each element in collection between min and max values using SSE SIMD
+func ClampUint32x4[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+
+	result := make(Slice, len(collection))
+	lanes := 4
+
+	minVec := archsimd.BroadcastUint32x4(uint32(min))
+	maxVec := archsimd.BroadcastUint32x4(uint32(max))
+
+	i := 0
+	for ; i+lanes <= len(collection); i += lanes {
+		c := unsafe.Slice((*uint32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint32x4Slice(c)
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		var buf [4]uint32
+		clamped.Store(&buf)
+		for j := 0; j < lanes; j++ {
+			result[i+j] = T(buf[j])
+		}
+	}
+
+	for ; i < len(collection); i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// ClampUint64x2 clamps each element in collection between min and max values using SSE SIMD and AVX-512 SIMD.
+func ClampUint64x2[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+
+	result := make(Slice, len(collection))
+	lanes := 2
+
+	minVec := archsimd.BroadcastUint64x2(uint64(min))
+	maxVec := archsimd.BroadcastUint64x2(uint64(max))
+
+	i := 0
+	for ; i+lanes <= len(collection); i += lanes {
+		c := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint64x2Slice(c)
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		var buf [2]uint64
+		clamped.Store(&buf)
+		for j := 0; j < lanes; j++ {
+			result[i+j] = T(buf[j])
+		}
+	}
+
+	for ; i < len(collection); i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// ClampFloat32x4 clamps each element in collection between min and max values using SSE SIMD
+func ClampFloat32x4[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+
+	result := make(Slice, len(collection))
+	lanes := 4
+
+	minVec := archsimd.BroadcastFloat32x4(float32(min))
+	maxVec := archsimd.BroadcastFloat32x4(float32(max))
+
+	i := 0
+	for ; i+lanes <= len(collection); i += lanes {
+		c := unsafe.Slice((*float32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadFloat32x4Slice(c)
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		var buf [4]float32
+		clamped.Store(&buf)
+		for j := 0; j < lanes; j++ {
+			result[i+j] = T(buf[j])
+		}
+	}
+
+	for ; i < len(collection); i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// ClampFloat64x2 clamps each element in collection between min and max values using SSE SIMD
+func ClampFloat64x2[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+
+	result := make(Slice, len(collection))
+	lanes := 2
+
+	minVec := archsimd.BroadcastFloat64x2(float64(min))
+	maxVec := archsimd.BroadcastFloat64x2(float64(max))
+
+	i := 0
+	for ; i+lanes <= len(collection); i += lanes {
+		c := unsafe.Slice((*float64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadFloat64x2Slice(c)
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		var buf [2]float64
+		clamped.Store(&buf)
+		for j := 0; j < lanes; j++ {
+			result[i+j] = T(buf[j])
+		}
+	}
+
+	for ; i < len(collection); i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// MinInt8x16 finds the minimum value in a collection of int8 using SSE SIMD
+func MinInt8x16[T ~int8](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 16
+
+	var minVec archsimd.Int8x16
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int8)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt8x16Slice(s)
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal int8
+	if firstInitialized {
+		var buf [16]int8
+		minVec.Store(&buf)
+		minVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] < minVal {
+				minVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = int8(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinInt16x8 finds the minimum value in a collection of int16 using SSE SIMD
+func MinInt16x8[T ~int16](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 8
+
+	var minVec archsimd.Int16x8
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int16)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt16x8Slice(s)
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal int16
+	if firstInitialized {
+		var buf [8]int16
+		minVec.Store(&buf)
+		minVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] < minVal {
+				minVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = int16(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinInt32x4 finds the minimum value in a collection of int32 using SSE SIMD
+func MinInt32x4[T ~int32](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 4
+
+	var minVec archsimd.Int32x4
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt32x4Slice(s)
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal int32
+	if firstInitialized {
+		var buf [4]int32
+		minVec.Store(&buf)
+		minVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] < minVal {
+				minVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = int32(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinInt64x2 finds the minimum value in a collection of int64 using SSE SIMD
+func MinInt64x2[T ~int64](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 2
+
+	var minVec archsimd.Int64x2
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt64x2Slice(s)
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal int64
+	if firstInitialized {
+		var buf [2]int64
+		minVec.Store(&buf)
+		minVal = buf[0]
+		if buf[1] < minVal {
+			minVal = buf[1]
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = int64(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinUint8x16 finds the minimum value in a collection of uint8 using SSE SIMD
+func MinUint8x16[T ~uint8](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 16
+
+	var minVec archsimd.Uint8x16
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint8)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint8x16Slice(s)
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal uint8
+	if firstInitialized {
+		var buf [16]uint8
+		minVec.Store(&buf)
+		minVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] < minVal {
+				minVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = uint8(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinUint16x8 finds the minimum value in a collection of uint16 using SSE SIMD
+func MinUint16x8[T ~uint16](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 8
+
+	var minVec archsimd.Uint16x8
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint16)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint16x8Slice(s)
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal uint16
+	if firstInitialized {
+		var buf [8]uint16
+		minVec.Store(&buf)
+		minVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] < minVal {
+				minVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = uint16(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinUint32x4 finds the minimum value in a collection of uint32 using SSE SIMD
+func MinUint32x4[T ~uint32](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 4
+
+	var minVec archsimd.Uint32x4
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint32x4Slice(s)
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal uint32
+	if firstInitialized {
+		var buf [4]uint32
+		minVec.Store(&buf)
+		minVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] < minVal {
+				minVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = uint32(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinUint64x2 finds the minimum value in a collection of uint64 using SSE SIMD
+func MinUint64x2[T ~uint64](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 2
+
+	var minVec archsimd.Uint64x2
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint64x2Slice(s)
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal uint64
+	if firstInitialized {
+		var buf [2]uint64
+		minVec.Store(&buf)
+		minVal = buf[0]
+		if buf[1] < minVal {
+			minVal = buf[1]
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = uint64(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinFloat32x4 finds the minimum value in a collection of float32 using SSE SIMD
+func MinFloat32x4[T ~float32](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 4
+
+	var minVec archsimd.Float32x4
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*float32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadFloat32x4Slice(s)
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal float32
+	if firstInitialized {
+		var buf [4]float32
+		minVec.Store(&buf)
+		minVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] < minVal {
+				minVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = float32(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinFloat64x2 finds the minimum value in a collection of float64 using SSE SIMD
+func MinFloat64x2[T ~float64](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 2
+
+	var minVec archsimd.Float64x2
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*float64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadFloat64x2Slice(s)
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal float64
+	if firstInitialized {
+		var buf [2]float64
+		minVec.Store(&buf)
+		minVal = buf[0]
+		if buf[1] < minVal {
+			minVal = buf[1]
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = float64(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MaxInt8x16 finds the maximum value in a collection of int8 using SSE SIMD
+func MaxInt8x16[T ~int8](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 16
+
+	var maxVec archsimd.Int8x16
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int8)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt8x16Slice(s)
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal int8
+	if firstInitialized {
+		var buf [16]int8
+		maxVec.Store(&buf)
+		maxVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] > maxVal {
+				maxVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = int8(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxInt16x8 finds the maximum value in a collection of int16 using SSE SIMD
+func MaxInt16x8[T ~int16](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 8
+
+	var maxVec archsimd.Int16x8
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int16)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt16x8Slice(s)
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal int16
+	if firstInitialized {
+		var buf [8]int16
+		maxVec.Store(&buf)
+		maxVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] > maxVal {
+				maxVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = int16(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxInt32x4 finds the maximum value in a collection of int32 using SSE SIMD
+func MaxInt32x4[T ~int32](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 4
+
+	var maxVec archsimd.Int32x4
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt32x4Slice(s)
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal int32
+	if firstInitialized {
+		var buf [4]int32
+		maxVec.Store(&buf)
+		maxVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] > maxVal {
+				maxVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = int32(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxInt64x2 finds the maximum value in a collection of int64 using SSE SIMD
+func MaxInt64x2[T ~int64](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 2
+
+	var maxVec archsimd.Int64x2
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*int64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadInt64x2Slice(s)
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal int64
+	if firstInitialized {
+		var buf [2]int64
+		maxVec.Store(&buf)
+		maxVal = buf[0]
+		if buf[1] > maxVal {
+			maxVal = buf[1]
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = int64(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxUint8x16 finds the maximum value in a collection of uint8 using SSE SIMD
+func MaxUint8x16[T ~uint8](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 16
+
+	var maxVec archsimd.Uint8x16
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint8)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint8x16Slice(s)
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal uint8
+	if firstInitialized {
+		var buf [16]uint8
+		maxVec.Store(&buf)
+		maxVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] > maxVal {
+				maxVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = uint8(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxUint16x8 finds the maximum value in a collection of uint16 using SSE SIMD
+func MaxUint16x8[T ~uint16](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 8
+
+	var maxVec archsimd.Uint16x8
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint16)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint16x8Slice(s)
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal uint16
+	if firstInitialized {
+		var buf [8]uint16
+		maxVec.Store(&buf)
+		maxVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] > maxVal {
+				maxVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = uint16(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxUint32x4 finds the maximum value in a collection of uint32 using SSE SIMD
+func MaxUint32x4[T ~uint32](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 4
+
+	var maxVec archsimd.Uint32x4
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint32x4Slice(s)
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal uint32
+	if firstInitialized {
+		var buf [4]uint32
+		maxVec.Store(&buf)
+		maxVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] > maxVal {
+				maxVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = uint32(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxUint64x2 finds the maximum value in a collection of uint64 using SSE SIMD
+func MaxUint64x2[T ~uint64](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 2
+
+	var maxVec archsimd.Uint64x2
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadUint64x2Slice(s)
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal uint64
+	if firstInitialized {
+		var buf [2]uint64
+		maxVec.Store(&buf)
+		maxVal = buf[0]
+		if buf[1] > maxVal {
+			maxVal = buf[1]
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = uint64(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxFloat32x4 finds the maximum value in a collection of float32 using SSE SIMD
+func MaxFloat32x4[T ~float32](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 4
+
+	var maxVec archsimd.Float32x4
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*float32)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadFloat32x4Slice(s)
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal float32
+	if firstInitialized {
+		var buf [4]float32
+		maxVec.Store(&buf)
+		maxVal = buf[0]
+		for j := 1; j < lanes; j++ {
+			if buf[j] > maxVal {
+				maxVal = buf[j]
+			}
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = float32(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxFloat64x2 finds the maximum value in a collection of float64 using SSE SIMD
+func MaxFloat64x2[T ~float64](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	lanes := 2
+
+	var maxVec archsimd.Float64x2
+	firstInitialized := false
+
+	i := 0
+	for ; i+lanes <= length; i += lanes {
+		s := unsafe.Slice((*float64)(unsafe.Pointer(&collection[i])), lanes)
+		v := archsimd.LoadFloat64x2Slice(s)
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal float64
+	if firstInitialized {
+		var buf [2]float64
+		maxVec.Store(&buf)
+		maxVal = buf[0]
+		if buf[1] > maxVal {
+			maxVal = buf[1]
+		}
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = float64(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
