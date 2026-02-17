@@ -454,153 +454,6 @@ func TestAVX512ContainsFloat64x2(t *testing.T) {
 	}
 }
 
-// Test type aliases work correctly
-func TestAVX512ContainsTypeAlias(t *testing.T) {
-	requireAVX2(t)
-	requireAVX512(t)
-	input := []myInt8{1, 2, 3, 4, 5}
-	target := myInt8(3)
-
-	got := ContainsInt8x16(input, target)
-	if !got {
-		t.Errorf("ContainsInt8x16() with type alias = false, want true")
-	}
-
-	target = myInt8(10)
-	got = ContainsInt8x16(input, target)
-	if got {
-		t.Errorf("ContainsInt8x16() with type alias = true, want false")
-	}
-}
-
-// Test consistency with lo.Contains
-func TestAVX512ContainsConsistency(t *testing.T) {
-	requireAVX2(t)
-	requireAVX512(t)
-	testCases := []struct {
-		name    string
-		int8    []int8
-		int16   []int16
-		int32   []int32
-		int64   []int64
-		uint8   []uint8
-		uint16  []uint16
-		uint32  []uint32
-		uint64  []uint64
-		float32 []float32
-		float64 []float64
-	}{
-		{
-			name:    "mixed",
-			int8:    []int8{-1, 0, 1, 2, 3},
-			int16:   []int16{-1, 0, 1, 2, 3},
-			int32:   []int32{-1, 0, 1, 2, 3},
-			int64:   []int64{-1, 0, 1, 2, 3},
-			uint8:   []uint8{0, 1, 2, 3, 4},
-			uint16:  []uint16{0, 1, 2, 3, 4},
-			uint32:  []uint32{0, 1, 2, 3, 4},
-			uint64:  []uint64{0, 1, 2, 3, 4},
-			float32: []float32{0.0, 1.1, 2.2, 3.3},
-			float64: []float64{0.0, 1.1, 2.2, 3.3},
-		},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			if len(tc.int8) > 0 {
-				for _, target := range tc.int8 {
-					got := ContainsInt8x16(tc.int8, target)
-					want := lo.Contains(tc.int8, target)
-					if got != want {
-						t.Errorf("ContainsInt8x16() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.int16) > 0 {
-				for _, target := range tc.int16 {
-					got := ContainsInt16x8(tc.int16, target)
-					want := lo.Contains(tc.int16, target)
-					if got != want {
-						t.Errorf("ContainsInt16x8() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.int32) > 0 {
-				for _, target := range tc.int32 {
-					got := ContainsInt32x4(tc.int32, target)
-					want := lo.Contains(tc.int32, target)
-					if got != want {
-						t.Errorf("ContainsInt32x4() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.int64) > 0 {
-				for _, target := range tc.int64 {
-					got := ContainsInt64x2(tc.int64, target)
-					want := lo.Contains(tc.int64, target)
-					if got != want {
-						t.Errorf("ContainsInt64x2() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.uint8) > 0 {
-				for _, target := range tc.uint8 {
-					got := ContainsUint8x16(tc.uint8, target)
-					want := lo.Contains(tc.uint8, target)
-					if got != want {
-						t.Errorf("ContainsUint8x16() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.uint16) > 0 {
-				for _, target := range tc.uint16 {
-					got := ContainsUint16x8(tc.uint16, target)
-					want := lo.Contains(tc.uint16, target)
-					if got != want {
-						t.Errorf("ContainsUint16x8() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.uint32) > 0 {
-				for _, target := range tc.uint32 {
-					got := ContainsUint32x4(tc.uint32, target)
-					want := lo.Contains(tc.uint32, target)
-					if got != want {
-						t.Errorf("ContainsUint32x4() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.uint64) > 0 {
-				for _, target := range tc.uint64 {
-					got := ContainsUint64x2(tc.uint64, target)
-					want := lo.Contains(tc.uint64, target)
-					if got != want {
-						t.Errorf("ContainsUint64x2() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.float32) > 0 {
-				for _, target := range tc.float32 {
-					got := ContainsFloat32x4(tc.float32, target)
-					want := lo.Contains(tc.float32, target)
-					if got != want {
-						t.Errorf("ContainsFloat32x4() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.float64) > 0 {
-				for _, target := range tc.float64 {
-					got := ContainsFloat64x2(tc.float64, target)
-					want := lo.Contains(tc.float64, target)
-					if got != want {
-						t.Errorf("ContainsFloat64x2() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-		})
-	}
-}
-
 func TestAVX512ContainsInt8x32(t *testing.T) {
 	requireAVX2(t)
 	requireAVX512(t)
@@ -1045,25 +898,6 @@ func TestAVX512ContainsFloat64x4(t *testing.T) {
 	}
 }
 
-// Test type aliases work correctly
-func TestAVX512ContainsTypeAlias(t *testing.T) {
-	requireAVX2(t)
-	requireAVX512(t)
-	input := []myInt8{1, 2, 3, 4, 5}
-	target := myInt8(3)
-
-	got := ContainsInt8x32(input, target)
-	if !got {
-		t.Errorf("ContainsInt8x32() with type alias = false, want true")
-	}
-
-	target = myInt8(10)
-	got = ContainsInt8x32(input, target)
-	if got {
-		t.Errorf("ContainsInt8x32() with type alias = true, want false")
-	}
-}
-
 // Test consistency with lo.Contains
 func TestAVX512ContainsConsistency(t *testing.T) {
 	requireAVX2(t)
@@ -1098,6 +932,186 @@ func TestAVX512ContainsConsistency(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.int8) > 0 {
+				for _, target := range tc.int8 {
+					got := ContainsInt8x16(tc.int8, target)
+					want := lo.Contains(tc.int8, target)
+					if got != want {
+						t.Errorf("ContainsInt8x16() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.int16) > 0 {
+				for _, target := range tc.int16 {
+					got := ContainsInt16x8(tc.int16, target)
+					want := lo.Contains(tc.int16, target)
+					if got != want {
+						t.Errorf("ContainsInt16x8() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.int32) > 0 {
+				for _, target := range tc.int32 {
+					got := ContainsInt32x4(tc.int32, target)
+					want := lo.Contains(tc.int32, target)
+					if got != want {
+						t.Errorf("ContainsInt32x4() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.int64) > 0 {
+				for _, target := range tc.int64 {
+					got := ContainsInt64x2(tc.int64, target)
+					want := lo.Contains(tc.int64, target)
+					if got != want {
+						t.Errorf("ContainsInt64x2() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.uint8) > 0 {
+				for _, target := range tc.uint8 {
+					got := ContainsUint8x16(tc.uint8, target)
+					want := lo.Contains(tc.uint8, target)
+					if got != want {
+						t.Errorf("ContainsUint8x16() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.uint16) > 0 {
+				for _, target := range tc.uint16 {
+					got := ContainsUint16x8(tc.uint16, target)
+					want := lo.Contains(tc.uint16, target)
+					if got != want {
+						t.Errorf("ContainsUint16x8() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.uint32) > 0 {
+				for _, target := range tc.uint32 {
+					got := ContainsUint32x4(tc.uint32, target)
+					want := lo.Contains(tc.uint32, target)
+					if got != want {
+						t.Errorf("ContainsUint32x4() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.uint64) > 0 {
+				for _, target := range tc.uint64 {
+					got := ContainsUint64x2(tc.uint64, target)
+					want := lo.Contains(tc.uint64, target)
+					if got != want {
+						t.Errorf("ContainsUint64x2() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.float32) > 0 {
+				for _, target := range tc.float32 {
+					got := ContainsFloat32x4(tc.float32, target)
+					want := lo.Contains(tc.float32, target)
+					if got != want {
+						t.Errorf("ContainsFloat32x4() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.float64) > 0 {
+				for _, target := range tc.float64 {
+					got := ContainsFloat64x2(tc.float64, target)
+					want := lo.Contains(tc.float64, target)
+					if got != want {
+						t.Errorf("ContainsFloat64x2() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.int8) > 0 {
+				for _, target := range tc.int8 {
+					got := ContainsInt8x64(tc.int8, target)
+					want := lo.Contains(tc.int8, target)
+					if got != want {
+						t.Errorf("ContainsInt8x64() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.int16) > 0 {
+				for _, target := range tc.int16 {
+					got := ContainsInt16x32(tc.int16, target)
+					want := lo.Contains(tc.int16, target)
+					if got != want {
+						t.Errorf("ContainsInt16x32() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.int32) > 0 {
+				for _, target := range tc.int32 {
+					got := ContainsInt32x16(tc.int32, target)
+					want := lo.Contains(tc.int32, target)
+					if got != want {
+						t.Errorf("ContainsInt32x16() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.int64) > 0 {
+				for _, target := range tc.int64 {
+					got := ContainsInt64x8(tc.int64, target)
+					want := lo.Contains(tc.int64, target)
+					if got != want {
+						t.Errorf("ContainsInt64x8() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.uint8) > 0 {
+				for _, target := range tc.uint8 {
+					got := ContainsUint8x64(tc.uint8, target)
+					want := lo.Contains(tc.uint8, target)
+					if got != want {
+						t.Errorf("ContainsUint8x64() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.uint16) > 0 {
+				for _, target := range tc.uint16 {
+					got := ContainsUint16x32(tc.uint16, target)
+					want := lo.Contains(tc.uint16, target)
+					if got != want {
+						t.Errorf("ContainsUint16x32() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.uint32) > 0 {
+				for _, target := range tc.uint32 {
+					got := ContainsUint32x16(tc.uint32, target)
+					want := lo.Contains(tc.uint32, target)
+					if got != want {
+						t.Errorf("ContainsUint32x16() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.uint64) > 0 {
+				for _, target := range tc.uint64 {
+					got := ContainsUint64x8(tc.uint64, target)
+					want := lo.Contains(tc.uint64, target)
+					if got != want {
+						t.Errorf("ContainsUint64x8() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.float32) > 0 {
+				for _, target := range tc.float32 {
+					got := ContainsFloat32x16(tc.float32, target)
+					want := lo.Contains(tc.float32, target)
+					if got != want {
+						t.Errorf("ContainsFloat32x16() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
+			if len(tc.float64) > 0 {
+				for _, target := range tc.float64 {
+					got := ContainsFloat64x8(tc.float64, target)
+					want := lo.Contains(tc.float64, target)
+					if got != want {
+						t.Errorf("ContainsFloat64x8() not consistent with lo.Contains for target %v", target)
+					}
+				}
+			}
 			if len(tc.int8) > 0 {
 				for _, target := range tc.int8 {
 					got := ContainsInt8x32(tc.int8, target)
@@ -1641,8 +1655,8 @@ func TestAVX512ContainsTypeAlias(t *testing.T) {
 	requireAVX2(t)
 	requireAVX512(t)
 	input := []myInt8{1, 2, 3, 4, 5}
-	target := myInt8(3)
 
+	target := myInt8(3)
 	got := ContainsInt8x64(input, target)
 	if !got {
 		t.Errorf("ContainsInt8x64() with type alias = false, want true")
@@ -1653,132 +1667,28 @@ func TestAVX512ContainsTypeAlias(t *testing.T) {
 	if got {
 		t.Errorf("ContainsInt8x64() with type alias = true, want false")
 	}
-}
 
-// Test consistency with lo.Contains
-func TestAVX512ContainsConsistency(t *testing.T) {
-	requireAVX2(t)
-	requireAVX512(t)
-	testCases := []struct {
-		name    string
-		int8    []int8
-		int16   []int16
-		int32   []int32
-		int64   []int64
-		uint8   []uint8
-		uint16  []uint16
-		uint32  []uint32
-		uint64  []uint64
-		float32 []float32
-		float64 []float64
-	}{
-		{
-			name:    "mixed",
-			int8:    []int8{-1, 0, 1, 2, 3},
-			int16:   []int16{-1, 0, 1, 2, 3},
-			int32:   []int32{-1, 0, 1, 2, 3},
-			int64:   []int64{-1, 0, 1, 2, 3},
-			uint8:   []uint8{0, 1, 2, 3, 4},
-			uint16:  []uint16{0, 1, 2, 3, 4},
-			uint32:  []uint32{0, 1, 2, 3, 4},
-			uint64:  []uint64{0, 1, 2, 3, 4},
-			float32: []float32{0.0, 1.1, 2.2, 3.3},
-			float64: []float64{0.0, 1.1, 2.2, 3.3},
-		},
+	target = myInt8(3)
+	got = ContainsInt8x16(input, target)
+	if !got {
+		t.Errorf("ContainsInt8x16() with type alias = false, want true")
 	}
 
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			if len(tc.int8) > 0 {
-				for _, target := range tc.int8 {
-					got := ContainsInt8x64(tc.int8, target)
-					want := lo.Contains(tc.int8, target)
-					if got != want {
-						t.Errorf("ContainsInt8x64() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.int16) > 0 {
-				for _, target := range tc.int16 {
-					got := ContainsInt16x32(tc.int16, target)
-					want := lo.Contains(tc.int16, target)
-					if got != want {
-						t.Errorf("ContainsInt16x32() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.int32) > 0 {
-				for _, target := range tc.int32 {
-					got := ContainsInt32x16(tc.int32, target)
-					want := lo.Contains(tc.int32, target)
-					if got != want {
-						t.Errorf("ContainsInt32x16() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.int64) > 0 {
-				for _, target := range tc.int64 {
-					got := ContainsInt64x8(tc.int64, target)
-					want := lo.Contains(tc.int64, target)
-					if got != want {
-						t.Errorf("ContainsInt64x8() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.uint8) > 0 {
-				for _, target := range tc.uint8 {
-					got := ContainsUint8x64(tc.uint8, target)
-					want := lo.Contains(tc.uint8, target)
-					if got != want {
-						t.Errorf("ContainsUint8x64() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.uint16) > 0 {
-				for _, target := range tc.uint16 {
-					got := ContainsUint16x32(tc.uint16, target)
-					want := lo.Contains(tc.uint16, target)
-					if got != want {
-						t.Errorf("ContainsUint16x32() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.uint32) > 0 {
-				for _, target := range tc.uint32 {
-					got := ContainsUint32x16(tc.uint32, target)
-					want := lo.Contains(tc.uint32, target)
-					if got != want {
-						t.Errorf("ContainsUint32x16() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.uint64) > 0 {
-				for _, target := range tc.uint64 {
-					got := ContainsUint64x8(tc.uint64, target)
-					want := lo.Contains(tc.uint64, target)
-					if got != want {
-						t.Errorf("ContainsUint64x8() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.float32) > 0 {
-				for _, target := range tc.float32 {
-					got := ContainsFloat32x16(tc.float32, target)
-					want := lo.Contains(tc.float32, target)
-					if got != want {
-						t.Errorf("ContainsFloat32x16() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-			if len(tc.float64) > 0 {
-				for _, target := range tc.float64 {
-					got := ContainsFloat64x8(tc.float64, target)
-					want := lo.Contains(tc.float64, target)
-					if got != want {
-						t.Errorf("ContainsFloat64x8() not consistent with lo.Contains for target %v", target)
-					}
-				}
-			}
-		})
+	target = myInt8(10)
+	got = ContainsInt8x16(input, target)
+	if got {
+		t.Errorf("ContainsInt8x16() with type alias = true, want false")
+	}
+
+	target = myInt8(3)
+	got = ContainsInt8x32(input, target)
+	if !got {
+		t.Errorf("ContainsInt8x32() with type alias = false, want true")
+	}
+
+	target = myInt8(10)
+	got = ContainsInt8x32(input, target)
+	if got {
+		t.Errorf("ContainsInt8x32() with type alias = true, want false")
 	}
 }

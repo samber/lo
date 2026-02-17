@@ -4,7 +4,6 @@ package simd
 
 import (
 	"simd/archsimd"
-	"unsafe"
 )
 
 // AVX2 (256-bit) SIMD sum functions - 32/16/8/4 lanes
@@ -17,8 +16,7 @@ func SumInt8x32[T ~int8](collection []T) T {
 	}
 	lanes := 32
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int8)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt8(collection, length)
 	var acc archsimd.Int8x32
 
 	i := 0
@@ -49,8 +47,7 @@ func SumInt16x16[T ~int16](collection []T) T {
 	}
 	lanes := 16
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int16)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt16(collection, length)
 	var acc archsimd.Int16x16
 
 	i := 0
@@ -81,8 +78,7 @@ func SumInt32x8[T ~int32](collection []T) T {
 	}
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int32)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt32(collection, length)
 	var acc archsimd.Int32x8
 
 	i := 0
@@ -113,8 +109,7 @@ func SumInt64x4[T ~int64](collection []T) T {
 	}
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int64)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt64(collection, length)
 	var acc archsimd.Int64x4
 
 	i := 0
@@ -145,8 +140,7 @@ func SumUint8x32[T ~uint8](collection []T) T {
 	}
 	lanes := 32
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint8)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint8(collection, length)
 	var acc archsimd.Uint8x32
 
 	i := 0
@@ -177,8 +171,7 @@ func SumUint16x16[T ~uint16](collection []T) T {
 	}
 	lanes := 16
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint16)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint16(collection, length)
 	var acc archsimd.Uint16x16
 
 	i := 0
@@ -209,8 +202,7 @@ func SumUint32x8[T ~uint32](collection []T) T {
 	}
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint32)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint32(collection, length)
 	var acc archsimd.Uint32x8
 
 	i := 0
@@ -241,8 +233,7 @@ func SumUint64x4[T ~uint64](collection []T) T {
 	}
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint64(collection, length)
 	var acc archsimd.Uint64x4
 
 	i := 0
@@ -273,8 +264,7 @@ func SumFloat32x8[T ~float32](collection []T) T {
 	}
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*float32)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceFloat32(collection, length)
 	var acc archsimd.Float32x8
 
 	i := 0
@@ -305,8 +295,7 @@ func SumFloat64x4[T ~float64](collection []T) T {
 	}
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*float64)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceFloat64(collection, length)
 	var acc archsimd.Float64x4
 
 	i := 0
@@ -421,20 +410,20 @@ func MeanFloat64x4[T ~float64](collection []T) T {
 
 // ClampInt8x32 clamps each element in collection between min and max values using AVX2 SIMD
 func ClampInt8x32[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
-	if len(collection) == 0 {
+	length := len(collection)
+	if length == 0 {
 		return collection
 	}
 
-	result := make(Slice, len(collection))
+	result := make(Slice, length)
 	lanes := 32
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int8)(unsafe.Pointer(&collection[0])), len(collection))
+	base := unsafeSliceInt8(collection, length)
 	minVec := archsimd.BroadcastInt8x32(int8(min))
 	maxVec := archsimd.BroadcastInt8x32(int8(max))
 
 	i := 0
-	for ; i+lanes <= len(collection); i += lanes {
+	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt8x32Slice(base[i : i+lanes])
 
 		clamped := v.Max(minVec).Min(maxVec)
@@ -446,7 +435,7 @@ func ClampInt8x32[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
 		}
 	}
 
-	for ; i < len(collection); i++ {
+	for ; i < length; i++ {
 		val := collection[i]
 		if val < min {
 			val = min
@@ -461,20 +450,20 @@ func ClampInt8x32[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampInt16x16 clamps each element in collection between min and max values using AVX2 SIMD
 func ClampInt16x16[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
-	if len(collection) == 0 {
+	length := len(collection)
+	if length == 0 {
 		return collection
 	}
 
-	result := make(Slice, len(collection))
+	result := make(Slice, length)
 	lanes := 16
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int16)(unsafe.Pointer(&collection[0])), len(collection))
+	base := unsafeSliceInt16(collection, length)
 	minVec := archsimd.BroadcastInt16x16(int16(min))
 	maxVec := archsimd.BroadcastInt16x16(int16(max))
 
 	i := 0
-	for ; i+lanes <= len(collection); i += lanes {
+	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt16x16Slice(base[i : i+lanes])
 
 		clamped := v.Max(minVec).Min(maxVec)
@@ -486,7 +475,7 @@ func ClampInt16x16[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
 		}
 	}
 
-	for ; i < len(collection); i++ {
+	for ; i < length; i++ {
 		val := collection[i]
 		if val < min {
 			val = min
@@ -501,20 +490,20 @@ func ClampInt16x16[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampInt32x8 clamps each element in collection between min and max values using AVX2 SIMD
 func ClampInt32x8[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
-	if len(collection) == 0 {
+	length := len(collection)
+	if length == 0 {
 		return collection
 	}
 
-	result := make(Slice, len(collection))
+	result := make(Slice, length)
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int32)(unsafe.Pointer(&collection[0])), len(collection))
+	base := unsafeSliceInt32(collection, length)
 	minVec := archsimd.BroadcastInt32x8(int32(min))
 	maxVec := archsimd.BroadcastInt32x8(int32(max))
 
 	i := 0
-	for ; i+lanes <= len(collection); i += lanes {
+	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt32x8Slice(base[i : i+lanes])
 
 		clamped := v.Max(minVec).Min(maxVec)
@@ -526,7 +515,7 @@ func ClampInt32x8[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 		}
 	}
 
-	for ; i < len(collection); i++ {
+	for ; i < length; i++ {
 		val := collection[i]
 		if val < min {
 			val = min
@@ -541,20 +530,20 @@ func ClampInt32x8[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampInt64x4 clamps each element in collection between min and max values using AVX2 SIMD and AVX-512 SIMD.
 func ClampInt64x4[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
-	if len(collection) == 0 {
+	length := len(collection)
+	if length == 0 {
 		return collection
 	}
 
-	result := make(Slice, len(collection))
+	result := make(Slice, length)
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int64)(unsafe.Pointer(&collection[0])), len(collection))
+	base := unsafeSliceInt64(collection, length)
 	minVec := archsimd.BroadcastInt64x4(int64(min))
 	maxVec := archsimd.BroadcastInt64x4(int64(max))
 
 	i := 0
-	for ; i+lanes <= len(collection); i += lanes {
+	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt64x4Slice(base[i : i+lanes])
 
 		clamped := v.Max(minVec).Min(maxVec)
@@ -566,7 +555,7 @@ func ClampInt64x4[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 		}
 	}
 
-	for ; i < len(collection); i++ {
+	for ; i < length; i++ {
 		val := collection[i]
 		if val < min {
 			val = min
@@ -581,20 +570,20 @@ func ClampInt64x4[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampUint8x32 clamps each element in collection between min and max values using AVX2 SIMD
 func ClampUint8x32[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
-	if len(collection) == 0 {
+	length := len(collection)
+	if length == 0 {
 		return collection
 	}
 
-	result := make(Slice, len(collection))
+	result := make(Slice, length)
 	lanes := 32
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint8)(unsafe.Pointer(&collection[0])), len(collection))
+	base := unsafeSliceUint8(collection, length)
 	minVec := archsimd.BroadcastUint8x32(uint8(min))
 	maxVec := archsimd.BroadcastUint8x32(uint8(max))
 
 	i := 0
-	for ; i+lanes <= len(collection); i += lanes {
+	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint8x32Slice(base[i : i+lanes])
 
 		clamped := v.Max(minVec).Min(maxVec)
@@ -606,7 +595,7 @@ func ClampUint8x32[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
 		}
 	}
 
-	for ; i < len(collection); i++ {
+	for ; i < length; i++ {
 		val := collection[i]
 		if val < min {
 			val = min
@@ -621,20 +610,20 @@ func ClampUint8x32[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampUint16x16 clamps each element in collection between min and max values using AVX2 SIMD
 func ClampUint16x16[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
-	if len(collection) == 0 {
+	length := len(collection)
+	if length == 0 {
 		return collection
 	}
 
-	result := make(Slice, len(collection))
+	result := make(Slice, length)
 	lanes := 16
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint16)(unsafe.Pointer(&collection[0])), len(collection))
+	base := unsafeSliceUint16(collection, length)
 	minVec := archsimd.BroadcastUint16x16(uint16(min))
 	maxVec := archsimd.BroadcastUint16x16(uint16(max))
 
 	i := 0
-	for ; i+lanes <= len(collection); i += lanes {
+	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint16x16Slice(base[i : i+lanes])
 
 		clamped := v.Max(minVec).Min(maxVec)
@@ -646,7 +635,7 @@ func ClampUint16x16[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
 		}
 	}
 
-	for ; i < len(collection); i++ {
+	for ; i < length; i++ {
 		val := collection[i]
 		if val < min {
 			val = min
@@ -661,20 +650,20 @@ func ClampUint16x16[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampUint32x8 clamps each element in collection between min and max values using AVX2 SIMD
 func ClampUint32x8[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
-	if len(collection) == 0 {
+	length := len(collection)
+	if length == 0 {
 		return collection
 	}
 
-	result := make(Slice, len(collection))
+	result := make(Slice, length)
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint32)(unsafe.Pointer(&collection[0])), len(collection))
+	base := unsafeSliceUint32(collection, length)
 	minVec := archsimd.BroadcastUint32x8(uint32(min))
 	maxVec := archsimd.BroadcastUint32x8(uint32(max))
 
 	i := 0
-	for ; i+lanes <= len(collection); i += lanes {
+	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint32x8Slice(base[i : i+lanes])
 
 		clamped := v.Max(minVec).Min(maxVec)
@@ -686,7 +675,7 @@ func ClampUint32x8[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
 		}
 	}
 
-	for ; i < len(collection); i++ {
+	for ; i < length; i++ {
 		val := collection[i]
 		if val < min {
 			val = min
@@ -701,20 +690,20 @@ func ClampUint32x8[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampUint64x4 clamps each element in collection between min and max values using AVX2 SIMD and AVX-512 SIMD.
 func ClampUint64x4[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
-	if len(collection) == 0 {
+	length := len(collection)
+	if length == 0 {
 		return collection
 	}
 
-	result := make(Slice, len(collection))
+	result := make(Slice, length)
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[0])), len(collection))
+	base := unsafeSliceUint64(collection, length)
 	minVec := archsimd.BroadcastUint64x4(uint64(min))
 	maxVec := archsimd.BroadcastUint64x4(uint64(max))
 
 	i := 0
-	for ; i+lanes <= len(collection); i += lanes {
+	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint64x4Slice(base[i : i+lanes])
 
 		clamped := v.Max(minVec).Min(maxVec)
@@ -726,7 +715,7 @@ func ClampUint64x4[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 		}
 	}
 
-	for ; i < len(collection); i++ {
+	for ; i < length; i++ {
 		val := collection[i]
 		if val < min {
 			val = min
@@ -741,20 +730,20 @@ func ClampUint64x4[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampFloat32x8 clamps each element in collection between min and max values using AVX2 SIMD
 func ClampFloat32x8[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice {
-	if len(collection) == 0 {
+	length := len(collection)
+	if length == 0 {
 		return collection
 	}
 
-	result := make(Slice, len(collection))
+	result := make(Slice, length)
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*float32)(unsafe.Pointer(&collection[0])), len(collection))
+	base := unsafeSliceFloat32(collection, length)
 	minVec := archsimd.BroadcastFloat32x8(float32(min))
 	maxVec := archsimd.BroadcastFloat32x8(float32(max))
 
 	i := 0
-	for ; i+lanes <= len(collection); i += lanes {
+	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadFloat32x8Slice(base[i : i+lanes])
 
 		clamped := v.Max(minVec).Min(maxVec)
@@ -766,7 +755,7 @@ func ClampFloat32x8[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice 
 		}
 	}
 
-	for ; i < len(collection); i++ {
+	for ; i < length; i++ {
 		val := collection[i]
 		if val < min {
 			val = min
@@ -781,20 +770,20 @@ func ClampFloat32x8[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice 
 
 // ClampFloat64x4 clamps each element in collection between min and max values using AVX2 SIMD
 func ClampFloat64x4[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice {
-	if len(collection) == 0 {
+	length := len(collection)
+	if length == 0 {
 		return collection
 	}
 
-	result := make(Slice, len(collection))
+	result := make(Slice, length)
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*float64)(unsafe.Pointer(&collection[0])), len(collection))
+	base := unsafeSliceFloat64(collection, length)
 	minVec := archsimd.BroadcastFloat64x4(float64(min))
 	maxVec := archsimd.BroadcastFloat64x4(float64(max))
 
 	i := 0
-	for ; i+lanes <= len(collection); i += lanes {
+	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadFloat64x4Slice(base[i : i+lanes])
 
 		clamped := v.Max(minVec).Min(maxVec)
@@ -806,7 +795,7 @@ func ClampFloat64x4[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice 
 		}
 	}
 
-	for ; i < len(collection); i++ {
+	for ; i < length; i++ {
 		val := collection[i]
 		if val < min {
 			val = min
@@ -828,8 +817,7 @@ func MinInt8x32[T ~int8](collection []T) T {
 
 	lanes := 32
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int8)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt8(collection, length)
 	var minVec archsimd.Int8x32
 	firstInitialized := false
 
@@ -878,8 +866,7 @@ func MinInt16x16[T ~int16](collection []T) T {
 
 	lanes := 16
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int16)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt16(collection, length)
 	var minVec archsimd.Int16x16
 	firstInitialized := false
 
@@ -928,8 +915,7 @@ func MinInt32x8[T ~int32](collection []T) T {
 
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int32)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt32(collection, length)
 	var minVec archsimd.Int32x8
 	firstInitialized := false
 
@@ -978,8 +964,7 @@ func MinInt64x4[T ~int64](collection []T) T {
 
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int64)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt64(collection, length)
 	var minVec archsimd.Int64x4
 	firstInitialized := false
 
@@ -1028,8 +1013,7 @@ func MinUint8x32[T ~uint8](collection []T) T {
 
 	lanes := 32
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint8)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint8(collection, length)
 	var minVec archsimd.Uint8x32
 	firstInitialized := false
 
@@ -1078,8 +1062,7 @@ func MinUint16x16[T ~uint16](collection []T) T {
 
 	lanes := 16
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint16)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint16(collection, length)
 	var minVec archsimd.Uint16x16
 	firstInitialized := false
 
@@ -1128,8 +1111,7 @@ func MinUint32x8[T ~uint32](collection []T) T {
 
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint32)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint32(collection, length)
 	var minVec archsimd.Uint32x8
 	firstInitialized := false
 
@@ -1178,8 +1160,7 @@ func MinUint64x4[T ~uint64](collection []T) T {
 
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint64(collection, length)
 	var minVec archsimd.Uint64x4
 	firstInitialized := false
 
@@ -1228,8 +1209,7 @@ func MinFloat32x8[T ~float32](collection []T) T {
 
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*float32)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceFloat32(collection, length)
 	var minVec archsimd.Float32x8
 	firstInitialized := false
 
@@ -1278,8 +1258,7 @@ func MinFloat64x4[T ~float64](collection []T) T {
 
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*float64)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceFloat64(collection, length)
 	var minVec archsimd.Float64x4
 	firstInitialized := false
 
@@ -1328,8 +1307,7 @@ func MaxInt8x32[T ~int8](collection []T) T {
 
 	lanes := 32
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int8)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt8(collection, length)
 	var maxVec archsimd.Int8x32
 	firstInitialized := false
 
@@ -1378,8 +1356,7 @@ func MaxInt16x16[T ~int16](collection []T) T {
 
 	lanes := 16
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int16)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt16(collection, length)
 	var maxVec archsimd.Int16x16
 	firstInitialized := false
 
@@ -1428,8 +1405,7 @@ func MaxInt32x8[T ~int32](collection []T) T {
 
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int32)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt32(collection, length)
 	var maxVec archsimd.Int32x8
 	firstInitialized := false
 
@@ -1478,8 +1454,7 @@ func MaxInt64x4[T ~int64](collection []T) T {
 
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*int64)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceInt64(collection, length)
 	var maxVec archsimd.Int64x4
 	firstInitialized := false
 
@@ -1528,8 +1503,7 @@ func MaxUint8x32[T ~uint8](collection []T) T {
 
 	lanes := 32
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint8)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint8(collection, length)
 	var maxVec archsimd.Uint8x32
 	firstInitialized := false
 
@@ -1578,8 +1552,7 @@ func MaxUint16x16[T ~uint16](collection []T) T {
 
 	lanes := 16
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint16)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint16(collection, length)
 	var maxVec archsimd.Uint16x16
 	firstInitialized := false
 
@@ -1628,8 +1601,7 @@ func MaxUint32x8[T ~uint32](collection []T) T {
 
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint32)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint32(collection, length)
 	var maxVec archsimd.Uint32x8
 	firstInitialized := false
 
@@ -1678,8 +1650,7 @@ func MaxUint64x4[T ~uint64](collection []T) T {
 
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*uint64)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceUint64(collection, length)
 	var maxVec archsimd.Uint64x4
 	firstInitialized := false
 
@@ -1728,8 +1699,7 @@ func MaxFloat32x8[T ~float32](collection []T) T {
 
 	lanes := 8
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*float32)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceFloat32(collection, length)
 	var maxVec archsimd.Float32x8
 	firstInitialized := false
 
@@ -1778,8 +1748,7 @@ func MaxFloat64x4[T ~float64](collection []T) T {
 
 	lanes := 4
 
-	// bearer:disable go_gosec_unsafe_unsafe
-	base := unsafe.Slice((*float64)(unsafe.Pointer(&collection[0])), length)
+	base := unsafeSliceFloat64(collection, length)
 	var maxVec archsimd.Float64x4
 	firstInitialized := false
 
