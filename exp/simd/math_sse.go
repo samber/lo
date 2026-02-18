@@ -859,12 +859,10 @@ func MinInt8x16[T ~int8](collection []T) T {
 	if firstInitialized {
 		var buf [16]int8
 		minVec.Store(&buf)
-		minVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] < minVal {
-				minVal = buf[j]
-			}
-		}
+		minVal = min(
+			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
+			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
+		)
 	}
 
 	// Handle remaining elements
@@ -908,12 +906,7 @@ func MinInt16x8[T ~int16](collection []T) T {
 	if firstInitialized {
 		var buf [8]int16
 		minVec.Store(&buf)
-		minVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] < minVal {
-				minVal = buf[j]
-			}
-		}
+		minVal = min(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
 
 	// Handle remaining elements
@@ -957,12 +950,7 @@ func MinInt32x4[T ~int32](collection []T) T {
 	if firstInitialized {
 		var buf [4]int32
 		minVec.Store(&buf)
-		minVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] < minVal {
-				minVal = buf[j]
-			}
-		}
+		minVal = min(buf[0], buf[1], buf[2], buf[3])
 	}
 
 	// Handle remaining elements
@@ -1006,10 +994,7 @@ func MinInt64x2[T ~int64](collection []T) T {
 	if firstInitialized {
 		var buf [2]int64
 		minVec.Store(&buf)
-		minVal = buf[0]
-		if buf[1] < minVal {
-			minVal = buf[1]
-		}
+		minVal = min(buf[0], buf[1])
 	}
 
 	// Handle remaining elements
@@ -1053,12 +1038,10 @@ func MinUint8x16[T ~uint8](collection []T) T {
 	if firstInitialized {
 		var buf [16]uint8
 		minVec.Store(&buf)
-		minVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] < minVal {
-				minVal = buf[j]
-			}
-		}
+		minVal = min(
+			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
+			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
+		)
 	}
 
 	// Handle remaining elements
@@ -1102,12 +1085,7 @@ func MinUint16x8[T ~uint16](collection []T) T {
 	if firstInitialized {
 		var buf [8]uint16
 		minVec.Store(&buf)
-		minVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] < minVal {
-				minVal = buf[j]
-			}
-		}
+		minVal = min(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
 
 	// Handle remaining elements
@@ -1151,12 +1129,7 @@ func MinUint32x4[T ~uint32](collection []T) T {
 	if firstInitialized {
 		var buf [4]uint32
 		minVec.Store(&buf)
-		minVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] < minVal {
-				minVal = buf[j]
-			}
-		}
+		minVal = min(buf[0], buf[1], buf[2], buf[3])
 	}
 
 	// Handle remaining elements
@@ -1200,10 +1173,7 @@ func MinUint64x2[T ~uint64](collection []T) T {
 	if firstInitialized {
 		var buf [2]uint64
 		minVec.Store(&buf)
-		minVal = buf[0]
-		if buf[1] < minVal {
-			minVal = buf[1]
-		}
+		minVal = min(buf[0], buf[1])
 	}
 
 	// Handle remaining elements
@@ -1247,12 +1217,7 @@ func MinFloat32x4[T ~float32](collection []T) T {
 	if firstInitialized {
 		var buf [4]float32
 		minVec.Store(&buf)
-		minVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] < minVal {
-				minVal = buf[j]
-			}
-		}
+		minVal = min(buf[0], buf[1], buf[2], buf[3])
 	}
 
 	// Handle remaining elements
@@ -1296,10 +1261,7 @@ func MinFloat64x2[T ~float64](collection []T) T {
 	if firstInitialized {
 		var buf [2]float64
 		minVec.Store(&buf)
-		minVal = buf[0]
-		if buf[1] < minVal {
-			minVal = buf[1]
-		}
+		minVal = min(buf[0], buf[1])
 	}
 
 	// Handle remaining elements
@@ -1343,12 +1305,10 @@ func MaxInt8x16[T ~int8](collection []T) T {
 	if firstInitialized {
 		var buf [16]int8
 		maxVec.Store(&buf)
-		maxVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] > maxVal {
-				maxVal = buf[j]
-			}
-		}
+		maxVal = max(
+			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
+			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
+		)
 	}
 
 	// Handle remaining elements
@@ -1392,12 +1352,7 @@ func MaxInt16x8[T ~int16](collection []T) T {
 	if firstInitialized {
 		var buf [8]int16
 		maxVec.Store(&buf)
-		maxVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] > maxVal {
-				maxVal = buf[j]
-			}
-		}
+		maxVal = max(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
 
 	// Handle remaining elements
@@ -1441,12 +1396,7 @@ func MaxInt32x4[T ~int32](collection []T) T {
 	if firstInitialized {
 		var buf [4]int32
 		maxVec.Store(&buf)
-		maxVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] > maxVal {
-				maxVal = buf[j]
-			}
-		}
+		maxVal = max(buf[0], buf[1], buf[2], buf[3])
 	}
 
 	// Handle remaining elements
@@ -1490,10 +1440,7 @@ func MaxInt64x2[T ~int64](collection []T) T {
 	if firstInitialized {
 		var buf [2]int64
 		maxVec.Store(&buf)
-		maxVal = buf[0]
-		if buf[1] > maxVal {
-			maxVal = buf[1]
-		}
+		maxVal = max(buf[0], buf[1])
 	}
 
 	// Handle remaining elements
@@ -1537,12 +1484,10 @@ func MaxUint8x16[T ~uint8](collection []T) T {
 	if firstInitialized {
 		var buf [16]uint8
 		maxVec.Store(&buf)
-		maxVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] > maxVal {
-				maxVal = buf[j]
-			}
-		}
+		maxVal = max(
+			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
+			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
+		)
 	}
 
 	// Handle remaining elements
@@ -1586,12 +1531,7 @@ func MaxUint16x8[T ~uint16](collection []T) T {
 	if firstInitialized {
 		var buf [8]uint16
 		maxVec.Store(&buf)
-		maxVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] > maxVal {
-				maxVal = buf[j]
-			}
-		}
+		maxVal = max(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
 
 	// Handle remaining elements
@@ -1635,12 +1575,7 @@ func MaxUint32x4[T ~uint32](collection []T) T {
 	if firstInitialized {
 		var buf [4]uint32
 		maxVec.Store(&buf)
-		maxVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] > maxVal {
-				maxVal = buf[j]
-			}
-		}
+		maxVal = max(buf[0], buf[1], buf[2], buf[3])
 	}
 
 	// Handle remaining elements
@@ -1684,10 +1619,7 @@ func MaxUint64x2[T ~uint64](collection []T) T {
 	if firstInitialized {
 		var buf [2]uint64
 		maxVec.Store(&buf)
-		maxVal = buf[0]
-		if buf[1] > maxVal {
-			maxVal = buf[1]
-		}
+		maxVal = max(buf[0], buf[1])
 	}
 
 	// Handle remaining elements
@@ -1731,12 +1663,7 @@ func MaxFloat32x4[T ~float32](collection []T) T {
 	if firstInitialized {
 		var buf [4]float32
 		maxVec.Store(&buf)
-		maxVal = buf[0]
-		for j := 1; j < lanes; j++ {
-			if buf[j] > maxVal {
-				maxVal = buf[j]
-			}
-		}
+		maxVal = max(buf[0], buf[1], buf[2], buf[3])
 	}
 
 	// Handle remaining elements
@@ -1780,10 +1707,7 @@ func MaxFloat64x2[T ~float64](collection []T) T {
 	if firstInitialized {
 		var buf [2]float64
 		maxVec.Store(&buf)
-		maxVal = buf[0]
-		if buf[1] > maxVal {
-			maxVal = buf[1]
-		}
+		maxVal = max(buf[0], buf[1])
 	}
 
 	// Handle remaining elements
