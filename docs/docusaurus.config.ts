@@ -134,6 +134,18 @@ const config: Config = {
     },
   ],
 
+  customFields: {
+    sponsors: [
+      {
+        name: 'DBOS',
+        url: 'https://www.dbos.dev/?utm_campaign=gh-smbr',
+        title: 'DBOS - Durable workflow orchestration library for Go',
+        logo_light: '/img/sponsors/dbos-black.png',
+        logo_dark: '/img/sponsors/dbos-white.png',
+      },
+    ],
+  },
+
   presets: [
     [
       'classic',
