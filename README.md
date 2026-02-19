@@ -28,13 +28,18 @@ What makes it different from **samber/ro**?
 
 ----
 
-<h3 align="center">💖 Support This Project</h3>
-
-<p align="center">
-	I’m going all-in on open-source for the coming months.
-	<br>
-	Help sustain development: Become an <a href="http://github.com/sponsors/samber">individual sponsor</a> or join as a <a href="mailto:hey@samuel-berthe.fr">corporate sponsor</a>.
-</p>
+<div align="center">
+  <sup><b>💖 Sponsored by:</b></sup>
+  <br>
+  <a href="https://www.dbos.dev/?utm_campaign=gh-smbr">
+    <div>
+	  <img width="200" alt="dbos" src="https://github.com/user-attachments/assets/d583cb62-7735-4d3c-beb7-e6ef1a5faf49" />
+    </div>
+    <div>
+      DBOS - Durable workflow orchestration library for Go
+    </div>
+  </a>
+</div>
 
 ----
 
