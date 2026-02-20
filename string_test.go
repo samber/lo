@@ -48,7 +48,7 @@ func TestChunkString(t *testing.T) {
 	is.Equal([]string{"123456"}, result4)
 
 	result5 := ChunkString("", 2)
-	is.Equal([]string{""}, result5) // @TODO: should be [] - see https://github.com/samber/lo/issues/788
+	is.Equal([]string{}, result5)
 
 	result6 := ChunkString("明1好休2林森", 2)
 	is.Equal([]string{"明1", "好休", "2林", "森"}, result6)

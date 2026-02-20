@@ -127,12 +127,13 @@ func Substring[T ~string](str T, offset int, length uint) T {
 // ChunkString returns a slice of strings split into groups of length size. If the string can't be split evenly,
 // the final chunk will be the remaining characters.
 // Play: https://go.dev/play/p/__FLTuJVz54
-//
-// Note: lo.ChunkString and lo.Chunk functions behave inconsistently for empty input: lo.ChunkString("", n) returns [""] instead of [].
-// See https://github.com/samber/lo/issues/788
 func ChunkString[T ~string](str T, size int) []T {
 	if size <= 0 {
 		panic("lo.ChunkString: size must be greater than 0")
+	}
+
+	if len(str) == 0 {
+		return []T{}
 	}
 
 	if size >= len(str) {

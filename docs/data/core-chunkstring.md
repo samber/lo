@@ -18,7 +18,7 @@ signatures:
   - "func ChunkString[T ~string](str T, size int) []T"
 ---
 
-Splits a string into chunks of the given size. The last chunk may be shorter. Returns [""] for empty input.
+Splits a string into chunks of the given size. The last chunk may be shorter. Returns an empty slice for empty input.
 
 ```go
 lo.ChunkString("1234567", 2)

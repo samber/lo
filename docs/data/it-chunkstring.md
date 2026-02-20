@@ -38,6 +38,6 @@ for s := range seq { out = append(out, s) }
 // Empty and small inputs
 seq1 := it.ChunkString("", 2)
 seq2 := it.ChunkString("1", 2)
-// seq1 yields ""
+// seq1 yields empty sequence
 // seq2 yields "1"
 ```
