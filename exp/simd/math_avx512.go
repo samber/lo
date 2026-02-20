@@ -8,7 +8,10 @@ import (
 
 // AVX-512 (512-bit) SIMD sum functions - 64/32/16/8 lanes
 
-// SumInt8x64 sums a slice of int8 using AVX-512 SIMD (Int8x64, 64 lanes)
+// SumInt8x64 sums a slice of int8 using AVX-512 SIMD (Int8x64, 64 lanes).
+// Overflow: The accumulation is performed using int8, which can overflow for large collections.
+// If the sum exceeds the int8 range (-128 to 127), the result will wrap around silently.
+// For collections that may overflow, consider using a wider type or handle overflow detection externally.
 func SumInt8x64[T ~int8](collection []T) T {
 	length := len(collection)
 	if length == 0 {
@@ -39,7 +42,10 @@ func SumInt8x64[T ~int8](collection []T) T {
 	return sum
 }
 
-// SumInt16x32 sums a slice of int16 using AVX-512 SIMD (Int16x32, 32 lanes)
+// SumInt16x32 sums a slice of int16 using AVX-512 SIMD (Int16x32, 32 lanes).
+// Overflow: The accumulation is performed using int16, which can overflow for large collections.
+// If the sum exceeds the int16 range (-32768 to 32767), the result will wrap around silently.
+// For collections that may overflow, consider using a wider type or handle overflow detection externally.
 func SumInt16x32[T ~int16](collection []T) T {
 	length := len(collection)
 	if length == 0 {
@@ -70,7 +76,10 @@ func SumInt16x32[T ~int16](collection []T) T {
 	return sum
 }
 
-// SumInt32x16 sums a slice of int32 using AVX-512 SIMD (Int32x16, 16 lanes)
+// SumInt32x16 sums a slice of int32 using AVX-512 SIMD (Int32x16, 16 lanes).
+// Overflow: The accumulation is performed using int32, which can overflow for very large collections.
+// If the sum exceeds the int32 range (-2147483648 to 2147483647), the result will wrap around silently.
+// For collections that may overflow, consider using SumInt64x8 or handle overflow detection externally.
 func SumInt32x16[T ~int32](collection []T) T {
 	length := len(collection)
 	if length == 0 {
@@ -101,7 +110,10 @@ func SumInt32x16[T ~int32](collection []T) T {
 	return sum
 }
 
-// SumInt64x8 sums a slice of int64 using AVX-512 SIMD (Int64x8, 8 lanes)
+// SumInt64x8 sums a slice of int64 using AVX-512 SIMD (Int64x8, 8 lanes).
+// Overflow: The accumulation is performed using int64, which can overflow for extremely large collections.
+// If the sum exceeds the int64 range, the result will wrap around silently.
+// For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
 func SumInt64x8[T ~int64](collection []T) T {
 	length := len(collection)
 	if length == 0 {
@@ -132,7 +144,10 @@ func SumInt64x8[T ~int64](collection []T) T {
 	return sum
 }
 
-// SumUint8x64 sums a slice of uint8 using AVX-512 SIMD (Uint8x64, 64 lanes)
+// SumUint8x64 sums a slice of uint8 using AVX-512 SIMD (Uint8x64, 64 lanes).
+// Overflow: The accumulation is performed using uint8, which can overflow for large collections.
+// If the sum exceeds the uint8 range (0 to 255), the result will wrap around silently.
+// For collections that may overflow, consider using a wider type or handle overflow detection externally.
 func SumUint8x64[T ~uint8](collection []T) T {
 	length := len(collection)
 	if length == 0 {
@@ -163,7 +178,10 @@ func SumUint8x64[T ~uint8](collection []T) T {
 	return sum
 }
 
-// SumUint16x32 sums a slice of uint16 using AVX-512 SIMD (Uint16x32, 32 lanes)
+// SumUint16x32 sums a slice of uint16 using AVX-512 SIMD (Uint16x32, 32 lanes).
+// Overflow: The accumulation is performed using uint16, which can overflow for large collections.
+// If the sum exceeds the uint16 range (0 to 65535), the result will wrap around silently.
+// For collections that may overflow, consider using a wider type or handle overflow detection externally.
 func SumUint16x32[T ~uint16](collection []T) T {
 	length := len(collection)
 	if length == 0 {
@@ -194,7 +212,10 @@ func SumUint16x32[T ~uint16](collection []T) T {
 	return sum
 }
 
-// SumUint32x16 sums a slice of uint32 using AVX-512 SIMD (Uint32x16, 16 lanes)
+// SumUint32x16 sums a slice of uint32 using AVX-512 SIMD (Uint32x16, 16 lanes).
+// Overflow: The accumulation is performed using uint32, which can overflow for very large collections.
+// If the sum exceeds the uint32 range (0 to 4294967295), the result will wrap around silently.
+// For collections that may overflow, consider using SumUint64x8 or handle overflow detection externally.
 func SumUint32x16[T ~uint32](collection []T) T {
 	length := len(collection)
 	if length == 0 {
@@ -225,7 +246,10 @@ func SumUint32x16[T ~uint32](collection []T) T {
 	return sum
 }
 
-// SumUint64x8 sums a slice of uint64 using AVX-512 SIMD (Uint64x8, 8 lanes)
+// SumUint64x8 sums a slice of uint64 using AVX-512 SIMD (Uint64x8, 8 lanes).
+// Overflow: The accumulation is performed using uint64, which can overflow for extremely large collections.
+// If the sum exceeds the uint64 range, the result will wrap around silently.
+// For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
 func SumUint64x8[T ~uint64](collection []T) T {
 	length := len(collection)
 	if length == 0 {
@@ -256,7 +280,9 @@ func SumUint64x8[T ~uint64](collection []T) T {
 	return sum
 }
 
-// SumFloat32x16 sums a slice of float32 using AVX-512 SIMD (Float32x16, 16 lanes)
+// SumFloat32x16 sums a slice of float32 using AVX-512 SIMD (Float32x16, 16 lanes).
+// Overflow: The accumulation is performed using float32. Overflow will result in +/-Inf rather than wrapping.
+// For collections requiring high precision or large sums, consider using SumFloat64x8.
 func SumFloat32x16[T ~float32](collection []T) T {
 	length := len(collection)
 	if length == 0 {
@@ -287,7 +313,9 @@ func SumFloat32x16[T ~float32](collection []T) T {
 	return sum
 }
 
-// SumFloat64x8 sums a slice of float64 using AVX-512 SIMD (Float64x8, 8 lanes)
+// SumFloat64x8 sums a slice of float64 using AVX-512 SIMD (Float64x8, 8 lanes).
+// Overflow: The accumulation is performed using float64. Overflow will result in +/-Inf rather than wrapping.
+// For collections that may overflow, handle overflow detection externally (e.g., using big.Float).
 func SumFloat64x8[T ~float64](collection []T) T {
 	length := len(collection)
 	if length == 0 {
