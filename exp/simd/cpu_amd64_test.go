@@ -10,6 +10,13 @@ import (
 	"simd/archsimd"
 )
 
+// skipHelper is a small interface implemented by both *testing.T and *testing.B
+// to allow unified CPU feature requirement checking for both tests and benchmarks.
+type skipHelper interface {
+	Helper()
+	Skipf(format string, args ...any)
+}
+
 // How to check if your Linux CPU supports SIMD (avoids SIGILL):
 //
 //   grep -E 'avx|sse' /proc/cpuinfo
@@ -23,18 +30,18 @@ import (
 //
 // If your CPU lacks AVX2 or AVX-512, tests that use them will be skipped automatically.
 
-// requireAVX2 skips the test if the CPU does not support AVX2 (256-bit SIMD).
-// Use at the start of each AVX2 test to avoid SIGILL on older or non-x86 systems.
-func requireAVX2(t *testing.T) {
+// requireAVX2 skips the test/benchmark if the CPU does not support AVX2 (256-bit SIMD).
+// Use at the start of each AVX2 test/benchmark to avoid SIGILL on older or non-x86 systems.
+func requireAVX2(t skipHelper) {
 	t.Helper()
 	if !archsimd.X86.AVX2() {
 		t.Skipf("CPU does not support AVX2; skipping. Check compatibility: grep avx2 /proc/cpuinfo")
 	}
 }
 
-// requireAVX512 skips the test if the CPU does not support AVX-512 Foundation.
-// Use at the start of each AVX-512 test to avoid SIGILL on CPUs without AVX-512.
-func requireAVX512(t *testing.T) {
+// requireAVX512 skips the test/benchmark if the CPU does not support AVX-512 Foundation.
+// Use at the start of each AVX-512 test/benchmark to avoid SIGILL on CPUs without AVX-512.
+func requireAVX512(t skipHelper) {
 	t.Helper()
 	if !archsimd.X86.AVX512() {
 		t.Skipf("CPU does not support AVX-512; skipping. Check compatibility: grep avx512 /proc/cpuinfo")

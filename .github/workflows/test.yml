@@ -40,6 +40,12 @@ jobs:
         run: make coverage
         if: matrix.go == 'stable'
 
+      - name: Benchmark
+        run: |
+          cd exp/simd/
+          GOEXPERIMENT=simd go test -run=^Benchmark -benchmem -bench ./...
+        if: matrix.go == '1.26'
+
       - name: Codecov
         uses: codecov/codecov-action@v5
         with:
