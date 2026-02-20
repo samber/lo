@@ -2,6 +2,8 @@
 
 This package requires **Go 1.26** with `GOEXPERIMENT=simd` and **amd64**.
 
+See [benchmarks](./BENCHMARK.md).
+
 ## CPU compatibility (avoiding SIGILL)
 
 If you see **SIGILL: illegal instruction** when running tests, the CPU or VM does not support the SIMD instructions used by that code.
