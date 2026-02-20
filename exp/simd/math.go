@@ -173,3 +173,663 @@ func SumFloat64[T ~float64](collection []T) T {
 		return lo.Sum(collection)
 	}
 }
+
+// MeanInt8 calculates the mean of a slice of int8 using the best available SIMD instruction set.
+func MeanInt8[T ~int8](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanInt8x64(collection)
+	case simdFeatureAVX2:
+		return MeanInt8x32(collection)
+	case simdFeatureAVX:
+		return MeanInt8x16(collection)
+	default:
+		return lo.Mean(collection)
+	}
+}
+
+// MeanInt16 calculates the mean of a slice of int16 using the best available SIMD instruction set.
+func MeanInt16[T ~int16](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanInt16x32(collection)
+	case simdFeatureAVX2:
+		return MeanInt16x16(collection)
+	case simdFeatureAVX:
+		return MeanInt16x8(collection)
+	default:
+		return lo.Mean(collection)
+	}
+}
+
+// MeanInt32 calculates the mean of a slice of int32 using the best available SIMD instruction set.
+func MeanInt32[T ~int32](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanInt32x16(collection)
+	case simdFeatureAVX2:
+		return MeanInt32x8(collection)
+	case simdFeatureAVX:
+		return MeanInt32x4(collection)
+	default:
+		return lo.Mean(collection)
+	}
+}
+
+// MeanInt64 calculates the mean of a slice of int64 using the best available SIMD instruction set.
+func MeanInt64[T ~int64](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanInt64x8(collection)
+	case simdFeatureAVX2:
+		return MeanInt64x4(collection)
+	case simdFeatureAVX:
+		return MeanInt64x2(collection)
+	default:
+		return lo.Mean(collection)
+	}
+}
+
+// MeanUint8 calculates the mean of a slice of uint8 using the best available SIMD instruction set.
+func MeanUint8[T ~uint8](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanUint8x64(collection)
+	case simdFeatureAVX2:
+		return MeanUint8x32(collection)
+	case simdFeatureAVX:
+		return MeanUint8x16(collection)
+	default:
+		return lo.Mean(collection)
+	}
+}
+
+// MeanUint16 calculates the mean of a slice of uint16 using the best available SIMD instruction set.
+func MeanUint16[T ~uint16](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanUint16x32(collection)
+	case simdFeatureAVX2:
+		return MeanUint16x16(collection)
+	case simdFeatureAVX:
+		return MeanUint16x8(collection)
+	default:
+		return lo.Mean(collection)
+	}
+}
+
+// MeanUint32 calculates the mean of a slice of uint32 using the best available SIMD instruction set.
+func MeanUint32[T ~uint32](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanUint32x16(collection)
+	case simdFeatureAVX2:
+		return MeanUint32x8(collection)
+	case simdFeatureAVX:
+		return MeanUint32x4(collection)
+	default:
+		return lo.Mean(collection)
+	}
+}
+
+// MeanUint64 calculates the mean of a slice of uint64 using the best available SIMD instruction set.
+func MeanUint64[T ~uint64](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanUint64x8(collection)
+	case simdFeatureAVX2:
+		return MeanUint64x4(collection)
+	case simdFeatureAVX:
+		return MeanUint64x2(collection)
+	default:
+		return lo.Mean(collection)
+	}
+}
+
+// MeanFloat32 calculates the mean of a slice of float32 using the best available SIMD instruction set.
+func MeanFloat32[T ~float32](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanFloat32x16(collection)
+	case simdFeatureAVX2:
+		return MeanFloat32x8(collection)
+	case simdFeatureAVX:
+		return MeanFloat32x4(collection)
+	default:
+		return lo.Mean(collection)
+	}
+}
+
+// MeanFloat64 calculates the mean of a slice of float64 using the best available SIMD instruction set.
+func MeanFloat64[T ~float64](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanFloat64x8(collection)
+	case simdFeatureAVX2:
+		return MeanFloat64x4(collection)
+	case simdFeatureAVX:
+		return MeanFloat64x2(collection)
+	default:
+		return lo.Mean(collection)
+	}
+}
+
+// MinInt8 finds the minimum value in a collection of int8 using the best available SIMD instruction set.
+func MinInt8[T ~int8](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MinInt8x64(collection)
+	case simdFeatureAVX2:
+		return MinInt8x32(collection)
+	case simdFeatureAVX:
+		return MinInt8x16(collection)
+	default:
+		return lo.Min(collection)
+	}
+}
+
+// MinInt16 finds the minimum value in a collection of int16 using the best available SIMD instruction set.
+func MinInt16[T ~int16](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MinInt16x32(collection)
+	case simdFeatureAVX2:
+		return MinInt16x16(collection)
+	case simdFeatureAVX:
+		return MinInt16x8(collection)
+	default:
+		return lo.Min(collection)
+	}
+}
+
+// MinInt32 finds the minimum value in a collection of int32 using the best available SIMD instruction set.
+func MinInt32[T ~int32](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MinInt32x16(collection)
+	case simdFeatureAVX2:
+		return MinInt32x8(collection)
+	case simdFeatureAVX:
+		return MinInt32x4(collection)
+	default:
+		return lo.Min(collection)
+	}
+}
+
+// MinInt64 finds the minimum value in a collection of int64 using the best available SIMD instruction set.
+func MinInt64[T ~int64](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MinInt64x8(collection)
+	case simdFeatureAVX2:
+		return MinInt64x4(collection)
+	case simdFeatureAVX:
+		return MinInt64x2(collection)
+	default:
+		return lo.Min(collection)
+	}
+}
+
+// MinUint8 finds the minimum value in a collection of uint8 using the best available SIMD instruction set.
+func MinUint8[T ~uint8](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MinUint8x64(collection)
+	case simdFeatureAVX2:
+		return MinUint8x32(collection)
+	case simdFeatureAVX:
+		return MinUint8x16(collection)
+	default:
+		return lo.Min(collection)
+	}
+}
+
+// MinUint16 finds the minimum value in a collection of uint16 using the best available SIMD instruction set.
+func MinUint16[T ~uint16](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MinUint16x32(collection)
+	case simdFeatureAVX2:
+		return MinUint16x16(collection)
+	case simdFeatureAVX:
+		return MinUint16x8(collection)
+	default:
+		return lo.Min(collection)
+	}
+}
+
+// MinUint32 finds the minimum value in a collection of uint32 using the best available SIMD instruction set.
+func MinUint32[T ~uint32](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MinUint32x16(collection)
+	case simdFeatureAVX2:
+		return MinUint32x8(collection)
+	case simdFeatureAVX:
+		return MinUint32x4(collection)
+	default:
+		return lo.Min(collection)
+	}
+}
+
+// MinUint64 finds the minimum value in a collection of uint64 using the best available SIMD instruction set.
+func MinUint64[T ~uint64](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MinUint64x8(collection)
+	case simdFeatureAVX2:
+		return MinUint64x4(collection)
+	case simdFeatureAVX:
+		return MinUint64x2(collection)
+	default:
+		return lo.Min(collection)
+	}
+}
+
+// MinFloat32 finds the minimum value in a collection of float32 using the best available SIMD instruction set.
+func MinFloat32[T ~float32](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MinFloat32x16(collection)
+	case simdFeatureAVX2:
+		return MinFloat32x8(collection)
+	case simdFeatureAVX:
+		return MinFloat32x4(collection)
+	default:
+		return lo.Min(collection)
+	}
+}
+
+// MinFloat64 finds the minimum value in a collection of float64 using the best available SIMD instruction set.
+func MinFloat64[T ~float64](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MinFloat64x8(collection)
+	case simdFeatureAVX2:
+		return MinFloat64x4(collection)
+	case simdFeatureAVX:
+		return MinFloat64x2(collection)
+	default:
+		return lo.Min(collection)
+	}
+}
+
+// MaxInt8 finds the maximum value in a collection of int8 using the best available SIMD instruction set.
+func MaxInt8[T ~int8](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MaxInt8x64(collection)
+	case simdFeatureAVX2:
+		return MaxInt8x32(collection)
+	case simdFeatureAVX:
+		return MaxInt8x16(collection)
+	default:
+		return lo.Max(collection)
+	}
+}
+
+// MaxInt16 finds the maximum value in a collection of int16 using the best available SIMD instruction set.
+func MaxInt16[T ~int16](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MaxInt16x32(collection)
+	case simdFeatureAVX2:
+		return MaxInt16x16(collection)
+	case simdFeatureAVX:
+		return MaxInt16x8(collection)
+	default:
+		return lo.Max(collection)
+	}
+}
+
+// MaxInt32 finds the maximum value in a collection of int32 using the best available SIMD instruction set.
+func MaxInt32[T ~int32](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MaxInt32x16(collection)
+	case simdFeatureAVX2:
+		return MaxInt32x8(collection)
+	case simdFeatureAVX:
+		return MaxInt32x4(collection)
+	default:
+		return lo.Max(collection)
+	}
+}
+
+// MaxInt64 finds the maximum value in a collection of int64 using the best available SIMD instruction set.
+func MaxInt64[T ~int64](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MaxInt64x8(collection)
+	case simdFeatureAVX2:
+		return MaxInt64x4(collection)
+	case simdFeatureAVX:
+		return MaxInt64x2(collection)
+	default:
+		return lo.Max(collection)
+	}
+}
+
+// MaxUint8 finds the maximum value in a collection of uint8 using the best available SIMD instruction set.
+func MaxUint8[T ~uint8](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MaxUint8x64(collection)
+	case simdFeatureAVX2:
+		return MaxUint8x32(collection)
+	case simdFeatureAVX:
+		return MaxUint8x16(collection)
+	default:
+		return lo.Max(collection)
+	}
+}
+
+// MaxUint16 finds the maximum value in a collection of uint16 using the best available SIMD instruction set.
+func MaxUint16[T ~uint16](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MaxUint16x32(collection)
+	case simdFeatureAVX2:
+		return MaxUint16x16(collection)
+	case simdFeatureAVX:
+		return MaxUint16x8(collection)
+	default:
+		return lo.Max(collection)
+	}
+}
+
+// MaxUint32 finds the maximum value in a collection of uint32 using the best available SIMD instruction set.
+func MaxUint32[T ~uint32](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MaxUint32x16(collection)
+	case simdFeatureAVX2:
+		return MaxUint32x8(collection)
+	case simdFeatureAVX:
+		return MaxUint32x4(collection)
+	default:
+		return lo.Max(collection)
+	}
+}
+
+// MaxUint64 finds the maximum value in a collection of uint64 using the best available SIMD instruction set.
+func MaxUint64[T ~uint64](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MaxUint64x8(collection)
+	case simdFeatureAVX2:
+		return MaxUint64x4(collection)
+	case simdFeatureAVX:
+		return MaxUint64x2(collection)
+	default:
+		return lo.Max(collection)
+	}
+}
+
+// MaxFloat32 finds the maximum value in a collection of float32 using the best available SIMD instruction set.
+func MaxFloat32[T ~float32](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MaxFloat32x16(collection)
+	case simdFeatureAVX2:
+		return MaxFloat32x8(collection)
+	case simdFeatureAVX:
+		return MaxFloat32x4(collection)
+	default:
+		return lo.Max(collection)
+	}
+}
+
+// MaxFloat64 finds the maximum value in a collection of float64 using the best available SIMD instruction set.
+func MaxFloat64[T ~float64](collection []T) T {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MaxFloat64x8(collection)
+	case simdFeatureAVX2:
+		return MaxFloat64x4(collection)
+	case simdFeatureAVX:
+		return MaxFloat64x2(collection)
+	default:
+		return lo.Max(collection)
+	}
+}
+
+// ClampInt8 clamps each element in collection between min and max values using the best available SIMD instruction set.
+func ClampInt8[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return ClampInt8x64(collection, min, max)
+	case simdFeatureAVX2:
+		return ClampInt8x32(collection, min, max)
+	case simdFeatureAVX:
+		return ClampInt8x16(collection, min, max)
+	default:
+		result := make(Slice, len(collection))
+		for i, v := range collection {
+			if v < min {
+				result[i] = min
+			} else if v > max {
+				result[i] = max
+			} else {
+				result[i] = v
+			}
+		}
+		return result
+	}
+}
+
+// ClampInt16 clamps each element in collection between min and max values using the best available SIMD instruction set.
+func ClampInt16[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return ClampInt16x32(collection, min, max)
+	case simdFeatureAVX2:
+		return ClampInt16x16(collection, min, max)
+	case simdFeatureAVX:
+		return ClampInt16x8(collection, min, max)
+	default:
+		result := make(Slice, len(collection))
+		for i, v := range collection {
+			if v < min {
+				result[i] = min
+			} else if v > max {
+				result[i] = max
+			} else {
+				result[i] = v
+			}
+		}
+		return result
+	}
+}
+
+// ClampInt32 clamps each element in collection between min and max values using the best available SIMD instruction set.
+func ClampInt32[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return ClampInt32x16(collection, min, max)
+	case simdFeatureAVX2:
+		return ClampInt32x8(collection, min, max)
+	case simdFeatureAVX:
+		return ClampInt32x4(collection, min, max)
+	default:
+		result := make(Slice, len(collection))
+		for i, v := range collection {
+			if v < min {
+				result[i] = min
+			} else if v > max {
+				result[i] = max
+			} else {
+				result[i] = v
+			}
+		}
+		return result
+	}
+}
+
+// ClampInt64 clamps each element in collection between min and max values using the best available SIMD instruction set.
+func ClampInt64[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return ClampInt64x8(collection, min, max)
+	case simdFeatureAVX2:
+		return ClampInt64x4(collection, min, max)
+	case simdFeatureAVX:
+		return ClampInt64x2(collection, min, max)
+	default:
+		result := make(Slice, len(collection))
+		for i, v := range collection {
+			if v < min {
+				result[i] = min
+			} else if v > max {
+				result[i] = max
+			} else {
+				result[i] = v
+			}
+		}
+		return result
+	}
+}
+
+// ClampUint8 clamps each element in collection between min and max values using the best available SIMD instruction set.
+func ClampUint8[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return ClampUint8x64(collection, min, max)
+	case simdFeatureAVX2:
+		return ClampUint8x32(collection, min, max)
+	case simdFeatureAVX:
+		return ClampUint8x16(collection, min, max)
+	default:
+		result := make(Slice, len(collection))
+		for i, v := range collection {
+			if v < min {
+				result[i] = min
+			} else if v > max {
+				result[i] = max
+			} else {
+				result[i] = v
+			}
+		}
+		return result
+	}
+}
+
+// ClampUint16 clamps each element in collection between min and max values using the best available SIMD instruction set.
+func ClampUint16[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return ClampUint16x32(collection, min, max)
+	case simdFeatureAVX2:
+		return ClampUint16x16(collection, min, max)
+	case simdFeatureAVX:
+		return ClampUint16x8(collection, min, max)
+	default:
+		result := make(Slice, len(collection))
+		for i, v := range collection {
+			if v < min {
+				result[i] = min
+			} else if v > max {
+				result[i] = max
+			} else {
+				result[i] = v
+			}
+		}
+		return result
+	}
+}
+
+// ClampUint32 clamps each element in collection between min and max values using the best available SIMD instruction set.
+func ClampUint32[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return ClampUint32x16(collection, min, max)
+	case simdFeatureAVX2:
+		return ClampUint32x8(collection, min, max)
+	case simdFeatureAVX:
+		return ClampUint32x4(collection, min, max)
+	default:
+		result := make(Slice, len(collection))
+		for i, v := range collection {
+			if v < min {
+				result[i] = min
+			} else if v > max {
+				result[i] = max
+			} else {
+				result[i] = v
+			}
+		}
+		return result
+	}
+}
+
+// ClampUint64 clamps each element in collection between min and max values using the best available SIMD instruction set.
+func ClampUint64[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return ClampUint64x8(collection, min, max)
+	case simdFeatureAVX2:
+		return ClampUint64x4(collection, min, max)
+	case simdFeatureAVX:
+		return ClampUint64x2(collection, min, max)
+	default:
+		result := make(Slice, len(collection))
+		for i, v := range collection {
+			if v < min {
+				result[i] = min
+			} else if v > max {
+				result[i] = max
+			} else {
+				result[i] = v
+			}
+		}
+		return result
+	}
+}
+
+// ClampFloat32 clamps each element in collection between min and max values using the best available SIMD instruction set.
+func ClampFloat32[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return ClampFloat32x16(collection, min, max)
+	case simdFeatureAVX2:
+		return ClampFloat32x8(collection, min, max)
+	case simdFeatureAVX:
+		return ClampFloat32x4(collection, min, max)
+	default:
+		result := make(Slice, len(collection))
+		for i, v := range collection {
+			if v < min {
+				result[i] = min
+			} else if v > max {
+				result[i] = max
+			} else {
+				result[i] = v
+			}
+		}
+		return result
+	}
+}
+
+// ClampFloat64 clamps each element in collection between min and max values using the best available SIMD instruction set.
+func ClampFloat64[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return ClampFloat64x8(collection, min, max)
+	case simdFeatureAVX2:
+		return ClampFloat64x4(collection, min, max)
+	case simdFeatureAVX:
+		return ClampFloat64x2(collection, min, max)
+	default:
+		result := make(Slice, len(collection))
+		for i, v := range collection {
+			if v < min {
+				result[i] = min
+			} else if v > max {
+				result[i] = max
+			} else {
+				result[i] = v
+			}
+		}
+		return result
+	}
+}
