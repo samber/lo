@@ -86,7 +86,7 @@ func BenchmarkUniqKeys(b *testing.B) {
 	b.Run("lo.UniqKeys.jit-alloc", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
 			seen := make(map[int64]struct{})
-			result := make([]int64, 0)
+			var result []int64
 
 			for i := range m {
 				for k := range m[i] {

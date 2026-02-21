@@ -566,7 +566,7 @@ func BenchmarkAssign(b *testing.B) {
 	allDifferentMap := func(b *testing.B, n int) []map[string]int {
 		b.Helper()
 		defer b.ResetTimer()
-		m := make([]map[string]int, 0)
+		m := make([]map[string]int, 0, n)
 		for i := 0; i < n; i++ {
 			m = append(m, map[string]int{
 				strconv.Itoa(i): i,
@@ -584,7 +584,7 @@ func BenchmarkAssign(b *testing.B) {
 	allTheSameMap := func(b *testing.B, n int) []map[string]int {
 		b.Helper()
 		defer b.ResetTimer()
-		m := make([]map[string]int, 0)
+		m := make([]map[string]int, 0, n)
 		for i := 0; i < n; i++ {
 			m = append(m, map[string]int{
 				"a": 1,

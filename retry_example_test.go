@@ -12,7 +12,7 @@ import (
 
 func ExampleNewDebounce() {
 	i := int32(0)
-	calls := []int32{}
+	var calls []int32
 	mu := sync.Mutex{}
 
 	debounce, cancel := NewDebounce(time.Millisecond, func() {
