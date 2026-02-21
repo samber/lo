@@ -2254,3 +2254,389 @@ func TestAVX512SumByTypeAlias(t *testing.T) {
 		t.Errorf("SumByInt8x64() with type alias = %v, want %v", got, want)
 	}
 }
+
+// MeanBy tests
+
+func TestMeanByInt8x64(t *testing.T) {
+	requireAVX512(t)
+
+	testCases := []struct {
+		name  string
+		input []avx512Item
+	}{
+		{"empty", []avx512Item{}},
+		{"single", []avx512Item{{Value: 42}}},
+		{"small", []avx512Item{{Value: 1}, {Value: 2}, {Value: 3}, {Value: 4}, {Value: 5}}},
+		{"exactly 64", make([]avx512Item, 64)},
+		{"large", make([]avx512Item, 1000)},
+		{"negative", []avx512Item{{Value: -1}, {Value: -2}, {Value: -3}, {Value: 4}, {Value: 5}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = int8(rand.IntN(256) - 128)
+				}
+			}
+
+			got := MeanByInt8x64(tc.input, func(i avx512Item) int8 { return i.Value })
+			want := lo.Mean(lo.Map(tc.input, func(i avx512Item, _ int) int8 { return i.Value }))
+
+			if got != want {
+				t.Errorf("MeanByInt8x64() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestMeanByInt16x32(t *testing.T) {
+	requireAVX512(t)
+
+	type avx512ItemInt16 struct {
+		Value int16
+	}
+
+	testCases := []struct {
+		name  string
+		input []avx512ItemInt16
+	}{
+		{"empty", []avx512ItemInt16{}},
+		{"single", []avx512ItemInt16{{Value: 42}}},
+		{"small", []avx512ItemInt16{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 32", make([]avx512ItemInt16, 32)},
+		{"large", make([]avx512ItemInt16, 1000)},
+		{"negative", []avx512ItemInt16{{-1}, {-2}, {-3}, {4}, {5}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = int16(rand.IntN(65536) - 32768)
+				}
+			}
+
+			got := MeanByInt16x32(tc.input, func(i avx512ItemInt16) int16 { return i.Value })
+			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemInt16, _ int) int16 { return i.Value }))
+
+			if got != want {
+				t.Errorf("MeanByInt16x32() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestMeanByInt32x16(t *testing.T) {
+	requireAVX512(t)
+
+	type avx512ItemInt32 struct {
+		Value int32
+	}
+
+	testCases := []struct {
+		name  string
+		input []avx512ItemInt32
+	}{
+		{"empty", []avx512ItemInt32{}},
+		{"single", []avx512ItemInt32{{Value: 42}}},
+		{"small", []avx512ItemInt32{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 16", make([]avx512ItemInt32, 16)},
+		{"large", make([]avx512ItemInt32, 1000)},
+		{"negative", []avx512ItemInt32{{-1}, {-2}, {-3}, {4}, {5}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Int32()
+				}
+			}
+
+			got := MeanByInt32x16(tc.input, func(i avx512ItemInt32) int32 { return i.Value })
+			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemInt32, _ int) int32 { return i.Value }))
+
+			if got != want {
+				t.Errorf("MeanByInt32x16() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestMeanByInt64x8(t *testing.T) {
+	requireAVX512(t)
+
+	type avx512ItemInt64 struct {
+		Value int64
+	}
+
+	testCases := []struct {
+		name  string
+		input []avx512ItemInt64
+	}{
+		{"empty", []avx512ItemInt64{}},
+		{"single", []avx512ItemInt64{{Value: 42}}},
+		{"small", []avx512ItemInt64{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 8", make([]avx512ItemInt64, 8)},
+		{"large", make([]avx512ItemInt64, 1000)},
+		{"negative", []avx512ItemInt64{{-1}, {-2}, {-3}, {4}, {5}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Int64()
+				}
+			}
+
+			got := MeanByInt64x8(tc.input, func(i avx512ItemInt64) int64 { return i.Value })
+			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemInt64, _ int) int64 { return i.Value }))
+
+			if got != want {
+				t.Errorf("MeanByInt64x8() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestMeanByUint8x64(t *testing.T) {
+	requireAVX512(t)
+
+	type avx512ItemUint8 struct {
+		Value uint8
+	}
+
+	testCases := []struct {
+		name  string
+		input []avx512ItemUint8
+	}{
+		{"empty", []avx512ItemUint8{}},
+		{"single", []avx512ItemUint8{{Value: 42}}},
+		{"small", []avx512ItemUint8{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 64", make([]avx512ItemUint8, 64)},
+		{"large", make([]avx512ItemUint8, 1000)},
+		{"max values", []avx512ItemUint8{{Value: 255}, {Value: 255}, {Value: 1}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = uint8(rand.IntN(256))
+				}
+			}
+
+			got := MeanByUint8x64(tc.input, func(i avx512ItemUint8) uint8 { return i.Value })
+			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemUint8, _ int) uint8 { return i.Value }))
+
+			if got != want {
+				t.Errorf("MeanByUint8x64() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestMeanByUint16x32(t *testing.T) {
+	requireAVX512(t)
+
+	type avx512ItemUint16 struct {
+		Value uint16
+	}
+
+	testCases := []struct {
+		name  string
+		input []avx512ItemUint16
+	}{
+		{"empty", []avx512ItemUint16{}},
+		{"single", []avx512ItemUint16{{Value: 42}}},
+		{"small", []avx512ItemUint16{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 32", make([]avx512ItemUint16, 32)},
+		{"large", make([]avx512ItemUint16, 1000)},
+		{"max values", []avx512ItemUint16{{Value: 65535}, {Value: 1}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = uint16(rand.IntN(65536))
+				}
+			}
+
+			got := MeanByUint16x32(tc.input, func(i avx512ItemUint16) uint16 { return i.Value })
+			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemUint16, _ int) uint16 { return i.Value }))
+
+			if got != want {
+				t.Errorf("MeanByUint16x32() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestMeanByUint32x16(t *testing.T) {
+	requireAVX512(t)
+
+	type avx512ItemUint32 struct {
+		Value uint32
+	}
+
+	testCases := []struct {
+		name  string
+		input []avx512ItemUint32
+	}{
+		{"empty", []avx512ItemUint32{}},
+		{"single", []avx512ItemUint32{{Value: 42}}},
+		{"small", []avx512ItemUint32{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 16", make([]avx512ItemUint32, 16)},
+		{"large", make([]avx512ItemUint32, 1000)},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Uint32()
+				}
+			}
+
+			got := MeanByUint32x16(tc.input, func(i avx512ItemUint32) uint32 { return i.Value })
+			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemUint32, _ int) uint32 { return i.Value }))
+
+			if got != want {
+				t.Errorf("MeanByUint32x16() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestMeanByUint64x8(t *testing.T) {
+	requireAVX512(t)
+
+	type avx512ItemUint64 struct {
+		Value uint64
+	}
+
+	testCases := []struct {
+		name  string
+		input []avx512ItemUint64
+	}{
+		{"empty", []avx512ItemUint64{}},
+		{"single", []avx512ItemUint64{{Value: 42}}},
+		{"small", []avx512ItemUint64{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 8", make([]avx512ItemUint64, 8)},
+		{"large", make([]avx512ItemUint64, 1000)},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Uint64()
+				}
+			}
+
+			got := MeanByUint64x8(tc.input, func(i avx512ItemUint64) uint64 { return i.Value })
+			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemUint64, _ int) uint64 { return i.Value }))
+
+			if got != want {
+				t.Errorf("MeanByUint64x8() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestMeanByFloat32x16(t *testing.T) {
+	requireAVX512(t)
+
+	type avx512ItemFloat32 struct {
+		Value float32
+	}
+
+	testCases := []struct {
+		name  string
+		input []avx512ItemFloat32
+	}{
+		{"empty", []avx512ItemFloat32{}},
+		{"single", []avx512ItemFloat32{{Value: 42.5}}},
+		{"small", []avx512ItemFloat32{{1.1}, {2.2}, {3.3}, {4.4}, {5.5}}},
+		{"exactly 16", make([]avx512ItemFloat32, 16)},
+		{"large", make([]avx512ItemFloat32, 1000)},
+		{"negative", []avx512ItemFloat32{{-1.1}, {-2.2}, {3.3}, {4.4}}},
+		{"zeros", []avx512ItemFloat32{{0}, {0}, {0}, {0}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Float32()
+				}
+			}
+
+			got := MeanByFloat32x16(tc.input, func(i avx512ItemFloat32) float32 { return i.Value })
+			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemFloat32, _ int) float32 { return i.Value }))
+
+			const epsilon = 1e-5
+			if diff := got - want; diff < -epsilon || diff > epsilon {
+				t.Errorf("MeanByFloat32x16() = %v, want %v (diff: %v)", got, want, diff)
+			}
+		})
+	}
+}
+
+func TestMeanByFloat64x8(t *testing.T) {
+	requireAVX512(t)
+
+	type avx512ItemFloat64 struct {
+		Value float64
+	}
+
+	testCases := []struct {
+		name  string
+		input []avx512ItemFloat64
+	}{
+		{"empty", []avx512ItemFloat64{}},
+		{"single", []avx512ItemFloat64{{Value: 42.5}}},
+		{"small", []avx512ItemFloat64{{1.1}, {2.2}, {3.3}, {4.4}, {5.5}}},
+		{"exactly 8", make([]avx512ItemFloat64, 8)},
+		{"large", make([]avx512ItemFloat64, 1000)},
+		{"negative", []avx512ItemFloat64{{-1.1}, {-2.2}, {3.3}, {4.4}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Float64()
+				}
+			}
+
+			got := MeanByFloat64x8(tc.input, func(i avx512ItemFloat64) float64 { return i.Value })
+			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemFloat64, _ int) float64 { return i.Value }))
+
+			const epsilon = 1e-10
+			if diff := got - want; diff < -epsilon || diff > epsilon {
+				t.Errorf("MeanByFloat64x8() = %v, want %v (diff: %v)", got, want, diff)
+			}
+		})
+	}
+}
+
+// Test type alias works correctly for MeanBy
+func TestAVX512MeanByTypeAlias(t *testing.T) {
+	requireAVX512(t)
+
+	type myAVX512Item struct {
+		Value myInt8
+	}
+
+	input := []myAVX512Item{{Value: 1}, {Value: 2}, {Value: 3}, {Value: 4}, {Value: 5}}
+	got := MeanByInt8x64(input, func(i myAVX512Item) myInt8 { return i.Value })
+	want := myInt8(3)
+
+	if got != want {
+		t.Errorf("MeanByInt8x64() with type alias = %v, want %v", got, want)
+	}
+}

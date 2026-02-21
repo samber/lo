@@ -1811,3 +1811,66 @@ func SumByFloat64x4[T any, R ~float64](collection []T, iteratee func(item T) R) 
 	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
 	return SumFloat64x4(mapped)
 }
+
+// AVX2 (256-bit) SIMD meanBy functions - 32/16/8/4 lanes
+// These implementations use lo.Map to apply the iteratee, then chain with SIMD mean functions.
+
+// MeanByInt8x32 calculates the mean of values extracted by iteratee from a slice using AVX2 SIMD.
+func MeanByInt8x32[T any, R ~int8](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return MeanInt8x32(mapped)
+}
+
+// MeanByInt16x16 calculates the mean of values extracted by iteratee from a slice using AVX2 SIMD.
+func MeanByInt16x16[T any, R ~int16](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return MeanInt16x16(mapped)
+}
+
+// MeanByInt32x8 calculates the mean of values extracted by iteratee from a slice using AVX2 SIMD.
+func MeanByInt32x8[T any, R ~int32](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return MeanInt32x8(mapped)
+}
+
+// MeanByInt64x4 calculates the mean of values extracted by iteratee from a slice using AVX2 SIMD.
+func MeanByInt64x4[T any, R ~int64](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return MeanInt64x4(mapped)
+}
+
+// MeanByUint8x32 calculates the mean of values extracted by iteratee from a slice using AVX2 SIMD.
+func MeanByUint8x32[T any, R ~uint8](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return MeanUint8x32(mapped)
+}
+
+// MeanByUint16x16 calculates the mean of values extracted by iteratee from a slice using AVX2 SIMD.
+func MeanByUint16x16[T any, R ~uint16](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return MeanUint16x16(mapped)
+}
+
+// MeanByUint32x8 calculates the mean of values extracted by iteratee from a slice using AVX2 SIMD.
+func MeanByUint32x8[T any, R ~uint32](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return MeanUint32x8(mapped)
+}
+
+// MeanByUint64x4 calculates the mean of values extracted by iteratee from a slice using AVX2 SIMD.
+func MeanByUint64x4[T any, R ~uint64](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return MeanUint64x4(mapped)
+}
+
+// MeanByFloat32x8 calculates the mean of values extracted by iteratee from a slice using AVX2 SIMD.
+func MeanByFloat32x8[T any, R ~float32](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return MeanFloat32x8(mapped)
+}
+
+// MeanByFloat64x4 calculates the mean of values extracted by iteratee from a slice using AVX2 SIMD.
+func MeanByFloat64x4[T any, R ~float64](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return MeanFloat64x4(mapped)
+}

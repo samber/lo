@@ -1001,3 +1001,143 @@ func SumByFloat64[T any, R ~float64](collection []T, iteratee func(item T) R) R 
 		return lo.SumBy(collection, iteratee)
 	}
 }
+
+// MeanByInt8 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+func MeanByInt8[T any, R ~int8](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanByInt8x64(collection, iteratee)
+	case simdFeatureAVX2:
+		return MeanByInt8x32(collection, iteratee)
+	case simdFeatureAVX:
+		return MeanByInt8x16(collection, iteratee)
+	default:
+		return lo.MeanBy(collection, iteratee)
+	}
+}
+
+// MeanByInt16 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+func MeanByInt16[T any, R ~int16](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanByInt16x32(collection, iteratee)
+	case simdFeatureAVX2:
+		return MeanByInt16x16(collection, iteratee)
+	case simdFeatureAVX:
+		return MeanByInt16x8(collection, iteratee)
+	default:
+		return lo.MeanBy(collection, iteratee)
+	}
+}
+
+// MeanByInt32 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+func MeanByInt32[T any, R ~int32](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanByInt32x16(collection, iteratee)
+	case simdFeatureAVX2:
+		return MeanByInt32x8(collection, iteratee)
+	case simdFeatureAVX:
+		return MeanByInt32x4(collection, iteratee)
+	default:
+		return lo.MeanBy(collection, iteratee)
+	}
+}
+
+// MeanByInt64 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+func MeanByInt64[T any, R ~int64](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanByInt64x8(collection, iteratee)
+	case simdFeatureAVX2:
+		return MeanByInt64x4(collection, iteratee)
+	case simdFeatureAVX:
+		return MeanByInt64x2(collection, iteratee)
+	default:
+		return lo.MeanBy(collection, iteratee)
+	}
+}
+
+// MeanByUint8 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+func MeanByUint8[T any, R ~uint8](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanByUint8x64(collection, iteratee)
+	case simdFeatureAVX2:
+		return MeanByUint8x32(collection, iteratee)
+	case simdFeatureAVX:
+		return MeanByUint8x16(collection, iteratee)
+	default:
+		return lo.MeanBy(collection, iteratee)
+	}
+}
+
+// MeanByUint16 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+func MeanByUint16[T any, R ~uint16](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanByUint16x32(collection, iteratee)
+	case simdFeatureAVX2:
+		return MeanByUint16x16(collection, iteratee)
+	case simdFeatureAVX:
+		return MeanByUint16x8(collection, iteratee)
+	default:
+		return lo.MeanBy(collection, iteratee)
+	}
+}
+
+// MeanByUint32 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+func MeanByUint32[T any, R ~uint32](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanByUint32x16(collection, iteratee)
+	case simdFeatureAVX2:
+		return MeanByUint32x8(collection, iteratee)
+	case simdFeatureAVX:
+		return MeanByUint32x4(collection, iteratee)
+	default:
+		return lo.MeanBy(collection, iteratee)
+	}
+}
+
+// MeanByUint64 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+func MeanByUint64[T any, R ~uint64](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanByUint64x8(collection, iteratee)
+	case simdFeatureAVX2:
+		return MeanByUint64x4(collection, iteratee)
+	case simdFeatureAVX:
+		return MeanByUint64x2(collection, iteratee)
+	default:
+		return lo.MeanBy(collection, iteratee)
+	}
+}
+
+// MeanByFloat32 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+func MeanByFloat32[T any, R ~float32](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanByFloat32x16(collection, iteratee)
+	case simdFeatureAVX2:
+		return MeanByFloat32x8(collection, iteratee)
+	case simdFeatureAVX:
+		return MeanByFloat32x4(collection, iteratee)
+	default:
+		return lo.MeanBy(collection, iteratee)
+	}
+}
+
+// MeanByFloat64 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+func MeanByFloat64[T any, R ~float64](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return MeanByFloat64x8(collection, iteratee)
+	case simdFeatureAVX2:
+		return MeanByFloat64x4(collection, iteratee)
+	case simdFeatureAVX:
+		return MeanByFloat64x2(collection, iteratee)
+	default:
+		return lo.MeanBy(collection, iteratee)
+	}
+}
