@@ -228,6 +228,48 @@ func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
 	return left, right
 }
 
+// DifferenceBy returns the difference between two collections: the elements from list1 that are not present in list2,
+// and the elements from list2 that are not present in list1, based on the provided predicate function.
+// The predicate function is used to compare elements from both lists.
+// It takes two arguments of type T and returns a boolean value indicating whether the elements are considered equal.
+// The returned slices maintain the order of the elements in the original lists.
+func DifferenceBy[T any](
+	list1 []T,
+	list2 []T,
+	predicate func(T, T) bool,
+) ([]T, []T) {
+	left := []T{}
+	right := []T{}
+
+	for _, aValue := range list1 {
+		found := false
+		for _, bValue := range list2 {
+			if predicate(aValue, bValue) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			left = append(left, aValue)
+		}
+	}
+
+	for _, bValue := range list2 {
+		found := false
+		for _, aValue := range list1 {
+			if predicate(bValue, aValue) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			right = append(right, bValue)
+		}
+	}
+
+	return left, right
+}
+
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
 // Play: https://go.dev/play/p/DI9RVEB_qMK
