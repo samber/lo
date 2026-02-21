@@ -789,3 +789,15 @@ func TestSamplesBy(t *testing.T) {
 	nonempty := SamplesBy(allStrings, 2, r.Intn)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
+
+func TestBinarySearch(t *testing.T) {
+	is := assert.New(t)
+
+	result1 := []int{1, 2, 3, 5, 10, 23}
+
+	index1 := Binary_Search(result1, 1)
+	index5 := Binary_Search(result1, 23)
+
+	is.Equal(index1, 0)
+	is.Equal(index5, 5)
+}

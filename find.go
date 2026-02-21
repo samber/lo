@@ -731,3 +731,30 @@ func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerato
 
 	return results
 }
+
+// Binary_Search search the value of a collection.
+func Binary_Search(collection []int, value int) int {
+
+	if len(collection) == 0 {
+		return -1
+	}
+
+	low := 0
+	high := len(collection) - 1
+
+	for low <= high {
+		median := (low + high) / 2
+
+		if collection[median] < value {
+			low = median + 1
+		} else {
+			high = median - 1
+		}
+	}
+
+	if low == len(collection) || collection[low] != value {
+		return -1
+	}
+
+	return low
+}
