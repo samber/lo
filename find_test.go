@@ -789,3 +789,45 @@ func TestSamplesBy(t *testing.T) {
 	nonempty := SamplesBy(allStrings, 2, r.Intn)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
+
+func TestCircular(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	in := []int{0, 1, 2, 3, 4}
+
+	result1, err1 := Circular(in, -6)
+	result2, err2 := Circular(in, -5)
+	result3, err3 := Circular(in, -4)
+	result4, err4 := Circular(in, -1)
+	result5, err5 := Circular(in, -0)
+	result6, err6 := Circular(in, 0)
+	result7, err7 := Circular(in, 1)
+	result8, err8 := Circular(in, 4)
+	result9, err9 := Circular(in, 5)
+	result10, err10 := Circular(in, 6)
+	result11, err11 := Circular([]int{}, 0)
+
+	is.Equal(result1, 4)
+	is.Equal(err1, nil)
+	is.Equal(result2, 0)
+	is.Equal(err2, nil)
+	is.Equal(result3, 1)
+	is.Equal(err3, nil)
+	is.Equal(result4, 4)
+	is.Equal(err4, nil)
+	is.Equal(result5, 0)
+	is.Equal(err5, nil)
+	is.Equal(result6, 0)
+	is.Equal(err6, nil)
+	is.Equal(result7, 1)
+	is.Equal(err7, nil)
+	is.Equal(result8, 4)
+	is.Equal(err8, nil)
+	is.Equal(result9, 0)
+	is.Equal(err9, nil)
+	is.Equal(result10, 1)
+	is.Equal(err10, nil)
+	is.Equal(result11, 0)
+	is.Equal(err11, fmt.Errorf("circular: empty slice"))
+}
