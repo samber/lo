@@ -42,9 +42,12 @@ jobs:
 
       - name: Benchmark
         run: |
+          echo "CPU info:"
+          cat /proc/cpuinfo
+          echo "---"
           cd exp/simd/
           GOEXPERIMENT=simd go test -run=^Benchmark -benchmem -bench ./...
-        if: matrix.go == '1.26'
+        if: matrix.go == 'stable'
 
       - name: Codecov
         uses: codecov/codecov-action@v5
