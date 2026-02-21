@@ -1,0 +1,30 @@
+name: Tests (SIMD)
+
+on:
+  push:
+  # pull_request:
+
+jobs:
+  test-simd:
+    runs-on: ubicloud-standard-2
+    strategy:
+      fail-fast: false
+      matrix:
+        go:
+          - "stable"
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Test
+        run: make test
+
+      - name: Benchmark
+        run: |
+          cd exp/simd/
+          GOEXPERIMENT=simd go test -run=^Benchmark -benchmem -bench ./...
