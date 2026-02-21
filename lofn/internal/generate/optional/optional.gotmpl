@@ -1,0 +1,56 @@
+{{- define "decls-types" -}}
+{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }}
+{{- end }}
+{{- define "decls-args" -}}
+{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}v{{ add $i 1 }} T{{ add $i 1 }}{{ end }}
+{{- end }}
+{{- define "decls-call-args" -}}
+{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}v{{ add $i 1 }}{{ end }}
+{{- end }}
+func OrDefault{{ if gt .N 1 }}{{ .N }}{{ end }}[{{ template "decls-types" . }}, R any](
+	fn func({{ template "decls-types" . }}) (R, bool),
+) func({{ template "decls-types" . }}, R) R {
+	return func({{ template "decls-args" . }}, fallback R) R {
+		if r, ok := fn({{ template "decls-call-args" . }}); ok {
+			return r
+		}
+
+		return fallback
+	}
+}
+
+func WithDefault{{ if gt .N 1 }}{{ .N }}{{ end }}[{{ template "decls-types" . }}, R any](
+	fn func({{ template "decls-types" . }}) (R, bool), fallback R,
+) func({{ template "decls-types" . }}) R {
+	return func({{ template "decls-args" . }}) R {
+		if r, ok := fn({{ template "decls-call-args" . }}); ok {
+			return r
+		}
+
+		return fallback
+	}
+}
+
+func OrFallback{{ if gt .N 1 }}{{ .N }}{{ end }}[{{ template "decls-types" . }}, R any](
+	fn func({{ template "decls-types" . }}) (R, bool),
+) func({{ template "decls-types" . }}, func({{ template "decls-types" . }}) R) R {
+	return func({{ template "decls-args" . }}, fallback func({{ template "decls-types" . }}) R) R {
+		if r, ok := fn({{ template "decls-call-args" . }}); ok {
+			return r
+		}
+
+		return fallback({{ template "decls-call-args" . }})
+	}
+}
+
+func WithFallback{{ if gt .N 1 }}{{ .N }}{{ end }}[{{ template "decls-types" . }}, R any](
+	fn func({{ template "decls-types" . }}) (R, bool), fallback func({{ template "decls-types" . }}) R,
+) func({{ template "decls-types" . }}) R {
+	return func({{ template "decls-args" . }}) R {
+		if r, ok := fn({{ template "decls-call-args" . }}); ok {
+			return r
+		}
+
+		return fallback({{ template "decls-call-args" . }})
+	}
+}
