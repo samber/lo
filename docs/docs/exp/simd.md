@@ -16,6 +16,10 @@ Your feedback helps us improve!
 
 This page lists all operations on slices, available in the `exp/simd` sub-package. These helpers use **SSE** (128-bit), **AVX2** (256-bit) or **AVX512** (512-bit) SIMD when built with Go 1.26+, the `GOEXPERIMENT=simd` flag, and on amd64.
 
+:::warning Unstable API
+SIMD helpers are experimental. The API may break in the future.
+:::
+
 ## Performance
 
 Benchmarks show that running SIMD operators on small datasets is slower:
