@@ -8,7 +8,7 @@ import (
 
 // ContainsInt8x16 checks if collection contains target using SSE SIMD and AVX512 SIMD
 func ContainsInt8x16[T ~int8](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -18,7 +18,7 @@ func ContainsInt8x16[T ~int8](collection []T, target T) bool {
 
 	base := unsafeSliceInt8(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt8x16Slice(s)
@@ -42,7 +42,7 @@ func ContainsInt8x16[T ~int8](collection []T, target T) bool {
 
 // ContainsInt16x8 checks if collection contains target using SSE SIMD and AVX512 SIMD
 func ContainsInt16x8[T ~int16](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -52,7 +52,7 @@ func ContainsInt16x8[T ~int16](collection []T, target T) bool {
 
 	base := unsafeSliceInt16(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt16x8Slice(s)
@@ -74,7 +74,7 @@ func ContainsInt16x8[T ~int16](collection []T, target T) bool {
 
 // ContainsInt32x4 checks if collection contains target using SSE SIMD and AVX512 SIMD
 func ContainsInt32x4[T ~int32](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -84,7 +84,7 @@ func ContainsInt32x4[T ~int32](collection []T, target T) bool {
 
 	base := unsafeSliceInt32(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt32x4Slice(s)
@@ -106,7 +106,7 @@ func ContainsInt32x4[T ~int32](collection []T, target T) bool {
 
 // ContainsInt64x2 checks if collection contains target using SSE SIMD and AVX512 SIMD
 func ContainsInt64x2[T ~int64](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -116,7 +116,7 @@ func ContainsInt64x2[T ~int64](collection []T, target T) bool {
 
 	base := unsafeSliceInt64(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt64x2Slice(s)
@@ -138,7 +138,7 @@ func ContainsInt64x2[T ~int64](collection []T, target T) bool {
 
 // ContainsUint8x16 checks if collection contains target using SSE SIMD and AVX512 SIMD
 func ContainsUint8x16[T ~uint8](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -148,7 +148,7 @@ func ContainsUint8x16[T ~uint8](collection []T, target T) bool {
 
 	base := unsafeSliceUint8(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint8x16Slice(s)
@@ -170,7 +170,7 @@ func ContainsUint8x16[T ~uint8](collection []T, target T) bool {
 
 // ContainsUint16x8 checks if collection contains target using SSE SIMD and AVX512 SIMD
 func ContainsUint16x8[T ~uint16](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -180,7 +180,7 @@ func ContainsUint16x8[T ~uint16](collection []T, target T) bool {
 
 	base := unsafeSliceUint16(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint16x8Slice(s)
@@ -202,7 +202,7 @@ func ContainsUint16x8[T ~uint16](collection []T, target T) bool {
 
 // ContainsUint32x4 checks if collection contains target using SSE SIMD and AVX512 SIMD
 func ContainsUint32x4[T ~uint32](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -212,7 +212,7 @@ func ContainsUint32x4[T ~uint32](collection []T, target T) bool {
 
 	base := unsafeSliceUint32(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint32x4Slice(s)
@@ -234,7 +234,7 @@ func ContainsUint32x4[T ~uint32](collection []T, target T) bool {
 
 // ContainsUint64x2 checks if collection contains target using SSE SIMD and AVX512 SIMD
 func ContainsUint64x2[T ~uint64](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -244,7 +244,7 @@ func ContainsUint64x2[T ~uint64](collection []T, target T) bool {
 
 	base := unsafeSliceUint64(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint64x2Slice(s)
@@ -266,7 +266,7 @@ func ContainsUint64x2[T ~uint64](collection []T, target T) bool {
 
 // ContainsFloat32x4 checks if collection contains target using SSE SIMD and AVX512 SIMD
 func ContainsFloat32x4[T ~float32](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -276,7 +276,7 @@ func ContainsFloat32x4[T ~float32](collection []T, target T) bool {
 
 	base := unsafeSliceFloat32(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadFloat32x4Slice(s)
@@ -298,7 +298,7 @@ func ContainsFloat32x4[T ~float32](collection []T, target T) bool {
 
 // ContainsFloat64x2 checks if collection contains target using SSE SIMD and AVX512 SIMD
 func ContainsFloat64x2[T ~float64](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -308,7 +308,7 @@ func ContainsFloat64x2[T ~float64](collection []T, target T) bool {
 
 	base := unsafeSliceFloat64(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadFloat64x2Slice(s)
@@ -330,7 +330,7 @@ func ContainsFloat64x2[T ~float64](collection []T, target T) bool {
 
 // ContainsInt8x32 checks if collection contains target using AVX2 SIMD
 func ContainsInt8x32[T ~int8](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -340,7 +340,7 @@ func ContainsInt8x32[T ~int8](collection []T, target T) bool {
 
 	base := unsafeSliceInt8(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt8x32Slice(s)
@@ -362,7 +362,7 @@ func ContainsInt8x32[T ~int8](collection []T, target T) bool {
 
 // ContainsInt16x16 checks if collection contains target using AVX2 SIMD
 func ContainsInt16x16[T ~int16](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -372,7 +372,7 @@ func ContainsInt16x16[T ~int16](collection []T, target T) bool {
 
 	base := unsafeSliceInt16(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt16x16Slice(s)
@@ -394,7 +394,7 @@ func ContainsInt16x16[T ~int16](collection []T, target T) bool {
 
 // ContainsInt32x8 checks if collection contains target using AVX2 SIMD
 func ContainsInt32x8[T ~int32](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -404,7 +404,7 @@ func ContainsInt32x8[T ~int32](collection []T, target T) bool {
 
 	base := unsafeSliceInt32(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt32x8Slice(s)
@@ -426,7 +426,7 @@ func ContainsInt32x8[T ~int32](collection []T, target T) bool {
 
 // ContainsInt64x4 checks if collection contains target using AVX2 SIMD
 func ContainsInt64x4[T ~int64](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -436,7 +436,7 @@ func ContainsInt64x4[T ~int64](collection []T, target T) bool {
 
 	base := unsafeSliceInt64(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt64x4Slice(s)
@@ -458,7 +458,7 @@ func ContainsInt64x4[T ~int64](collection []T, target T) bool {
 
 // ContainsUint8x32 checks if collection contains target using AVX2 SIMD
 func ContainsUint8x32[T ~uint8](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -468,7 +468,7 @@ func ContainsUint8x32[T ~uint8](collection []T, target T) bool {
 
 	base := unsafeSliceUint8(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint8x32Slice(s)
@@ -490,7 +490,7 @@ func ContainsUint8x32[T ~uint8](collection []T, target T) bool {
 
 // ContainsUint16x16 checks if collection contains target using AVX2 SIMD
 func ContainsUint16x16[T ~uint16](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -500,7 +500,7 @@ func ContainsUint16x16[T ~uint16](collection []T, target T) bool {
 
 	base := unsafeSliceUint16(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint16x16Slice(s)
@@ -522,7 +522,7 @@ func ContainsUint16x16[T ~uint16](collection []T, target T) bool {
 
 // ContainsUint32x8 checks if collection contains target using AVX2 SIMD
 func ContainsUint32x8[T ~uint32](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -532,7 +532,7 @@ func ContainsUint32x8[T ~uint32](collection []T, target T) bool {
 
 	base := unsafeSliceUint32(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint32x8Slice(s)
@@ -554,7 +554,7 @@ func ContainsUint32x8[T ~uint32](collection []T, target T) bool {
 
 // ContainsUint64x4 checks if collection contains target using AVX2 SIMD
 func ContainsUint64x4[T ~uint64](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -564,7 +564,7 @@ func ContainsUint64x4[T ~uint64](collection []T, target T) bool {
 
 	base := unsafeSliceUint64(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint64x4Slice(s)
@@ -586,7 +586,7 @@ func ContainsUint64x4[T ~uint64](collection []T, target T) bool {
 
 // ContainsFloat32x8 checks if collection contains target using AVX2 SIMD
 func ContainsFloat32x8[T ~float32](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -596,7 +596,7 @@ func ContainsFloat32x8[T ~float32](collection []T, target T) bool {
 
 	base := unsafeSliceFloat32(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadFloat32x8Slice(s)
@@ -618,7 +618,7 @@ func ContainsFloat32x8[T ~float32](collection []T, target T) bool {
 
 // ContainsFloat64x4 checks if collection contains target using AVX2 SIMD
 func ContainsFloat64x4[T ~float64](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -628,7 +628,7 @@ func ContainsFloat64x4[T ~float64](collection []T, target T) bool {
 
 	base := unsafeSliceFloat64(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadFloat64x4Slice(s)
@@ -650,7 +650,7 @@ func ContainsFloat64x4[T ~float64](collection []T, target T) bool {
 
 // ContainsInt8x64 checks if collection contains target using AVX-512 SIMD
 func ContainsInt8x64[T ~int8](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -660,7 +660,7 @@ func ContainsInt8x64[T ~int8](collection []T, target T) bool {
 
 	base := unsafeSliceInt8(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt8x64Slice(s)
@@ -682,7 +682,7 @@ func ContainsInt8x64[T ~int8](collection []T, target T) bool {
 
 // ContainsInt16x32 checks if collection contains target using AVX-512 SIMD
 func ContainsInt16x32[T ~int16](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -692,7 +692,7 @@ func ContainsInt16x32[T ~int16](collection []T, target T) bool {
 
 	base := unsafeSliceInt16(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt16x32Slice(s)
@@ -714,7 +714,7 @@ func ContainsInt16x32[T ~int16](collection []T, target T) bool {
 
 // ContainsInt32x16 checks if collection contains target using AVX-512 SIMD
 func ContainsInt32x16[T ~int32](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -724,7 +724,7 @@ func ContainsInt32x16[T ~int32](collection []T, target T) bool {
 
 	base := unsafeSliceInt32(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt32x16Slice(s)
@@ -746,7 +746,7 @@ func ContainsInt32x16[T ~int32](collection []T, target T) bool {
 
 // ContainsInt64x8 checks if collection contains target using AVX-512 SIMD
 func ContainsInt64x8[T ~int64](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -756,7 +756,7 @@ func ContainsInt64x8[T ~int64](collection []T, target T) bool {
 
 	base := unsafeSliceInt64(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadInt64x8Slice(s)
@@ -778,7 +778,7 @@ func ContainsInt64x8[T ~int64](collection []T, target T) bool {
 
 // ContainsUint8x64 checks if collection contains target using AVX-512 SIMD
 func ContainsUint8x64[T ~uint8](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -788,7 +788,7 @@ func ContainsUint8x64[T ~uint8](collection []T, target T) bool {
 
 	base := unsafeSliceUint8(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint8x64Slice(s)
@@ -810,7 +810,7 @@ func ContainsUint8x64[T ~uint8](collection []T, target T) bool {
 
 // ContainsUint16x32 checks if collection contains target using AVX-512 SIMD
 func ContainsUint16x32[T ~uint16](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -820,7 +820,7 @@ func ContainsUint16x32[T ~uint16](collection []T, target T) bool {
 
 	base := unsafeSliceUint16(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint16x32Slice(s)
@@ -842,7 +842,7 @@ func ContainsUint16x32[T ~uint16](collection []T, target T) bool {
 
 // ContainsUint32x16 checks if collection contains target using AVX-512 SIMD
 func ContainsUint32x16[T ~uint32](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -852,7 +852,7 @@ func ContainsUint32x16[T ~uint32](collection []T, target T) bool {
 
 	base := unsafeSliceUint32(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint32x16Slice(s)
@@ -874,7 +874,7 @@ func ContainsUint32x16[T ~uint32](collection []T, target T) bool {
 
 // ContainsUint64x8 checks if collection contains target using AVX-512 SIMD
 func ContainsUint64x8[T ~uint64](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -884,7 +884,7 @@ func ContainsUint64x8[T ~uint64](collection []T, target T) bool {
 
 	base := unsafeSliceUint64(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadUint64x8Slice(s)
@@ -906,7 +906,7 @@ func ContainsUint64x8[T ~uint64](collection []T, target T) bool {
 
 // ContainsFloat32x16 checks if collection contains target using AVX-512 SIMD
 func ContainsFloat32x16[T ~float32](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -916,7 +916,7 @@ func ContainsFloat32x16[T ~float32](collection []T, target T) bool {
 
 	base := unsafeSliceFloat32(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadFloat32x16Slice(s)
@@ -938,7 +938,7 @@ func ContainsFloat32x16[T ~float32](collection []T, target T) bool {
 
 // ContainsFloat64x8 checks if collection contains target using AVX-512 SIMD
 func ContainsFloat64x8[T ~float64](collection []T, target T) bool {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return false
 	}
@@ -948,7 +948,7 @@ func ContainsFloat64x8[T ~float64](collection []T, target T) bool {
 
 	base := unsafeSliceFloat64(collection, length)
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
 		v := archsimd.LoadFloat64x8Slice(s)

@@ -16,7 +16,7 @@ import (
 // If the sum exceeds the int8 range (-128 to 127), the result will wrap around silently.
 // For collections that may overflow, consider using a wider type or handle overflow detection externally.
 func SumInt8x16[T ~int8](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -25,7 +25,7 @@ func SumInt8x16[T ~int8](collection []T) T {
 	base := unsafeSliceInt8(collection, length)
 	var acc archsimd.Int8x16
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt8x16Slice(base[i : i+lanes])
 		acc = acc.Add(v)
@@ -34,7 +34,7 @@ func SumInt8x16[T ~int8](collection []T) T {
 	var buf [lanes]int8
 	acc.Store(&buf)
 	var sum T
-	for k := 0; k < lanes; k++ {
+	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
 	}
 
@@ -50,7 +50,7 @@ func SumInt8x16[T ~int8](collection []T) T {
 // If the sum exceeds the int16 range (-32768 to 32767), the result will wrap around silently.
 // For collections that may overflow, consider using a wider type or handle overflow detection externally.
 func SumInt16x8[T ~int16](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -59,7 +59,7 @@ func SumInt16x8[T ~int16](collection []T) T {
 	base := unsafeSliceInt16(collection, length)
 	var acc archsimd.Int16x8
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt16x8Slice(base[i : i+lanes])
 		acc = acc.Add(v)
@@ -68,7 +68,7 @@ func SumInt16x8[T ~int16](collection []T) T {
 	var buf [lanes]int16
 	acc.Store(&buf)
 	var sum T
-	for k := 0; k < lanes; k++ {
+	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
 	}
 
@@ -84,7 +84,7 @@ func SumInt16x8[T ~int16](collection []T) T {
 // If the sum exceeds the int32 range (-2147483648 to 2147483647), the result will wrap around silently.
 // For collections that may overflow, consider using SumInt64x2 or handle overflow detection externally.
 func SumInt32x4[T ~int32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -93,7 +93,7 @@ func SumInt32x4[T ~int32](collection []T) T {
 	base := unsafeSliceInt32(collection, length)
 	var acc archsimd.Int32x4
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt32x4Slice(base[i : i+lanes])
 		acc = acc.Add(v)
@@ -102,7 +102,7 @@ func SumInt32x4[T ~int32](collection []T) T {
 	var buf [lanes]int32
 	acc.Store(&buf)
 	var sum T
-	for k := 0; k < lanes; k++ {
+	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
 	}
 
@@ -118,7 +118,7 @@ func SumInt32x4[T ~int32](collection []T) T {
 // If the sum exceeds the int64 range, the result will wrap around silently.
 // For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
 func SumInt64x2[T ~int64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -127,7 +127,7 @@ func SumInt64x2[T ~int64](collection []T) T {
 	base := unsafeSliceInt64(collection, length)
 	var acc archsimd.Int64x2
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
 		acc = acc.Add(v)
@@ -136,7 +136,7 @@ func SumInt64x2[T ~int64](collection []T) T {
 	var buf [lanes]int64
 	acc.Store(&buf)
 	var sum T
-	for k := 0; k < lanes; k++ {
+	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
 	}
 
@@ -152,7 +152,7 @@ func SumInt64x2[T ~int64](collection []T) T {
 // If the sum exceeds the uint8 range (0 to 255), the result will wrap around silently.
 // For collections that may overflow, consider using a wider type or handle overflow detection externally.
 func SumUint8x16[T ~uint8](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -161,7 +161,7 @@ func SumUint8x16[T ~uint8](collection []T) T {
 	base := unsafeSliceUint8(collection, length)
 	var acc archsimd.Uint8x16
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint8x16Slice(base[i : i+lanes])
 		acc = acc.Add(v)
@@ -170,7 +170,7 @@ func SumUint8x16[T ~uint8](collection []T) T {
 	var buf [lanes]uint8
 	acc.Store(&buf)
 	var sum T
-	for k := 0; k < lanes; k++ {
+	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
 	}
 
@@ -186,7 +186,7 @@ func SumUint8x16[T ~uint8](collection []T) T {
 // If the sum exceeds the uint16 range (0 to 65535), the result will wrap around silently.
 // For collections that may overflow, consider using a wider type or handle overflow detection externally.
 func SumUint16x8[T ~uint16](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -195,7 +195,7 @@ func SumUint16x8[T ~uint16](collection []T) T {
 	base := unsafeSliceUint16(collection, length)
 	var acc archsimd.Uint16x8
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint16x8Slice(base[i : i+lanes])
 		acc = acc.Add(v)
@@ -204,7 +204,7 @@ func SumUint16x8[T ~uint16](collection []T) T {
 	var buf [lanes]uint16
 	acc.Store(&buf)
 	var sum T
-	for k := 0; k < lanes; k++ {
+	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
 	}
 
@@ -220,7 +220,7 @@ func SumUint16x8[T ~uint16](collection []T) T {
 // If the sum exceeds the uint32 range (0 to 4294967295), the result will wrap around silently.
 // For collections that may overflow, consider using SumUint64x2 or handle overflow detection externally.
 func SumUint32x4[T ~uint32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -229,7 +229,7 @@ func SumUint32x4[T ~uint32](collection []T) T {
 	base := unsafeSliceUint32(collection, length)
 	var acc archsimd.Uint32x4
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint32x4Slice(base[i : i+lanes])
 		acc = acc.Add(v)
@@ -238,7 +238,7 @@ func SumUint32x4[T ~uint32](collection []T) T {
 	var buf [lanes]uint32
 	acc.Store(&buf)
 	var sum T
-	for k := 0; k < lanes; k++ {
+	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
 	}
 
@@ -254,7 +254,7 @@ func SumUint32x4[T ~uint32](collection []T) T {
 // If the sum exceeds the uint64 range, the result will wrap around silently.
 // For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
 func SumUint64x2[T ~uint64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -263,7 +263,7 @@ func SumUint64x2[T ~uint64](collection []T) T {
 	base := unsafeSliceUint64(collection, length)
 	var acc archsimd.Uint64x2
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
 		acc = acc.Add(v)
@@ -272,7 +272,7 @@ func SumUint64x2[T ~uint64](collection []T) T {
 	var buf [lanes]uint64
 	acc.Store(&buf)
 	var sum T
-	for k := 0; k < lanes; k++ {
+	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
 	}
 
@@ -287,7 +287,7 @@ func SumUint64x2[T ~uint64](collection []T) T {
 // Overflow: The accumulation is performed using float32. Overflow will result in +/-Inf rather than wrapping.
 // For collections requiring high precision or large sums, consider using SumFloat64x2.
 func SumFloat32x4[T ~float32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -296,7 +296,7 @@ func SumFloat32x4[T ~float32](collection []T) T {
 	base := unsafeSliceFloat32(collection, length)
 	var acc archsimd.Float32x4
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadFloat32x4Slice(base[i : i+lanes])
 		acc = acc.Add(v)
@@ -305,7 +305,7 @@ func SumFloat32x4[T ~float32](collection []T) T {
 	var buf [lanes]float32
 	acc.Store(&buf)
 	var sum T
-	for k := 0; k < lanes; k++ {
+	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
 	}
 
@@ -320,7 +320,7 @@ func SumFloat32x4[T ~float32](collection []T) T {
 // Overflow: The accumulation is performed using float64. Overflow will result in +/-Inf rather than wrapping.
 // For collections that may overflow, handle overflow detection externally (e.g., using big.Float).
 func SumFloat64x2[T ~float64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -329,7 +329,7 @@ func SumFloat64x2[T ~float64](collection []T) T {
 	base := unsafeSliceFloat64(collection, length)
 	var acc archsimd.Float64x2
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadFloat64x2Slice(base[i : i+lanes])
 		acc = acc.Add(v)
@@ -338,7 +338,7 @@ func SumFloat64x2[T ~float64](collection []T) T {
 	var buf [lanes]float64
 	acc.Store(&buf)
 	var sum T
-	for k := 0; k < lanes; k++ {
+	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
 	}
 
@@ -351,7 +351,7 @@ func SumFloat64x2[T ~float64](collection []T) T {
 
 // MeanInt8x16 calculates the mean of a slice of int8 using SSE SIMD
 func MeanInt8x16[T ~int8](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -361,7 +361,7 @@ func MeanInt8x16[T ~int8](collection []T) T {
 
 // MeanInt16x8 calculates the mean of a slice of int16 using SSE SIMD
 func MeanInt16x8[T ~int16](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -371,7 +371,7 @@ func MeanInt16x8[T ~int16](collection []T) T {
 
 // MeanInt32x4 calculates the mean of a slice of int32 using SSE SIMD
 func MeanInt32x4[T ~int32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -381,7 +381,7 @@ func MeanInt32x4[T ~int32](collection []T) T {
 
 // MeanInt64x2 calculates the mean of a slice of int64 using SSE SIMD
 func MeanInt64x2[T ~int64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -391,7 +391,7 @@ func MeanInt64x2[T ~int64](collection []T) T {
 
 // MeanUint8x16 calculates the mean of a slice of uint8 using SSE SIMD
 func MeanUint8x16[T ~uint8](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -401,7 +401,7 @@ func MeanUint8x16[T ~uint8](collection []T) T {
 
 // MeanUint16x8 calculates the mean of a slice of uint16 using SSE SIMD
 func MeanUint16x8[T ~uint16](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -411,7 +411,7 @@ func MeanUint16x8[T ~uint16](collection []T) T {
 
 // MeanUint32x4 calculates the mean of a slice of uint32 using SSE SIMD
 func MeanUint32x4[T ~uint32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -421,7 +421,7 @@ func MeanUint32x4[T ~uint32](collection []T) T {
 
 // MeanUint64x2 calculates the mean of a slice of uint64 using SSE SIMD
 func MeanUint64x2[T ~uint64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -431,7 +431,7 @@ func MeanUint64x2[T ~uint64](collection []T) T {
 
 // MeanFloat32x4 calculates the mean of a slice of float32 using SSE SIMD
 func MeanFloat32x4[T ~float32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -442,7 +442,7 @@ func MeanFloat32x4[T ~float32](collection []T) T {
 
 // MeanFloat64x2 calculates the mean of a slice of float64 using SSE SIMD
 func MeanFloat64x2[T ~float64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -452,7 +452,7 @@ func MeanFloat64x2[T ~float64](collection []T) T {
 
 // ClampInt8x16 clamps each element in collection between min and max values using SSE SIMD
 func ClampInt8x16[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return collection
 	}
@@ -465,7 +465,7 @@ func ClampInt8x16[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
 	minVec := archsimd.BroadcastInt8x16(int8(min))
 	maxVec := archsimd.BroadcastInt8x16(int8(max))
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt8x16Slice(base[i : i+lanes])
 
@@ -490,7 +490,7 @@ func ClampInt8x16[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampInt16x8 clamps each element in collection between min and max values using SSE SIMD
 func ClampInt16x8[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return collection
 	}
@@ -503,7 +503,7 @@ func ClampInt16x8[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
 	minVec := archsimd.BroadcastInt16x8(int16(min))
 	maxVec := archsimd.BroadcastInt16x8(int16(max))
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt16x8Slice(base[i : i+lanes])
 
@@ -528,7 +528,7 @@ func ClampInt16x8[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampInt32x4 clamps each element in collection between min and max values using SSE SIMD
 func ClampInt32x4[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return collection
 	}
@@ -541,7 +541,7 @@ func ClampInt32x4[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 	minVec := archsimd.BroadcastInt32x4(int32(min))
 	maxVec := archsimd.BroadcastInt32x4(int32(max))
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt32x4Slice(base[i : i+lanes])
 
@@ -566,7 +566,7 @@ func ClampInt32x4[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampInt64x2 clamps each element in collection between min and max values using SSE SIMD and AVX-512 SIMD.
 func ClampInt64x2[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return collection
 	}
@@ -579,7 +579,7 @@ func ClampInt64x2[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 	minVec := archsimd.BroadcastInt64x2(int64(min))
 	maxVec := archsimd.BroadcastInt64x2(int64(max))
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
 
@@ -604,7 +604,7 @@ func ClampInt64x2[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampUint8x16 clamps each element in collection between min and max values using SSE SIMD
 func ClampUint8x16[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return collection
 	}
@@ -617,7 +617,7 @@ func ClampUint8x16[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
 	minVec := archsimd.BroadcastUint8x16(uint8(min))
 	maxVec := archsimd.BroadcastUint8x16(uint8(max))
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint8x16Slice(base[i : i+lanes])
 
@@ -642,7 +642,7 @@ func ClampUint8x16[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampUint16x8 clamps each element in collection between min and max values using SSE SIMD
 func ClampUint16x8[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return collection
 	}
@@ -655,7 +655,7 @@ func ClampUint16x8[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
 	minVec := archsimd.BroadcastUint16x8(uint16(min))
 	maxVec := archsimd.BroadcastUint16x8(uint16(max))
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint16x8Slice(base[i : i+lanes])
 
@@ -680,7 +680,7 @@ func ClampUint16x8[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampUint32x4 clamps each element in collection between min and max values using SSE SIMD
 func ClampUint32x4[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return collection
 	}
@@ -693,7 +693,7 @@ func ClampUint32x4[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
 	minVec := archsimd.BroadcastUint32x4(uint32(min))
 	maxVec := archsimd.BroadcastUint32x4(uint32(max))
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint32x4Slice(base[i : i+lanes])
 
@@ -718,7 +718,7 @@ func ClampUint32x4[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampUint64x2 clamps each element in collection between min and max values using SSE SIMD and AVX-512 SIMD.
 func ClampUint64x2[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return collection
 	}
@@ -731,7 +731,7 @@ func ClampUint64x2[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 	minVec := archsimd.BroadcastUint64x2(uint64(min))
 	maxVec := archsimd.BroadcastUint64x2(uint64(max))
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
 
@@ -756,7 +756,7 @@ func ClampUint64x2[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 
 // ClampFloat32x4 clamps each element in collection between min and max values using SSE SIMD
 func ClampFloat32x4[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return collection
 	}
@@ -769,7 +769,7 @@ func ClampFloat32x4[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice 
 	minVec := archsimd.BroadcastFloat32x4(float32(min))
 	maxVec := archsimd.BroadcastFloat32x4(float32(max))
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadFloat32x4Slice(base[i : i+lanes])
 
@@ -794,7 +794,7 @@ func ClampFloat32x4[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice 
 
 // ClampFloat64x2 clamps each element in collection between min and max values using SSE SIMD
 func ClampFloat64x2[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return collection
 	}
@@ -807,7 +807,7 @@ func ClampFloat64x2[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice 
 	minVec := archsimd.BroadcastFloat64x2(float64(min))
 	maxVec := archsimd.BroadcastFloat64x2(float64(max))
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadFloat64x2Slice(base[i : i+lanes])
 
@@ -832,7 +832,7 @@ func ClampFloat64x2[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice 
 
 // MinInt8x16 finds the minimum value in a collection of int8 using SSE SIMD
 func MinInt8x16[T ~int8](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -843,7 +843,7 @@ func MinInt8x16[T ~int8](collection []T) T {
 	var minVec archsimd.Int8x16
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt8x16Slice(base[i : i+lanes])
 
@@ -879,7 +879,7 @@ func MinInt8x16[T ~int8](collection []T) T {
 
 // MinInt16x8 finds the minimum value in a collection of int16 using SSE SIMD
 func MinInt16x8[T ~int16](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -890,7 +890,7 @@ func MinInt16x8[T ~int16](collection []T) T {
 	var minVec archsimd.Int16x8
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt16x8Slice(base[i : i+lanes])
 
@@ -923,7 +923,7 @@ func MinInt16x8[T ~int16](collection []T) T {
 
 // MinInt32x4 finds the minimum value in a collection of int32 using SSE SIMD
 func MinInt32x4[T ~int32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -934,7 +934,7 @@ func MinInt32x4[T ~int32](collection []T) T {
 	var minVec archsimd.Int32x4
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt32x4Slice(base[i : i+lanes])
 
@@ -967,7 +967,7 @@ func MinInt32x4[T ~int32](collection []T) T {
 
 // MinInt64x2 finds the minimum value in a collection of int64 using SSE SIMD
 func MinInt64x2[T ~int64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -978,7 +978,7 @@ func MinInt64x2[T ~int64](collection []T) T {
 	var minVec archsimd.Int64x2
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
 
@@ -1011,7 +1011,7 @@ func MinInt64x2[T ~int64](collection []T) T {
 
 // MinUint8x16 finds the minimum value in a collection of uint8 using SSE SIMD
 func MinUint8x16[T ~uint8](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1022,7 +1022,7 @@ func MinUint8x16[T ~uint8](collection []T) T {
 	var minVec archsimd.Uint8x16
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint8x16Slice(base[i : i+lanes])
 
@@ -1058,7 +1058,7 @@ func MinUint8x16[T ~uint8](collection []T) T {
 
 // MinUint16x8 finds the minimum value in a collection of uint16 using SSE SIMD
 func MinUint16x8[T ~uint16](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1069,7 +1069,7 @@ func MinUint16x8[T ~uint16](collection []T) T {
 	var minVec archsimd.Uint16x8
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint16x8Slice(base[i : i+lanes])
 
@@ -1102,7 +1102,7 @@ func MinUint16x8[T ~uint16](collection []T) T {
 
 // MinUint32x4 finds the minimum value in a collection of uint32 using SSE SIMD
 func MinUint32x4[T ~uint32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1113,7 +1113,7 @@ func MinUint32x4[T ~uint32](collection []T) T {
 	var minVec archsimd.Uint32x4
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint32x4Slice(base[i : i+lanes])
 
@@ -1146,7 +1146,7 @@ func MinUint32x4[T ~uint32](collection []T) T {
 
 // MinUint64x2 finds the minimum value in a collection of uint64 using SSE SIMD
 func MinUint64x2[T ~uint64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1157,7 +1157,7 @@ func MinUint64x2[T ~uint64](collection []T) T {
 	var minVec archsimd.Uint64x2
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
 
@@ -1190,7 +1190,7 @@ func MinUint64x2[T ~uint64](collection []T) T {
 
 // MinFloat32x4 finds the minimum value in a collection of float32 using SSE SIMD
 func MinFloat32x4[T ~float32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1201,7 +1201,7 @@ func MinFloat32x4[T ~float32](collection []T) T {
 	var minVec archsimd.Float32x4
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadFloat32x4Slice(base[i : i+lanes])
 
@@ -1234,7 +1234,7 @@ func MinFloat32x4[T ~float32](collection []T) T {
 
 // MinFloat64x2 finds the minimum value in a collection of float64 using SSE SIMD
 func MinFloat64x2[T ~float64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1245,7 +1245,7 @@ func MinFloat64x2[T ~float64](collection []T) T {
 	var minVec archsimd.Float64x2
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadFloat64x2Slice(base[i : i+lanes])
 
@@ -1278,7 +1278,7 @@ func MinFloat64x2[T ~float64](collection []T) T {
 
 // MaxInt8x16 finds the maximum value in a collection of int8 using SSE SIMD
 func MaxInt8x16[T ~int8](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1289,7 +1289,7 @@ func MaxInt8x16[T ~int8](collection []T) T {
 	var maxVec archsimd.Int8x16
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt8x16Slice(base[i : i+lanes])
 
@@ -1325,7 +1325,7 @@ func MaxInt8x16[T ~int8](collection []T) T {
 
 // MaxInt16x8 finds the maximum value in a collection of int16 using SSE SIMD
 func MaxInt16x8[T ~int16](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1336,7 +1336,7 @@ func MaxInt16x8[T ~int16](collection []T) T {
 	var maxVec archsimd.Int16x8
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt16x8Slice(base[i : i+lanes])
 
@@ -1369,7 +1369,7 @@ func MaxInt16x8[T ~int16](collection []T) T {
 
 // MaxInt32x4 finds the maximum value in a collection of int32 using SSE SIMD
 func MaxInt32x4[T ~int32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1380,7 +1380,7 @@ func MaxInt32x4[T ~int32](collection []T) T {
 	var maxVec archsimd.Int32x4
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt32x4Slice(base[i : i+lanes])
 
@@ -1413,7 +1413,7 @@ func MaxInt32x4[T ~int32](collection []T) T {
 
 // MaxInt64x2 finds the maximum value in a collection of int64 using SSE SIMD
 func MaxInt64x2[T ~int64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1424,7 +1424,7 @@ func MaxInt64x2[T ~int64](collection []T) T {
 	var maxVec archsimd.Int64x2
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
 
@@ -1457,7 +1457,7 @@ func MaxInt64x2[T ~int64](collection []T) T {
 
 // MaxUint8x16 finds the maximum value in a collection of uint8 using SSE SIMD
 func MaxUint8x16[T ~uint8](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1468,7 +1468,7 @@ func MaxUint8x16[T ~uint8](collection []T) T {
 	var maxVec archsimd.Uint8x16
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint8x16Slice(base[i : i+lanes])
 
@@ -1504,7 +1504,7 @@ func MaxUint8x16[T ~uint8](collection []T) T {
 
 // MaxUint16x8 finds the maximum value in a collection of uint16 using SSE SIMD
 func MaxUint16x8[T ~uint16](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1515,7 +1515,7 @@ func MaxUint16x8[T ~uint16](collection []T) T {
 	var maxVec archsimd.Uint16x8
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint16x8Slice(base[i : i+lanes])
 
@@ -1548,7 +1548,7 @@ func MaxUint16x8[T ~uint16](collection []T) T {
 
 // MaxUint32x4 finds the maximum value in a collection of uint32 using SSE SIMD
 func MaxUint32x4[T ~uint32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1559,7 +1559,7 @@ func MaxUint32x4[T ~uint32](collection []T) T {
 	var maxVec archsimd.Uint32x4
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint32x4Slice(base[i : i+lanes])
 
@@ -1592,7 +1592,7 @@ func MaxUint32x4[T ~uint32](collection []T) T {
 
 // MaxUint64x2 finds the maximum value in a collection of uint64 using SSE SIMD
 func MaxUint64x2[T ~uint64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1603,7 +1603,7 @@ func MaxUint64x2[T ~uint64](collection []T) T {
 	var maxVec archsimd.Uint64x2
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
 
@@ -1636,7 +1636,7 @@ func MaxUint64x2[T ~uint64](collection []T) T {
 
 // MaxFloat32x4 finds the maximum value in a collection of float32 using SSE SIMD
 func MaxFloat32x4[T ~float32](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1647,7 +1647,7 @@ func MaxFloat32x4[T ~float32](collection []T) T {
 	var maxVec archsimd.Float32x4
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadFloat32x4Slice(base[i : i+lanes])
 
@@ -1680,7 +1680,7 @@ func MaxFloat32x4[T ~float32](collection []T) T {
 
 // MaxFloat64x2 finds the maximum value in a collection of float64 using SSE SIMD
 func MaxFloat64x2[T ~float64](collection []T) T {
-	length := len(collection)
+	length := uint(len(collection))
 	if length == 0 {
 		return 0
 	}
@@ -1691,7 +1691,7 @@ func MaxFloat64x2[T ~float64](collection []T) T {
 	var maxVec archsimd.Float64x2
 	firstInitialized := false
 
-	i := 0
+	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		v := archsimd.LoadFloat64x2Slice(base[i : i+lanes])
 
