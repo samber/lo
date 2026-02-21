@@ -3,8 +3,10 @@
 package simd
 
 import (
-	"github.com/samber/lo"
 	"simd/archsimd"
+	"unsafe"
+
+	"github.com/samber/lo"
 )
 
 // SSE (128-bit) SIMD sum functions - 16/8/4/2 lanes
@@ -469,11 +471,7 @@ func ClampInt8x16[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
-		var buf [16]int8
-		clamped.Store(&buf)
-		for j := 0; j < lanes; j++ {
-			result[i+j] = T(buf[j])
-		}
+		clamped.Store((*[16]int8)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -510,11 +508,7 @@ func ClampInt16x8[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
-		var buf [8]int16
-		clamped.Store(&buf)
-		for j := 0; j < lanes; j++ {
-			result[i+j] = T(buf[j])
-		}
+		clamped.Store((*[8]int16)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -551,11 +545,7 @@ func ClampInt32x4[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
-		var buf [4]int32
-		clamped.Store(&buf)
-		for j := 0; j < lanes; j++ {
-			result[i+j] = T(buf[j])
-		}
+		clamped.Store((*[4]int32)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -592,11 +582,7 @@ func ClampInt64x2[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
-		var buf [2]int64
-		clamped.Store(&buf)
-		for j := 0; j < lanes; j++ {
-			result[i+j] = T(buf[j])
-		}
+		clamped.Store((*[2]int64)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -633,11 +619,7 @@ func ClampUint8x16[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
-		var buf [16]uint8
-		clamped.Store(&buf)
-		for j := 0; j < lanes; j++ {
-			result[i+j] = T(buf[j])
-		}
+		clamped.Store((*[16]uint8)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -674,11 +656,7 @@ func ClampUint16x8[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
-		var buf [8]uint16
-		clamped.Store(&buf)
-		for j := 0; j < lanes; j++ {
-			result[i+j] = T(buf[j])
-		}
+		clamped.Store((*[8]uint16)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -715,11 +693,7 @@ func ClampUint32x4[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
-		var buf [4]uint32
-		clamped.Store(&buf)
-		for j := 0; j < lanes; j++ {
-			result[i+j] = T(buf[j])
-		}
+		clamped.Store((*[4]uint32)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -756,11 +730,7 @@ func ClampUint64x2[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
-		var buf [2]uint64
-		clamped.Store(&buf)
-		for j := 0; j < lanes; j++ {
-			result[i+j] = T(buf[j])
-		}
+		clamped.Store((*[2]uint64)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -797,11 +767,7 @@ func ClampFloat32x4[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice 
 
 		clamped := v.Max(minVec).Min(maxVec)
 
-		var buf [4]float32
-		clamped.Store(&buf)
-		for j := 0; j < lanes; j++ {
-			result[i+j] = T(buf[j])
-		}
+		clamped.Store((*[4]float32)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -838,11 +804,7 @@ func ClampFloat64x2[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice 
 
 		clamped := v.Max(minVec).Min(maxVec)
 
-		var buf [2]float64
-		clamped.Store(&buf)
-		for j := 0; j < lanes; j++ {
-			result[i+j] = T(buf[j])
-		}
+		clamped.Store((*[2]float64)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
