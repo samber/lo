@@ -174,6 +174,29 @@ func UniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(ite
 	return result
 }
 
+// UniqByMap returns a duplicate-free version of an given array datatype, in which only the first occurrence of each
+// element is kept. The order of result values is determined by the order they occur in the array. It accepts
+// `iteratee` which is invoked for each element in array to generate the criterion by which uniqueness is computed.
+// It accepts `extract` which is invoked for each element in array to return the value of a given datatype.
+func UniqByMap[T any, V any, U comparable](collection []T, iteratee func(item T) U, extract func(item T) V) []V {
+	result := make([]V, 0, len(collection))
+	seen := make(map[U]struct{}, len(collection))
+
+	for _, item := range collection {
+		key := iteratee(item)
+
+		if _, ok := seen[key]; ok {
+			continue
+		}
+
+		seen[key] = struct{}{}
+		value := extract(item)
+		result = append(result, value)
+	}
+
+	return result
+}
+
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // Play: https://go.dev/play/p/XnQBd_v6brd
 func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) map[U]Slice {
