@@ -261,6 +261,31 @@ func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (col
 	return BufferWithContext(ctx, ch, size)
 }
 
+// BufferWithIdleTimeout collects a specified number of elements from an input channel, stopping either when the target size is reached or when a period of inactivity (idle timeout) occurs.
+func BufferWithIdleTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
+	buffer := make([]T, 0, size)
+	now := time.Now()
+
+	timer := time.NewTimer(timeout)
+	defer timer.Stop()
+
+	for index := 0; index < size; index++ {
+		select {
+		case item, ok := <-ch:
+			if !ok {
+				return buffer, index, time.Since(now), false
+			}
+
+			buffer = append(buffer, item)
+			timer.Reset(timeout)
+		case <-timer.C:
+			return buffer, index, time.Since(now), true
+		}
+	}
+
+	return buffer, size, time.Since(now), true
+}
+
 // BatchWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
 //
 // Deprecated: Use [BufferWithTimeout] instead.
