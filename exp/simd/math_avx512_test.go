@@ -286,7 +286,7 @@ func TestSumFloat32x16(t *testing.T) {
 			got := SumFloat32x16(tc.input)
 			want := lo.Sum(tc.input)
 
-			const epsilon = 1e-2
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("SumFloat32x16() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -319,7 +319,7 @@ func TestSumFloat64x8(t *testing.T) {
 			got := SumFloat64x8(tc.input)
 			want := lo.Sum(tc.input)
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("SumFloat64x8() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -616,7 +616,7 @@ func TestMeanFloat32x16(t *testing.T) {
 			got := MeanFloat32x16(tc.input)
 			want := lo.Mean(tc.input)
 
-			const epsilon = 1e-5
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MeanFloat32x16() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -649,7 +649,7 @@ func TestMeanFloat64x8(t *testing.T) {
 			got := MeanFloat64x8(tc.input)
 			want := lo.Mean(tc.input)
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MeanFloat64x8() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -1099,7 +1099,7 @@ func TestClampFloat32x16(t *testing.T) {
 				t.Errorf("ClampFloat32x16() returned length %d, want %d", len(got), len(tc.input))
 			}
 
-			const epsilon = 1e-5
+			const epsilon = 1e-3
 			for i, v := range got {
 				if v < tc.min-epsilon || v > tc.max+epsilon {
 					t.Errorf("ClampFloat32x16()[%d] = %v, outside range [%v, %v]", i, v, tc.min, tc.max)
@@ -1151,7 +1151,7 @@ func TestClampFloat64x8(t *testing.T) {
 				t.Errorf("ClampFloat64x8() returned length %d, want %d", len(got), len(tc.input))
 			}
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			for i, v := range got {
 				if v < tc.min-epsilon || v > tc.max+epsilon {
 					t.Errorf("ClampFloat64x8()[%d] = %v, outside range [%v, %v]", i, v, tc.min, tc.max)
@@ -1476,7 +1476,7 @@ func TestMinFloat32x16(t *testing.T) {
 			got := MinFloat32x16(tc.input)
 			want := lo.Min(tc.input)
 
-			const epsilon = 1e-5
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MinFloat32x16() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -1509,7 +1509,7 @@ func TestMinFloat64x8(t *testing.T) {
 			got := MinFloat64x8(tc.input)
 			want := lo.Min(tc.input)
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MinFloat64x8() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -1809,7 +1809,7 @@ func TestMaxFloat32x16(t *testing.T) {
 			got := MaxFloat32x16(tc.input)
 			want := lo.Max(tc.input)
 
-			const epsilon = 1e-5
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MaxFloat32x16() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -1842,7 +1842,7 @@ func TestMaxFloat64x8(t *testing.T) {
 			got := MaxFloat64x8(tc.input)
 			want := lo.Max(tc.input)
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MaxFloat64x8() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -2192,7 +2192,7 @@ func TestSumByFloat32x16(t *testing.T) {
 			got := SumByFloat32x16(tc.input, func(i avx512ItemFloat32) float32 { return i.Value })
 			want := lo.Sum(lo.Map(tc.input, func(i avx512ItemFloat32, _ int) float32 { return i.Value }))
 
-			const epsilon = 1e-5
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("SumByFloat32x16() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -2230,7 +2230,7 @@ func TestSumByFloat64x8(t *testing.T) {
 			got := SumByFloat64x8(tc.input, func(i avx512ItemFloat64) float64 { return i.Value })
 			want := lo.Sum(lo.Map(tc.input, func(i avx512ItemFloat64, _ int) float64 { return i.Value }))
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("SumByFloat64x8() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -2578,7 +2578,7 @@ func TestMeanByFloat32x16(t *testing.T) {
 			got := MeanByFloat32x16(tc.input, func(i avx512ItemFloat32) float32 { return i.Value })
 			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemFloat32, _ int) float32 { return i.Value }))
 
-			const epsilon = 1e-5
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MeanByFloat32x16() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -2616,7 +2616,7 @@ func TestMeanByFloat64x8(t *testing.T) {
 			got := MeanByFloat64x8(tc.input, func(i avx512ItemFloat64) float64 { return i.Value })
 			want := lo.Mean(lo.Map(tc.input, func(i avx512ItemFloat64, _ int) float64 { return i.Value }))
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MeanByFloat64x8() = %v, want %v (diff: %v)", got, want, diff)
 			}

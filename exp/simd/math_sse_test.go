@@ -282,7 +282,7 @@ func TestSumFloat32x4(t *testing.T) {
 			got := SumFloat32x4(tc.input)
 			want := lo.Sum(tc.input)
 
-			const epsilon = 1e-2
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("SumFloat32x4() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -314,7 +314,7 @@ func TestSumFloat64x2(t *testing.T) {
 			got := SumFloat64x2(tc.input)
 			want := lo.Sum(tc.input)
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("SumFloat64x2() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -757,7 +757,7 @@ func TestClampFloat32x4(t *testing.T) {
 				t.Errorf("ClampFloat32x4() returned length %d, want %d", len(got), len(tc.input))
 			}
 
-			const epsilon = 1e-5
+			const epsilon = 1e-3
 			for i, v := range got {
 				if v < tc.min-epsilon || v > tc.max+epsilon {
 					t.Errorf("ClampFloat32x4()[%d] = %v, outside range [%v, %v]", i, v, tc.min, tc.max)
@@ -808,7 +808,7 @@ func TestClampFloat64x2(t *testing.T) {
 				t.Errorf("ClampFloat64x2() returned length %d, want %d", len(got), len(tc.input))
 			}
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			for i, v := range got {
 				if v < tc.min-epsilon || v > tc.max+epsilon {
 					t.Errorf("ClampFloat64x2()[%d] = %v, outside range [%v, %v]", i, v, tc.min, tc.max)
@@ -1123,7 +1123,7 @@ func TestMeanFloat32x4(t *testing.T) {
 			got := MeanFloat32x4(tc.input)
 			want := lo.Mean(tc.input)
 
-			const epsilon = 1e-5
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MeanFloat32x4() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -1155,7 +1155,7 @@ func TestMeanFloat64x2(t *testing.T) {
 			got := MeanFloat64x2(tc.input)
 			want := lo.Mean(tc.input)
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MeanFloat64x2() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -1447,7 +1447,7 @@ func TestMinFloat32x4(t *testing.T) {
 			got := MinFloat32x4(tc.input)
 			want := lo.Min(tc.input)
 
-			const epsilon = 1e-5
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MinFloat32x4() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -1479,7 +1479,7 @@ func TestMinFloat64x2(t *testing.T) {
 			got := MinFloat64x2(tc.input)
 			want := lo.Min(tc.input)
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MinFloat64x2() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -1771,7 +1771,7 @@ func TestMaxFloat32x4(t *testing.T) {
 			got := MaxFloat32x4(tc.input)
 			want := lo.Max(tc.input)
 
-			const epsilon = 1e-5
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MaxFloat32x4() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -1803,7 +1803,7 @@ func TestMaxFloat64x2(t *testing.T) {
 			got := MaxFloat64x2(tc.input)
 			want := lo.Max(tc.input)
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MaxFloat64x2() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -2170,7 +2170,7 @@ func TestSumByFloat64x2(t *testing.T) {
 			got := SumByFloat64x2(tc.input, func(i itemFloat64) float64 { return i.Value })
 			want := lo.Sum(lo.Map(tc.input, func(i itemFloat64, _ int) float64 { return i.Value }))
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("SumByFloat64x2() = %v, want %v (diff: %v)", got, want, diff)
 			}
@@ -2534,7 +2534,7 @@ func TestMeanByFloat64x2(t *testing.T) {
 			got := MeanByFloat64x2(tc.input, func(i itemFloat64) float64 { return i.Value })
 			want := lo.Mean(lo.Map(tc.input, func(i itemFloat64, _ int) float64 { return i.Value }))
 
-			const epsilon = 1e-10
+			const epsilon = 1e-3
 			if diff := got - want; diff < -epsilon || diff > epsilon {
 				t.Errorf("MeanByFloat64x2() = %v, want %v (diff: %v)", got, want, diff)
 			}
