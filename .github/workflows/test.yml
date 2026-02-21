@@ -20,7 +20,7 @@ jobs:
           - "1.24"
           - "1.25"
           - "1.26"
-          - "latest"
+          - "stable"
 
     steps:
       - uses: actions/checkout@v6
@@ -38,7 +38,7 @@ jobs:
 
       - name: Test coverage
         run: make coverage
-        if: matrix.go == 'latest'
+        if: matrix.go == 'stable'
 
       - name: Codecov
         uses: codecov/codecov-action@v5
@@ -46,4 +46,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unittests
           verbose: true
-        if: matrix.go == 'latest'
+        if: matrix.go == 'stable'
