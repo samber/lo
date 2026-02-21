@@ -6,6 +6,7 @@ category: exp
 subCategory: simd
 similarHelpers:
   - exp#simd#mean
+  - exp#simd#meanby
 position: 10
 signatures:
   - "func MeanInt8x16[T ~int8](collection []T) T"

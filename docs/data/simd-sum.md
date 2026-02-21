@@ -6,6 +6,7 @@ category: exp
 subCategory: simd
 similarHelpers:
   - exp#simd#sum
+  - exp#simd#sumby
 position: 0
 signatures:
   - "func SumInt8x16[T ~int8](collection []T) T"
