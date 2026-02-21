@@ -1,9 +1,14 @@
+# Only build/test/lint exp/simd when Go version is >= 1.26 (requires goexperiment.simd)
+GO_VERSION := $(shell go version 2>/dev/null | sed -n 's/.*go\([0-9]*\)\.\([0-9]*\).*/\1.\2/p')
+GO_SIMD_SUPPORT := $(shell ver="$(GO_VERSION)"; [ -n "$$ver" ] && [ "$$(printf '%s\n1.26\n' "$$ver" | sort -V | tail -1)" = "$$ver" ] && echo yes)
 
 build:
 	go build -v ./...
+	@if [ -n "$(GO_SIMD_SUPPORT)" ]; then cd ./exp/simd && GOEXPERIMENT=simd go build -v ./; fi
 
 test:
 	go test -race ./...
+	@if [ -n "$(GO_SIMD_SUPPORT)" ]; then cd ./exp/simd && GOEXPERIMENT=simd go test -race ./; fi
 watch-test:
 	reflex -t 50ms -s -- sh -c 'gotest -race ./...'
 
@@ -32,9 +37,11 @@ tools:
 
 lint:
 	golangci-lint run --timeout 60s --max-same-issues 50 ./...
+	@if [ -n "$(GO_SIMD_SUPPORT)" ]; then cd ./exp/simd && golangci-lint run --timeout 60s --max-same-issues 50 ./; fi
 	# mdsf verify --debug --log-level warn docs/
 lint-fix:
 	golangci-lint run --timeout 60s --max-same-issues 50 --fix ./...
+	@if [ -n "$(GO_SIMD_SUPPORT)" ]; then cd ./exp/simd && golangci-lint run --timeout 60s --max-same-issues 50 --fix ./; fi
 	# mdsf format --debug --log-level warn docs/
 
 audit:
