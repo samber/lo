@@ -471,6 +471,7 @@ func ClampInt8x64[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
+		// bearer:disable go_gosec_unsafe_unsafe
 		clamped.Store((*[64]int8)(unsafe.Pointer(&result[i])))
 	}
 
@@ -509,6 +510,7 @@ func ClampInt16x32[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
+		// bearer:disable go_gosec_unsafe_unsafe
 		clamped.Store((*[32]int16)(unsafe.Pointer(&result[i])))
 	}
 
@@ -547,6 +549,7 @@ func ClampInt32x16[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
+		// bearer:disable go_gosec_unsafe_unsafe
 		clamped.Store((*[16]int32)(unsafe.Pointer(&result[i])))
 	}
 
@@ -585,6 +588,7 @@ func ClampInt64x8[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
+		// bearer:disable go_gosec_unsafe_unsafe
 		clamped.Store((*[8]int64)(unsafe.Pointer(&result[i])))
 	}
 
@@ -623,6 +627,7 @@ func ClampUint8x64[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
+		// bearer:disable go_gosec_unsafe_unsafe
 		clamped.Store((*[64]uint8)(unsafe.Pointer(&result[i])))
 	}
 
@@ -661,6 +666,7 @@ func ClampUint16x32[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
+		// bearer:disable go_gosec_unsafe_unsafe
 		clamped.Store((*[32]uint16)(unsafe.Pointer(&result[i])))
 	}
 
@@ -699,6 +705,7 @@ func ClampUint32x16[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
+		// bearer:disable go_gosec_unsafe_unsafe
 		clamped.Store((*[16]uint32)(unsafe.Pointer(&result[i])))
 	}
 
@@ -737,6 +744,7 @@ func ClampUint64x8[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 
 		clamped := v.Max(minVec).Min(maxVec)
 
+		// bearer:disable go_gosec_unsafe_unsafe
 		clamped.Store((*[8]uint64)(unsafe.Pointer(&result[i])))
 	}
 
@@ -775,6 +783,7 @@ func ClampFloat32x16[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice
 
 		clamped := v.Max(minVec).Min(maxVec)
 
+		// bearer:disable go_gosec_unsafe_unsafe
 		clamped.Store((*[16]float32)(unsafe.Pointer(&result[i])))
 	}
 
@@ -813,6 +822,7 @@ func ClampFloat64x8[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice 
 
 		clamped := v.Max(minVec).Min(maxVec)
 
+		// bearer:disable go_gosec_unsafe_unsafe
 		clamped.Store((*[8]float64)(unsafe.Pointer(&result[i])))
 	}
 
