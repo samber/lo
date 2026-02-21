@@ -838,6 +838,7 @@ func ClampFloat64[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice {
 // Overflow: The accumulation is performed using int8, which can overflow for large collections.
 // If the sum exceeds the int8 range (-128 to 127), the result will wrap around silently.
 // For collections that may overflow, consider using a wider type or handle overflow detection externally.
+// Play: https://go.dev/play/p/TBD
 func SumByInt8[T any, R ~int8](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -855,6 +856,7 @@ func SumByInt8[T any, R ~int8](collection []T, iteratee func(item T) R) R {
 // Overflow: The accumulation is performed using int16, which can overflow for large collections.
 // If the sum exceeds the int16 range (-32768 to 32767), the result will wrap around silently.
 // For collections that may overflow, consider using a wider type or handle overflow detection externally.
+// Play: https://go.dev/play/p/TBD
 func SumByInt16[T any, R ~int16](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -872,6 +874,7 @@ func SumByInt16[T any, R ~int16](collection []T, iteratee func(item T) R) R {
 // Overflow: The accumulation is performed using int32, which can overflow for very large collections.
 // If the sum exceeds the int32 range (-2147483648 to 2147483647), the result will wrap around silently.
 // For collections that may overflow, consider using SumByInt64 or handle overflow detection externally.
+// Play: https://go.dev/play/p/TBD
 func SumByInt32[T any, R ~int32](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -889,6 +892,7 @@ func SumByInt32[T any, R ~int32](collection []T, iteratee func(item T) R) R {
 // Overflow: The accumulation is performed using int64, which can overflow for extremely large collections.
 // If the sum exceeds the int64 range, the result will wrap around silently.
 // For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
+// Play: https://go.dev/play/p/TBD
 func SumByInt64[T any, R ~int64](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -906,6 +910,7 @@ func SumByInt64[T any, R ~int64](collection []T, iteratee func(item T) R) R {
 // Overflow: The accumulation is performed using uint8, which can overflow for large collections.
 // If the sum exceeds the uint8 range (0 to 255), the result will wrap around silently.
 // For collections that may overflow, consider using a wider type or handle overflow detection externally.
+// Play: https://go.dev/play/p/TBD
 func SumByUint8[T any, R ~uint8](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -923,6 +928,7 @@ func SumByUint8[T any, R ~uint8](collection []T, iteratee func(item T) R) R {
 // Overflow: The accumulation is performed using uint16, which can overflow for large collections.
 // If the sum exceeds the uint16 range (0 to 65535), the result will wrap around silently.
 // For collections that may overflow, consider using a wider type or handle overflow detection externally.
+// Play: https://go.dev/play/p/TBD
 func SumByUint16[T any, R ~uint16](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -940,6 +946,7 @@ func SumByUint16[T any, R ~uint16](collection []T, iteratee func(item T) R) R {
 // Overflow: The accumulation is performed using uint32, which can overflow for very large collections.
 // If the sum exceeds the uint32 range (0 to 4294967295), the result will wrap around silently.
 // For collections that may overflow, consider using SumByUint64 or handle overflow detection externally.
+// Play: https://go.dev/play/p/TBD
 func SumByUint32[T any, R ~uint32](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -957,6 +964,7 @@ func SumByUint32[T any, R ~uint32](collection []T, iteratee func(item T) R) R {
 // Overflow: The accumulation is performed using uint64, which can overflow for extremely large collections.
 // If the sum exceeds the uint64 range, the result will wrap around silently.
 // For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
+// Play: https://go.dev/play/p/TBD
 func SumByUint64[T any, R ~uint64](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -973,6 +981,7 @@ func SumByUint64[T any, R ~uint64](collection []T, iteratee func(item T) R) R {
 // SumByFloat32 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
 // Overflow: The accumulation is performed using float32. Overflow will result in +/-Inf rather than wrapping.
 // For collections requiring high precision or large sums, consider using SumByFloat64.
+// Play: https://go.dev/play/p/TBD
 func SumByFloat32[T any, R ~float32](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -989,6 +998,7 @@ func SumByFloat32[T any, R ~float32](collection []T, iteratee func(item T) R) R 
 // SumByFloat64 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
 // Overflow: The accumulation is performed using float64. Overflow will result in +/-Inf rather than wrapping.
 // For collections that may overflow, handle overflow detection externally (e.g., using big.Float).
+// Play: https://go.dev/play/p/TBD
 func SumByFloat64[T any, R ~float64](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -1003,6 +1013,7 @@ func SumByFloat64[T any, R ~float64](collection []T, iteratee func(item T) R) R 
 }
 
 // MeanByInt8 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Play: https://go.dev/play/p/TBD
 func MeanByInt8[T any, R ~int8](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -1017,6 +1028,7 @@ func MeanByInt8[T any, R ~int8](collection []T, iteratee func(item T) R) R {
 }
 
 // MeanByInt16 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Play: https://go.dev/play/p/TBD
 func MeanByInt16[T any, R ~int16](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -1031,6 +1043,7 @@ func MeanByInt16[T any, R ~int16](collection []T, iteratee func(item T) R) R {
 }
 
 // MeanByInt32 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Play: https://go.dev/play/p/TBD
 func MeanByInt32[T any, R ~int32](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -1045,6 +1058,7 @@ func MeanByInt32[T any, R ~int32](collection []T, iteratee func(item T) R) R {
 }
 
 // MeanByInt64 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Play: https://go.dev/play/p/TBD
 func MeanByInt64[T any, R ~int64](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -1059,6 +1073,7 @@ func MeanByInt64[T any, R ~int64](collection []T, iteratee func(item T) R) R {
 }
 
 // MeanByUint8 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Play: https://go.dev/play/p/TBD
 func MeanByUint8[T any, R ~uint8](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -1073,6 +1088,7 @@ func MeanByUint8[T any, R ~uint8](collection []T, iteratee func(item T) R) R {
 }
 
 // MeanByUint16 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Play: https://go.dev/play/p/TBD
 func MeanByUint16[T any, R ~uint16](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -1087,6 +1103,7 @@ func MeanByUint16[T any, R ~uint16](collection []T, iteratee func(item T) R) R {
 }
 
 // MeanByUint32 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Play: https://go.dev/play/p/TBD
 func MeanByUint32[T any, R ~uint32](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -1101,6 +1118,7 @@ func MeanByUint32[T any, R ~uint32](collection []T, iteratee func(item T) R) R {
 }
 
 // MeanByUint64 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Play: https://go.dev/play/p/TBD
 func MeanByUint64[T any, R ~uint64](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -1115,6 +1133,7 @@ func MeanByUint64[T any, R ~uint64](collection []T, iteratee func(item T) R) R {
 }
 
 // MeanByFloat32 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Play: https://go.dev/play/p/TBD
 func MeanByFloat32[T any, R ~float32](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:
@@ -1129,6 +1148,7 @@ func MeanByFloat32[T any, R ~float32](collection []T, iteratee func(item T) R) R
 }
 
 // MeanByFloat64 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Play: https://go.dev/play/p/TBD
 func MeanByFloat64[T any, R ~float64](collection []T, iteratee func(item T) R) R {
 	switch currentSimdFeature {
 	case simdFeatureAVX512:

@@ -20,7 +20,7 @@ func SumInt8x16[T ~int8](collection []T) T {
 	if length == 0 {
 		return 0
 	}
-	lanes := 16
+	const lanes = simdLanes16
 
 	base := unsafeSliceInt8(collection, length)
 	var acc archsimd.Int8x16
@@ -31,7 +31,7 @@ func SumInt8x16[T ~int8](collection []T) T {
 		acc = acc.Add(v)
 	}
 
-	var buf [16]int8
+	var buf [lanes]int8
 	acc.Store(&buf)
 	var sum T
 	for k := 0; k < lanes; k++ {
@@ -54,7 +54,7 @@ func SumInt16x8[T ~int16](collection []T) T {
 	if length == 0 {
 		return 0
 	}
-	lanes := 8
+	const lanes = simdLanes8
 
 	base := unsafeSliceInt16(collection, length)
 	var acc archsimd.Int16x8
@@ -65,7 +65,7 @@ func SumInt16x8[T ~int16](collection []T) T {
 		acc = acc.Add(v)
 	}
 
-	var buf [8]int16
+	var buf [lanes]int16
 	acc.Store(&buf)
 	var sum T
 	for k := 0; k < lanes; k++ {
@@ -88,7 +88,7 @@ func SumInt32x4[T ~int32](collection []T) T {
 	if length == 0 {
 		return 0
 	}
-	lanes := 4
+	const lanes = simdLanes4
 
 	base := unsafeSliceInt32(collection, length)
 	var acc archsimd.Int32x4
@@ -99,7 +99,7 @@ func SumInt32x4[T ~int32](collection []T) T {
 		acc = acc.Add(v)
 	}
 
-	var buf [4]int32
+	var buf [lanes]int32
 	acc.Store(&buf)
 	var sum T
 	for k := 0; k < lanes; k++ {
@@ -122,7 +122,7 @@ func SumInt64x2[T ~int64](collection []T) T {
 	if length == 0 {
 		return 0
 	}
-	lanes := 2
+	const lanes = simdLanes2
 
 	base := unsafeSliceInt64(collection, length)
 	var acc archsimd.Int64x2
@@ -133,7 +133,7 @@ func SumInt64x2[T ~int64](collection []T) T {
 		acc = acc.Add(v)
 	}
 
-	var buf [2]int64
+	var buf [lanes]int64
 	acc.Store(&buf)
 	var sum T
 	for k := 0; k < lanes; k++ {
@@ -156,7 +156,7 @@ func SumUint8x16[T ~uint8](collection []T) T {
 	if length == 0 {
 		return 0
 	}
-	lanes := 16
+	const lanes = simdLanes16
 
 	base := unsafeSliceUint8(collection, length)
 	var acc archsimd.Uint8x16
@@ -167,7 +167,7 @@ func SumUint8x16[T ~uint8](collection []T) T {
 		acc = acc.Add(v)
 	}
 
-	var buf [16]uint8
+	var buf [lanes]uint8
 	acc.Store(&buf)
 	var sum T
 	for k := 0; k < lanes; k++ {
@@ -190,7 +190,7 @@ func SumUint16x8[T ~uint16](collection []T) T {
 	if length == 0 {
 		return 0
 	}
-	lanes := 8
+	const lanes = simdLanes8
 
 	base := unsafeSliceUint16(collection, length)
 	var acc archsimd.Uint16x8
@@ -201,7 +201,7 @@ func SumUint16x8[T ~uint16](collection []T) T {
 		acc = acc.Add(v)
 	}
 
-	var buf [8]uint16
+	var buf [lanes]uint16
 	acc.Store(&buf)
 	var sum T
 	for k := 0; k < lanes; k++ {
@@ -224,7 +224,7 @@ func SumUint32x4[T ~uint32](collection []T) T {
 	if length == 0 {
 		return 0
 	}
-	lanes := 4
+	const lanes = simdLanes4
 
 	base := unsafeSliceUint32(collection, length)
 	var acc archsimd.Uint32x4
@@ -235,7 +235,7 @@ func SumUint32x4[T ~uint32](collection []T) T {
 		acc = acc.Add(v)
 	}
 
-	var buf [4]uint32
+	var buf [lanes]uint32
 	acc.Store(&buf)
 	var sum T
 	for k := 0; k < lanes; k++ {
@@ -258,7 +258,7 @@ func SumUint64x2[T ~uint64](collection []T) T {
 	if length == 0 {
 		return 0
 	}
-	lanes := 2
+	const lanes = simdLanes2
 
 	base := unsafeSliceUint64(collection, length)
 	var acc archsimd.Uint64x2
@@ -269,7 +269,7 @@ func SumUint64x2[T ~uint64](collection []T) T {
 		acc = acc.Add(v)
 	}
 
-	var buf [2]uint64
+	var buf [lanes]uint64
 	acc.Store(&buf)
 	var sum T
 	for k := 0; k < lanes; k++ {
@@ -291,7 +291,7 @@ func SumFloat32x4[T ~float32](collection []T) T {
 	if length == 0 {
 		return 0
 	}
-	lanes := 4
+	const lanes = simdLanes4
 
 	base := unsafeSliceFloat32(collection, length)
 	var acc archsimd.Float32x4
@@ -302,7 +302,7 @@ func SumFloat32x4[T ~float32](collection []T) T {
 		acc = acc.Add(v)
 	}
 
-	var buf [4]float32
+	var buf [lanes]float32
 	acc.Store(&buf)
 	var sum T
 	for k := 0; k < lanes; k++ {
@@ -324,7 +324,7 @@ func SumFloat64x2[T ~float64](collection []T) T {
 	if length == 0 {
 		return 0
 	}
-	lanes := 2
+	const lanes = simdLanes2
 
 	base := unsafeSliceFloat64(collection, length)
 	var acc archsimd.Float64x2
@@ -335,7 +335,7 @@ func SumFloat64x2[T ~float64](collection []T) T {
 		acc = acc.Add(v)
 	}
 
-	var buf [2]float64
+	var buf [lanes]float64
 	acc.Store(&buf)
 	var sum T
 	for k := 0; k < lanes; k++ {
@@ -458,7 +458,7 @@ func ClampInt8x16[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
 	}
 
 	result := make(Slice, length)
-	lanes := 16
+	const lanes = simdLanes16
 
 	base := unsafeSliceInt8(collection, length)
 
@@ -472,7 +472,7 @@ func ClampInt8x16[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[16]int8)(unsafe.Pointer(&result[i])))
+		clamped.Store((*[lanes]int8)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -496,7 +496,7 @@ func ClampInt16x8[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
 	}
 
 	result := make(Slice, length)
-	lanes := 8
+	const lanes = simdLanes8
 
 	base := unsafeSliceInt16(collection, length)
 
@@ -510,7 +510,7 @@ func ClampInt16x8[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[8]int16)(unsafe.Pointer(&result[i])))
+		clamped.Store((*[lanes]int16)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -534,7 +534,7 @@ func ClampInt32x4[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 	}
 
 	result := make(Slice, length)
-	lanes := 4
+	const lanes = simdLanes4
 
 	base := unsafeSliceInt32(collection, length)
 
@@ -548,7 +548,7 @@ func ClampInt32x4[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[4]int32)(unsafe.Pointer(&result[i])))
+		clamped.Store((*[lanes]int32)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -572,7 +572,7 @@ func ClampInt64x2[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 	}
 
 	result := make(Slice, length)
-	lanes := 2
+	const lanes = simdLanes2
 
 	base := unsafeSliceInt64(collection, length)
 
@@ -586,7 +586,7 @@ func ClampInt64x2[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[2]int64)(unsafe.Pointer(&result[i])))
+		clamped.Store((*[lanes]int64)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -610,7 +610,7 @@ func ClampUint8x16[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
 	}
 
 	result := make(Slice, length)
-	lanes := 16
+	const lanes = simdLanes16
 
 	base := unsafeSliceUint8(collection, length)
 
@@ -624,7 +624,7 @@ func ClampUint8x16[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[16]uint8)(unsafe.Pointer(&result[i])))
+		clamped.Store((*[lanes]uint8)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -648,7 +648,7 @@ func ClampUint16x8[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
 	}
 
 	result := make(Slice, length)
-	lanes := 8
+	const lanes = simdLanes8
 
 	base := unsafeSliceUint16(collection, length)
 
@@ -662,7 +662,7 @@ func ClampUint16x8[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[8]uint16)(unsafe.Pointer(&result[i])))
+		clamped.Store((*[lanes]uint16)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -686,7 +686,7 @@ func ClampUint32x4[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
 	}
 
 	result := make(Slice, length)
-	lanes := 4
+	const lanes = simdLanes4
 
 	base := unsafeSliceUint32(collection, length)
 
@@ -700,7 +700,7 @@ func ClampUint32x4[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[4]uint32)(unsafe.Pointer(&result[i])))
+		clamped.Store((*[lanes]uint32)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -724,7 +724,7 @@ func ClampUint64x2[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 	}
 
 	result := make(Slice, length)
-	lanes := 2
+	const lanes = simdLanes2
 
 	base := unsafeSliceUint64(collection, length)
 
@@ -738,7 +738,7 @@ func ClampUint64x2[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[2]uint64)(unsafe.Pointer(&result[i])))
+		clamped.Store((*[lanes]uint64)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -762,7 +762,7 @@ func ClampFloat32x4[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice 
 	}
 
 	result := make(Slice, length)
-	lanes := 4
+	const lanes = simdLanes4
 
 	base := unsafeSliceFloat32(collection, length)
 
@@ -776,7 +776,7 @@ func ClampFloat32x4[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[4]float32)(unsafe.Pointer(&result[i])))
+		clamped.Store((*[lanes]float32)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -800,7 +800,7 @@ func ClampFloat64x2[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice 
 	}
 
 	result := make(Slice, length)
-	lanes := 2
+	const lanes = simdLanes2
 
 	base := unsafeSliceFloat64(collection, length)
 
@@ -814,7 +814,7 @@ func ClampFloat64x2[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[2]float64)(unsafe.Pointer(&result[i])))
+		clamped.Store((*[lanes]float64)(unsafe.Pointer(&result[i])))
 	}
 
 	for ; i < length; i++ {
@@ -837,7 +837,7 @@ func MinInt8x16[T ~int8](collection []T) T {
 		return 0
 	}
 
-	lanes := 16
+	const lanes = simdLanes16
 	base := unsafeSliceInt8(collection, length)
 
 	var minVec archsimd.Int8x16
@@ -858,7 +858,7 @@ func MinInt8x16[T ~int8](collection []T) T {
 	// Find minimum in the vector (only if we processed any vectors)
 	var minVal int8
 	if firstInitialized {
-		var buf [16]int8
+		var buf [lanes]int8
 		minVec.Store(&buf)
 		minVal = min(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
@@ -884,7 +884,7 @@ func MinInt16x8[T ~int16](collection []T) T {
 		return 0
 	}
 
-	lanes := 8
+	const lanes = simdLanes8
 	base := unsafeSliceInt16(collection, length)
 
 	var minVec archsimd.Int16x8
@@ -905,7 +905,7 @@ func MinInt16x8[T ~int16](collection []T) T {
 	// Find minimum in the vector (only if we processed any vectors)
 	var minVal int16
 	if firstInitialized {
-		var buf [8]int16
+		var buf [lanes]int16
 		minVec.Store(&buf)
 		minVal = min(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
@@ -928,7 +928,7 @@ func MinInt32x4[T ~int32](collection []T) T {
 		return 0
 	}
 
-	lanes := 4
+	const lanes = simdLanes4
 	base := unsafeSliceInt32(collection, length)
 
 	var minVec archsimd.Int32x4
@@ -949,7 +949,7 @@ func MinInt32x4[T ~int32](collection []T) T {
 	// Find minimum in the vector (only if we processed any vectors)
 	var minVal int32
 	if firstInitialized {
-		var buf [4]int32
+		var buf [lanes]int32
 		minVec.Store(&buf)
 		minVal = min(buf[0], buf[1], buf[2], buf[3])
 	}
@@ -972,7 +972,7 @@ func MinInt64x2[T ~int64](collection []T) T {
 		return 0
 	}
 
-	lanes := 2
+	const lanes = simdLanes2
 	base := unsafeSliceInt64(collection, length)
 
 	var minVec archsimd.Int64x2
@@ -993,7 +993,7 @@ func MinInt64x2[T ~int64](collection []T) T {
 	// Find minimum in the vector (only if we processed any vectors)
 	var minVal int64
 	if firstInitialized {
-		var buf [2]int64
+		var buf [lanes]int64
 		minVec.Store(&buf)
 		minVal = min(buf[0], buf[1])
 	}
@@ -1016,7 +1016,7 @@ func MinUint8x16[T ~uint8](collection []T) T {
 		return 0
 	}
 
-	lanes := 16
+	const lanes = simdLanes16
 	base := unsafeSliceUint8(collection, length)
 
 	var minVec archsimd.Uint8x16
@@ -1037,7 +1037,7 @@ func MinUint8x16[T ~uint8](collection []T) T {
 	// Find minimum in the vector (only if we processed any vectors)
 	var minVal uint8
 	if firstInitialized {
-		var buf [16]uint8
+		var buf [lanes]uint8
 		minVec.Store(&buf)
 		minVal = min(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
@@ -1063,7 +1063,7 @@ func MinUint16x8[T ~uint16](collection []T) T {
 		return 0
 	}
 
-	lanes := 8
+	const lanes = simdLanes8
 	base := unsafeSliceUint16(collection, length)
 
 	var minVec archsimd.Uint16x8
@@ -1084,7 +1084,7 @@ func MinUint16x8[T ~uint16](collection []T) T {
 	// Find minimum in the vector (only if we processed any vectors)
 	var minVal uint16
 	if firstInitialized {
-		var buf [8]uint16
+		var buf [lanes]uint16
 		minVec.Store(&buf)
 		minVal = min(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
@@ -1107,7 +1107,7 @@ func MinUint32x4[T ~uint32](collection []T) T {
 		return 0
 	}
 
-	lanes := 4
+	const lanes = simdLanes4
 	base := unsafeSliceUint32(collection, length)
 
 	var minVec archsimd.Uint32x4
@@ -1128,7 +1128,7 @@ func MinUint32x4[T ~uint32](collection []T) T {
 	// Find minimum in the vector (only if we processed any vectors)
 	var minVal uint32
 	if firstInitialized {
-		var buf [4]uint32
+		var buf [lanes]uint32
 		minVec.Store(&buf)
 		minVal = min(buf[0], buf[1], buf[2], buf[3])
 	}
@@ -1151,7 +1151,7 @@ func MinUint64x2[T ~uint64](collection []T) T {
 		return 0
 	}
 
-	lanes := 2
+	const lanes = simdLanes2
 	base := unsafeSliceUint64(collection, length)
 
 	var minVec archsimd.Uint64x2
@@ -1172,7 +1172,7 @@ func MinUint64x2[T ~uint64](collection []T) T {
 	// Find minimum in the vector (only if we processed any vectors)
 	var minVal uint64
 	if firstInitialized {
-		var buf [2]uint64
+		var buf [lanes]uint64
 		minVec.Store(&buf)
 		minVal = min(buf[0], buf[1])
 	}
@@ -1195,7 +1195,7 @@ func MinFloat32x4[T ~float32](collection []T) T {
 		return 0
 	}
 
-	lanes := 4
+	const lanes = simdLanes4
 	base := unsafeSliceFloat32(collection, length)
 
 	var minVec archsimd.Float32x4
@@ -1216,7 +1216,7 @@ func MinFloat32x4[T ~float32](collection []T) T {
 	// Find minimum in the vector (only if we processed any vectors)
 	var minVal float32
 	if firstInitialized {
-		var buf [4]float32
+		var buf [lanes]float32
 		minVec.Store(&buf)
 		minVal = min(buf[0], buf[1], buf[2], buf[3])
 	}
@@ -1239,7 +1239,7 @@ func MinFloat64x2[T ~float64](collection []T) T {
 		return 0
 	}
 
-	lanes := 2
+	const lanes = simdLanes2
 	base := unsafeSliceFloat64(collection, length)
 
 	var minVec archsimd.Float64x2
@@ -1260,7 +1260,7 @@ func MinFloat64x2[T ~float64](collection []T) T {
 	// Find minimum in the vector (only if we processed any vectors)
 	var minVal float64
 	if firstInitialized {
-		var buf [2]float64
+		var buf [lanes]float64
 		minVec.Store(&buf)
 		minVal = min(buf[0], buf[1])
 	}
@@ -1283,7 +1283,7 @@ func MaxInt8x16[T ~int8](collection []T) T {
 		return 0
 	}
 
-	lanes := 16
+	const lanes = simdLanes16
 	base := unsafeSliceInt8(collection, length)
 
 	var maxVec archsimd.Int8x16
@@ -1304,7 +1304,7 @@ func MaxInt8x16[T ~int8](collection []T) T {
 	// Find maximum in the vector (only if we processed any vectors)
 	var maxVal int8
 	if firstInitialized {
-		var buf [16]int8
+		var buf [lanes]int8
 		maxVec.Store(&buf)
 		maxVal = max(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
@@ -1330,7 +1330,7 @@ func MaxInt16x8[T ~int16](collection []T) T {
 		return 0
 	}
 
-	lanes := 8
+	const lanes = simdLanes8
 	base := unsafeSliceInt16(collection, length)
 
 	var maxVec archsimd.Int16x8
@@ -1351,7 +1351,7 @@ func MaxInt16x8[T ~int16](collection []T) T {
 	// Find maximum in the vector (only if we processed any vectors)
 	var maxVal int16
 	if firstInitialized {
-		var buf [8]int16
+		var buf [lanes]int16
 		maxVec.Store(&buf)
 		maxVal = max(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
@@ -1374,7 +1374,7 @@ func MaxInt32x4[T ~int32](collection []T) T {
 		return 0
 	}
 
-	lanes := 4
+	const lanes = simdLanes4
 	base := unsafeSliceInt32(collection, length)
 
 	var maxVec archsimd.Int32x4
@@ -1395,7 +1395,7 @@ func MaxInt32x4[T ~int32](collection []T) T {
 	// Find maximum in the vector (only if we processed any vectors)
 	var maxVal int32
 	if firstInitialized {
-		var buf [4]int32
+		var buf [lanes]int32
 		maxVec.Store(&buf)
 		maxVal = max(buf[0], buf[1], buf[2], buf[3])
 	}
@@ -1418,7 +1418,7 @@ func MaxInt64x2[T ~int64](collection []T) T {
 		return 0
 	}
 
-	lanes := 2
+	const lanes = simdLanes2
 	base := unsafeSliceInt64(collection, length)
 
 	var maxVec archsimd.Int64x2
@@ -1439,7 +1439,7 @@ func MaxInt64x2[T ~int64](collection []T) T {
 	// Find maximum in the vector (only if we processed any vectors)
 	var maxVal int64
 	if firstInitialized {
-		var buf [2]int64
+		var buf [lanes]int64
 		maxVec.Store(&buf)
 		maxVal = max(buf[0], buf[1])
 	}
@@ -1462,7 +1462,7 @@ func MaxUint8x16[T ~uint8](collection []T) T {
 		return 0
 	}
 
-	lanes := 16
+	const lanes = simdLanes16
 	base := unsafeSliceUint8(collection, length)
 
 	var maxVec archsimd.Uint8x16
@@ -1483,7 +1483,7 @@ func MaxUint8x16[T ~uint8](collection []T) T {
 	// Find maximum in the vector (only if we processed any vectors)
 	var maxVal uint8
 	if firstInitialized {
-		var buf [16]uint8
+		var buf [lanes]uint8
 		maxVec.Store(&buf)
 		maxVal = max(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
@@ -1509,7 +1509,7 @@ func MaxUint16x8[T ~uint16](collection []T) T {
 		return 0
 	}
 
-	lanes := 8
+	const lanes = simdLanes8
 	base := unsafeSliceUint16(collection, length)
 
 	var maxVec archsimd.Uint16x8
@@ -1530,7 +1530,7 @@ func MaxUint16x8[T ~uint16](collection []T) T {
 	// Find maximum in the vector (only if we processed any vectors)
 	var maxVal uint16
 	if firstInitialized {
-		var buf [8]uint16
+		var buf [lanes]uint16
 		maxVec.Store(&buf)
 		maxVal = max(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
@@ -1553,7 +1553,7 @@ func MaxUint32x4[T ~uint32](collection []T) T {
 		return 0
 	}
 
-	lanes := 4
+	const lanes = simdLanes4
 	base := unsafeSliceUint32(collection, length)
 
 	var maxVec archsimd.Uint32x4
@@ -1574,7 +1574,7 @@ func MaxUint32x4[T ~uint32](collection []T) T {
 	// Find maximum in the vector (only if we processed any vectors)
 	var maxVal uint32
 	if firstInitialized {
-		var buf [4]uint32
+		var buf [lanes]uint32
 		maxVec.Store(&buf)
 		maxVal = max(buf[0], buf[1], buf[2], buf[3])
 	}
@@ -1597,7 +1597,7 @@ func MaxUint64x2[T ~uint64](collection []T) T {
 		return 0
 	}
 
-	lanes := 2
+	const lanes = simdLanes2
 	base := unsafeSliceUint64(collection, length)
 
 	var maxVec archsimd.Uint64x2
@@ -1618,7 +1618,7 @@ func MaxUint64x2[T ~uint64](collection []T) T {
 	// Find maximum in the vector (only if we processed any vectors)
 	var maxVal uint64
 	if firstInitialized {
-		var buf [2]uint64
+		var buf [lanes]uint64
 		maxVec.Store(&buf)
 		maxVal = max(buf[0], buf[1])
 	}
@@ -1641,7 +1641,7 @@ func MaxFloat32x4[T ~float32](collection []T) T {
 		return 0
 	}
 
-	lanes := 4
+	const lanes = simdLanes4
 	base := unsafeSliceFloat32(collection, length)
 
 	var maxVec archsimd.Float32x4
@@ -1662,7 +1662,7 @@ func MaxFloat32x4[T ~float32](collection []T) T {
 	// Find maximum in the vector (only if we processed any vectors)
 	var maxVal float32
 	if firstInitialized {
-		var buf [4]float32
+		var buf [lanes]float32
 		maxVec.Store(&buf)
 		maxVal = max(buf[0], buf[1], buf[2], buf[3])
 	}
@@ -1685,7 +1685,7 @@ func MaxFloat64x2[T ~float64](collection []T) T {
 		return 0
 	}
 
-	lanes := 2
+	const lanes = simdLanes2
 	base := unsafeSliceFloat64(collection, length)
 
 	var maxVec archsimd.Float64x2
@@ -1706,7 +1706,7 @@ func MaxFloat64x2[T ~float64](collection []T) T {
 	// Find maximum in the vector (only if we processed any vectors)
 	var maxVal float64
 	if firstInitialized {
-		var buf [2]float64
+		var buf [lanes]float64
 		maxVec.Store(&buf)
 		maxVal = max(buf[0], buf[1])
 	}
