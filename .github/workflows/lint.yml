@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/setup-go@v6
         with:
-          go-version: 1.18
+          go-version-file: 'go.mod'
       - uses: actions/checkout@v6
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
