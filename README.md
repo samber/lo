@@ -57,7 +57,7 @@ go get github.com/samber/lo@v1
 
 This library is v1 and follows SemVer strictly.
 
-No breaking changes will be made to exported APIs before v2.0.0.
+No breaking changes will be made to exported APIs before v2.0.0, except for experimental packages under `exp/`.
 
 This library has no dependencies outside the Go standard library.
 
