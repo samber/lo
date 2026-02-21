@@ -2,6 +2,27 @@
 
 package simd
 
+import (
+	"fmt"
+	"os"
+	"strings"
+
+	"simd/archsimd"
+)
+
+func init() {
+	for _, arg := range os.Args {
+		if strings.HasPrefix(arg, "-test.bench=") {
+			bench := strings.TrimPrefix(arg, "-test.bench=")
+			if bench != "" && bench != "none" {
+				fmt.Fprintf(os.Stdout, "archsimd.X86: AVX=%v AVX2=%v AVX512=%v\n",
+					archsimd.X86.AVX(), archsimd.X86.AVX2(), archsimd.X86.AVX512())
+				break
+			}
+		}
+	}
+}
+
 // Type aliases for testing
 type myInt8 int8
 type myInt16 int16
