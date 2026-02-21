@@ -1211,6 +1211,7 @@ func TestReplace(t *testing.T) {
 	out10 := Replace(in, -1, 42, -1)
 
 	is.Equal([]int{42, 1, 42, 1, 2, 3, 0}, slices.Collect(out1))
+	is.Equal([]int{42, 1, 42, 1, 2, 3, 0}, slices.Collect(out1)) // check no counter mutation
 	is.Equal([]int{42, 1, 0, 1, 2, 3, 0}, slices.Collect(out2))
 	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, slices.Collect(out3))
 	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, slices.Collect(out4))
