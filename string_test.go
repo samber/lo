@@ -499,16 +499,16 @@ func TestEllipsis(t *testing.T) {
 	is.Equal("hello...", Ellipsis(" hello   world ", 9))
 
 	// Unicode: rune-based truncation (not byte-based)
-	is.Equal("hello...", Ellipsis("hello 世界! 你好", 8))            // CJK characters: "hello" (5 runes) + "..." = 8 runes
-	is.Equal("hello 世界...", Ellipsis("hello 世界! 你好", 11))       // truncate within CJK text
-	is.Equal("hello 世界! 你好", Ellipsis("hello 世界! 你好", 12))    // exact length, no truncation
-	is.Equal("hello 世界! 你好", Ellipsis("hello 世界! 你好", 20))    // length exceeds string, no truncation
-	is.Equal("🏠🐶🐱🌟", Ellipsis("🏠🐶🐱🌟", 5))                     // length > rune count, no truncation
-	is.Equal("🏠🐶🐱🌟", Ellipsis("🏠🐶🐱🌟", 4))                     // exact length, no truncation
-	is.Equal("...", Ellipsis("🏠🐶🐱🌟", 3))                          // length == 3, returns "..."
-	is.Equal("...", Ellipsis("🏠🐶🐱🌟", 2))                          // length < 3, returns "..."
-	is.Equal("🏠🐶...", Ellipsis("🏠🐶🐱🌟🎉🌈", 5))                   // 6 emoji, truncate to 2 + "..."
-	is.Equal("café", Ellipsis("café", 4))                             // accented char counts as 1 rune
-	is.Equal("...", Ellipsis("café", 3))                               // length == 3, returns "..."
-	is.Equal("ca...", Ellipsis("café au lait", 5))                     // mixed ASCII and accented
+	is.Equal("hello...", Ellipsis("hello 世界! 你好", 8))      // CJK characters: "hello" (5 runes) + "..." = 8 runes
+	is.Equal("hello 世界...", Ellipsis("hello 世界! 你好", 11))  // truncate within CJK text
+	is.Equal("hello 世界! 你好", Ellipsis("hello 世界! 你好", 12)) // exact length, no truncation
+	is.Equal("hello 世界! 你好", Ellipsis("hello 世界! 你好", 20)) // length exceeds string, no truncation
+	is.Equal("🏠🐶🐱🌟", Ellipsis("🏠🐶🐱🌟", 5))                  // length > rune count, no truncation
+	is.Equal("🏠🐶🐱🌟", Ellipsis("🏠🐶🐱🌟", 4))                  // exact length, no truncation
+	is.Equal("...", Ellipsis("🏠🐶🐱🌟", 3))                   // length == 3, returns "..."
+	is.Equal("...", Ellipsis("🏠🐶🐱🌟", 2))                   // length < 3, returns "..."
+	is.Equal("🏠🐶...", Ellipsis("🏠🐶🐱🌟🎉🌈", 5))               // 6 emoji, truncate to 2 + "..."
+	is.Equal("café", Ellipsis("café", 4))                  // accented char counts as 1 rune
+	is.Equal("...", Ellipsis("café", 3))                   // length == 3, returns "..."
+	is.Equal("ca...", Ellipsis("café au lait", 5))         // mixed ASCII and accented
 }
