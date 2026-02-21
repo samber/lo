@@ -2,7 +2,7 @@
 
 ## Summary
 
-Benchmarks show that running SIMD operators on small datasets is slower:
+Benchmarks show that running SIMD operations on small datasets is slower:
 
 ```txt
 BenchmarkSumInt8/small/Fallback-lo-2            	248740710	        5.218 ns/op
@@ -11,7 +11,7 @@ BenchmarkSumInt8/small/AVX2-x32-2               	 73059427	        14.44 ns/op
 BenchmarkSumInt8/small/AVX512-x64-2             	 49913169	        24.41 ns/op
 ```
 
-But much much faster on big datasets:
+But SIMD is much faster on large datasets:
 
 ```txt
 BenchmarkSumInt8/xlarge/Fallback-lo-2           	  273898	         4383 ns/op
