@@ -451,6 +451,203 @@ func TestChunk(t *testing.T) {
 	})
 }
 
+func TestWindow(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Window(values(1, 2, 3, 4, 5), 3)
+	result2 := Window(values(1, 2, 3, 4, 5, 6), 3)
+	result3 := Window(values(1, 2), 3)
+	result4 := Window(values(1, 2, 3), 3)
+	result5 := Window(values(1, 2, 3, 4), 1)
+
+	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}}, slices.Collect(result1))
+	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}, slices.Collect(result2))
+	is.Empty(slices.Collect(result3))
+	is.Equal([][]int{{1, 2, 3}}, slices.Collect(result4))
+	is.Equal([][]int{{1}, {2}, {3}, {4}}, slices.Collect(result5))
+
+	is.PanicsWithValue("it.Window: size must be greater than 0", func() {
+		Window(values(1, 2, 3), 0)
+	})
+
+	is.PanicsWithValue("it.Window: size must be greater than 0", func() {
+		Window(values(1, 2, 3), -1)
+	})
+}
+
+func TestSliding(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Sliding(values(1, 2, 3, 4, 5, 6), 3, 1)
+	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}, slices.Collect(result1))
+
+	result2 := Sliding(values(1, 2, 3, 4, 5, 6), 3, 3)
+	is.Equal([][]int{{1, 2, 3}, {4, 5, 6}}, slices.Collect(result2))
+
+	result3 := Sliding(values(1, 2, 3, 4, 5, 6, 7, 8), 2, 3)
+	is.Equal([][]int{{1, 2}, {4, 5}, {7, 8}}, slices.Collect(result3))
+
+	result4 := Sliding(values(1, 2, 3, 4), 1, 1)
+	is.Equal([][]int{{1}, {2}, {3}, {4}}, slices.Collect(result4))
+
+	result5 := Sliding(values(1, 2), 3, 1)
+	is.Empty(slices.Collect(result5))
+
+	result6 := Sliding(values(1, 2, 3, 4, 5, 6), 2, 2)
+	is.Equal([][]int{{1, 2}, {3, 4}, {5, 6}}, slices.Collect(result6))
+
+	is.PanicsWithValue("it.Sliding: size must be greater than 0", func() {
+		Sliding(values(1, 2, 3), 0, 1)
+	})
+
+	is.PanicsWithValue("it.Sliding: step must be greater than 0", func() {
+		Sliding(values(1, 2, 3), 2, 0)
+	})
+
+	is.PanicsWithValue("it.Sliding: step must be greater than 0", func() {
+		Sliding(values(1, 2, 3), 2, -1)
+	})
+
+	// Test overlapping windows (step < size)
+	result7 := Sliding(values(1, 2, 3, 4, 5), 3, 2)
+	is.Equal([][]int{{1, 2, 3}, {3, 4, 5}}, slices.Collect(result7))
+
+	// Test with step > size (non-overlapping with gaps)
+	result8 := Sliding(values(1, 2, 3, 4, 5, 6, 7, 8), 2, 4)
+	is.Equal([][]int{{1, 2}, {5, 6}}, slices.Collect(result8))
+
+	// Test empty collection
+	result9 := Sliding(values[int](), 2, 1)
+	is.Empty(slices.Collect(result9))
+
+	// Test collection exactly equal to size (one window)
+	result10 := Sliding(values(1, 2, 3), 3, 1)
+	is.Equal([][]int{{1, 2, 3}}, slices.Collect(result10))
+
+	// Test collection exactly equal to size with step=3
+	result11 := Sliding(values(1, 2, 3), 3, 3)
+	is.Equal([][]int{{1, 2, 3}}, slices.Collect(result11))
+
+	// Test collection just larger than size (two windows)
+	result12 := Sliding(values(1, 2, 3, 4), 3, 1)
+	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}}, slices.Collect(result12))
+
+	// Test size=1 with different steps
+	result13 := Sliding(values(1, 2, 3, 4, 5), 1, 2)
+	is.Equal([][]int{{1}, {3}, {5}}, slices.Collect(result13))
+
+	result14 := Sliding(values(1, 2, 3, 4, 5), 1, 3)
+	is.Equal([][]int{{1}, {4}}, slices.Collect(result14))
+
+	// Test very large step (only first window)
+	result15 := Sliding(values(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 2, 100)
+	is.Equal([][]int{{1, 2}}, slices.Collect(result15))
+
+	// Test step=1 with large size (maximum overlap)
+	result16 := Sliding(values(1, 2, 3, 4, 5), 4, 1)
+	is.Equal([][]int{{1, 2, 3, 4}, {2, 3, 4, 5}}, slices.Collect(result16))
+
+	// Test with strings
+	result17 := Sliding(values("a", "b", "c", "d"), 2, 1)
+	is.Equal([][]string{{"a", "b"}, {"b", "c"}, {"c", "d"}}, slices.Collect(result17))
+
+	// Test with structs
+	type Person struct {
+		Name string
+		Age  int
+	}
+	people := values(
+		Person{"Alice", 25},
+		Person{"Bob", 30},
+		Person{"Charlie", 35},
+		Person{"Diana", 40},
+	)
+	result18 := Sliding(people, 2, 1)
+	collected := slices.Collect(result18)
+	is.Len(collected, 3)
+	is.Equal(Person{"Alice", 25}, collected[0][0])
+	is.Equal(Person{"Bob", 30}, collected[0][1])
+	is.Equal(Person{"Bob", 30}, collected[1][0])
+	is.Equal(Person{"Charlie", 35}, collected[1][1])
+
+	// Test size equals collection length with step > size (only one window)
+	result19 := Sliding(values(1, 2, 3), 3, 5)
+	is.Equal([][]int{{1, 2, 3}}, slices.Collect(result19))
+
+	// Test step=1 with size=2 on single element
+	result20 := Sliding(values(1), 2, 1)
+	is.Empty(slices.Collect(result20))
+
+	// Test large collection with small windows
+	result21 := Sliding(values(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 2, 2)
+	is.Equal([][]int{{1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 10}}, slices.Collect(result21))
+
+	// Test overlapping with step=2, size=4 (only full windows are returned)
+	result22 := Sliding(values(1, 2, 3, 4, 5, 6, 7), 4, 2)
+	is.Equal([][]int{{1, 2, 3, 4}, {3, 4, 5, 6}}, slices.Collect(result22))
+
+	// Test with float64
+	result23 := Sliding(values(1.1, 2.2, 3.3, 4.4), 2, 1)
+	is.Equal([][]float64{{1.1, 2.2}, {2.2, 3.3}, {3.3, 4.4}}, slices.Collect(result23))
+
+	// Test with bool
+	result24 := Sliding(values(true, false, true, false, true), 3, 2)
+	is.Equal([][]bool{{true, false, true}, {true, false, true}}, slices.Collect(result24))
+
+	// Test size=5, step=3 on collection of 7 elements (only full windows are returned)
+	result25 := Sliding(values(1, 2, 3, 4, 5, 6, 7), 5, 3)
+	is.Equal([][]int{{1, 2, 3, 4, 5}}, slices.Collect(result25))
+
+	// Test when collection size is exactly size + step - 1 (two windows with overlap)
+	result26 := Sliding(values(1, 2, 3, 4, 5), 3, 2)
+	is.Equal([][]int{{1, 2, 3}, {3, 4, 5}}, slices.Collect(result26))
+
+	// Test with negative size should panic
+	is.PanicsWithValue("it.Sliding: size must be greater than 0", func() {
+		Sliding(values(1, 2, 3), -1, 1)
+	})
+
+	// Test multiple early termination (stop yielding)
+	result27 := Sliding(values(1, 2, 3, 4, 5, 6), 2, 1)
+	count := 0
+	for window := range result27 {
+		count++
+		if count == 2 {
+			break
+		}
+		_ = window
+	}
+	is.Equal(2, count)
+
+	// Test with large size, small step, large collection (only full windows are returned)
+	result28 := Sliding(values(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), 5, 3)
+	is.Equal([][]int{{1, 2, 3, 4, 5}, {4, 5, 6, 7, 8}, {7, 8, 9, 10, 11}}, slices.Collect(result28))
+
+	// Test size equals step equals 1
+	result29 := Sliding(values(1, 2, 3, 4, 5), 1, 1)
+	is.Equal([][]int{{1}, {2}, {3}, {4}, {5}}, slices.Collect(result29))
+
+	// Test with zero elements in collection
+	result30 := Sliding(values[int](), 1, 1)
+	is.Empty(slices.Collect(result30))
+
+	// Test when last window is exactly size elements
+	result31 := Sliding(values(1, 2, 3, 4, 5, 6), 3, 3)
+	is.Equal([][]int{{1, 2, 3}, {4, 5, 6}}, slices.Collect(result31))
+
+	// Test with pointers
+	x, y, z := 1, 2, 3
+	result32 := Sliding(values(&x, &y, &z), 2, 1)
+	collected32 := slices.Collect(result32)
+	is.Len(collected32, 2)
+	is.Equal(&x, collected32[0][0])
+	is.Equal(&y, collected32[0][1])
+	is.Equal(&y, collected32[1][0])
+	is.Equal(&z, collected32[1][1])
+}
+
 func TestPartitionBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -935,6 +1132,91 @@ func TestDropLastWhile(t *testing.T) {
 	allStrings := myStrings(values("", "foo", "bar"))
 	nonempty := DropLastWhile(allStrings, func(t string) bool {
 		return t != "foo"
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestTake(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{0, 1, 2}, slices.Collect(Take(values(0, 1, 2, 3, 4), 3)))
+	is.Equal([]int{0, 1}, slices.Collect(Take(values(0, 1, 2, 3, 4), 2)))
+	is.Equal([]int{0}, slices.Collect(Take(values(0, 1, 2, 3, 4), 1)))
+	is.Empty(slices.Collect(Take(values(0, 1, 2, 3, 4), 0)))
+	is.Equal([]int{0, 1, 2, 3, 4}, slices.Collect(Take(values(0, 1, 2, 3, 4), 5)))
+	is.Equal([]int{0, 1, 2, 3, 4}, slices.Collect(Take(values(0, 1, 2, 3, 4), 10)))
+
+	is.PanicsWithValue("it.Take: n must not be negative", func() {
+		Take(values(0, 1, 2, 3, 4), -1)
+	})
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := Take(allStrings, 2)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestTakeWhile(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{0, 1, 2, 3}, slices.Collect(TakeWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+		return t != 4
+	})))
+
+	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, slices.Collect(TakeWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+		return true
+	})))
+
+	is.Empty(slices.Collect(TakeWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+		return false
+	})))
+
+	is.Equal([]int{0, 1, 2}, slices.Collect(TakeWhile(values(0, 1, 2, 3, 4, 5, 6), func(t int) bool {
+		return t < 3
+	})))
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar"))
+	nonempty := TakeWhile(allStrings, func(t string) bool {
+		return t != "bar"
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestTakeFilter(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{2, 4}, slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 2, func(item, index int) bool {
+		return item%2 == 0 && index < 4
+	})))
+
+	is.Equal([]int{2, 4, 6}, slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 10, func(item, _ int) bool {
+		return item%2 == 0
+	})))
+
+	is.Empty(slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 0, func(item, index int) bool {
+		return item%2 == 0 && index < 4
+	})))
+
+	is.Empty(slices.Collect(TakeFilter(values(1, 3, 5), 2, func(item, _ int) bool {
+		return item%2 == 0
+	})))
+
+	is.Equal([]int{1}, slices.Collect(TakeFilter(values(1, 2, 3, 4, 5), 1, func(item, _ int) bool {
+		return item%2 != 0
+	})))
+
+	is.PanicsWithValue("it.TakeFilter: n must not be negative", func() {
+		TakeFilter(values(1, 2, 3), -1, func(item, _ int) bool { return true })
+	})
+
+	type myStrings iter.Seq[string]
+	allStrings := myStrings(values("", "foo", "bar", "baz"))
+	nonempty := TakeFilter(allStrings, 2, func(item string, _ int) bool {
+		return item != ""
 	})
 	is.IsType(nonempty, allStrings, "type preserved")
 }

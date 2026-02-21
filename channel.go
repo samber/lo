@@ -324,3 +324,71 @@ func FanOut[T any](count, channelsBufferCap int, upstream <-chan T) []<-chan T {
 
 	return channelsToReadOnly(downstreams)
 }
+
+// Distinct returns a channel with duplicate values removed.
+// The first occurrence is preserved, and ordering is maintained.
+// Memory usage grows with the number of distinct values and can be unbounded.
+func Distinct[T comparable](upstream <-chan T) <-chan T {
+	unique := make(chan T)
+
+	go func() {
+		defer close(unique)
+		seenValues := make(map[T]struct{})
+
+		for value := range upstream {
+			if _, ok := seenValues[value]; ok {
+				continue
+			}
+			seenValues[value] = struct{}{}
+			unique <- value
+		}
+	}()
+
+	return unique
+}
+
+// DistinctBy returns a channel with duplicate values removed based on the provided key.
+// The first occurrence is preserved, and ordering is maintained.
+// Memory usage grows with the number of distinct keys and can be unbounded.
+func DistinctBy[T any, K comparable](upstream <-chan T, key func(item T) K) <-chan T {
+	unique := make(chan T)
+
+	go func() {
+		defer close(unique)
+		seenKeys := make(map[K]struct{})
+
+		for value := range upstream {
+			keyValue := key(value)
+			if _, ok := seenKeys[keyValue]; ok {
+				continue
+			}
+			seenKeys[keyValue] = struct{}{}
+			unique <- value
+		}
+	}()
+
+	return unique
+}
+
+// Tee duplicates the stream into multiple output channels without blocking.
+// If an output channel is full or not ready, the value is dropped for that channel.
+func Tee[T any](count, channelsBufferCap int, upstream <-chan T) []<-chan T {
+	downStreams := createChannels[T](count, channelsBufferCap)
+
+	go func() {
+		for item := range upstream {
+			for i := range downStreams {
+				select {
+				case downStreams[i] <- item:
+				default:
+				}
+			}
+		}
+
+		for i := range downStreams {
+			close(downStreams[i])
+		}
+	}()
+
+	return channelsToReadOnly(downStreams)
+}
