@@ -28,7 +28,21 @@ cd exp/simd/
 go test -bench ./... -run=^Benchmark -benchmem -bench
 ```
 
+```bash
+# get instruction set
+cat /proc/cpuinfo
+```
+
 ## Result
+
+```
+goos: linux
+goarch: amd64
+pkg: github.com/samber/lo/exp/simd
+cpu: Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
+PASS
+ok      github.com/samber/lo/exp/simd        596.328s
+```
 
 | Benchmark                                      | Iterations | Time/op     | Bytes/op | Allocs/op   |
 | ---------------------------------------------- | ---------- | ----------- | -------- | ----------- |
@@ -426,13 +440,3 @@ go test -bench ./... -run=^Benchmark -benchmem -bench
 | BenchmarkSumInt64SteadyState/SSE-x2-4          | 460347     | 2634 ns/op  | 0 B/op   | 0 allocs/op |
 | BenchmarkSumInt64SteadyState/AVX2-x4-4         | 664824     | 1792 ns/op  | 0 B/op   | 0 allocs/op |
 | BenchmarkSumInt64SteadyState/AVX512-x8-4       | 1311258    | 914.6 ns/op | 0 B/op   | 0 allocs/op |
-
-```
-
-goos: linux
-goarch: amd64
-pkg: github.com/samber/lo/exp/simd
-cpu: Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
-PASS
-ok      github.com/samber/lo/exp/simd        596.328s
-```
