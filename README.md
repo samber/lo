@@ -2126,7 +2126,7 @@ str := lo.Capitalize("heLLO")
 
 ### Ellipsis
 
-Trims and truncates a string to a specified length in `bytes` and appends an ellipsis if truncated. If the string contains non-ASCII characters (which may occupy multiple bytes in UTF-8), truncating by byte length may split a character in the middle, potentially resulting in garbled output.
+Trims and truncates a string to a specified length in runes (Unicode code points) and appends an ellipsis if truncated. Multi-byte characters such as emoji or CJK ideographs are never split in the middle.
 
 ```go
 str := lo.Ellipsis("  Lorem Ipsum  ", 5)
@@ -2137,6 +2137,12 @@ str := lo.Ellipsis("Lorem Ipsum", 100)
 
 str := lo.Ellipsis("Lorem Ipsum", 3)
 // ...
+
+str := lo.Ellipsis("hello 世界! 你好", 8)
+// hello...
+
+str := lo.Ellipsis("🏠🐶🐱🌟", 4)
+// 🏠🐶🐱🌟
 ```
 
 [[play](https://go.dev/play/p/qE93rgqe1TW)]
