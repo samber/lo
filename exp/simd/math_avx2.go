@@ -3,6 +3,7 @@
 package simd
 
 import (
+	"github.com/samber/lo"
 	"simd/archsimd"
 )
 
@@ -1746,4 +1747,67 @@ func MaxFloat64x4[T ~float64](collection []T) T {
 	}
 
 	return T(maxVal)
+}
+
+// AVX2 (256-bit) SIMD sumBy functions - 32/16/8/4 lanes
+// These implementations use lo.Map to apply the iteratee, then chain with SIMD sum functions.
+
+// SumByInt8x32 sums the values extracted by iteratee from a slice using AVX2 SIMD.
+func SumByInt8x32[T any, R ~int8](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return SumInt8x32(mapped)
+}
+
+// SumByInt16x16 sums the values extracted by iteratee from a slice using AVX2 SIMD.
+func SumByInt16x16[T any, R ~int16](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return SumInt16x16(mapped)
+}
+
+// SumByInt32x8 sums the values extracted by iteratee from a slice using AVX2 SIMD.
+func SumByInt32x8[T any, R ~int32](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return SumInt32x8(mapped)
+}
+
+// SumByInt64x4 sums the values extracted by iteratee from a slice using AVX2 SIMD.
+func SumByInt64x4[T any, R ~int64](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return SumInt64x4(mapped)
+}
+
+// SumByUint8x32 sums the values extracted by iteratee from a slice using AVX2 SIMD.
+func SumByUint8x32[T any, R ~uint8](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return SumUint8x32(mapped)
+}
+
+// SumByUint16x16 sums the values extracted by iteratee from a slice using AVX2 SIMD.
+func SumByUint16x16[T any, R ~uint16](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return SumUint16x16(mapped)
+}
+
+// SumByUint32x8 sums the values extracted by iteratee from a slice using AVX2 SIMD.
+func SumByUint32x8[T any, R ~uint32](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return SumUint32x8(mapped)
+}
+
+// SumByUint64x4 sums the values extracted by iteratee from a slice using AVX2 SIMD.
+func SumByUint64x4[T any, R ~uint64](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return SumUint64x4(mapped)
+}
+
+// SumByFloat32x8 sums the values extracted by iteratee from a slice using AVX2 SIMD.
+func SumByFloat32x8[T any, R ~float32](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return SumFloat32x8(mapped)
+}
+
+// SumByFloat64x4 sums the values extracted by iteratee from a slice using AVX2 SIMD.
+func SumByFloat64x4[T any, R ~float64](collection []T, iteratee func(item T) R) R {
+	mapped := lo.Map(collection, func(item T, _ int) R { return iteratee(item) })
+	return SumFloat64x4(mapped)
 }

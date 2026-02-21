@@ -833,3 +833,171 @@ func ClampFloat64[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice {
 		return result
 	}
 }
+
+// SumByInt8 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Overflow: The accumulation is performed using int8, which can overflow for large collections.
+// If the sum exceeds the int8 range (-128 to 127), the result will wrap around silently.
+// For collections that may overflow, consider using a wider type or handle overflow detection externally.
+func SumByInt8[T any, R ~int8](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return SumByInt8x64(collection, iteratee)
+	case simdFeatureAVX2:
+		return SumByInt8x32(collection, iteratee)
+	case simdFeatureAVX:
+		return SumByInt8x16(collection, iteratee)
+	default:
+		return lo.SumBy(collection, iteratee)
+	}
+}
+
+// SumByInt16 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Overflow: The accumulation is performed using int16, which can overflow for large collections.
+// If the sum exceeds the int16 range (-32768 to 32767), the result will wrap around silently.
+// For collections that may overflow, consider using a wider type or handle overflow detection externally.
+func SumByInt16[T any, R ~int16](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return SumByInt16x32(collection, iteratee)
+	case simdFeatureAVX2:
+		return SumByInt16x16(collection, iteratee)
+	case simdFeatureAVX:
+		return SumByInt16x8(collection, iteratee)
+	default:
+		return lo.SumBy(collection, iteratee)
+	}
+}
+
+// SumByInt32 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Overflow: The accumulation is performed using int32, which can overflow for very large collections.
+// If the sum exceeds the int32 range (-2147483648 to 2147483647), the result will wrap around silently.
+// For collections that may overflow, consider using SumByInt64 or handle overflow detection externally.
+func SumByInt32[T any, R ~int32](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return SumByInt32x16(collection, iteratee)
+	case simdFeatureAVX2:
+		return SumByInt32x8(collection, iteratee)
+	case simdFeatureAVX:
+		return SumByInt32x4(collection, iteratee)
+	default:
+		return lo.SumBy(collection, iteratee)
+	}
+}
+
+// SumByInt64 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Overflow: The accumulation is performed using int64, which can overflow for extremely large collections.
+// If the sum exceeds the int64 range, the result will wrap around silently.
+// For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
+func SumByInt64[T any, R ~int64](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return SumByInt64x8(collection, iteratee)
+	case simdFeatureAVX2:
+		return SumByInt64x4(collection, iteratee)
+	case simdFeatureAVX:
+		return SumByInt64x2(collection, iteratee)
+	default:
+		return lo.SumBy(collection, iteratee)
+	}
+}
+
+// SumByUint8 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Overflow: The accumulation is performed using uint8, which can overflow for large collections.
+// If the sum exceeds the uint8 range (0 to 255), the result will wrap around silently.
+// For collections that may overflow, consider using a wider type or handle overflow detection externally.
+func SumByUint8[T any, R ~uint8](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return SumByUint8x64(collection, iteratee)
+	case simdFeatureAVX2:
+		return SumByUint8x32(collection, iteratee)
+	case simdFeatureAVX:
+		return SumByUint8x16(collection, iteratee)
+	default:
+		return lo.SumBy(collection, iteratee)
+	}
+}
+
+// SumByUint16 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Overflow: The accumulation is performed using uint16, which can overflow for large collections.
+// If the sum exceeds the uint16 range (0 to 65535), the result will wrap around silently.
+// For collections that may overflow, consider using a wider type or handle overflow detection externally.
+func SumByUint16[T any, R ~uint16](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return SumByUint16x32(collection, iteratee)
+	case simdFeatureAVX2:
+		return SumByUint16x16(collection, iteratee)
+	case simdFeatureAVX:
+		return SumByUint16x8(collection, iteratee)
+	default:
+		return lo.SumBy(collection, iteratee)
+	}
+}
+
+// SumByUint32 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Overflow: The accumulation is performed using uint32, which can overflow for very large collections.
+// If the sum exceeds the uint32 range (0 to 4294967295), the result will wrap around silently.
+// For collections that may overflow, consider using SumByUint64 or handle overflow detection externally.
+func SumByUint32[T any, R ~uint32](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return SumByUint32x16(collection, iteratee)
+	case simdFeatureAVX2:
+		return SumByUint32x8(collection, iteratee)
+	case simdFeatureAVX:
+		return SumByUint32x4(collection, iteratee)
+	default:
+		return lo.SumBy(collection, iteratee)
+	}
+}
+
+// SumByUint64 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Overflow: The accumulation is performed using uint64, which can overflow for extremely large collections.
+// If the sum exceeds the uint64 range, the result will wrap around silently.
+// For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
+func SumByUint64[T any, R ~uint64](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return SumByUint64x8(collection, iteratee)
+	case simdFeatureAVX2:
+		return SumByUint64x4(collection, iteratee)
+	case simdFeatureAVX:
+		return SumByUint64x2(collection, iteratee)
+	default:
+		return lo.SumBy(collection, iteratee)
+	}
+}
+
+// SumByFloat32 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Overflow: The accumulation is performed using float32. Overflow will result in +/-Inf rather than wrapping.
+// For collections requiring high precision or large sums, consider using SumByFloat64.
+func SumByFloat32[T any, R ~float32](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return SumByFloat32x16(collection, iteratee)
+	case simdFeatureAVX2:
+		return SumByFloat32x8(collection, iteratee)
+	case simdFeatureAVX:
+		return SumByFloat32x4(collection, iteratee)
+	default:
+		return lo.SumBy(collection, iteratee)
+	}
+}
+
+// SumByFloat64 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
+// Overflow: The accumulation is performed using float64. Overflow will result in +/-Inf rather than wrapping.
+// For collections that may overflow, handle overflow detection externally (e.g., using big.Float).
+func SumByFloat64[T any, R ~float64](collection []T, iteratee func(item T) R) R {
+	switch currentSimdFeature {
+	case simdFeatureAVX512:
+		return SumByFloat64x8(collection, iteratee)
+	case simdFeatureAVX2:
+		return SumByFloat64x4(collection, iteratee)
+	case simdFeatureAVX:
+		return SumByFloat64x2(collection, iteratee)
+	default:
+		return lo.SumBy(collection, iteratee)
+	}
+}

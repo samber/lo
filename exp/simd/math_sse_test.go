@@ -1821,3 +1821,374 @@ func TestSSEMaxTypeAlias(t *testing.T) {
 		t.Errorf("MaxInt8x16() with type alias = %v, want %v", got, want)
 	}
 }
+
+// SumBy tests
+
+type item struct {
+	Value      int8
+	Weight     int8
+	Multiplier int8
+}
+
+func TestSumByInt8x16(t *testing.T) {
+	testCases := []struct {
+		name  string
+		input []item
+	}{
+		{"empty", []item{}},
+		{"single", []item{{Value: 42}}},
+		{"small", []item{{Value: 1}, {Value: 2}, {Value: 3}, {Value: 4}, {Value: 5}}},
+		{"exactly 16", make([]item, 16)},
+		{"large", make([]item, 1000)},
+		{"negative", []item{{Value: -1}, {Value: -2}, {Value: -3}, {Value: 4}, {Value: 5}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = int8(rand.IntN(256) - 128)
+				}
+			}
+
+			// Using Value field as the iteratee
+			got := SumByInt8x16(tc.input, func(i item) int8 { return i.Value })
+			want := lo.Sum(lo.Map(tc.input, func(i item, _ int) int8 { return i.Value }))
+
+			if got != want {
+				t.Errorf("SumByInt8x16() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestSumByInt16x8(t *testing.T) {
+	type itemInt16 struct {
+		Value int16
+	}
+
+	testCases := []struct {
+		name  string
+		input []itemInt16
+	}{
+		{"empty", []itemInt16{}},
+		{"single", []itemInt16{{Value: 42}}},
+		{"small", []itemInt16{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 8", make([]itemInt16, 8)},
+		{"large", make([]itemInt16, 1000)},
+		{"negative", []itemInt16{{-1}, {-2}, {-3}, {4}, {5}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = int16(rand.IntN(65536) - 32768)
+				}
+			}
+
+			got := SumByInt16x8(tc.input, func(i itemInt16) int16 { return i.Value })
+			want := lo.Sum(lo.Map(tc.input, func(i itemInt16, _ int) int16 { return i.Value }))
+
+			if got != want {
+				t.Errorf("SumByInt16x8() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestSumByInt32x4(t *testing.T) {
+	type itemInt32 struct {
+		Value int32
+	}
+
+	testCases := []struct {
+		name  string
+		input []itemInt32
+	}{
+		{"empty", []itemInt32{}},
+		{"single", []itemInt32{{Value: 42}}},
+		{"small", []itemInt32{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 4", []itemInt32{{1}, {2}, {3}, {4}}},
+		{"large", make([]itemInt32, 1000)},
+		{"negative", []itemInt32{{-1}, {-2}, {-3}, {4}, {5}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Int32()
+				}
+			}
+
+			got := SumByInt32x4(tc.input, func(i itemInt32) int32 { return i.Value })
+			want := lo.Sum(lo.Map(tc.input, func(i itemInt32, _ int) int32 { return i.Value }))
+
+			if got != want {
+				t.Errorf("SumByInt32x4() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestSumByInt64x2(t *testing.T) {
+	type itemInt64 struct {
+		Value int64
+	}
+
+	testCases := []struct {
+		name  string
+		input []itemInt64
+	}{
+		{"empty", []itemInt64{}},
+		{"single", []itemInt64{{Value: 42}}},
+		{"small", []itemInt64{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 2", []itemInt64{{1}, {2}}},
+		{"large", make([]itemInt64, 1000)},
+		{"negative", []itemInt64{{-1}, {-2}, {-3}, {4}, {5}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Int64()
+				}
+			}
+
+			got := SumByInt64x2(tc.input, func(i itemInt64) int64 { return i.Value })
+			want := lo.Sum(lo.Map(tc.input, func(i itemInt64, _ int) int64 { return i.Value }))
+
+			if got != want {
+				t.Errorf("SumByInt64x2() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestSumByUint8x16(t *testing.T) {
+	type itemUint8 struct {
+		Value uint8
+	}
+
+	testCases := []struct {
+		name  string
+		input []itemUint8
+	}{
+		{"empty", []itemUint8{}},
+		{"single", []itemUint8{{Value: 42}}},
+		{"small", []itemUint8{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 16", make([]itemUint8, 16)},
+		{"large", make([]itemUint8, 1000)},
+		{"max values", []itemUint8{{Value: 255}, {Value: 255}, {Value: 1}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = uint8(rand.IntN(256))
+				}
+			}
+
+			got := SumByUint8x16(tc.input, func(i itemUint8) uint8 { return i.Value })
+			want := lo.Sum(lo.Map(tc.input, func(i itemUint8, _ int) uint8 { return i.Value }))
+
+			if got != want {
+				t.Errorf("SumByUint8x16() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestSumByUint16x8(t *testing.T) {
+	type itemUint16 struct {
+		Value uint16
+	}
+
+	testCases := []struct {
+		name  string
+		input []itemUint16
+	}{
+		{"empty", []itemUint16{}},
+		{"single", []itemUint16{{Value: 42}}},
+		{"small", []itemUint16{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 8", make([]itemUint16, 8)},
+		{"large", make([]itemUint16, 1000)},
+		{"max values", []itemUint16{{Value: 65535}, {Value: 1}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = uint16(rand.IntN(65536))
+				}
+			}
+
+			got := SumByUint16x8(tc.input, func(i itemUint16) uint16 { return i.Value })
+			want := lo.Sum(lo.Map(tc.input, func(i itemUint16, _ int) uint16 { return i.Value }))
+
+			if got != want {
+				t.Errorf("SumByUint16x8() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestSumByUint32x4(t *testing.T) {
+	type itemUint32 struct {
+		Value uint32
+	}
+
+	testCases := []struct {
+		name  string
+		input []itemUint32
+	}{
+		{"empty", []itemUint32{}},
+		{"single", []itemUint32{{Value: 42}}},
+		{"small", []itemUint32{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 4", []itemUint32{{1}, {2}, {3}, {4}}},
+		{"large", make([]itemUint32, 1000)},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Uint32()
+				}
+			}
+
+			got := SumByUint32x4(tc.input, func(i itemUint32) uint32 { return i.Value })
+			want := lo.Sum(lo.Map(tc.input, func(i itemUint32, _ int) uint32 { return i.Value }))
+
+			if got != want {
+				t.Errorf("SumByUint32x4() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestSumByUint64x2(t *testing.T) {
+	type itemUint64 struct {
+		Value uint64
+	}
+
+	testCases := []struct {
+		name  string
+		input []itemUint64
+	}{
+		{"empty", []itemUint64{}},
+		{"single", []itemUint64{{Value: 42}}},
+		{"small", []itemUint64{{1}, {2}, {3}, {4}, {5}}},
+		{"exactly 2", []itemUint64{{1}, {2}}},
+		{"large", make([]itemUint64, 1000)},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Uint64()
+				}
+			}
+
+			got := SumByUint64x2(tc.input, func(i itemUint64) uint64 { return i.Value })
+			want := lo.Sum(lo.Map(tc.input, func(i itemUint64, _ int) uint64 { return i.Value }))
+
+			if got != want {
+				t.Errorf("SumByUint64x2() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestSumByFloat32x4(t *testing.T) {
+	type itemFloat32 struct {
+		Value float32
+	}
+
+	testCases := []struct {
+		name  string
+		input []itemFloat32
+	}{
+		{"empty", []itemFloat32{}},
+		{"single", []itemFloat32{{Value: 42.5}}},
+		{"small", []itemFloat32{{1.1}, {2.2}, {3.3}, {4.4}, {5.5}}},
+		{"exactly 4", []itemFloat32{{1.0}, {2.0}, {3.0}, {4.0}}},
+		{"large", make([]itemFloat32, 1000)},
+		{"negative", []itemFloat32{{-1.1}, {-2.2}, {3.3}, {4.4}}},
+		{"zeros", []itemFloat32{{0}, {0}, {0}, {0}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Float32()
+				}
+			}
+
+			got := SumByFloat32x4(tc.input, func(i itemFloat32) float32 { return i.Value })
+			want := lo.Sum(lo.Map(tc.input, func(i itemFloat32, _ int) float32 { return i.Value }))
+
+			const epsilon = 1e-3
+			if diff := got - want; diff < -epsilon || diff > epsilon {
+				t.Errorf("SumByFloat32x4() = %v, want %v (diff: %v)", got, want, diff)
+			}
+		})
+	}
+}
+
+func TestSumByFloat64x2(t *testing.T) {
+	type itemFloat64 struct {
+		Value float64
+	}
+
+	testCases := []struct {
+		name  string
+		input []itemFloat64
+	}{
+		{"empty", []itemFloat64{}},
+		{"single", []itemFloat64{{Value: 42.5}}},
+		{"small", []itemFloat64{{1.1}, {2.2}, {3.3}, {4.4}, {5.5}}},
+		{"exactly 2", []itemFloat64{{1.0}, {2.0}}},
+		{"large", make([]itemFloat64, 1000)},
+		{"negative", []itemFloat64{{-1.1}, {-2.2}, {3.3}, {4.4}}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0].Value == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i].Value = rand.Float64()
+				}
+			}
+
+			got := SumByFloat64x2(tc.input, func(i itemFloat64) float64 { return i.Value })
+			want := lo.Sum(lo.Map(tc.input, func(i itemFloat64, _ int) float64 { return i.Value }))
+
+			const epsilon = 1e-10
+			if diff := got - want; diff < -epsilon || diff > epsilon {
+				t.Errorf("SumByFloat64x2() = %v, want %v (diff: %v)", got, want, diff)
+			}
+		})
+	}
+}
+
+// Test type alias works correctly for SumBy
+func TestSSESumByTypeAlias(t *testing.T) {
+	type myItem struct {
+		Value myInt8
+	}
+
+	input := []myItem{{Value: 1}, {Value: 2}, {Value: 3}, {Value: 4}, {Value: 5}}
+	got := SumByInt8x16(input, func(i myItem) myInt8 { return i.Value })
+	want := myInt8(15)
+
+	if got != want {
+		t.Errorf("SumByInt8x16() with type alias = %v, want %v", got, want)
+	}
+}
