@@ -324,3 +324,17 @@ func FanOut[T any](count, channelsBufferCap int, upstream <-chan T) []<-chan T {
 
 	return channelsToReadOnly(downstreams)
 }
+
+// SafeClose protects against double-close panic.
+// Returns true on first close, only.
+// May be equivalent to calling `sync.Once{}.Do(func() { close(ch) })`.`
+func SafeClose[T any](ch chan<- T) (justClosed bool) {
+	defer func() {
+		if recover() != nil {
+			justClosed = false
+		}
+	}()
+
+	close(ch) // may panic
+	return true
+}
