@@ -8,7 +8,6 @@ signatures:
   - "func FanIn[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T"
 similarHelpers:
   - core#channel#fanout
-  - core#channel#channelmerge
   - core#channel#channeldispatcher
 position: 254
 ---

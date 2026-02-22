@@ -7,8 +7,6 @@ subCategory: string
 playUrl: https://go.dev/play/p/qE93rgqe1TW
 variantHelpers:
   - core#string#ellipsis
-  # typo / deprecated
-  - core#string#elipse
 similarHelpers:
   - core#string#substring
   - core#string#runelength

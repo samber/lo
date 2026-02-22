@@ -7,10 +7,8 @@ subCategory: channel
 signatures:
   - "func Buffer[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool)"
   - "func BufferWithContext[T any](ctx context.Context, ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool)"
-  - "func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool)"
 variantHelpers:
   - core#channel#buffer
-  - core#channel#batch
   - core#channel#bufferwithcontext
 similarHelpers:
   - core#channel#slicetochannel
@@ -30,24 +28,6 @@ close(ch)
 items, length, readTime, ok := lo.Buffer(ch, 3)
 // items: []int{1, 2, 3}
 // length: 3
-// readTime: ~0s (immediate read from buffered channel)
-// ok: true (channel was closed)
-```
-
-### Batch (Deprecated)
-
-Batch is an alias for Buffer.
-
-```go
-ch := make(chan string, 5)
-ch <- "a"
-ch <- "b"
-ch <- "c"
-close(ch)
-
-batch, length, readTime, ok := lo.Batch(ch, 2)
-// batch: []string{"a", "b"}
-// length: 2
 // readTime: ~0s (immediate read from buffered channel)
 // ok: true (channel was closed)
 ```

@@ -6,10 +6,8 @@ category: core
 subCategory: channel
 signatures:
   - "func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool)"
-  - "func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool)"
 variantHelpers:
   - core#channel#bufferwithtimeout
-  - core#channel#batchwithtimeout
 similarHelpers:
   - core#channel#buffer
   - core#channel#bufferwithcontext
@@ -28,20 +26,5 @@ go func() {
 }()
 
 items, length, readTime, ok := lo.BufferWithTimeout(ch, 5, 100*time.Millisecond)
-// Returns empty slice due to timeout
-```
-
-### BatchWithTimeout (Deprecated)
-
-BatchWithTimeout is an alias for BufferWithTimeout.
-
-```go
-ch := make(chan float64)
-go func() {
-    time.Sleep(150 * time.Millisecond)
-    ch <- 3.14
-}()
-
-batch, length, readTime, ok := lo.BatchWithTimeout(ch, 3, 100*time.Millisecond)
 // Returns empty slice due to timeout
 ```
