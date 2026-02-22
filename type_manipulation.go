@@ -1,6 +1,10 @@
 package lo
 
-import "reflect"
+import (
+	"reflect"
+
+	"github.com/samber/lo/internal/constraints"
+)
 
 // IsNil checks if a value is nil or if it's a reference type with a nil underlying value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
@@ -211,4 +215,34 @@ func CoalesceMapOrEmpty[K comparable, V any](v ...map[K]V) map[K]V {
 		}
 	}
 	return map[K]V{}
+}
+
+// EqualPtr checks equality of two pointers by their dereferenced values, handling nil cases.
+// Play: https://go.dev/play/p/qMzVWWBMbNX
+func EqualPtr[T comparable](a, b *T) bool {
+	if a == nil || b == nil {
+		return a == b
+	}
+	return *a == *b
+}
+
+// ComparePtr compares two pointers by their dereferenced values, handling nil cases.
+// Play: https://go.dev/play/p/-VYPXhng6lB
+func ComparePtr[T constraints.Ordered](a, b *T) int {
+	if a == nil && b == nil {
+		return 0
+	}
+	if a == nil {
+		return -1
+	}
+	if b == nil {
+		return 1
+	}
+	if *a < *b {
+		return -1
+	}
+	if *a > *b {
+		return 1
+	}
+	return 0
 }

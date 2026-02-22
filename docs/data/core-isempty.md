@@ -1,7 +1,7 @@
 ---
 name: IsEmpty
 slug: isempty
-sourceRef: type_manipulation.go#L139
+sourceRef: type_manipulation.go#L143
 category: core
 subCategory: type
 signatures:

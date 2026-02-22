@@ -1,7 +1,7 @@
 ---
 name: FromSlicePtr
 slug: fromsliceptr
-sourceRef: type_manipulation.go#L85
+sourceRef: type_manipulation.go#L89
 category: core
 subCategory: type
 signatures:
