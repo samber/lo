@@ -222,13 +222,6 @@ func Buffer[T any](ch <-chan T, size int) (collection []T, length int, readTime 
 	return buffer, size, time.Since(now), true
 }
 
-// Batch creates a slice of n elements from a channel. Returns the slice and the slice length.
-//
-// Deprecated: Use [Buffer] instead.
-func Batch[T any](ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool) {
-	return Buffer(ch, size)
-}
-
 // BufferWithContext creates a slice of n elements from a channel, with context. Returns the slice and the slice length.
 // @TODO: we should probably provide a helper that reuses the same buffer.
 // Play: https://go.dev/play/p/oRfOyJWK9YF
@@ -261,13 +254,6 @@ func BufferWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (col
 	return BufferWithContext(ctx, ch, size)
 }
 
-// BatchWithTimeout creates a slice of n elements from a channel, with timeout. Returns the slice and the slice length.
-//
-// Deprecated: Use [BufferWithTimeout] instead.
-func BatchWithTimeout[T any](ch <-chan T, size int, timeout time.Duration) (collection []T, length int, readTime time.Duration, ok bool) {
-	return BufferWithTimeout(ch, size, timeout)
-}
-
 // FanIn collects messages from multiple input channels into a single buffered channel.
 // Output messages have no priority. When all upstream channels reach EOF, downstream channel closes.
 // Play: https://go.dev/play/p/FH8Wq-T04Jb
@@ -292,14 +278,6 @@ func FanIn[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
 		close(out)
 	}()
 	return out
-}
-
-// ChannelMerge collects messages from multiple input channels into a single buffered channel.
-// Output messages have no priority. When all upstream channels reach EOF, downstream channel closes.
-//
-// Deprecated: Use [FanIn] instead.
-func ChannelMerge[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T {
-	return FanIn(channelBufferCap, upstreams...)
 }
 
 // FanOut broadcasts all the upstream messages to multiple downstream channels.
