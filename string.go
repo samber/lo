@@ -250,10 +250,3 @@ func Ellipsis(str string, length int) string {
 
 	return str
 }
-
-// Elipse trims and truncates a string to a specified length and appends an ellipsis if truncated.
-//
-// Deprecated: Use Ellipsis instead.
-func Elipse(str string, length int) string {
-	return Ellipsis(str, length)
-}
