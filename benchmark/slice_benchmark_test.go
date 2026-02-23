@@ -207,7 +207,7 @@ func BenchmarkFilterTakeVsFilterAndTake(b *testing.B) {
 
 	b.Run("lo.TakeFilter", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_ = lo.TakeFilter(ints, 5, func(v int) bool {
+			_ = lo.TakeFilter(ints, 5, func(v, _ int) bool {
 				return v%2 == 0
 			})
 		}

@@ -2423,20 +2423,11 @@ func ExampleTakeWhile() {
 func ExampleTakeFilter() {
 	list := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
-	result := TakeFilter(list, 3, func(val int) bool {
-		return val%2 == 0
-	})
-
-	fmt.Printf("%v", result)
-	// Output: [2 4 6]
-}
-
-func ExampleTakeFilterI() {
-	list := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-
-	result := TakeFilterI(list, 3, func(val, index int) bool {
-		return val%2 == 0 && index < 8
-	})
+	result := TakeFilter(
+		list, 3, func(val, index int) bool {
+			return val%2 == 0
+		},
+	)
 
 	fmt.Printf("%v", result)
 	// Output: [2 4 6]
