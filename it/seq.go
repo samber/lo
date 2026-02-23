@@ -324,47 +324,62 @@ func Window[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 }
 
 // Sliding creates a sequence of sliding windows of a given size with a given step.
-// If step is equal to size, windows don't overlap (similar to Chunk).
-// If step is less than size, windows overlap.
+// offset = step - size: offset == 0 means adjacent windows (no overlap/gap);
+// offset < 0 means overlapping windows; offset > 0 means gaps between windows.
+// Only full-size windows are yielded; a partial window at the end is not yielded.
 func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
 	if size <= 0 {
 		panic("it.Sliding: size must be greater than 0")
 	}
-
 	if step <= 0 {
 		panic("it.Sliding: step must be greater than 0")
 	}
 
 	return func(yield func([]T) bool) {
-		buffer := make([]T, 0, size)
-		skip := 0
-		stepGteSize := step >= size
-		skipDelta := step - size
+		buffer := make([]T, size)
+		count := 0
+		offset := step - size
 
-		for item := range collection {
-			if skip > 0 {
-				skip--
-				continue
+		switch {
+		case offset == 0:
+			// Adjacent windows: no overlap, no gap.
+			for buffer[count] = range collection {
+				if count++; count == size {
+					if !yield(append(make([]T, 0, size), buffer...)) {
+						return
+					}
+					count = 0
+				}
 			}
 
-			buffer = append(buffer, item)
-			if len(buffer) < size {
-				continue
+		case offset < 0:
+			// Overlap: next window starts inside the current one; keep tail in buffer.
+			for buffer[count] = range collection {
+				if count++; count == size {
+					if !yield(append(make([]T, 0, size), buffer...)) {
+						return
+					}
+					count -= step
+					copy(buffer, buffer[step:])
+				}
 			}
 
-			window := make([]T, size)
-			copy(window, buffer)
-			if !yield(window) {
-				return
-			}
-
-			if stepGteSize {
-				buffer = buffer[:0]
-				skip = skipDelta
-			} else {
-				overlap := len(buffer) - step
-				copy(buffer, buffer[step:])
-				buffer = buffer[:overlap]
+		default: // offset > 0 (step > size)
+			// Gap: skip elements between windows.
+			skip := 0
+			for item := range collection {
+				if skip > 0 {
+					skip--
+					continue
+				}
+				buffer[count] = item
+				if count++; count == size {
+					if !yield(append(make([]T, 0, size), buffer...)) {
+						return
+					}
+					count = 0
+					skip = offset
+				}
 			}
 		}
 	}
@@ -723,10 +738,16 @@ func DropByIndex[T any, I ~func(func(T) bool)](collection I, indexes ...int) I {
 }
 
 // TakeFilter filters elements and takes the first n elements that match the predicate.
+// Equivalent to calling Take(Filter(...)), but more efficient as it stops after finding n matches.
+func TakeFilter[T any, I ~func(func(T) bool)](collection I, n int, predicate func(item T) bool) I {
+	return TakeFilterI(collection, n, func(item T, _ int) bool { return predicate(item) })
+}
+
+// TakeFilterI filters elements and takes the first n elements that match the predicate.
 // Equivalent to calling Take(FilterI(...)), but more efficient as it stops after finding n matches.
-func TakeFilter[T any, I ~func(func(T) bool)](collection I, n int, predicate func(item T, index int) bool) I {
+func TakeFilterI[T any, I ~func(func(T) bool)](collection I, n int, predicate func(item T, index int) bool) I {
 	if n < 0 {
-		panic("it.TakeFilter: n must not be negative")
+		panic("it.TakeFilterI: n must not be negative")
 	}
 
 	if n == 0 {

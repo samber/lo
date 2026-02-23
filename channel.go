@@ -370,26 +370,3 @@ func DistinctBy[T any, K comparable](upstream <-chan T, key func(item T) K) <-ch
 
 	return unique
 }
-
-// Tee duplicates the stream into multiple output channels without blocking.
-// If an output channel is full or not ready, the value is dropped for that channel.
-func Tee[T any](count, channelsBufferCap int, upstream <-chan T) []<-chan T {
-	downStreams := createChannels[T](count, channelsBufferCap)
-
-	go func() {
-		for item := range upstream {
-			for i := range downStreams {
-				select {
-				case downStreams[i] <- item:
-				default:
-				}
-			}
-		}
-
-		for i := range downStreams {
-			close(downStreams[i])
-		}
-	}()
-
-	return channelsToReadOnly(downStreams)
-}

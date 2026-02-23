@@ -1189,36 +1189,57 @@ func TestTakeFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{2, 4}, slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 2, func(item, index int) bool {
-		return item%2 == 0 && index < 4
-	})))
-
-	is.Equal([]int{2, 4, 6}, slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 10, func(item, _ int) bool {
+	is.Equal([]int{2, 4}, slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 2, func(item int) bool {
 		return item%2 == 0
 	})))
 
-	is.Empty(slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 0, func(item, index int) bool {
-		return item%2 == 0 && index < 4
-	})))
-
-	is.Empty(slices.Collect(TakeFilter(values(1, 3, 5), 2, func(item, _ int) bool {
+	is.Empty(slices.Collect(TakeFilter(values(1, 2, 3, 4, 5, 6), 0, func(item int) bool {
 		return item%2 == 0
 	})))
 
-	is.Equal([]int{1}, slices.Collect(TakeFilter(values(1, 2, 3, 4, 5), 1, func(item, _ int) bool {
-		return item%2 != 0
+	is.Empty(slices.Collect(TakeFilter(values(1, 3, 5), 2, func(item int) bool {
+		return item%2 == 0
 	})))
 
-	is.PanicsWithValue("it.TakeFilter: n must not be negative", func() {
-		TakeFilter(values(1, 2, 3), -1, func(item, _ int) bool { return true })
+	is.PanicsWithValue("it.TakeFilterI: n must not be negative", func() {
+		TakeFilter(values(1, 2, 3), -1, func(item int) bool { return true })
 	})
 
 	type myStrings iter.Seq[string]
 	allStrings := myStrings(values("", "foo", "bar", "baz"))
-	nonempty := TakeFilter(allStrings, 2, func(item string, _ int) bool {
+	nonempty := TakeFilter(allStrings, 2, func(item string) bool {
 		return item != ""
 	})
 	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestTakeFilterI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal([]int{2, 4}, slices.Collect(TakeFilterI(values(1, 2, 3, 4, 5, 6), 2, func(item, index int) bool {
+		return item%2 == 0 && index < 4
+	})))
+
+	is.Equal([]int{2, 4, 6}, slices.Collect(TakeFilterI(values(1, 2, 3, 4, 5, 6), 10, func(item, _ int) bool {
+		return item%2 == 0
+	})))
+
+	is.Empty(slices.Collect(TakeFilterI(values(1, 2, 3, 4, 5, 6), 0, func(item, index int) bool {
+		return item%2 == 0 && index < 4
+	})))
+
+	is.Empty(slices.Collect(TakeFilterI(values(1, 3, 5), 2, func(item, _ int) bool {
+		return item%2 == 0
+	})))
+
+	is.Equal([]int{1}, slices.Collect(TakeFilterI(values(1, 2, 3, 4, 5), 1, func(item, _ int) bool {
+		return item%2 != 0
+	})))
+
+	is.PanicsWithValue("it.TakeFilterI: n must not be negative", func() {
+		TakeFilterI(values(1, 2, 3), -1, func(item, _ int) bool { return true })
+	})
 }
 
 func TestDropByIndex(t *testing.T) {

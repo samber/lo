@@ -440,8 +440,19 @@ func ExampleDropByIndex() {
 func ExampleTakeFilter() {
 	list := slices.Values([]int{1, 2, 3, 4, 5, 6})
 
-	result := TakeFilter(list, 2, func(val, _ int) bool {
+	result := TakeFilter(list, 2, func(val int) bool {
 		return val%2 == 0
+	})
+
+	fmt.Printf("%v", slices.Collect(result))
+	// Output: [2 4]
+}
+
+func ExampleTakeFilterI() {
+	list := slices.Values([]int{1, 2, 3, 4, 5, 6})
+
+	result := TakeFilterI(list, 2, func(val, index int) bool {
+		return val%2 == 0 && index < 4
 	})
 
 	fmt.Printf("%v", slices.Collect(result))

@@ -473,39 +473,3 @@ func TestDistinctBy(t *testing.T) {
 		{ID: 3, Name: "Eve"},
 	}, result)
 }
-
-func TestTee(t *testing.T) { //nolint:paralleltest
-	// t.Parallel()
-	testWithTimeout(t, 100*time.Millisecond)
-	is := assert.New(t)
-
-	upstream := SliceToChannel(10, []int{0, 1, 2, 3})
-	downstreams := Tee(2, 10, upstream)
-
-	time.Sleep(10 * time.Millisecond)
-	is.Len(downstreams, 2)
-	for i := range downstreams {
-		is.Equal([]int{0, 1, 2, 3}, ChannelToSlice(downstreams[i]))
-	}
-
-	time.Sleep(10 * time.Millisecond)
-	for i := range downstreams {
-		msg, ok := <-downstreams[i]
-		is.False(ok)
-		is.Zero(msg)
-	}
-}
-
-func TestTeeDropsWhenDownstreamNotReady(t *testing.T) { //nolint:paralleltest
-	// t.Parallel()
-	testWithTimeout(t, 100*time.Millisecond)
-	is := assert.New(t)
-
-	upstream := SliceToChannel(10, []int{0, 1, 2, 3})
-	downstreams := Tee(2, 0, upstream)
-
-	time.Sleep(10 * time.Millisecond)
-	for i := range downstreams {
-		is.Empty(ChannelToSlice(downstreams[i]))
-	}
-}
