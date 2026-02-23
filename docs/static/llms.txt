@@ -477,6 +477,8 @@ The lo/it package provides iterator helpers for lazy evaluation and streaming op
 - GroupBy: Group elements by key function
 - GroupByMap: Group elements by key function into map
 - Chunk: Split sequence into chunks of specified size
+- Window: Create sliding windows of specified size (overlapping)
+- Sliding: Create sliding windows with specified size and step
 - PartitionBy: Split elements into two groups by predicate
 - Flatten: Flatten nested sequences into single sequence
 - Concat: Combine multiple sequences into one
@@ -498,7 +500,10 @@ The lo/it package provides iterator helpers for lazy evaluation and streaming op
 - DropLast: Remove last n elements
 - DropWhile: Remove elements from start while predicate is true
 - DropLastWhile: Remove elements from end while predicate is true
+- Take: Get first n elements from sequence
+- TakeWhile: Get elements from start while predicate is true
 - DropByIndex: Remove elements at specified indices
+- TakeFilter / TakeFilterI: Filter and take first n matching elements
 - Reject: Remove elements matching predicate
 - RejectI: Remove elements matching index predicate
 - RejectMap: Remove and transform elements matching predicate
