@@ -2,9 +2,13 @@ name: Tests (SIMD)
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'exp/simd/**'
-  # pull_request:
+  pull_request:
+    paths:
+      - 'exp/simd/**'
 
 jobs:
   test-simd:
