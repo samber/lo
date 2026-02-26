@@ -1,7 +1,7 @@
 ---
 name: Mean
 slug: mean
-sourceRef: exp/simd/math_sse.go#L333
+sourceRef: exp/simd/math_avx.go#L352
 category: exp
 subCategory: simd
 similarHelpers:
@@ -52,7 +52,7 @@ Calculates the arithmetic mean of a collection using SIMD instructions. The suff
 
 | SIMD variant | Lanes | Required flags | Typical CPUs                   |
 | ------------ | ----- | -------------- | ------------------------------ |
-| SSE (xN)     | 2-16  | `sse2`         | All amd64                      |
+| AVX (xN)     | 2-16  | `avx`          | All amd64                      |
 | AVX2 (xN)    | 4-32  | `avx2`         | Intel Haswell+, AMD Excavator+ |
 | AVX-512 (xN) | 8-64  | `avx512f`      | Intel Skylake-X+, some Xeons   |
 
@@ -71,7 +71,7 @@ mean := simd.MeanFloat32x16([]float32{1.0, 2.0, 3.0, 4.0})
 ```
 
 ```go
-// Using SSE variant (8 lanes at once) - works on all amd64
+// Using AVX variant (8 lanes at once) - works on all amd64
 mean := simd.MeanInt16x8([]int16{10, 20, 30, 40})
 // 25
 ```

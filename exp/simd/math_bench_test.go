@@ -13,15 +13,15 @@ import (
 
 // Benchmark suite for SIMD math operations compared to core lo package fallbacks.
 // These benchmarks measure the performance of Sum, Mean, Min, and Max operations
-// across different SIMD implementations (SSE, AVX2, AVX512) and data sizes.
+// across different SIMD implementations (AVX, AVX2, AVX512) and data sizes.
 
 // Benchmark sizes to demonstrate performance characteristics at different scales
 var benchmarkSizes = []struct {
 	name string
 	size int
 }{
-	{"small", 8},     // Smaller than SSE width (16 lanes for int8)
-	{"medium", 128},  // Between SSE (16) and AVX2 (32) width for int8
+	{"small", 8},     // Smaller than AVX width (16 lanes for int8)
+	{"medium", 128},  // Between AVX (16) and AVX2 (32) width for int8
 	{"large", 1024},  // Well above SIMD register widths
 	{"xlarge", 8192}, // Large dataset for real-world performance
 }
@@ -128,7 +128,8 @@ func BenchmarkSumInt8(b *testing.B) {
 					_ = lo.Sum(data)
 				}
 			})
-			b.Run("SSE-x16", func(b *testing.B) {
+			b.Run("AVX-x16", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = SumInt8x16(data)
@@ -162,7 +163,8 @@ func BenchmarkSumInt16(b *testing.B) {
 					_ = lo.Sum(data)
 				}
 			})
-			b.Run("SSE-x8", func(b *testing.B) {
+			b.Run("AVX-x8", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = SumInt16x8(data)
@@ -196,7 +198,8 @@ func BenchmarkSumInt32(b *testing.B) {
 					_ = lo.Sum(data)
 				}
 			})
-			b.Run("SSE-x4", func(b *testing.B) {
+			b.Run("AVX-x4", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = SumInt32x4(data)
@@ -230,7 +233,8 @@ func BenchmarkSumInt64(b *testing.B) {
 					_ = lo.Sum(data)
 				}
 			})
-			b.Run("SSE-x2", func(b *testing.B) {
+			b.Run("AVX-x2", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = SumInt64x2(data)
@@ -264,7 +268,8 @@ func BenchmarkSumFloat32(b *testing.B) {
 					_ = lo.Sum(data)
 				}
 			})
-			b.Run("SSE-x4", func(b *testing.B) {
+			b.Run("AVX-x4", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = SumFloat32x4(data)
@@ -298,7 +303,8 @@ func BenchmarkSumFloat64(b *testing.B) {
 					_ = lo.Sum(data)
 				}
 			})
-			b.Run("SSE-x2", func(b *testing.B) {
+			b.Run("AVX-x2", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = SumFloat64x2(data)
@@ -336,7 +342,8 @@ func BenchmarkMeanInt32(b *testing.B) {
 					_ = lo.Mean(data)
 				}
 			})
-			b.Run("SSE-x4", func(b *testing.B) {
+			b.Run("AVX-x4", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = MeanInt32x4(data)
@@ -370,7 +377,8 @@ func BenchmarkMeanFloat64(b *testing.B) {
 					_ = lo.Mean(data)
 				}
 			})
-			b.Run("SSE-x2", func(b *testing.B) {
+			b.Run("AVX-x2", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = MeanFloat64x2(data)
@@ -402,7 +410,8 @@ func BenchmarkMinInt32(b *testing.B) {
 	for _, bs := range benchmarkSizes {
 		b.Run(bs.name, func(b *testing.B) {
 			data := generateInt32(bs.size)
-			b.Run("SSE-x4", func(b *testing.B) {
+			b.Run("AVX-x4", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = MinInt32x4(data)
@@ -430,7 +439,8 @@ func BenchmarkMinFloat64(b *testing.B) {
 	for _, bs := range benchmarkSizes {
 		b.Run(bs.name, func(b *testing.B) {
 			data := generateFloat64(bs.size)
-			b.Run("SSE-x2", func(b *testing.B) {
+			b.Run("AVX-x2", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = MinFloat64x2(data)
@@ -462,7 +472,8 @@ func BenchmarkMaxInt32(b *testing.B) {
 	for _, bs := range benchmarkSizes {
 		b.Run(bs.name, func(b *testing.B) {
 			data := generateInt32(bs.size)
-			b.Run("SSE-x4", func(b *testing.B) {
+			b.Run("AVX-x4", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = MaxInt32x4(data)
@@ -490,7 +501,8 @@ func BenchmarkMaxFloat64(b *testing.B) {
 	for _, bs := range benchmarkSizes {
 		b.Run(bs.name, func(b *testing.B) {
 			data := generateFloat64(bs.size)
-			b.Run("SSE-x2", func(b *testing.B) {
+			b.Run("AVX-x2", func(b *testing.B) {
+				requireAVX(b)
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
 					_ = MaxFloat64x2(data)
@@ -528,13 +540,16 @@ func BenchmarkSumInt8ByWidth(b *testing.B) {
 		fn   func() int8
 	}{
 		{"Fallback-lo", func() int8 { return lo.Sum(data) }},
-		{"SSE-x16", func() int8 { return SumInt8x16(data) }},
+		{"AVX-x16", func() int8 { return SumInt8x16(data) }},
 		{"AVX2-x32", func() int8 { return SumInt8x32(data) }},
 		{"AVX512-x64", func() int8 { return SumInt8x64(data) }},
 	}
 
 	for _, bm := range benchmarks {
 		b.Run(bm.name, func(b *testing.B) {
+			if bm.name == "AVX-x16" {
+				requireAVX(b)
+			}
 			if bm.name == "AVX2-x32" {
 				requireAVX2(b)
 			}
@@ -578,7 +593,8 @@ func BenchmarkSumInt64SteadyState(b *testing.B) {
 			_ = lo.Sum(data)
 		}
 	})
-	b.Run("SSE-x2", func(b *testing.B) {
+	b.Run("AVX-x2", func(b *testing.B) {
+		requireAVX(b)
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
 			_ = SumInt64x2(data)

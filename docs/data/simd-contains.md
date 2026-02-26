@@ -1,7 +1,7 @@
 ---
 name: Contains
 slug: contains
-sourceRef: exp/simd/intersect_sse.go#L11
+sourceRef: exp/simd/intersect_avx512.go#L9
 category: exp
 subCategory: simd
 similarHelpers:
@@ -51,7 +51,7 @@ Checks if a target value is present in a collection using SIMD instructions. The
 
 | SIMD variant | Lanes | Required flags | Typical CPUs                   |
 | ------------ | ----- | -------------- | ------------------------------ |
-| SSE (xN)     | 2-16  | `sse2`         | All amd64                      |
+| AVX (xN)     | 2-16  | `avx`          | All amd64                      |
 | AVX2 (xN)    | 4-32  | `avx2`         | Intel Haswell+, AMD Excavator+ |
 | AVX-512 (xN) | 8-64  | `avx512f`      | Intel Skylake-X+, some Xeons   |
 
@@ -64,7 +64,7 @@ found := simd.ContainsInt8x32([]int8{1, 2, 3, 4, 5}, 3)
 ```
 
 ```go
-// Using SSE variant (16 lanes at once) - works on all amd64
+// Using AVX variant (16 lanes at once) - works on all amd64
 found := simd.ContainsInt64x2([]int64{1000000, 2000000, 3000000}, 2000000)
 // true
 ```

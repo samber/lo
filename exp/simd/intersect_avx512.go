@@ -6,7 +6,7 @@ import (
 	"simd/archsimd"
 )
 
-// ContainsInt8x16 checks if collection contains target using SSE SIMD and AVX512 SIMD
+// ContainsInt8x16 checks if collection contains target using AVX SIMD and AVX-512 SIMD
 func ContainsInt8x16[T ~int8](collection []T, target T) bool {
 	length := uint(len(collection))
 	if length == 0 {
@@ -40,7 +40,7 @@ func ContainsInt8x16[T ~int8](collection []T, target T) bool {
 	return false
 }
 
-// ContainsInt16x8 checks if collection contains target using SSE SIMD and AVX512 SIMD
+// ContainsInt16x8 checks if collection contains target using AVX SIMD and AVX-512 SIMD
 func ContainsInt16x8[T ~int16](collection []T, target T) bool {
 	length := uint(len(collection))
 	if length == 0 {
@@ -72,7 +72,7 @@ func ContainsInt16x8[T ~int16](collection []T, target T) bool {
 	return false
 }
 
-// ContainsInt32x4 checks if collection contains target using SSE SIMD and AVX512 SIMD
+// ContainsInt32x4 checks if collection contains target using AVX SIMD and AVX-512 SIMD
 func ContainsInt32x4[T ~int32](collection []T, target T) bool {
 	length := uint(len(collection))
 	if length == 0 {
@@ -104,7 +104,7 @@ func ContainsInt32x4[T ~int32](collection []T, target T) bool {
 	return false
 }
 
-// ContainsInt64x2 checks if collection contains target using SSE SIMD and AVX512 SIMD
+// ContainsInt64x2 checks if collection contains target using AVX SIMD and AVX-512 SIMD
 func ContainsInt64x2[T ~int64](collection []T, target T) bool {
 	length := uint(len(collection))
 	if length == 0 {
@@ -136,7 +136,7 @@ func ContainsInt64x2[T ~int64](collection []T, target T) bool {
 	return false
 }
 
-// ContainsUint8x16 checks if collection contains target using SSE SIMD and AVX512 SIMD
+// ContainsUint8x16 checks if collection contains target using AVX SIMD and AVX-512 SIMD
 func ContainsUint8x16[T ~uint8](collection []T, target T) bool {
 	length := uint(len(collection))
 	if length == 0 {
@@ -168,7 +168,7 @@ func ContainsUint8x16[T ~uint8](collection []T, target T) bool {
 	return false
 }
 
-// ContainsUint16x8 checks if collection contains target using SSE SIMD and AVX512 SIMD
+// ContainsUint16x8 checks if collection contains target using AVX SIMD and AVX-512 SIMD
 func ContainsUint16x8[T ~uint16](collection []T, target T) bool {
 	length := uint(len(collection))
 	if length == 0 {
@@ -200,7 +200,7 @@ func ContainsUint16x8[T ~uint16](collection []T, target T) bool {
 	return false
 }
 
-// ContainsUint32x4 checks if collection contains target using SSE SIMD and AVX512 SIMD
+// ContainsUint32x4 checks if collection contains target using AVX SIMD and AVX-512 SIMD
 func ContainsUint32x4[T ~uint32](collection []T, target T) bool {
 	length := uint(len(collection))
 	if length == 0 {
@@ -232,7 +232,7 @@ func ContainsUint32x4[T ~uint32](collection []T, target T) bool {
 	return false
 }
 
-// ContainsUint64x2 checks if collection contains target using SSE SIMD and AVX512 SIMD
+// ContainsUint64x2 checks if collection contains target using AVX SIMD and AVX-512 SIMD
 func ContainsUint64x2[T ~uint64](collection []T, target T) bool {
 	length := uint(len(collection))
 	if length == 0 {
@@ -264,7 +264,7 @@ func ContainsUint64x2[T ~uint64](collection []T, target T) bool {
 	return false
 }
 
-// ContainsFloat32x4 checks if collection contains target using SSE SIMD and AVX512 SIMD
+// ContainsFloat32x4 checks if collection contains target using AVX SIMD and AVX-512 SIMD
 func ContainsFloat32x4[T ~float32](collection []T, target T) bool {
 	length := uint(len(collection))
 	if length == 0 {
@@ -296,7 +296,7 @@ func ContainsFloat32x4[T ~float32](collection []T, target T) bool {
 	return false
 }
 
-// ContainsFloat64x2 checks if collection contains target using SSE SIMD and AVX512 SIMD
+// ContainsFloat64x2 checks if collection contains target using AVX SIMD and AVX-512 SIMD
 func ContainsFloat64x2[T ~float64](collection []T, target T) bool {
 	length := uint(len(collection))
 	if length == 0 {

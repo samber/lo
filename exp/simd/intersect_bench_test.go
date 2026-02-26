@@ -8,16 +8,16 @@ import (
 
 // Benchmark suite for SIMD Contains operations compared to core lo package fallbacks.
 // These benchmarks measure the performance of element lookup operations
-// across different SIMD implementations (SSE, AVX2, AVX512) and data sizes.
+// across different SIMD implementations (AVX, AVX2, AVX512) and data sizes.
 
 // Benchmark sizes for Contains operations
 var containsBenchmarkSizes = []struct {
 	name string
 	size int
 }{
-	{"tiny", 4},       // Smaller than SSE width (16 lanes for int8)
-	{"small", 16},     // Exactly SSE width for int8
-	{"medium", 64},    // Multiple of SSE, between SSE and AVX2 for int8
+	{"tiny", 4},       // Smaller than AVX width (16 lanes for int8)
+	{"small", 16},     // Exactly AVX width for int8
+	{"medium", 64},    // Multiple of AVX, between AVX and AVX2 for int8
 	{"large", 256},    // Multiple of AVX2 (32 lanes for int8)
 	{"xlarge", 1024},  // Multiple of AVX512 (64 lanes for int8)
 	{"massive", 8192}, // Very large dataset
@@ -33,7 +33,7 @@ func BenchmarkContainsInt8(b *testing.B) {
 			data := generateInt8(bs.size)
 			target := int8(42)
 
-			b.Run("SSE-x16", func(b *testing.B) {
+			b.Run("AVX-x16", func(b *testing.B) {
 				requireAVX512(b) // ContainsInt8x16 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -68,7 +68,7 @@ func BenchmarkContainsInt16(b *testing.B) {
 			data := generateInt16(bs.size)
 			target := int16(42)
 
-			b.Run("SSE-x8", func(b *testing.B) {
+			b.Run("AVX-x8", func(b *testing.B) {
 				requireAVX512(b) // ContainsInt16x8 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -103,7 +103,7 @@ func BenchmarkContainsInt32(b *testing.B) {
 			data := generateInt32(bs.size)
 			target := int32(42)
 
-			b.Run("SSE-x4", func(b *testing.B) {
+			b.Run("AVX-x4", func(b *testing.B) {
 				requireAVX512(b) // ContainsInt32x4 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -138,7 +138,7 @@ func BenchmarkContainsInt64(b *testing.B) {
 			data := generateInt64(bs.size)
 			target := int64(42)
 
-			b.Run("SSE-x2", func(b *testing.B) {
+			b.Run("AVX-x2", func(b *testing.B) {
 				requireAVX512(b) // ContainsInt64x2 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -173,7 +173,7 @@ func BenchmarkContainsUint8(b *testing.B) {
 			data := generateUint8(bs.size)
 			target := uint8(255)
 
-			b.Run("SSE-x16", func(b *testing.B) {
+			b.Run("AVX-x16", func(b *testing.B) {
 				requireAVX512(b) // ContainsUint8x16 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -208,7 +208,7 @@ func BenchmarkContainsUint16(b *testing.B) {
 			data := generateUint16(bs.size)
 			target := uint16(42)
 
-			b.Run("SSE-x8", func(b *testing.B) {
+			b.Run("AVX-x8", func(b *testing.B) {
 				requireAVX512(b) // ContainsUint16x8 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -243,7 +243,7 @@ func BenchmarkContainsUint32(b *testing.B) {
 			data := generateUint32(bs.size)
 			target := uint32(42)
 
-			b.Run("SSE-x4", func(b *testing.B) {
+			b.Run("AVX-x4", func(b *testing.B) {
 				requireAVX512(b) // ContainsUint32x4 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -278,7 +278,7 @@ func BenchmarkContainsUint64(b *testing.B) {
 			data := generateUint64(bs.size)
 			target := uint64(42)
 
-			b.Run("SSE-x2", func(b *testing.B) {
+			b.Run("AVX-x2", func(b *testing.B) {
 				requireAVX512(b) // ContainsUint64x2 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -313,7 +313,7 @@ func BenchmarkContainsFloat32(b *testing.B) {
 			data := generateFloat32(bs.size)
 			target := float32(42.5)
 
-			b.Run("SSE-x4", func(b *testing.B) {
+			b.Run("AVX-x4", func(b *testing.B) {
 				requireAVX512(b) // ContainsFloat32x4 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -348,7 +348,7 @@ func BenchmarkContainsFloat64(b *testing.B) {
 			data := generateFloat64(bs.size)
 			target := float64(42.5)
 
-			b.Run("SSE-x2", func(b *testing.B) {
+			b.Run("AVX-x2", func(b *testing.B) {
 				requireAVX512(b) // ContainsFloat64x2 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -386,7 +386,7 @@ func BenchmarkContainsWorstCase(b *testing.B) {
 	}
 	target := int32(size - 1) // Target at the very end
 
-	b.Run("SSE-x4", func(b *testing.B) {
+	b.Run("AVX-x4", func(b *testing.B) {
 		requireAVX512(b) // ContainsInt32x4 is in intersect_avx512.go which uses AVX-512
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
@@ -422,7 +422,7 @@ func BenchmarkContainsBestCase(b *testing.B) {
 	}
 	target := int32(0) // Target at the very beginning
 
-	b.Run("SSE-x4", func(b *testing.B) {
+	b.Run("AVX-x4", func(b *testing.B) {
 		requireAVX512(b) // ContainsInt32x4 is in intersect_avx512.go which uses AVX-512
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
@@ -456,7 +456,7 @@ func BenchmarkContainsNegative(b *testing.B) {
 			data := generateInt32(bs.size)
 			target := int32(999999) // Target that's unlikely to be in the data
 
-			b.Run("SSE-x4", func(b *testing.B) {
+			b.Run("AVX-x4", func(b *testing.B) {
 				requireAVX512(b) // ContainsInt32x4 is in intersect_avx512.go which uses AVX-512
 				b.ReportAllocs()
 				for i := 0; i < b.N; i++ {
@@ -497,7 +497,7 @@ func BenchmarkContainsInt8ByWidth(b *testing.B) {
 		name string
 		fn   func() bool
 	}{
-		{"SSE-x16", func() bool { return ContainsInt8x16(data, target) }},
+		{"AVX-x16", func() bool { return ContainsInt8x16(data, target) }},
 		{"AVX2-x32", func() bool { return ContainsInt8x32(data, target) }},
 		{"AVX512-x64", func() bool { return ContainsInt8x64(data, target) }},
 	}
@@ -533,7 +533,7 @@ func BenchmarkContainsInt64SteadyState(b *testing.B) {
 
 	b.ResetTimer() // Reset timer to exclude warmup
 
-	b.Run("SSE-x2", func(b *testing.B) {
+	b.Run("AVX-x2", func(b *testing.B) {
 		requireAVX512(b) // ContainsInt64x2 is in intersect_avx512.go which uses AVX-512
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {

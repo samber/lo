@@ -1,7 +1,7 @@
 ---
 name: Min
 slug: min
-sourceRef: exp/simd/math_sse.go#L834
+sourceRef: exp/simd/math_avx.go#L833
 category: exp
 subCategory: simd
 similarHelpers:
@@ -51,7 +51,7 @@ Finds the minimum value in a collection using SIMD instructions. The suffix (x2,
 
 | SIMD variant | Lanes | Required flags | Typical CPUs                   |
 | ------------ | ----- | -------------- | ------------------------------ |
-| SSE (xN)     | 2-16  | `sse2`         | All amd64                      |
+| AVX (xN)     | 2-16  | `avx`          | All amd64                      |
 | AVX2 (xN)    | 4-32  | `avx2`         | Intel Haswell+, AMD Excavator+ |
 | AVX-512 (xN) | 8-64  | `avx512f`      | Intel Skylake-X+, some Xeons   |
 
@@ -70,7 +70,7 @@ min := simd.MinFloat32x16([]float32{3.5, 1.2, 4.8, 2.1})
 ```
 
 ```go
-// Using SSE variant (4 lanes at once) - works on all amd64
+// Using AVX variant (4 lanes at once) - works on all amd64
 min := simd.MinInt32x4([]int32{100, 50, 200, 75})
 // 50
 ```

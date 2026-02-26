@@ -62,7 +62,7 @@ SumBy transforms a collection using an iteratee function and sums the result usi
 
 | SIMD variant | Lanes | Required flags | Typical CPUs                   |
 | ------------ | ----- | -------------- | ------------------------------ |
-| SSE (xN)     | 2-16  | `sse2`         | All amd64                      |
+| AVX (xN)     | 2-16  | `avx`          | All amd64                      |
 | AVX2 (xN)    | 4-32  | `avx2`         | Intel Haswell+, AMD Excavator+ |
 | AVX-512 (xN) | 8-64  | `avx512f`      | Intel Skylake-X+, some Xeons   |
 
@@ -119,7 +119,7 @@ metrics := []Metric{
     {Value: 400},
 }
 
-// Using SSE variant - works on all amd64
+// Using AVX variant - works on all amd64
 sum := simd.SumByUint16x8(metrics, func(m Metric) uint16 {
     return m.Value
 })

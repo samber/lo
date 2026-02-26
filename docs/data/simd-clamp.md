@@ -1,7 +1,7 @@
 ---
 name: Clamp
 slug: clamp
-sourceRef: exp/simd/math_sse.go#L424
+sourceRef: exp/simd/math_avx.go#L453
 category: exp
 subCategory: simd
 similarHelpers:
@@ -51,7 +51,7 @@ Clamps each element in a collection between min and max values using SIMD instru
 
 | SIMD variant | Lanes | Required flags | Typical CPUs                   |
 | ------------ | ----- | -------------- | ------------------------------ |
-| SSE (xN)     | 2-16  | `sse2`         | All amd64                      |
+| AVX (xN)     | 2-16  | `avx`          | All amd64                      |
 | AVX2 (xN)    | 4-32  | `avx2`         | Intel Haswell+, AMD Excavator+ |
 | AVX-512 (xN) | 8-64  | `avx512f`      | Intel Skylake-X+, some Xeons   |
 
@@ -70,7 +70,7 @@ result := simd.ClampFloat32x16([]float32{0.5, 1.5, 2.5, 3.5}, 1.0, 3.0)
 ```
 
 ```go
-// Using SSE variant (8 lanes at once) - works on all amd64
+// Using AVX variant (8 lanes at once) - works on all amd64
 result := simd.ClampInt16x8([]int16{100, 150, 200, 250}, 120, 220)
 // []int16{120, 150, 200, 220}
 ```

@@ -1,7 +1,7 @@
 ---
 name: Sum
 slug: sum
-sourceRef: exp/simd/math_sse.go#L13
+sourceRef: exp/simd/math_avx.go#L14
 category: exp
 subCategory: simd
 similarHelpers:
@@ -52,7 +52,7 @@ Sums the values in a collection using SIMD instructions. The suffix (x2, x4, x8,
 
 | SIMD variant | Lanes | Required flags | Typical CPUs                   |
 | ------------ | ----- | -------------- | ------------------------------ |
-| SSE (xN)     | 2-16  | `sse2`         | All amd64                      |
+| AVX (xN)     | 2-16  | `avx`          | All amd64                      |
 | AVX2 (xN)    | 4-32  | `avx2`         | Intel Haswell+, AMD Excavator+ |
 | AVX-512 (xN) | 8-64  | `avx512f`      | Intel Skylake-X+, some Xeons   |
 
@@ -71,7 +71,7 @@ sum := simd.SumFloat32x16([]float32{1.1, 2.2, 3.3, 4.4})
 ```
 
 ```go
-// Using SSE variant (4 lanes at once) - works on all amd64
+// Using AVX variant (4 lanes at once) - works on all amd64
 sum := simd.SumInt32x4([]int32{1000000, 2000000, 3000000})
 // 6000000
 ```

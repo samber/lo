@@ -24,13 +24,15 @@ func init() {
 }
 
 // Type aliases for testing
-type myInt8 int8
-type myInt16 int16
-type myInt32 int32
-type myInt64 int64
-type myUint8 uint8
-type myUint16 uint16
-type myUint32 uint32
-type myUint64 uint64
-type myFloat32 float32
-type myFloat64 float64
+type (
+	myInt8    int8
+	myInt16   int16
+	myInt32   int32
+	myInt64   int64
+	myUint8   uint8
+	myUint16  uint16
+	myUint32  uint32
+	myUint64  uint64
+	myFloat32 float32
+	myFloat64 float64
+)

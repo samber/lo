@@ -19,16 +19,25 @@ type skipHelper interface {
 
 // How to check if your Linux CPU supports SIMD (avoids SIGILL):
 //
-//   grep -E 'avx|sse' /proc/cpuinfo
+//   grep -E 'avx' /proc/cpuinfo
 //
 // Or:  lscpu | grep -i avx
 //
 // You need:
-//   - SSE tests (128-bit):  sse2 (baseline on amd64), sse4.1/sse4.2 often used
+//   - AVX tests (128-bit):  avx in flags (baseline on amd64)
 //   - AVX2 tests (256-bit):  avx2  in flags
 //   - AVX-512 tests:        avx512f (and often avx512bw, avx512vl)
 //
-// If your CPU lacks AVX2 or AVX-512, tests that use them will be skipped automatically.
+// If your CPU lacks AVX or AVX2 or AVX-512, tests that use them will be skipped automatically.
+
+// requireAVX skips the test/benchmark if the CPU does not support AVX (128-bit SIMD).
+// Use at the start of each AVX test/benchmark to avoid SIGILL on older or non-x86 systems.
+func requireAVX(t skipHelper) {
+	t.Helper()
+	if !archsimd.X86.AVX() {
+		t.Skipf("CPU does not support AVX; skipping. Check compatibility: grep avx /proc/cpuinfo")
+	}
+}
 
 // requireAVX2 skips the test/benchmark if the CPU does not support AVX2 (256-bit SIMD).
 // Use at the start of each AVX2 test/benchmark to avoid SIGILL on older or non-x86 systems.
