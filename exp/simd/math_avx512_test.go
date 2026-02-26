@@ -819,6 +819,55 @@ func TestClampInt32x16(t *testing.T) {
 	}
 }
 
+func TestClampInt64x2(t *testing.T) {
+	requireAVX512(t)
+	testCases := []struct {
+		name  string
+		input []int64
+		min   int64
+		max   int64
+	}{
+		{"empty", []int64{}, -100, 100},
+		{"single", []int64{42}, -10, 10},
+		{"small", []int64{1, 2, 3, 4, 5}, 2, 4},
+		{"exactly 2", []int64{-100, 200}, -50, 50},
+		{"large", make([]int64, 1000), -50, 50},
+		{"all below min", []int64{-1000, -2000, -3000}, -500, 100},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0] == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i] = rand.Int64()
+				}
+			}
+
+			got := ClampInt64x2(tc.input, tc.min, tc.max)
+
+			if len(got) != len(tc.input) {
+				t.Errorf("ClampInt64x2() returned length %d, want %d", len(got), len(tc.input))
+			}
+
+			for i, v := range got {
+				if v < tc.min || v > tc.max {
+					t.Errorf("ClampInt64x2()[%d] = %v, outside range [%v, %v]", i, v, tc.min, tc.max)
+				}
+				original := tc.input[i]
+				expected := original
+				if expected < tc.min {
+					expected = tc.min
+				} else if expected > tc.max {
+					expected = tc.max
+				}
+				if v != expected {
+					t.Errorf("ClampInt64x2()[%d] = %v, want %v (original: %v)", i, v, expected, original)
+				}
+			}
+		})
+	}
+}
+
 func TestClampInt64x8(t *testing.T) {
 	requireAVX512(t)
 	testCases := []struct {
@@ -1012,6 +1061,55 @@ func TestClampUint32x16(t *testing.T) {
 				}
 				if v != expected {
 					t.Errorf("ClampUint32x16()[%d] = %v, want %v (original: %v)", i, v, expected, original)
+				}
+			}
+		})
+	}
+}
+
+func TestClampUint64x2(t *testing.T) {
+	requireAVX512(t)
+	testCases := []struct {
+		name  string
+		input []uint64
+		min   uint64
+		max   uint64
+	}{
+		{"empty", []uint64{}, 100, 1000},
+		{"single", []uint64{42}, 10, 100},
+		{"small", []uint64{1, 2, 3, 4, 5}, 2, 4},
+		{"exactly 2", []uint64{50, 2000}, 100, 1000},
+		{"large", make([]uint64, 1000), 500, 5000},
+		{"all below min", []uint64{1, 2, 3}, 10, 100},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0] == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i] = rand.Uint64()
+				}
+			}
+
+			got := ClampUint64x2(tc.input, tc.min, tc.max)
+
+			if len(got) != len(tc.input) {
+				t.Errorf("ClampUint64x2() returned length %d, want %d", len(got), len(tc.input))
+			}
+
+			for i, v := range got {
+				if v < tc.min || v > tc.max {
+					t.Errorf("ClampUint64x2()[%d] = %v, outside range [%v, %v]", i, v, tc.min, tc.max)
+				}
+				original := tc.input[i]
+				expected := original
+				if expected < tc.min {
+					expected = tc.min
+				} else if expected > tc.max {
+					expected = tc.max
+				}
+				if v != expected {
+					t.Errorf("ClampUint64x2()[%d] = %v, want %v (original: %v)", i, v, expected, original)
 				}
 			}
 		})
@@ -1292,6 +1390,38 @@ func TestMinInt32x16(t *testing.T) {
 	}
 }
 
+func TestMinInt64x2(t *testing.T) {
+	requireAVX512(t)
+	testCases := []struct {
+		name  string
+		input []int64
+	}{
+		{"empty", []int64{}},
+		{"single", []int64{42}},
+		{"small", []int64{1, 2, 3, 4, 5}},
+		{"exactly 2", []int64{1, 2}},
+		{"large", make([]int64, 1000)},
+		{"negative", []int64{-1, -2, -3, 4, 5}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0] == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i] = rand.Int64()
+				}
+			}
+
+			got := MinInt64x2(tc.input)
+			want := lo.Min(tc.input)
+
+			if got != want {
+				t.Errorf("MinInt64x2() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
 func TestMinInt64x8(t *testing.T) {
 	requireAVX512(t)
 	testCases := []struct {
@@ -1414,6 +1544,37 @@ func TestMinUint32x16(t *testing.T) {
 
 			if got != want {
 				t.Errorf("MinUint32x16() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestMinUint64x2(t *testing.T) {
+	requireAVX512(t)
+	testCases := []struct {
+		name  string
+		input []uint64
+	}{
+		{"empty", []uint64{}},
+		{"single", []uint64{42}},
+		{"small", []uint64{1, 2, 3, 4, 5}},
+		{"exactly 2", []uint64{1, 2}},
+		{"large", make([]uint64, 1000)},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0] == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i] = rand.Uint64()
+				}
+			}
+
+			got := MinUint64x2(tc.input)
+			want := lo.Min(tc.input)
+
+			if got != want {
+				t.Errorf("MinUint64x2() = %v, want %v", got, want)
 			}
 		})
 	}
@@ -1625,6 +1786,38 @@ func TestMaxInt32x16(t *testing.T) {
 	}
 }
 
+func TestMaxInt64x2(t *testing.T) {
+	requireAVX512(t)
+	testCases := []struct {
+		name  string
+		input []int64
+	}{
+		{"empty", []int64{}},
+		{"single", []int64{42}},
+		{"small", []int64{1, 2, 3, 4, 5}},
+		{"exactly 2", []int64{1, 2}},
+		{"large", make([]int64, 1000)},
+		{"negative", []int64{-1, -2, -3, 4, 5}},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0] == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i] = rand.Int64()
+				}
+			}
+
+			got := MaxInt64x2(tc.input)
+			want := lo.Max(tc.input)
+
+			if got != want {
+				t.Errorf("MaxInt64x2() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
 func TestMaxInt64x8(t *testing.T) {
 	requireAVX512(t)
 	testCases := []struct {
@@ -1747,6 +1940,37 @@ func TestMaxUint32x16(t *testing.T) {
 
 			if got != want {
 				t.Errorf("MaxUint32x16() = %v, want %v", got, want)
+			}
+		})
+	}
+}
+
+func TestMaxUint64x2(t *testing.T) {
+	requireAVX512(t)
+	testCases := []struct {
+		name  string
+		input []uint64
+	}{
+		{"empty", []uint64{}},
+		{"single", []uint64{42}},
+		{"small", []uint64{1, 2, 3, 4, 5}},
+		{"exactly 2", []uint64{1, 2}},
+		{"large", make([]uint64, 1000)},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			if len(tc.input) > 0 && tc.input[0] == 0 && len(tc.input) > 6 {
+				for i := range tc.input {
+					tc.input[i] = rand.Uint64()
+				}
+			}
+
+			got := MaxUint64x2(tc.input)
+			want := lo.Max(tc.input)
+
+			if got != want {
+				t.Errorf("MaxUint64x2() = %v, want %v", got, want)
 			}
 		})
 	}

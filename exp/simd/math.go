@@ -364,7 +364,8 @@ func MinInt64[T ~int64](collection []T) T {
 	case simdFeatureAVX2:
 		return MinInt64x4(collection)
 	case simdFeatureAVX:
-		return MinInt64x2(collection)
+		// MinInt64x2 requires AVX-512 (archsimd Int64x2.Min); use scalar fallback
+		fallthrough
 	default:
 		return lo.Min(collection)
 	}
@@ -420,7 +421,8 @@ func MinUint64[T ~uint64](collection []T) T {
 	case simdFeatureAVX2:
 		return MinUint64x4(collection)
 	case simdFeatureAVX:
-		return MinUint64x2(collection)
+		// MinUint64x2 requires AVX-512; use scalar fallback
+		fallthrough
 	default:
 		return lo.Min(collection)
 	}
@@ -504,7 +506,8 @@ func MaxInt64[T ~int64](collection []T) T {
 	case simdFeatureAVX2:
 		return MaxInt64x4(collection)
 	case simdFeatureAVX:
-		return MaxInt64x2(collection)
+		// MaxInt64x2 requires AVX-512; use scalar fallback
+		fallthrough
 	default:
 		return lo.Max(collection)
 	}
@@ -560,7 +563,8 @@ func MaxUint64[T ~uint64](collection []T) T {
 	case simdFeatureAVX2:
 		return MaxUint64x4(collection)
 	case simdFeatureAVX:
-		return MaxUint64x2(collection)
+		// MaxUint64x2 requires AVX-512; use scalar fallback
+		fallthrough
 	default:
 		return lo.Max(collection)
 	}
@@ -674,7 +678,8 @@ func ClampInt64[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 	case simdFeatureAVX2:
 		return ClampInt64x4(collection, min, max)
 	case simdFeatureAVX:
-		return ClampInt64x2(collection, min, max)
+		// ClampInt64x2 requires AVX-512; use scalar fallback
+		fallthrough
 	default:
 		result := make(Slice, len(collection))
 		for i, v := range collection {
@@ -770,7 +775,8 @@ func ClampUint64[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 	case simdFeatureAVX2:
 		return ClampUint64x4(collection, min, max)
 	case simdFeatureAVX:
-		return ClampUint64x2(collection, min, max)
+		// ClampUint64x2 requires AVX-512; use scalar fallback
+		fallthrough
 	default:
 		result := make(Slice, len(collection))
 		for i, v := range collection {

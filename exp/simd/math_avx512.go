@@ -566,6 +566,84 @@ func ClampInt32x16[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 	return result
 }
 
+// ClampInt64x2 clamps each element in collection between min and max values using AVX-512 SIMD.
+// Int64x2 Min/Max operations in archsimd require AVX-512 (VPMAXSQ/VPMINSQ).
+func ClampInt64x2[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
+	length := uint(len(collection))
+	if length == 0 {
+		return collection
+	}
+
+	result := make(Slice, length)
+	const lanes = simdLanes2
+
+	base := unsafeSliceInt64(collection, length)
+
+	minVec := archsimd.BroadcastInt64x2(int64(min))
+	maxVec := archsimd.BroadcastInt64x2(int64(max))
+
+	i := uint(0)
+	for ; i+lanes <= length; i += lanes {
+		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		// bearer:disable go_gosec_unsafe_unsafe
+		clamped.Store((*[lanes]int64)(unsafe.Pointer(&result[i])))
+	}
+
+	for ; i < length; i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
+// ClampUint64x2 clamps each element in collection between min and max values using AVX-512 SIMD.
+// Uint64x2 Min/Max operations in archsimd require AVX-512.
+func ClampUint64x2[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
+	length := uint(len(collection))
+	if length == 0 {
+		return collection
+	}
+
+	result := make(Slice, length)
+	const lanes = simdLanes2
+
+	base := unsafeSliceUint64(collection, length)
+
+	minVec := archsimd.BroadcastUint64x2(uint64(min))
+	maxVec := archsimd.BroadcastUint64x2(uint64(max))
+
+	i := uint(0)
+	for ; i+lanes <= length; i += lanes {
+		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
+
+		clamped := v.Max(minVec).Min(maxVec)
+
+		// bearer:disable go_gosec_unsafe_unsafe
+		clamped.Store((*[lanes]uint64)(unsafe.Pointer(&result[i])))
+	}
+
+	for ; i < length; i++ {
+		val := collection[i]
+		if val < min {
+			val = min
+		} else if val > max {
+			val = max
+		}
+		result[i] = val
+	}
+
+	return result
+}
+
 // ClampInt64x8 clamps each element in collection between min and max values using AVX-512 SIMD
 func ClampInt64x8[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 	length := uint(len(collection))
@@ -984,6 +1062,96 @@ func MinInt32x16[T ~int32](collection []T) T {
 	for ; i < length; i++ {
 		if !firstInitialized || collection[i] < T(minVal) {
 			minVal = int32(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinInt64x2 finds the minimum value in a collection of int64 using AVX-512 SIMD.
+// Int64x2 Min operations in archsimd require AVX-512.
+func MinInt64x2[T ~int64](collection []T) T {
+	length := uint(len(collection))
+	if length == 0 {
+		return 0
+	}
+
+	const lanes = simdLanes2
+	base := unsafeSliceInt64(collection, length)
+
+	var minVec archsimd.Int64x2
+	firstInitialized := false
+
+	i := uint(0)
+	for ; i+lanes <= length; i += lanes {
+		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal int64
+	if firstInitialized {
+		var buf [lanes]int64
+		minVec.Store(&buf)
+		minVal = min(buf[0], buf[1])
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = int64(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(minVal)
+}
+
+// MinUint64x2 finds the minimum value in a collection of uint64 using AVX-512 SIMD.
+// Uint64x2 Min operations in archsimd require AVX-512.
+func MinUint64x2[T ~uint64](collection []T) T {
+	length := uint(len(collection))
+	if length == 0 {
+		return 0
+	}
+
+	const lanes = simdLanes2
+	base := unsafeSliceUint64(collection, length)
+
+	var minVec archsimd.Uint64x2
+	firstInitialized := false
+
+	i := uint(0)
+	for ; i+lanes <= length; i += lanes {
+		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
+
+		if !firstInitialized {
+			minVec = v
+			firstInitialized = true
+		} else {
+			minVec = minVec.Min(v)
+		}
+	}
+
+	// Find minimum in the vector (only if we processed any vectors)
+	var minVal uint64
+	if firstInitialized {
+		var buf [lanes]uint64
+		minVec.Store(&buf)
+		minVal = min(buf[0], buf[1])
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] < T(minVal) {
+			minVal = uint64(collection[i])
 			firstInitialized = true
 		}
 	}
@@ -1471,6 +1639,96 @@ func MaxInt32x16[T ~int32](collection []T) T {
 	for ; i < length; i++ {
 		if !firstInitialized || collection[i] > T(maxVal) {
 			maxVal = int32(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxInt64x2 finds the maximum value in a collection of int64 using AVX-512 SIMD.
+// Int64x2 Max operations in archsimd require AVX-512.
+func MaxInt64x2[T ~int64](collection []T) T {
+	length := uint(len(collection))
+	if length == 0 {
+		return 0
+	}
+
+	const lanes = simdLanes2
+	base := unsafeSliceInt64(collection, length)
+
+	var maxVec archsimd.Int64x2
+	firstInitialized := false
+
+	i := uint(0)
+	for ; i+lanes <= length; i += lanes {
+		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal int64
+	if firstInitialized {
+		var buf [lanes]int64
+		maxVec.Store(&buf)
+		maxVal = max(buf[0], buf[1])
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = int64(collection[i])
+			firstInitialized = true
+		}
+	}
+
+	return T(maxVal)
+}
+
+// MaxUint64x2 finds the maximum value in a collection of uint64 using AVX-512 SIMD.
+// Uint64x2 Max operations in archsimd require AVX-512.
+func MaxUint64x2[T ~uint64](collection []T) T {
+	length := uint(len(collection))
+	if length == 0 {
+		return 0
+	}
+
+	const lanes = simdLanes2
+	base := unsafeSliceUint64(collection, length)
+
+	var maxVec archsimd.Uint64x2
+	firstInitialized := false
+
+	i := uint(0)
+	for ; i+lanes <= length; i += lanes {
+		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
+
+		if !firstInitialized {
+			maxVec = v
+			firstInitialized = true
+		} else {
+			maxVec = maxVec.Max(v)
+		}
+	}
+
+	// Find maximum in the vector (only if we processed any vectors)
+	var maxVal uint64
+	if firstInitialized {
+		var buf [lanes]uint64
+		maxVec.Store(&buf)
+		maxVal = max(buf[0], buf[1])
+	}
+
+	// Handle remaining elements
+	for ; i < length; i++ {
+		if !firstInitialized || collection[i] > T(maxVal) {
+			maxVal = uint64(collection[i])
 			firstInitialized = true
 		}
 	}
