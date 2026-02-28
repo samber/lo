@@ -1267,6 +1267,26 @@ func ExampleMinBy() {
 	// Output: Alice
 }
 
+func ExampleMinByErr() {
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	users := []User{
+		{Name: "Alice", Age: 25},
+		{Name: "Bob", Age: 30},
+		{Name: "Charlie", Age: 35},
+	}
+
+	result, err := MinByErr(users, func(a, b User) (bool, error) {
+		return a.Age < b.Age, nil
+	})
+
+	fmt.Printf("%s %v", result.Name, err)
+	// Output: Alice <nil>
+}
+
 func ExampleMinIndexBy() {
 	type User struct {
 		Name string
@@ -1317,6 +1337,27 @@ func ExampleEarliestBy() {
 
 	fmt.Printf("%s", result.Name)
 	// Output: Event C
+}
+
+func ExampleEarliestByErr() {
+	type Event struct {
+		Name string
+		Time time.Time
+	}
+
+	now := time.Now()
+	events := []Event{
+		{Name: "Event A", Time: now.Add(time.Hour)},
+		{Name: "Event B", Time: now},
+		{Name: "Event C", Time: now.Add(-time.Hour)},
+	}
+
+	result, err := EarliestByErr(events, func(event Event) (time.Time, error) {
+		return event.Time, nil
+	})
+
+	fmt.Printf("%s %v", result.Name, err)
+	// Output: Event C <nil>
 }
 
 func ExampleMax() {
@@ -1375,6 +1416,26 @@ func ExampleMaxBy() {
 	// Output: Charlie
 }
 
+func ExampleMaxByErr() {
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	users := []User{
+		{Name: "Alice", Age: 25},
+		{Name: "Bob", Age: 30},
+		{Name: "Charlie", Age: 35},
+	}
+
+	result, err := MaxByErr(users, func(a, b User) (bool, error) {
+		return a.Age > b.Age, nil
+	})
+
+	fmt.Printf("%s %v", result.Name, err)
+	// Output: Charlie <nil>
+}
+
 func ExampleMaxIndexBy() {
 	type User struct {
 		Name string
@@ -1393,6 +1454,26 @@ func ExampleMaxIndexBy() {
 
 	fmt.Printf("%s %d", result.Name, index)
 	// Output: Charlie 2
+}
+
+func ExampleMaxIndexByErr() {
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	users := []User{
+		{Name: "Alice", Age: 25},
+		{Name: "Bob", Age: 30},
+		{Name: "Charlie", Age: 35},
+	}
+
+	result, index, err := MaxIndexByErr(users, func(a, b User) (bool, error) {
+		return a.Age > b.Age, nil
+	})
+
+	fmt.Printf("%s %d %v", result.Name, index, err)
+	// Output: Charlie 2 <nil>
 }
 
 func ExampleLatest() {
@@ -1425,6 +1506,31 @@ func ExampleLatestBy() {
 
 	fmt.Printf("%s", result.Name)
 	// Output: Event A
+}
+
+func ExampleLatestByErr() {
+	type Event struct {
+		Name string
+		Time time.Time
+		Err  error // Simulates error condition
+	}
+
+	now := time.Now()
+	events := []Event{
+		{Name: "Event A", Time: now.Add(time.Hour), Err: nil},
+		{Name: "Event B", Time: now, Err: nil},
+		{Name: "Event C", Time: now.Add(-time.Hour), Err: nil},
+	}
+
+	result, err := LatestByErr(events, func(event Event) (time.Time, error) {
+		if event.Err != nil {
+			return time.Time{}, event.Err
+		}
+		return event.Time, nil
+	})
+
+	fmt.Printf("%s %v", result.Name, err)
+	// Output: Event A <nil>
 }
 
 func ExampleFirst() {
@@ -1970,6 +2076,17 @@ func ExampleProductBy() {
 	// Output: 9
 }
 
+func ExampleProductByErr() {
+	list := []string{"foo", "bar"}
+
+	result, err := ProductByErr(list, func(item string) (int, error) {
+		return len(item), nil
+	})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: 9 <nil>
+}
+
 func ExampleMean() {
 	list := []int{1, 2, 3, 4, 5}
 
@@ -1988,6 +2105,17 @@ func ExampleMeanBy() {
 
 	fmt.Printf("%v", result)
 	// Output: 3
+}
+
+func ExampleMeanByErr() {
+	list := []string{"foo", "bar"}
+
+	result, err := MeanByErr(list, func(item string) (int, error) {
+		return len(item), nil
+	})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: 3 <nil>
 }
 
 func ExampleFilter() {
