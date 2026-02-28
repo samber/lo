@@ -2980,6 +2980,30 @@ filteredUsers := lo.WithoutBy(users, getID, excludedIDs...)
 // []User[{ID: 1, Name: "Alice"}]
 ```
 
+```go
+// Use WithoutByErr when the iteratee can return an error
+type struct User {
+    ID int
+    Name string
+}
+
+users := []User{
+    {ID: 1, Name: "Alice"},
+    {ID: 2, Name: "Bob"},
+    {ID: 3, Name: "Charlie"},
+}
+
+getID := func(user User) (int, error) {
+    if user.ID == 2 {
+        return 0, fmt.Errorf("Bob not allowed")
+    }
+    return user.ID, nil
+}
+
+filteredUsers, err := lo.WithoutByErr(users, getID, 2, 3)
+// []User(nil), error("Bob not allowed")
+```
+
 ### WithoutEmpty
 
 Returns a slice excluding zero values.
