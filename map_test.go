@@ -623,6 +623,195 @@ func TestMapEntries(t *testing.T) {
 	})
 }
 
+func TestMapEntriesErr(t *testing.T) {
+	t.Parallel()
+
+	t.Run("same types", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name     string
+			input    map[string]int
+			iteratee func(string, int) (string, int, error)
+			want     map[string]int
+			wantErr  string
+		}{
+			{
+				name:  "increment values",
+				input: map[string]int{"foo": 1, "bar": 2},
+				iteratee: func(k string, v int) (string, int, error) {
+					return k, v + 1, nil
+				},
+				want: map[string]int{"foo": 2, "bar": 3},
+			},
+			{
+				name:  "error on specific key",
+				input: map[string]int{"foo": 1, "bar": 2, "baz": 3},
+				iteratee: func(k string, v int) (string, int, error) {
+					if k == "bar" {
+						return "", 0, fmt.Errorf("bar not allowed")
+					}
+					return k, v, nil
+				},
+				wantErr: "bar not allowed",
+			},
+			{
+				name:  "empty map",
+				input: map[string]int{},
+				iteratee: func(k string, v int) (string, int, error) {
+					return k, v, nil
+				},
+				want: map[string]int{},
+			},
+			{
+				name:  "to constant entry",
+				input: map[string]int{"foo": 1, "bar": 2, "baz": 3},
+				iteratee: func(k string, v int) (string, int, error) {
+					return "key", 0, nil
+				},
+				want: map[string]int{"key": 0},
+			},
+			{
+				name:  "identity",
+				input: map[string]int{"foo": 1, "bar": 2},
+				iteratee: func(k string, v int) (string, int, error) {
+					return k, v, nil
+				},
+				want: map[string]int{"foo": 1, "bar": 2},
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt // capture range variable
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+
+				got, err := MapEntriesErr(tt.input, tt.iteratee)
+
+				if tt.wantErr != "" {
+					is.Error(err)
+					is.Equal(tt.wantErr, err.Error())
+					is.Nil(got)
+				} else {
+					is.NoError(err)
+					is.Equal(tt.want, got)
+				}
+			})
+		}
+	})
+
+	t.Run("different value type", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name     string
+			input    map[string]int
+			iteratee func(string, int) (string, string, error)
+			want     map[string]string
+			wantErr  string
+		}{
+			{
+				name:  "transform both key and value",
+				input: map[string]int{"foo": 1, "bar": 2},
+				iteratee: func(k string, v int) (string, string, error) {
+					return k, k + strconv.Itoa(v), nil
+				},
+				want: map[string]string{"foo": "foo1", "bar": "bar2"},
+			},
+			{
+				name:  "error on specific value",
+				input: map[string]int{"foo": 1, "bar": 2, "baz": 3},
+				iteratee: func(k string, v int) (string, string, error) {
+					if v == 2 {
+						return "", "", fmt.Errorf("even value not allowed: %d", v)
+					}
+					return k, strconv.Itoa(v), nil
+				},
+				wantErr: "even value not allowed: 2",
+			},
+			{
+				name:  "empty map",
+				input: map[string]int{},
+				iteratee: func(k string, v int) (string, string, error) {
+					return k, strconv.Itoa(v), nil
+				},
+				want: map[string]string{},
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt // capture range variable
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+
+				got, err := MapEntriesErr(tt.input, tt.iteratee)
+
+				if tt.wantErr != "" {
+					is.Error(err)
+					is.Equal(tt.wantErr, err.Error())
+					is.Nil(got)
+				} else {
+					is.NoError(err)
+					is.Equal(tt.want, got)
+				}
+			})
+		}
+	})
+
+	t.Run("invert map", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name     string
+			input    map[string]int
+			iteratee func(string, int) (int, string, error)
+			want     map[int]string
+			wantErr  string
+		}{
+			{
+				name:  "successful invert",
+				input: map[string]int{"a": 1, "b": 2},
+				iteratee: func(k string, v int) (int, string, error) {
+					return v, k, nil
+				},
+				want: map[int]string{1: "a", 2: "b"},
+			},
+			{
+				name:  "error on specific key",
+				input: map[string]int{"a": 1, "b": 2},
+				iteratee: func(k string, v int) (int, string, error) {
+					if k == "b" {
+						return 0, "", fmt.Errorf("cannot invert b")
+					}
+					return v, k, nil
+				},
+				wantErr: "cannot invert b",
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt // capture range variable
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+
+				got, err := MapEntriesErr(tt.input, tt.iteratee)
+
+				if tt.wantErr != "" {
+					is.Error(err)
+					is.Equal(tt.wantErr, err.Error())
+					is.Nil(got)
+				} else {
+					is.NoError(err)
+					is.Equal(tt.want, got)
+				}
+			})
+		}
+	})
+}
+
 func TestMapToSlice(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
