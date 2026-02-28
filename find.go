@@ -481,6 +481,37 @@ func EarliestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 	return earliest
 }
 
+// EarliestByErr search the minimum time.Time of a collection using the given iteratee function.
+// Returns zero value and nil error when the collection is empty.
+// If the iteratee returns an error, iteration stops and the error is returned.
+func EarliestByErr[T any](collection []T, iteratee func(item T) (time.Time, error)) (T, error) {
+	var earliest T
+
+	if len(collection) == 0 {
+		return earliest, nil
+	}
+
+	earliestTime, err := iteratee(collection[0])
+	if err != nil {
+		return earliest, err
+	}
+	earliest = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		itemTime, err := iteratee(collection[i])
+		if err != nil {
+			return earliest, err
+		}
+
+		if itemTime.Before(earliestTime) {
+			earliest = collection[i]
+			earliestTime = itemTime
+		}
+	}
+
+	return earliest, nil
+}
+
 // Max searches the maximum value of a collection.
 // Returns zero value when the collection is empty.
 // Play: https://go.dev/play/p/r6e-Z8JozS8
