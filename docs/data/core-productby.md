@@ -1,7 +1,7 @@
 ---
 name: ProductBy
 slug: productby
-sourceRef: math.go#L108
+sourceRef: math.go#L125
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/wadzrWr9Aer
@@ -9,6 +9,7 @@ variantHelpers:
   - core#math#productby
 similarHelpers:
   - core#math#product
+  - core#math#productbyerr
   - core#math#sumby
   - core#math#meanby
   - core#find#minby

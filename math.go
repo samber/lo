@@ -132,6 +132,21 @@ func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Co
 	return product
 }
 
+// ProductByErr summarizes the values in a collection using the given return value from the iteration function.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// If collection is empty 1 and nil error are returned.
+func ProductByErr[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) (R, error)) (R, error) {
+	var product R = 1
+	for i := range collection {
+		v, err := iteratee(collection[i])
+		if err != nil {
+			return product, err
+		}
+		product *= v
+	}
+	return product, nil
+}
+
 // Mean calculates the mean of a collection of numbers.
 // Play: https://go.dev/play/p/tPURSuteUsP
 func Mean[T constraints.Float | constraints.Integer](collection []T) T {
