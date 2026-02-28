@@ -1,7 +1,7 @@
 ---
 name: MeanBy
 slug: meanby
-sourceRef: math.go#L137
+sourceRef: math.go#L161
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/j7TsVwBOZ7P
@@ -9,6 +9,7 @@ variantHelpers:
   - core#math#meanby
 similarHelpers:
   - core#math#mean
+  - core#math#meanbyerr
   - core#math#mode
   - core#math#sum
   - core#math#sumby

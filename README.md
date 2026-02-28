@@ -2119,6 +2119,18 @@ mean := lo.MeanBy([]float64{}, mapper)
 // 0
 ```
 
+```go
+// Use MeanByErr when the transform function can return an error
+list := []string{"aa", "bbb", "cccc", "ddddd"}
+mean, err := lo.MeanByErr(list, func(item string) (float64, error) {
+    if item == "cccc" {
+        return 0, fmt.Errorf("cccc is not allowed")
+    }
+    return float64(len(item)), nil
+})
+// 0, error("cccc is not allowed")
+```
+
 [[play](https://go.dev/play/p/j7TsVwBOZ7P)]
 
 ### Mode
