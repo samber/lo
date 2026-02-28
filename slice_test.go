@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"sort"
@@ -53,74 +54,74 @@ func TestMapErr(t *testing.T) {
 	is := assert.New(t)
 
 	tests := []struct {
-		name               string
-		input              []int
-		transform          func(item int, index int) (string, error)
-		wantResult         []string
-		wantErr            bool
-		errMsg             string
+		name                  string
+		input                 []int
+		transform             func(item, index int) (string, error)
+		wantResult            []string
+		wantErr               bool
+		errMsg                string
 		expectedCallbackCount int
 	}{
 		{
 			name:  "successful transformation",
 			input: []int{1, 2, 3, 4},
-			transform: func(x int, _ int) (string, error) {
+			transform: func(x, _ int) (string, error) {
 				return strconv.Itoa(x), nil
 			},
-			wantResult: []string{"1", "2", "3", "4"},
-			wantErr: false,
+			wantResult:            []string{"1", "2", "3", "4"},
+			wantErr:               false,
 			expectedCallbackCount: 4,
 		},
 		{
 			name:  "error at third element stops iteration",
 			input: []int{1, 2, 3, 4},
-			transform: func(x int, _ int) (string, error) {
+			transform: func(x, _ int) (string, error) {
 				if x == 3 {
-					return "", fmt.Errorf("number 3 is not allowed")
+					return "", errors.New("number 3 is not allowed")
 				}
 				return strconv.Itoa(x), nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 3 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 3 is not allowed",
 			expectedCallbackCount: 3,
 		},
 		{
 			name:  "error at first element stops iteration immediately",
 			input: []int{1, 2, 3, 4},
-			transform: func(x int, _ int) (string, error) {
+			transform: func(x, _ int) (string, error) {
 				if x == 1 {
-					return "", fmt.Errorf("number 1 is not allowed")
+					return "", errors.New("number 1 is not allowed")
 				}
 				return strconv.Itoa(x), nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 1 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 1 is not allowed",
 			expectedCallbackCount: 1,
 		},
 		{
 			name:  "error at last element",
 			input: []int{1, 2, 3, 4},
-			transform: func(x int, _ int) (string, error) {
+			transform: func(x, _ int) (string, error) {
 				if x == 4 {
-					return "", fmt.Errorf("number 4 is not allowed")
+					return "", errors.New("number 4 is not allowed")
 				}
 				return strconv.Itoa(x), nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 4 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 4 is not allowed",
 			expectedCallbackCount: 4,
 		},
 		{
 			name:  "empty input slice",
 			input: []int{},
-			transform: func(x int, _ int) (string, error) {
+			transform: func(x, _ int) (string, error) {
 				return strconv.Itoa(x), nil
 			},
-			wantResult: []string{},
-			wantErr: false,
+			wantResult:            []string{},
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 	}
@@ -132,7 +133,7 @@ func TestMapErr(t *testing.T) {
 
 			// Track callback count to test early return
 			callbackCount := 0
-			wrappedTransform := func(item int, index int) (string, error) {
+			wrappedTransform := func(item, index int) (string, error) {
 				callbackCount++
 				return tt.transform(item, index)
 			}
@@ -218,12 +219,12 @@ func TestFlatMapErr(t *testing.T) {
 	is := assert.New(t)
 
 	tests := []struct {
-		name               string
-		input              []int64
-		transform          func(item int64, index int) ([]string, error)
-		wantResult         []string
-		wantErr            bool
-		errMsg             string
+		name                  string
+		input                 []int64
+		transform             func(item int64, index int) ([]string, error)
+		wantResult            []string
+		wantErr               bool
+		errMsg                string
 		expectedCallbackCount int
 	}{
 		{
@@ -232,8 +233,8 @@ func TestFlatMapErr(t *testing.T) {
 			transform: func(x int64, _ int) ([]string, error) {
 				return []string{strconv.FormatInt(x, 10), strconv.FormatInt(x, 10)}, nil
 			},
-			wantResult: []string{"0", "0", "1", "1", "2", "2"},
-			wantErr: false,
+			wantResult:            []string{"0", "0", "1", "1", "2", "2"},
+			wantErr:               false,
 			expectedCallbackCount: 3,
 		},
 		{
@@ -241,13 +242,13 @@ func TestFlatMapErr(t *testing.T) {
 			input: []int64{0, 1, 2, 3},
 			transform: func(x int64, _ int) ([]string, error) {
 				if x == 1 {
-					return nil, fmt.Errorf("number 1 is not allowed")
+					return nil, errors.New("number 1 is not allowed")
 				}
 				return []string{strconv.FormatInt(x, 10)}, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 1 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 1 is not allowed",
 			expectedCallbackCount: 2,
 		},
 		{
@@ -255,13 +256,13 @@ func TestFlatMapErr(t *testing.T) {
 			input: []int64{0, 1, 2, 3},
 			transform: func(x int64, _ int) ([]string, error) {
 				if x == 0 {
-					return nil, fmt.Errorf("number 0 is not allowed")
+					return nil, errors.New("number 0 is not allowed")
 				}
 				return []string{strconv.FormatInt(x, 10)}, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 0 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 0 is not allowed",
 			expectedCallbackCount: 1,
 		},
 		{
@@ -269,13 +270,13 @@ func TestFlatMapErr(t *testing.T) {
 			input: []int64{0, 1, 2},
 			transform: func(x int64, _ int) ([]string, error) {
 				if x == 2 {
-					return nil, fmt.Errorf("number 2 is not allowed")
+					return nil, errors.New("number 2 is not allowed")
 				}
 				return []string{strconv.FormatInt(x, 10)}, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 2 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 2 is not allowed",
 			expectedCallbackCount: 3,
 		},
 		{
@@ -284,8 +285,8 @@ func TestFlatMapErr(t *testing.T) {
 			transform: func(x int64, _ int) ([]string, error) {
 				return []string{strconv.FormatInt(x, 10)}, nil
 			},
-			wantResult: []string{},
-			wantErr: false,
+			wantResult:            []string{},
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 		{
@@ -294,8 +295,8 @@ func TestFlatMapErr(t *testing.T) {
 			transform: func(x int64, _ int) ([]string, error) {
 				return []string{}, nil
 			},
-			wantResult: []string{},
-			wantErr: false,
+			wantResult:            []string{},
+			wantErr:               false,
 			expectedCallbackCount: 3,
 		},
 		{
@@ -307,8 +308,8 @@ func TestFlatMapErr(t *testing.T) {
 				}
 				return []string{strconv.FormatInt(x, 10)}, nil
 			},
-			wantResult: []string{"1", "3"},
-			wantErr: false,
+			wantResult:            []string{"1", "3"},
+			wantErr:               false,
 			expectedCallbackCount: 3,
 		},
 	}
@@ -372,13 +373,13 @@ func TestReduceErr(t *testing.T) {
 	is := assert.New(t)
 
 	tests := []struct {
-		name               string
-		input              []int
-		accumulator        func(agg int, item int, index int) (int, error)
-		initial            int
-		wantResult         int
-		wantErr            bool
-		errMsg             string
+		name                  string
+		input                 []int
+		accumulator           func(agg, item, index int) (int, error)
+		initial               int
+		wantResult            int
+		wantErr               bool
+		errMsg                string
 		expectedCallbackCount int
 	}{
 		{
@@ -387,9 +388,9 @@ func TestReduceErr(t *testing.T) {
 			accumulator: func(agg, item, _ int) (int, error) {
 				return agg + item, nil
 			},
-			initial: 0,
-			wantResult: 10,
-			wantErr: false,
+			initial:               0,
+			wantResult:            10,
+			wantErr:               false,
 			expectedCallbackCount: 4,
 		},
 		{
@@ -397,14 +398,14 @@ func TestReduceErr(t *testing.T) {
 			input: []int{1, 2, 3, 4},
 			accumulator: func(agg, item, _ int) (int, error) {
 				if item == 3 {
-					return 0, fmt.Errorf("number 3 is not allowed")
+					return 0, errors.New("number 3 is not allowed")
 				}
 				return agg + item, nil
 			},
-			initial: 0,
-			wantResult: 0,
-			wantErr: true,
-			errMsg: "number 3 is not allowed",
+			initial:               0,
+			wantResult:            0,
+			wantErr:               true,
+			errMsg:                "number 3 is not allowed",
 			expectedCallbackCount: 3,
 		},
 		{
@@ -412,14 +413,14 @@ func TestReduceErr(t *testing.T) {
 			input: []int{1, 2, 3, 4},
 			accumulator: func(agg, item, _ int) (int, error) {
 				if item == 1 {
-					return 0, fmt.Errorf("number 1 is not allowed")
+					return 0, errors.New("number 1 is not allowed")
 				}
 				return agg + item, nil
 			},
-			initial: 0,
-			wantResult: 0,
-			wantErr: true,
-			errMsg: "number 1 is not allowed",
+			initial:               0,
+			wantResult:            0,
+			wantErr:               true,
+			errMsg:                "number 1 is not allowed",
 			expectedCallbackCount: 1,
 		},
 		{
@@ -427,14 +428,14 @@ func TestReduceErr(t *testing.T) {
 			input: []int{1, 2, 3, 4},
 			accumulator: func(agg, item, _ int) (int, error) {
 				if item == 4 {
-					return 0, fmt.Errorf("number 4 is not allowed")
+					return 0, errors.New("number 4 is not allowed")
 				}
 				return agg + item, nil
 			},
-			initial: 0,
-			wantResult: 0,
-			wantErr: true,
-			errMsg: "number 4 is not allowed",
+			initial:               0,
+			wantResult:            0,
+			wantErr:               true,
+			errMsg:                "number 4 is not allowed",
 			expectedCallbackCount: 4,
 		},
 		{
@@ -443,9 +444,9 @@ func TestReduceErr(t *testing.T) {
 			accumulator: func(agg, item, _ int) (int, error) {
 				return agg + item, nil
 			},
-			initial: 10,
-			wantResult: 10,
-			wantErr: false,
+			initial:               10,
+			wantResult:            10,
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 		{
@@ -454,9 +455,9 @@ func TestReduceErr(t *testing.T) {
 			accumulator: func(agg, item, _ int) (int, error) {
 				return agg + item, nil
 			},
-			initial: 10,
-			wantResult: 20,
-			wantErr: false,
+			initial:               10,
+			wantResult:            20,
+			wantErr:               false,
 			expectedCallbackCount: 4,
 		},
 	}
@@ -468,7 +469,7 @@ func TestReduceErr(t *testing.T) {
 
 			// Track callback count to test early return
 			callbackCount := 0
-			wrappedAccumulator := func(agg int, item int, index int) (int, error) {
+			wrappedAccumulator := func(agg, item, index int) (int, error) {
 				callbackCount++
 				return tt.accumulator(agg, item, index)
 			}
@@ -511,13 +512,13 @@ func TestReduceRightErr(t *testing.T) {
 	is := assert.New(t)
 
 	tests := []struct {
-		name               string
-		input              []int
-		accumulator        func(agg int, item int, index int) (int, error)
-		initial            int
-		wantResult         int
-		wantErr            bool
-		errMsg             string
+		name                  string
+		input                 []int
+		accumulator           func(agg, item, index int) (int, error)
+		initial               int
+		wantResult            int
+		wantErr               bool
+		errMsg                string
 		expectedCallbackCount int
 	}{
 		{
@@ -526,9 +527,9 @@ func TestReduceRightErr(t *testing.T) {
 			accumulator: func(agg, item, _ int) (int, error) {
 				return agg + item, nil
 			},
-			initial: 0,
-			wantResult: 10,
-			wantErr: false,
+			initial:               0,
+			wantResult:            10,
+			wantErr:               false,
 			expectedCallbackCount: 4,
 		},
 		{
@@ -536,14 +537,14 @@ func TestReduceRightErr(t *testing.T) {
 			input: []int{1, 2, 3, 4},
 			accumulator: func(agg, item, _ int) (int, error) {
 				if item == 3 {
-					return 0, fmt.Errorf("number 3 is not allowed")
+					return 0, errors.New("number 3 is not allowed")
 				}
 				return agg + item, nil
 			},
-			initial: 0,
-			wantResult: 0,
-			wantErr: true,
-			errMsg: "number 3 is not allowed",
+			initial:               0,
+			wantResult:            0,
+			wantErr:               true,
+			errMsg:                "number 3 is not allowed",
 			expectedCallbackCount: 2,
 		},
 		{
@@ -551,14 +552,14 @@ func TestReduceRightErr(t *testing.T) {
 			input: []int{1, 2, 3, 4},
 			accumulator: func(agg, item, _ int) (int, error) {
 				if item == 4 {
-					return 0, fmt.Errorf("number 4 is not allowed")
+					return 0, errors.New("number 4 is not allowed")
 				}
 				return agg + item, nil
 			},
-			initial: 0,
-			wantResult: 0,
-			wantErr: true,
-			errMsg: "number 4 is not allowed",
+			initial:               0,
+			wantResult:            0,
+			wantErr:               true,
+			errMsg:                "number 4 is not allowed",
 			expectedCallbackCount: 1,
 		},
 		{
@@ -566,14 +567,14 @@ func TestReduceRightErr(t *testing.T) {
 			input: []int{1, 2, 3, 4},
 			accumulator: func(agg, item, _ int) (int, error) {
 				if item == 1 {
-					return 0, fmt.Errorf("number 1 is not allowed")
+					return 0, errors.New("number 1 is not allowed")
 				}
 				return agg + item, nil
 			},
-			initial: 0,
-			wantResult: 0,
-			wantErr: true,
-			errMsg: "number 1 is not allowed",
+			initial:               0,
+			wantResult:            0,
+			wantErr:               true,
+			errMsg:                "number 1 is not allowed",
 			expectedCallbackCount: 4,
 		},
 		{
@@ -582,9 +583,9 @@ func TestReduceRightErr(t *testing.T) {
 			accumulator: func(agg, item, _ int) (int, error) {
 				return agg + item, nil
 			},
-			initial: 10,
-			wantResult: 10,
-			wantErr: false,
+			initial:               10,
+			wantResult:            10,
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 		{
@@ -593,9 +594,9 @@ func TestReduceRightErr(t *testing.T) {
 			accumulator: func(agg, item, _ int) (int, error) {
 				return agg + item, nil
 			},
-			initial: 10,
-			wantResult: 20,
-			wantErr: false,
+			initial:               10,
+			wantResult:            20,
+			wantErr:               false,
 			expectedCallbackCount: 4,
 		},
 	}
@@ -607,7 +608,7 @@ func TestReduceRightErr(t *testing.T) {
 
 			// Track callback count to test early return
 			callbackCount := 0
-			wrappedAccumulator := func(agg int, item int, index int) (int, error) {
+			wrappedAccumulator := func(agg, item, index int) (int, error) {
 				callbackCount++
 				return tt.accumulator(agg, item, index)
 			}
@@ -705,12 +706,12 @@ func TestUniqByErr(t *testing.T) {
 	is := assert.New(t)
 
 	tests := []struct {
-		name               string
-		input              []int
-		iteratee           func(item int) (int, error)
-		wantResult         []int
-		wantErr            bool
-		errMsg             string
+		name                  string
+		input                 []int
+		iteratee              func(item int) (int, error)
+		wantResult            []int
+		wantErr               bool
+		errMsg                string
 		expectedCallbackCount int
 	}{
 		{
@@ -719,8 +720,8 @@ func TestUniqByErr(t *testing.T) {
 			iteratee: func(i int) (int, error) {
 				return i % 3, nil
 			},
-			wantResult: []int{0, 1, 2},
-			wantErr: false,
+			wantResult:            []int{0, 1, 2},
+			wantErr:               false,
 			expectedCallbackCount: 6,
 		},
 		{
@@ -728,13 +729,13 @@ func TestUniqByErr(t *testing.T) {
 			input: []int{0, 1, 2, 3, 4, 5},
 			iteratee: func(i int) (int, error) {
 				if i == 3 {
-					return 0, fmt.Errorf("number 3 is not allowed")
+					return 0, errors.New("number 3 is not allowed")
 				}
 				return i % 3, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 3 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 3 is not allowed",
 			expectedCallbackCount: 4,
 		},
 		{
@@ -742,13 +743,13 @@ func TestUniqByErr(t *testing.T) {
 			input: []int{0, 1, 2, 3, 4, 5},
 			iteratee: func(i int) (int, error) {
 				if i == 0 {
-					return 0, fmt.Errorf("number 0 is not allowed")
+					return 0, errors.New("number 0 is not allowed")
 				}
 				return i % 3, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 0 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 0 is not allowed",
 			expectedCallbackCount: 1,
 		},
 		{
@@ -756,13 +757,13 @@ func TestUniqByErr(t *testing.T) {
 			input: []int{0, 1, 2, 3, 4, 5},
 			iteratee: func(i int) (int, error) {
 				if i == 5 {
-					return 0, fmt.Errorf("number 5 is not allowed")
+					return 0, errors.New("number 5 is not allowed")
 				}
 				return i % 3, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 5 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 5 is not allowed",
 			expectedCallbackCount: 6,
 		},
 		{
@@ -771,8 +772,8 @@ func TestUniqByErr(t *testing.T) {
 			iteratee: func(i int) (int, error) {
 				return i % 3, nil
 			},
-			wantResult: []int{},
-			wantErr: false,
+			wantResult:            []int{},
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 		{
@@ -781,8 +782,8 @@ func TestUniqByErr(t *testing.T) {
 			iteratee: func(i int) (int, error) {
 				return i % 3, nil
 			},
-			wantResult: []int{1},
-			wantErr: false,
+			wantResult:            []int{1},
+			wantErr:               false,
 			expectedCallbackCount: 4,
 		},
 		{
@@ -791,8 +792,8 @@ func TestUniqByErr(t *testing.T) {
 			iteratee: func(i int) (int, error) {
 				return i, nil
 			},
-			wantResult: []int{0, 1, 2, 3},
-			wantErr: false,
+			wantResult:            []int{0, 1, 2, 3},
+			wantErr:               false,
 			expectedCallbackCount: 4,
 		},
 	}
@@ -852,12 +853,12 @@ func TestGroupByErr(t *testing.T) {
 	is := assert.New(t)
 
 	tests := []struct {
-		name               string
-		input              []int
-		iteratee           func(item int) (int, error)
-		wantResult         map[int][]int
-		wantErr            bool
-		errMsg             string
+		name                  string
+		input                 []int
+		iteratee              func(item int) (int, error)
+		wantResult            map[int][]int
+		wantErr               bool
+		errMsg                string
 		expectedCallbackCount int
 	}{
 		{
@@ -871,7 +872,7 @@ func TestGroupByErr(t *testing.T) {
 				1: {1, 4},
 				2: {2, 5},
 			},
-			wantErr: false,
+			wantErr:               false,
 			expectedCallbackCount: 6,
 		},
 		{
@@ -879,13 +880,13 @@ func TestGroupByErr(t *testing.T) {
 			input: []int{0, 1, 2, 3, 4, 5},
 			iteratee: func(i int) (int, error) {
 				if i == 3 {
-					return 0, fmt.Errorf("number 3 is not allowed")
+					return 0, errors.New("number 3 is not allowed")
 				}
 				return i % 3, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 3 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 3 is not allowed",
 			expectedCallbackCount: 4,
 		},
 		{
@@ -893,13 +894,13 @@ func TestGroupByErr(t *testing.T) {
 			input: []int{0, 1, 2, 3, 4, 5},
 			iteratee: func(i int) (int, error) {
 				if i == 0 {
-					return 0, fmt.Errorf("number 0 is not allowed")
+					return 0, errors.New("number 0 is not allowed")
 				}
 				return i % 3, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 0 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 0 is not allowed",
 			expectedCallbackCount: 1,
 		},
 		{
@@ -907,13 +908,13 @@ func TestGroupByErr(t *testing.T) {
 			input: []int{0, 1, 2, 3, 4, 5},
 			iteratee: func(i int) (int, error) {
 				if i == 5 {
-					return 0, fmt.Errorf("number 5 is not allowed")
+					return 0, errors.New("number 5 is not allowed")
 				}
 				return i % 3, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 5 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 5 is not allowed",
 			expectedCallbackCount: 6,
 		},
 		{
@@ -922,8 +923,8 @@ func TestGroupByErr(t *testing.T) {
 			iteratee: func(i int) (int, error) {
 				return i % 3, nil
 			},
-			wantResult: map[int][]int{},
-			wantErr: false,
+			wantResult:            map[int][]int{},
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 		{
@@ -935,7 +936,7 @@ func TestGroupByErr(t *testing.T) {
 			wantResult: map[int][]int{
 				0: {3, 6, 9, 12},
 			},
-			wantErr: false,
+			wantErr:               false,
 			expectedCallbackCount: 4,
 		},
 	}
@@ -1019,12 +1020,12 @@ func TestGroupByMapErr(t *testing.T) {
 	is := assert.New(t)
 
 	tests := []struct {
-		name               string
-		input              []int
-		transform          func(item int) (int, int, error)
-		wantResult         map[int][]int
-		wantErr            bool
-		errMsg             string
+		name                  string
+		input                 []int
+		transform             func(item int) (int, int, error)
+		wantResult            map[int][]int
+		wantErr               bool
+		errMsg                string
 		expectedCallbackCount int
 	}{
 		{
@@ -1038,7 +1039,7 @@ func TestGroupByMapErr(t *testing.T) {
 				1: {2, 8},
 				2: {4, 10},
 			},
-			wantErr: false,
+			wantErr:               false,
 			expectedCallbackCount: 6,
 		},
 		{
@@ -1046,13 +1047,13 @@ func TestGroupByMapErr(t *testing.T) {
 			input: []int{0, 1, 2, 3, 4, 5},
 			transform: func(i int) (int, int, error) {
 				if i == 3 {
-					return 0, 0, fmt.Errorf("number 3 is not allowed")
+					return 0, 0, errors.New("number 3 is not allowed")
 				}
 				return i % 3, i * 2, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 3 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 3 is not allowed",
 			expectedCallbackCount: 4,
 		},
 		{
@@ -1060,13 +1061,13 @@ func TestGroupByMapErr(t *testing.T) {
 			input: []int{0, 1, 2, 3, 4, 5},
 			transform: func(i int) (int, int, error) {
 				if i == 0 {
-					return 0, 0, fmt.Errorf("number 0 is not allowed")
+					return 0, 0, errors.New("number 0 is not allowed")
 				}
 				return i % 3, i * 2, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 0 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 0 is not allowed",
 			expectedCallbackCount: 1,
 		},
 		{
@@ -1074,13 +1075,13 @@ func TestGroupByMapErr(t *testing.T) {
 			input: []int{0, 1, 2, 3, 4, 5},
 			transform: func(i int) (int, int, error) {
 				if i == 5 {
-					return 0, 0, fmt.Errorf("number 5 is not allowed")
+					return 0, 0, errors.New("number 5 is not allowed")
 				}
 				return i % 3, i * 2, nil
 			},
-			wantResult: nil,
-			wantErr: true,
-			errMsg: "number 5 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 5 is not allowed",
 			expectedCallbackCount: 6,
 		},
 		{
@@ -1089,8 +1090,8 @@ func TestGroupByMapErr(t *testing.T) {
 			transform: func(i int) (int, int, error) {
 				return i % 3, i * 2, nil
 			},
-			wantResult: map[int][]int{},
-			wantErr: false,
+			wantResult:            map[int][]int{},
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 		{
@@ -1102,7 +1103,7 @@ func TestGroupByMapErr(t *testing.T) {
 			wantResult: map[int][]int{
 				0: {3, 6, 9, 12},
 			},
-			wantErr: false,
+			wantErr:               false,
 			expectedCallbackCount: 4,
 		},
 	}
@@ -1296,80 +1297,80 @@ func TestPartitionByErr(t *testing.T) {
 	}
 
 	tests := []struct {
-		name               string
-		input              []int
-		iteratee           func(item int) (string, error)
-		wantResult         [][]int
-		wantErr            bool
-		errMsg             string
+		name                  string
+		input                 []int
+		iteratee              func(item int) (string, error)
+		wantResult            [][]int
+		wantErr               bool
+		errMsg                string
 		expectedCallbackCount int
 	}{
 		{
-			name:       "successful partition",
-			input:      []int{-2, -1, 0, 1, 2, 3, 4, 5},
-			iteratee:   oddEven,
-			wantResult: [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}},
-			wantErr:    false,
+			name:                  "successful partition",
+			input:                 []int{-2, -1, 0, 1, 2, 3, 4, 5},
+			iteratee:              oddEven,
+			wantResult:            [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}},
+			wantErr:               false,
 			expectedCallbackCount: 8,
 		},
 		{
-			name: "error at fifth element stops iteration",
+			name:  "error at fifth element stops iteration",
 			input: []int{-2, -1, 0, 1, 2, 3},
 			iteratee: func(x int) (string, error) {
 				if x == 2 {
-					return "", fmt.Errorf("number 2 is not allowed")
+					return "", errors.New("number 2 is not allowed")
 				}
 				return oddEven(x)
 			},
-			wantResult: nil,
-			wantErr:    true,
-			errMsg:     "number 2 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 2 is not allowed",
 			expectedCallbackCount: 5,
 		},
 		{
-			name: "error at first element stops iteration immediately",
+			name:  "error at first element stops iteration immediately",
 			input: []int{-2, -1, 0, 1},
 			iteratee: func(x int) (string, error) {
 				if x == -2 {
-					return "", fmt.Errorf("number -2 is not allowed")
+					return "", errors.New("number -2 is not allowed")
 				}
 				return oddEven(x)
 			},
-			wantResult: nil,
-			wantErr:    true,
-			errMsg:     "number -2 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number -2 is not allowed",
 			expectedCallbackCount: 1,
 		},
 		{
-			name: "error at last element",
+			name:  "error at last element",
 			input: []int{-2, -1, 0, 1, 2},
 			iteratee: func(x int) (string, error) {
 				if x == 2 {
-					return "", fmt.Errorf("number 2 is not allowed")
+					return "", errors.New("number 2 is not allowed")
 				}
 				return oddEven(x)
 			},
-			wantResult: nil,
-			wantErr:    true,
-			errMsg:     "number 2 is not allowed",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "number 2 is not allowed",
 			expectedCallbackCount: 5,
 		},
 		{
-			name:       "empty input slice",
-			input:      []int{},
-			iteratee:   oddEven,
-			wantResult: [][]int{},
-			wantErr:    false,
+			name:                  "empty input slice",
+			input:                 []int{},
+			iteratee:              oddEven,
+			wantResult:            [][]int{},
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 		{
-			name: "all elements in same partition",
+			name:  "all elements in same partition",
 			input: []int{1, 3, 5},
 			iteratee: func(x int) (string, error) {
 				return "odd", nil
 			},
-			wantResult: [][]int{{1, 3, 5}},
-			wantErr:    false,
+			wantResult:            [][]int{{1, 3, 5}},
+			wantErr:               false,
 			expectedCallbackCount: 3,
 		},
 	}
@@ -1574,75 +1575,75 @@ func TestKeyByErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name                 string
-		input                []string
-		iteratee             func(item string) (int, error)
-		wantResult           map[int]string
-		wantErr              bool
-		errMsg               string
+		name                  string
+		input                 []string
+		iteratee              func(item string) (int, error)
+		wantResult            map[int]string
+		wantErr               bool
+		errMsg                string
 		expectedCallbackCount int
 	}{
 		{
-			name:     "empty slice",
-			input:    []string{},
-			iteratee: func(s string) (int, error) { return len(s), nil },
-			wantResult: map[int]string{},
-			wantErr:              false,
+			name:                  "empty slice",
+			input:                 []string{},
+			iteratee:              func(s string) (int, error) { return len(s), nil },
+			wantResult:            map[int]string{},
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 		{
-			name:     "success case",
-			input:    []string{"a", "aa", "aaa"},
-			iteratee: func(s string) (int, error) { return len(s), nil },
-			wantResult: map[int]string{1: "a", 2: "aa", 3: "aaa"},
-			wantErr:              false,
+			name:                  "success case",
+			input:                 []string{"a", "aa", "aaa"},
+			iteratee:              func(s string) (int, error) { return len(s), nil },
+			wantResult:            map[int]string{1: "a", 2: "aa", 3: "aaa"},
+			wantErr:               false,
 			expectedCallbackCount: 3,
 		},
 		{
-			name: "error stops iteration - first item",
+			name:  "error stops iteration - first item",
 			input: []string{"a", "aa", "aaa"},
 			iteratee: func(s string) (int, error) {
 				return 0, fmt.Errorf("error on %s", s)
 			},
-			wantResult:           nil,
-			wantErr:              true,
-			errMsg:               "error on a",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "error on a",
 			expectedCallbackCount: 1,
 		},
 		{
-			name: "error stops iteration - middle item",
+			name:  "error stops iteration - middle item",
 			input: []string{"a", "aa", "aaa"},
 			iteratee: func(s string) (int, error) {
 				if s == "aa" {
-					return 0, fmt.Errorf("middle error")
+					return 0, errors.New("middle error")
 				}
 				return len(s), nil
 			},
-			wantResult:           nil,
-			wantErr:              true,
-			errMsg:               "middle error",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "middle error",
 			expectedCallbackCount: 2,
 		},
 		{
-			name: "error stops iteration - last item",
+			name:  "error stops iteration - last item",
 			input: []string{"a", "aa", "aaa"},
 			iteratee: func(s string) (int, error) {
 				if s == "aaa" {
-					return 0, fmt.Errorf("last error")
+					return 0, errors.New("last error")
 				}
 				return len(s), nil
 			},
-			wantResult:           nil,
-			wantErr:              true,
-			errMsg:               "last error",
+			wantResult:            nil,
+			wantErr:               true,
+			errMsg:                "last error",
 			expectedCallbackCount: 3,
 		},
 		{
-			name:     "duplicate keys",
-			input:    []string{"a", "b", "c"},
-			iteratee: func(s string) (int, error) { return 1, nil },
-			wantResult: map[int]string{1: "c"},
-			wantErr:              false,
+			name:                  "duplicate keys",
+			input:                 []string{"a", "b", "c"},
+			iteratee:              func(s string) (int, error) { return 1, nil },
+			wantResult:            map[int]string{1: "c"},
+			wantErr:               false,
 			expectedCallbackCount: 3,
 		},
 	}
@@ -2272,7 +2273,7 @@ func TestCountByErr(t *testing.T) {
 			name:  "error on first element",
 			input: []int{1, 2, 3},
 			predicate: func(i int) (bool, error) {
-				return false, fmt.Errorf("first element error")
+				return false, errors.New("first element error")
 			},
 			want:          0,
 			wantErr:       "first element error",
