@@ -97,6 +97,21 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 	return sum
 }
 
+// SumByErr summarizes the values in a collection using the given return value from the iteration function.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// If collection is empty 0 and nil error are returned.
+func SumByErr[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) (R, error)) (R, error) {
+	var sum R
+	for i := range collection {
+		v, err := iteratee(collection[i])
+		if err != nil {
+			return sum, err
+		}
+		sum += v
+	}
+	return sum, nil
+}
+
 // Product gets the product of the values in a collection. If collection is empty 1 is returned.
 // Play: https://go.dev/play/p/2_kjM_smtAH
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {

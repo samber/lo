@@ -9,12 +9,9 @@ variantHelpers:
   - core#math#sumby
 similarHelpers:
   - core#math#sum
+  - core#math#sumbyerr
   - core#math#productby
   - core#math#meanby
-  - core#find#minby
-  - core#find#maxby
-  - core#find#minindexby
-  - core#find#maxindexby
   - core#math#product
   - core#math#mean
 position: 50
@@ -30,4 +27,16 @@ lo.SumBy(strings, func(item string) int {
     return len(item)
 })
 // 6
+```
+
+```go
+// See also: SumByErr for error handling
+strings := []string{"foo", "bar", "baz"}
+sum, err := lo.SumByErr(strings, func(item string) (int, error) {
+    if item == "bar" {
+        return 0, fmt.Errorf("invalid item: %s", item)
+    }
+    return len(item), nil
+})
+// sum: 3, err: invalid item: bar
 ```

@@ -1961,6 +1961,19 @@ sum := lo.SumBy(strings, func(item string) int {
 // 6
 ```
 
+With error handling:
+
+```go
+strings := []string{"foo", "bar", "baz"}
+sum, err := lo.SumByErr(strings, func(item string) (int, error) {
+    if item == "bar" {
+        return 0, fmt.Errorf("invalid item: %s", item)
+    }
+    return len(item), nil
+})
+// sum: 3, err: invalid item: bar
+```
+
 ### Product
 
 Calculates the product of the values in a collection.
