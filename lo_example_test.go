@@ -1307,6 +1307,26 @@ func ExampleMinIndexBy() {
 	// Output: Alice 0
 }
 
+func ExampleMinIndexByErr() {
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	users := []User{
+		{Name: "Alice", Age: 25},
+		{Name: "Bob", Age: 30},
+		{Name: "Charlie", Age: 35},
+	}
+
+	result, index, err := MinIndexByErr(users, func(a, b User) (bool, error) {
+		return a.Age < b.Age, nil
+	})
+
+	fmt.Printf("%s %d %v", result.Name, index, err)
+	// Output: Alice 0 <nil>
+}
+
 func ExampleEarliest() {
 	now := time.Now()
 	past := now.Add(-time.Hour)
@@ -1733,6 +1753,35 @@ func ExampleWithoutBy() {
 	// [{1 Alice}]
 }
 
+func ExampleWithoutByErr() {
+	type User struct {
+		ID   int
+		Name string
+	}
+	// original users
+	users := []User{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+		{ID: 3, Name: "Charlie"},
+	}
+
+	// exclude users with IDs 2 and 3
+	excludedIDs := []int{2, 3}
+
+	// extract function to get the user ID
+	extractID := func(user User) (int, error) {
+		return user.ID, nil
+	}
+
+	// filtering users
+	filteredUsers, err := WithoutByErr(users, extractID, excludedIDs...)
+
+	// output the filtered users
+	fmt.Printf("%v %v", filteredUsers, err)
+	// Output:
+	// [{1 Alice}] <nil>
+}
+
 func ExampleKeys() {
 	kv := map[string]int{"foo": 1, "bar": 2}
 	kv2 := map[string]int{"baz": 3}
@@ -1796,6 +1845,17 @@ func ExamplePickBy() {
 	// Output: 2 1 3
 }
 
+func ExamplePickByErr() {
+	kv := map[string]int{"foo": 1, "bar": 2, "baz": 3}
+
+	result, err := PickByErr(kv, func(key string, value int) (bool, error) {
+		return value%2 == 1, nil
+	})
+
+	fmt.Printf("%v %v %v %v", len(result), result["foo"], result["baz"], err)
+	// Output: 2 1 3 <nil>
+}
+
 func ExamplePickByKeys() {
 	kv := map[string]int{"foo": 1, "bar": 2, "baz": 3}
 
@@ -1823,6 +1883,17 @@ func ExampleOmitBy() {
 
 	fmt.Printf("%v", result)
 	// Output: map[bar:2]
+}
+
+func ExampleOmitByErr() {
+	kv := map[string]int{"foo": 1, "bar": 2, "baz": 3}
+
+	result, err := OmitByErr(kv, func(key string, value int) (bool, error) {
+		return value%2 == 1, nil
+	})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: map[bar:2] <nil>
 }
 
 func ExampleOmitByKeys() {
@@ -1925,6 +1996,17 @@ func ExampleMapKeys() {
 	// Output: 4 1 2 3 4
 }
 
+func ExampleMapKeysErr() {
+	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
+
+	result, err := MapKeysErr(kv, func(_, k int) (string, error) {
+		return strconv.FormatInt(int64(k), 10), nil
+	})
+
+	fmt.Printf("%v %v %v %v %v %v", len(result), result["1"], result["2"], result["3"], result["4"], err)
+	// Output: 4 1 2 3 4 <nil>
+}
+
 func ExampleMapValues() {
 	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
 
@@ -1934,6 +2016,17 @@ func ExampleMapValues() {
 
 	fmt.Printf("%v %q %q %q %q", len(result), result[1], result[2], result[3], result[4])
 	// Output: 4 "1" "2" "3" "4"
+}
+
+func ExampleMapValuesErr() {
+	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
+
+	result, err := MapValuesErr(kv, func(v, _ int) (string, error) {
+		return strconv.FormatInt(int64(v), 10), nil
+	})
+
+	fmt.Printf("%v %q %q %q %q %v", len(result), result[1], result[2], result[3], result[4], err)
+	// Output: 4 "1" "2" "3" "4" <nil>
 }
 
 func ExampleMapEntries() {
@@ -1947,6 +2040,17 @@ func ExampleMapEntries() {
 	// Output: map[1:foo 2:bar]
 }
 
+func ExampleMapEntriesErr() {
+	kv := map[string]int{"foo": 1, "bar": 2}
+
+	result, err := MapEntriesErr(kv, func(k string, v int) (int, string, error) {
+		return v, k, nil
+	})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: map[1:foo 2:bar] <nil>
+}
+
 func ExampleMapToSlice() {
 	kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
 
@@ -1957,6 +2061,18 @@ func ExampleMapToSlice() {
 	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [1_1 2_2 3_3 4_4]
+}
+
+func ExampleMapToSliceErr() {
+	kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
+
+	result, err := MapToSliceErr(kv, func(k int, v int64) (string, error) {
+		return fmt.Sprintf("%d_%d", k, v), nil
+	})
+
+	sort.Strings(result)
+	fmt.Printf("%v %v", result, err)
+	// Output: [1_1 2_2 3_3 4_4] <nil>
 }
 
 func ExampleFilterMapToSlice() {
@@ -2056,6 +2172,17 @@ func ExampleSumBy() {
 	// Output: 6
 }
 
+func ExampleSumByErr() {
+	list := []string{"foo", "bar"}
+
+	result, err := SumByErr(list, func(item string) (int, error) {
+		return len(item), nil
+	})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: 6 <nil>
+}
+
 func ExampleProduct() {
 	list := []int{1, 2, 3, 4, 5}
 
@@ -2140,6 +2267,17 @@ func ExampleMap() {
 	// Output: [2 4 6 8]
 }
 
+func ExampleMapErr() {
+	list := []int64{1, 2, 3, 4}
+
+	result, err := MapErr(list, func(nbr int64, index int) (string, error) {
+		return strconv.FormatInt(nbr*2, 10), nil
+	})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: [2 4 6 8] <nil>
+}
+
 func ExampleUniqMap() {
 	type User struct {
 		Name string
@@ -2182,6 +2320,20 @@ func ExampleFlatMap() {
 	// Output: [1 1 2 10 3 11 4 100]
 }
 
+func ExampleFlatMapErr() {
+	list := []int64{1, 2, 3, 4}
+
+	result, err := FlatMapErr(list, func(nbr int64, index int) ([]string, error) {
+		return []string{
+			strconv.FormatInt(nbr, 10), // base 10
+			strconv.FormatInt(nbr, 2),  // base 2
+		}, nil
+	})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: [1 1 2 10 3 11 4 100] <nil>
+}
+
 func ExampleReduce() {
 	list := []int64{1, 2, 3, 4}
 
@@ -2193,6 +2345,17 @@ func ExampleReduce() {
 	// Output: 10
 }
 
+func ExampleReduceErr() {
+	list := []int64{1, 2, 3, 4}
+
+	result, err := ReduceErr(list, func(agg, item int64, index int) (int64, error) {
+		return agg + item, nil
+	}, 0)
+
+	fmt.Printf("%v %v", result, err)
+	// Output: 10 <nil>
+}
+
 func ExampleReduceRight() {
 	list := [][]int{{0, 1}, {2, 3}, {4, 5}}
 
@@ -2202,6 +2365,17 @@ func ExampleReduceRight() {
 
 	fmt.Printf("%v", result)
 	// Output: [4 5 2 3 0 1]
+}
+
+func ExampleReduceRightErr() {
+	list := [][]int{{0, 1}, {2, 3}, {4, 5}}
+
+	result, err := ReduceRightErr(list, func(agg, item []int, index int) ([]int, error) {
+		return append(agg, item...), nil
+	}, []int{})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: [4 5 2 3 0 1] <nil>
 }
 
 func ExampleForEach() {
@@ -2263,6 +2437,17 @@ func ExampleUniqBy() {
 	// Output: [0 1 2]
 }
 
+func ExampleUniqByErr() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result, err := UniqByErr(list, func(i int) (int, error) {
+		return i % 3, nil
+	})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: [0 1 2] <nil>
+}
+
 func ExampleGroupBy() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
@@ -2279,6 +2464,24 @@ func ExampleGroupBy() {
 	// [2 5]
 }
 
+func ExampleGroupByErr() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result, err := GroupByErr(list, func(i int) (int, error) {
+		return i % 3, nil
+	})
+
+	fmt.Printf("%v\n", result[0])
+	fmt.Printf("%v\n", result[1])
+	fmt.Printf("%v\n", result[2])
+	fmt.Printf("%v", err)
+	// Output:
+	// [0 3]
+	// [1 4]
+	// [2 5]
+	// <nil>
+}
+
 func ExampleGroupByMap() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
@@ -2293,6 +2496,24 @@ func ExampleGroupByMap() {
 	// [0 6]
 	// [2 8]
 	// [4 10]
+}
+
+func ExampleGroupByMapErr() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	result, err := GroupByMapErr(list, func(i int) (int, int, error) {
+		return i % 3, i * 2, nil
+	})
+
+	fmt.Printf("%v\n", result[0])
+	fmt.Printf("%v\n", result[1])
+	fmt.Printf("%v\n", result[2])
+	fmt.Printf("%v", err)
+	// Output:
+	// [0 6]
+	// [2 8]
+	// [4 10]
+	// <nil>
 }
 
 func ExampleChunk() {
@@ -2363,6 +2584,29 @@ func ExamplePartitionBy() {
 	// [-2 -1]
 	// [0 2 4]
 	// [1 3]
+}
+
+func ExamplePartitionByErr() {
+	list := []int{-2, -1, 0, 1, 2, 3, 4}
+
+	result, err := PartitionByErr(list, func(x int) (string, error) {
+		if x < 0 {
+			return "negative", nil
+		} else if x%2 == 0 {
+			return "even", nil
+		}
+		return "odd", nil
+	})
+
+	for _, item := range result {
+		fmt.Printf("%v\n", item)
+	}
+	fmt.Printf("%v", err)
+	// Output:
+	// [-2 -1]
+	// [0 2 4]
+	// [1 3]
+	// <nil>
 }
 
 func ExampleFlatten() {
@@ -2448,6 +2692,17 @@ func ExampleKeyBy() {
 
 	fmt.Printf("%v", result)
 	// Output: map[1:a 2:aa 3:aaa]
+}
+
+func ExampleKeyByErr() {
+	list := []string{"a", "aa", "aaa"}
+
+	result, err := KeyByErr(list, func(str string) (int, error) {
+		return len(str), nil
+	})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: map[1:a 2:aa 3:aaa] <nil>
 }
 
 func ExampleSliceToMap() {
@@ -2599,6 +2854,17 @@ func ExampleCountBy() {
 
 	fmt.Printf("%v", result)
 	// Output: 8
+}
+
+func ExampleCountByErr() {
+	list := []int{0, 1, 2, 3, 4, 5, 0, 1, 2, 3}
+
+	result, err := CountByErr(list, func(i int) (bool, error) {
+		return i < 4, nil
+	})
+
+	fmt.Printf("%v %v", result, err)
+	// Output: 8 <nil>
 }
 
 func ExampleCountValues() {
