@@ -137,6 +137,106 @@ func TestPickBy(t *testing.T) {
 	is.IsType(after, before, "type preserved")
 }
 
+func TestPickByErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name          string
+		input         map[string]int
+		predicate     func(string, int) (bool, error)
+		want          map[string]int
+		wantErr       string
+		wantCallCount int // 0 means don't check (maps have no order)
+	}{
+		{
+			name:  "filter odd values",
+			input: map[string]int{"foo": 1, "bar": 2, "baz": 3},
+			predicate: func(key string, value int) (bool, error) {
+				return value%2 == 1, nil
+			},
+			want:          map[string]int{"foo": 1, "baz": 3},
+			wantErr:       "",
+			wantCallCount: 0, // map iteration order is not deterministic
+		},
+		{
+			name:  "empty map",
+			input: map[string]int{},
+			predicate: func(key string, value int) (bool, error) {
+				return true, nil
+			},
+			want:          map[string]int{},
+			wantErr:       "",
+			wantCallCount: 0,
+		},
+		{
+			name:  "error on specific key",
+			input: map[string]int{"foo": 1, "bar": 2, "baz": 3},
+			predicate: func(key string, value int) (bool, error) {
+				if key == "bar" {
+					return false, fmt.Errorf("bar not allowed")
+				}
+				return true, nil
+			},
+			want:          nil,
+			wantErr:       "bar not allowed",
+			wantCallCount: 0, // map iteration order is not deterministic
+		},
+		{
+			name:  "filter all out",
+			input: map[string]int{"foo": 2, "bar": 4, "baz": 6},
+			predicate: func(key string, value int) (bool, error) {
+				return value%2 == 1, nil
+			},
+			want:          map[string]int{},
+			wantErr:       "",
+			wantCallCount: 0,
+		},
+		{
+			name:  "filter all in",
+			input: map[string]int{"foo": 1, "bar": 3, "baz": 5},
+			predicate: func(key string, value int) (bool, error) {
+				return value%2 == 1, nil
+			},
+			want:          map[string]int{"foo": 1, "bar": 3, "baz": 5},
+			wantErr:       "",
+			wantCallCount: 0,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt // capture range variable
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			got, err := PickByErr(tt.input, tt.predicate)
+
+			if tt.wantErr != "" {
+				is.Error(err)
+				is.Equal(tt.wantErr, err.Error())
+				is.Nil(got)
+			} else {
+				is.NoError(err)
+				is.Equal(tt.want, got)
+			}
+		})
+	}
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myMap map[string]int
+		before := myMap{"": 0, "foobar": 6, "baz": 3}
+		after, err := PickByErr(before, func(key string, value int) (bool, error) {
+			return true, nil
+		})
+
+		is.NoError(err)
+		is.IsType(after, before, "type preserved")
+	})
+}
+
 func TestPickByKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

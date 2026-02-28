@@ -112,6 +112,22 @@ func PickBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, val
 	return r
 }
 
+// PickByErr returns same map type filtered by given predicate.
+// It returns the first error returned by the predicate.
+func PickByErr[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) (bool, error)) (Map, error) {
+	r := Map{}
+	for k, v := range in {
+		ok, err := predicate(k, v)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			r[k] = v
+		}
+	}
+	return r, nil
+}
+
 // PickByKeys returns same map type filtered by given keys.
 // Play: https://go.dev/play/p/R1imbuci9qU
 func PickByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
