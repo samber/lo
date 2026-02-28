@@ -671,6 +671,17 @@ uniqValues := lo.UniqBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 // []int{0, 1, 2}
 ```
 
+```go
+// Use UniqByErr when the iteratee function can return an error
+result, err := lo.UniqByErr([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, error) {
+    if i == 3 {
+        return 0, fmt.Errorf("number 3 is not allowed")
+    }
+    return i % 3, nil
+})
+// []int(nil), error("number 3 is not allowed")
+```
+
 [[play](https://go.dev/play/p/g42Z3QSb53u)]
 
 ### GroupBy
@@ -1663,6 +1674,17 @@ m := lo.OmitBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, va
     return value%2 == 1
 })
 // map[string]int{"bar": 2}
+```
+
+```go
+// Use OmitByErr when the predicate can return an error
+m, err := lo.OmitByErr(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) (bool, error) {
+    if key == "bar" {
+        return false, fmt.Errorf("bar not allowed")
+    }
+    return value%2 == 1, nil
+})
+// map[string]int(nil), error("bar not allowed")
 ```
 
 [[play](https://go.dev/play/p/EtBsR43bdsd)]
