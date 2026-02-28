@@ -169,6 +169,21 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, it
 	return sum / length
 }
 
+// MeanByErr calculates the mean of a collection of numbers using the given return value from the iteration function.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// If collection is empty 0 and nil error are returned.
+func MeanByErr[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(item T) (R, error)) (R, error) {
+	length := R(len(collection))
+	if length == 0 {
+		return 0, nil
+	}
+	sum, err := SumByErr(collection, iteratee)
+	if err != nil {
+		return 0, err
+	}
+	return sum / length, nil
+}
+
 // Mode returns the mode (most frequent value) of a collection.
 // If multiple values have the same highest frequency, then multiple values are returned.
 // If the collection is empty, then the zero value of T is returned.
