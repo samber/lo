@@ -573,6 +573,23 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(item V) K) map[K]V
 	return result
 }
 
+// KeyByErr transforms a slice or a slice of structs to a map based on a pivot callback to compute keys.
+// Iteratee can return an error to stop iteration immediately.
+// Play: https://go.dev/play/p/ccUiUL_Lnel
+func KeyByErr[K comparable, V any](collection []V, iteratee func(item V) (K, error)) (map[K]V, error) {
+	result := make(map[K]V, len(collection))
+
+	for i := range collection {
+		k, err := iteratee(collection[i])
+		if err != nil {
+			return nil, err
+		}
+		result[k] = collection[i]
+	}
+
+	return result, nil
+}
+
 // Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
 // If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original slice.

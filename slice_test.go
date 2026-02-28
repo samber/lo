@@ -1570,6 +1570,112 @@ func TestKeyBy(t *testing.T) {
 	is.Equal(map[int]string{1: "a", 2: "aa", 3: "aaa"}, result1)
 }
 
+func TestKeyByErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name                 string
+		input                []string
+		iteratee             func(item string) (int, error)
+		wantResult           map[int]string
+		wantErr              bool
+		errMsg               string
+		expectedCallbackCount int
+	}{
+		{
+			name:     "empty slice",
+			input:    []string{},
+			iteratee: func(s string) (int, error) { return len(s), nil },
+			wantResult: map[int]string{},
+			wantErr:              false,
+			expectedCallbackCount: 0,
+		},
+		{
+			name:     "success case",
+			input:    []string{"a", "aa", "aaa"},
+			iteratee: func(s string) (int, error) { return len(s), nil },
+			wantResult: map[int]string{1: "a", 2: "aa", 3: "aaa"},
+			wantErr:              false,
+			expectedCallbackCount: 3,
+		},
+		{
+			name: "error stops iteration - first item",
+			input: []string{"a", "aa", "aaa"},
+			iteratee: func(s string) (int, error) {
+				return 0, fmt.Errorf("error on %s", s)
+			},
+			wantResult:           nil,
+			wantErr:              true,
+			errMsg:               "error on a",
+			expectedCallbackCount: 1,
+		},
+		{
+			name: "error stops iteration - middle item",
+			input: []string{"a", "aa", "aaa"},
+			iteratee: func(s string) (int, error) {
+				if s == "aa" {
+					return 0, fmt.Errorf("middle error")
+				}
+				return len(s), nil
+			},
+			wantResult:           nil,
+			wantErr:              true,
+			errMsg:               "middle error",
+			expectedCallbackCount: 2,
+		},
+		{
+			name: "error stops iteration - last item",
+			input: []string{"a", "aa", "aaa"},
+			iteratee: func(s string) (int, error) {
+				if s == "aaa" {
+					return 0, fmt.Errorf("last error")
+				}
+				return len(s), nil
+			},
+			wantResult:           nil,
+			wantErr:              true,
+			errMsg:               "last error",
+			expectedCallbackCount: 3,
+		},
+		{
+			name:     "duplicate keys",
+			input:    []string{"a", "b", "c"},
+			iteratee: func(s string) (int, error) { return 1, nil },
+			wantResult: map[int]string{1: "c"},
+			wantErr:              false,
+			expectedCallbackCount: 3,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			callbackCount := 0
+			wrappedIteratee := func(s string) (int, error) {
+				callbackCount++
+				return tt.iteratee(s)
+			}
+
+			result, err := KeyByErr(tt.input, wrappedIteratee)
+
+			if tt.wantErr {
+				assert.Error(t, err)
+				if tt.errMsg != "" {
+					assert.Equal(t, tt.errMsg, err.Error())
+				}
+				assert.Nil(t, result)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tt.wantResult, result)
+			}
+
+			assert.Equal(t, tt.expectedCallbackCount, callbackCount, "callback count mismatch")
+		})
+	}
+}
+
 func TestAssociate(t *testing.T) {
 	t.Parallel()
 

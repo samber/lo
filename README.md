@@ -1004,6 +1004,16 @@ result := lo.KeyBy(characters, func(char Character) string {
 //map[a:{dir:left code:97} d:{dir:right code:100}]
 ```
 
+```go
+result, err := lo.KeyByErr([]string{"a", "aa", "aaa", ""}, func(str string) (int, error) {
+    if str == "" {
+        return 0, fmt.Errorf("empty string not allowed")
+    }
+    return len(str), nil
+})
+// map[int]string(nil), error("empty string not allowed")
+```
+
 [[play](https://go.dev/play/p/mdaClUAT-zZ)]
 
 ### SliceToMap (alias: Associate)
