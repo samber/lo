@@ -1,7 +1,7 @@
 package lo
 
 import (
-	"fmt"
+	"errors"
 	"strconv"
 	"testing"
 
@@ -400,7 +400,7 @@ func TestWithoutByErr(t *testing.T) {
 			input: []User{{Name: "nick"}, {Name: "peter"}, {Name: "lily"}},
 			iteratee: func(item User) (string, error) {
 				if item.Name == "peter" {
-					return "", fmt.Errorf("peter not allowed")
+					return "", errors.New("peter not allowed")
 				}
 				return item.Name, nil
 			},
@@ -413,7 +413,7 @@ func TestWithoutByErr(t *testing.T) {
 			name:  "error on first element",
 			input: []User{{Name: "nick"}, {Name: "peter"}},
 			iteratee: func(item User) (string, error) {
-				return "", fmt.Errorf("first element error")
+				return "", errors.New("first element error")
 			},
 			exclude:       []string{"nick"},
 			want:          nil,

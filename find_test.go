@@ -1,7 +1,7 @@
 package lo
 
 import (
-	"fmt"
+	"errors"
 	"math/rand"
 	"testing"
 	"time"
@@ -374,9 +374,12 @@ func TestMinByErr(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			result, err := MinByErr(tt.input, func(item, min string) (bool, error) {
-				return len(item) < len(min), nil
+			t.Parallel()
+
+			result, err := MinByErr(tt.input, func(item, mIn string) (bool, error) {
+				return len(item) < len(mIn), nil
 			})
 			is.NoError(err)
 			is.Equal(tt.expected, result)
@@ -405,23 +408,21 @@ func TestMinByErr(t *testing.T) {
 	}
 
 	for _, tt := range errorTests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			callbackCount := 0
-			result, err := MinByErr(tt.input, func(item, min string) (bool, error) {
+			result, err := MinByErr(tt.input, func(item, mIn string) (bool, error) {
 				callbackCount++
 				if item == tt.errorAt {
 					return false, testErr
 				}
-				return len(item) < len(min), nil
+				return len(item) < len(mIn), nil
 			})
 			is.ErrorIs(err, testErr)
 			is.Equal(tt.expectedCalls, callbackCount)
-			// Result should be the current min at the time of error
-			if tt.expectedCalls == 1 {
-				is.Equal("a", result) // Still the first element
-			} else {
-				is.Equal("a", result) // "a" is still min
-			}
+			is.Equal("a", result) // Still the first element
 		})
 	}
 }
@@ -454,43 +455,43 @@ func TestMinIndexByErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name                 string
-		input                []string
-		less                 func(a, b string) (bool, error)
-		wantValue            string
-		wantIndex            int
-		wantErr              bool
-		errMsg               string
+		name                  string
+		input                 []string
+		less                  func(a, b string) (bool, error)
+		wantValue             string
+		wantIndex             int
+		wantErr               bool
+		errMsg                string
 		expectedCallbackCount int
 	}{
 		{
-			name:     "empty slice",
-			input:    []string{},
-			less:     func(a, b string) (bool, error) { return len(a) < len(b), nil },
-			wantValue: "",
-			wantIndex: -1,
-			wantErr:              false,
+			name:                  "empty slice",
+			input:                 []string{},
+			less:                  func(a, b string) (bool, error) { return len(a) < len(b), nil },
+			wantValue:             "",
+			wantIndex:             -1,
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 		{
-			name:     "success case",
-			input:    []string{"s1", "string2", "s3"},
-			less:     func(a, b string) (bool, error) { return len(a) < len(b), nil },
-			wantValue: "s1",
-			wantIndex: 0,
-			wantErr:              false,
+			name:                  "success case",
+			input:                 []string{"s1", "string2", "s3"},
+			less:                  func(a, b string) (bool, error) { return len(a) < len(b), nil },
+			wantValue:             "s1",
+			wantIndex:             0,
+			wantErr:               false,
 			expectedCallbackCount: 2,
 		},
 		{
 			name:  "error on first comparison",
 			input: []string{"s1", "string2", "s3"},
 			less: func(a, b string) (bool, error) {
-				return false, fmt.Errorf("comparison error")
+				return false, errors.New("comparison error")
 			},
-			wantValue:            "",
-			wantIndex:            -1,
-			wantErr:              true,
-			errMsg:               "comparison error",
+			wantValue:             "",
+			wantIndex:             -1,
+			wantErr:               true,
+			errMsg:                "comparison error",
 			expectedCallbackCount: 1,
 		},
 		{
@@ -498,23 +499,23 @@ func TestMinIndexByErr(t *testing.T) {
 			input: []string{"a", "bb", "ccc", "error", "e"},
 			less: func(a, b string) (bool, error) {
 				if a == "error" || b == "error" {
-					return false, fmt.Errorf("error value encountered")
+					return false, errors.New("error value encountered")
 				}
 				return len(a) < len(b), nil
 			},
-			wantValue:            "",
-			wantIndex:            -1,
-			wantErr:              true,
-			errMsg:               "error value encountered",
+			wantValue:             "",
+			wantIndex:             -1,
+			wantErr:               true,
+			errMsg:                "error value encountered",
 			expectedCallbackCount: 3,
 		},
 		{
-			name:     "single element",
-			input:    []string{"single"},
-			less:     func(a, b string) (bool, error) { return len(a) < len(b), nil },
-			wantValue: "single",
-			wantIndex: 0,
-			wantErr:              false,
+			name:                  "single element",
+			input:                 []string{"single"},
+			less:                  func(a, b string) (bool, error) { return len(a) < len(b), nil },
+			wantValue:             "single",
+			wantIndex:             0,
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 	}
@@ -627,7 +628,10 @@ func TestEarliestByErr(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			result, err := EarliestByErr(tt.input, func(i foo) (time.Time, error) {
 				return i.bar, nil
 			})
@@ -664,7 +668,10 @@ func TestEarliestByErr(t *testing.T) {
 	}
 
 	for _, tt := range errorTests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			callbackCount := 0
 			_, err := EarliestByErr(tt.input, func(i foo) (time.Time, error) {
 				callbackCount++
@@ -775,9 +782,12 @@ func TestMaxByErr(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			result, err := MaxByErr(tt.input, func(item, max string) (bool, error) {
-				return len(item) > len(max), nil
+			t.Parallel()
+
+			result, err := MaxByErr(tt.input, func(item, mAx string) (bool, error) {
+				return len(item) > len(mAx), nil
 			})
 			is.NoError(err)
 			is.Equal(tt.expected, result)
@@ -806,14 +816,17 @@ func TestMaxByErr(t *testing.T) {
 	}
 
 	for _, tt := range errorTests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			callbackCount := 0
-			result, err := MaxByErr(tt.input, func(item, max string) (bool, error) {
+			result, err := MaxByErr(tt.input, func(item, mAx string) (bool, error) {
 				callbackCount++
 				if item == tt.errorAt {
 					return false, testErr
 				}
-				return len(item) > len(max), nil
+				return len(item) > len(mAx), nil
 			})
 			is.ErrorIs(err, testErr)
 			is.Equal(tt.expectedCalls, callbackCount)
@@ -897,9 +910,12 @@ func TestMaxIndexByErr(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			result, index, err := MaxIndexByErr(tt.input, func(item, max string) (bool, error) {
-				return len(item) > len(max), nil
+			t.Parallel()
+
+			result, index, err := MaxIndexByErr(tt.input, func(item, mAx string) (bool, error) {
+				return len(item) > len(mAx), nil
 			})
 			is.NoError(err)
 			is.Equal(tt.expectedResult, result)
@@ -935,14 +951,17 @@ func TestMaxIndexByErr(t *testing.T) {
 	}
 
 	for _, tt := range errorTests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			callbackCount := 0
-			result, index, err := MaxIndexByErr(tt.input, func(item, max string) (bool, error) {
+			result, index, err := MaxIndexByErr(tt.input, func(item, mAx string) (bool, error) {
 				callbackCount++
 				if item == tt.errorAt {
 					return false, testErr
 				}
-				return len(item) > len(max), nil
+				return len(item) > len(mAx), nil
 			})
 			is.ErrorIs(err, testErr)
 			is.Equal(tt.expectedCalls, callbackCount)
@@ -1029,7 +1048,10 @@ func TestLatestByErr(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			result, err := LatestByErr(tt.input, func(i foo) (time.Time, error) {
 				return i.bar, nil
 			})
@@ -1066,7 +1088,10 @@ func TestLatestByErr(t *testing.T) {
 	}
 
 	for _, tt := range errorTests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			callbackCount := 0
 			_, err := LatestByErr(tt.input, func(i foo) (time.Time, error) {
 				callbackCount++

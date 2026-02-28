@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"testing"
@@ -173,7 +174,7 @@ func TestPickByErr(t *testing.T) {
 			input: map[string]int{"foo": 1, "bar": 2, "baz": 3},
 			predicate: func(key string, value int) (bool, error) {
 				if key == "bar" {
-					return false, fmt.Errorf("bar not allowed")
+					return false, errors.New("bar not allowed")
 				}
 				return true, nil
 			},
@@ -317,7 +318,7 @@ func TestOmitByErr(t *testing.T) {
 			input: map[string]int{"foo": 1, "bar": 2, "baz": 3},
 			predicate: func(key string, value int) (bool, error) {
 				if key == "bar" {
-					return false, fmt.Errorf("bar not allowed")
+					return false, errors.New("bar not allowed")
 				}
 				return true, nil
 			},
@@ -664,7 +665,7 @@ func TestMapValuesErr(t *testing.T) {
 			input: map[int]int{1: 1, 2: 2},
 			iteratee: func(x, _ int) (string, error) {
 				if x == 1 {
-					return "", fmt.Errorf("cannot process 1")
+					return "", errors.New("cannot process 1")
 				}
 				return strconv.FormatInt(int64(x), 10), nil
 			},
@@ -849,7 +850,7 @@ func TestMapEntriesErr(t *testing.T) {
 				input: map[string]int{"foo": 1, "bar": 2, "baz": 3},
 				iteratee: func(k string, v int) (string, int, error) {
 					if k == "bar" {
-						return "", 0, fmt.Errorf("bar not allowed")
+						return "", 0, errors.New("bar not allowed")
 					}
 					return k, v, nil
 				},
@@ -983,7 +984,7 @@ func TestMapEntriesErr(t *testing.T) {
 				input: map[string]int{"a": 1, "b": 2},
 				iteratee: func(k string, v int) (int, string, error) {
 					if k == "b" {
-						return 0, "", fmt.Errorf("cannot invert b")
+						return 0, "", errors.New("cannot invert b")
 					}
 					return v, k, nil
 				},
@@ -1031,75 +1032,75 @@ func TestMapToSliceErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-	 name          string
-	 input         map[int]int64
-	 iteratee      func(int, int64) (string, error)
-	 want          []string
-	 wantErr       string
-	 wantCallCount int // 0 means don't check (maps have no order)
+		name          string
+		input         map[int]int64
+		iteratee      func(int, int64) (string, error)
+		want          []string
+		wantErr       string
+		wantCallCount int // 0 means don't check (maps have no order)
 	}{
-	 {
-	 name:  "successful transformation",
-	 input: map[int]int64{1: 5, 2: 6, 3: 7},
-	 iteratee: func(k int, v int64) (string, error) {
-	 return fmt.Sprintf("%d_%d", k, v), nil
-	 },
-	 want:          []string{"1_5", "2_6", "3_7"},
-	 wantErr:       "",
-	 wantCallCount: 0, // map iteration order is not deterministic
-	 },
-	 {
-	 name:  "empty map",
-	 input: map[int]int64{},
-	 iteratee: func(k int, v int64) (string, error) {
-	 return fmt.Sprintf("%d_%d", k, v), nil
-	 },
-	 want:          []string{},
-	 wantErr:       "",
-	 wantCallCount: 0,
-	 },
-	 {
-	 name:  "error on specific key",
-	 input: map[int]int64{1: 5, 2: 6, 3: 7},
-	 iteratee: func(k int, v int64) (string, error) {
-	 if k == 2 {
-		 return "", fmt.Errorf("key 2 not allowed")
-	 }
-	 return fmt.Sprintf("%d_%d", k, v), nil
-	 },
-	 want:          nil,
-	 wantErr:       "key 2 not allowed",
-	 wantCallCount: 0, // map iteration order is not deterministic
-	 },
-	 {
-	 name:  "constant value",
-	 input: map[int]int64{1: 5, 2: 6, 3: 7},
-	 iteratee: func(k int, v int64) (string, error) {
-	 return "constant", nil
-	 },
-	 want:          []string{"constant", "constant", "constant"},
-	 wantErr:       "",
-	 wantCallCount: 0,
-	 },
+		{
+			name:  "successful transformation",
+			input: map[int]int64{1: 5, 2: 6, 3: 7},
+			iteratee: func(k int, v int64) (string, error) {
+				return fmt.Sprintf("%d_%d", k, v), nil
+			},
+			want:          []string{"1_5", "2_6", "3_7"},
+			wantErr:       "",
+			wantCallCount: 0, // map iteration order is not deterministic
+		},
+		{
+			name:  "empty map",
+			input: map[int]int64{},
+			iteratee: func(k int, v int64) (string, error) {
+				return fmt.Sprintf("%d_%d", k, v), nil
+			},
+			want:          []string{},
+			wantErr:       "",
+			wantCallCount: 0,
+		},
+		{
+			name:  "error on specific key",
+			input: map[int]int64{1: 5, 2: 6, 3: 7},
+			iteratee: func(k int, v int64) (string, error) {
+				if k == 2 {
+					return "", errors.New("key 2 not allowed")
+				}
+				return fmt.Sprintf("%d_%d", k, v), nil
+			},
+			want:          nil,
+			wantErr:       "key 2 not allowed",
+			wantCallCount: 0, // map iteration order is not deterministic
+		},
+		{
+			name:  "constant value",
+			input: map[int]int64{1: 5, 2: 6, 3: 7},
+			iteratee: func(k int, v int64) (string, error) {
+				return "constant", nil
+			},
+			want:          []string{"constant", "constant", "constant"},
+			wantErr:       "",
+			wantCallCount: 0,
+		},
 	}
 
 	for _, tt := range tests {
-	 tt := tt // capture range variable
-	 t.Run(tt.name, func(t *testing.T) {
-	 t.Parallel()
-	 is := assert.New(t)
+		tt := tt // capture range variable
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	 got, err := MapToSliceErr(tt.input, tt.iteratee)
+			got, err := MapToSliceErr(tt.input, tt.iteratee)
 
-	 if tt.wantErr != "" {
-		 is.Error(err)
-		 is.Equal(tt.wantErr, err.Error())
-		 is.Nil(got)
-	 } else {
-		 is.NoError(err)
-		 is.ElementsMatch(tt.want, got)
-	 }
-	 })
+			if tt.wantErr != "" {
+				is.Error(err)
+				is.Equal(tt.wantErr, err.Error())
+				is.Nil(got)
+			} else {
+				is.NoError(err)
+				is.ElementsMatch(tt.want, got)
+			}
+		})
 	}
 }
 

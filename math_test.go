@@ -231,6 +231,7 @@ func TestProductBy(t *testing.T) {
 	is.Equal(uint32(1), result8)
 }
 
+//nolint:errcheck,forcetypeassert
 func TestProductByErr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -286,7 +287,10 @@ func TestProductByErr(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			switch input := tt.input.(type) {
 			case []float32:
 				result, err := ProductByErr(input, func(n float32) (float32, error) { return n, nil })
@@ -340,7 +344,10 @@ func TestProductByErr(t *testing.T) {
 	}
 
 	for _, tt := range errorTests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			callbackCount := 0
 			result, err := ProductByErr(tt.input, func(n int32) (int32, error) {
 				callbackCount++
@@ -386,6 +393,7 @@ func TestMeanBy(t *testing.T) {
 	is.Equal(uint32(0), result4)
 }
 
+//nolint:errcheck,forcetypeassert
 func TestMeanByErr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -426,7 +434,10 @@ func TestMeanByErr(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			switch input := tt.input.(type) {
 			case []float32:
 				result, err := MeanByErr(input, func(n float32) (float32, error) { return n, nil })
@@ -472,7 +483,10 @@ func TestMeanByErr(t *testing.T) {
 	}
 
 	for _, tt := range errorTests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			callbackCount := 0
 			_, err := MeanByErr(tt.input, func(n int32) (int32, error) {
 				callbackCount++
