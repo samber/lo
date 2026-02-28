@@ -12,6 +12,7 @@ similarHelpers:
   - core#map#mapentries
   - core#map#keyby
   - core#slice#map
+  - core#map#mapkeyserr
 position: 180
 signatures:
   - "func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value V, key K) R) map[R]V"

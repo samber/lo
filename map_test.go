@@ -362,6 +362,48 @@ func TestMapKeys(t *testing.T) {
 	is.Equal(map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}, result2)
 }
 
+func TestMapKeysErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Test successful case
+	result1, err := MapKeysErr(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(x, _ int) (string, error) {
+		return "Hello", nil
+	})
+	is.NoError(err)
+	is.Len(result1, 1)
+
+	result2, err := MapKeysErr(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_, v int) (string, error) {
+		return strconv.FormatInt(int64(v), 10), nil
+	})
+	is.NoError(err)
+	is.Equal(map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}, result2)
+
+	// Test error case - returns first error
+	_, err = MapKeysErr(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(v, _ int) (string, error) {
+		if v == 3 {
+			return "", fmt.Errorf("error at %d", v)
+		}
+		return strconv.FormatInt(int64(v), 10), nil
+	})
+	is.Error(err)
+	is.Equal("error at 3", err.Error())
+
+	// Test empty map
+	result3, err := MapKeysErr(map[int]int{}, func(v, _ int) (string, error) {
+		return strconv.FormatInt(int64(v), 10), nil
+	})
+	is.NoError(err)
+	is.Empty(result3)
+
+	// Test all keys collide
+	result4, err := MapKeysErr(map[int]int{1: 1, 2: 2, 3: 3}, func(_, _ int) (string, error) {
+		return "same", nil
+	})
+	is.NoError(err)
+	is.Equal(map[string]int{"same": 3}, result4)
+}
+
 func TestMapValues(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

@@ -1735,6 +1735,17 @@ m2 := lo.MapKeys(map[int]int{1: 1, 2: 2, 3: 3, 4: 4}, func(_ int, v int) string 
 // map[string]int{"1": 1, "2": 2, "3": 3, "4": 4}
 ```
 
+```go
+// Use MapKeysErr when the iteratee can return an error
+m2, err := lo.MapKeysErr(map[int]int{1: 1, 2: 2, 3: 3}, func(_ int, v int) (string, error) {
+    if v == 2 {
+        return "", fmt.Errorf("even number not allowed")
+    }
+    return strconv.FormatInt(int64(v), 10), nil
+})
+// map[string]int(nil), error("even number not allowed")
+```
+
 [[play](https://go.dev/play/p/9_4WPIqOetJ)]
 
 ### MapValues
