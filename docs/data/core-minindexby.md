@@ -8,6 +8,7 @@ playUrl:
 variantHelpers:
   - core#find#minindexby
 similarHelpers:
+  - core#find#minindexbyerr
   - core#find#min
   - core#find#minby
   - core#find#minindex
