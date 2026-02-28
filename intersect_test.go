@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"fmt"
 	"strconv"
 	"testing"
 
@@ -353,6 +354,138 @@ func TestWithoutBy(t *testing.T) {
 		return s
 	})
 	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestWithoutByErr(t *testing.T) {
+	t.Parallel()
+
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	tests := []struct {
+		name          string
+		input         []User
+		iteratee      func(User) (string, error)
+		exclude       []string
+		want          []User
+		wantErr       string
+		wantCallCount int
+	}{
+		{
+			name:  "exclude by name",
+			input: []User{{Name: "nick"}, {Name: "peter"}},
+			iteratee: func(item User) (string, error) {
+				return item.Name, nil
+			},
+			exclude:       []string{"nick", "lily"},
+			want:          []User{{Name: "peter"}},
+			wantErr:       "",
+			wantCallCount: 2,
+		},
+		{
+			name:  "empty exclude list",
+			input: []User{{Name: "nick"}, {Name: "peter"}},
+			iteratee: func(item User) (string, error) {
+				return item.Name, nil
+			},
+			exclude:       []string{},
+			want:          []User{{Name: "nick"}, {Name: "peter"}},
+			wantErr:       "",
+			wantCallCount: 2,
+		},
+		{
+			name:  "error on second element",
+			input: []User{{Name: "nick"}, {Name: "peter"}, {Name: "lily"}},
+			iteratee: func(item User) (string, error) {
+				if item.Name == "peter" {
+					return "", fmt.Errorf("peter not allowed")
+				}
+				return item.Name, nil
+			},
+			exclude:       []string{"nick"},
+			want:          nil,
+			wantErr:       "peter not allowed",
+			wantCallCount: 2, // stops early at error
+		},
+		{
+			name:  "error on first element",
+			input: []User{{Name: "nick"}, {Name: "peter"}},
+			iteratee: func(item User) (string, error) {
+				return "", fmt.Errorf("first element error")
+			},
+			exclude:       []string{"nick"},
+			want:          nil,
+			wantErr:       "first element error",
+			wantCallCount: 1,
+		},
+		{
+			name:  "all excluded",
+			input: []User{{Name: "nick"}, {Name: "peter"}},
+			iteratee: func(item User) (string, error) {
+				return item.Name, nil
+			},
+			exclude:       []string{"nick", "peter", "lily"},
+			want:          []User{},
+			wantErr:       "",
+			wantCallCount: 2,
+		},
+		{
+			name:  "none excluded",
+			input: []User{{Name: "nick"}, {Name: "peter"}},
+			iteratee: func(item User) (string, error) {
+				return item.Name, nil
+			},
+			exclude:       []string{"alice"},
+			want:          []User{{Name: "nick"}, {Name: "peter"}},
+			wantErr:       "",
+			wantCallCount: 2,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt // capture range variable
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			callCount := 0
+			wrappedIteratee := func(item User) (string, error) {
+				callCount++
+				return tt.iteratee(item)
+			}
+
+			got, err := WithoutByErr(tt.input, wrappedIteratee, tt.exclude...)
+
+			if tt.wantErr != "" {
+				is.Error(err)
+				is.Equal(tt.wantErr, err.Error())
+				is.Nil(got)
+				if tt.wantCallCount > 0 {
+					is.Equal(tt.wantCallCount, callCount, "should stop early on error")
+				}
+			} else {
+				is.NoError(err)
+				is.Equal(tt.want, got)
+				is.Equal(tt.wantCallCount, callCount)
+			}
+		})
+	}
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty, err := WithoutByErr(allStrings, func(s string) (string, error) {
+			return s, nil
+		})
+
+		is.NoError(err)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestWithoutEmpty(t *testing.T) {

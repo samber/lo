@@ -282,6 +282,24 @@ func WithoutBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(
 	return result
 }
 
+// WithoutByErr filters a slice by excluding elements whose extracted keys match any in the exclude list.
+// It returns the first error returned by the iteratee.
+func WithoutByErr[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) (K, error), exclude ...K) (Slice, error) {
+	excludeMap := Keyify(exclude)
+
+	result := make(Slice, 0, len(collection))
+	for _, item := range collection {
+		key, err := iteratee(item)
+		if err != nil {
+			return nil, err
+		}
+		if _, ok := excludeMap[key]; !ok {
+			result = append(result, item)
+		}
+	}
+	return result, nil
+}
+
 // WithoutEmpty returns a slice excluding zero values.
 //
 // Deprecated: Use lo.Compact instead.

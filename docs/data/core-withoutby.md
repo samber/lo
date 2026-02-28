@@ -1,7 +1,7 @@
 ---
 name: WithoutBy
 slug: withoutby
-sourceRef: intersect.go#L199
+sourceRef: intersect.go#L273
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/VgWJOF01NbJ
@@ -11,6 +11,7 @@ similarHelpers:
   - core#intersect#without
   - core#intersect#difference
   - core#slice#rejectby
+  - core#intersect#withoutbyerr
 position: 120
 signatures:
   - "func WithoutBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K, exclude ...K) Slice"
