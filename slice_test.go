@@ -700,6 +700,132 @@ func TestUniqBy(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestUniqByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name               string
+		input              []int
+		iteratee           func(item int) (int, error)
+		wantResult         []int
+		wantErr            bool
+		errMsg             string
+		expectedCallbackCount int
+	}{
+		{
+			name:  "successful uniq",
+			input: []int{0, 1, 2, 3, 4, 5},
+			iteratee: func(i int) (int, error) {
+				return i % 3, nil
+			},
+			wantResult: []int{0, 1, 2},
+			wantErr: false,
+			expectedCallbackCount: 6,
+		},
+		{
+			name:  "error at fourth element stops iteration",
+			input: []int{0, 1, 2, 3, 4, 5},
+			iteratee: func(i int) (int, error) {
+				if i == 3 {
+					return 0, fmt.Errorf("number 3 is not allowed")
+				}
+				return i % 3, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 3 is not allowed",
+			expectedCallbackCount: 4,
+		},
+		{
+			name:  "error at first element stops iteration immediately",
+			input: []int{0, 1, 2, 3, 4, 5},
+			iteratee: func(i int) (int, error) {
+				if i == 0 {
+					return 0, fmt.Errorf("number 0 is not allowed")
+				}
+				return i % 3, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 0 is not allowed",
+			expectedCallbackCount: 1,
+		},
+		{
+			name:  "error at last element",
+			input: []int{0, 1, 2, 3, 4, 5},
+			iteratee: func(i int) (int, error) {
+				if i == 5 {
+					return 0, fmt.Errorf("number 5 is not allowed")
+				}
+				return i % 3, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 5 is not allowed",
+			expectedCallbackCount: 6,
+		},
+		{
+			name:  "empty input slice",
+			input: []int{},
+			iteratee: func(i int) (int, error) {
+				return i % 3, nil
+			},
+			wantResult: []int{},
+			wantErr: false,
+			expectedCallbackCount: 0,
+		},
+		{
+			name:  "all duplicates",
+			input: []int{1, 1, 1, 1},
+			iteratee: func(i int) (int, error) {
+				return i % 3, nil
+			},
+			wantResult: []int{1},
+			wantErr: false,
+			expectedCallbackCount: 4,
+		},
+		{
+			name:  "no duplicates",
+			input: []int{0, 1, 2, 3},
+			iteratee: func(i int) (int, error) {
+				return i, nil
+			},
+			wantResult: []int{0, 1, 2, 3},
+			wantErr: false,
+			expectedCallbackCount: 4,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			// Track callback count to test early return
+			callbackCount := 0
+			wrappedIteratee := func(item int) (int, error) {
+				callbackCount++
+				return tt.iteratee(item)
+			}
+
+			result, err := UniqByErr(tt.input, wrappedIteratee)
+
+			if tt.wantErr {
+				is.Error(err)
+				is.Equal(tt.errMsg, err.Error())
+				is.Nil(result)
+			} else {
+				is.NoError(err)
+				is.Equal(tt.wantResult, result)
+			}
+
+			// Verify callback count matches expected
+			is.Equal(tt.expectedCallbackCount, callbackCount, "callback count should match expected")
+		})
+	}
+}
+
 func TestGroupBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

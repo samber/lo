@@ -237,6 +237,31 @@ func UniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(ite
 	return result
 }
 
+// UniqByErr returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept.
+// The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
+// invoked for each element in the slice to generate the criterion by which uniqueness is computed.
+// It returns the first error returned by the iteratee function.
+func UniqByErr[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) (U, error)) (Slice, error) {
+	result := make(Slice, 0, len(collection))
+	seen := make(map[U]struct{}, len(collection))
+
+	for i := range collection {
+		key, err := iteratee(collection[i])
+		if err != nil {
+			return nil, err
+		}
+
+		if _, ok := seen[key]; ok {
+			continue
+		}
+
+		seen[key] = struct{}{}
+		result = append(result, collection[i])
+	}
+
+	return result, nil
+}
+
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // Play: https://go.dev/play/p/XnQBd_v6brd
 func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) map[U]Slice {
