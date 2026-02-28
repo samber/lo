@@ -733,6 +733,37 @@ func LatestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 	return latest
 }
 
+// LatestByErr search the maximum time.Time of a collection using the given iteratee function.
+// Returns zero value and nil error when the collection is empty.
+// If the iteratee returns an error, iteration stops and the error is returned.
+func LatestByErr[T any](collection []T, iteratee func(item T) (time.Time, error)) (T, error) {
+	var latest T
+
+	if len(collection) == 0 {
+		return latest, nil
+	}
+
+	latestTime, err := iteratee(collection[0])
+	if err != nil {
+		return latest, err
+	}
+	latest = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		itemTime, err := iteratee(collection[i])
+		if err != nil {
+			return latest, err
+		}
+
+		if itemTime.After(latestTime) {
+			latest = collection[i]
+			latestTime = itemTime
+		}
+	}
+
+	return latest, nil
+}
+
 // First returns the first element of a collection and check for availability of the first element.
 // Play: https://go.dev/play/p/ul45Z0y2EFO
 func First[T any](collection []T) (T, bool) {

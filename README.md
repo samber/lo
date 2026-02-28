@@ -3540,6 +3540,17 @@ latest := lo.LatestBy([]foo{{time.Now()}, {}}, func(i foo) time.Time {
 // {bar:{2023-04-01 01:02:03 +0000 UTC}}
 ```
 
+```go
+// Use LatestByErr when the iteratee function can return an error
+result, err := lo.LatestByErr([]foo{{time.Now()}, {}}, func(i foo) (time.Time, error) {
+    if i.bar.IsZero() {
+        return time.Time{}, fmt.Errorf("zero time not allowed")
+    }
+    return i.bar, nil
+})
+// foo{}, error("zero time not allowed")
+```
+
 ### First
 
 Returns the first element of a collection and check for availability of the first element.
