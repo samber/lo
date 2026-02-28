@@ -1282,6 +1282,127 @@ func TestPartitionBy(t *testing.T) {
 	is.IsType(nonempty[0], allStrings, "type preserved")
 }
 
+func TestPartitionByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	oddEven := func(x int) (string, error) {
+		if x < 0 {
+			return "negative", nil
+		} else if x%2 == 0 {
+			return "even", nil
+		}
+		return "odd", nil
+	}
+
+	tests := []struct {
+		name               string
+		input              []int
+		iteratee           func(item int) (string, error)
+		wantResult         [][]int
+		wantErr            bool
+		errMsg             string
+		expectedCallbackCount int
+	}{
+		{
+			name:       "successful partition",
+			input:      []int{-2, -1, 0, 1, 2, 3, 4, 5},
+			iteratee:   oddEven,
+			wantResult: [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}},
+			wantErr:    false,
+			expectedCallbackCount: 8,
+		},
+		{
+			name: "error at fifth element stops iteration",
+			input: []int{-2, -1, 0, 1, 2, 3},
+			iteratee: func(x int) (string, error) {
+				if x == 2 {
+					return "", fmt.Errorf("number 2 is not allowed")
+				}
+				return oddEven(x)
+			},
+			wantResult: nil,
+			wantErr:    true,
+			errMsg:     "number 2 is not allowed",
+			expectedCallbackCount: 5,
+		},
+		{
+			name: "error at first element stops iteration immediately",
+			input: []int{-2, -1, 0, 1},
+			iteratee: func(x int) (string, error) {
+				if x == -2 {
+					return "", fmt.Errorf("number -2 is not allowed")
+				}
+				return oddEven(x)
+			},
+			wantResult: nil,
+			wantErr:    true,
+			errMsg:     "number -2 is not allowed",
+			expectedCallbackCount: 1,
+		},
+		{
+			name: "error at last element",
+			input: []int{-2, -1, 0, 1, 2},
+			iteratee: func(x int) (string, error) {
+				if x == 2 {
+					return "", fmt.Errorf("number 2 is not allowed")
+				}
+				return oddEven(x)
+			},
+			wantResult: nil,
+			wantErr:    true,
+			errMsg:     "number 2 is not allowed",
+			expectedCallbackCount: 5,
+		},
+		{
+			name:       "empty input slice",
+			input:      []int{},
+			iteratee:   oddEven,
+			wantResult: [][]int{},
+			wantErr:    false,
+			expectedCallbackCount: 0,
+		},
+		{
+			name: "all elements in same partition",
+			input: []int{1, 3, 5},
+			iteratee: func(x int) (string, error) {
+				return "odd", nil
+			},
+			wantResult: [][]int{{1, 3, 5}},
+			wantErr:    false,
+			expectedCallbackCount: 3,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			// Track callback count to test early return
+			callbackCount := 0
+			wrappedIteratee := func(item int) (string, error) {
+				callbackCount++
+				return tt.iteratee(item)
+			}
+
+			result, err := PartitionByErr(tt.input, wrappedIteratee)
+
+			if tt.wantErr {
+				is.Error(err)
+				is.Equal(tt.errMsg, err.Error())
+				is.Nil(result)
+			} else {
+				is.NoError(err)
+				is.Equal(tt.wantResult, result)
+			}
+
+			// Verify callback count matches expected
+			is.Equal(tt.expectedCallbackCount, callbackCount, "callback count should match expected")
+		})
+	}
+}
+
 func TestFlatten(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
