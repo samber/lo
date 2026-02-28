@@ -516,6 +516,17 @@ lo.FlatMap([]int64{0, 1, 2}, func(x int64, _ int) []string {
 // []string{"0", "0", "1", "1", "2", "2"}
 ```
 
+```go
+// Use FlatMapErr when the transform function can return an error
+result, err := lo.FlatMapErr([]int64{0, 1, 2, 3}, func(x int64, _ int) ([]string, error) {
+    if x == 2 {
+        return nil, fmt.Errorf("number 2 is not allowed")
+    }
+    return []string{strconv.FormatInt(x, 10), strconv.FormatInt(x, 10)}, nil
+})
+// []string(nil), error("number 2 is not allowed")
+```
+
 [[play](https://go.dev/play/p/YSoYmQTA8-U)]
 
 ### Reduce
@@ -1797,6 +1808,18 @@ out := lo.MapEntries(in, func(k string, v int) (int, string) {
     return v,k
 })
 // map[int]string{1: "foo", 2: "bar"}
+```
+
+```go
+// Use MapEntriesErr when the iteratee can return an error
+in := map[string]int{"foo": 1, "bar": 2, "baz": 3}
+out, err := lo.MapEntriesErr(in, func(k string, v int) (int, string, error) {
+    if k == "bar" {
+        return 0, "", fmt.Errorf("bar not allowed")
+    }
+    return v, k, nil
+})
+// map[int]string(nil), error("bar not allowed")
 ```
 
 [[play](https://go.dev/play/p/VuvNQzxKimT)]

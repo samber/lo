@@ -96,6 +96,24 @@ func FlatMap[T, R any](collection []T, transform func(item T, index int) []R) []
 	return result
 }
 
+// FlatMapErr manipulates a slice and transforms and flattens it to a slice of another type.
+// The transform function can either return a slice or a `nil`, and in the `nil` case
+// no value is added to the final slice.
+// It returns the first error returned by the transform function.
+func FlatMapErr[T, R any](collection []T, transform func(item T, index int) ([]R, error)) ([]R, error) {
+	result := make([]R, 0, len(collection))
+
+	for i := range collection {
+		r, err := transform(collection[i], i)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, r...)
+	}
+
+	return result, nil
+}
+
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
 // Play: https://go.dev/play/p/CgHYNUpOd1I
