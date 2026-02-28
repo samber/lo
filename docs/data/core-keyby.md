@@ -8,7 +8,9 @@ playUrl: https://go.dev/play/p/ccUiUL_Lnel
 variantHelpers:
   - core#slice#keyby
 similarHelpers:
+  - core#slice#keybyerr
   - core#slice#groupby
+  - core#slice#groupbyerr
   - core#slice#partitionby
   - core#map#associate
   - core#slice#keyify
