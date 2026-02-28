@@ -114,6 +114,77 @@ func TestSumBy(t *testing.T) {
 	is.Equal(complex128(6_6), result5)
 }
 
+func TestSumByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Test normal operation (no error)
+	result1, err1 := SumByErr([]float32{2.3, 3.3, 4, 5.3}, func(n float32) (float32, error) { return n, nil })
+	result2, err2 := SumByErr([]int32{2, 3, 4, 5}, func(n int32) (int32, error) { return n, nil })
+	result3, err3 := SumByErr([]uint32{2, 3, 4, 5}, func(n uint32) (uint32, error) { return n, nil })
+	result4, err4 := SumByErr([]complex128{4_4, 2_2}, func(n complex128) (complex128, error) { return n, nil })
+
+	is.NoError(err1)
+	is.InEpsilon(14.9, result1, 1e-7)
+	is.NoError(err2)
+	is.Equal(int32(14), result2)
+	is.NoError(err3)
+	is.Equal(uint32(14), result3)
+	is.NoError(err4)
+	is.Equal(complex128(6_6), result4)
+
+	// Test empty collection
+	result5, err5 := SumByErr([]uint32{}, func(n uint32) (uint32, error) { return n, nil })
+	is.NoError(err5)
+	is.Equal(uint32(0), result5)
+
+	// Test error - iteratee returns error
+	testErr := assert.AnError
+	result6, err6 := SumByErr([]int32{1, 2, 3, 4, 5}, func(n int32) (int32, error) {
+		if n == 3 {
+			return 0, testErr
+		}
+		return n, nil
+	})
+	is.ErrorIs(err6, testErr)
+	// Early return: sum up to 1+2 = 3
+	is.Equal(int32(3), result6)
+
+	// Test early return - callback count verification
+	// With 5 elements and error at 3rd, only 3 callbacks should be made
+	items := []int32{1, 2, 3, 4, 5}
+	callbackCount := 0
+	_, err7 := SumByErr(items, func(n int32) (int32, error) {
+		callbackCount++
+		if n == 3 {
+			return 0, testErr
+		}
+		return n, nil
+	})
+	is.ErrorIs(err7, testErr)
+	is.Equal(3, callbackCount) // Only 3 callbacks before error
+
+	// Test error at first element
+	result8, err8 := SumByErr([]int32{1, 2, 3}, func(n int32) (int32, error) {
+		return 0, testErr
+	})
+	is.ErrorIs(err8, testErr)
+	is.Equal(int32(0), result8)
+
+	// Test error at last element
+	callbackCount2 := 0
+	result9, err9 := SumByErr([]int32{1, 2, 3}, func(n int32) (int32, error) {
+		callbackCount2++
+		if n == 3 {
+			return 0, testErr
+		}
+		return n, nil
+	})
+	_ = result9 // unused due to error
+	is.ErrorIs(err9, testErr)
+	is.Equal(3, callbackCount2) // All 3 callbacks before error at last element
+}
+
 func TestProduct(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
