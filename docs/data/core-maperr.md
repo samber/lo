@@ -37,3 +37,4 @@ result, err := lo.MapErr([]int{1, 2, 3, 4}, func(x int, _ int) (string, error) {
 })
 // []string{"1", "2", "3", "4"}, nil
 ```
+docs/data/core-mapvalues.md

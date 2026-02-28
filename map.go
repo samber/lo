@@ -346,6 +346,22 @@ func MapEntries[K1 comparable, V1 any, K2 comparable, V2 any](in map[K1]V1, iter
 	return result
 }
 
+// MapEntriesErr manipulates map entries and transforms it to a map of another type.
+// It returns the first error returned by the iteratee.
+func MapEntriesErr[K1 comparable, V1 any, K2 comparable, V2 any](in map[K1]V1, iteratee func(key K1, value V1) (K2, V2, error)) (map[K2]V2, error) {
+	result := make(map[K2]V2, len(in))
+
+	for k1 := range in {
+		k2, v2, err := iteratee(k1, in[k1])
+		if err != nil {
+			return nil, err
+		}
+		result[k2] = v2
+	}
+
+	return result, nil
+}
+
 // MapToSlice transforms a map into a slice based on specified iteratee.
 // Play: https://go.dev/play/p/ZuiCZpDt6LD
 func MapToSlice[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) R) []R {

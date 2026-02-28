@@ -11,6 +11,7 @@ variantHelpers:
 similarHelpers:
   - core#map#mapvalues
   - core#map#mapkeyserr
+  - core#map#mapentrieserr
 position: 195
 ---
 
