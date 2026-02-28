@@ -307,6 +307,23 @@ func GroupByMap[T any, K comparable, V any](collection []T, transform func(item 
 	return result
 }
 
+// GroupByMapErr returns an object composed of keys generated from the results of running each element of collection through transform.
+// It returns the first error returned by the transform function.
+func GroupByMapErr[T any, K comparable, V any](collection []T, transform func(item T) (K, V, error)) (map[K][]V, error) {
+	result := map[K][]V{}
+
+	for i := range collection {
+		k, v, err := transform(collection[i])
+		if err != nil {
+			return nil, err
+		}
+
+		result[k] = append(result[k], v)
+	}
+
+	return result, nil
+}
+
 // Chunk returns a slice of elements split into groups of length size. If the slice can't be split evenly,
 // the final chunk will be the remaining elements.
 // Play: https://go.dev/play/p/kEMkFbdu85g
