@@ -166,6 +166,22 @@ func OmitBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, val
 	return r
 }
 
+// OmitByErr returns same map type filtered by given predicate.
+// It returns the first error returned by the predicate.
+func OmitByErr[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) (bool, error)) (Map, error) {
+	r := Map{}
+	for k, v := range in {
+		ok, err := predicate(k, v)
+		if err != nil {
+			return nil, err
+		}
+		if !ok {
+			r[k] = v
+		}
+	}
+	return r, nil
+}
+
 // OmitByKeys returns same map type filtered by given keys.
 // Play: https://go.dev/play/p/t1QjCrs-ysk
 func OmitByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
