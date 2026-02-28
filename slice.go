@@ -125,6 +125,21 @@ func Reduce[T, R any](collection []T, accumulator func(agg R, item T, index int)
 	return initial
 }
 
+// ReduceErr reduces collection to a value which is the accumulated result of running each element in collection
+// through accumulator, where each successive invocation is supplied the return value of the previous.
+// It returns the first error returned by the accumulator function.
+func ReduceErr[T, R any](collection []T, accumulator func(agg R, item T, index int) (R, error), initial R) (R, error) {
+	for i := range collection {
+		result, err := accumulator(initial, collection[i], i)
+		if err != nil {
+			return result, err
+		}
+		initial = result
+	}
+
+	return initial, nil
+}
+
 // ReduceRight is like Reduce except that it iterates over elements of collection from right to left.
 // Play: https://go.dev/play/p/Fq3W70l7wXF
 func ReduceRight[T, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R {

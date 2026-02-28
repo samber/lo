@@ -367,6 +367,128 @@ func TestReduce(t *testing.T) {
 	is.Equal(20, result2)
 }
 
+func TestReduceErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name               string
+		input              []int
+		accumulator        func(agg int, item int, index int) (int, error)
+		initial            int
+		wantResult         int
+		wantErr            bool
+		errMsg             string
+		expectedCallbackCount int
+	}{
+		{
+			name:  "successful reduction",
+			input: []int{1, 2, 3, 4},
+			accumulator: func(agg, item, _ int) (int, error) {
+				return agg + item, nil
+			},
+			initial: 0,
+			wantResult: 10,
+			wantErr: false,
+			expectedCallbackCount: 4,
+		},
+		{
+			name:  "error at third element stops iteration",
+			input: []int{1, 2, 3, 4},
+			accumulator: func(agg, item, _ int) (int, error) {
+				if item == 3 {
+					return 0, fmt.Errorf("number 3 is not allowed")
+				}
+				return agg + item, nil
+			},
+			initial: 0,
+			wantResult: 0,
+			wantErr: true,
+			errMsg: "number 3 is not allowed",
+			expectedCallbackCount: 3,
+		},
+		{
+			name:  "error at first element stops iteration immediately",
+			input: []int{1, 2, 3, 4},
+			accumulator: func(agg, item, _ int) (int, error) {
+				if item == 1 {
+					return 0, fmt.Errorf("number 1 is not allowed")
+				}
+				return agg + item, nil
+			},
+			initial: 0,
+			wantResult: 0,
+			wantErr: true,
+			errMsg: "number 1 is not allowed",
+			expectedCallbackCount: 1,
+		},
+		{
+			name:  "error at last element",
+			input: []int{1, 2, 3, 4},
+			accumulator: func(agg, item, _ int) (int, error) {
+				if item == 4 {
+					return 0, fmt.Errorf("number 4 is not allowed")
+				}
+				return agg + item, nil
+			},
+			initial: 0,
+			wantResult: 0,
+			wantErr: true,
+			errMsg: "number 4 is not allowed",
+			expectedCallbackCount: 4,
+		},
+		{
+			name:  "empty input slice",
+			input: []int{},
+			accumulator: func(agg, item, _ int) (int, error) {
+				return agg + item, nil
+			},
+			initial: 10,
+			wantResult: 10,
+			wantErr: false,
+			expectedCallbackCount: 0,
+		},
+		{
+			name:  "with non-zero initial value",
+			input: []int{1, 2, 3, 4},
+			accumulator: func(agg, item, _ int) (int, error) {
+				return agg + item, nil
+			},
+			initial: 10,
+			wantResult: 20,
+			wantErr: false,
+			expectedCallbackCount: 4,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			// Track callback count to test early return
+			callbackCount := 0
+			wrappedAccumulator := func(agg int, item int, index int) (int, error) {
+				callbackCount++
+				return tt.accumulator(agg, item, index)
+			}
+
+			result, err := ReduceErr(tt.input, wrappedAccumulator, tt.initial)
+
+			if tt.wantErr {
+				is.Error(err)
+				is.Equal(tt.errMsg, err.Error())
+			} else {
+				is.NoError(err)
+				is.Equal(tt.wantResult, result)
+			}
+
+			// Verify callback count matches expected
+			is.Equal(tt.expectedCallbackCount, callbackCount, "callback count should match expected")
+		})
+	}
+}
+
 func TestReduceRight(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
