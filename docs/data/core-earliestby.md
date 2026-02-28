@@ -1,13 +1,14 @@
 ---
 name: EarliestBy
 slug: earliestby
-sourceRef: find.go#L385
+sourceRef: find.go#L462
 category: core
 subCategory: find
-playUrl: 
+playUrl:
 variantHelpers:
   - core#find#earliestby
 similarHelpers:
+  - core#find#earliestbyerr
   - core#find#latestby
   - core#find#earliest
   - core#find#latest

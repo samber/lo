@@ -589,6 +589,96 @@ func TestEarliestBy(t *testing.T) {
 	is.Zero(result3)
 }
 
+func TestEarliestByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	testErr := assert.AnError
+
+	type foo struct {
+		bar time.Time
+	}
+
+	t1 := time.Now()
+	t2 := t1.Add(time.Hour)
+	t3 := t1.Add(-time.Hour)
+
+	// Test normal operation (no error) - table driven
+	tests := []struct {
+		name     string
+		input    []foo
+		expected foo
+	}{
+		{
+			name:     "finds earliest time",
+			input:    []foo{{t1}, {t2}, {t3}},
+			expected: foo{t3},
+		},
+		{
+			name:     "single element",
+			input:    []foo{{t1}},
+			expected: foo{t1},
+		},
+		{
+			name:     "empty collection",
+			input:    []foo{},
+			expected: foo{},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := EarliestByErr(tt.input, func(i foo) (time.Time, error) {
+				return i.bar, nil
+			})
+			is.NoError(err)
+			is.Equal(tt.expected, result)
+		})
+	}
+
+	// Test error cases - table driven
+	errorTests := []struct {
+		name          string
+		input         []foo
+		errorAt       int
+		expectedCalls int
+	}{
+		{
+			name:          "error at first element",
+			input:         []foo{{t1}, {t2}, {t3}},
+			errorAt:       0,
+			expectedCalls: 1, // Only first callback
+		},
+		{
+			name:          "error at second element",
+			input:         []foo{{t1}, {t2}, {t3}},
+			errorAt:       1,
+			expectedCalls: 2, // First two callbacks
+		},
+		{
+			name:          "error at third element",
+			input:         []foo{{t1}, {t2}, {t3}},
+			errorAt:       2,
+			expectedCalls: 3, // All three callbacks
+		},
+	}
+
+	for _, tt := range errorTests {
+		t.Run(tt.name, func(t *testing.T) {
+			callbackCount := 0
+			_, err := EarliestByErr(tt.input, func(i foo) (time.Time, error) {
+				callbackCount++
+				if len(tt.input) > 0 && i == tt.input[tt.errorAt] {
+					return time.Time{}, testErr
+				}
+				return i.bar, nil
+			})
+			is.ErrorIs(err, testErr)
+			is.Equal(tt.expectedCalls, callbackCount)
+		})
+	}
+}
+
 func TestMax(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

@@ -3401,6 +3401,17 @@ earliest := lo.EarliestBy([]foo{{time.Now()}, {}}, func(i foo) time.Time {
 // {bar:{2023-04-01 01:02:03 +0000 UTC}}
 ```
 
+```go
+// Use EarliestByErr when the iteratee function can return an error
+earliest, err := lo.EarliestByErr([]foo{{time.Now()}, {}}, func(i foo) (time.Time, error) {
+    if i.bar.IsZero() {
+        return time.Time{}, fmt.Errorf("zero time not allowed")
+    }
+    return i.bar, nil
+})
+// {bar:{...}}, error("zero time not allowed")
+```
+
 ### Max
 
 Search the maximum value of a collection.
