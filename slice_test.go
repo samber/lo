@@ -1014,6 +1014,128 @@ func TestGroupByMap(t *testing.T) {
 	}, result3)
 }
 
+func TestGroupByMapErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name               string
+		input              []int
+		transform          func(item int) (int, int, error)
+		wantResult         map[int][]int
+		wantErr            bool
+		errMsg             string
+		expectedCallbackCount int
+	}{
+		{
+			name:  "successful grouping",
+			input: []int{0, 1, 2, 3, 4, 5},
+			transform: func(i int) (int, int, error) {
+				return i % 3, i * 2, nil
+			},
+			wantResult: map[int][]int{
+				0: {0, 6},
+				1: {2, 8},
+				2: {4, 10},
+			},
+			wantErr: false,
+			expectedCallbackCount: 6,
+		},
+		{
+			name:  "error at fourth element stops iteration",
+			input: []int{0, 1, 2, 3, 4, 5},
+			transform: func(i int) (int, int, error) {
+				if i == 3 {
+					return 0, 0, fmt.Errorf("number 3 is not allowed")
+				}
+				return i % 3, i * 2, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 3 is not allowed",
+			expectedCallbackCount: 4,
+		},
+		{
+			name:  "error at first element stops iteration immediately",
+			input: []int{0, 1, 2, 3, 4, 5},
+			transform: func(i int) (int, int, error) {
+				if i == 0 {
+					return 0, 0, fmt.Errorf("number 0 is not allowed")
+				}
+				return i % 3, i * 2, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 0 is not allowed",
+			expectedCallbackCount: 1,
+		},
+		{
+			name:  "error at last element",
+			input: []int{0, 1, 2, 3, 4, 5},
+			transform: func(i int) (int, int, error) {
+				if i == 5 {
+					return 0, 0, fmt.Errorf("number 5 is not allowed")
+				}
+				return i % 3, i * 2, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 5 is not allowed",
+			expectedCallbackCount: 6,
+		},
+		{
+			name:  "empty input slice",
+			input: []int{},
+			transform: func(i int) (int, int, error) {
+				return i % 3, i * 2, nil
+			},
+			wantResult: map[int][]int{},
+			wantErr: false,
+			expectedCallbackCount: 0,
+		},
+		{
+			name:  "all elements in same group",
+			input: []int{3, 6, 9, 12},
+			transform: func(i int) (int, int, error) {
+				return 0, i, nil
+			},
+			wantResult: map[int][]int{
+				0: {3, 6, 9, 12},
+			},
+			wantErr: false,
+			expectedCallbackCount: 4,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			// Track callback count to test early return
+			callbackCount := 0
+			wrappedTransform := func(item int) (int, int, error) {
+				callbackCount++
+				return tt.transform(item)
+			}
+
+			result, err := GroupByMapErr(tt.input, wrappedTransform)
+
+			if tt.wantErr {
+				is.Error(err)
+				is.Equal(tt.errMsg, err.Error())
+				is.Nil(result)
+			} else {
+				is.NoError(err)
+				is.Equal(tt.wantResult, result)
+			}
+
+			// Verify callback count matches expected
+			is.Equal(tt.expectedCallbackCount, callbackCount, "callback count should match expected")
+		})
+	}
+}
+
 func TestChunk(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
