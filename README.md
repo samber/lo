@@ -540,6 +540,17 @@ sum := lo.Reduce([]int{1, 2, 3, 4}, func(agg int, item int, _ int) int {
 // 10
 ```
 
+```go
+// Use ReduceErr when the accumulator function can return an error
+result, err := lo.ReduceErr([]int{1, 2, 3, 4}, func(agg int, item int, _ int) (int, error) {
+    if item == 3 {
+        return 0, fmt.Errorf("number 3 is not allowed")
+    }
+    return agg + item, nil
+}, 0)
+// 0, error("number 3 is not allowed")
+```
+
 [[play](https://go.dev/play/p/R4UHXZNaaUG)]
 
 ### ReduceRight
@@ -1835,6 +1846,18 @@ s := lo.MapToSlice(m, func(k int, v int64) string {
     return fmt.Sprintf("%d_%d", k, v)
 })
 // []string{"1_4", "2_5", "3_6"}
+```
+
+```go
+// Use MapToSliceErr when the iteratee can return an error
+m := map[int]int64{1: 4, 2: 5, 3: 6}
+s, err := lo.MapToSliceErr(m, func(k int, v int64) (string, error) {
+    if k == 2 {
+        return "", fmt.Errorf("key 2 not allowed")
+    }
+    return fmt.Sprintf("%d_%d", k, v), nil
+})
+// []string(nil), error("key 2 not allowed")
 ```
 
 [[play](https://go.dev/play/p/ZuiCZpDt6LD)]
