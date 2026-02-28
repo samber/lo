@@ -8,7 +8,9 @@ playUrl: https://go.dev/play/p/Fq3W70l7wXF
 variantHelpers:
   - core#slice#reduceright
 similarHelpers:
+  - core#slice#reducerighterr
   - core#slice#reduce
+  - core#slice#reduceerr
   - core#slice#sum
   - core#slice#product
   - core#slice#mean

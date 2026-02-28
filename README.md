@@ -564,6 +564,17 @@ result := lo.ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg []int, item [
 // []int{4, 5, 2, 3, 0, 1}
 ```
 
+```go
+// Use ReduceRightErr when the accumulator function can return an error
+result, err := lo.ReduceRightErr([]int{1, 2, 3, 4}, func(agg int, item int, _ int) (int, error) {
+    if item == 2 {
+        return 0, fmt.Errorf("number 2 is not allowed")
+    }
+    return agg + item, nil
+}, 0)
+// 0, error("number 2 is not allowed")
+```
+
 [[play](https://go.dev/play/p/Fq3W70l7wXF)]
 
 ### ForEach
@@ -2023,6 +2034,18 @@ product := lo.ProductBy(strings, func(item string) int {
     return len(item)
 })
 // 9
+```
+
+```go
+// Use ProductByErr when the transform function can return an error
+strings := []string{"foo", "bar", "baz"}
+product, err := lo.ProductByErr(strings, func(item string) (int, error) {
+    if item == "bar" {
+        return 0, fmt.Errorf("bar is not allowed")
+    }
+    return len(item), nil
+})
+// 3, error("bar is not allowed")
 ```
 
 [[play](https://go.dev/play/p/wadzrWr9Aer)]
