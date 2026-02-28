@@ -1,7 +1,7 @@
 ---
 name: MaxBy
 slug: maxby
-sourceRef: find.go#L459
+sourceRef: find.go#L507
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/JW1qu-ECwF7
@@ -9,6 +9,7 @@ variantHelpers:
   - core#find#maxby
 similarHelpers:
   - core#find#max
+  - core#find#maxbyerr
   - core#find#maxindex
   - core#find#maxindexby
   - core#find#min

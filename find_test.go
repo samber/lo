@@ -544,6 +544,98 @@ func TestMaxBy(t *testing.T) {
 	is.Empty(result3)
 }
 
+func TestMaxByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	testErr := assert.AnError
+
+	// Test normal operation (no error) - table driven
+	tests := []struct {
+		name     string
+		input    []string
+		expected string
+	}{
+		{
+			name:     "finds max by length - second match",
+			input:    []string{"s1", "string2", "s3"},
+			expected: "string2",
+		},
+		{
+			name:     "finds max by length - first match",
+			input:    []string{"string1", "string2", "s3"},
+			expected: "string1",
+		},
+		{
+			name:     "empty collection",
+			input:    []string{},
+			expected: "",
+		},
+		{
+			name:     "single element",
+			input:    []string{"single"},
+			expected: "single",
+		},
+		{
+			name:     "all equal length",
+			input:    []string{"a", "b", "c"},
+			expected: "a", // first maximal value
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := MaxByErr(tt.input, func(item, max string) (bool, error) {
+				return len(item) > len(max), nil
+			})
+			is.NoError(err)
+			is.Equal(tt.expected, result)
+		})
+	}
+
+	// Test error cases - table driven
+	errorTests := []struct {
+		name          string
+		input         []string
+		errorAt       string
+		expectedCalls int
+	}{
+		{
+			name:          "error at second comparison",
+			input:         []string{"a", "bb", "ccc"},
+			errorAt:       "bb",
+			expectedCalls: 1, // Only first comparison (initial element vs second)
+		},
+		{
+			name:          "error at third comparison",
+			input:         []string{"a", "bb", "ccc"},
+			errorAt:       "ccc",
+			expectedCalls: 2, // First two comparisons
+		},
+	}
+
+	for _, tt := range errorTests {
+		t.Run(tt.name, func(t *testing.T) {
+			callbackCount := 0
+			result, err := MaxByErr(tt.input, func(item, max string) (bool, error) {
+				callbackCount++
+				if item == tt.errorAt {
+					return false, testErr
+				}
+				return len(item) > len(max), nil
+			})
+			is.ErrorIs(err, testErr)
+			is.Equal(tt.expectedCalls, callbackCount)
+			// Result should be the current max at the time of error
+			if tt.expectedCalls == 1 {
+				is.Equal("a", result) // Still the first element
+			} else {
+				is.Equal("bb", result) // "bb" became max after second comparison
+			}
+		})
+	}
+}
+
 func TestMaxIndexBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
