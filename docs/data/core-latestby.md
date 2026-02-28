@@ -8,8 +8,10 @@ playUrl:
 variantHelpers:
   - core#find#latestby
 similarHelpers:
+  - core#find#latestbyerr
   - core#find#latest
   - core#find#earliestby
+  - core#find#earliestbyerr
   - core#find#earliest
   - core#find#maxby
   - core#find#minby
