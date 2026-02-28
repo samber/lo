@@ -317,6 +317,22 @@ func MapValues[K comparable, V, R any](in map[K]V, iteratee func(value V, key K)
 	return result
 }
 
+// MapValuesErr manipulates map values and transforms it to a map of another type.
+// It returns the first error returned by the iteratee.
+func MapValuesErr[K comparable, V, R any](in map[K]V, iteratee func(value V, key K) (R, error)) (map[K]R, error) {
+	result := make(map[K]R, len(in))
+
+	for k, v := range in {
+		r, err := iteratee(v, k)
+		if err != nil {
+			return nil, err
+		}
+		result[k] = r
+	}
+
+	return result, nil
+}
+
 // MapEntries manipulates map entries and transforms it to a map of another type.
 // Play: https://go.dev/play/p/VuvNQzxKimT
 func MapEntries[K1 comparable, V1 any, K2 comparable, V2 any](in map[K1]V1, iteratee func(key K1, value V1) (K2, V2)) map[K2]V2 {

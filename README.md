@@ -425,6 +425,17 @@ lo.Map([]int64{1, 2, 3, 4}, func(x int64, index int) string {
 // []string{"1", "2", "3", "4"}
 ```
 
+```go
+// Use MapErr when the transform function can return an error
+result, err := lo.MapErr([]int{1, 2, 3, 4}, func(x int, _ int) (string, error) {
+    if x == 3 {
+        return "", fmt.Errorf("number 3 is not allowed")
+    }
+    return strconv.Itoa(x), nil
+})
+// []string(nil), error("number 3 is not allowed")
+```
+
 [[play](https://go.dev/play/p/OkPcYAhBo0D)]
 
 Parallel processing: like `lo.Map()`, but the transform function is called in a goroutine. Results are returned in the same order.
@@ -1759,6 +1770,18 @@ m2 := lo.MapValues(m1, func(x int64, _ int) string {
     return strconv.FormatInt(x, 10)
 })
 // map[int]string{1: "1", 2: "2", 3: "3"}
+```
+
+```go
+// Use MapValuesErr when the iteratee can return an error
+m1 := map[int]int64{1: 1, 2: 2, 3: 3}
+m2, err := lo.MapValuesErr(m1, func(x int64, _ int) (string, error) {
+    if x == 2 {
+        return "", fmt.Errorf("even number not allowed")
+    }
+    return strconv.FormatInt(x, 10), nil
+})
+// map[int]string(nil), error("even number not allowed")
 ```
 
 [[play](https://go.dev/play/p/T_8xAfvcf0W)]
