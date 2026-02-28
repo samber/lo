@@ -231,6 +231,131 @@ func TestProductBy(t *testing.T) {
 	is.Equal(uint32(1), result8)
 }
 
+func TestProductByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	testErr := assert.AnError
+
+	// Test normal operation (no error) - table driven
+	tests := []struct {
+		name     string
+		input    interface{}
+		expected interface{}
+	}{
+		{
+			name:     "float32 slice",
+			input:    []float32{2.3, 3.3, 4, 5.3},
+			expected: float32(160.908),
+		},
+		{
+			name:     "int32 slice",
+			input:    []int32{2, 3, 4, 5},
+			expected: int32(120),
+		},
+		{
+			name:     "int32 slice with zero",
+			input:    []int32{7, 8, 9, 0},
+			expected: int32(0),
+		},
+		{
+			name:     "int32 slice with negative",
+			input:    []int32{7, -1, 9, 2},
+			expected: int32(-126),
+		},
+		{
+			name:     "uint32 slice",
+			input:    []uint32{2, 3, 4, 5},
+			expected: uint32(120),
+		},
+		{
+			name:     "empty uint32 slice",
+			input:    []uint32{},
+			expected: uint32(1),
+		},
+		{
+			name:     "complex128 slice",
+			input:    []complex128{4 + 4i, 2 + 2i},
+			expected: complex128(0 + 16i),
+		},
+		{
+			name:     "nil int32 slice",
+			input:    ([]int32)(nil),
+			expected: int32(1),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			switch input := tt.input.(type) {
+			case []float32:
+				result, err := ProductByErr(input, func(n float32) (float32, error) { return n, nil })
+				is.NoError(err)
+				is.InEpsilon(tt.expected.(float32), result, 1e-7)
+			case []int32:
+				result, err := ProductByErr(input, func(n int32) (int32, error) { return n, nil })
+				is.NoError(err)
+				is.Equal(tt.expected.(int32), result)
+			case []uint32:
+				result, err := ProductByErr(input, func(n uint32) (uint32, error) { return n, nil })
+				is.NoError(err)
+				is.Equal(tt.expected.(uint32), result)
+			case []complex128:
+				result, err := ProductByErr(input, func(n complex128) (complex128, error) { return n, nil })
+				is.NoError(err)
+				is.Equal(tt.expected.(complex128), result)
+			}
+		})
+	}
+
+	// Test error cases - table driven
+	errorTests := []struct {
+		name          string
+		input         []int32
+		errorAt       int32
+		expectedProd  int32
+		expectedCalls int
+	}{
+		{
+			name:          "error at third element",
+			input:         []int32{1, 2, 3, 4, 5},
+			errorAt:       3,
+			expectedProd:  2, // 1 * 2
+			expectedCalls: 3,
+		},
+		{
+			name:          "error at first element",
+			input:         []int32{1, 2, 3},
+			errorAt:       1,
+			expectedProd:  1, // initial value
+			expectedCalls: 1,
+		},
+		{
+			name:          "error at last element",
+			input:         []int32{1, 2, 3},
+			errorAt:       3,
+			expectedProd:  2, // 1 * 2
+			expectedCalls: 3,
+		},
+	}
+
+	for _, tt := range errorTests {
+		t.Run(tt.name, func(t *testing.T) {
+			callbackCount := 0
+			result, err := ProductByErr(tt.input, func(n int32) (int32, error) {
+				callbackCount++
+				if n == tt.errorAt {
+					return 0, testErr
+				}
+				return n, nil
+			})
+			is.ErrorIs(err, testErr)
+			is.Equal(tt.expectedProd, result)
+			is.Equal(tt.expectedCalls, callbackCount)
+		})
+	}
+}
+
 func TestMean(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
