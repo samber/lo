@@ -6,6 +6,7 @@ category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/OkPcYAhBo0D
 similarHelpers:
+  - core#slice#maperr
   - core#slice#filtermap
   - core#slice#flatmap
   - core#slice#uniqmap

@@ -419,6 +419,87 @@ func TestMapValues(t *testing.T) {
 	is.Equal(map[int]string{1: "1", 2: "2", 3: "3", 4: "4"}, result2)
 }
 
+func TestMapValuesErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    map[int]int
+		iteratee func(int, int) (string, error)
+		want     map[int]string
+		wantErr  string
+	}{
+		{
+			name:  "successful transformation",
+			input: map[int]int{1: 1, 2: 2, 3: 3},
+			iteratee: func(x, _ int) (string, error) {
+				return strconv.FormatInt(int64(x), 10), nil
+			},
+			want:    map[int]string{1: "1", 2: "2", 3: "3"},
+			wantErr: "",
+		},
+		{
+			name:  "constant value transformation",
+			input: map[int]int{1: 1, 2: 2, 3: 3},
+			iteratee: func(_, _ int) (string, error) {
+				return "Hello", nil
+			},
+			want:    map[int]string{1: "Hello", 2: "Hello", 3: "Hello"},
+			wantErr: "",
+		},
+		{
+			name:  "error on specific value",
+			input: map[int]int{1: 1, 2: 2, 3: 3, 4: 4},
+			iteratee: func(x, _ int) (string, error) {
+				if x == 3 {
+					return "", fmt.Errorf("error at %d", x)
+				}
+				return strconv.FormatInt(int64(x), 10), nil
+			},
+			want:    nil,
+			wantErr: "error at 3",
+		},
+		{
+			name:  "error on first value",
+			input: map[int]int{1: 1, 2: 2},
+			iteratee: func(x, _ int) (string, error) {
+				if x == 1 {
+					return "", fmt.Errorf("cannot process 1")
+				}
+				return strconv.FormatInt(int64(x), 10), nil
+			},
+			want:    nil,
+			wantErr: "cannot process 1",
+		},
+		{
+			name:     "empty map",
+			input:    map[int]int{},
+			iteratee: func(x, _ int) (string, error) { return strconv.FormatInt(int64(x), 10), nil },
+			want:     map[int]string{},
+			wantErr:  "",
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt // capture range variable
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			got, err := MapValuesErr(tt.input, tt.iteratee)
+
+			if tt.wantErr != "" {
+				is.Error(err)
+				is.Equal(tt.wantErr, err.Error())
+				is.Nil(got)
+			} else {
+				is.NoError(err)
+				is.Equal(tt.want, got)
+			}
+		})
+	}
+}
+
 func TestMapEntries(t *testing.T) {
 	t.Parallel()
 

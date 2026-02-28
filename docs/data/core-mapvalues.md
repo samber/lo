@@ -12,6 +12,7 @@ similarHelpers:
   - core#map#mapentries
   - core#map#groupby
   - core#slice#map
+  - core#map#mapvalueserr
 position: 190
 signatures:
   - "func MapValues[K comparable, V any, R any](in map[K]V, iteratee func(value V, key K) R) map[K]R"
