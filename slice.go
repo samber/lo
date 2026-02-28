@@ -150,6 +150,20 @@ func ReduceRight[T, R any](collection []T, accumulator func(agg R, item T, index
 	return initial
 }
 
+// ReduceRightErr is like ReduceRight except that the accumulator function can return an error.
+// It returns the first error returned by the accumulator function.
+func ReduceRightErr[T, R any](collection []T, accumulator func(agg R, item T, index int) (R, error), initial R) (R, error) {
+	for i := len(collection) - 1; i >= 0; i-- {
+		result, err := accumulator(initial, collection[i], i)
+		if err != nil {
+			return result, err
+		}
+		initial = result
+	}
+
+	return initial, nil
+}
+
 // ForEach iterates over elements of collection and invokes callback for each element.
 // Play: https://go.dev/play/p/oofyiUPRf8t
 func ForEach[T any](collection []T, callback func(item T, index int)) {
