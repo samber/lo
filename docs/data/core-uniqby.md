@@ -8,6 +8,7 @@ playUrl: https://go.dev/play/p/g42Z3QSb53u
 variantHelpers:
   - core#slice#uniqby
 similarHelpers:
+  - core#slice#uniqbyerr
   - core#slice#uniq
   - core#slice#uniqmap
   - core#slice#partitionby
