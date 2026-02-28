@@ -33,6 +33,22 @@ func Map[T, R any](collection []T, transform func(item T, index int) R) []R {
 	return result
 }
 
+// MapErr manipulates a slice and transforms it to a slice of another type.
+// It returns the first error returned by the transform function.
+func MapErr[T, R any](collection []T, transform func(item T, index int) (R, error)) ([]R, error) {
+	result := make([]R, len(collection))
+
+	for i := range collection {
+		r, err := transform(collection[i], i)
+		if err != nil {
+			return nil, err
+		}
+		result[i] = r
+	}
+
+	return result, nil
+}
+
 // UniqMap manipulates a slice and transforms it to a slice of another type with unique values.
 // Play: https://go.dev/play/p/fygzLBhvUdB
 func UniqMap[T any, R comparable](collection []T, transform func(item T, index int) R) []R {
