@@ -734,6 +734,17 @@ groups := lo.GroupByMap([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, int) {
 // map[int][]int{0: []int{0, 6}, 1: []int{2, 8}, 2: []int{4, 10}}
 ```
 
+```go
+// Use GroupByMapErr when the transform function can return an error
+result, err := lo.GroupByMapErr([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, int, error) {
+    if i == 3 {
+        return 0, 0, fmt.Errorf("number 3 is not allowed")
+    }
+    return i % 3, i * 2, nil
+})
+// map[int][]int(nil), error("number 3 is not allowed")
+```
+
 [[play](https://go.dev/play/p/iMeruQ3_W80)]
 
 ### Chunk
@@ -3269,6 +3280,17 @@ min := lo.MinBy([]string{}, func(item string, min string) bool {
     return len(item) < len(min)
 })
 // ""
+```
+
+```go
+// Use MinByErr when the comparison function can return an error
+min, err := lo.MinByErr([]string{"s1", "string2", "s3"}, func(item string, min string) (bool, error) {
+    if item == "string2" {
+        return false, fmt.Errorf("string2 is not allowed")
+    }
+    return len(item) < len(min), nil
+})
+// "s1", error("string2 is not allowed")
 ```
 
 ### MinIndexBy

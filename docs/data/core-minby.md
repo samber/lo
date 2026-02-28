@@ -1,14 +1,15 @@
 ---
 name: MinBy
 slug: minby
-sourceRef: find.go#L314
+sourceRef: find.go#L329
 category: core
 subCategory: find
-playUrl: 
+playUrl:
 variantHelpers:
   - core#find#minby
 similarHelpers:
   - core#find#min
+  - core#find#minbyerr
   - core#find#minindex
   - core#find#minindexby
   - core#find#max
