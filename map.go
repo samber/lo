@@ -374,6 +374,22 @@ func MapToSlice[K comparable, V, R any](in map[K]V, iteratee func(key K, value V
 	return result
 }
 
+// MapToSliceErr transforms a map into a slice based on specified iteratee.
+// It returns the first error returned by the iteratee.
+func MapToSliceErr[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) (R, error)) ([]R, error) {
+	result := make([]R, 0, len(in))
+
+	for k, v := range in {
+		r, err := iteratee(k, v)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, r)
+	}
+
+	return result, nil
+}
+
 // FilterMapToSlice transforms a map into a slice based on specified iteratee.
 // The iteratee returns a value and a boolean. If the boolean is true, the value is added to the result slice.
 // If the boolean is false, the value is not added to the result slice.

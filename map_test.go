@@ -827,6 +827,82 @@ func TestMapToSlice(t *testing.T) {
 	is.ElementsMatch(result2, []string{"1", "2", "3", "4"})
 }
 
+func TestMapToSliceErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+	 name          string
+	 input         map[int]int64
+	 iteratee      func(int, int64) (string, error)
+	 want          []string
+	 wantErr       string
+	 wantCallCount int // 0 means don't check (maps have no order)
+	}{
+	 {
+	 name:  "successful transformation",
+	 input: map[int]int64{1: 5, 2: 6, 3: 7},
+	 iteratee: func(k int, v int64) (string, error) {
+	 return fmt.Sprintf("%d_%d", k, v), nil
+	 },
+	 want:          []string{"1_5", "2_6", "3_7"},
+	 wantErr:       "",
+	 wantCallCount: 0, // map iteration order is not deterministic
+	 },
+	 {
+	 name:  "empty map",
+	 input: map[int]int64{},
+	 iteratee: func(k int, v int64) (string, error) {
+	 return fmt.Sprintf("%d_%d", k, v), nil
+	 },
+	 want:          []string{},
+	 wantErr:       "",
+	 wantCallCount: 0,
+	 },
+	 {
+	 name:  "error on specific key",
+	 input: map[int]int64{1: 5, 2: 6, 3: 7},
+	 iteratee: func(k int, v int64) (string, error) {
+	 if k == 2 {
+		 return "", fmt.Errorf("key 2 not allowed")
+	 }
+	 return fmt.Sprintf("%d_%d", k, v), nil
+	 },
+	 want:          nil,
+	 wantErr:       "key 2 not allowed",
+	 wantCallCount: 0, // map iteration order is not deterministic
+	 },
+	 {
+	 name:  "constant value",
+	 input: map[int]int64{1: 5, 2: 6, 3: 7},
+	 iteratee: func(k int, v int64) (string, error) {
+	 return "constant", nil
+	 },
+	 want:          []string{"constant", "constant", "constant"},
+	 wantErr:       "",
+	 wantCallCount: 0,
+	 },
+	}
+
+	for _, tt := range tests {
+	 tt := tt // capture range variable
+	 t.Run(tt.name, func(t *testing.T) {
+	 t.Parallel()
+	 is := assert.New(t)
+
+	 got, err := MapToSliceErr(tt.input, tt.iteratee)
+
+	 if tt.wantErr != "" {
+		 is.Error(err)
+		 is.Equal(tt.wantErr, err.Error())
+		 is.Nil(got)
+	 } else {
+		 is.NoError(err)
+		 is.ElementsMatch(tt.want, got)
+	 }
+	 })
+	}
+}
+
 func TestFilterMapToSlice(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

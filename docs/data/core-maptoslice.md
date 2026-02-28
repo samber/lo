@@ -1,7 +1,7 @@
 ---
 name: MapToSlice
 slug: maptoslice
-sourceRef: map.go#L320
+sourceRef: map.go#L367
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/ZuiCZpDt6LD
@@ -12,6 +12,7 @@ similarHelpers:
   - core#map#entries
   - core#slice#map
   - core#slice#mapentries
+  - core#map#maptosliceerr
 position: 210
 signatures:
   - "func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key K, value V) R) []R"
