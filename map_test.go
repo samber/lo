@@ -597,12 +597,14 @@ func TestMapKeysErr(t *testing.T) {
 	is.NoError(err)
 	is.Empty(result3)
 
-	// Test all keys collide
+	// Test all keys collide - iteration order is non-deterministic, so check that value is one of expected values
 	result4, err := MapKeysErr(map[int]int{1: 1, 2: 2, 3: 3}, func(_, _ int) (string, error) {
 		return "same", nil
 	})
 	is.NoError(err)
-	is.Equal(map[string]int{"same": 3}, result4)
+	is.Len(result4, 1)
+	is.Contains(result4, "same")
+	is.Contains([]int{1, 2, 3}, result4["same"])
 }
 
 func TestMapValues(t *testing.T) {
