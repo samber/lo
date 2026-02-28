@@ -1,6 +1,7 @@
 package lo
 
 import (
+	"fmt"
 	"math/rand"
 	"testing"
 	"time"
@@ -447,6 +448,106 @@ func TestMinIndexBy(t *testing.T) {
 
 	is.Empty(result3)
 	is.Equal(-1, index3)
+}
+
+func TestMinIndexByErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name                 string
+		input                []string
+		less                 func(a, b string) (bool, error)
+		wantValue            string
+		wantIndex            int
+		wantErr              bool
+		errMsg               string
+		expectedCallbackCount int
+	}{
+		{
+			name:     "empty slice",
+			input:    []string{},
+			less:     func(a, b string) (bool, error) { return len(a) < len(b), nil },
+			wantValue: "",
+			wantIndex: -1,
+			wantErr:              false,
+			expectedCallbackCount: 0,
+		},
+		{
+			name:     "success case",
+			input:    []string{"s1", "string2", "s3"},
+			less:     func(a, b string) (bool, error) { return len(a) < len(b), nil },
+			wantValue: "s1",
+			wantIndex: 0,
+			wantErr:              false,
+			expectedCallbackCount: 2,
+		},
+		{
+			name:  "error on first comparison",
+			input: []string{"s1", "string2", "s3"},
+			less: func(a, b string) (bool, error) {
+				return false, fmt.Errorf("comparison error")
+			},
+			wantValue:            "",
+			wantIndex:            -1,
+			wantErr:              true,
+			errMsg:               "comparison error",
+			expectedCallbackCount: 1,
+		},
+		{
+			name:  "error on second comparison",
+			input: []string{"a", "bb", "ccc", "error", "e"},
+			less: func(a, b string) (bool, error) {
+				if a == "error" || b == "error" {
+					return false, fmt.Errorf("error value encountered")
+				}
+				return len(a) < len(b), nil
+			},
+			wantValue:            "",
+			wantIndex:            -1,
+			wantErr:              true,
+			errMsg:               "error value encountered",
+			expectedCallbackCount: 3,
+		},
+		{
+			name:     "single element",
+			input:    []string{"single"},
+			less:     func(a, b string) (bool, error) { return len(a) < len(b), nil },
+			wantValue: "single",
+			wantIndex: 0,
+			wantErr:              false,
+			expectedCallbackCount: 0,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			callbackCount := 0
+			wrappedLess := func(a, b string) (bool, error) {
+				callbackCount++
+				return tt.less(a, b)
+			}
+
+			value, index, err := MinIndexByErr(tt.input, wrappedLess)
+
+			if tt.wantErr {
+				assert.Error(t, err)
+				if tt.errMsg != "" {
+					assert.Equal(t, tt.errMsg, err.Error())
+				}
+				assert.Empty(t, value)
+				assert.Equal(t, -1, index)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tt.wantValue, value)
+				assert.Equal(t, tt.wantIndex, index)
+			}
+
+			assert.Equal(t, tt.expectedCallbackCount, callbackCount, "callback count mismatch")
+		})
+	}
 }
 
 func TestEarliest(t *testing.T) {

@@ -401,6 +401,40 @@ func MinIndexBy[T any](collection []T, less func(a, b T) bool) (T, int) {
 	return mIn, index
 }
 
+// MinIndexByErr search the minimum value of a collection using the given comparison function and the index of the minimum value.
+// If several values of the collection are equal to the smallest value, returns the first such value.
+// Returns (zero value, -1) when the collection is empty.
+// Comparison function can return an error to stop iteration immediately.
+func MinIndexByErr[T any](collection []T, less func(a, b T) (bool, error)) (T, int, error) {
+	var (
+		mIn   T
+		index int
+	)
+
+	if len(collection) == 0 {
+		return mIn, -1, nil
+	}
+
+	mIn = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
+
+		isLess, err := less(item, mIn)
+		if err != nil {
+			var zero T
+			return zero, -1, err
+		}
+
+		if isLess {
+			mIn = item
+			index = i
+		}
+	}
+
+	return mIn, index, nil
+}
+
 // Earliest search the minimum time.Time of a collection.
 // Returns zero value when the collection is empty.
 func Earliest(times ...time.Time) time.Time {

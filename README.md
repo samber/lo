@@ -3363,6 +3363,16 @@ min, index := lo.MinIndexBy([]string{}, func(item string, min string) bool {
 // "", -1
 ```
 
+```go
+min, index, err := lo.MinIndexByErr([]string{"s1", "string2", "s3"}, func(item string, min string) (bool, error) {
+    if item == "" || min == "" {
+        return false, fmt.Errorf("empty string not allowed")
+    }
+    return len(item) < len(min), nil
+})
+// "s1", 0, nil
+```
+
 ### Earliest
 
 Search the minimum time.Time of a collection.
