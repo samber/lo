@@ -815,6 +815,22 @@ partitions := lo.PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, func(x int) string
 // [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}}
 ```
 
+```go
+// Use PartitionByErr when the iteratee function can return an error
+result, err := lo.PartitionByErr([]int{-2, -1, 0, 1, 2}, func(x int) (string, error) {
+    if x == 0 {
+        return "", fmt.Errorf("zero is not allowed")
+    }
+    if x < 0 {
+        return "negative", nil
+    } else if x%2 == 0 {
+        return "even", nil
+    }
+    return "odd", nil
+})
+// [][]int(nil), error("zero is not allowed")
+```
+
 [[play](https://go.dev/play/p/NfQ_nGjkgXW)]
 
 Parallel processing: like `lo.PartitionBy()`, but callback is called in goroutine. Results are returned in the same order.

@@ -381,6 +381,32 @@ func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee fun
 	// return Values[K, []T](groups)
 }
 
+// PartitionByErr partitions a slice into groups determined by a key computed from each element.
+// The order of the partitions is determined by the order they occur in collection. The grouping
+// is generated from the results of running each element of collection through iteratee.
+// It returns the first error returned by the iteratee function.
+func PartitionByErr[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) (K, error)) ([]Slice, error) {
+	result := []Slice{}
+	seen := map[K]int{}
+
+	for i := range collection {
+		key, err := iteratee(collection[i])
+		if err != nil {
+			return nil, err
+		}
+
+		resultIndex, ok := seen[key]
+		if ok {
+			result[resultIndex] = append(result[resultIndex], collection[i])
+		} else {
+			seen[key] = len(result)
+			result = append(result, Slice{collection[i]})
+		}
+	}
+
+	return result, nil
+}
+
 // Flatten returns a slice a single level deep.
 // See also: Concat
 // Play: https://go.dev/play/p/rbp9ORaMpjw
