@@ -3435,6 +3435,17 @@ max := lo.MaxBy([]string{}, func(item string, max string) bool {
 // ""
 ```
 
+```go
+// Use MaxByErr when the comparison function can return an error
+max, err := lo.MaxByErr([]string{"string1", "s2", "string3"}, func(item string, max string) (bool, error) {
+    if item == "s2" {
+        return false, fmt.Errorf("s2 is not allowed")
+    }
+    return len(item) > len(max), nil
+})
+// "string1", error("s2 is not allowed")
+```
+
 [[play](https://go.dev/play/p/JW1qu-ECwF7)]
 
 ### MaxIndexBy

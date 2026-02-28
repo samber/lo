@@ -524,6 +524,37 @@ func MaxBy[T any](collection []T, greater func(a, b T) bool) T {
 	return mAx
 }
 
+// MaxByErr search the maximum value of a collection using the given comparison function.
+// If several values of the collection are equal to the greatest value, returns the first such value.
+// Returns zero value and nil error when the collection is empty.
+// If the comparison function returns an error, iteration stops and the error is returned.
+//
+// Note: the comparison function is inconsistent with most languages, since we use the opposite of the usual convention.
+// See https://github.com/samber/lo/issues/129
+func MaxByErr[T any](collection []T, greater func(a, b T) (bool, error)) (T, error) {
+	var mAx T
+
+	if len(collection) == 0 {
+		return mAx, nil
+	}
+
+	mAx = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
+
+		isGreater, err := greater(item, mAx)
+		if err != nil {
+			return mAx, err
+		}
+		if isGreater {
+			mAx = item
+		}
+	}
+
+	return mAx, nil
+}
+
 // MaxIndexBy search the maximum value of a collection using the given comparison function and the index of the maximum value.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
