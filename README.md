@@ -697,6 +697,17 @@ groups := lo.GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 // map[int][]int{0: []int{0, 3}, 1: []int{1, 4}, 2: []int{2, 5}}
 ```
 
+```go
+// Use GroupByErr when the iteratee function can return an error
+result, err := lo.GroupByErr([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, error) {
+    if i == 3 {
+        return 0, fmt.Errorf("number 3 is not allowed")
+    }
+    return i % 3, nil
+})
+// map[int][]int(nil), error("number 3 is not allowed")
+```
+
 [[play](https://go.dev/play/p/XnQBd_v6brd)]
 
 Parallel processing: like `lo.GroupBy()`, but callback is called in goroutine.
@@ -1182,6 +1193,17 @@ count := lo.CountBy([]int{1, 5, 1}, func(i int) bool {
     return i < 4
 })
 // 2
+```
+
+```go
+// Use CountByErr when the predicate can return an error
+count, err := lo.CountByErr([]int{1, 5, 1}, func(i int) (bool, error) {
+    if i == 5 {
+        return false, fmt.Errorf("5 not allowed")
+    }
+    return i < 4, nil
+})
+// 0, error("5 not allowed")
 ```
 
 [[play](https://go.dev/play/p/ByQbNYQQi4X)]

@@ -847,6 +847,128 @@ func TestGroupBy(t *testing.T) {
 	is.IsType(nonempty[42], allStrings, "type preserved")
 }
 
+func TestGroupByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name               string
+		input              []int
+		iteratee           func(item int) (int, error)
+		wantResult         map[int][]int
+		wantErr            bool
+		errMsg             string
+		expectedCallbackCount int
+	}{
+		{
+			name:  "successful grouping",
+			input: []int{0, 1, 2, 3, 4, 5},
+			iteratee: func(i int) (int, error) {
+				return i % 3, nil
+			},
+			wantResult: map[int][]int{
+				0: {0, 3},
+				1: {1, 4},
+				2: {2, 5},
+			},
+			wantErr: false,
+			expectedCallbackCount: 6,
+		},
+		{
+			name:  "error at fourth element stops iteration",
+			input: []int{0, 1, 2, 3, 4, 5},
+			iteratee: func(i int) (int, error) {
+				if i == 3 {
+					return 0, fmt.Errorf("number 3 is not allowed")
+				}
+				return i % 3, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 3 is not allowed",
+			expectedCallbackCount: 4,
+		},
+		{
+			name:  "error at first element stops iteration immediately",
+			input: []int{0, 1, 2, 3, 4, 5},
+			iteratee: func(i int) (int, error) {
+				if i == 0 {
+					return 0, fmt.Errorf("number 0 is not allowed")
+				}
+				return i % 3, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 0 is not allowed",
+			expectedCallbackCount: 1,
+		},
+		{
+			name:  "error at last element",
+			input: []int{0, 1, 2, 3, 4, 5},
+			iteratee: func(i int) (int, error) {
+				if i == 5 {
+					return 0, fmt.Errorf("number 5 is not allowed")
+				}
+				return i % 3, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 5 is not allowed",
+			expectedCallbackCount: 6,
+		},
+		{
+			name:  "empty input slice",
+			input: []int{},
+			iteratee: func(i int) (int, error) {
+				return i % 3, nil
+			},
+			wantResult: map[int][]int{},
+			wantErr: false,
+			expectedCallbackCount: 0,
+		},
+		{
+			name:  "all elements in same group",
+			input: []int{3, 6, 9, 12},
+			iteratee: func(i int) (int, error) {
+				return 0, nil
+			},
+			wantResult: map[int][]int{
+				0: {3, 6, 9, 12},
+			},
+			wantErr: false,
+			expectedCallbackCount: 4,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			// Track callback count to test early return
+			callbackCount := 0
+			wrappedIteratee := func(item int) (int, error) {
+				callbackCount++
+				return tt.iteratee(item)
+			}
+
+			result, err := GroupByErr(tt.input, wrappedIteratee)
+
+			if tt.wantErr {
+				is.Error(err)
+				is.Equal(tt.errMsg, err.Error())
+				is.Nil(result)
+			} else {
+				is.NoError(err)
+				is.Equal(tt.wantResult, result)
+			}
+
+			// Verify callback count matches expected
+			is.Equal(tt.expectedCallbackCount, callbackCount, "callback count should match expected")
+		})
+	}
+}
+
 func TestGroupByMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -1741,6 +1863,112 @@ func TestCountBy(t *testing.T) {
 	is.Equal(2, count1)
 	is.Zero(count2)
 	is.Zero(count3)
+}
+
+func TestCountByErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name          string
+		input         []int
+		predicate     func(int) (bool, error)
+		want          int
+		wantErr       string
+		wantCallCount int
+	}{
+		{
+			name:  "count elements less than 2",
+			input: []int{1, 2, 1},
+			predicate: func(i int) (bool, error) {
+				return i < 2, nil
+			},
+			want:          2,
+			wantErr:       "",
+			wantCallCount: 3,
+		},
+		{
+			name:  "count elements greater than 2",
+			input: []int{1, 2, 1},
+			predicate: func(i int) (bool, error) {
+				return i > 2, nil
+			},
+			want:          0,
+			wantErr:       "",
+			wantCallCount: 3,
+		},
+		{
+			name:  "empty slice",
+			input: []int{},
+			predicate: func(i int) (bool, error) {
+				return i <= 2, nil
+			},
+			want:          0,
+			wantErr:       "",
+			wantCallCount: 0,
+		},
+		{
+			name:  "error on third element",
+			input: []int{1, 2, 3, 4, 5},
+			predicate: func(i int) (bool, error) {
+				if i == 3 {
+					return false, fmt.Errorf("error at %d", i)
+				}
+				return i < 3, nil
+			},
+			want:          0,
+			wantErr:       "error at 3",
+			wantCallCount: 3, // stops early at error
+		},
+		{
+			name:  "error on first element",
+			input: []int{1, 2, 3},
+			predicate: func(i int) (bool, error) {
+				return false, fmt.Errorf("first element error")
+			},
+			want:          0,
+			wantErr:       "first element error",
+			wantCallCount: 1,
+		},
+		{
+			name:  "all match",
+			input: []int{1, 2, 3},
+			predicate: func(i int) (bool, error) {
+				return i > 0, nil
+			},
+			want:          3,
+			wantErr:       "",
+			wantCallCount: 3,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt // capture range variable
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			callCount := 0
+			wrappedPredicate := func(i int) (bool, error) {
+				callCount++
+				return tt.predicate(i)
+			}
+
+			got, err := CountByErr(tt.input, wrappedPredicate)
+
+			if tt.wantErr != "" {
+				is.Error(err)
+				is.Equal(tt.wantErr, err.Error())
+				is.Equal(tt.want, got)
+				if tt.wantCallCount > 0 {
+					is.Equal(tt.wantCallCount, callCount, "should stop early on error")
+				}
+			} else {
+				is.NoError(err)
+				is.Equal(tt.want, got)
+				is.Equal(tt.wantCallCount, callCount)
+			}
+		})
+	}
 }
 
 func TestCountValues(t *testing.T) {
