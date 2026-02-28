@@ -213,6 +213,135 @@ func TestFlatMap(t *testing.T) {
 	is.Equal([]string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"}, result2)
 }
 
+func TestFlatMapErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name               string
+		input              []int64
+		transform          func(item int64, index int) ([]string, error)
+		wantResult         []string
+		wantErr            bool
+		errMsg             string
+		expectedCallbackCount int
+	}{
+		{
+			name:  "successful transformation",
+			input: []int64{0, 1, 2},
+			transform: func(x int64, _ int) ([]string, error) {
+				return []string{strconv.FormatInt(x, 10), strconv.FormatInt(x, 10)}, nil
+			},
+			wantResult: []string{"0", "0", "1", "1", "2", "2"},
+			wantErr: false,
+			expectedCallbackCount: 3,
+		},
+		{
+			name:  "error at second element stops iteration",
+			input: []int64{0, 1, 2, 3},
+			transform: func(x int64, _ int) ([]string, error) {
+				if x == 1 {
+					return nil, fmt.Errorf("number 1 is not allowed")
+				}
+				return []string{strconv.FormatInt(x, 10)}, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 1 is not allowed",
+			expectedCallbackCount: 2,
+		},
+		{
+			name:  "error at first element stops iteration immediately",
+			input: []int64{0, 1, 2, 3},
+			transform: func(x int64, _ int) ([]string, error) {
+				if x == 0 {
+					return nil, fmt.Errorf("number 0 is not allowed")
+				}
+				return []string{strconv.FormatInt(x, 10)}, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 0 is not allowed",
+			expectedCallbackCount: 1,
+		},
+		{
+			name:  "error at last element",
+			input: []int64{0, 1, 2},
+			transform: func(x int64, _ int) ([]string, error) {
+				if x == 2 {
+					return nil, fmt.Errorf("number 2 is not allowed")
+				}
+				return []string{strconv.FormatInt(x, 10)}, nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 2 is not allowed",
+			expectedCallbackCount: 3,
+		},
+		{
+			name:  "empty input slice",
+			input: []int64{},
+			transform: func(x int64, _ int) ([]string, error) {
+				return []string{strconv.FormatInt(x, 10)}, nil
+			},
+			wantResult: []string{},
+			wantErr: false,
+			expectedCallbackCount: 0,
+		},
+		{
+			name:  "returns empty slice for each element",
+			input: []int64{1, 2, 3},
+			transform: func(x int64, _ int) ([]string, error) {
+				return []string{}, nil
+			},
+			wantResult: []string{},
+			wantErr: false,
+			expectedCallbackCount: 3,
+		},
+		{
+			name:  "returns nil for some elements",
+			input: []int64{1, 2, 3},
+			transform: func(x int64, _ int) ([]string, error) {
+				if x == 2 {
+					return nil, nil
+				}
+				return []string{strconv.FormatInt(x, 10)}, nil
+			},
+			wantResult: []string{"1", "3"},
+			wantErr: false,
+			expectedCallbackCount: 3,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			// Track callback count to test early return
+			callbackCount := 0
+			wrappedTransform := func(item int64, index int) ([]string, error) {
+				callbackCount++
+				return tt.transform(item, index)
+			}
+
+			result, err := FlatMapErr(tt.input, wrappedTransform)
+
+			if tt.wantErr {
+				is.Error(err)
+				is.Equal(tt.errMsg, err.Error())
+				is.Nil(result)
+			} else {
+				is.NoError(err)
+				is.Equal(tt.wantResult, result)
+			}
+
+			// Verify callback count matches expected
+			is.Equal(tt.expectedCallbackCount, callbackCount, "callback count should match expected")
+		})
+	}
+}
+
 func TestTimes(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

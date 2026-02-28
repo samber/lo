@@ -8,7 +8,9 @@ playUrl: https://go.dev/play/p/pFCF5WVB225
 variantHelpers:
   - core#slice#flatmap
 similarHelpers:
+  - core#slice#flatmaperr
   - core#slice#map
+  - core#slice#maperr
   - parallel#slice#map
   - mutable#slice#map
   - core#slice#filtermap
