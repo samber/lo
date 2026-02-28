@@ -1619,6 +1619,17 @@ m := lo.PickBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, va
 // map[string]int{"foo": 1, "baz": 3}
 ```
 
+```go
+// Use PickByErr when the predicate can return an error
+m, err := lo.PickByErr(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(key string, value int) (bool, error) {
+    if key == "bar" {
+        return false, fmt.Errorf("bar not allowed")
+    }
+    return value%2 == 1, nil
+})
+// map[string]int(nil), error("bar not allowed")
+```
+
 [[play](https://go.dev/play/p/kdg8GR_QMmf)]
 
 ### PickByKeys
