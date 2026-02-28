@@ -48,6 +48,112 @@ func TestMap(t *testing.T) {
 	is.Equal([]string{"1", "2", "3", "4"}, result2)
 }
 
+func TestMapErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name               string
+		input              []int
+		transform          func(item int, index int) (string, error)
+		wantResult         []string
+		wantErr            bool
+		errMsg             string
+		expectedCallbackCount int
+	}{
+		{
+			name:  "successful transformation",
+			input: []int{1, 2, 3, 4},
+			transform: func(x int, _ int) (string, error) {
+				return strconv.Itoa(x), nil
+			},
+			wantResult: []string{"1", "2", "3", "4"},
+			wantErr: false,
+			expectedCallbackCount: 4,
+		},
+		{
+			name:  "error at third element stops iteration",
+			input: []int{1, 2, 3, 4},
+			transform: func(x int, _ int) (string, error) {
+				if x == 3 {
+					return "", fmt.Errorf("number 3 is not allowed")
+				}
+				return strconv.Itoa(x), nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 3 is not allowed",
+			expectedCallbackCount: 3,
+		},
+		{
+			name:  "error at first element stops iteration immediately",
+			input: []int{1, 2, 3, 4},
+			transform: func(x int, _ int) (string, error) {
+				if x == 1 {
+					return "", fmt.Errorf("number 1 is not allowed")
+				}
+				return strconv.Itoa(x), nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 1 is not allowed",
+			expectedCallbackCount: 1,
+		},
+		{
+			name:  "error at last element",
+			input: []int{1, 2, 3, 4},
+			transform: func(x int, _ int) (string, error) {
+				if x == 4 {
+					return "", fmt.Errorf("number 4 is not allowed")
+				}
+				return strconv.Itoa(x), nil
+			},
+			wantResult: nil,
+			wantErr: true,
+			errMsg: "number 4 is not allowed",
+			expectedCallbackCount: 4,
+		},
+		{
+			name:  "empty input slice",
+			input: []int{},
+			transform: func(x int, _ int) (string, error) {
+				return strconv.Itoa(x), nil
+			},
+			wantResult: []string{},
+			wantErr: false,
+			expectedCallbackCount: 0,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			// Track callback count to test early return
+			callbackCount := 0
+			wrappedTransform := func(item int, index int) (string, error) {
+				callbackCount++
+				return tt.transform(item, index)
+			}
+
+			result, err := MapErr(tt.input, wrappedTransform)
+
+			if tt.wantErr {
+				is.Error(err)
+				is.Equal(tt.errMsg, err.Error())
+				is.Nil(result)
+			} else {
+				is.NoError(err)
+				is.Equal(tt.wantResult, result)
+			}
+
+			// Verify callback count matches expected
+			is.Equal(tt.expectedCallbackCount, callbackCount, "callback count should match expected")
+		})
+	}
+}
+
 func TestUniqMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
