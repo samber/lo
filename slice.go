@@ -276,6 +276,23 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 	return result
 }
 
+// GroupByErr returns an object composed of keys generated from the results of running each element of collection through iteratee.
+// It returns the first error returned by the iteratee function.
+func GroupByErr[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) (U, error)) (map[U]Slice, error) {
+	result := map[U]Slice{}
+
+	for i := range collection {
+		key, err := iteratee(collection[i])
+		if err != nil {
+			return nil, err
+		}
+
+		result[key] = append(result[key], collection[i])
+	}
+
+	return result, nil
+}
+
 // GroupByMap returns an object composed of keys generated from the results of running each element of collection through transform.
 // Play: https://go.dev/play/p/iMeruQ3_W80
 func GroupByMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K][]V {
@@ -839,6 +856,24 @@ func CountBy[T any](collection []T, predicate func(item T) bool) int {
 	}
 
 	return count
+}
+
+// CountByErr counts the number of elements in the collection for which predicate is true.
+// It returns the first error returned by the predicate.
+func CountByErr[T any](collection []T, predicate func(item T) (bool, error)) (int, error) {
+	var count int
+
+	for i := range collection {
+		ok, err := predicate(collection[i])
+		if err != nil {
+			return 0, err
+		}
+		if ok {
+			count++
+		}
+	}
+
+	return count, nil
 }
 
 // CountValues counts the number of each element in the collection.

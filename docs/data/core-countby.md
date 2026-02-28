@@ -1,7 +1,7 @@
 ---
 name: CountBy
 slug: countby
-sourceRef: slice.go#L596
+sourceRef: slice.go#L849
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/ByQbNYQQi4X
@@ -13,6 +13,7 @@ similarHelpers:
   - core#slice#some
   - core#slice#filter
   - core#slice#find
+  - core#slice#countbyerr
 position: 0
 signatures:
   - "func CountBy[T any](collection []T, predicate func(item T) bool) int"
