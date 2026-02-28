@@ -346,6 +346,34 @@ func MinBy[T any](collection []T, less func(a, b T) bool) T {
 	return mIn
 }
 
+// MinByErr search the minimum value of a collection using the given comparison function.
+// If several values of the collection are equal to the smallest value, returns the first such value.
+// Returns zero value and nil error when the collection is empty.
+// If the comparison function returns an error, iteration stops and the error is returned.
+func MinByErr[T any](collection []T, less func(a, b T) (bool, error)) (T, error) {
+	var mIn T
+
+	if len(collection) == 0 {
+		return mIn, nil
+	}
+
+	mIn = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
+
+		isLess, err := less(item, mIn)
+		if err != nil {
+			return mIn, err
+		}
+		if isLess {
+			mIn = item
+		}
+	}
+
+	return mIn, nil
+}
+
 // MinIndexBy search the minimum value of a collection using the given comparison function and the index of the minimum value.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
