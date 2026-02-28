@@ -587,6 +587,41 @@ func MaxIndexBy[T any](collection []T, greater func(a, b T) bool) (T, int) {
 	return mAx, index
 }
 
+// MaxIndexByErr search the maximum value of a collection using the given comparison function and the index of the maximum value.
+// If several values of the collection are equal to the greatest value, returns the first such value.
+// Returns (zero value, -1, nil) when the collection is empty.
+// If the comparison function returns an error, iteration stops and the error is returned.
+//
+// Note: the comparison function is inconsistent with most languages, since we use the opposite of the usual convention.
+// See https://github.com/samber/lo/issues/129
+func MaxIndexByErr[T any](collection []T, greater func(a, b T) (bool, error)) (T, int, error) {
+	var (
+		mAx   T
+		index int
+	)
+
+	if len(collection) == 0 {
+		return mAx, -1, nil
+	}
+
+	mAx = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
+
+		isGreater, err := greater(item, mAx)
+		if err != nil {
+			return mAx, index, err
+		}
+		if isGreater {
+			mAx = item
+			index = i
+		}
+	}
+
+	return mAx, index, nil
+}
+
 // Latest search the maximum time.Time of a collection.
 // Returns zero value when the collection is empty.
 func Latest(times ...time.Time) time.Time {
