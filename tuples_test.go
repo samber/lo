@@ -982,3 +982,300 @@ func TestCrossJoinBy(t *testing.T) {
 	results7 := CrossJoinBy2(listOne, mixedList, T2[string, any])
 	is.Equal([]Tuple2[string, any]{T2[string, any]("a", 9.6), T2[string, any]("a", 4), T2[string, any]("a", "foobar"), T2[string, any]("b", 9.6), T2[string, any]("b", 4), T2[string, any]("b", "foobar"), T2[string, any]("c", 9.6), T2[string, any]("c", 4), T2[string, any]("c", "foobar")}, results7)
 }
+
+func TestCrossJoinByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Test CrossJoinByErr2
+	t.Run("CrossJoinByErr2", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name                  string
+			listA                 []string
+			listB                 []int
+			transform             func(a string, b int) (string, error)
+			wantResult            []string
+			wantErr               bool
+			errMsg                string
+			expectedCallbackCount int
+		}{
+			{
+				name:  "successful transformation",
+				listA: []string{"a", "b"},
+				listB: []int{1, 2},
+				transform: func(a string, b int) (string, error) {
+					return a + "-" + strconv.Itoa(b), nil
+				},
+				wantResult:            []string{"a-1", "a-2", "b-1", "b-2"},
+				wantErr:               false,
+				expectedCallbackCount: 4,
+			},
+			{
+				name:  "error stops iteration early",
+				listA: []string{"a", "b"},
+				listB: []int{1, 2},
+				transform: func(a string, b int) (string, error) {
+					if a == "b" {
+						return "", errors.New("b not allowed")
+					}
+					return a + "-" + strconv.Itoa(b), nil
+				},
+				wantResult:            nil,
+				wantErr:               true,
+				errMsg:                "b not allowed",
+				expectedCallbackCount: 3, // a-1, a-2, then b-1 errors
+			},
+			{
+				name:      "empty list returns empty result",
+				listA:     []string{},
+				listB:     []int{1, 2},
+				transform: func(a string, b int) (string, error) { return a + "-" + strconv.Itoa(b), nil },
+				wantResult:            []string{},
+				wantErr:               false,
+				expectedCallbackCount: 0,
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+
+				callbackCount := 0
+				transform := func(a string, b int) (string, error) {
+					callbackCount++
+					return tt.transform(a, b)
+				}
+
+				result, err := CrossJoinByErr2(tt.listA, tt.listB, transform)
+
+				is.Equal(tt.wantResult, result)
+				if tt.wantErr {
+					is.Error(err)
+					if tt.errMsg != "" {
+						is.ErrorContains(err, tt.errMsg)
+					}
+				} else {
+					is.NoError(err)
+				}
+				is.Equal(tt.expectedCallbackCount, callbackCount)
+			})
+		}
+	})
+
+	// Test CrossJoinByErr3
+	t.Run("CrossJoinByErr3", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name                  string
+			listA                 []string
+			listB                 []int
+			listC                 []bool
+			transform             func(a string, b int, c bool) (string, error)
+			wantResult            []string
+			wantErr               bool
+			expectedCallbackCount int
+		}{
+			{
+				name:  "successful transformation",
+				listA: []string{"a", "b"},
+				listB: []int{1, 2},
+				listC: []bool{true, false},
+				transform: func(a string, b int, c bool) (string, error) {
+					return a + "-" + strconv.Itoa(b), nil
+				},
+				wantResult:            []string{"a-1", "a-1", "a-2", "a-2", "b-1", "b-1", "b-2", "b-2"},
+				wantErr:               false,
+				expectedCallbackCount: 8,
+			},
+			{
+				name:  "error stops iteration early",
+				listA: []string{"a", "b"},
+				listB: []int{1, 2},
+				listC: []bool{true, false},
+				transform: func(a string, b int, c bool) (string, error) {
+					if a == "b" && b == 2 {
+						return "", errors.New("error")
+					}
+					return a + "-" + strconv.Itoa(b), nil
+				},
+				wantResult:            nil,
+				wantErr:               true,
+				expectedCallbackCount: 7,
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+
+				callbackCount := 0
+				transform := func(a string, b int, c bool) (string, error) {
+					callbackCount++
+					return tt.transform(a, b, c)
+				}
+
+				result, err := CrossJoinByErr3(tt.listA, tt.listB, tt.listC, transform)
+
+				is.Equal(tt.wantResult, result)
+				if tt.wantErr {
+					is.Error(err)
+				} else {
+					is.NoError(err)
+				}
+				is.Equal(tt.expectedCallbackCount, callbackCount)
+			})
+		}
+	})
+
+	// Test CrossJoinByErr4
+	t.Run("CrossJoinByErr4", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := CrossJoinByErr4(
+			[]string{"a", "b"},
+			[]int{1, 2},
+			[]bool{true},
+			[]float32{1.1},
+			func(a string, b int, c bool, d float32) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal(4, len(result))
+		is.NoError(err)
+		is.Equal(4, callbackCount)
+	})
+
+	// Test CrossJoinByErr5
+	t.Run("CrossJoinByErr5", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := CrossJoinByErr5(
+			[]string{"a", "b"},
+			[]int{1},
+			[]bool{true},
+			[]float32{1.1},
+			[]float64{2.2},
+			func(a string, b int, c bool, d float32, e float64) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal(2, len(result))
+		is.NoError(err)
+		is.Equal(2, callbackCount)
+	})
+
+	// Test CrossJoinByErr6
+	t.Run("CrossJoinByErr6", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := CrossJoinByErr6(
+			[]string{"a"},
+			[]int{1},
+			[]bool{true},
+			[]float32{1.1},
+			[]float64{2.2},
+			[]int8{3},
+			func(a string, b int, c bool, d float32, e float64, f int8) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal(1, len(result))
+		is.NoError(err)
+		is.Equal(1, callbackCount)
+	})
+
+	// Test CrossJoinByErr7
+	t.Run("CrossJoinByErr7", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := CrossJoinByErr7(
+			[]string{"a"},
+			[]int{1},
+			[]bool{true},
+			[]float32{1.1},
+			[]float64{2.2},
+			[]int8{3},
+			[]int16{4},
+			func(a string, b int, c bool, d float32, e float64, f int8, g int16) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal(1, len(result))
+		is.NoError(err)
+		is.Equal(1, callbackCount)
+	})
+
+	// Test CrossJoinByErr8
+	t.Run("CrossJoinByErr8", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := CrossJoinByErr8(
+			[]string{"a"},
+			[]int{1},
+			[]bool{true},
+			[]float32{1.1},
+			[]float64{2.2},
+			[]int8{3},
+			[]int16{4},
+			[]int32{5},
+			func(a string, b int, c bool, d float32, e float64, f int8, g int16, h int32) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal(1, len(result))
+		is.NoError(err)
+		is.Equal(1, callbackCount)
+	})
+
+	// Test CrossJoinByErr9
+	t.Run("CrossJoinByErr9", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := CrossJoinByErr9(
+			[]string{"a"},
+			[]int{1},
+			[]bool{true},
+			[]float32{1.1},
+			[]float64{2.2},
+			[]int8{3},
+			[]int16{4},
+			[]int32{5},
+			[]int64{6},
+			func(a string, b int, c bool, d float32, e float64, f int8, g int16, h int32, i int64) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal(1, len(result))
+		is.NoError(err)
+		is.Equal(1, callbackCount)
+	})
+}

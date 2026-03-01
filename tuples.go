@@ -1315,3 +1315,267 @@ func CrossJoinBy9[A, B, C, D, E, F, G, H, I, Out any](listA []A, listB []B, list
 
 	return result
 }
+
+// CrossJoinByErr2 combines every item from one list with every item from others.
+// It is the cartesian product of lists received as arguments. The transform function
+// is used to create the output values.
+// Returns an empty list if a list is empty.
+// It returns the first error returned by the transform function.
+func CrossJoinByErr2[A, B, Out any](listA []A, listB []B, transform func(a A, b B) (Out, error)) ([]Out, error) {
+	size := len(listA) * len(listB)
+	if size == 0 {
+		return []Out{}, nil
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			r, err := transform(a, b)
+			if err != nil {
+				return nil, err
+			}
+			result = append(result, r)
+		}
+	}
+
+	return result, nil
+}
+
+// CrossJoinByErr3 combines every item from one list with every item from others.
+// It is the cartesian product of lists received as arguments. The transform function
+// is used to create the output values.
+// Returns an empty list if a list is empty.
+// It returns the first error returned by the transform function.
+func CrossJoinByErr3[A, B, C, Out any](listA []A, listB []B, listC []C, transform func(a A, b B, c C) (Out, error)) ([]Out, error) {
+	size := len(listA) * len(listB) * len(listC)
+	if size == 0 {
+		return []Out{}, nil
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				r, err := transform(a, b, c)
+				if err != nil {
+					return nil, err
+				}
+				result = append(result, r)
+			}
+		}
+	}
+
+	return result, nil
+}
+
+// CrossJoinByErr4 combines every item from one list with every item from others.
+// It is the cartesian product of lists received as arguments. The transform function
+// is used to create the output values.
+// Returns an empty list if a list is empty.
+// It returns the first error returned by the transform function.
+func CrossJoinByErr4[A, B, C, D, Out any](listA []A, listB []B, listC []C, listD []D, transform func(a A, b B, c C, d D) (Out, error)) ([]Out, error) {
+	size := len(listA) * len(listB) * len(listC) * len(listD)
+	if size == 0 {
+		return []Out{}, nil
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					r, err := transform(a, b, c, d)
+					if err != nil {
+						return nil, err
+					}
+					result = append(result, r)
+				}
+			}
+		}
+	}
+
+	return result, nil
+}
+
+// CrossJoinByErr5 combines every item from one list with every item from others.
+// It is the cartesian product of lists received as arguments. The transform function
+// is used to create the output values.
+// Returns an empty list if a list is empty.
+// It returns the first error returned by the transform function.
+func CrossJoinByErr5[A, B, C, D, E, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, transform func(a A, b B, c C, d D, e E) (Out, error)) ([]Out, error) {
+	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE)
+	if size == 0 {
+		return []Out{}, nil
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					for _, e := range listE {
+						r, err := transform(a, b, c, d, e)
+						if err != nil {
+							return nil, err
+						}
+						result = append(result, r)
+					}
+				}
+			}
+		}
+	}
+
+	return result, nil
+}
+
+// CrossJoinByErr6 combines every item from one list with every item from others.
+// It is the cartesian product of lists received as arguments. The transform function
+// is used to create the output values.
+// Returns an empty list if a list is empty.
+// It returns the first error returned by the transform function.
+func CrossJoinByErr6[A, B, C, D, E, F, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, transform func(a A, b B, c C, d D, e E, f F) (Out, error)) ([]Out, error) {
+	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF)
+	if size == 0 {
+		return []Out{}, nil
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					for _, e := range listE {
+						for _, f := range listF {
+							r, err := transform(a, b, c, d, e, f)
+							if err != nil {
+								return nil, err
+							}
+							result = append(result, r)
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return result, nil
+}
+
+// CrossJoinByErr7 combines every item from one list with every item from others.
+// It is the cartesian product of lists received as arguments. The transform function
+// is used to create the output values.
+// Returns an empty list if a list is empty.
+// It returns the first error returned by the transform function.
+func CrossJoinByErr7[A, B, C, D, E, F, G, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, transform func(a A, b B, c C, d D, e E, f F, g G) (Out, error)) ([]Out, error) {
+	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG)
+	if size == 0 {
+		return []Out{}, nil
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					for _, e := range listE {
+						for _, f := range listF {
+							for _, g := range listG {
+								r, err := transform(a, b, c, d, e, f, g)
+								if err != nil {
+									return nil, err
+								}
+								result = append(result, r)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return result, nil
+}
+
+// CrossJoinByErr8 combines every item from one list with every item from others.
+// It is the cartesian product of lists received as arguments. The transform function
+// is used to create the output values.
+// Returns an empty list if a list is empty.
+// It returns the first error returned by the transform function.
+func CrossJoinByErr8[A, B, C, D, E, F, G, H, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, transform func(a A, b B, c C, d D, e E, f F, g G, h H) (Out, error)) ([]Out, error) {
+	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG) * len(listH)
+	if size == 0 {
+		return []Out{}, nil
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					for _, e := range listE {
+						for _, f := range listF {
+							for _, g := range listG {
+								for _, h := range listH {
+									r, err := transform(a, b, c, d, e, f, g, h)
+									if err != nil {
+										return nil, err
+									}
+									result = append(result, r)
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return result, nil
+}
+
+// CrossJoinByErr9 combines every item from one list with every item from others.
+// It is the cartesian product of lists received as arguments. The transform function
+// is used to create the output values.
+// Returns an empty list if a list is empty.
+// It returns the first error returned by the transform function.
+func CrossJoinByErr9[A, B, C, D, E, F, G, H, I, Out any](listA []A, listB []B, listC []C, listD []D, listE []E, listF []F, listG []G, listH []H, listI []I, transform func(a A, b B, c C, d D, e E, f F, g G, h H, i I) (Out, error)) ([]Out, error) {
+	size := len(listA) * len(listB) * len(listC) * len(listD) * len(listE) * len(listF) * len(listG) * len(listH) * len(listI)
+	if size == 0 {
+		return []Out{}, nil
+	}
+
+	result := make([]Out, 0, size)
+
+	for _, a := range listA {
+		for _, b := range listB {
+			for _, c := range listC {
+				for _, d := range listD {
+					for _, e := range listE {
+						for _, f := range listF {
+							for _, g := range listG {
+								for _, h := range listH {
+									for _, i := range listI {
+										r, err := transform(a, b, c, d, e, f, g, h, i)
+										if err != nil {
+											return nil, err
+										}
+										result = append(result, r)
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return result, nil
+}

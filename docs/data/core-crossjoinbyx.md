@@ -16,6 +16,7 @@ signatures:
 playUrl: https://go.dev/play/p/8Y7btpvuA-C
 variantHelpers:
   - core#tuple#crossjoinbyx
+  - core#tuple#crossjoinbyerrx
 similarHelpers:
   - core#tuple#zipx
   - core#tuple#unzipx
@@ -23,7 +24,7 @@ similarHelpers:
   - core#tuple#unzipbyx
   - core#slice#product
   - core#slice#productby
-position: 60
+position: 62
 ---
 
 Computes a cartesian product and projects each combination through a function. Variants support 2 up to 9 input slices.

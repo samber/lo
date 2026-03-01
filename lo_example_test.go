@@ -3828,6 +3828,42 @@ func ExampleCrossJoinBy9() {
 	// b-4-false-{bar}-4.2-plop-false-42-hello world
 }
 
+func ExampleCrossJoinByErr2() {
+	result, err := CrossJoinByErr2([]string{"a", "b"}, []int{1, 2}, func(a string, b int) (string, error) {
+		if a == "b" {
+			return "", fmt.Errorf("b not allowed")
+		}
+		return fmt.Sprintf("%v-%v", a, b), nil
+	})
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return
+	}
+	for _, r := range result {
+		fmt.Printf("%v\n", r)
+	}
+	// Output:
+	// error: b not allowed
+}
+
+func ExampleZipByErr2() {
+	result, err := ZipByErr2([]string{"a", "b", "c"}, []int{1, 2, 3}, func(a string, b int) (string, error) {
+		if a == "b" {
+			return "", fmt.Errorf("b is not allowed")
+		}
+		return fmt.Sprintf("%v-%v", a, b), nil
+	})
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return
+	}
+	for _, r := range result {
+		fmt.Printf("%v\n", r)
+	}
+	// Output:
+	// error: b is not allowed
+}
+
 func ExampleIntersect() {
 	result := Intersect([]int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0})
 	fmt.Printf("%v", result)
