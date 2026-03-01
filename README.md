@@ -1980,6 +1980,18 @@ result := lo.FilterMapToSlice(kv, func(k int, v int64) (string, bool) {
 // []{"2_2", "4_4"}
 ```
 
+```go
+kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
+
+result, err := lo.FilterMapToSliceErr(kv, func(k int, v int64) (string, bool, error) {
+    if k == 3 {
+        return "", false, fmt.Errorf("key 3 not allowed")
+    }
+    return fmt.Sprintf("%d_%d", k, v), k%2 == 0, nil
+})
+// []string(nil), error("key 3 not allowed")
+```
+
 ### FilterKeys
 
 Transforms a map into a slice based on predicate returns true for specific elements. It is a mix of `lo.Filter()` and `lo.Keys()`.

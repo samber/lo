@@ -2111,6 +2111,18 @@ func ExampleFilterMapToSlice() {
 	// Output: [2_2 4_4]
 }
 
+func ExampleFilterMapToSliceErr() {
+	kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
+
+	result, err := FilterMapToSliceErr(kv, func(k int, v int64) (string, bool, error) {
+		return fmt.Sprintf("%d_%d", k, v), k%2 == 0, nil
+	})
+
+	sort.Strings(result)
+	fmt.Printf("%v %v", result, err)
+	// Output: [2_2 4_4] <nil>
+}
+
 func ExampleFilterKeys() {
 	kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
 

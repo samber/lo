@@ -1,7 +1,7 @@
 ---
 name: FilterMapToSlice
 slug: filtermaptoslice
-sourceRef: map.go#L335
+sourceRef: map.go#L430
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/jgsD_Kil9pV
@@ -13,6 +13,7 @@ similarHelpers:
   - core#slice#filterreject
   - core#map#filterkeys
   - core#map#filtervalues
+  - core#map#filtermaptosliceerr
 position: 220
 signatures:
   - "func FilterMapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key K, value V) (R, bool)) []R"
