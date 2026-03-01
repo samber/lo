@@ -2493,6 +2493,18 @@ result := lo.CrossJoinBy2([]string{"hello", "john", "doe"}, []int{1, 2}, func(a 
 // "doe - 2"
 ```
 
+With error handling:
+
+```go
+result, err := lo.CrossJoinByErr2([]string{"hello", "john"}, []int{1, 2}, func(a string, b int) (string, error) {
+    if a == "john" {
+        return "", fmt.Errorf("john not allowed")
+    }
+    return fmt.Sprintf("%s - %d", a, b), nil
+})
+// []string(nil), error("john not allowed")
+```
+
 ### Duration
 
 Returns the time taken to execute a function.
