@@ -1020,6 +1020,222 @@ func UnzipBy9[In, A, B, C, D, E, F, G, H, I any](items []In, iteratee func(In) (
 	return r1, r2, r3, r4, r5, r6, r7, r8, r9
 }
 
+// UnzipByErr2 iterates over a collection and creates a slice regrouping the elements
+// to their pre-zip configuration.
+// It returns the first error returned by the iteratee.
+func UnzipByErr2[In, A, B any](items []In, iteratee func(In) (a A, b B, err error)) ([]A, []B, error) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+
+	for i := range items {
+		a, b, err := iteratee(items[i])
+		if err != nil {
+			return nil, nil, err
+		}
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+	}
+
+	return r1, r2, nil
+}
+
+// UnzipByErr3 iterates over a collection and creates a slice regrouping the elements
+// to their pre-zip configuration.
+// It returns the first error returned by the iteratee.
+func UnzipByErr3[In, A, B, C any](items []In, iteratee func(In) (a A, b B, c C, err error)) ([]A, []B, []C, error) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+
+	for i := range items {
+		a, b, c, err := iteratee(items[i])
+		if err != nil {
+			return nil, nil, nil, err
+		}
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+	}
+
+	return r1, r2, r3, nil
+}
+
+// UnzipByErr4 iterates over a collection and creates a slice regrouping the elements
+// to their pre-zip configuration.
+// It returns the first error returned by the iteratee.
+func UnzipByErr4[In, A, B, C, D any](items []In, iteratee func(In) (a A, b B, c C, d D, err error)) ([]A, []B, []C, []D, error) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+
+	for i := range items {
+		a, b, c, d, err := iteratee(items[i])
+		if err != nil {
+			return nil, nil, nil, nil, err
+		}
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+	}
+
+	return r1, r2, r3, r4, nil
+}
+
+// UnzipByErr5 iterates over a collection and creates a slice regrouping the elements
+// to their pre-zip configuration.
+// It returns the first error returned by the iteratee.
+func UnzipByErr5[In, A, B, C, D, E any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, err error)) ([]A, []B, []C, []D, []E, error) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+	r5 := make([]E, 0, size)
+
+	for i := range items {
+		a, b, c, d, e, err := iteratee(items[i])
+		if err != nil {
+			return nil, nil, nil, nil, nil, err
+		}
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+		r5 = append(r5, e)
+	}
+
+	return r1, r2, r3, r4, r5, nil
+}
+
+// UnzipByErr6 iterates over a collection and creates a slice regrouping the elements
+// to their pre-zip configuration.
+// It returns the first error returned by the iteratee.
+func UnzipByErr6[In, A, B, C, D, E, F any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, err error)) ([]A, []B, []C, []D, []E, []F, error) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+	r5 := make([]E, 0, size)
+	r6 := make([]F, 0, size)
+
+	for i := range items {
+		a, b, c, d, e, f, err := iteratee(items[i])
+		if err != nil {
+			return nil, nil, nil, nil, nil, nil, err
+		}
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+		r5 = append(r5, e)
+		r6 = append(r6, f)
+	}
+
+	return r1, r2, r3, r4, r5, r6, nil
+}
+
+// UnzipByErr7 iterates over a collection and creates a slice regrouping the elements
+// to their pre-zip configuration.
+// It returns the first error returned by the iteratee.
+func UnzipByErr7[In, A, B, C, D, E, F, G any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G, err error)) ([]A, []B, []C, []D, []E, []F, []G, error) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+	r5 := make([]E, 0, size)
+	r6 := make([]F, 0, size)
+	r7 := make([]G, 0, size)
+
+	for i := range items {
+		a, b, c, d, e, f, g, err := iteratee(items[i])
+		if err != nil {
+			return nil, nil, nil, nil, nil, nil, nil, err
+		}
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+		r5 = append(r5, e)
+		r6 = append(r6, f)
+		r7 = append(r7, g)
+	}
+
+	return r1, r2, r3, r4, r5, r6, r7, nil
+}
+
+// UnzipByErr8 iterates over a collection and creates a slice regrouping the elements
+// to their pre-zip configuration.
+// It returns the first error returned by the iteratee.
+func UnzipByErr8[In, A, B, C, D, E, F, G, H any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G, h H, err error)) ([]A, []B, []C, []D, []E, []F, []G, []H, error) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+	r5 := make([]E, 0, size)
+	r6 := make([]F, 0, size)
+	r7 := make([]G, 0, size)
+	r8 := make([]H, 0, size)
+
+	for i := range items {
+		a, b, c, d, e, f, g, h, err := iteratee(items[i])
+		if err != nil {
+			return nil, nil, nil, nil, nil, nil, nil, nil, err
+		}
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+		r5 = append(r5, e)
+		r6 = append(r6, f)
+		r7 = append(r7, g)
+		r8 = append(r8, h)
+	}
+
+	return r1, r2, r3, r4, r5, r6, r7, r8, nil
+}
+
+// UnzipByErr9 iterates over a collection and creates a slice regrouping the elements
+// to their pre-zip configuration.
+// It returns the first error returned by the iteratee.
+func UnzipByErr9[In, A, B, C, D, E, F, G, H, I any](items []In, iteratee func(In) (a A, b B, c C, d D, e E, f F, g G, h H, i I, err error)) ([]A, []B, []C, []D, []E, []F, []G, []H, []I, error) {
+	size := len(items)
+	r1 := make([]A, 0, size)
+	r2 := make([]B, 0, size)
+	r3 := make([]C, 0, size)
+	r4 := make([]D, 0, size)
+	r5 := make([]E, 0, size)
+	r6 := make([]F, 0, size)
+	r7 := make([]G, 0, size)
+	r8 := make([]H, 0, size)
+	r9 := make([]I, 0, size)
+
+	for i := range items {
+		a, b, c, d, e, f, g, h, i, err := iteratee(items[i])
+		if err != nil {
+			return nil, nil, nil, nil, nil, nil, nil, nil, nil, err
+		}
+		r1 = append(r1, a)
+		r2 = append(r2, b)
+		r3 = append(r3, c)
+		r4 = append(r4, d)
+		r5 = append(r5, e)
+		r6 = append(r6, f)
+		r7 = append(r7, g)
+		r8 = append(r8, h)
+		r9 = append(r9, i)
+	}
+
+	return r1, r2, r3, r4, r5, r6, r7, r8, r9, nil
+}
+
 // CrossJoin2 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
