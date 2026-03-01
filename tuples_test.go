@@ -1,6 +1,8 @@
 package lo
 
 import (
+	"errors"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -512,6 +514,411 @@ func TestUnzipBy(t *testing.T) {
 
 	is.Equal([]string{"aa", "bb"}, r1)
 	is.Equal([]int{2, 4}, r2)
+}
+
+func TestZipByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Test ZipByErr2
+	t.Run("ZipByErr2", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name                  string
+			a                     []string
+			b                     []int
+			iteratee              func(a string, b int) (string, error)
+			wantResult            []string
+			wantErr               bool
+			errMsg                string
+			expectedCallbackCount int
+		}{
+			{
+				name:  "successful transformation",
+				a:     []string{"a", "b"},
+				b:     []int{1, 2},
+				iteratee: func(a string, b int) (string, error) {
+					return a + "-" + strconv.Itoa(b), nil
+				},
+				wantResult:            []string{"a-1", "b-2"},
+				wantErr:               false,
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "error at second element stops iteration",
+				a:     []string{"a", "b"},
+				b:     []int{1, 2},
+				iteratee: func(a string, b int) (string, error) {
+					if b == 2 {
+						return "", errors.New("number 2 is not allowed")
+					}
+					return a + "-" + strconv.Itoa(b), nil
+				},
+				wantResult:            nil,
+				wantErr:               true,
+				errMsg:                "number 2 is not allowed",
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "error at first element stops iteration immediately",
+				a:     []string{"a", "b"},
+				b:     []int{1, 2},
+				iteratee: func(a string, b int) (string, error) {
+					return "", errors.New("first error")
+				},
+				wantResult:            nil,
+				wantErr:               true,
+				errMsg:                "first error",
+				expectedCallbackCount: 1,
+			},
+			{
+				name:  "empty input slices",
+				a:     []string{},
+				b:     []int{},
+				iteratee: func(a string, b int) (string, error) {
+					return a + "-" + strconv.Itoa(b), nil
+				},
+				wantResult:            []string{},
+				wantErr:               false,
+				expectedCallbackCount: 0,
+			},
+			{
+				name:  "unequal slice lengths - zero value filled",
+				a:     []string{"a", "b", "c"},
+				b:     []int{1},
+				iteratee: func(a string, b int) (string, error) {
+					if b == 0 {
+						return "", errors.New("zero value not allowed")
+					}
+					return a + "-" + strconv.Itoa(b), nil
+				},
+				wantResult:            nil,
+				wantErr:               true,
+				errMsg:                "zero value not allowed",
+				expectedCallbackCount: 2,
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+
+				callbackCount := 0
+				iteratee := func(a string, b int) (string, error) {
+					callbackCount++
+					return tt.iteratee(a, b)
+				}
+
+				result, err := ZipByErr2(tt.a, tt.b, iteratee)
+
+				is.Equal(tt.wantResult, result)
+				if tt.wantErr {
+					is.Error(err)
+					if tt.errMsg != "" {
+						is.ErrorContains(err, tt.errMsg)
+					}
+				} else {
+					is.NoError(err)
+				}
+				is.Equal(tt.expectedCallbackCount, callbackCount)
+			})
+		}
+	})
+
+	// Test ZipByErr3
+	t.Run("ZipByErr3", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name                  string
+			a                     []string
+			b                     []int
+			c                     []bool
+			iteratee              func(a string, b int, c bool) (string, error)
+			wantResult            []string
+			wantErr               bool
+			errMsg                string
+			expectedCallbackCount int
+		}{
+			{
+				name:  "successful transformation",
+				a:     []string{"a", "b"},
+				b:     []int{1, 2},
+				c:     []bool{true, false},
+				iteratee: func(a string, b int, c bool) (string, error) {
+					return a + "-" + strconv.Itoa(b) + "-" + strconv.FormatBool(c), nil
+				},
+				wantResult:            []string{"a-1-true", "b-2-false"},
+				wantErr:               false,
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "error at second element stops iteration",
+				a:     []string{"a", "b"},
+				b:     []int{1, 2},
+				c:     []bool{true, false},
+				iteratee: func(a string, b int, c bool) (string, error) {
+					if b == 2 {
+						return "", errors.New("number 2 is not allowed")
+					}
+					return a + "-" + strconv.Itoa(b) + "-" + strconv.FormatBool(c), nil
+				},
+				wantResult:            nil,
+				wantErr:               true,
+				errMsg:                "number 2 is not allowed",
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "error at first element",
+				a:     []string{"a", "b"},
+				b:     []int{1, 2},
+				c:     []bool{true, false},
+				iteratee: func(a string, b int, c bool) (string, error) {
+					return "", errors.New("first error")
+				},
+				wantResult:            nil,
+				wantErr:               true,
+				errMsg:                "first error",
+				expectedCallbackCount: 1,
+			},
+			{
+				name:  "empty input slices",
+				a:     []string{},
+				b:     []int{},
+				c:     []bool{},
+				iteratee: func(a string, b int, c bool) (string, error) {
+					return a + "-" + strconv.Itoa(b) + "-" + strconv.FormatBool(c), nil
+				},
+				wantResult:            []string{},
+				wantErr:               false,
+				expectedCallbackCount: 0,
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+
+				callbackCount := 0
+				iteratee := func(a string, b int, c bool) (string, error) {
+					callbackCount++
+					return tt.iteratee(a, b, c)
+				}
+
+				result, err := ZipByErr3(tt.a, tt.b, tt.c, iteratee)
+
+				is.Equal(tt.wantResult, result)
+				if tt.wantErr {
+					is.Error(err)
+					if tt.errMsg != "" {
+						is.ErrorContains(err, tt.errMsg)
+					}
+				} else {
+					is.NoError(err)
+				}
+				is.Equal(tt.expectedCallbackCount, callbackCount)
+			})
+		}
+	})
+
+	// Test ZipByErr4
+	t.Run("ZipByErr4", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		tests := []struct {
+			name                  string
+			a                     []string
+			b                     []int
+			c                     []bool
+			d                     []float32
+			iteratee              func(a string, b int, c bool, d float32) (string, error)
+			wantResult            []string
+			wantErr               bool
+			expectedCallbackCount int
+		}{
+			{
+				name:  "successful transformation",
+				a:     []string{"a", "b"},
+				b:     []int{1, 2},
+				c:     []bool{true, false},
+				d:     []float32{1.1, 2.2},
+				iteratee: func(a string, b int, c bool, d float32) (string, error) {
+					return a + "-" + strconv.Itoa(b), nil
+				},
+				wantResult:            []string{"a-1", "b-2"},
+				wantErr:               false,
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "error stops iteration",
+				a:     []string{"a", "b"},
+				b:     []int{1, 2},
+				c:     []bool{true, false},
+				d:     []float32{1.1, 2.2},
+				iteratee: func(a string, b int, c bool, d float32) (string, error) {
+					if b == 2 {
+						return "", errors.New("error")
+					}
+					return a + "-" + strconv.Itoa(b), nil
+				},
+				wantResult:            nil,
+				wantErr:               true,
+				expectedCallbackCount: 2,
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+
+				callbackCount := 0
+				iteratee := func(a string, b int, c bool, d float32) (string, error) {
+					callbackCount++
+					return tt.iteratee(a, b, c, d)
+				}
+
+				result, err := ZipByErr4(tt.a, tt.b, tt.c, tt.d, iteratee)
+
+				is.Equal(tt.wantResult, result)
+				if tt.wantErr {
+					is.Error(err)
+				} else {
+					is.NoError(err)
+				}
+				is.Equal(tt.expectedCallbackCount, callbackCount)
+			})
+		}
+	})
+
+	// Test ZipByErr5
+	t.Run("ZipByErr5", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := ZipByErr5(
+			[]string{"a", "b"},
+			[]int{1, 2},
+			[]bool{true, false},
+			[]float32{1.1, 2.2},
+			[]float64{0.1, 0.2},
+			func(a string, b int, c bool, d float32, e float64) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal([]string{"a-1", "b-2"}, result)
+		is.NoError(err)
+		is.Equal(2, callbackCount)
+	})
+
+	// Test ZipByErr6
+	t.Run("ZipByErr6", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := ZipByErr6(
+			[]string{"a", "b"},
+			[]int{1, 2},
+			[]bool{true, false},
+			[]float32{1.1, 2.2},
+			[]float64{0.1, 0.2},
+			[]int8{1, 2},
+			func(a string, b int, c bool, d float32, e float64, f int8) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal([]string{"a-1", "b-2"}, result)
+		is.NoError(err)
+		is.Equal(2, callbackCount)
+	})
+
+	// Test ZipByErr7
+	t.Run("ZipByErr7", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := ZipByErr7(
+			[]string{"a", "b"},
+			[]int{1, 2},
+			[]bool{true, false},
+			[]float32{1.1, 2.2},
+			[]float64{0.1, 0.2},
+			[]int8{1, 2},
+			[]int16{3, 4},
+			func(a string, b int, c bool, d float32, e float64, f int8, g int16) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal([]string{"a-1", "b-2"}, result)
+		is.NoError(err)
+		is.Equal(2, callbackCount)
+	})
+
+	// Test ZipByErr8
+	t.Run("ZipByErr8", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := ZipByErr8(
+			[]string{"a", "b"},
+			[]int{1, 2},
+			[]bool{true, false},
+			[]float32{1.1, 2.2},
+			[]float64{0.1, 0.2},
+			[]int8{1, 2},
+			[]int16{3, 4},
+			[]int32{5, 6},
+			func(a string, b int, c bool, d float32, e float64, f int8, g int16, h int32) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal([]string{"a-1", "b-2"}, result)
+		is.NoError(err)
+		is.Equal(2, callbackCount)
+	})
+
+	// Test ZipByErr9
+	t.Run("ZipByErr9", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		callbackCount := 0
+		result, err := ZipByErr9(
+			[]string{"a", "b"},
+			[]int{1, 2},
+			[]bool{true, false},
+			[]float32{1.1, 2.2},
+			[]float64{0.1, 0.2},
+			[]int8{1, 2},
+			[]int16{3, 4},
+			[]int32{5, 6},
+			[]int64{7, 8},
+			func(a string, b int, c bool, d float32, e float64, f int8, g int16, h int32, i int64) (string, error) {
+				callbackCount++
+				return a + "-" + strconv.Itoa(b), nil
+			},
+		)
+
+		is.Equal([]string{"a-1", "b-2"}, result)
+		is.NoError(err)
+		is.Equal(2, callbackCount)
+	})
 }
 
 func TestCrossJoin(t *testing.T) {

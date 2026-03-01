@@ -2427,6 +2427,18 @@ items := lo.ZipBy2([]string{"a", "b"}, []int{1, 2}, func(a string, b int) string
 // []string{"a-1", "b-2"}
 ```
 
+With error handling:
+
+```go
+items, err := lo.ZipByErr2([]string{"a", "b"}, []int{1, 2}, func(a string, b int) (string, error) {
+    if b == 2 {
+        return "", fmt.Errorf("number 2 is not allowed")
+    }
+    return fmt.Sprintf("%s-%d", a, b), nil
+})
+// []string(nil), error("number 2 is not allowed")
+```
+
 ### Unzip2 -> Unzip9
 
 Unzip accepts a slice of grouped elements and creates a slice regrouping the elements to their pre-zip configuration.

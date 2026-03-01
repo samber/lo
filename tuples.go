@@ -440,6 +440,210 @@ func ZipBy9[A, B, C, D, E, F, G, H, I, Out any](a []A, b []B, c []C, d []D, e []
 	return result
 }
 
+// ZipByErr2 creates a slice of transformed elements, the first of which contains the first elements
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
+// When collections are different sizes, the Tuple attributes are filled with zero value.
+// It returns the first error returned by the iteratee.
+func ZipByErr2[A, B, Out any](a []A, b []B, iteratee func(a A, b B) (Out, error)) ([]Out, error) {
+	size := uint(Max([]int{len(a), len(b)}))
+	result := make([]Out, size)
+
+	for index := uint(0); index < size; index++ {
+		r, err := iteratee(
+			NthOrEmpty(a, index),
+			NthOrEmpty(b, index),
+		)
+		if err != nil {
+			return nil, err
+		}
+		result[index] = r
+	}
+
+	return result, nil
+}
+
+// ZipByErr3 creates a slice of transformed elements, the first of which contains the first elements
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
+// When collections are different sizes, the Tuple attributes are filled with zero value.
+// It returns the first error returned by the iteratee.
+func ZipByErr3[A, B, C, Out any](a []A, b []B, c []C, iteratee func(a A, b B, c C) (Out, error)) ([]Out, error) {
+	size := uint(Max([]int{len(a), len(b), len(c)}))
+	result := make([]Out, size)
+
+	for index := uint(0); index < size; index++ {
+		r, err := iteratee(
+			NthOrEmpty(a, index),
+			NthOrEmpty(b, index),
+			NthOrEmpty(c, index),
+		)
+		if err != nil {
+			return nil, err
+		}
+		result[index] = r
+	}
+
+	return result, nil
+}
+
+// ZipByErr4 creates a slice of transformed elements, the first of which contains the first elements
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
+// When collections are different sizes, the Tuple attributes are filled with zero value.
+// It returns the first error returned by the iteratee.
+func ZipByErr4[A, B, C, D, Out any](a []A, b []B, c []C, d []D, iteratee func(a A, b B, c C, d D) (Out, error)) ([]Out, error) {
+	size := uint(Max([]int{len(a), len(b), len(c), len(d)}))
+	result := make([]Out, size)
+
+	for index := uint(0); index < size; index++ {
+		r, err := iteratee(
+			NthOrEmpty(a, index),
+			NthOrEmpty(b, index),
+			NthOrEmpty(c, index),
+			NthOrEmpty(d, index),
+		)
+		if err != nil {
+			return nil, err
+		}
+		result[index] = r
+	}
+
+	return result, nil
+}
+
+// ZipByErr5 creates a slice of transformed elements, the first of which contains the first elements
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
+// When collections are different sizes, the Tuple attributes are filled with zero value.
+// It returns the first error returned by the iteratee.
+func ZipByErr5[A, B, C, D, E, Out any](a []A, b []B, c []C, d []D, e []E, iteratee func(a A, b B, c C, d D, e E) (Out, error)) ([]Out, error) {
+	size := uint(Max([]int{len(a), len(b), len(c), len(d), len(e)}))
+	result := make([]Out, size)
+
+	for index := uint(0); index < size; index++ {
+		r, err := iteratee(
+			NthOrEmpty(a, index),
+			NthOrEmpty(b, index),
+			NthOrEmpty(c, index),
+			NthOrEmpty(d, index),
+			NthOrEmpty(e, index),
+		)
+		if err != nil {
+			return nil, err
+		}
+		result[index] = r
+	}
+
+	return result, nil
+}
+
+// ZipByErr6 creates a slice of transformed elements, the first of which contains the first elements
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
+// When collections are different sizes, the Tuple attributes are filled with zero value.
+// It returns the first error returned by the iteratee.
+func ZipByErr6[A, B, C, D, E, F, Out any](a []A, b []B, c []C, d []D, e []E, f []F, iteratee func(a A, b B, c C, d D, e E, f F) (Out, error)) ([]Out, error) {
+	size := uint(Max([]int{len(a), len(b), len(c), len(d), len(e), len(f)}))
+	result := make([]Out, size)
+
+	for index := uint(0); index < size; index++ {
+		r, err := iteratee(
+			NthOrEmpty(a, index),
+			NthOrEmpty(b, index),
+			NthOrEmpty(c, index),
+			NthOrEmpty(d, index),
+			NthOrEmpty(e, index),
+			NthOrEmpty(f, index),
+		)
+		if err != nil {
+			return nil, err
+		}
+		result[index] = r
+	}
+
+	return result, nil
+}
+
+// ZipByErr7 creates a slice of transformed elements, the first of which contains the first elements
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
+// When collections are different sizes, the Tuple attributes are filled with zero value.
+// It returns the first error returned by the iteratee.
+func ZipByErr7[A, B, C, D, E, F, G, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, iteratee func(a A, b B, c C, d D, e E, f F, g G) (Out, error)) ([]Out, error) {
+	size := uint(Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g)}))
+	result := make([]Out, size)
+
+	for index := uint(0); index < size; index++ {
+		r, err := iteratee(
+			NthOrEmpty(a, index),
+			NthOrEmpty(b, index),
+			NthOrEmpty(c, index),
+			NthOrEmpty(d, index),
+			NthOrEmpty(e, index),
+			NthOrEmpty(f, index),
+			NthOrEmpty(g, index),
+		)
+		if err != nil {
+			return nil, err
+		}
+		result[index] = r
+	}
+
+	return result, nil
+}
+
+// ZipByErr8 creates a slice of transformed elements, the first of which contains the first elements
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
+// When collections are different sizes, the Tuple attributes are filled with zero value.
+// It returns the first error returned by the iteratee.
+func ZipByErr8[A, B, C, D, E, F, G, H, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, iteratee func(a A, b B, c C, d D, e E, f F, g G, h H) (Out, error)) ([]Out, error) {
+	size := uint(Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h)}))
+	result := make([]Out, size)
+
+	for index := uint(0); index < size; index++ {
+		r, err := iteratee(
+			NthOrEmpty(a, index),
+			NthOrEmpty(b, index),
+			NthOrEmpty(c, index),
+			NthOrEmpty(d, index),
+			NthOrEmpty(e, index),
+			NthOrEmpty(f, index),
+			NthOrEmpty(g, index),
+			NthOrEmpty(h, index),
+		)
+		if err != nil {
+			return nil, err
+		}
+		result[index] = r
+	}
+
+	return result, nil
+}
+
+// ZipByErr9 creates a slice of transformed elements, the first of which contains the first elements
+// of the given slices, the second of which contains the second elements of the given slices, and so on.
+// When collections are different sizes, the Tuple attributes are filled with zero value.
+// It returns the first error returned by the iteratee.
+func ZipByErr9[A, B, C, D, E, F, G, H, I, Out any](a []A, b []B, c []C, d []D, e []E, f []F, g []G, h []H, i []I, iteratee func(a A, b B, c C, d D, e E, f F, g G, h H, i I) (Out, error)) ([]Out, error) {
+	size := uint(Max([]int{len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h), len(i)}))
+	result := make([]Out, size)
+
+	for index := uint(0); index < size; index++ {
+		r, err := iteratee(
+			NthOrEmpty(a, index),
+			NthOrEmpty(b, index),
+			NthOrEmpty(c, index),
+			NthOrEmpty(d, index),
+			NthOrEmpty(e, index),
+			NthOrEmpty(f, index),
+			NthOrEmpty(g, index),
+			NthOrEmpty(h, index),
+			NthOrEmpty(i, index),
+		)
+		if err != nil {
+			return nil, err
+		}
+		result[index] = r
+	}
+
+	return result, nil
+}
+
 // Unzip2 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // Play: https://go.dev/play/p/ciHugugvaAW
