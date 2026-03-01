@@ -3628,6 +3628,94 @@ func ExampleUnzip9() {
 	// Output: [hello] [2] [true] [{bar}] [4.2] [plop] [false] [42] [hello world]
 }
 
+func ExampleUnzipByErr2() {
+	a, b, err := UnzipByErr2([]string{"hello", "error", "world"}, func(str string) (string, int, error) {
+		if str == "error" {
+			return "", 0, fmt.Errorf("error string not allowed")
+		}
+		return str, len(str), nil
+	})
+	fmt.Printf("%v %v %v", len(a), len(b), err)
+	// Output: 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr3() {
+	a, b, c, err := UnzipByErr3([]string{"hello", "error", "world"}, func(str string) (string, int, bool, error) {
+		if str == "error" {
+			return "", 0, false, fmt.Errorf("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, nil
+	})
+	fmt.Printf("%v %v %v %v", len(a), len(b), len(c), err)
+	// Output: 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr4() {
+	a, b, c, d, err := UnzipByErr4([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, error) {
+		if str == "error" {
+			return "", 0, false, 0, fmt.Errorf("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v", len(a), len(b), len(c), len(d), err)
+	// Output: 0 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr5() {
+	a, b, c, d, e, err := UnzipByErr5([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, error) {
+		if str == "error" {
+			return "", 0, false, 0, 0, fmt.Errorf("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v %v", len(a), len(b), len(c), len(d), len(e), err)
+	// Output: 0 0 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr6() {
+	a, b, c, d, e, f, err := UnzipByErr6([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, error) {
+		if str == "error" {
+			return "", 0, false, 0, 0, 0, fmt.Errorf("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v %v %v", len(a), len(b), len(c), len(d), len(e), len(f), err)
+	// Output: 0 0 0 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr7() {
+	a, b, c, d, e, f, g, err := UnzipByErr7([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, error) {
+		if str == "error" {
+			return "", 0, false, 0, 0, 0, 0, fmt.Errorf("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v %v %v %v", len(a), len(b), len(c), len(d), len(e), len(f), len(g), err)
+	// Output: 0 0 0 0 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr8() {
+	a, b, c, d, e, f, g, h, err := UnzipByErr8([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, error) {
+		if str == "error" {
+			return "", 0, false, 0, 0, 0, 0, 0, fmt.Errorf("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), int32(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v %v %v %v %v", len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h), err)
+	// Output: 0 0 0 0 0 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr9() {
+	a, b, c, d, e, f, g, h, i, err := UnzipByErr9([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, int64, error) {
+		if str == "error" {
+			return "", 0, false, 0, 0, 0, 0, 0, 0, fmt.Errorf("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), int32(len(str)), int64(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v %v %v %v %v %v", len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h), len(i), err)
+	// Output: 0 0 0 0 0 0 0 0 0 error string not allowed
+}
+
 func ExampleCrossJoin2() {
 	result := CrossJoin2([]string{"a", "b"}, []int{1, 2, 3, 4})
 	for _, r := range result {

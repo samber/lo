@@ -3,6 +3,7 @@ package lo
 import (
 	"errors"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -1277,5 +1278,338 @@ func TestCrossJoinByErr(t *testing.T) {
 		is.Equal(1, len(result))
 		is.NoError(err)
 		is.Equal(1, callbackCount)
+	})
+}
+
+func TestUnzipByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Test UnzipByErr2
+	t.Run("UnzipByErr2", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name                  string
+			items                 []string
+			iteratee              func(str string) (string, int, error)
+			wantR1                []string
+			wantR2                []int
+			wantErr               bool
+			errMsg                string
+			expectedCallbackCount int
+		}{
+			{
+				name:  "successful transformation",
+				items: []string{"hello", "world"},
+				iteratee: func(str string) (string, int, error) {
+					return strings.ToUpper(str), len(str), nil
+				},
+				wantR1:                []string{"HELLO", "WORLD"},
+				wantR2:                []int{5, 5},
+				wantErr:               false,
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "error at second element stops iteration",
+				items: []string{"hello", "error", "world"},
+				iteratee: func(str string) (string, int, error) {
+					if str == "error" {
+						return "", 0, errors.New("error string not allowed")
+					}
+					return strings.ToUpper(str), len(str), nil
+				},
+				wantR1:                nil,
+				wantR2:                nil,
+				wantErr:               true,
+				errMsg:                "error string not allowed",
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "error at first element stops immediately",
+				items: []string{"error", "hello", "world"},
+				iteratee: func(str string) (string, int, error) {
+					return "", 0, errors.New("first error")
+				},
+				wantR1:                nil,
+				wantR2:                nil,
+				wantErr:               true,
+				errMsg:                "first error",
+				expectedCallbackCount: 1,
+			},
+			{
+				name:  "empty input slices",
+				items: []string{},
+				iteratee: func(str string) (string, int, error) {
+					return strings.ToUpper(str), len(str), nil
+				},
+				wantR1:                []string{},
+				wantR2:                []int{},
+				wantErr:               false,
+				expectedCallbackCount: 0,
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+
+				callbackCount := 0
+				iteratee := func(str string) (string, int, error) {
+					callbackCount++
+					return tt.iteratee(str)
+				}
+
+				r1, r2, err := UnzipByErr2(tt.items, iteratee)
+
+				is.Equal(tt.wantR1, r1)
+				is.Equal(tt.wantR2, r2)
+				if tt.wantErr {
+					is.Error(err)
+					if tt.errMsg != "" {
+						is.ErrorContains(err, tt.errMsg)
+					}
+				} else {
+					is.NoError(err)
+				}
+				is.Equal(tt.expectedCallbackCount, callbackCount)
+			})
+		}
+	})
+
+	// Test UnzipByErr3
+	t.Run("UnzipByErr3", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name                  string
+			items                 []string
+			iteratee              func(str string) (string, int, bool, error)
+			wantR1                []string
+			wantR2                []int
+			wantR3                []bool
+			wantErr               bool
+			errMsg                string
+			expectedCallbackCount int
+		}{
+			{
+				name:  "successful transformation",
+				items: []string{"hello", "world"},
+				iteratee: func(str string) (string, int, bool, error) {
+					return strings.ToUpper(str), len(str), len(str) > 4, nil
+				},
+				wantR1:                []string{"HELLO", "WORLD"},
+				wantR2:                []int{5, 5},
+				wantR3:                []bool{true, true},
+				wantErr:               false,
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "error at second element stops iteration",
+				items: []string{"hello", "error", "world"},
+				iteratee: func(str string) (string, int, bool, error) {
+					if str == "error" {
+						return "", 0, false, errors.New("error string not allowed")
+					}
+					return strings.ToUpper(str), len(str), len(str) > 4, nil
+				},
+				wantR1:                nil,
+				wantR2:                nil,
+				wantR3:                nil,
+				wantErr:               true,
+				errMsg:                "error string not allowed",
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "error at first element",
+				items: []string{"error", "hello", "world"},
+				iteratee: func(str string) (string, int, bool, error) {
+					return "", 0, false, errors.New("first error")
+				},
+				wantR1:                nil,
+				wantR2:                nil,
+				wantR3:                nil,
+				wantErr:               true,
+				errMsg:                "first error",
+				expectedCallbackCount: 1,
+			},
+			{
+				name:  "empty input slices",
+				items: []string{},
+				iteratee: func(str string) (string, int, bool, error) {
+					return strings.ToUpper(str), len(str), len(str) > 4, nil
+				},
+				wantR1:                []string{},
+				wantR2:                []int{},
+				wantR3:                []bool{},
+				wantErr:               false,
+				expectedCallbackCount: 0,
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+
+				callbackCount := 0
+				iteratee := func(str string) (string, int, bool, error) {
+					callbackCount++
+					return tt.iteratee(str)
+				}
+
+				r1, r2, r3, err := UnzipByErr3(tt.items, iteratee)
+
+				is.Equal(tt.wantR1, r1)
+				is.Equal(tt.wantR2, r2)
+				is.Equal(tt.wantR3, r3)
+				if tt.wantErr {
+					is.Error(err)
+					if tt.errMsg != "" {
+						is.ErrorContains(err, tt.errMsg)
+					}
+				} else {
+					is.NoError(err)
+				}
+				is.Equal(tt.expectedCallbackCount, callbackCount)
+			})
+		}
+	})
+
+	// Test UnzipByErr4
+	t.Run("UnzipByErr4", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name                  string
+			items                 []string
+			iteratee              func(str string) (string, int, bool, float32, error)
+			wantErr               bool
+			expectedCallbackCount int
+		}{
+			{
+				name:  "successful transformation",
+				items: []string{"hello", "world"},
+				iteratee: func(str string) (string, int, bool, float32, error) {
+					return strings.ToUpper(str), len(str), len(str) > 4, float32(len(str)), nil
+				},
+				wantErr:               false,
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "error at second element stops iteration",
+				items: []string{"hello", "error", "world"},
+				iteratee: func(str string) (string, int, bool, float32, error) {
+					if str == "error" {
+						return "", 0, false, 0, errors.New("error string not allowed")
+					}
+					return strings.ToUpper(str), len(str), len(str) > 4, float32(len(str)), nil
+				},
+				wantErr:               true,
+				expectedCallbackCount: 2,
+			},
+			{
+				name:  "empty input slices",
+				items: []string{},
+				iteratee: func(str string) (string, int, bool, float32, error) {
+					return strings.ToUpper(str), len(str), len(str) > 4, float32(len(str)), nil
+				},
+				wantErr:               false,
+				expectedCallbackCount: 0,
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+
+				callbackCount := 0
+				iteratee := func(str string) (string, int, bool, float32, error) {
+					callbackCount++
+					return tt.iteratee(str)
+				}
+
+				_, _, _, _, err := UnzipByErr4(tt.items, iteratee)
+
+				if tt.wantErr {
+					is.Error(err)
+				} else {
+					is.NoError(err)
+				}
+				is.Equal(tt.expectedCallbackCount, callbackCount)
+			})
+		}
+	})
+
+	// Test UnzipByErr5
+	t.Run("UnzipByErr5", func(t *testing.T) {
+		t.Parallel()
+
+		callbackCount := 0
+		_, _, _, _, _, err := UnzipByErr5([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, error) {
+			callbackCount++
+			return strings.ToUpper(str), len(str), len(str) > 4, float32(len(str)), float64(len(str)), nil
+		})
+
+		is.NoError(err)
+		is.Equal(2, callbackCount)
+	})
+
+	// Test UnzipByErr6
+	t.Run("UnzipByErr6", func(t *testing.T) {
+		t.Parallel()
+
+		callbackCount := 0
+		_, _, _, _, _, _, err := UnzipByErr6([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, error) {
+			callbackCount++
+			return strings.ToUpper(str), len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), nil
+		})
+
+		is.NoError(err)
+		is.Equal(2, callbackCount)
+	})
+
+	// Test UnzipByErr7
+	t.Run("UnzipByErr7", func(t *testing.T) {
+		t.Parallel()
+
+		callbackCount := 0
+		_, _, _, _, _, _, _, err := UnzipByErr7([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, error) {
+			callbackCount++
+			return strings.ToUpper(str), len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), nil
+		})
+
+		is.NoError(err)
+		is.Equal(2, callbackCount)
+	})
+
+	// Test UnzipByErr8
+	t.Run("UnzipByErr8", func(t *testing.T) {
+		t.Parallel()
+
+		callbackCount := 0
+		_, _, _, _, _, _, _, _, err := UnzipByErr8([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, error) {
+			callbackCount++
+			return strings.ToUpper(str), len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), int32(len(str)), nil
+		})
+
+		is.NoError(err)
+		is.Equal(2, callbackCount)
+	})
+
+	// Test UnzipByErr9
+	t.Run("UnzipByErr9", func(t *testing.T) {
+		t.Parallel()
+
+		callbackCount := 0
+		_, _, _, _, _, _, _, _, _, err := UnzipByErr9([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, int64, error) {
+			callbackCount++
+			return strings.ToUpper(str), len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), int32(len(str)), int64(len(str)), nil
+		})
+
+		is.NoError(err)
+		is.Equal(2, callbackCount)
 	})
 }

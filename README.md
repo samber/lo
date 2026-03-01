@@ -2531,6 +2531,18 @@ a, b := lo.UnzipBy2([]string{"hello", "john", "doe"}, func(str string) (string, 
 // []int{5, 4, 3}
 ```
 
+```go
+a, b, err := lo.UnzipByErr2([]string{"hello", "error", "world"}, func(str string) (string, int, error) {
+    if str == "error" {
+        return "", 0, fmt.Errorf("error string not allowed")
+    }
+    return str, len(str), nil
+})
+// []string{}
+// []int{}
+// error string not allowed
+```
+
 ### CrossJoin2 -> CrossJoin9
 
 Combines every item from one list with every item from others. It is the cartesian product of lists received as arguments. Returns an empty list if a list is empty.
