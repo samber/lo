@@ -994,10 +994,13 @@ slice := lo.RepeatBy(5, func(i int) string {
 With error handling:
 
 ```go
-slice, err := lo.RepeatByErr(3, func(i int) (string, error) {
+slice, err := lo.RepeatByErr(5, func(i int) (string, error) {
+    if i == 3 {
+        return "", fmt.Errorf("index 3 is not allowed")
+    }
     return fmt.Sprintf("item-%d", i), nil
 })
-// []string{"item-0", "item-1", "item-2"}, <nil>
+// []string(nil), error("index 3 is not allowed")
 ```
 
 ### KeyBy
@@ -3474,12 +3477,12 @@ min, index := lo.MinIndexBy([]string{}, func(item string, min string) bool {
 
 ```go
 min, index, err := lo.MinIndexByErr([]string{"s1", "string2", "s3"}, func(item string, min string) (bool, error) {
-    if item == "" || min == "" {
-        return false, fmt.Errorf("empty string not allowed")
+    if item == "s2" {
+        return false, fmt.Errorf("s2 is not allowed")
     }
     return len(item) < len(min), nil
 })
-// "s1", 0, nil
+// "s1", 0, error("s2 is not allowed")
 ```
 
 ### Earliest

@@ -42,5 +42,5 @@ min, err := lo.MinByErr([]Point{{1}, {5}, {3}}, func(a, b Point) (bool, error) {
     }
     return a.X < b.X, nil
 })
-// {1}, error("cannot compare with 5")
+// {0}, error("cannot compare with 5")
 ```
