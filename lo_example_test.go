@@ -2781,6 +2781,15 @@ func ExampleRepeatBy() {
 	// Output: [0 1 4 9 16]
 }
 
+func ExampleRepeatByErr() {
+	result, err := RepeatByErr(3, func(i int) (string, error) {
+		return fmt.Sprintf("item-%d", i), nil
+	})
+
+	fmt.Printf("%d %v", len(result), err)
+	// Output: 3 <nil>
+}
+
 func ExampleKeyBy() {
 	list := []string{"a", "aa", "aaa"}
 

@@ -980,6 +980,15 @@ slice := lo.RepeatBy(5, func(i int) string {
 
 [[play](https://go.dev/play/p/ozZLCtX_hNU)]
 
+With error handling:
+
+```go
+slice, err := lo.RepeatByErr(3, func(i int) (string, error) {
+    return fmt.Sprintf("item-%d", i), nil
+})
+// []string{"item-0", "item-1", "item-2"}, <nil>
+```
+
 ### KeyBy
 
 Transforms a slice or a slice of structs to a map based on a pivot callback.

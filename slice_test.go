@@ -1560,6 +1560,120 @@ func TestRepeatBy(t *testing.T) {
 	is.Equal([]int{0, 1, 4, 9, 16}, result3)
 }
 
+func TestRepeatByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	testErr := errors.New("test error")
+
+	// Table-driven tests
+	tests := []struct {
+		name                 string
+		count                int
+		callback             func(index int) (int, error)
+		wantResult           []int
+		wantErr              bool
+		expectedCallbackCount int
+	}{
+		{
+			name:  "successful completion",
+			count: 5,
+			callback: func(i int) (int, error) {
+				return i * i, nil
+			},
+			wantResult:           []int{0, 1, 4, 9, 16},
+			wantErr:              false,
+			expectedCallbackCount: 5,
+		},
+		{
+			name:  "error at first iteration",
+			count: 5,
+			callback: func(i int) (int, error) {
+				if i == 0 {
+					return 0, testErr
+				}
+				return i * i, nil
+			},
+			wantResult:           nil,
+			wantErr:              true,
+			expectedCallbackCount: 1,
+		},
+		{
+			name:  "error at third iteration",
+			count: 5,
+			callback: func(i int) (int, error) {
+				if i == 2 {
+					return 0, testErr
+				}
+				return i * i, nil
+			},
+			wantResult:           nil,
+			wantErr:              true,
+			expectedCallbackCount: 3,
+		},
+		{
+			name:  "error at last iteration",
+			count: 5,
+			callback: func(i int) (int, error) {
+				if i == 4 {
+					return 0, testErr
+				}
+				return i * i, nil
+			},
+			wantResult:           nil,
+			wantErr:              true,
+			expectedCallbackCount: 5,
+		},
+		{
+			name:  "zero count - empty result",
+			count: 0,
+			callback: func(i int) (int, error) {
+				return i * i, nil
+			},
+			wantResult:           []int{},
+			wantErr:              false,
+			expectedCallbackCount: 0,
+		},
+		{
+			name:  "single item success",
+			count: 1,
+			callback: func(i int) (int, error) {
+				return 42, nil
+			},
+			wantResult:           []int{42},
+			wantErr:              false,
+			expectedCallbackCount: 1,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			// Track callback count to verify early return
+			callbackCount := 0
+			wrappedCallback := func(i int) (int, error) {
+				callbackCount++
+				return tt.callback(i)
+			}
+
+			result, err := RepeatByErr(tt.count, wrappedCallback)
+
+			if tt.wantErr {
+				is.ErrorIs(err, testErr)
+				is.Nil(result)
+			} else {
+				is.NoError(err)
+				is.Equal(tt.wantResult, result)
+			}
+
+			// Verify callback count matches expected (tests early return)
+			is.Equal(tt.expectedCallbackCount, callbackCount, "callback count should match expected")
+		})
+	}
+}
+
 func TestKeyBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

@@ -7,6 +7,7 @@ subCategory: slice
 playUrl: https://go.dev/play/p/ozZLCtX_hNU
 variantHelpers:
   - core#slice#repeatby
+  - core#slice#repeatbyerr
 similarHelpers:
   - core#slice#times
   - core#slice#repeat
