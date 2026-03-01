@@ -294,6 +294,52 @@ func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iterate
 	return result
 }
 
+// FindDuplicatesByErr returns a slice with the first occurrence of each duplicated element in the collection.
+// The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
+// invoked for each element in the slice to generate the criterion by which uniqueness is computed.
+// If the iteratee returns an error, iteration stops immediately and the error is returned with a nil slice.
+func FindDuplicatesByErr[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) (U, error)) (Slice, error) {
+	isDupl := make(map[U]bool, len(collection))
+
+	duplicates := 0
+
+	// First pass: identify duplicates
+	for i := range collection {
+		key, err := iteratee(collection[i])
+		if err != nil {
+			var result Slice
+			return result, err
+		}
+
+		duplicated, seen := isDupl[key]
+		if !duplicated {
+			isDupl[key] = seen
+
+			if seen {
+				duplicates++
+			}
+		}
+	}
+
+	result := make(Slice, 0, duplicates)
+
+	// Second pass: collect first occurrences of duplicates
+	for i := range collection {
+		key, err := iteratee(collection[i])
+		if err != nil {
+			var result Slice
+			return result, err
+		}
+
+		if duplicated := isDupl[key]; duplicated {
+			result = append(result, collection[i])
+			isDupl[key] = false
+		}
+	}
+
+	return result, nil
+}
+
 // Min search the minimum value of a collection.
 // Returns zero value when the collection is empty.
 // Play: https://go.dev/play/p/r6e-Z8JozS8

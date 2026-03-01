@@ -382,6 +382,109 @@ func TestFindDuplicatesBy(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestFindDuplicatesByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Table-driven tests for normal operation
+	tests := []struct {
+		name     string
+		input    []int
+		expected []int
+	}{
+		{
+			name:     "finds duplicates by key",
+			input:    []int{3, 4, 5, 6, 7},
+			expected: []int{3, 4},
+		},
+		{
+			name:     "no duplicates",
+			input:    []int{0, 1, 2, 3, 4},
+			expected: []int{0, 1},
+		},
+		{
+			name:     "empty collection",
+			input:    []int{},
+			expected: []int{},
+		},
+		{
+			name:     "all duplicates",
+			input:    []int{0, 3, 6, 9},
+			expected: []int{0},
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			result, err := FindDuplicatesByErr(tt.input, func(i int) (int, error) {
+				return i % 3, nil
+			})
+			is.NoError(err)
+			is.Equal(tt.expected, result)
+		})
+	}
+
+	// Table-driven tests with callback count verification for early return
+	testErr := errors.New("test error")
+
+	errorTests := []struct {
+		name          string
+		input         []int
+		errorAt       int
+		expectedCalls int
+	}{
+		{
+			name:          "error in first pass at element 0",
+			input:         []int{3, 4, 5},
+			errorAt:       0,
+			expectedCalls: 1,
+		},
+		{
+			name:          "error in first pass at element 2",
+			input:         []int{3, 4, 5},
+			errorAt:       2,
+			expectedCalls: 3,
+		},
+		{
+			name:          "error in second pass at first duplicate",
+			input:         []int{3, 4, 5, 6},
+			errorAt:       3,
+			expectedCalls: 4, // First pass completes (4 items), error at first item of second pass
+		},
+	}
+
+	for _, tt := range errorTests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			callbackCount := 0
+			result, err := FindDuplicatesByErr(tt.input, func(i int) (int, error) {
+				callbackCount++
+				if i == tt.input[tt.errorAt] {
+					return 0, testErr
+				}
+				return i % 3, nil
+			})
+			is.ErrorIs(err, testErr)
+			is.Equal(tt.expectedCalls, callbackCount, "callback count mismatch - iteration didn't stop early")
+			is.Nil(result, "nil should be returned on error")
+		})
+	}
+
+	// Test type preservation
+	type myStrings []string
+	allStrings := myStrings{"a", "b", "a", "c", "b"}
+	result, err := FindDuplicatesByErr(allStrings, func(s string) (string, error) {
+		return s, nil
+	})
+	is.NoError(err)
+	is.IsType(result, allStrings, "type preserved")
+}
+
 func TestMin(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

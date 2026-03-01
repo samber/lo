@@ -3331,6 +3331,18 @@ duplicatedValues := lo.FindDuplicatesBy([]int{3, 4, 5, 6, 7}, func(i int) int {
 // []int{3, 4}
 ```
 
+With error handling:
+
+```go
+duplicatedValues, err := lo.FindDuplicatesByErr([]int{3, 4, 5, 6, 7}, func(i int) (int, error) {
+    if i == 5 {
+        return 0, fmt.Errorf("number 5 is not allowed")
+    }
+    return i % 3, nil
+})
+// []int(nil), error("number 5 is not allowed")
+```
+
 ### Min
 
 Search the minimum value of a collection.
