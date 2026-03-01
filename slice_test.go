@@ -2346,6 +2346,105 @@ func TestReject(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestRejectErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name      string
+		input     []int
+		predicate func(item int, index int) (bool, error)
+		want      []int
+		wantErr   string
+		callbacks int // Number of predicates called before error/finish
+	}{
+		{
+			name:  "reject even numbers",
+			input: []int{1, 2, 3, 4},
+			predicate: func(x int, _ int) (bool, error) {
+				return x%2 == 0, nil
+			},
+			want:      []int{1, 3},
+			callbacks: 4,
+		},
+		{
+			name:  "empty slice",
+			input: []int{},
+			predicate: func(x int, _ int) (bool, error) {
+				return true, nil
+			},
+			want:      []int{},
+			callbacks: 0,
+		},
+		{
+			name:  "reject all out",
+			input: []int{1, 2, 3, 4},
+			predicate: func(x int, _ int) (bool, error) {
+				return false, nil
+			},
+			want:      []int{1, 2, 3, 4},
+			callbacks: 4,
+		},
+		{
+			name:  "reject all in",
+			input: []int{1, 2, 3, 4},
+			predicate: func(x int, _ int) (bool, error) {
+				return true, nil
+			},
+			want:      []int{},
+			callbacks: 4,
+		},
+		{
+			name:  "error on specific index",
+			input: []int{1, 2, 3, 4},
+			predicate: func(x int, _ int) (bool, error) {
+				if x == 3 {
+					return false, fmt.Errorf("number 3 is not allowed")
+				}
+				return x%2 == 0, nil
+			},
+			callbacks: 3,
+			wantErr:   "number 3 is not allowed",
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			var callbacks int
+			wrappedPredicate := func(item int, index int) (bool, error) {
+				callbacks++
+				return tt.predicate(item, index)
+			}
+
+			got, err := RejectErr(tt.input, wrappedPredicate)
+
+			if tt.wantErr != "" {
+				is.Error(err)
+				is.Equal(tt.wantErr, err.Error())
+				is.Nil(got)
+				is.Equal(tt.callbacks, callbacks, "callback count should match expected early return")
+			} else {
+				is.NoError(err)
+				is.Equal(tt.want, got)
+				is.Equal(tt.callbacks, callbacks)
+			}
+		})
+	}
+
+	// Test type preservation
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty, err := RejectErr(allStrings, func(x string, _ int) (bool, error) {
+		return len(x) > 0, nil
+	})
+	is.NoError(err)
+	is.IsType(nonempty, allStrings, "type preserved")
+	is.Equal(myStrings{""}, nonempty)
+}
+
 func TestRejectMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

@@ -9,6 +9,7 @@ variantHelpers:
   - core#slice#reject
 similarHelpers:
   - core#slice#filter
+  - core#slice#rejecterr
   - core#slice#filterreject
   - core#slice#rejectmap
   - core#slice#filterreject
