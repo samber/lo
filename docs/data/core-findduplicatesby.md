@@ -7,6 +7,7 @@ subCategory: find
 playUrl: 
 variantHelpers:
   - core#find#findduplicatesby
+  - core#find#findduplicatesbyerr
 similarHelpers:
   - core#find#findduplicates
   - core#find#finduniques

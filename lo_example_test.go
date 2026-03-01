@@ -1235,6 +1235,28 @@ func ExampleFindDuplicatesBy() {
 	// Output: 2
 }
 
+func ExampleFindDuplicatesByErr() {
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	users := []User{
+		{Name: "Alice", Age: 25},
+		{Name: "Bob", Age: 30},
+		{Name: "Charlie", Age: 25},
+		{Name: "David", Age: 30},
+		{Name: "Eve", Age: 35},
+	}
+
+	result, err := FindDuplicatesByErr(users, func(user User) (int, error) {
+		return user.Age, nil
+	})
+
+	fmt.Printf("%d %v", len(result), err)
+	// Output: 2 <nil>
+}
+
 func ExampleMin() {
 	list := []int{3, 1, 4, 1, 5, 9, 2, 6}
 
