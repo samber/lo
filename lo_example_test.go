@@ -2354,6 +2354,26 @@ func ExampleFilter() {
 	// Output: [2 4]
 }
 
+func ExampleFilterErr() {
+	list := []int64{1, 2, 3, 4}
+
+	result, err := FilterErr(list, func(nbr int64, index int) (bool, error) {
+		if nbr == 3 {
+			return false, fmt.Errorf("number 3 is not allowed")
+		}
+		return nbr%2 == 0, nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+
+	result, err = FilterErr([]int64{1, 2, 4, 6}, func(nbr int64, index int) (bool, error) {
+		return nbr%2 == 0, nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+	// Output:
+	// [], number 3 is not allowed
+	// [2 4 6], <nil>
+}
+
 func ExampleMap() {
 	list := []int64{1, 2, 3, 4}
 

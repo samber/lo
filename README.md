@@ -393,6 +393,17 @@ even := lo.Filter([]int{1, 2, 3, 4}, func(x int, index int) bool {
 // []int{2, 4}
 ```
 
+```go
+// Use FilterErr when the predicate can return an error
+even, err := lo.FilterErr([]int{1, 2, 3, 4}, func(x int, _ int) (bool, error) {
+    if x == 3 {
+        return false, fmt.Errorf("number 3 is not allowed")
+    }
+    return x%2 == 0, nil
+})
+// []int(nil), error("number 3 is not allowed")
+```
+
 [[play](https://go.dev/play/p/Apjg3WeSi7K)]
 
 Mutable: like `lo.Filter()`, but the slice is updated in place.

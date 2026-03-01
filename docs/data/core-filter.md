@@ -7,6 +7,7 @@ subCategory: slice
 playUrl: https://go.dev/play/p/Apjg3WeSi7K
 similarHelpers:
   - core#slice#reject
+  - core#slice#filtererr
   - core#slice#filtermap
   - core#slice#filterreject
   - core#slice#rejectmap

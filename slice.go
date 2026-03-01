@@ -21,6 +21,25 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 	return result
 }
 
+// FilterErr iterates over elements of collection, returning a slice of all elements predicate returns true for.
+// If the predicate returns an error, iteration stops immediately and returns the error.
+// Play: https://go.dev/play/p/Apjg3WeSi7K
+func FilterErr[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) (bool, error)) (Slice, error) {
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		ok, err := predicate(collection[i], i)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result, nil
+}
+
 // Map manipulates a slice and transforms it to a slice of another type.
 // Play: https://go.dev/play/p/OkPcYAhBo0D
 func Map[T, R any](collection []T, transform func(item T, index int) R) []R {
