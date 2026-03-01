@@ -16,6 +16,7 @@ signatures:
 playUrl: https://go.dev/play/p/wlHur6yO8rR
 variantHelpers:
   - core#tuple#zipbyx
+  - core#tuple#zipbyerrx
 similarHelpers:
   - core#tuple#tuplex
   - core#tuple#unpackx
@@ -24,7 +25,7 @@ similarHelpers:
   - core#tuple#unzipbyx
   - core#slice#map
   - core#slice#filtermap
-position: 30
+position: 31
 ---
 
 Zips multiple slices and projects each grouped set through a function. Variants support 2 up to 9 input slices.
