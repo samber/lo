@@ -132,7 +132,8 @@ func ReduceErr[T, R any](collection []T, accumulator func(agg R, item T, index i
 	for i := range collection {
 		result, err := accumulator(initial, collection[i], i)
 		if err != nil {
-			return result, err
+			var zero R
+			return zero, err
 		}
 		initial = result
 	}
@@ -156,7 +157,8 @@ func ReduceRightErr[T, R any](collection []T, accumulator func(agg R, item T, in
 	for i := len(collection) - 1; i >= 0; i-- {
 		result, err := accumulator(initial, collection[i], i)
 		if err != nil {
-			return result, err
+			var zero R
+			return zero, err
 		}
 		initial = result
 	}
