@@ -1239,11 +1239,11 @@ func TestFilterKeysErr(t *testing.T) {
 	is := assert.New(t)
 
 	tests := []struct {
-		name     string
-		input    map[int]string
+		name      string
+		input     map[int]string
 		predicate func(int, string) (bool, error)
-		want     []int
-		wantErr  string
+		want      []int
+		wantErr   string
 	}{
 		{
 			name:  "filter by value",
@@ -1254,8 +1254,8 @@ func TestFilterKeysErr(t *testing.T) {
 			want: []int{1},
 		},
 		{
-			name:     "empty map",
-			input:    map[int]string{},
+			name:  "empty map",
+			input: map[int]string{},
 			predicate: func(k int, v string) (bool, error) {
 				return true, nil
 			},
@@ -1282,7 +1282,7 @@ func TestFilterKeysErr(t *testing.T) {
 			input: map[int]string{1: "foo", 2: "bar", 3: "baz"},
 			predicate: func(k int, v string) (bool, error) {
 				if k == 2 {
-					return false, fmt.Errorf("key 2 not allowed")
+					return false, errors.New("key 2 not allowed")
 				}
 				return true, nil
 			},
@@ -1314,11 +1314,11 @@ func TestFilterValuesErr(t *testing.T) {
 	is := assert.New(t)
 
 	tests := []struct {
-		name     string
-		input    map[int]string
+		name      string
+		input     map[int]string
 		predicate func(int, string) (bool, error)
-		want     []string
-		wantErr  string
+		want      []string
+		wantErr   string
 	}{
 		{
 			name:  "filter by value",
@@ -1329,8 +1329,8 @@ func TestFilterValuesErr(t *testing.T) {
 			want: []string{"foo"},
 		},
 		{
-			name:     "empty map",
-			input:    map[int]string{},
+			name:  "empty map",
+			input: map[int]string{},
 			predicate: func(k int, v string) (bool, error) {
 				return true, nil
 			},
@@ -1357,7 +1357,7 @@ func TestFilterValuesErr(t *testing.T) {
 			input: map[int]string{1: "foo", 2: "bar", 3: "baz"},
 			predicate: func(k int, v string) (bool, error) {
 				if k == 2 {
-					return false, fmt.Errorf("key 2 not allowed")
+					return false, errors.New("key 2 not allowed")
 				}
 				return true, nil
 			},
