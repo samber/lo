@@ -1040,7 +1040,7 @@ func ExampleFindErr() {
 
 	result, err = FindErr([]string{"a", "b", "c"}, func(i string) (bool, error) {
 		if i == "b" {
-			return false, fmt.Errorf("b is not allowed")
+			return false, errors.New("b is not allowed")
 		}
 		return i == "b", nil
 	})
@@ -1251,7 +1251,7 @@ func ExampleFindDuplicatesByErr() {
 
 	result, err := FindDuplicatesByErr(users, func(user User) (int, error) {
 		if user.Name == "Charlie" {
-			return 0, fmt.Errorf("charlie is not allowed")
+			return 0, errors.New("charlie is not allowed")
 		}
 		return user.Age, nil
 	})
@@ -1330,7 +1330,7 @@ func ExampleMinByErr() {
 
 	result, err := MinByErr(users, func(a, b User) (bool, error) {
 		if a.Name == "Bob" {
-			return false, fmt.Errorf("bob is not allowed")
+			return false, errors.New("bob is not allowed")
 		}
 		return a.Age < b.Age, nil
 	})
@@ -1373,7 +1373,7 @@ func ExampleMinIndexByErr() {
 
 	result, _, err := MinIndexByErr(users, func(a, b User) (bool, error) {
 		if a.Name == "Bob" {
-			return false, fmt.Errorf("bob is not allowed")
+			return false, errors.New("bob is not allowed")
 		}
 		return a.Age < b.Age, nil
 	})
@@ -1429,7 +1429,7 @@ func ExampleEarliestByErr() {
 
 	_, err := EarliestByErr(events, func(event Event) (time.Time, error) {
 		if event.Name == "Event B" {
-			return time.Time{}, fmt.Errorf("event b is not allowed")
+			return time.Time{}, errors.New("event b is not allowed")
 		}
 		return event.Time, nil
 	})
@@ -1508,7 +1508,7 @@ func ExampleMaxByErr() {
 
 	_, err := MaxByErr(users, func(a, b User) (bool, error) {
 		if b.Name == "Bob" {
-			return false, fmt.Errorf("bob is not allowed")
+			return false, errors.New("bob is not allowed")
 		}
 		return a.Age > b.Age, nil
 	})
@@ -1551,7 +1551,7 @@ func ExampleMaxIndexByErr() {
 
 	_, _, err := MaxIndexByErr(users, func(a, b User) (bool, error) {
 		if b.Name == "Bob" {
-			return false, fmt.Errorf("bob is not allowed")
+			return false, errors.New("bob is not allowed")
 		}
 		return a.Age > b.Age, nil
 	})
@@ -1602,7 +1602,7 @@ func ExampleLatestByErr() {
 	now := time.Now()
 	events := []Event{
 		{Name: "Event A", Time: now.Add(time.Hour), Err: nil},
-		{Name: "Event B", Time: now, Err: fmt.Errorf("event b error")},
+		{Name: "Event B", Time: now, Err: errors.New("event b error")},
 		{Name: "Event C", Time: now.Add(-time.Hour), Err: nil},
 	}
 
@@ -1835,7 +1835,7 @@ func ExampleWithoutByErr() {
 	// extract function to get the user ID
 	extractID := func(user User) (int, error) {
 		if user.ID == 2 {
-			return 0, fmt.Errorf("user 2 extraction failed")
+			return 0, errors.New("user 2 extraction failed")
 		}
 		return user.ID, nil
 	}
@@ -1917,7 +1917,7 @@ func ExamplePickByErr() {
 
 	_, err := PickByErr(kv, func(key string, value int) (bool, error) {
 		if key == "bar" {
-			return false, fmt.Errorf("key bar is not allowed")
+			return false, errors.New("key bar is not allowed")
 		}
 		return value%2 == 1, nil
 	})
@@ -1960,7 +1960,7 @@ func ExampleOmitByErr() {
 
 	_, err := OmitByErr(kv, func(key string, value int) (bool, error) {
 		if key == "bar" {
-			return false, fmt.Errorf("key bar is not allowed")
+			return false, errors.New("key bar is not allowed")
 		}
 		return value%2 == 1, nil
 	})
@@ -2074,7 +2074,7 @@ func ExampleMapKeysErr() {
 
 	_, err := MapKeysErr(kv, func(_, k int) (string, error) {
 		if k == 3 {
-			return "", fmt.Errorf("key 3 is not allowed")
+			return "", errors.New("key 3 is not allowed")
 		}
 		return strconv.FormatInt(int64(k), 10), nil
 	})
@@ -2099,7 +2099,7 @@ func ExampleMapValuesErr() {
 
 	_, err := MapValuesErr(kv, func(v, _ int) (string, error) {
 		if v == 3 {
-			return "", fmt.Errorf("value 3 is not allowed")
+			return "", errors.New("value 3 is not allowed")
 		}
 		return strconv.FormatInt(int64(v), 10), nil
 	})
@@ -2124,7 +2124,7 @@ func ExampleMapEntriesErr() {
 
 	_, err := MapEntriesErr(kv, func(k string, v int) (int, string, error) {
 		if k == "foo" {
-			return 0, "", fmt.Errorf("entry foo is not allowed")
+			return 0, "", errors.New("entry foo is not allowed")
 		}
 		return v, k, nil
 	})
@@ -2150,7 +2150,7 @@ func ExampleMapToSliceErr() {
 
 	_, err := MapToSliceErr(kv, func(k int, v int64) (string, error) {
 		if k == 3 {
-			return "", fmt.Errorf("key 3 is not allowed")
+			return "", errors.New("key 3 is not allowed")
 		}
 		return fmt.Sprintf("%d_%d", k, v), nil
 	})
@@ -2176,7 +2176,7 @@ func ExampleFilterMapToSliceErr() {
 
 	_, err := FilterMapToSliceErr(kv, func(k int, v int64) (string, bool, error) {
 		if k == 3 {
-			return "", false, fmt.Errorf("key 3 is not allowed")
+			return "", false, errors.New("key 3 is not allowed")
 		}
 		return fmt.Sprintf("%d_%d", k, v), k%2 == 0, nil
 	})
@@ -2212,7 +2212,7 @@ func ExampleFilterKeysErr() {
 
 	result, err := FilterKeysErr(kv, func(k int, v string) (bool, error) {
 		if k == 3 {
-			return false, fmt.Errorf("key 3 not allowed")
+			return false, errors.New("key 3 not allowed")
 		}
 		return v == "foo", nil
 	})
@@ -2232,7 +2232,7 @@ func ExampleFilterValuesErr() {
 
 	result, err := FilterValuesErr(kv, func(k int, v string) (bool, error) {
 		if k == 3 {
-			return false, fmt.Errorf("key 3 not allowed")
+			return false, errors.New("key 3 not allowed")
 		}
 		return v == "foo", nil
 	})
@@ -2315,7 +2315,7 @@ func ExampleSumByErr() {
 
 	_, err := SumByErr(list, func(item string) (int, error) {
 		if item == "bar" {
-			return 0, fmt.Errorf("bar is not allowed")
+			return 0, errors.New("bar is not allowed")
 		}
 		return len(item), nil
 	})
@@ -2349,7 +2349,7 @@ func ExampleProductByErr() {
 
 	_, err := ProductByErr(list, func(item string) (int, error) {
 		if item == "bar" {
-			return 0, fmt.Errorf("bar is not allowed")
+			return 0, errors.New("bar is not allowed")
 		}
 		return len(item), nil
 	})
@@ -2383,7 +2383,7 @@ func ExampleMeanByErr() {
 
 	_, err := MeanByErr(list, func(item string) (int, error) {
 		if item == "bar" {
-			return 0, fmt.Errorf("bar is not allowed")
+			return 0, errors.New("bar is not allowed")
 		}
 		return len(item), nil
 	})
@@ -2408,7 +2408,7 @@ func ExampleFilterErr() {
 
 	result, err := FilterErr(list, func(nbr int64, index int) (bool, error) {
 		if nbr == 3 {
-			return false, fmt.Errorf("number 3 is not allowed")
+			return false, errors.New("number 3 is not allowed")
 		}
 		return nbr%2 == 0, nil
 	})
@@ -2439,7 +2439,7 @@ func ExampleMapErr() {
 
 	_, err := MapErr(list, func(nbr int64, index int) (string, error) {
 		if nbr == 3 {
-			return "", fmt.Errorf("number 3 is not allowed")
+			return "", errors.New("number 3 is not allowed")
 		}
 		return strconv.FormatInt(nbr*2, 10), nil
 	})
@@ -2495,7 +2495,7 @@ func ExampleFlatMapErr() {
 
 	_, err := FlatMapErr(list, func(nbr int64, index int) ([]string, error) {
 		if nbr == 3 {
-			return nil, fmt.Errorf("number 3 is not allowed")
+			return nil, errors.New("number 3 is not allowed")
 		}
 		return []string{
 			strconv.FormatInt(nbr, 10), // base 10
@@ -2523,7 +2523,7 @@ func ExampleReduceErr() {
 
 	_, err := ReduceErr(list, func(agg, item int64, index int) (int64, error) {
 		if item == 3 {
-			return 0, fmt.Errorf("number 3 is not allowed")
+			return 0, errors.New("number 3 is not allowed")
 		}
 		return agg + item, nil
 	}, 0)
@@ -2548,7 +2548,7 @@ func ExampleReduceRightErr() {
 
 	_, err := ReduceRightErr(list, func(agg, item []int, index int) ([]int, error) {
 		if index == 0 {
-			return nil, fmt.Errorf("index 0 is not allowed")
+			return nil, errors.New("index 0 is not allowed")
 		}
 		return append(agg, item...), nil
 	}, []int{})
@@ -2621,7 +2621,7 @@ func ExampleUniqByErr() {
 
 	_, err := UniqByErr(list, func(i int) (int, error) {
 		if i == 3 {
-			return 0, fmt.Errorf("number 3 is not allowed")
+			return 0, errors.New("number 3 is not allowed")
 		}
 		return i % 3, nil
 	})
@@ -2651,7 +2651,7 @@ func ExampleGroupByErr() {
 
 	_, err := GroupByErr(list, func(i int) (int, error) {
 		if i == 3 {
-			return 0, fmt.Errorf("number 3 is not allowed")
+			return 0, errors.New("number 3 is not allowed")
 		}
 		return i % 3, nil
 	})
@@ -2681,7 +2681,7 @@ func ExampleGroupByMapErr() {
 
 	_, err := GroupByMapErr(list, func(i int) (int, int, error) {
 		if i == 3 {
-			return 0, 0, fmt.Errorf("number 3 is not allowed")
+			return 0, 0, errors.New("number 3 is not allowed")
 		}
 		return i % 3, i * 2, nil
 	})
@@ -2765,7 +2765,7 @@ func ExamplePartitionByErr() {
 
 	_, err := PartitionByErr(list, func(x int) (string, error) {
 		if x == 0 {
-			return "", fmt.Errorf("zero is not allowed")
+			return "", errors.New("zero is not allowed")
 		}
 		if x < 0 {
 			return "negative", nil
@@ -2856,7 +2856,7 @@ func ExampleRepeatBy() {
 func ExampleRepeatByErr() {
 	result, err := RepeatByErr(5, func(i int) (string, error) {
 		if i == 3 {
-			return "", fmt.Errorf("index 3 is not allowed")
+			return "", errors.New("index 3 is not allowed")
 		}
 		return fmt.Sprintf("item-%d", i), nil
 	})
@@ -2881,7 +2881,7 @@ func ExampleKeyByErr() {
 
 	_, err := KeyByErr(list, func(str string) (int, error) {
 		if str == "aa" {
-			return 0, fmt.Errorf("aa is not allowed")
+			return 0, errors.New("aa is not allowed")
 		}
 		return len(str), nil
 	})
@@ -3026,7 +3026,7 @@ func ExampleRejectErr() {
 
 	result, err := RejectErr(list, func(x int64, index int) (bool, error) {
 		if x == 3 {
-			return false, fmt.Errorf("number 3 is not allowed")
+			return false, errors.New("number 3 is not allowed")
 		}
 		return x%2 == 0, nil
 	})
@@ -3066,7 +3066,7 @@ func ExampleCountByErr() {
 
 	_, err := CountByErr(list, func(i int) (bool, error) {
 		if i == 3 {
-			return false, fmt.Errorf("number 3 is not allowed")
+			return false, errors.New("number 3 is not allowed")
 		}
 		return i < 4, nil
 	})
@@ -3631,7 +3631,7 @@ func ExampleUnzip9() {
 func ExampleUnzipByErr2() {
 	a, b, err := UnzipByErr2([]string{"hello", "error", "world"}, func(str string) (string, int, error) {
 		if str == "error" {
-			return "", 0, fmt.Errorf("error string not allowed")
+			return "", 0, errors.New("error string not allowed")
 		}
 		return str, len(str), nil
 	})
@@ -3642,7 +3642,7 @@ func ExampleUnzipByErr2() {
 func ExampleUnzipByErr3() {
 	a, b, c, err := UnzipByErr3([]string{"hello", "error", "world"}, func(str string) (string, int, bool, error) {
 		if str == "error" {
-			return "", 0, false, fmt.Errorf("error string not allowed")
+			return "", 0, false, errors.New("error string not allowed")
 		}
 		return str, len(str), len(str) > 4, nil
 	})
@@ -3653,7 +3653,7 @@ func ExampleUnzipByErr3() {
 func ExampleUnzipByErr4() {
 	a, b, c, d, err := UnzipByErr4([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, error) {
 		if str == "error" {
-			return "", 0, false, 0, fmt.Errorf("error string not allowed")
+			return "", 0, false, 0, errors.New("error string not allowed")
 		}
 		return str, len(str), len(str) > 4, float32(len(str)), nil
 	})
@@ -3664,7 +3664,7 @@ func ExampleUnzipByErr4() {
 func ExampleUnzipByErr5() {
 	a, b, c, d, e, err := UnzipByErr5([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, error) {
 		if str == "error" {
-			return "", 0, false, 0, 0, fmt.Errorf("error string not allowed")
+			return "", 0, false, 0, 0, errors.New("error string not allowed")
 		}
 		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), nil
 	})
@@ -3675,7 +3675,7 @@ func ExampleUnzipByErr5() {
 func ExampleUnzipByErr6() {
 	a, b, c, d, e, f, err := UnzipByErr6([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, error) {
 		if str == "error" {
-			return "", 0, false, 0, 0, 0, fmt.Errorf("error string not allowed")
+			return "", 0, false, 0, 0, 0, errors.New("error string not allowed")
 		}
 		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), nil
 	})
@@ -3686,7 +3686,7 @@ func ExampleUnzipByErr6() {
 func ExampleUnzipByErr7() {
 	a, b, c, d, e, f, g, err := UnzipByErr7([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, error) {
 		if str == "error" {
-			return "", 0, false, 0, 0, 0, 0, fmt.Errorf("error string not allowed")
+			return "", 0, false, 0, 0, 0, 0, errors.New("error string not allowed")
 		}
 		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), nil
 	})
@@ -3697,7 +3697,7 @@ func ExampleUnzipByErr7() {
 func ExampleUnzipByErr8() {
 	a, b, c, d, e, f, g, h, err := UnzipByErr8([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, error) {
 		if str == "error" {
-			return "", 0, false, 0, 0, 0, 0, 0, fmt.Errorf("error string not allowed")
+			return "", 0, false, 0, 0, 0, 0, 0, errors.New("error string not allowed")
 		}
 		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), int32(len(str)), nil
 	})
@@ -3708,7 +3708,7 @@ func ExampleUnzipByErr8() {
 func ExampleUnzipByErr9() {
 	a, b, c, d, e, f, g, h, i, err := UnzipByErr9([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, int64, error) {
 		if str == "error" {
-			return "", 0, false, 0, 0, 0, 0, 0, 0, fmt.Errorf("error string not allowed")
+			return "", 0, false, 0, 0, 0, 0, 0, 0, errors.New("error string not allowed")
 		}
 		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), int32(len(str)), int64(len(str)), nil
 	})
@@ -4103,7 +4103,7 @@ func ExampleCrossJoinBy9() {
 func ExampleCrossJoinByErr2() {
 	result, err := CrossJoinByErr2([]string{"a", "b"}, []int{1, 2}, func(a string, b int) (string, error) {
 		if a == "b" {
-			return "", fmt.Errorf("b not allowed")
+			return "", errors.New("b not allowed")
 		}
 		return fmt.Sprintf("%v-%v", a, b), nil
 	})
@@ -4121,7 +4121,7 @@ func ExampleCrossJoinByErr2() {
 func ExampleZipByErr2() {
 	result, err := ZipByErr2([]string{"a", "b", "c"}, []int{1, 2, 3}, func(a string, b int) (string, error) {
 		if a == "b" {
-			return "", fmt.Errorf("b is not allowed")
+			return "", errors.New("b is not allowed")
 		}
 		return fmt.Sprintf("%v-%v", a, b), nil
 	})

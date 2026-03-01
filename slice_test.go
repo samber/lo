@@ -41,7 +41,7 @@ func TestFilterErr(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     []int
-		predicate func(item int, index int) (bool, error)
+		predicate func(item, index int) (bool, error)
 		want      []int
 		wantErr   string
 		callbacks int // Number of predicates called before error/finish
@@ -49,7 +49,7 @@ func TestFilterErr(t *testing.T) {
 		{
 			name:  "filter even numbers",
 			input: []int{1, 2, 3, 4},
-			predicate: func(x int, _ int) (bool, error) {
+			predicate: func(x, _ int) (bool, error) {
 				return x%2 == 0, nil
 			},
 			want:      []int{2, 4},
@@ -58,7 +58,7 @@ func TestFilterErr(t *testing.T) {
 		{
 			name:  "empty slice",
 			input: []int{},
-			predicate: func(x int, _ int) (bool, error) {
+			predicate: func(x, _ int) (bool, error) {
 				return true, nil
 			},
 			want:      []int{},
@@ -67,7 +67,7 @@ func TestFilterErr(t *testing.T) {
 		{
 			name:  "filter all out",
 			input: []int{1, 2, 3, 4},
-			predicate: func(x int, _ int) (bool, error) {
+			predicate: func(x, _ int) (bool, error) {
 				return false, nil
 			},
 			want:      []int{},
@@ -76,7 +76,7 @@ func TestFilterErr(t *testing.T) {
 		{
 			name:  "filter all in",
 			input: []int{1, 2, 3, 4},
-			predicate: func(x int, _ int) (bool, error) {
+			predicate: func(x, _ int) (bool, error) {
 				return true, nil
 			},
 			want:      []int{1, 2, 3, 4},
@@ -85,9 +85,9 @@ func TestFilterErr(t *testing.T) {
 		{
 			name:  "error on specific index",
 			input: []int{1, 2, 3, 4},
-			predicate: func(x int, _ int) (bool, error) {
+			predicate: func(x, _ int) (bool, error) {
 				if x == 3 {
-					return false, fmt.Errorf("number 3 is not allowed")
+					return false, errors.New("number 3 is not allowed")
 				}
 				return x%2 == 0, nil
 			},
@@ -102,7 +102,7 @@ func TestFilterErr(t *testing.T) {
 			t.Parallel()
 
 			var callbacks int
-			wrappedPredicate := func(item int, index int) (bool, error) {
+			wrappedPredicate := func(item, index int) (bool, error) {
 				callbacks++
 				return tt.predicate(item, index)
 			}
@@ -1667,11 +1667,11 @@ func TestRepeatByErr(t *testing.T) {
 
 	// Table-driven tests
 	tests := []struct {
-		name                 string
-		count                int
-		callback             func(index int) (int, error)
-		wantResult           []int
-		wantErr              bool
+		name                  string
+		count                 int
+		callback              func(index int) (int, error)
+		wantResult            []int
+		wantErr               bool
 		expectedCallbackCount int
 	}{
 		{
@@ -1680,8 +1680,8 @@ func TestRepeatByErr(t *testing.T) {
 			callback: func(i int) (int, error) {
 				return i * i, nil
 			},
-			wantResult:           []int{0, 1, 4, 9, 16},
-			wantErr:              false,
+			wantResult:            []int{0, 1, 4, 9, 16},
+			wantErr:               false,
 			expectedCallbackCount: 5,
 		},
 		{
@@ -1693,8 +1693,8 @@ func TestRepeatByErr(t *testing.T) {
 				}
 				return i * i, nil
 			},
-			wantResult:           nil,
-			wantErr:              true,
+			wantResult:            nil,
+			wantErr:               true,
 			expectedCallbackCount: 1,
 		},
 		{
@@ -1706,8 +1706,8 @@ func TestRepeatByErr(t *testing.T) {
 				}
 				return i * i, nil
 			},
-			wantResult:           nil,
-			wantErr:              true,
+			wantResult:            nil,
+			wantErr:               true,
 			expectedCallbackCount: 3,
 		},
 		{
@@ -1719,8 +1719,8 @@ func TestRepeatByErr(t *testing.T) {
 				}
 				return i * i, nil
 			},
-			wantResult:           nil,
-			wantErr:              true,
+			wantResult:            nil,
+			wantErr:               true,
 			expectedCallbackCount: 5,
 		},
 		{
@@ -1729,8 +1729,8 @@ func TestRepeatByErr(t *testing.T) {
 			callback: func(i int) (int, error) {
 				return i * i, nil
 			},
-			wantResult:           []int{},
-			wantErr:              false,
+			wantResult:            []int{},
+			wantErr:               false,
 			expectedCallbackCount: 0,
 		},
 		{
@@ -1739,8 +1739,8 @@ func TestRepeatByErr(t *testing.T) {
 			callback: func(i int) (int, error) {
 				return 42, nil
 			},
-			wantResult:           []int{42},
-			wantErr:              false,
+			wantResult:            []int{42},
+			wantErr:               false,
 			expectedCallbackCount: 1,
 		},
 	}
@@ -2353,7 +2353,7 @@ func TestRejectErr(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     []int
-		predicate func(item int, index int) (bool, error)
+		predicate func(item, index int) (bool, error)
 		want      []int
 		wantErr   string
 		callbacks int // Number of predicates called before error/finish
@@ -2361,7 +2361,7 @@ func TestRejectErr(t *testing.T) {
 		{
 			name:  "reject even numbers",
 			input: []int{1, 2, 3, 4},
-			predicate: func(x int, _ int) (bool, error) {
+			predicate: func(x, _ int) (bool, error) {
 				return x%2 == 0, nil
 			},
 			want:      []int{1, 3},
@@ -2370,7 +2370,7 @@ func TestRejectErr(t *testing.T) {
 		{
 			name:  "empty slice",
 			input: []int{},
-			predicate: func(x int, _ int) (bool, error) {
+			predicate: func(x, _ int) (bool, error) {
 				return true, nil
 			},
 			want:      []int{},
@@ -2379,7 +2379,7 @@ func TestRejectErr(t *testing.T) {
 		{
 			name:  "reject all out",
 			input: []int{1, 2, 3, 4},
-			predicate: func(x int, _ int) (bool, error) {
+			predicate: func(x, _ int) (bool, error) {
 				return false, nil
 			},
 			want:      []int{1, 2, 3, 4},
@@ -2388,7 +2388,7 @@ func TestRejectErr(t *testing.T) {
 		{
 			name:  "reject all in",
 			input: []int{1, 2, 3, 4},
-			predicate: func(x int, _ int) (bool, error) {
+			predicate: func(x, _ int) (bool, error) {
 				return true, nil
 			},
 			want:      []int{},
@@ -2397,9 +2397,9 @@ func TestRejectErr(t *testing.T) {
 		{
 			name:  "error on specific index",
 			input: []int{1, 2, 3, 4},
-			predicate: func(x int, _ int) (bool, error) {
+			predicate: func(x, _ int) (bool, error) {
 				if x == 3 {
-					return false, fmt.Errorf("number 3 is not allowed")
+					return false, errors.New("number 3 is not allowed")
 				}
 				return x%2 == 0, nil
 			},
@@ -2414,7 +2414,7 @@ func TestRejectErr(t *testing.T) {
 			t.Parallel()
 
 			var callbacks int
-			wrappedPredicate := func(item int, index int) (bool, error) {
+			wrappedPredicate := func(item, index int) (bool, error) {
 				callbacks++
 				return tt.predicate(item, index)
 			}

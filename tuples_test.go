@@ -536,9 +536,9 @@ func TestZipByErr(t *testing.T) {
 			expectedCallbackCount int
 		}{
 			{
-				name:  "successful transformation",
-				a:     []string{"a", "b"},
-				b:     []int{1, 2},
+				name: "successful transformation",
+				a:    []string{"a", "b"},
+				b:    []int{1, 2},
 				iteratee: func(a string, b int) (string, error) {
 					return a + "-" + strconv.Itoa(b), nil
 				},
@@ -547,9 +547,9 @@ func TestZipByErr(t *testing.T) {
 				expectedCallbackCount: 2,
 			},
 			{
-				name:  "error at second element stops iteration",
-				a:     []string{"a", "b"},
-				b:     []int{1, 2},
+				name: "error at second element stops iteration",
+				a:    []string{"a", "b"},
+				b:    []int{1, 2},
 				iteratee: func(a string, b int) (string, error) {
 					if b == 2 {
 						return "", errors.New("number 2 is not allowed")
@@ -562,9 +562,9 @@ func TestZipByErr(t *testing.T) {
 				expectedCallbackCount: 2,
 			},
 			{
-				name:  "error at first element stops iteration immediately",
-				a:     []string{"a", "b"},
-				b:     []int{1, 2},
+				name: "error at first element stops iteration immediately",
+				a:    []string{"a", "b"},
+				b:    []int{1, 2},
 				iteratee: func(a string, b int) (string, error) {
 					return "", errors.New("first error")
 				},
@@ -574,9 +574,9 @@ func TestZipByErr(t *testing.T) {
 				expectedCallbackCount: 1,
 			},
 			{
-				name:  "empty input slices",
-				a:     []string{},
-				b:     []int{},
+				name: "empty input slices",
+				a:    []string{},
+				b:    []int{},
 				iteratee: func(a string, b int) (string, error) {
 					return a + "-" + strconv.Itoa(b), nil
 				},
@@ -585,9 +585,9 @@ func TestZipByErr(t *testing.T) {
 				expectedCallbackCount: 0,
 			},
 			{
-				name:  "unequal slice lengths - zero value filled",
-				a:     []string{"a", "b", "c"},
-				b:     []int{1},
+				name: "unequal slice lengths - zero value filled",
+				a:    []string{"a", "b", "c"},
+				b:    []int{1},
 				iteratee: func(a string, b int) (string, error) {
 					if b == 0 {
 						return "", errors.New("zero value not allowed")
@@ -644,10 +644,10 @@ func TestZipByErr(t *testing.T) {
 			expectedCallbackCount int
 		}{
 			{
-				name:  "successful transformation",
-				a:     []string{"a", "b"},
-				b:     []int{1, 2},
-				c:     []bool{true, false},
+				name: "successful transformation",
+				a:    []string{"a", "b"},
+				b:    []int{1, 2},
+				c:    []bool{true, false},
 				iteratee: func(a string, b int, c bool) (string, error) {
 					return a + "-" + strconv.Itoa(b) + "-" + strconv.FormatBool(c), nil
 				},
@@ -656,10 +656,10 @@ func TestZipByErr(t *testing.T) {
 				expectedCallbackCount: 2,
 			},
 			{
-				name:  "error at second element stops iteration",
-				a:     []string{"a", "b"},
-				b:     []int{1, 2},
-				c:     []bool{true, false},
+				name: "error at second element stops iteration",
+				a:    []string{"a", "b"},
+				b:    []int{1, 2},
+				c:    []bool{true, false},
 				iteratee: func(a string, b int, c bool) (string, error) {
 					if b == 2 {
 						return "", errors.New("number 2 is not allowed")
@@ -672,10 +672,10 @@ func TestZipByErr(t *testing.T) {
 				expectedCallbackCount: 2,
 			},
 			{
-				name:  "error at first element",
-				a:     []string{"a", "b"},
-				b:     []int{1, 2},
-				c:     []bool{true, false},
+				name: "error at first element",
+				a:    []string{"a", "b"},
+				b:    []int{1, 2},
+				c:    []bool{true, false},
 				iteratee: func(a string, b int, c bool) (string, error) {
 					return "", errors.New("first error")
 				},
@@ -685,10 +685,10 @@ func TestZipByErr(t *testing.T) {
 				expectedCallbackCount: 1,
 			},
 			{
-				name:  "empty input slices",
-				a:     []string{},
-				b:     []int{},
-				c:     []bool{},
+				name: "empty input slices",
+				a:    []string{},
+				b:    []int{},
+				c:    []bool{},
 				iteratee: func(a string, b int, c bool) (string, error) {
 					return a + "-" + strconv.Itoa(b) + "-" + strconv.FormatBool(c), nil
 				},
@@ -742,11 +742,11 @@ func TestZipByErr(t *testing.T) {
 			expectedCallbackCount int
 		}{
 			{
-				name:  "successful transformation",
-				a:     []string{"a", "b"},
-				b:     []int{1, 2},
-				c:     []bool{true, false},
-				d:     []float32{1.1, 2.2},
+				name: "successful transformation",
+				a:    []string{"a", "b"},
+				b:    []int{1, 2},
+				c:    []bool{true, false},
+				d:    []float32{1.1, 2.2},
 				iteratee: func(a string, b int, c bool, d float32) (string, error) {
 					return a + "-" + strconv.Itoa(b), nil
 				},
@@ -755,11 +755,11 @@ func TestZipByErr(t *testing.T) {
 				expectedCallbackCount: 2,
 			},
 			{
-				name:  "error stops iteration",
-				a:     []string{"a", "b"},
-				b:     []int{1, 2},
-				c:     []bool{true, false},
-				d:     []float32{1.1, 2.2},
+				name: "error stops iteration",
+				a:    []string{"a", "b"},
+				b:    []int{1, 2},
+				c:    []bool{true, false},
+				d:    []float32{1.1, 2.2},
 				iteratee: func(a string, b int, c bool, d float32) (string, error) {
 					if b == 2 {
 						return "", errors.New("error")
@@ -1029,10 +1029,10 @@ func TestCrossJoinByErr(t *testing.T) {
 				expectedCallbackCount: 3, // a-1, a-2, then b-1 errors
 			},
 			{
-				name:      "empty list returns empty result",
-				listA:     []string{},
-				listB:     []int{1, 2},
-				transform: func(a string, b int) (string, error) { return a + "-" + strconv.Itoa(b), nil },
+				name:                  "empty list returns empty result",
+				listA:                 []string{},
+				listB:                 []int{1, 2},
+				transform:             func(a string, b int) (string, error) { return a + "-" + strconv.Itoa(b), nil },
 				wantResult:            []string{},
 				wantErr:               false,
 				expectedCallbackCount: 0,
@@ -1150,7 +1150,7 @@ func TestCrossJoinByErr(t *testing.T) {
 			},
 		)
 
-		is.Equal(4, len(result))
+		is.Len(result, 4)
 		is.NoError(err)
 		is.Equal(4, callbackCount)
 	})
@@ -1173,7 +1173,7 @@ func TestCrossJoinByErr(t *testing.T) {
 			},
 		)
 
-		is.Equal(2, len(result))
+		is.Len(result, 2)
 		is.NoError(err)
 		is.Equal(2, callbackCount)
 	})
@@ -1197,7 +1197,7 @@ func TestCrossJoinByErr(t *testing.T) {
 			},
 		)
 
-		is.Equal(1, len(result))
+		is.Len(result, 1)
 		is.NoError(err)
 		is.Equal(1, callbackCount)
 	})
@@ -1222,7 +1222,7 @@ func TestCrossJoinByErr(t *testing.T) {
 			},
 		)
 
-		is.Equal(1, len(result))
+		is.Len(result, 1)
 		is.NoError(err)
 		is.Equal(1, callbackCount)
 	})
@@ -1248,7 +1248,7 @@ func TestCrossJoinByErr(t *testing.T) {
 			},
 		)
 
-		is.Equal(1, len(result))
+		is.Len(result, 1)
 		is.NoError(err)
 		is.Equal(1, callbackCount)
 	})
@@ -1275,7 +1275,7 @@ func TestCrossJoinByErr(t *testing.T) {
 			},
 		)
 
-		is.Equal(1, len(result))
+		is.Len(result, 1)
 		is.NoError(err)
 		is.Equal(1, callbackCount)
 	})
