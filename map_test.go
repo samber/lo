@@ -1121,6 +1121,89 @@ func TestFilterMapToSlice(t *testing.T) {
 	is.ElementsMatch(result2, []string{"2", "4"})
 }
 
+func TestFilterMapToSliceErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name     string
+		input    map[int]int64
+		iteratee func(int, int64) (string, bool, error)
+		want     []string
+		wantErr  string
+	}{
+		{
+			name:  "filter even keys and transform",
+			input: map[int]int64{1: 5, 2: 6, 3: 7, 4: 8},
+			iteratee: func(k int, v int64) (string, bool, error) {
+				return fmt.Sprintf("%d_%d", k, v), k%2 == 0, nil
+			},
+			want: []string{"2_6", "4_8"},
+		},
+		{
+			name:  "empty map",
+			input: map[int]int64{},
+			iteratee: func(k int, v int64) (string, bool, error) {
+				return fmt.Sprintf("%d_%d", k, v), true, nil
+			},
+			want: []string{},
+		},
+		{
+			name:  "filter all out",
+			input: map[int]int64{1: 2, 2: 4, 3: 6},
+			iteratee: func(k int, v int64) (string, bool, error) {
+				return fmt.Sprintf("%d_%d", k, v), false, nil
+			},
+			want: []string{},
+		},
+		{
+			name:  "filter all in",
+			input: map[int]int64{1: 5, 2: 6, 3: 7},
+			iteratee: func(k int, v int64) (string, bool, error) {
+				return fmt.Sprintf("%d_%d", k, v), true, nil
+			},
+			want: []string{"1_5", "2_6", "3_7"},
+		},
+		{
+			name:  "constant value",
+			input: map[int]int64{1: 5, 2: 6, 3: 7},
+			iteratee: func(k int, v int64) (string, bool, error) {
+				return "constant", true, nil
+			},
+			want: []string{"constant", "constant", "constant"},
+		},
+		{
+			name:  "error on specific key",
+			input: map[int]int64{1: 5, 2: 6, 3: 7},
+			iteratee: func(k int, v int64) (string, bool, error) {
+				if k == 2 {
+					return "", false, errors.New("key 2 not allowed")
+				}
+				return fmt.Sprintf("%d_%d", k, v), true, nil
+			},
+			wantErr: "key 2 not allowed",
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			got, err := FilterMapToSliceErr(tt.input, tt.iteratee)
+
+			if tt.wantErr != "" {
+				is.Error(err)
+				is.Equal(tt.wantErr, err.Error())
+				is.Nil(got)
+			} else {
+				is.NoError(err)
+				is.ElementsMatch(tt.want, got)
+			}
+		})
+	}
+}
+
 func TestFilterKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

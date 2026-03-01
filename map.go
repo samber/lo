@@ -439,6 +439,27 @@ func FilterMapToSlice[K comparable, V, R any](in map[K]V, iteratee func(key K, v
 	return result
 }
 
+// FilterMapToSliceErr transforms a map into a slice based on specified iteratee.
+// The iteratee returns a value, a boolean, and an error. If the boolean is true, the value is added to the result slice.
+// If the boolean is false, the value is not added to the result slice.
+// If an error is returned, iteration stops immediately and returns the error.
+// The order of the keys in the input map is not specified and the order of the keys in the output slice is not guaranteed.
+func FilterMapToSliceErr[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) (R, bool, error)) ([]R, error) {
+	result := make([]R, 0, len(in))
+
+	for k, v := range in {
+		r, ok, err := iteratee(k, v)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			result = append(result, r)
+		}
+	}
+
+	return result, nil
+}
+
 // FilterKeys transforms a map into a slice based on predicate returns true for specific elements.
 // It is a mix of lo.Filter() and lo.Keys().
 // Play: https://go.dev/play/p/OFlKXlPrBAe
