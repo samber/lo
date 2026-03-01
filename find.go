@@ -364,7 +364,8 @@ func MinByErr[T any](collection []T, less func(a, b T) (bool, error)) (T, error)
 
 		isLess, err := less(item, mIn)
 		if err != nil {
-			return mIn, err
+			var zero T
+			return zero, err
 		}
 		if isLess {
 			mIn = item
@@ -676,7 +677,8 @@ func MaxIndexByErr[T any](collection []T, greater func(a, b T) (bool, error)) (T
 
 		isGreater, err := greater(item, mAx)
 		if err != nil {
-			return mAx, index, err
+			var zero T
+			return zero, -1, err
 		}
 		if isGreater {
 			mAx = item

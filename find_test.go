@@ -422,7 +422,7 @@ func TestMinByErr(t *testing.T) {
 			})
 			is.ErrorIs(err, testErr)
 			is.Equal(tt.expectedCalls, callbackCount)
-			is.Equal("a", result) // Still the first element
+			is.Empty(result) // Zero value on error
 		})
 	}
 }
@@ -937,16 +937,16 @@ func TestMaxIndexByErr(t *testing.T) {
 			input:          []string{"a", "bb", "ccc"},
 			errorAt:        "bb",
 			expectedCalls:  1, // Only first comparison (initial element vs second)
-			expectedResult: "a",
-			expectedIndex:  0,
+			expectedResult: "",
+			expectedIndex:  -1,
 		},
 		{
 			name:           "error at third comparison",
 			input:          []string{"a", "bb", "ccc"},
 			errorAt:        "ccc",
 			expectedCalls:  2, // First two comparisons
-			expectedResult: "bb",
-			expectedIndex:  1,
+			expectedResult: "",
+			expectedIndex:  -1,
 		},
 	}
 
