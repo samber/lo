@@ -80,6 +80,26 @@ func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {
 	return result, false
 }
 
+// FindErr searches for an element in a slice based on a predicate that can return an error.
+// Returns the element and nil error if the element is found.
+// Returns zero value and nil error if the element is not found.
+// If the predicate returns an error, iteration stops immediately and returns zero value and the error.
+func FindErr[T any](collection []T, predicate func(item T) (bool, error)) (T, error) {
+	for i := range collection {
+		matches, err := predicate(collection[i])
+		if err != nil {
+			var result T
+			return result, err
+		}
+		if matches {
+			return collection[i], nil
+		}
+	}
+
+	var result T
+	return result, nil
+}
+
 // FindIndexOf searches for an element in a slice based on a predicate and returns the index and true.
 // Returns -1 and false if the element is not found.
 // Play: https://go.dev/play/p/XWSEM4Ic_t0

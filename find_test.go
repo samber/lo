@@ -71,6 +71,110 @@ func TestFind(t *testing.T) {
 	is.Empty(result2)
 }
 
+func TestFindErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	testErr := assert.AnError
+
+	// Test normal operation (no error) - table driven
+	tests := []struct {
+		name     string
+		input    []string
+		expected string
+	}{
+		{
+			name:     "finds matching element",
+			input:    []string{"a", "b", "c", "d"},
+			expected: "b",
+		},
+		{
+			name:     "element not found",
+			input:    []string{"foobar"},
+			expected: "",
+		},
+		{
+			name:     "empty collection",
+			input:    []string{},
+			expected: "",
+		},
+		{
+			name:     "single element found",
+			input:    []string{"b"},
+			expected: "b",
+		},
+		{
+			name:     "single element not found",
+			input:    []string{"a"},
+			expected: "",
+		},
+		{
+			name:     "finds first match",
+			input:    []string{"a", "b", "c", "b"},
+			expected: "b", // first "b"
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			result, err := FindErr(tt.input, func(item string) (bool, error) {
+				return item == "b", nil
+			})
+			is.NoError(err)
+			is.Equal(tt.expected, result)
+		})
+	}
+
+	// Test error cases - table driven with callback count verification
+	errorTests := []struct {
+		name          string
+		input         []string
+		errorAt       string
+		expectedCalls int
+	}{
+		{
+			name:          "error at first element",
+			input:         []string{"b", "c", "d"},
+			errorAt:       "b",
+			expectedCalls: 1,
+		},
+		{
+			name:          "error at second element",
+			input:         []string{"a", "b", "c"},
+			errorAt:       "b",
+			expectedCalls: 2,
+		},
+		{
+			name:          "error at third element",
+			input:         []string{"a", "c", "b"},
+			errorAt:       "b",
+			expectedCalls: 3,
+		},
+	}
+
+	for _, tt := range errorTests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			callbackCount := 0
+			result, err := FindErr(tt.input, func(item string) (bool, error) {
+				callbackCount++
+				if item == tt.errorAt {
+					return false, testErr
+				}
+				return item == "b", nil
+			})
+			is.ErrorIs(err, testErr)
+			is.Equal(tt.expectedCalls, callbackCount, "callback count mismatch - iteration didn't stop early")
+			is.Empty(result, "zero value should be returned on error")
+		})
+	}
+}
+
 func TestFindIndexOf(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

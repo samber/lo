@@ -3160,6 +3160,25 @@ str, ok := lo.Find([]string{"foobar"}, func(i string) bool {
 // "", false
 ```
 
+```go
+// Use FindErr when the predicate can return an error
+str, err := lo.FindErr([]string{"a", "b", "c", "d"}, func(i string) (bool, error) {
+    if i == "c" {
+        return false, fmt.Errorf("c is not allowed")
+    }
+    return i == "b", nil
+})
+// "b", nil
+
+str, err = lo.FindErr([]string{"a", "b", "c"}, func(i string) (bool, error) {
+    if i == "b" {
+        return false, fmt.Errorf("b is not allowed")
+    }
+    return i == "b", nil
+})
+// "", error("b is not allowed")
+```
+
 [[play](https://go.dev/play/p/Eo7W0lvKTky)]
 
 ### FindIndexOf

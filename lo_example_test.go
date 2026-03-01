@@ -1027,6 +1027,30 @@ func ExampleFind_notFound() {
 	// Output: 0 false
 }
 
+func ExampleFindErr() {
+	result, err := FindErr([]string{"a", "b", "c", "d"}, func(i string) (bool, error) {
+		return i == "b", nil
+	})
+	fmt.Printf("%v %v\n", result, err)
+
+	result, err = FindErr([]string{"foobar"}, func(i string) (bool, error) {
+		return i == "b", nil
+	})
+	fmt.Printf("%v %v\n", result, err)
+
+	result, err = FindErr([]string{"a", "b", "c"}, func(i string) (bool, error) {
+		if i == "b" {
+			return false, fmt.Errorf("b is not allowed")
+		}
+		return i == "b", nil
+	})
+	fmt.Printf("%v %v", result, err)
+	// Output:
+	// b <nil>
+	//  <nil>
+	//  b is not allowed
+}
+
 func ExampleFindIndexOf() {
 	list := []int{1, 2, 3, 4, 5}
 

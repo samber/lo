@@ -1,7 +1,7 @@
 ---
 name: Find
 slug: find
-sourceRef: find.go#L73
+sourceRef: find.go#L72
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/Eo7W0lvKTky
@@ -11,6 +11,7 @@ similarHelpers:
   - core#find#findorelse
   - core#find#findkey
   - core#find#findindexof
+  - core#find#finderr
   - core#slice#filter
   - core#slice#first
   - core#slice#last
