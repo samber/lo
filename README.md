@@ -2981,7 +2981,7 @@ Filters a slice by excluding elements whose extracted keys match any in the excl
 Returns a new slice containing only the elements whose keys are not in the exclude list.
 
 ```go
-type struct User {
+type User struct {
     ID int
     Name string
 }
