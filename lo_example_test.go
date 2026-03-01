@@ -2167,6 +2167,46 @@ func ExampleFilterValues() {
 	// Output: [foo]
 }
 
+func ExampleFilterKeysErr() {
+	kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
+
+	result, err := FilterKeysErr(kv, func(k int, v string) (bool, error) {
+		if k == 3 {
+			return false, fmt.Errorf("key 3 not allowed")
+		}
+		return v == "foo", nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+
+	result, err = FilterKeysErr(kv, func(k int, v string) (bool, error) {
+		return v == "bar", nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+	// Output:
+	// [], key 3 not allowed
+	// [2], <nil>
+}
+
+func ExampleFilterValuesErr() {
+	kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
+
+	result, err := FilterValuesErr(kv, func(k int, v string) (bool, error) {
+		if k == 3 {
+			return false, fmt.Errorf("key 3 not allowed")
+		}
+		return v == "foo", nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+
+	result, err = FilterValuesErr(kv, func(k int, v string) (bool, error) {
+		return v == "bar", nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+	// Output:
+	// [], key 3 not allowed
+	// [bar], <nil>
+}
+
 func ExampleRange() {
 	result1 := Range(4)
 	result2 := Range(-4)

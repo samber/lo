@@ -489,3 +489,45 @@ func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V
 
 	return result
 }
+
+// FilterKeysErr transforms a map into a slice of keys based on predicate that can return an error.
+// It is a mix of lo.Filter() and lo.Keys() with error handling.
+// If the predicate returns true, the key is added to the result slice.
+// If the predicate returns an error, iteration stops immediately and returns the error.
+// The order of the keys in the input map is not specified.
+func FilterKeysErr[K comparable, V any](in map[K]V, predicate func(key K, value V) (bool, error)) ([]K, error) {
+	result := make([]K, 0)
+
+	for k, v := range in {
+		ok, err := predicate(k, v)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			result = append(result, k)
+		}
+	}
+
+	return result, nil
+}
+
+// FilterValuesErr transforms a map into a slice of values based on predicate that can return an error.
+// It is a mix of lo.Filter() and lo.Values() with error handling.
+// If the predicate returns true, the value is added to the result slice.
+// If the predicate returns an error, iteration stops immediately and returns the error.
+// The order of the keys in the input map is not specified.
+func FilterValuesErr[K comparable, V any](in map[K]V, predicate func(key K, value V) (bool, error)) ([]V, error) {
+	result := make([]V, 0)
+
+	for k, v := range in {
+		ok, err := predicate(k, v)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			result = append(result, v)
+		}
+	}
+
+	return result, nil
+}
