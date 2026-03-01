@@ -1234,6 +1234,156 @@ func TestFilterValues(t *testing.T) {
 	is.Empty(result2)
 }
 
+func TestFilterKeysErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name     string
+		input    map[int]string
+		predicate func(int, string) (bool, error)
+		want     []int
+		wantErr  string
+	}{
+		{
+			name:  "filter by value",
+			input: map[int]string{1: "foo", 2: "bar", 3: "baz"},
+			predicate: func(k int, v string) (bool, error) {
+				return v == "foo", nil
+			},
+			want: []int{1},
+		},
+		{
+			name:     "empty map",
+			input:    map[int]string{},
+			predicate: func(k int, v string) (bool, error) {
+				return true, nil
+			},
+			want: []int{},
+		},
+		{
+			name:  "filter all out",
+			input: map[int]string{1: "foo", 2: "bar", 3: "baz"},
+			predicate: func(k int, v string) (bool, error) {
+				return false, nil
+			},
+			want: []int{},
+		},
+		{
+			name:  "filter all in",
+			input: map[int]string{1: "foo", 2: "bar", 3: "baz"},
+			predicate: func(k int, v string) (bool, error) {
+				return true, nil
+			},
+			want: []int{1, 2, 3},
+		},
+		{
+			name:  "error on specific key",
+			input: map[int]string{1: "foo", 2: "bar", 3: "baz"},
+			predicate: func(k int, v string) (bool, error) {
+				if k == 2 {
+					return false, fmt.Errorf("key 2 not allowed")
+				}
+				return true, nil
+			},
+			wantErr: "key 2 not allowed",
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			got, err := FilterKeysErr(tt.input, tt.predicate)
+
+			if tt.wantErr != "" {
+				is.Error(err)
+				is.Equal(tt.wantErr, err.Error())
+				is.Nil(got)
+			} else {
+				is.NoError(err)
+				is.ElementsMatch(tt.want, got)
+			}
+		})
+	}
+}
+
+func TestFilterValuesErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name     string
+		input    map[int]string
+		predicate func(int, string) (bool, error)
+		want     []string
+		wantErr  string
+	}{
+		{
+			name:  "filter by value",
+			input: map[int]string{1: "foo", 2: "bar", 3: "baz"},
+			predicate: func(k int, v string) (bool, error) {
+				return v == "foo", nil
+			},
+			want: []string{"foo"},
+		},
+		{
+			name:     "empty map",
+			input:    map[int]string{},
+			predicate: func(k int, v string) (bool, error) {
+				return true, nil
+			},
+			want: []string{},
+		},
+		{
+			name:  "filter all out",
+			input: map[int]string{1: "foo", 2: "bar", 3: "baz"},
+			predicate: func(k int, v string) (bool, error) {
+				return false, nil
+			},
+			want: []string{},
+		},
+		{
+			name:  "filter all in",
+			input: map[int]string{1: "foo", 2: "bar", 3: "baz"},
+			predicate: func(k int, v string) (bool, error) {
+				return true, nil
+			},
+			want: []string{"foo", "bar", "baz"},
+		},
+		{
+			name:  "error on specific key",
+			input: map[int]string{1: "foo", 2: "bar", 3: "baz"},
+			predicate: func(k int, v string) (bool, error) {
+				if k == 2 {
+					return false, fmt.Errorf("key 2 not allowed")
+				}
+				return true, nil
+			},
+			wantErr: "key 2 not allowed",
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			got, err := FilterValuesErr(tt.input, tt.predicate)
+
+			if tt.wantErr != "" {
+				is.Error(err)
+				is.Equal(tt.wantErr, err.Error())
+				is.Nil(got)
+			} else {
+				is.NoError(err)
+				is.ElementsMatch(tt.want, got)
+			}
+		})
+	}
+}
+
 func BenchmarkAssign(b *testing.B) {
 	counts := []int{32768, 1024, 128, 32, 2}
 

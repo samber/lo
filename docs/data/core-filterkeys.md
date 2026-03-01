@@ -9,6 +9,7 @@ variantHelpers:
   - core#map#filterkeys
 similarHelpers:
   - core#map#filtervalues
+  - core#map#filterkeyserr
   - core#map#pickbykeys
   - core#map#omitbykeys
   - core#map#pickbyvalues

@@ -2005,6 +2005,17 @@ result := FilterKeys(kv, func(k int, v string) bool {
 // [1]
 ```
 
+```go
+// Use FilterKeysErr when the predicate can return an error
+result, err := lo.FilterKeysErr(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) (bool, error) {
+    if k == 3 {
+        return false, fmt.Errorf("key 3 not allowed")
+    }
+    return v == "foo", nil
+})
+// []int(nil), error("key 3 not allowed")
+```
+
 [[play](https://go.dev/play/p/OFlKXlPrBAe)]
 
 ### FilterValues
@@ -2018,6 +2029,17 @@ result := FilterValues(kv, func(k int, v string) bool {
     return v == "foo"
 })
 // ["foo"]
+```
+
+```go
+// Use FilterValuesErr when the predicate can return an error
+result, err := lo.FilterValuesErr(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) (bool, error) {
+    if k == 3 {
+        return false, fmt.Errorf("key 3 not allowed")
+    }
+    return v == "foo", nil
+})
+// []string(nil), error("key 3 not allowed")
 ```
 
 [[play](https://go.dev/play/p/YVD5r_h-LX-)]
