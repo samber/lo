@@ -3021,6 +3021,26 @@ func ExampleReject() {
 	// Output: [1 3 5]
 }
 
+func ExampleRejectErr() {
+	list := []int64{0, 1, 2, 3, 4, 5}
+
+	result, err := RejectErr(list, func(x int64, index int) (bool, error) {
+		if x == 3 {
+			return false, fmt.Errorf("number 3 is not allowed")
+		}
+		return x%2 == 0, nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+
+	result, err = RejectErr([]int64{0, 1, 2, 4, 6}, func(x int64, index int) (bool, error) {
+		return x%2 == 0, nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+	// Output:
+	// [], number 3 is not allowed
+	// [1], <nil>
+}
+
 func ExampleCount() {
 	list := []int{0, 1, 2, 3, 4, 5, 0, 1, 2, 3}
 

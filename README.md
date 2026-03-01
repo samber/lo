@@ -1203,6 +1203,17 @@ odd := lo.Reject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 // []int{1, 3}
 ```
 
+```go
+// Use RejectErr when the predicate can return an error
+odd, err := lo.RejectErr([]int{1, 2, 3, 4}, func(x int, _ int) (bool, error) {
+    if x == 3 {
+        return false, fmt.Errorf("number 3 is not allowed")
+    }
+    return x%2 == 0, nil
+})
+// []int(nil), error("number 3 is not allowed")
+```
+
 [[play](https://go.dev/play/p/YkLMODy1WEL)]
 
 ### RejectMap

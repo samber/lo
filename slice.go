@@ -891,6 +891,25 @@ func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 	return result
 }
 
+// RejectErr is the opposite of FilterErr, this method returns the elements of collection that predicate does not return true for.
+// If the predicate returns an error, iteration stops immediately and returns the error.
+// Play: https://go.dev/play/p/pFCF5WVB225
+func RejectErr[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) (bool, error)) (Slice, error) {
+	result := Slice{}
+
+	for i := range collection {
+		match, err := predicate(collection[i], i)
+		if err != nil {
+			return nil, err
+		}
+		if !match {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result, nil
+}
+
 // RejectMap is the opposite of FilterMap, this method returns a slice obtained after both filtering and mapping using the given callback function.
 // The callback function should return two values:
 //   - the result of the mapping operation and
