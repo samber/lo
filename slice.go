@@ -562,6 +562,22 @@ func RepeatBy[T any](count int, callback func(index int) T) []T {
 	return result
 }
 
+// RepeatByErr builds a slice with values returned by N calls of callback.
+// It returns the first error returned by the callback function.
+func RepeatByErr[T any](count int, callback func(index int) (T, error)) ([]T, error) {
+	result := make([]T, 0, count)
+
+	for i := 0; i < count; i++ {
+		r, err := callback(i)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, r)
+	}
+
+	return result, nil
+}
+
 // KeyBy transforms a slice or a slice of structs to a map based on a pivot callback.
 // Play: https://go.dev/play/p/ccUiUL_Lnel
 func KeyBy[K comparable, V any](collection []V, iteratee func(item V) K) map[K]V {
