@@ -1799,3 +1799,24 @@ func TestTrimSuffix(t *testing.T) {
 	actual = TrimSuffix(values("a", "b", "c", "d", "e", "f", "g"), []string{})
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(actual))
 }
+
+func TestBuffer(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// full batches
+	batches := slices.Collect(Buffer(RangeFrom(1, 6), 2))
+	is.Equal([][]int{{1, 2}, {3, 4}, {5, 6}}, batches)
+
+	// partial last batch
+	batches2 := slices.Collect(Buffer(RangeFrom(1, 5), 2))
+	is.Equal([][]int{{1, 2}, {3, 4}, {5}}, batches2)
+
+	// empty channel
+	batches3 := slices.Collect(Buffer(RangeFrom(1, 0), 2))
+	is.Empty(batches3)
+
+	// stop after first batch (early termination)
+	batches4 := slices.Collect(Take(Buffer(RangeFrom(1, 6), 2), 1))
+	is.Equal([][]int{{1, 2}}, batches4)
+}
