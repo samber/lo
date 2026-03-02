@@ -88,6 +88,7 @@ Use `variantHelpers` for different versions of the **same helper function**:
 ```yaml
 variantHelpers:
   - core#slice#map        # func Map[T, R]([]T, func(T, int) R) []R
+  - core#slice#maperr     # func MapErr[T, R]([]T, func(T, int) (R, error)) ([]R, error)
   - core#slice#mapi       # func MapI[T, R]([]T, func(T, int) R) []R (with index)
   - core#slice#mapwithcontext  # func MapWithContext[T, R]([]T, func(T, int, context.Context) R, context.Context) []R
 ```
@@ -194,6 +195,7 @@ Use these established subCategories:
 - For function variants, use consistent suffixes:
   - `F` suffix for function-based versions (lazy evaluation)
   - `I` suffix for variants having `index int` argument in predicate callback
+  - `Err` suffix for variants returning an error in predicate callback
   - `WithContext` suffix when context.Context is provided
   - `X` suffix for helpers with varying arguments (eg: MustX: Must2, Must3, Must4...)
 
@@ -210,27 +212,6 @@ When creating the go playground examples, please run it to be sure it compiles a
 Add these examples in the source code comments, on top of helpers, with a syntax like `// Play: <url>`.
 
 If the documentation is created at the same time of the helper source code, then the Go playground execution might fail, since we need to merge+release the source code first to make this new helper available to Go playground compiler. In that case, skip the creation of the example and set no URL.
-
-## Validation Scripts
-
-Run these scripts to validate your documentation:
-
-```bash
-# Check cross-references
-node scripts/check-cross-references.js
-
-# Check for duplicates in categories
-node scripts/check-duplicates-in-category.js
-
-# Check filename matches frontmatter
-node scripts/check-filename-matches-frontmatter.js
-
-# Check for similar existing helpers
-node scripts/check-similar-exists.js
-
-# Check for similar keys in directory
-node scripts/check-similar-keys-exist-in-directory.js
-```
 
 ## Example: Complete File
 

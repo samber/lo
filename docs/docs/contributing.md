@@ -24,6 +24,13 @@ Functions use `~[]T` constraints to accept any slice type, including named slice
 ## Variants
 When applicable, some functions can be added to sub-package as well: `mutable`, `it` and `parallel`. Add a documentation for each helper.
 
+For function variants, use consistent suffixes:
+- `F` suffix for function-based versions (lazy evaluation)
+- `I` suffix for variants having `index int` argument in predicate callback
+- `Err` suffix for variants returning an error in predicate callback
+- `WithContext` suffix when context.Context is provided
+- `X` suffix for helpers with varying arguments (eg: MustX: Must2, Must3, Must4...)
+
 ## Testing
 We try to maintain code coverage above 90%.
 
