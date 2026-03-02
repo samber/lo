@@ -51,3 +51,28 @@ func ChannelToSeq[T any](ch <-chan T) iter.Seq[T] {
 		}
 	}
 }
+
+// Buffer returns a sequence of slices, each containing up to size items read from the channel.
+// The last slice may be smaller if the channel closes before filling the buffer.
+func Buffer[T any](ch <-chan T, size int) iter.Seq[[]T] {
+	return func(yield func([]T) bool) {
+		for {
+			buffer := make([]T, 0, size)
+
+			for range size {
+				item, ok := <-ch
+				if !ok {
+					if len(buffer) > 0 {
+						yield(buffer)
+					}
+					return
+				}
+				buffer = append(buffer, item)
+			}
+
+			if !yield(buffer) {
+				return
+			}
+		}
+	}
+}

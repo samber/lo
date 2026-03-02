@@ -58,3 +58,28 @@ func TestChannelToSeq(t *testing.T) {
 
 	is.Equal([]int{1, 2, 3}, slices.Collect(items))
 }
+
+func TestBuffer(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// full batches
+	ch := SeqToChannel(0, values(1, 2, 3, 4, 5, 6))
+	batches := slices.Collect(Buffer(ch, 2))
+	is.Equal([][]int{{1, 2}, {3, 4}, {5, 6}}, batches)
+
+	// partial last batch
+	ch2 := SeqToChannel(0, values(1, 2, 3, 4, 5))
+	batches2 := slices.Collect(Buffer(ch2, 2))
+	is.Equal([][]int{{1, 2}, {3, 4}, {5}}, batches2)
+
+	// empty channel
+	ch3 := SeqToChannel(0, values[int]())
+	batches3 := slices.Collect(Buffer(ch3, 2))
+	is.Empty(batches3)
+
+	// stop after first batch (early termination)
+	ch4 := SeqToChannel(0, values(1, 2, 3, 4, 5, 6))
+	batches4 := slices.Collect(Take(Buffer(ch4, 2), 1))
+	is.Equal([][]int{{1, 2}}, batches4)
+}
