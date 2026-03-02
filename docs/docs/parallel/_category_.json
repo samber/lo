@@ -1,8 +1,0 @@
-{
-  "label": "🏎️ Parallel",
-  "position": 4,
-  "link": {
-    "type": "generated-index",
-    "description": "Parallel processing of slices, maps, and channels"
-  }
-}
