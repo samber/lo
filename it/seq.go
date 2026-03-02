@@ -1158,3 +1158,27 @@ func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I
 		}
 	}
 }
+
+// Buffer returns a sequence of slices, each containing up to size items read from the channel.
+// The last slice may be smaller if the channel closes before filling the buffer.
+func Buffer[T any](seq iter.Seq[T], size int) iter.Seq[[]T] {
+	return func(yield func([]T) bool) {
+		buffer := make([]T, 0, size)
+
+		seq(func(v T) bool {
+			buffer = append(buffer, v)
+			if len(buffer) < size {
+				return true // keep pulling
+			}
+			// Buffer full, yield it
+			result := buffer
+			buffer = make([]T, 0, size) // allocate new buffer
+			return yield(result)        // false = stop, true = continue
+		})
+
+		// Yield remaining partial buffer
+		if len(buffer) > 0 {
+			yield(buffer)
+		}
+	}
+}
