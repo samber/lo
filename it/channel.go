@@ -63,7 +63,7 @@ func Buffer[T any](ch <-chan T, size int) iter.Seq[[]T] {
 				item, ok := <-ch
 				if !ok {
 					if len(buffer) > 0 {
-						yield(buffer)
+						_ = yield(buffer)
 					}
 					return
 				}
