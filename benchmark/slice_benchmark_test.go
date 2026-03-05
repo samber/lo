@@ -353,3 +353,25 @@ func BenchmarkFilterTakeVsFilterAndTake(b *testing.B) {
 		}
 	})
 }
+
+func BenchmarkDifference(b *testing.B) {
+	for _, n := range lengths {
+		ints1 := genSliceInt(n)
+		ints2 := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _ = lo.Difference(ints1, ints2)
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		strs1 := genSliceString(n)
+		strs2 := genSliceString(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _ = lo.Difference(strs1, strs2)
+			}
+		})
+	}
+}

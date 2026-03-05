@@ -207,8 +207,8 @@ func IntersectBy[T any, K comparable, Slice ~[]T](transform func(T) K, lists ...
 // The second value is the collection of elements absent from list1.
 // Play: https://go.dev/play/p/pKE-JgzqRpz
 func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
-	left := Slice{}
-	right := Slice{}
+	left := make(Slice, 0, len(list1))
+	right := make(Slice, 0, len(list2))
 
 	seenLeft := Keyify(list1)
 	seenRight := Keyify(list2)
