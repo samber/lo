@@ -52,7 +52,7 @@ func (d *debounce) cancel() {
 }
 
 // NewDebounce creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed.
-// Play: https://go.dev/play/p/mz32VMK2nqe
+// Play: https://go.dev/play/p/_IPY7ROzbMk
 func NewDebounce(duration time.Duration, f ...func()) (func(), func()) {
 	d := &debounce{
 		after:     duration,
@@ -135,7 +135,7 @@ func (d *debounceBy[T]) cancel(key T) {
 }
 
 // NewDebounceBy creates a debounced instance for each distinct key, that delays invoking functions given until after wait milliseconds have elapsed.
-// Play: https://go.dev/play/p/d3Vpt6pxhY8
+// Play: https://go.dev/play/p/Izk7GEzZm2Q
 func NewDebounceBy[T comparable](duration time.Duration, f ...func(key T, count int)) (func(key T), func(key T)) {
 	d := &debounceBy[T]{
 		after:     duration,
@@ -251,7 +251,7 @@ type transactionStep[T any] struct {
 }
 
 // NewTransaction instantiate a new transaction.
-// Play: https://go.dev/play/p/Qxrd7MGQGh1
+// Play: https://go.dev/play/p/7B2o52wEQbj
 func NewTransaction[T any]() *Transaction[T] {
 	return &Transaction[T]{
 		steps: []transactionStep[T]{},

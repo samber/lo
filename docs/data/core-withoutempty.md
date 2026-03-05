@@ -4,7 +4,7 @@ slug: withoutempty
 sourceRef: intersect.go#L218
 category: core
 subCategory: intersect
-playUrl: 
+playUrl: https://go.dev/play/p/iZvYJWuniJm
 variantHelpers:
   - core#intersect#withoutempty
 similarHelpers:

@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func Without[T comparable, I ~func(func(T) bool)](collection I, exclude ...T) I"
-playUrl: "https://go.dev/play/p/eAOoUsQnrZf"
+playUrl: "https://go.dev/play/p/LbN55AVBZ7h"
 variantHelpers:
   - it#intersect#without
 similarHelpers:

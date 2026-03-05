@@ -6,6 +6,7 @@ category: it
 subCategory: string
 signatures:
   - "func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I"
+playUrl: https://go.dev/play/p/s9nwy9helEi
 variantHelpers: []
 similarHelpers:
   - core#string#trimsuffix

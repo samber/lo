@@ -646,7 +646,7 @@ func ZipByErr9[A, B, C, D, E, F, G, H, I, Out any](a []A, b []B, c []C, d []D, e
 
 // Unzip2 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
-// Play: https://go.dev/play/p/ciHugugvaAW
+// Play: https://go.dev/play/p/K-vG9tyD3Kf
 func Unzip2[A, B any](tuples []Tuple2[A, B]) ([]A, []B) {
 	size := len(tuples)
 	r1 := make([]A, 0, size)
@@ -1023,6 +1023,7 @@ func UnzipBy9[In, A, B, C, D, E, F, G, H, I any](items []In, iteratee func(In) (
 // UnzipByErr2 iterates over a collection and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // It returns the first error returned by the iteratee.
+// Play: https://go.dev/play/p/G2pyXQa1SUD
 func UnzipByErr2[In, A, B any](items []In, iteratee func(In) (a A, b B, err error)) ([]A, []B, error) {
 	size := len(items)
 	r1 := make([]A, 0, size)

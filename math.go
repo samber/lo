@@ -7,7 +7,7 @@ import (
 )
 
 // Range creates a slice of numbers (positive and/or negative) with given length.
-// Play: https://go.dev/play/p/0r6VimXAi9H
+// Play: https://go.dev/play/p/rho00R0WuHs
 func Range(elementNum int) []int {
 	step := Ternary(elementNum < 0, -1, 1)
 	length := elementNum * step
@@ -187,6 +187,7 @@ func MeanByErr[T any, R constraints.Float | constraints.Integer](collection []T,
 // Mode returns the mode (most frequent value) of a collection.
 // If multiple values have the same highest frequency, then multiple values are returned.
 // If the collection is empty, then the zero value of T is returned.
+// Play: https://go.dev/play/p/PbiviqnV5zX
 func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
 	length := T(len(collection))
 	if length == 0 {

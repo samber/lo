@@ -201,17 +201,94 @@ Use these established subCategories:
 
 ## Go Playground Examples
 
-Every helper must have a working Go Playground example:
-1. Create a minimal, self-contained example
-2. Use realistic but simple data
-3. Include the expected result as a comment
-4. Test the example to ensure it works
+Every helper must have a working Go Playground example linked in two places:
 
-When creating the go playground examples, please run it to be sure it compiles and returns the expected output. If invalid, loop until it works.
+1. **Source code**: `// Play: <url>` comment on the last line of the doc block, right before the `func` keyword
+2. **Doc file**: `playUrl: <url>` field in the YAML frontmatter of `docs/data/<category>-<slug>.md`
 
-Add these examples in the source code comments, on top of helpers, with a syntax like `// Play: <url>`.
+### Creating a New Playground Example
 
-If the documentation is created at the same time of the helper source code, then the Go playground execution might fail, since we need to merge+release the source code first to make this new helper available to Go playground compiler. In that case, skip the creation of the example and set no URL.
+#### Step 1: Write the Example Code
+
+Write a minimal, self-contained `main.go` that demonstrates the helper. Guidelines:
+
+- Use realistic but simple data
+- Print the result with `fmt.Println` so the output is visible
+- Include edge cases when useful (e.g., empty input, error case)
+- For `Err` variants, show both a success and an error case
+- For time-based helpers, use `time.Date()` for deterministic output
+- For random helpers (`SampleBy`, `SamplesBy`), use `rand.New(rand.NewSource(42))` for reproducible output
+
+#### Step 2: Import Conventions
+
+Use the correct import path depending on the package:
+
+```go
+// Core helpers
+import "github.com/samber/lo"
+// Usage: lo.Map(...)
+
+// Iterator helpers (it/ package, requires Go 1.23+)
+import (
+    "slices"
+    "github.com/samber/lo/it"
+)
+// Usage: slices.Collect(it.Map(...))
+// Convert slices to iterators: slices.Values([]int{1, 2, 3})
+
+// Parallel helpers
+import lop "github.com/samber/lo/parallel"
+// Usage: lop.Map(...)
+```
+
+#### Step 3: Run and Share via Go Playground
+
+Use the `go-playground` MCP tool to execute the example and get a shareable URL:
+
+```
+mcp__go-playground__run_and_share_go_code(code: "<your code>")
+```
+
+This compiles the code on go.dev/play, runs it, and returns:
+- The program output (to verify correctness)
+- A shareable URL like `https://go.dev/play/p/XXXXXXX`
+
+If the output doesn't match expectations, fix the code and re-run until it produces the correct result.
+
+#### Step 4: Add the URL to Source Code
+
+Add a `// Play:` comment as the **last line** of the function's doc comment block:
+
+```go
+// Map manipulates a slice and transforms it to a slice of another type.
+// Play: https://go.dev/play/p/refNB9ZTIGo
+func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
+```
+
+#### Step 5: Add the URL to Documentation
+
+Set the `playUrl` field in the corresponding `docs/data/*.md` file:
+
+```yaml
+---
+name: Map
+slug: map
+playUrl: https://go.dev/play/p/refNB9ZTIGo
+...
+---
+```
+
+### Troubleshooting
+
+**First-run timeouts**: The Go Playground may timeout on the first execution if `github.com/samber/lo` hasn't been cached yet. Simply retry — subsequent runs succeed because the module is cached.
+
+**New helpers not yet released**: If documentation is created at the same time as the helper source code, the Go Playground cannot compile it because the module version hasn't been published yet. In that case, skip the playground example and leave `playUrl` empty. Create the example after the next release.
+
+**SIMD helpers**: Helpers in `exp/simd/` require `go1.26+goexperiment.simd+amd64` build tags, which the Go Playground does not support. These helpers cannot have playground examples.
+
+### Bulk Verification
+
+To verify all playground URLs compile, you can use `mcp__go-playground__execute_go_playground_url` to re-run an existing URL and check the output. To read the source code of an existing playground, use `mcp__go-playground__read_go_playground_url`.
 
 ## Example: Complete File
 

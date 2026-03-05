@@ -7,6 +7,7 @@ subCategory: sequence
 signatures:
   - "func Flatten[T any, I ~func(func(T) bool)](collection []I) I"
 variantHelpers: []
+playUrl: https://go.dev/play/p/CCklxuNk7Lm
 similarHelpers:
   - core#slice#flatten
 position: 172

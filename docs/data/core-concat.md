@@ -4,7 +4,7 @@ slug: concat
 sourceRef: slice.go#L282
 category: core
 subCategory: slice
-playUrl:
+playUrl: https://go.dev/play/p/Ux2UuR2xpRK
 variantHelpers:
   - core#slice#concat
 similarHelpers:

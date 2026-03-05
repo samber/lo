@@ -6,7 +6,7 @@ category: core
 subCategory: slice
 signatures:
   - "func FilterErr[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) (bool, error)) (Slice, error)"
-playUrl:
+playUrl: https://go.dev/play/p/Apjg3WeSi7K
 variantHelpers:
   - core#slice#filtererr
 similarHelpers:

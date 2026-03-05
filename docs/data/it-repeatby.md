@@ -6,6 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func RepeatBy[T any](count int, callback func(index int) T) iter.Seq[T]"
+playUrl: https://go.dev/play/p/i7BuZQBcUzZ
 variantHelpers:
   - it#sequence#repeatby
 similarHelpers:

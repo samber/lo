@@ -8,6 +8,7 @@ signatures:
   - "func ToAnySeq[T any](collection iter.Seq[T]) iter.Seq[any]"
 variantHelpers:
   - it#type#fromanyseq
+playUrl: "https://go.dev/play/p/ktE4IMXDMxv"
 similarHelpers:
   - core#type#toany
 position: 243

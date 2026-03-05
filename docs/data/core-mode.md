@@ -4,7 +4,7 @@ slug: mode
 sourceRef: math.go#L149
 category: core
 subCategory: math
-playUrl: 
+playUrl: https://go.dev/play/p/PbiviqnV5zX
 variantHelpers:
   - core#math#mode
 similarHelpers:

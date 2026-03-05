@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func WithoutNth[T comparable, I ~func(func(T) bool)](collection I, nths ...int) I"
-playUrl: https://go.dev/play/p/p-YFULJfVlZ
+playUrl: "https://go.dev/play/p/KGE7Lpsk18P"
 variantHelpers:
   - it#intersect#withoutnth
 similarHelpers:

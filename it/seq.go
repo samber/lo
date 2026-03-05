@@ -315,6 +315,7 @@ func Chunk[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 // Window creates a sequence of sliding windows of a given size.
 // Each window overlaps with the previous one by size-1 elements.
 // This is equivalent to Sliding(collection, size, 1).
+// Play: https://go.dev/play/p/_1BzQYtKBhi
 func Window[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 	if size <= 0 {
 		panic("it.Window: size must be greater than 0")
@@ -327,6 +328,7 @@ func Window[T any](collection iter.Seq[T], size int) iter.Seq[[]T] {
 // offset = step - size: offset == 0 means adjacent windows (no overlap/gap);
 // offset < 0 means overlapping windows; offset > 0 means gaps between windows.
 // Only full-size windows are yielded; a partial window at the end is not yielded.
+// Play: https://go.dev/play/p/mzhO4CZeiik
 func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
 	if size <= 0 {
 		panic("it.Sliding: size must be greater than 0")
@@ -390,7 +392,7 @@ func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
 // of running each element of collection through transform.
 // Will allocate a map large enough to hold all distinct transformed elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
-// Play: https://go.dev/play/p/5WqJN9-zv
+// Play: https://go.dev/play/p/VxTx8mva28z
 func PartitionBy[T any, K comparable](collection iter.Seq[T], transform func(item T) K) [][]T {
 	var result [][]T
 	seen := map[K]int{}
@@ -411,7 +413,7 @@ func PartitionBy[T any, K comparable](collection iter.Seq[T], transform func(ite
 }
 
 // Flatten returns a sequence a single level deep.
-// Play: https://go.dev/play/p/6XrKO0-zw
+// Play: https://go.dev/play/p/CCklxuNk7Lm
 func Flatten[T any, I ~func(func(T) bool)](collection []I) I {
 	return func(yield func(T) bool) {
 		for _, item := range collection {
@@ -425,13 +427,14 @@ func Flatten[T any, I ~func(func(T) bool)](collection []I) I {
 }
 
 // Concat returns a sequence of all the elements in iterators. Concat conserves the order of the elements.
+// Play: https://go.dev/play/p/Fa0u7xT2JOR
 func Concat[T any, I ~func(func(T) bool)](collection ...I) I {
 	return Flatten(collection)
 }
 
 // Interleave round-robin alternating input sequences and sequentially appending value at index into result.
 // Will allocate a slice the size of collections.
-// Play: https://go.dev/play/p/7YsLP1-zx
+// Play: https://go.dev/play/p/kNvnz4ClLgH
 func Interleave[T any](collections ...iter.Seq[T]) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		next := make([]func() (T, bool), len(collections))
@@ -484,7 +487,7 @@ func Reverse[T any, I ~func(func(T) bool)](collection I) I {
 }
 
 // Fill replaces elements of a sequence with `initial` value.
-// Play: https://go.dev/play/p/0XrQKOk-vw
+// Play: https://go.dev/play/p/mHShWq5ezMc
 func Fill[T lo.Clonable[T], I ~func(func(T) bool)](collection I, initial T) I {
 	return func(yield func(T) bool) {
 		for range collection {
@@ -496,13 +499,13 @@ func Fill[T lo.Clonable[T], I ~func(func(T) bool)](collection I, initial T) I {
 }
 
 // Repeat builds a sequence with N copies of initial value.
-// Play: https://go.dev/play/p/1YsRLPl-wx
+// Play: https://go.dev/play/p/xs-aq0p_uDP
 func Repeat[T lo.Clonable[T]](count int, initial T) iter.Seq[T] {
 	return RepeatBy(count, func(int) T { return initial.Clone() })
 }
 
 // RepeatBy builds a sequence with values returned by N calls of transform.
-// Play: https://go.dev/play/p/2ZtSMQm-xy
+// Play: https://go.dev/play/p/i7BuZQBcUzZ
 func RepeatBy[T any](count int, callback func(index int) T) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		for i := range count {
@@ -608,7 +611,7 @@ func FilterSeqToMapI[T any, K comparable, V any](collection iter.Seq[T], transfo
 
 // Keyify returns a map with each unique element of the sequence as a key.
 // Will iterate through the entire sequence.
-// Play: https://go.dev/play/p/0RlEI4-zq
+// Play: https://go.dev/play/p/aHOD29_l-rF
 func Keyify[T comparable](collection iter.Seq[T]) map[T]struct{} {
 	result := make(map[T]struct{})
 
@@ -745,6 +748,7 @@ func DropByIndex[T any, I ~func(func(T) bool)](collection I, indexes ...int) I {
 
 // TakeFilter filters elements and takes the first n elements that match the predicate.
 // Equivalent to calling Take(Filter(...)), but more efficient as it stops after finding n matches.
+// Play: https://go.dev/play/p/Db68Bhu4MCA
 func TakeFilter[T any, I ~func(func(T) bool)](collection I, n int, predicate func(item T) bool) I {
 	return TakeFilterI(collection, n, func(item T, _ int) bool { return predicate(item) })
 }
@@ -832,7 +836,7 @@ func Count[T comparable](collection iter.Seq[T], value T) int {
 
 // CountBy counts the number of elements in the collection for which predicate is true.
 // Will iterate through the entire sequence.
-// Play: https://go.dev/play/p/UcJ-6cANwfY
+// Play: https://go.dev/play/p/m6G0o3huCOG
 func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int {
 	var count int
 
@@ -847,7 +851,7 @@ func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int {
 
 // CountValues counts the number of each element in the collection.
 // Will iterate through the entire sequence.
-// Play: https://go.dev/play/p/2TnGK6-zs
+// Play: https://go.dev/play/p/PPBT4Fp-V3B
 func CountValues[T comparable](collection iter.Seq[T]) map[T]int {
 	return CountValuesBy(collection, func(item T) T { return item })
 }
@@ -855,7 +859,7 @@ func CountValues[T comparable](collection iter.Seq[T]) map[T]int {
 // CountValuesBy counts the number of each element returned from transform function.
 // Is equivalent to chaining Map and CountValues.
 // Will iterate through the entire sequence.
-// Play: https://go.dev/play/p/3UoHL7-zt
+// Play: https://go.dev/play/p/gnr_MPhYCHX
 func CountValuesBy[T any, U comparable](collection iter.Seq[T], transform func(item T) U) map[U]int {
 	result := make(map[U]int)
 
@@ -931,14 +935,14 @@ func Compact[T comparable, I ~func(func(T) bool)](collection I) I {
 
 // IsSorted checks if a sequence is sorted.
 // Will iterate through the entire sequence.
-// Play: https://go.dev/play/p/9jthUzgF-u
+// Play: https://go.dev/play/p/o-BD4UOn-0U
 func IsSorted[T constraints.Ordered](collection iter.Seq[T]) bool {
 	return IsSortedBy(collection, func(item T) T { return item })
 }
 
 // IsSortedBy checks if a sequence is sorted by transform.
 // Will iterate through the entire sequence.
-// Play: https://go.dev/play/p/0XrQKOk-vw
+// Play: https://go.dev/play/p/AfYOiGWa78T
 func IsSortedBy[T any, K constraints.Ordered](collection iter.Seq[T], transform func(item T) K) bool {
 	first := true
 	var prev K
@@ -995,7 +999,7 @@ func Splice[T any, I ~func(func(T) bool)](collection I, index int, elements ...T
 // If collection doesn't start with prefix, CutPrefix returns collection, false.
 // If prefix is empty, CutPrefix returns collection, true.
 // Will iterate at most the size of separator before returning.
-// Play: https://go.dev/play/p/2TnGK6-zs
+// Play: https://go.dev/play/p/bPnV39zVnAV
 func CutPrefix[T comparable, I ~func(func(T) bool)](collection I, separator []T) (after I, found bool) { //nolint:gocyclo
 	if len(separator) == 0 {
 		return collection, true
@@ -1050,7 +1054,7 @@ func CutPrefix[T comparable, I ~func(func(T) bool)](collection I, separator []T)
 // If suffix is empty, CutSuffix returns collection, true.
 // Will iterate through the entire sequence and allocate a slice large enough to hold all elements.
 // Long input sequences can cause excessive memory usage.
-// Play: https://go.dev/play/p/3UoHL7-zt
+// Play: https://go.dev/play/p/CTRh9m1UHrZ
 func CutSuffix[T comparable, I ~func(func(T) bool)](collection I, separator []T) (before I, found bool) {
 	slice := slices.Collect(iter.Seq[T](collection))
 	result, ok := lo.CutSuffix(slice, separator)
@@ -1059,7 +1063,7 @@ func CutSuffix[T comparable, I ~func(func(T) bool)](collection I, separator []T)
 
 // Trim removes all the leading and trailing cutset from the collection.
 // Will allocate a map large enough to hold all distinct cutset elements.
-// Play: https://go.dev/play/p/4VpIM8-zu
+// Play: https://go.dev/play/p/k0VCcilk4V1
 func Trim[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
 	predicate := lo.Partial(lo.HasKey, lo.Keyify(cutset))
 	return DropLastWhile(DropWhile(collection, predicate), predicate)
@@ -1067,13 +1071,13 @@ func Trim[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
 
 // TrimFirst removes all the leading cutset from the collection.
 // Will allocate a map large enough to hold all distinct cutset elements.
-// Play: https://go.dev/play/p/5WqJN9-zv
+// Play: https://go.dev/play/p/4D4Ke5C5MwH
 func TrimFirst[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
 	return DropWhile(collection, lo.Partial(lo.HasKey, lo.Keyify(cutset)))
 }
 
 // TrimPrefix removes all the leading prefix from the collection.
-// Play: https://go.dev/play/p/6XrKO0-zw
+// Play: https://go.dev/play/p/Pce4zSPnThY
 func TrimPrefix[T comparable, I ~func(func(T) bool)](collection I, prefix []T) I {
 	n := len(prefix)
 	if n == 0 {
@@ -1112,13 +1116,13 @@ func TrimPrefix[T comparable, I ~func(func(T) bool)](collection I, prefix []T) I
 
 // TrimLast removes all the trailing cutset from the collection.
 // Will allocate a map large enough to hold all distinct cutset elements.
-// Play: https://go.dev/play/p/7YsLP1-zx
+// Play: https://go.dev/play/p/GQLhnaeW0gd
 func TrimLast[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I {
 	return DropLastWhile(collection, lo.Partial(lo.HasKey, lo.Keyify(cutset)))
 }
 
 // TrimSuffix removes all the trailing suffix from the collection.
-// Play: https://go.dev/play/p/8isgTsyfL-t
+// Play: https://go.dev/play/p/s9nwy9helEi
 func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I {
 	n := len(suffix)
 	if n == 0 {
@@ -1161,6 +1165,7 @@ func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I
 
 // Buffer returns a sequence of slices, each containing up to size items read from the channel.
 // The last slice may be smaller if the channel closes before filling the buffer.
+// Play: https://go.dev/play/p/zDZdcCA20ut
 func Buffer[T any](seq iter.Seq[T], size int) iter.Seq[[]T] {
 	return func(yield func([]T) bool) {
 		buffer := make([]T, 0, size)

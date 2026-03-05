@@ -4,7 +4,7 @@ slug: countby
 sourceRef: slice.go#L849
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/ByQbNYQQi4X
+playUrl: https://go.dev/play/p/5GMQP5vNT4q
 variantHelpers:
   - core#slice#countby
 similarHelpers:

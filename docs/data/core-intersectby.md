@@ -4,7 +4,7 @@ slug: intersectby
 sourceRef: intersect.go#L174
 category: core
 subCategory: intersect
-playUrl:
+playUrl: https://go.dev/play/p/uWF8y2-zmtf
 variantHelpers:
   - core#intersect#intersectby
 similarHelpers:

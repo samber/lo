@@ -6,6 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Window[T any](collection iter.Seq[T], size int) iter.Seq[[]T]"
+playUrl: https://go.dev/play/p/_1BzQYtKBhi
 variantHelpers:
   - it#sequence#window
 similarHelpers:

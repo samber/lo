@@ -8,6 +8,7 @@ signatures:
   - "func FromSeqPtr[T any](collection iter.Seq[*T]) iter.Seq[T]"
 variantHelpers:
   - it#type#fromseqptror
+playUrl: "https://go.dev/play/p/_eO6scpLcBF"
 similarHelpers:
   - core#type#fromptr
 position: 241

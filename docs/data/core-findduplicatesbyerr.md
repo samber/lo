@@ -4,6 +4,7 @@ slug: findduplicatesbyerr
 sourceRef: find.go#L296
 category: core
 subCategory: find
+playUrl: https://go.dev/play/p/HiVILQqdFP0
 signatures:
   - "func FindDuplicatesByErr[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) (U, error)) (Slice, error)"
 variantHelpers:

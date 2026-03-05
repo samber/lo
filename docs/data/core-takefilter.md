@@ -6,6 +6,7 @@ category: core
 subCategory: slice
 variantHelpers:
   - core#slice#takefilter
+playUrl: https://go.dev/play/p/l99lvN4gReF
 similarHelpers:
   - core#slice#filter
   - core#slice#take

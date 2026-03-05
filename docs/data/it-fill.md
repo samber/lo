@@ -7,6 +7,7 @@ subCategory: sequence
 signatures:
   - "func Fill[T lo.Clonable[T], I ~func(func(T) bool)](collection I, initial T) I"
 variantHelpers: []
+playUrl: https://go.dev/play/p/mHShWq5ezMc
 similarHelpers:
   - core#slice#fill
 position: 174

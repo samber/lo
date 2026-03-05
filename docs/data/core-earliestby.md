@@ -4,7 +4,7 @@ slug: earliestby
 sourceRef: find.go#L462
 category: core
 subCategory: find
-playUrl:
+playUrl: https://go.dev/play/p/0XvCF6vuLXC
 variantHelpers:
   - core#find#earliestby
 similarHelpers:

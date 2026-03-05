@@ -6,6 +6,7 @@ category: it
 subCategory: slice
 signatures:
   - "func Keyify[T comparable](collection iter.Seq[T]) map[T]struct{}"
+playUrl: https://go.dev/play/p/aHOD29_l-rF
 variantHelpers: []
 similarHelpers:
   - core#slice#keyby

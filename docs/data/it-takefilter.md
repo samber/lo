@@ -7,6 +7,7 @@ subCategory: sequence
 signatures:
   - "func TakeFilter[T any, I ~func(func(T) bool)](collection I, n int, predicate func(item T) bool) I"
   - "func TakeFilterI[T any, I ~func(func(T) bool)](collection I, n int, predicate func(item T, index int) bool) I"
+playUrl: https://go.dev/play/p/Db68Bhu4MCA
 variantHelpers:
   - it#sequence#takefilter
   - it#sequence#takefilteri

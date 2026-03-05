@@ -4,7 +4,7 @@ slug: trimprefix
 sourceRef: slice.go#L858
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/SHO6X-YegPg
+playUrl: https://go.dev/play/p/8O2RoWYzi8J
 variantHelpers:
   - core#slice#trimprefix
 similarHelpers:

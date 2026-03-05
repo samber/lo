@@ -141,7 +141,7 @@ func PickByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
 }
 
 // PickByValues returns same map type filtered by given values.
-// Play: https://go.dev/play/p/1zdzSvbfsJc
+// Play: https://go.dev/play/p/-_PPkSbO1Kc
 func PickByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
 	r := Map{}
 
@@ -395,7 +395,7 @@ func MapEntriesErr[K1 comparable, V1 any, K2 comparable, V2 any](in map[K1]V1, i
 }
 
 // MapToSlice transforms a map into a slice based on specified iteratee.
-// Play: https://go.dev/play/p/ZuiCZpDt6LD
+// Play: https://go.dev/play/p/4f5hbHyMf5h
 func MapToSlice[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) R) []R {
 	result := make([]R, 0, len(in))
 
@@ -444,6 +444,7 @@ func FilterMapToSlice[K comparable, V, R any](in map[K]V, iteratee func(key K, v
 // If the boolean is false, the value is not added to the result slice.
 // If an error is returned, iteration stops immediately and returns the error.
 // The order of the keys in the input map is not specified and the order of the keys in the output slice is not guaranteed.
+// Play: https://go.dev/play/p/YjFEORLBWvk
 func FilterMapToSliceErr[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) (R, bool, error)) ([]R, error) {
 	result := make([]R, 0, len(in))
 
@@ -495,6 +496,7 @@ func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V
 // If the predicate returns true, the key is added to the result slice.
 // If the predicate returns an error, iteration stops immediately and returns the error.
 // The order of the keys in the input map is not specified.
+// Play: https://go.dev/play/p/j2gUQzCTu4t
 func FilterKeysErr[K comparable, V any](in map[K]V, predicate func(key K, value V) (bool, error)) ([]K, error) {
 	result := make([]K, 0)
 
@@ -516,6 +518,7 @@ func FilterKeysErr[K comparable, V any](in map[K]V, predicate func(key K, value 
 // If the predicate returns true, the value is added to the result slice.
 // If the predicate returns an error, iteration stops immediately and returns the error.
 // The order of the keys in the input map is not specified.
+// Play: https://go.dev/play/p/hKvHlqLzbdE
 func FilterValuesErr[K comparable, V any](in map[K]V, predicate func(key K, value V) (bool, error)) ([]V, error) {
 	result := make([]V, 0)
 

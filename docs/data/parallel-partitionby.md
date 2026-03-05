@@ -4,7 +4,7 @@ slug: partitionby
 sourceRef: parallel/slice.go#L92
 category: parallel
 subCategory: slice
-playUrl: ""
+playUrl: "https://go.dev/play/p/GwBQdMgx2nC"
 similarHelpers:
   - core#slice#partitionby
   - parallel#slice#groupby

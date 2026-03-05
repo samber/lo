@@ -4,7 +4,7 @@ slug: substring
 sourceRef: string.go#L105
 category: core
 subCategory: string
-playUrl: https://go.dev/play/p/TQlxQi82Lu1
+playUrl: https://go.dev/play/p/emzCC9zBjHu
 variantHelpers:
   - core#string#substring
 similarHelpers:

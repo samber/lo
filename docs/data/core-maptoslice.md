@@ -4,7 +4,7 @@ slug: maptoslice
 sourceRef: map.go#L367
 category: core
 subCategory: map
-playUrl: https://go.dev/play/p/ZuiCZpDt6LD
+playUrl: https://go.dev/play/p/4f5hbHyMf5h
 variantHelpers:
   - core#map#maptoslice
 similarHelpers:

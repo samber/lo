@@ -7,7 +7,7 @@ subCategory: sequence
 signatures:
   - "func ReduceLast[T, R any](collection iter.Seq[T], accumulator func(agg R, item T) R, initial R) R"
   - "func ReduceLastI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, index int) R, initial R) R"
-playUrl:
+playUrl: https://go.dev/play/p/D2ZGZ2pN270
 variantHelpers:
   - it#sequence#reduce
   - it#sequence#reducei

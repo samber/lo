@@ -4,6 +4,7 @@ slug: groupbyerr
 sourceRef: slice.go#L279
 category: core
 subCategory: slice
+playUrl: https://go.dev/play/p/BzKPcY3AdX2
 signatures:
   - "func GroupByErr[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) (U, error)) (map[U]Slice, error)"
 variantHelpers:

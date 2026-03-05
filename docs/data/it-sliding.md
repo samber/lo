@@ -6,6 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T]"
+playUrl: https://go.dev/play/p/mzhO4CZeiik
 variantHelpers:
   - it#sequence#sliding
 similarHelpers:

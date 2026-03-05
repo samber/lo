@@ -4,7 +4,7 @@ slug: chunkstring
 sourceRef: it/string.go#L130
 category: it
 subCategory: string
-playUrl: "https://go.dev/play/p/Y4mN8bB2cXw"
+playUrl: "https://go.dev/play/p/Bcc5ixTQQoQ"
 variantHelpers:
   - it#string#chunkstring
 similarHelpers:

@@ -4,6 +4,7 @@ slug: maxbyerr
 sourceRef: find.go#L528
 category: core
 subCategory: find
+playUrl: https://go.dev/play/p/s-63-6_9zqM
 variantHelpers:
   - core#find#maxbyerr
 similarHelpers:

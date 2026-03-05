@@ -5,7 +5,7 @@ import (
 )
 
 // Duration returns the time taken to execute a function.
-// Play: https://go.dev/play/p/HQfbBbAXaFP
+// Play: https://go.dev/play/p/LFhKq2vY9Ty
 func Duration(callback func()) time.Duration {
 	return Duration0(callback)
 }

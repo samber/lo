@@ -6,7 +6,7 @@ category: it
 subCategory: math
 signatures:
   - "func MeanBy[T any, R constraints.Float | constraints.Integer](collection iter.Seq[T], transform func(item T) R) R"
-playUrl:
+playUrl: https://go.dev/play/p/Ked4rpztH5Y
 variantHelpers:
   - it#math#mean
 similarHelpers:

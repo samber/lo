@@ -4,7 +4,7 @@ slug: kebabcase
 sourceRef: string.go#L190
 category: core
 subCategory: string
-playUrl: https://go.dev/play/p/96gT_WZnTVP
+playUrl: https://go.dev/play/p/ZBeMB4-pq45
 variantHelpers:
   - core#string#kebabcase
 similarHelpers:

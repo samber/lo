@@ -10,7 +10,7 @@ import (
 )
 
 // Range creates a sequence of numbers (positive and/or negative) with given length.
-// Play: https://go.dev/play/p/6ksL0W6KEuQ
+// Play: https://go.dev/play/p/79QUZBa8Ukn
 func Range(elementNum int) iter.Seq[int] {
 	step := lo.Ternary(elementNum < 0, -1, 1)
 	length := elementNum * step
@@ -86,14 +86,14 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 
 // Product gets the product of the values in a collection. If collection is empty 1 is returned.
 // Will iterate through the entire sequence.
-// Play: https://go.dev/play/p/ebgxKxJmhLj
+// Play: https://go.dev/play/p/AOMCD1Yl5Bc
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T]) T {
 	return ProductBy(collection, func(item T) T { return item })
 }
 
 // ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 1 is returned.
 // Will iterate through the entire sequence.
-// Play: https://go.dev/play/p/BkRYS0NG42b
+// Play: https://go.dev/play/p/dgFCRJrlPHY
 func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], transform func(item T) R) R {
 	var product R = 1
 	for item := range collection {

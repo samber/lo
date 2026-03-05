@@ -299,6 +299,7 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 
 // GroupByErr returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // It returns the first error returned by the iteratee function.
+// Play: https://go.dev/play/p/BzKPcY3AdX2
 func GroupByErr[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) (U, error)) (map[U]Slice, error) {
 	result := map[U]Slice{}
 
@@ -447,6 +448,7 @@ func Flatten[T any, Slice ~[]T](collection []Slice) Slice {
 
 // Concat returns a new slice containing all the elements in collections. Concat conserves the order of the elements.
 // See also: Flatten, Union.
+// Play: https://go.dev/play/p/Ux2UuR2xpRK
 func Concat[T any, Slice ~[]T](collections ...Slice) Slice {
 	return Flatten(collections)
 }
@@ -464,6 +466,7 @@ func Window[T any, Slice ~[]T](collection Slice, size int) []Slice {
 // Sliding creates a slice of sliding windows of a given size with a given step.
 // If step is equal to size, windows don't overlap (similar to Chunk).
 // If step is less than size, windows overlap.
+// Play: https://go.dev/play/p/aIIU6gWxl2T
 func Sliding[T any, Slice ~[]T](collection Slice, size, step int) []Slice {
 	if size <= 0 {
 		panic("lo.Sliding: size must be greater than 0")
@@ -490,7 +493,7 @@ func Sliding[T any, Slice ~[]T](collection Slice, size, step int) []Slice {
 }
 
 // Interleave round-robin alternating input slices and sequentially appending value at index into result.
-// Play: https://go.dev/play/p/-RJkTLQEDVt
+// Play: https://go.dev/play/p/KOVtGUt-tdI
 func Interleave[T any, Slice ~[]T](collections ...Slice) Slice {
 	if len(collections) == 0 {
 		return Slice{}
@@ -674,7 +677,7 @@ func SliceToMapI[T any, K comparable, V any](collection []T, transform func(item
 // If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original slice.
 // The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
-// Play: https://go.dev/play/p/2z0rDz2ZSGU
+// Play: https://go.dev/play/p/eurMiQEqey2
 func FilterSliceToMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V, bool)) map[K]V {
 	return FilterSliceToMapI(collection, func(item T, _ int) (K, V, bool) {
 		return transform(item)
@@ -700,7 +703,7 @@ func FilterSliceToMapI[T any, K comparable, V any](collection []T, transform fun
 }
 
 // Keyify returns a map with each unique element of the slice as a key.
-// Play: https://go.dev/play/p/RYhhM_csqIG
+// Play: https://go.dev/play/p/_d5lXdzfw32
 func Keyify[T comparable, Slice ~[]T](collection Slice) map[T]struct{} {
 	result := make(map[T]struct{}, len(collection))
 
@@ -743,7 +746,7 @@ func DropRight[T any, Slice ~[]T](collection Slice, n int) Slice {
 }
 
 // DropWhile drops elements from the beginning of a slice while the predicate returns true.
-// Play: https://go.dev/play/p/7gBPYw2IK16
+// Play: https://go.dev/play/p/b_PYomVQLGy
 func DropWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	i := 0
 	for ; i < len(collection); i++ {
@@ -757,7 +760,7 @@ func DropWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool)
 }
 
 // DropRightWhile drops elements from the end of a slice while the predicate returns true.
-// Play: https://go.dev/play/p/3-n71oEC0Hz
+// Play: https://go.dev/play/p/HBh8pHl-ZZz
 func DropRightWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	i := len(collection) - 1
 	for ; i >= 0; i-- {
@@ -797,6 +800,7 @@ func Take[T any, Slice ~[]T](collection Slice, n int) Slice {
 }
 
 // TakeWhile takes elements from the beginning of a slice while the predicate returns true.
+// Play: https://go.dev/play/p/NJkLGvyRWm4
 func TakeWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	i := 0
 	for ; i < len(collection); i++ {
@@ -852,6 +856,7 @@ func DropByIndex[T any, Slice ~[]T](collection Slice, indexes ...int) Slice {
 
 // TakeFilter filters elements and takes the first n elements that match the predicate.
 // Equivalent to calling Take(Filter(...)), but more efficient as it stops after finding n matches.
+// Play: https://go.dev/play/p/l99lvN4gReF
 func TakeFilter[T any, Slice ~[]T](collection Slice, n int, predicate func(item T, index int) bool) Slice {
 	if n < 0 {
 		panic("lo.TakeFilter: n must not be negative")
@@ -961,7 +966,7 @@ func Count[T comparable](collection []T, value T) int {
 }
 
 // CountBy counts the number of elements in the collection for which predicate is true.
-// Play: https://go.dev/play/p/ByQbNYQQi4X
+// Play: https://go.dev/play/p/5GMQP5vNT4q
 func CountBy[T any](collection []T, predicate func(item T) bool) int {
 	var count int
 
@@ -976,6 +981,7 @@ func CountBy[T any](collection []T, predicate func(item T) bool) int {
 
 // CountByErr counts the number of elements in the collection for which predicate is true.
 // It returns the first error returned by the predicate.
+// Play: https://go.dev/play/p/7BnyPhpG6lW
 func CountByErr[T any](collection []T, predicate func(item T) (bool, error)) (int, error) {
 	var count int
 
@@ -1086,6 +1092,7 @@ func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old, nEw T) Slice {
 }
 
 // Clone returns a shallow copy of the collection.
+// Play: https://go.dev/play/p/66LJ2wAF0rN
 func Clone[T any, Slice ~[]T](collection Slice) Slice {
 	// backporting from slices.Clone in Go 1.21
 	// when we drop support for Go 1.20, this can be replaced with: return slices.Clone(collection)
@@ -1201,7 +1208,7 @@ func Cut[T comparable, Slice ~[]T](collection, separator Slice) (before, after S
 // and reports whether it found the prefix.
 // If s doesn't start with prefix, CutPrefix returns collection, false.
 // If prefix is the empty []T, CutPrefix returns collection, true.
-// Play: https://go.dev/play/p/7Plak4a1ICl
+// Play: https://go.dev/play/p/P1scQj53aFa
 func CutPrefix[T comparable, Slice ~[]T](collection, separator Slice) (after Slice, found bool) {
 	if HasPrefix(collection, separator) {
 		return collection[len(separator):], true
@@ -1221,7 +1228,7 @@ func CutSuffix[T comparable, Slice ~[]T](collection, separator Slice) (before Sl
 }
 
 // Trim removes all the leading and trailing cutset from the collection.
-// Play: https://go.dev/play/p/1an9mxLdRG5
+// Play: https://go.dev/play/p/LZLfLj5C8Lg
 func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
@@ -1248,7 +1255,7 @@ func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 }
 
 // TrimLeft removes all the leading cutset from the collection.
-// Play: https://go.dev/play/p/74aqfAYLmyi
+// Play: https://go.dev/play/p/fJK-AhROy9w
 func TrimLeft[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
@@ -1259,7 +1266,7 @@ func TrimLeft[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 }
 
 // TrimPrefix removes all the leading prefix from the collection.
-// Play: https://go.dev/play/p/SHO6X-YegPg
+// Play: https://go.dev/play/p/8O2RoWYzi8J
 func TrimPrefix[T comparable, Slice ~[]T](collection, prefix Slice) Slice {
 	if len(prefix) == 0 {
 		return collection
@@ -1273,7 +1280,7 @@ func TrimPrefix[T comparable, Slice ~[]T](collection, prefix Slice) Slice {
 }
 
 // TrimRight removes all the trailing cutset from the collection.
-// Play: https://go.dev/play/p/MRpAfR6sf0g
+// Play: https://go.dev/play/p/9V_N8sRyyiZ
 func TrimRight[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 

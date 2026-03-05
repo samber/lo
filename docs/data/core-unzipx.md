@@ -13,7 +13,7 @@ signatures:
   - "func Unzip7[A, B, C, D, E, F, G any](tuples []Tuple7[A, B, C, D, E, F, G]) ([]A, []B, []C, []D, []E, []F, []G)"
   - "func Unzip8[A, B, C, D, E, F, G, H any](tuples []Tuple8[A, B, C, D, E, F, G, H]) ([]A, []B, []C, []D, []E, []F, []G, []H)"
   - "func Unzip9[A, B, C, D, E, F, G, H, I any](tuples []Tuple9[A, B, C, D, E, F, G, H, I]) ([]A, []B, []C, []D, []E, []F, []G, []H, []I)"
-playUrl: https://go.dev/play/p/ciHugugvaAW
+playUrl: https://go.dev/play/p/K-vG9tyD3Kf
 variantHelpers:
   - core#tuple#unzipx
 similarHelpers:

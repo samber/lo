@@ -6,6 +6,7 @@ category: it
 subCategory: type
 signatures:
   - "func ToSeqPtr[T any](collection iter.Seq[T]) iter.Seq[*T]"
+playUrl: "https://go.dev/play/p/70BcKpDcOKm"
 variantHelpers: []
 similarHelpers:
   - core#type#toptr

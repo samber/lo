@@ -6,6 +6,7 @@ category: core
 subCategory: slice
 variantHelpers:
   - core#slice#sliding
+playUrl: https://go.dev/play/p/aIIU6gWxl2T
 similarHelpers:
   - core#slice#window
   - core#slice#chunk

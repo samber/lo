@@ -4,7 +4,7 @@ slug: pickbyvalues
 sourceRef: map.go#L130
 category: core
 subCategory: map
-playUrl: https://go.dev/play/p/1zdzSvbfsJc
+playUrl: https://go.dev/play/p/-_PPkSbO1Kc
 variantHelpers:
   - core#map#pickbyvalues
 similarHelpers:

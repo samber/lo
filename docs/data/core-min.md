@@ -4,7 +4,7 @@ slug: min
 sourceRef: find.go#L265
 category: core
 subCategory: find
-playUrl: https://go.dev/play/p/r6e-Z8JozS8
+playUrl: https://go.dev/play/p/fJFLwpY8eMN
 variantHelpers:
   - core#find#min
 similarHelpers:

@@ -4,7 +4,7 @@ slug: range
 sourceRef: math.go#L9
 category: core
 subCategory: math
-playUrl: https://go.dev/play/p/0r6VimXAi9H
+playUrl: https://go.dev/play/p/rho00R0WuHs
 variantHelpers:
   - core#math#range
 similarHelpers:

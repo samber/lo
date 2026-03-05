@@ -105,7 +105,7 @@ func nearestPowerOfTwo(capacity int) int {
 // length - number of characters to extract
 // With positive offset, counting starts from the beginning of the string
 // With negative offset, counting starts from the end of the string
-// Play: https://go.dev/play/p/TQlxQi82Lu1
+// Play: https://go.dev/play/p/emzCC9zBjHu
 func Substring[T ~string](str T, offset int, length uint) T {
 	str = substring(str, offset, length)
 
@@ -221,13 +221,13 @@ func ChunkString[T ~string](str T, size int) []T {
 }
 
 // RuneLength is an alias to utf8.RuneCountInString which returns the number of runes in string.
-// Play: https://go.dev/play/p/tuhgW_lWY8l
+// Play: https://go.dev/play/p/BXT52mBk0zO
 func RuneLength(str string) int {
 	return utf8.RuneCountInString(str)
 }
 
 // PascalCase converts string to pascal case.
-// Play: https://go.dev/play/p/Dy_V_6DUYhe
+// Play: https://go.dev/play/p/uxER7XpRHLB
 func PascalCase(str string) string {
 	items := Words(str)
 	for i := range items {
@@ -237,7 +237,7 @@ func PascalCase(str string) string {
 }
 
 // CamelCase converts string to camel case.
-// Play: https://go.dev/play/p/Go6aKwUiq59
+// Play: https://go.dev/play/p/4JNDzaMwXkm
 func CamelCase(str string) string {
 	items := Words(str)
 	for i, item := range items {
@@ -251,7 +251,7 @@ func CamelCase(str string) string {
 }
 
 // KebabCase converts string to kebab case.
-// Play: https://go.dev/play/p/96gT_WZnTVP
+// Play: https://go.dev/play/p/ZBeMB4-pq45
 func KebabCase(str string) string {
 	items := Words(str)
 	for i := range items {

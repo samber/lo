@@ -4,7 +4,7 @@ slug: pascalcase
 sourceRef: string.go#L166
 category: core
 subCategory: string
-playUrl: https://go.dev/play/p/Dy_V_6DUYhe
+playUrl: https://go.dev/play/p/uxER7XpRHLB
 variantHelpers:
   - core#string#pascalcase
 similarHelpers:

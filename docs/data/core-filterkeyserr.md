@@ -6,7 +6,7 @@ category: core
 subCategory: map
 signatures:
   - "func FilterKeysErr[K comparable, V any](in map[K]V, predicate func(key K, value V) (bool, error)) ([]K, error)"
-playUrl:
+playUrl: https://go.dev/play/p/j2gUQzCTu4t
 variantHelpers:
   - core#map#filterkeyserr
 similarHelpers:
