@@ -226,6 +226,66 @@ func BenchmarkToSlicePtr(b *testing.B) {
 	}
 }
 
+func BenchmarkReject(b *testing.B) {
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Reject(strs, func(v string, _ int) bool { return len(v) < 3 })
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Reject(ints, func(v int, _ int) bool { return v < 50000 })
+			}
+		})
+	}
+}
+
+func BenchmarkRejectErr(b *testing.B) {
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _ = lo.RejectErr(strs, func(v string, _ int) (bool, error) { return len(v) < 3, nil })
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _ = lo.RejectErr(ints, func(v int, _ int) (bool, error) { return v < 50000, nil })
+			}
+		})
+	}
+}
+
+func BenchmarkRejectMap(b *testing.B) {
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.RejectMap(strs, func(v string, _ int) (string, bool) { return v, len(v) < 3 })
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.RejectMap(ints, func(v int, _ int) (int, bool) { return v, v < 50000 })
+			}
+		})
+	}
+}
+
 func BenchmarkFilterTakeVsFilterAndTake(b *testing.B) {
 	n := 1000
 	ints := genSliceInt(n)
