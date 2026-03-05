@@ -83,23 +83,31 @@ func ToSlicePtr[T any](collection []T) []*T {
 // Returns a zero value in case of a nil pointer element.
 // Play: https://go.dev/play/p/lbunFvzlUDX
 func FromSlicePtr[T any](collection []*T) []T {
-	return Map(collection, func(x *T, _ int) T {
-		if x == nil {
-			return Empty[T]()
+	result := make([]T, len(collection))
+
+	for i := range collection {
+		if collection[i] != nil {
+			result[i] = *collection[i]
 		}
-		return *x
-	})
+	}
+
+	return result
 }
 
 // FromSlicePtrOr returns a slice with the pointer values or the fallback value.
 // Play: https://go.dev/play/p/lbunFvzlUDX
 func FromSlicePtrOr[T any](collection []*T, fallback T) []T {
-	return Map(collection, func(x *T, _ int) T {
-		if x == nil {
-			return fallback
+	result := make([]T, len(collection))
+
+	for i := range collection {
+		if collection[i] != nil {
+			result[i] = *collection[i]
+		} else {
+			result[i] = fallback
 		}
-		return *x
-	})
+	}
+
+	return result
 }
 
 // ToAnySlice returns a slice with all elements mapped to `any` type.
