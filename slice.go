@@ -1003,7 +1003,7 @@ func CountByErr[T any](collection []T, predicate func(item T) (bool, error)) (in
 // CountValues counts the number of each element in the collection.
 // Play: https://go.dev/play/p/-p-PyLT4dfy
 func CountValues[T comparable](collection []T) map[T]int {
-	result := make(map[T]int)
+	result := make(map[T]int, len(collection))
 
 	for i := range collection {
 		result[collection[i]]++
