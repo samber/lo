@@ -226,6 +226,46 @@ func BenchmarkToSlicePtr(b *testing.B) {
 	}
 }
 
+func BenchmarkFromSlicePtr(b *testing.B) {
+	for _, n := range lengths {
+		ptrs := lo.ToSlicePtr(genSliceInt(n))
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.FromSlicePtr(ptrs)
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ptrs := lo.ToSlicePtr(genSliceString(n))
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.FromSlicePtr(ptrs)
+			}
+		})
+	}
+}
+
+func BenchmarkFromSlicePtrOr(b *testing.B) {
+	for _, n := range lengths {
+		ptrs := lo.ToSlicePtr(genSliceInt(n))
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.FromSlicePtrOr(ptrs, -1)
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ptrs := lo.ToSlicePtr(genSliceString(n))
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.FromSlicePtrOr(ptrs, "default")
+			}
+		})
+	}
+}
+
 func BenchmarkReject(b *testing.B) {
 	for _, n := range lengths {
 		strs := genSliceString(n)
