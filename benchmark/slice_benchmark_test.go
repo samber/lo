@@ -240,7 +240,7 @@ func BenchmarkReject(b *testing.B) {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = lo.Reject(ints, func(v int, _ int) bool { return v < 50000 })
+				_ = lo.Reject(ints, func(v, _ int) bool { return v < 50000 })
 			}
 		})
 	}
@@ -260,7 +260,7 @@ func BenchmarkRejectErr(b *testing.B) {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_, _ = lo.RejectErr(ints, func(v int, _ int) (bool, error) { return v < 50000, nil })
+				_, _ = lo.RejectErr(ints, func(v, _ int) (bool, error) { return v < 50000, nil })
 			}
 		})
 	}
@@ -280,7 +280,27 @@ func BenchmarkRejectMap(b *testing.B) {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = lo.RejectMap(ints, func(v int, _ int) (int, bool) { return v, v < 50000 })
+				_ = lo.RejectMap(ints, func(v, _ int) (int, bool) { return v, v < 50000 })
+			}
+		})
+	}
+}
+
+func BenchmarkUniqMap(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.UniqMap(ints, func(v, _ int) int { return v % 50 })
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.UniqMap(strs, func(v string, _ int) string { return v })
 			}
 		})
 	}

@@ -71,16 +71,18 @@ func MapErr[T, R any](collection []T, transform func(item T, index int) (R, erro
 // UniqMap manipulates a slice and transforms it to a slice of another type with unique values.
 // Play: https://go.dev/play/p/fygzLBhvUdB
 func UniqMap[T any, R comparable](collection []T, transform func(item T, index int) R) []R {
+	result := make([]R, 0, len(collection))
 	seen := make(map[R]struct{}, len(collection))
 
 	for i := range collection {
 		r := transform(collection[i], i)
 		if _, ok := seen[r]; !ok {
 			seen[r] = struct{}{}
+			result = append(result, r)
 		}
 	}
 
-	return Keys(seen)
+	return result
 }
 
 // FilterMap returns a slice obtained after both filtering and mapping using the given callback function.
