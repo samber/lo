@@ -226,6 +226,26 @@ func BenchmarkToSlicePtr(b *testing.B) {
 	}
 }
 
+func BenchmarkReject(b *testing.B) {
+	for _, n := range lengths {
+		strs := genSliceString(n)
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Reject(strs, func(v string, _ int) bool { return len(v) < 3 })
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Reject(ints, func(v int, _ int) bool { return v < 50000 })
+			}
+		})
+	}
+}
+
 func BenchmarkFilterTakeVsFilterAndTake(b *testing.B) {
 	n := 1000
 	ints := genSliceInt(n)

@@ -880,7 +880,7 @@ func TakeFilter[T any, Slice ~[]T](collection Slice, n int, predicate func(item 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return true for.
 // Play: https://go.dev/play/p/pFCF5WVB225
 func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
-	result := Slice{}
+	result := make(Slice, 0, len(collection))
 
 	for i := range collection {
 		if !predicate(collection[i], i) {
