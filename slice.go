@@ -550,10 +550,10 @@ func Reverse[T any, Slice ~[]T](collection Slice) Slice {
 // Fill fills elements of a slice with `initial` value.
 // Play: https://go.dev/play/p/VwR34GzqEub
 func Fill[T Clonable[T], Slice ~[]T](collection Slice, initial T) Slice {
-	result := make(Slice, 0, len(collection))
+	result := make(Slice, len(collection))
 
-	for range collection {
-		result = append(result, initial.Clone())
+	for i := range collection {
+		result[i] = initial.Clone()
 	}
 
 	return result
@@ -562,10 +562,10 @@ func Fill[T Clonable[T], Slice ~[]T](collection Slice, initial T) Slice {
 // Repeat builds a slice with N copies of initial value.
 // Play: https://go.dev/play/p/g3uHXbmc3b6
 func Repeat[T Clonable[T]](count int, initial T) []T {
-	result := make([]T, 0, count)
+	result := make([]T, count)
 
 	for i := 0; i < count; i++ {
-		result = append(result, initial.Clone())
+		result[i] = initial.Clone()
 	}
 
 	return result
@@ -574,10 +574,10 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 // RepeatBy builds a slice with values returned by N calls of callback.
 // Play: https://go.dev/play/p/ozZLCtX_hNU
 func RepeatBy[T any](count int, callback func(index int) T) []T {
-	result := make([]T, 0, count)
+	result := make([]T, count)
 
 	for i := 0; i < count; i++ {
-		result = append(result, callback(i))
+		result[i] = callback(i)
 	}
 
 	return result
