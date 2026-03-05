@@ -895,7 +895,7 @@ func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 // If the predicate returns an error, iteration stops immediately and returns the error.
 // Play: https://go.dev/play/p/pFCF5WVB225
 func RejectErr[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) (bool, error)) (Slice, error) {
-	result := Slice{}
+	result := make(Slice, 0, len(collection))
 
 	for i := range collection {
 		match, err := predicate(collection[i], i)
@@ -917,7 +917,7 @@ func RejectErr[T any, Slice ~[]T](collection Slice, predicate func(item T, index
 //
 // Play: https://go.dev/play/p/W9Ug9r0QFkL
 func RejectMap[T, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
-	result := []R{}
+	result := make([]R, 0, len(collection))
 
 	for i := range collection {
 		if r, ok := callback(collection[i], i); !ok {
