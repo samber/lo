@@ -1239,7 +1239,7 @@ func UnzipByErr9[In, A, B, C, D, E, F, G, H, I any](items []In, iteratee func(In
 // CrossJoin2 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
-// Play: https://go.dev/play/p/3VFppyL9FDU
+// Play: https://go.dev/play/p/LSRL5DmdPag
 func CrossJoin2[A, B any](listA []A, listB []B) []Tuple2[A, B] {
 	return CrossJoinBy2(listA, listB, T2[A, B])
 }
@@ -1304,7 +1304,7 @@ func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA []A, listB []B, listC []C, 
 // It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
-// Play: https://go.dev/play/p/8Y7btpvuA-C
+// Play: https://go.dev/play/p/VLy8iyrPN8X
 func CrossJoinBy2[A, B, Out any](listA []A, listB []B, transform func(a A, b B) Out) []Out {
 	size := len(listA) * len(listB)
 	if size == 0 {

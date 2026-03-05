@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func LastOrEmpty[T any](collection iter.Seq[T]) T"
-playUrl: "https://go.dev/play/p/9QkDH3-zp"
+playUrl: https://go.dev/play/p/teODFK4YqM4
 variantHelpers:
   - it#find#lastorempty
 similarHelpers:

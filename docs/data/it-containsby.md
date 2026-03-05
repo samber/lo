@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func ContainsBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool"
-playUrl: "https://go.dev/play/p/2edj7hH3TS2"
+playUrl: https://go.dev/play/p/m86Cpsoyv8k
 variantHelpers:
   - it#intersect#containsby
 similarHelpers:

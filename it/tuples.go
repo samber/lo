@@ -279,7 +279,7 @@ func Zip9[A, B, C, D, E, F, G, H, I any](a iter.Seq[A], b iter.Seq[B], c iter.Se
 // ZipBy2 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
-// Play: https://go.dev/play/p/2TnGK6-zs
+// Play: https://go.dev/play/p/y03uqMEAi1E
 func ZipBy2[A, B, Out any](a iter.Seq[A], b iter.Seq[B], transform func(a A, b B) Out) iter.Seq[Out] {
 	return Map(Zip2(a, b), func(item lo.Tuple2[A, B]) Out {
 		return transform(item.A, item.B)
@@ -359,7 +359,7 @@ func ZipBy9[A, B, C, D, E, F, G, H, I, Out any](a iter.Seq[A], b iter.Seq[B], c 
 // CrossJoin2 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
-// Play: https://go.dev/play/p/ZBDEXBYj6nU
+// Play: https://go.dev/play/p/OFe8xjZFjWU
 func CrossJoin2[A, B any](listA iter.Seq[A], listB iter.Seq[B]) iter.Seq[lo.Tuple2[A, B]] {
 	return CrossJoinBy2(listA, listB, lo.T2[A, B])
 }
@@ -424,7 +424,7 @@ func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA iter.Seq[A], listB iter.Seq
 // It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
-// Play: https://go.dev/play/p/7YsLP1-zx
+// Play: https://go.dev/play/p/6QGp3W-bQU1
 func CrossJoinBy2[A, B, Out any](listA iter.Seq[A], listB iter.Seq[B], transform func(a A, b B) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {

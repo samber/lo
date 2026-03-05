@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func Find[T any](collection iter.Seq[T], predicate func(item T) bool) (T, bool)"
-playUrl: "https://go.dev/play/p/5SdLM6jf-q"
+playUrl: https://go.dev/play/p/4w28pF_l58a
 variantHelpers:
   - it#find#find
 similarHelpers:

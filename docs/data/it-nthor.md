@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func NthOr[T any, N constraints.Integer](collection iter.Seq[T], nth N, fallback T) T"
-playUrl: "https://go.dev/play/p/2TnGK6-zs"
+playUrl: https://go.dev/play/p/MNweuhpy4Ym
 variantHelpers:
   - it#find#nthor
 similarHelpers:

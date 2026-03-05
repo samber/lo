@@ -59,7 +59,7 @@ func Values[K comparable, V any](in ...map[K]V) iter.Seq[V] {
 // UniqValues creates a sequence of unique values in the map.
 // Will allocate a map large enough to hold all distinct input values.
 // Long input sequences with heterogeneous values can cause excessive memory usage.
-// Play: https://go.dev/play/p/M7qV2xP4yG8
+// Play: https://go.dev/play/p/QQv4zGrk-fF
 func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V] {
 	return func(yield func(V) bool) {
 		seen := make(map[V]struct{})
@@ -78,7 +78,7 @@ func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V] {
 }
 
 // Entries transforms a map into a sequence of key/value pairs.
-// Play: https://go.dev/play/p/N8RbJ5t6H2k
+// Play: https://go.dev/play/p/ckLxqTE9KCz
 func Entries[K comparable, V any](in ...map[K]V) iter.Seq2[K, V] {
 	return func(yield func(K, V) bool) {
 		for _, m := range in {
@@ -99,7 +99,7 @@ func ToPairs[K comparable, V any](in ...map[K]V) iter.Seq2[K, V] {
 }
 
 // FromEntries transforms a sequence of key/value pairs into a map.
-// Play: https://go.dev/play/p/K3wL9j7TmXs
+// Play: https://go.dev/play/p/MgEF1J5-tuK
 func FromEntries[K comparable, V any](entries ...iter.Seq2[K, V]) map[K]V {
 	m := make(map[K]V)
 	for _, e := range entries {
@@ -110,13 +110,13 @@ func FromEntries[K comparable, V any](entries ...iter.Seq2[K, V]) map[K]V {
 
 // FromPairs transforms a sequence of key/value pairs into a map.
 // Alias of FromEntries().
-// Play: https://go.dev/play/p/K3wL9j7TmXs
+// Play: https://go.dev/play/p/GqPl6isVR9W
 func FromPairs[K comparable, V any](entries ...iter.Seq2[K, V]) map[K]V {
 	return FromEntries(entries...)
 }
 
 // Invert creates a sequence composed of inverted keys and values.
-// Play: https://go.dev/play/p/H4jR7n2sF8k
+// Play: https://go.dev/play/p/Iph19Lgcsx-
 func Invert[K, V comparable](in iter.Seq2[K, V]) iter.Seq2[V, K] {
 	return func(yield func(V, K) bool) {
 		for k, v := range in {
@@ -128,7 +128,7 @@ func Invert[K, V comparable](in iter.Seq2[K, V]) iter.Seq2[V, K] {
 }
 
 // Assign merges multiple sequences of maps from left to right.
-// Play: https://go.dev/play/p/P6tY8qW3rN2
+// Play: https://go.dev/play/p/lwngaIFkFAg
 func Assign[K comparable, V any, Map ~map[K]V](maps ...iter.Seq[Map]) Map {
 	out := make(Map)
 
@@ -145,7 +145,7 @@ func Assign[K comparable, V any, Map ~map[K]V](maps ...iter.Seq[Map]) Map {
 
 // ChunkEntries splits a map into a sequence of elements in groups of length equal to its size. If the map cannot be split evenly,
 // the final chunk will contain the remaining elements.
-// Play: https://go.dev/play/p/Q4jR8m9T2nX
+// Play: https://go.dev/play/p/xtX-so65kDp
 func ChunkEntries[K comparable, V any](m map[K]V, size int) iter.Seq[map[K]V] {
 	if size <= 0 {
 		panic("it.ChunkEntries: size must be greater than 0")
@@ -172,7 +172,7 @@ func ChunkEntries[K comparable, V any](m map[K]V, size int) iter.Seq[map[K]V] {
 }
 
 // MapToSeq transforms a map into a sequence based on specified transform.
-// Play: https://go.dev/play/p/R7sL5h4K3mV
+// Play: https://go.dev/play/p/SEV4Vz5XFac
 func MapToSeq[K comparable, V, R any](in map[K]V, transform func(key K, value V) R) iter.Seq[R] {
 	return func(yield func(R) bool) {
 		for k, v := range in {
@@ -187,7 +187,7 @@ func MapToSeq[K comparable, V, R any](in map[K]V, transform func(key K, value V)
 // The transform returns a value and a boolean. If the boolean is true, the value is added to the result sequence.
 // If the boolean is false, the value is not added to the result sequence.
 // The order of the keys in the input map is not specified and the order of the keys in the output sequence is not guaranteed.
-// Play: https://go.dev/play/p/S6tY2uJ7nWq
+// Play: https://go.dev/play/p/HQgi01x8A4o
 func FilterMapToSeq[K comparable, V, R any](in map[K]V, transform func(key K, value V) (R, bool)) iter.Seq[R] {
 	return func(yield func(R) bool) {
 		for k, v := range in {
@@ -200,7 +200,7 @@ func FilterMapToSeq[K comparable, V, R any](in map[K]V, transform func(key K, va
 
 // FilterKeys transforms a map into a sequence based on predicate returns true for specific elements.
 // It is a mix of Filter and Keys.
-// Play: https://go.dev/play/p/T8vW9kX7nLm
+// Play: https://go.dev/play/p/ODxc6_IiWtO
 func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) iter.Seq[K] {
 	return func(yield func(K) bool) {
 		for k, v := range in {
@@ -213,7 +213,7 @@ func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) 
 
 // FilterValues transforms a map into a sequence based on predicate returns true for specific elements.
 // It is a mix of Filter and Values.
-// Play: https://go.dev/play/p/U3yN7kV8oXp
+// Play: https://go.dev/play/p/9SBiyOqgrl8
 func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) iter.Seq[V] {
 	return func(yield func(V) bool) {
 		for k, v := range in {

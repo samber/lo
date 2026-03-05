@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func Nth[T any, N constraints.Integer](collection iter.Seq[T], nth N) (T, error)"
-playUrl: https://go.dev/play/p/1SmFJ5-zr
+playUrl: https://go.dev/play/p/FqgCobsKqva
 variantHelpers:
   - it#find#nth
 similarHelpers:

@@ -4,7 +4,7 @@ slug: withoutnth
 sourceRef: intersect.go#L223
 category: core
 subCategory: intersect
-playUrl: https://go.dev/play/p/5g3F9R2H1xL
+playUrl: https://go.dev/play/p/AIro-_UtL9c
 variantHelpers:
   - core#intersect#withoutnth
 similarHelpers:

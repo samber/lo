@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func EveryBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool"
-playUrl: "https://go.dev/play/p/3edj7hH3TS2"
+playUrl: https://go.dev/play/p/7OvV1BRWsER
 variantHelpers:
   - it#intersect#everyby
 similarHelpers:

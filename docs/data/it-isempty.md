@@ -6,7 +6,7 @@ category: it
 subCategory: type
 signatures:
   - "func IsEmpty[T any](collection iter.Seq[T]) bool"
-playUrl: "https://go.dev/play/p/F6gG2iI9Cd4"
+playUrl: https://go.dev/play/p/krZ-laaVi2C
 variantHelpers:
   - it#type#isempty
 similarHelpers:

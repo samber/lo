@@ -46,14 +46,14 @@ func FromAnySeq[T any](collection iter.Seq[any]) iter.Seq[T] {
 }
 
 // Empty returns an empty sequence.
-// Play: https://go.dev/play/p/E5fF1hH8Bc3
+// Play: https://go.dev/play/p/Y9yplM3vGFe
 func Empty[T any]() iter.Seq[T] {
 	return func(yield func(T) bool) {}
 }
 
 // IsEmpty returns true if the sequence is empty.
 // Will iterate at most once.
-// Play: https://go.dev/play/p/F6gG2iI9Cd4
+// Play: https://go.dev/play/p/krZ-laaVi2C
 func IsEmpty[T any](collection iter.Seq[T]) bool {
 	for range collection {
 		return false
@@ -63,14 +63,14 @@ func IsEmpty[T any](collection iter.Seq[T]) bool {
 
 // IsNotEmpty returns true if the sequence is not empty.
 // Will iterate at most once.
-// Play: https://go.dev/play/p/G7hH3jJ0De5
+// Play: https://go.dev/play/p/jMAjbDvrdPu
 func IsNotEmpty[T any](collection iter.Seq[T]) bool {
 	return !IsEmpty(collection)
 }
 
 // CoalesceSeq returns the first non-empty sequence.
 // Will iterate through each sub-sequence at most once.
-// Play: https://go.dev/play/p/H8iI4kK1Ef6
+// Play: https://go.dev/play/p/wep4z2KJLCO
 func CoalesceSeq[T any](v ...iter.Seq[T]) (iter.Seq[T], bool) {
 	for i := range v {
 		for range v[i] {
@@ -82,7 +82,7 @@ func CoalesceSeq[T any](v ...iter.Seq[T]) (iter.Seq[T], bool) {
 
 // CoalesceSeqOrEmpty returns the first non-empty sequence.
 // Will iterate through each sub-sequence at most once.
-// Play: https://go.dev/play/p/I9jJ5lL2Fg7
+// Play: https://go.dev/play/p/3KZPAFRQr8B
 func CoalesceSeqOrEmpty[T any](v ...iter.Seq[T]) iter.Seq[T] {
 	result, _ := CoalesceSeq(v...)
 	return result
