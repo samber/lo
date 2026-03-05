@@ -4,6 +4,7 @@ slug: minbyerr
 sourceRef: find.go#L349
 category: core
 subCategory: find
+playUrl: https://go.dev/play/p/nvDYGS8q895
 variantHelpers:
   - core#find#minbyerr
 similarHelpers:

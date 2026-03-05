@@ -7,7 +7,7 @@ subCategory: sequence
 signatures:
   - "func Count[T comparable](collection iter.Seq[T], value T) int"
   - "func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int"
-playUrl: "https://go.dev/play/p/1SmFJ5-zr"
+playUrl: https://go.dev/play/p/UcJ-6cANwfY
 variantHelpers:
   - it#sequence#count
   - it#sequence#countby

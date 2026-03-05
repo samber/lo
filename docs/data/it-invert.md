@@ -6,7 +6,7 @@ category: it
 subCategory: map
 signatures:
   - "func Invert[K, V comparable](in iter.Seq2[K, V]) iter.Seq2[V, K]"
-playUrl: "https://go.dev/play/p/H4jR7n2sF8k"
+playUrl: https://go.dev/play/p/Iph19Lgcsx-
 variantHelpers:
   - it#map#invert
 similarHelpers:

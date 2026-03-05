@@ -4,7 +4,7 @@ slug: maxindexby
 sourceRef: find.go#L566
 category: core
 subCategory: find
-playUrl: https://go.dev/play/p/uaUszc-c9QK
+playUrl: https://go.dev/play/p/5yd4W7pe2QJ
 variantHelpers:
   - core#find#maxindexby
 similarHelpers:

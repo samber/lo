@@ -7,6 +7,7 @@ subCategory: sequence
 signatures:
   - "func Interleave[T any](collections ...iter.Seq[T]) iter.Seq[T]"
 variantHelpers: []
+playUrl: https://go.dev/play/p/kNvnz4ClLgH
 similarHelpers:
   - core#slice#interleave
 position: 173

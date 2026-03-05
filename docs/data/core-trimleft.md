@@ -4,7 +4,7 @@ slug: trimleft
 sourceRef: slice.go#L847
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/74aqfAYLmyi
+playUrl: https://go.dev/play/p/fJK-AhROy9w
 variantHelpers:
   - core#slice#trimleft
 similarHelpers:

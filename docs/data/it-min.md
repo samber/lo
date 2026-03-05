@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func Min[T constraints.Ordered](collection iter.Seq[T]) T"
-playUrl: "https://go.dev/play/p/3AuTNRn-yz"
+playUrl: https://go.dev/play/p/0VihyYEaM-M
 variantHelpers:
   - it#find#min
 similarHelpers:

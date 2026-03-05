@@ -6,6 +6,7 @@ category: it
 subCategory: string
 signatures:
   - "func CutPrefix[T comparable, I ~func(func(T) bool)](collection I, separator []T) (after I, found bool)"
+playUrl: https://go.dev/play/p/bPnV39zVnAV
 variantHelpers: []
 similarHelpers:
   - core#string#cutprefix

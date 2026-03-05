@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I"
-playUrl:
+playUrl: https://go.dev/play/p/HKrt3AvwMTR
 variantHelpers:
   - it#slice#uniq
 similarHelpers:

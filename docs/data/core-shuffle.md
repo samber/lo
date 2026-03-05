@@ -4,7 +4,7 @@ slug: shuffle
 sourceRef: slice.go#L322
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/ZTGG7OUCdnp
+playUrl: https://go.dev/play/p/whgrQWwOy-j
 variantHelpers:
   - core#slice#shuffle
 similarHelpers:

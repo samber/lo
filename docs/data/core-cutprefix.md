@@ -4,7 +4,7 @@ slug: cutprefix
 sourceRef: slice.go#L800
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/7Plak4a1ICl
+playUrl: https://go.dev/play/p/P1scQj53aFa
 variantHelpers:
   - core#slice#cutprefix
 similarHelpers:

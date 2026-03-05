@@ -4,7 +4,7 @@ slug: newdebounceby
 sourceRef: retry.go#L137
 category: core
 subCategory: concurrency
-playUrl: https://go.dev/play/p/d3Vpt6pxhY8
+playUrl: https://go.dev/play/p/Izk7GEzZm2Q
 variantHelpers:
   - core#concurrency#newdebounceby
 similarHelpers:

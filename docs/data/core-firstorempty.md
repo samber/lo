@@ -4,7 +4,7 @@ slug: firstorempty
 sourceRef: find.go#L567
 category: core
 subCategory: find
-playUrl: https://go.dev/play/p/ul45Z0y2EFO
+playUrl: https://go.dev/play/p/i200n9wgrDA
 variantHelpers:
   - core#find#firstorempty
 similarHelpers:

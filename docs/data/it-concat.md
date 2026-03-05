@@ -4,7 +4,7 @@ slug: concat
 sourceRef: it/seq.go#L358
 category: it
 subCategory: sequence
-playUrl:
+playUrl: https://go.dev/play/p/Fa0u7xT2JOR
 variantHelpers:
   - it#sequence#concat
 similarHelpers:

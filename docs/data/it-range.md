@@ -6,7 +6,7 @@ category: it
 subCategory: math
 signatures:
   - "func Range(elementNum int) iter.Seq[int]"
-playUrl: "https://go.dev/play/p/6ksL0W6KEuQ"
+playUrl: "https://go.dev/play/p/79QUZBa8Ukn"
 variantHelpers:
   - it#math#range
 similarHelpers:

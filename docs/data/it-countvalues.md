@@ -6,6 +6,7 @@ category: it
 subCategory: slice
 signatures:
   - "func CountValues[T comparable](collection iter.Seq[T]) map[T]int"
+playUrl: https://go.dev/play/p/PPBT4Fp-V3B
 variantHelpers: []
 similarHelpers:
   - core#slice#countvalues

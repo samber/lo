@@ -4,6 +4,7 @@ slug: latestbyerr
 sourceRef: find.go#L737
 category: core
 subCategory: find
+playUrl: https://go.dev/play/p/WpBUptwnxuG
 signatures:
   - "func LatestByErr[T any](collection []T, iteratee func(item T) (time.Time, error)) (T, error)"
 variantHelpers:

@@ -6,7 +6,7 @@ category: core
 subCategory: slice
 signatures:
   - "func RejectErr[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) (bool, error)) (Slice, error)"
-playUrl:
+playUrl: https://go.dev/play/p/pFCF5WVB225
 variantHelpers:
   - core#slice#rejecterr
 similarHelpers:

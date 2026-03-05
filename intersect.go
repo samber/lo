@@ -158,6 +158,7 @@ func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 }
 
 // IntersectBy returns the intersection between two collections using a custom key selector function.
+// Play: https://go.dev/play/p/uWF8y2-zmtf
 func IntersectBy[T any, K comparable, Slice ~[]T](transform func(T) K, lists ...Slice) Slice {
 	if len(lists) == 0 {
 		return Slice{}
@@ -230,7 +231,7 @@ func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
 
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
-// Play: https://go.dev/play/p/DI9RVEB_qMK
+// Play: https://go.dev/play/p/-hsqZNTH0ej
 func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	var capLen int
 
@@ -254,7 +255,7 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 }
 
 // Without returns a slice excluding all given values.
-// Play: https://go.dev/play/p/5j30Ux8TaD0
+// Play: https://go.dev/play/p/PcAVtYJsEsS
 func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
 	excludeMap := Keyify(exclude)
 
@@ -303,6 +304,7 @@ func WithoutByErr[T any, K comparable, Slice ~[]T](collection Slice, iteratee fu
 // WithoutEmpty returns a slice excluding zero values.
 //
 // Deprecated: Use lo.Compact instead.
+// Play: https://go.dev/play/p/iZvYJWuniJm
 func WithoutEmpty[T comparable, Slice ~[]T](collection Slice) Slice {
 	return Compact(collection)
 }

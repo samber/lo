@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func DropByIndex[T any, I ~func(func(T) bool)](collection I, indexes ...int) I"
-playUrl:
+playUrl: https://go.dev/play/p/vPbrZYgiU4q
 variantHelpers:
   - it#slice#drop
 similarHelpers:

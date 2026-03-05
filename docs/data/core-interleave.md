@@ -4,7 +4,7 @@ slug: interleave
 sourceRef: slice.go#L282
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/-RJkTLQEDVt
+playUrl: https://go.dev/play/p/KOVtGUt-tdI
 variantHelpers:
   - core#slice#interleave
 similarHelpers:

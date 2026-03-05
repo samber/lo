@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func Drain[T any](collection iter.Seq[T])"
-playUrl: "https://go.dev/play/p/4eocpKucL-p"
+playUrl: https://go.dev/play/p/xU_GCG861r1
 variantHelpers: []
 similarHelpers: []
 position: 170

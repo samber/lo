@@ -6,7 +6,7 @@ category: it
 subCategory: math
 signatures:
   - "func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], transform func(item T) R) R"
-playUrl:
+playUrl: "https://go.dev/play/p/dgFCRJrlPHY"
 variantHelpers:
   - it#math#product
 similarHelpers:

@@ -4,7 +4,7 @@ slug: times
 sourceRef: parallel/slice.go#L49
 category: parallel
 subCategory: slice
-playUrl: ""
+playUrl: https://go.dev/play/p/ZNnWNcJ4Au-
 similarHelpers:
   - core#slice#times
 position: 20

@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func IntersectBy[T any, K comparable, I ~func(func(T) bool)](func(T) K, lists ...I) I"
-playUrl:
+playUrl: https://go.dev/play/p/X2nEvHC-lE2
 variantHelpers:
   - it#intersect#intersectby
 similarHelpers:

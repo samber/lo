@@ -6,7 +6,7 @@ category: it
 subCategory: intersect
 signatures:
   - "func NoneBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool"
-playUrl: "https://go.dev/play/p/4edj7hH3TS2"
+playUrl: https://go.dev/play/p/PR7ddQ7Ckz5
 variantHelpers:
   - it#intersect#noneby
 similarHelpers:

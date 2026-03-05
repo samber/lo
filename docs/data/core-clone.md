@@ -4,7 +4,7 @@ slug: clone
 sourceRef: slice.go#L741
 category: core
 subCategory: slice
-playUrl:
+playUrl: https://go.dev/play/p/66LJ2wAF0rN
 variantHelpers:
   - core#slice#clone
 similarHelpers:

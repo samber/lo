@@ -6,6 +6,7 @@ category: it
 subCategory: string
 signatures:
   - "func TrimLast[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I"
+playUrl: https://go.dev/play/p/GQLhnaeW0gd
 variantHelpers:
   - it#string#trim
   - it#string#trimfirst

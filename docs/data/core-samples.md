@@ -4,7 +4,7 @@ slug: samples
 sourceRef: find.go#L679
 category: core
 subCategory: find
-playUrl: https://go.dev/play/p/vCcSJbh5s6l
+playUrl: https://go.dev/play/p/QYRD8aufD0C
 variantHelpers:
   - core#find#samples
 similarHelpers:

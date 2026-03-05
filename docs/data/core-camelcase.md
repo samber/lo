@@ -4,7 +4,7 @@ slug: camelcase
 sourceRef: string.go#L176
 category: core
 subCategory: string
-playUrl: https://go.dev/play/p/Go6aKwUiq59
+playUrl: https://go.dev/play/p/4JNDzaMwXkm
 variantHelpers:
   - core#string#camelcase
 similarHelpers:

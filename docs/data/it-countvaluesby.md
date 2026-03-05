@@ -6,6 +6,7 @@ category: it
 subCategory: slice
 signatures:
   - "func CountValuesBy[T any, U comparable](collection iter.Seq[T], transform func(item T) U) map[U]int"
+playUrl: https://go.dev/play/p/gnr_MPhYCHX
 variantHelpers: []
 similarHelpers:
   - core#slice#countvaluesby

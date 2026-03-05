@@ -4,7 +4,7 @@ slug: minby
 sourceRef: find.go#L329
 category: core
 subCategory: find
-playUrl:
+playUrl: https://go.dev/play/p/-B1PsrHVnfx
 variantHelpers:
   - core#find#minby
 similarHelpers:

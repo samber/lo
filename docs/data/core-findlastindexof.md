@@ -4,7 +4,7 @@ slug: findlastindexof
 sourceRef: find.go#L101
 category: core
 subCategory: find
-playUrl: https://go.dev/play/p/dPiMRtJ6cUx
+playUrl: https://go.dev/play/p/2VhPMiQvX-D
 variantHelpers:
   - core#find#findlastindexof
 similarHelpers:

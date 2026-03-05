@@ -13,6 +13,7 @@ signatures:
   - "func UnzipByErr7[In any, A any, B any, C any, D any, E any, F any, G any](items []In, predicate func(In) (a A, b B, c C, d D, e E, f F, g G, err error)) ([]A, []B, []C, []D, []E, []F, []G, error)"
   - "func UnzipByErr8[In any, A any, B any, C any, D any, E any, F any, G any, H any](items []In, predicate func(In) (a A, b B, c C, d D, e E, f F, g G, h H, err error)) ([]A, []B, []C, []D, []E, []F, []G, []H, error)"
   - "func UnzipByErr9[In any, A any, B any, C any, D any, E any, F any, G any, H any, I any](items []In, predicate func(In) (a A, b B, c C, d D, e E, f F, g G, h H, i I, err error)) ([]A, []B, []C, []D, []E, []F, []G, []H, []I, error)"
+playUrl: https://go.dev/play/p/G2pyXQa1SUD
 variantHelpers:
   - core#tuple#unzipbyerrx
 similarHelpers:

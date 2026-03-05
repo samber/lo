@@ -7,6 +7,7 @@ subCategory: sequence
 signatures:
   - "func PartitionBy[T any, K comparable](collection iter.Seq[T], transform func(item T) K) [][]T"
 variantHelpers: []
+playUrl: https://go.dev/play/p/VxTx8mva28z
 similarHelpers:
   - core#slice#partitionby
 position: 171

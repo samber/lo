@@ -4,7 +4,7 @@ slug: rejectmap
 sourceRef: slice.go#L550
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/W9Ug9r0QFk
+playUrl: https://go.dev/play/p/bmXhtuM2OMq
 variantHelpers:
   - core#slice#rejectmap
 similarHelpers:

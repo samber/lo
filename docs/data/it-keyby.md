@@ -6,7 +6,7 @@ category: it
 subCategory: sequence
 signatures:
   - "func KeyBy[K comparable, V any](collection iter.Seq[V], transform func(item V) K) map[K]V"
-playUrl:
+playUrl: https://go.dev/play/p/MMaHpzTqY0a
 variantHelpers:
   - it#map#associate
 similarHelpers:

@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func Last[T any](collection iter.Seq[T]) (T, bool)"
-playUrl: https://go.dev/play/p/8PjCG2-zo
+playUrl: https://go.dev/play/p/eGZV-sSmn_Q
 variantHelpers:
   - it#find#last
 similarHelpers:

@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func HasPrefix[T comparable](collection iter.Seq[T], prefix ...T) bool"
-playUrl: "https://go.dev/play/p/3QbJK4hd-o"
+playUrl: https://go.dev/play/p/Fyj6uq-G5IH
 variantHelpers:
   - it#find#hasprefix
 similarHelpers:

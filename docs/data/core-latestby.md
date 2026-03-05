@@ -4,7 +4,7 @@ slug: latestby
 sourceRef: find.go#L530
 category: core
 subCategory: find
-playUrl: 
+playUrl: https://go.dev/play/p/p1HA8XumaMU
 variantHelpers:
   - core#find#latestby
 similarHelpers:

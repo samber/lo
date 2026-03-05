@@ -4,7 +4,7 @@ slug: latest
 sourceRef: find.go#L508
 category: core
 subCategory: find
-playUrl: 
+playUrl: https://go.dev/play/p/dBfdf5s8s-Y
 variantHelpers:
   - core#find#latest
 similarHelpers:

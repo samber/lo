@@ -6,7 +6,7 @@ category: core
 subCategory: map
 signatures:
   - "func FilterMapToSliceErr[K comparable, V any, R any](in map[K]V, iteratee func(key K, value V) (R, bool, error)) ([]R, error)"
-playUrl:
+playUrl: https://go.dev/play/p/YjFEORLBWvk
 variantHelpers:
   - core#map#filtermaptosliceerr
 similarHelpers:

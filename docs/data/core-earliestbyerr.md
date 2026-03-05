@@ -4,6 +4,7 @@ slug: earliestbyerr
 sourceRef: find.go#L484
 category: core
 subCategory: find
+playUrl: https://go.dev/play/p/zJUBUj7ANvq
 variantHelpers:
   - core#find#earliestbyerr
 similarHelpers:

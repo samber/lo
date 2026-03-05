@@ -4,7 +4,7 @@ slug: minindexby
 sourceRef: find.go#L337
 category: core
 subCategory: find
-playUrl: 
+playUrl: https://go.dev/play/p/zwwPRqWhnUY
 variantHelpers:
   - core#find#minindexby
 similarHelpers:

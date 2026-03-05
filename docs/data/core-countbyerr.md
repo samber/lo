@@ -8,6 +8,7 @@ signatures:
   - "func CountByErr[T any](collection []T, predicate func(item T) (bool, error)) (int, error)"
 variantHelpers:
   - core#slice#countbyerr
+playUrl: https://go.dev/play/p/7BnyPhpG6lW
 similarHelpers:
   - core#slice#countby
   - core#slice#count

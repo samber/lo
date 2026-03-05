@@ -6,7 +6,7 @@ category: core
 subCategory: find
 signatures:
   - "func FindErr[T any](collection []T, predicate func(item T) (bool, error)) (T, error)"
-playUrl:
+playUrl: https://go.dev/play/p/XK-qtpQWXJ9
 variantHelpers: []
 similarHelpers:
   - core#find#find

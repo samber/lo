@@ -646,7 +646,7 @@ func ZipByErr9[A, B, C, D, E, F, G, H, I, Out any](a []A, b []B, c []C, d []D, e
 
 // Unzip2 accepts a slice of grouped elements and creates a slice regrouping the elements
 // to their pre-zip configuration.
-// Play: https://go.dev/play/p/ciHugugvaAW
+// Play: https://go.dev/play/p/K-vG9tyD3Kf
 func Unzip2[A, B any](tuples []Tuple2[A, B]) ([]A, []B) {
 	size := len(tuples)
 	r1 := make([]A, 0, size)
@@ -1023,6 +1023,7 @@ func UnzipBy9[In, A, B, C, D, E, F, G, H, I any](items []In, iteratee func(In) (
 // UnzipByErr2 iterates over a collection and creates a slice regrouping the elements
 // to their pre-zip configuration.
 // It returns the first error returned by the iteratee.
+// Play: https://go.dev/play/p/G2pyXQa1SUD
 func UnzipByErr2[In, A, B any](items []In, iteratee func(In) (a A, b B, err error)) ([]A, []B, error) {
 	size := len(items)
 	r1 := make([]A, 0, size)
@@ -1239,7 +1240,7 @@ func UnzipByErr9[In, A, B, C, D, E, F, G, H, I any](items []In, iteratee func(In
 // CrossJoin2 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
-// Play: https://go.dev/play/p/3VFppyL9FDU
+// Play: https://go.dev/play/p/LSRL5DmdPag
 func CrossJoin2[A, B any](listA []A, listB []B) []Tuple2[A, B] {
 	return CrossJoinBy2(listA, listB, T2[A, B])
 }
@@ -1304,7 +1305,7 @@ func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA []A, listB []B, listC []C, 
 // It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
-// Play: https://go.dev/play/p/8Y7btpvuA-C
+// Play: https://go.dev/play/p/VLy8iyrPN8X
 func CrossJoinBy2[A, B, Out any](listA []A, listB []B, transform func(a A, b B) Out) []Out {
 	size := len(listA) * len(listB)
 	if size == 0 {

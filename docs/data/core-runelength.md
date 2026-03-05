@@ -4,7 +4,7 @@ slug: runelength
 sourceRef: string.go#L160
 category: core
 subCategory: string
-playUrl: https://go.dev/play/p/tuhgW_lWY8l
+playUrl: https://go.dev/play/p/BXT52mBk0zO
 variantHelpers:
   - core#string#runelength
 similarHelpers:

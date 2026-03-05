@@ -4,7 +4,7 @@ slug: trim
 sourceRef: slice.go#L842
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/1an9mxLdRG5
+playUrl: https://go.dev/play/p/LZLfLj5C8Lg
 variantHelpers:
   - core#slice#trim
 similarHelpers:

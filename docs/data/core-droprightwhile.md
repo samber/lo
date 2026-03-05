@@ -4,7 +4,7 @@ slug: droprightwhile
 sourceRef: slice.go#L486
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/3-n71oEC0Hz
+playUrl: https://go.dev/play/p/HBh8pHl-ZZz
 variantHelpers:
   - core#slice#droprightwhile
 similarHelpers:

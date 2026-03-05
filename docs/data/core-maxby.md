@@ -4,7 +4,7 @@ slug: maxby
 sourceRef: find.go#L507
 category: core
 subCategory: find
-playUrl: https://go.dev/play/p/JW1qu-ECwF7
+playUrl: https://go.dev/play/p/PJCc-ThrwX1
 variantHelpers:
   - core#find#maxby
 similarHelpers:

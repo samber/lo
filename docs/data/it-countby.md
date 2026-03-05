@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int"
-playUrl:
+playUrl: https://go.dev/play/p/m6G0o3huCOG
 variantHelpers:
   - it#find#count
 similarHelpers:

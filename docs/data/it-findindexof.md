@@ -6,7 +6,7 @@ category: it
 subCategory: find
 signatures:
   - "func FindIndexOf[T any](collection iter.Seq[T], predicate func(item T) bool) (T, int, bool)"
-playUrl: "https://go.dev/play/p/6TeNM7kg-r"
+playUrl: https://go.dev/play/p/ihchBAEkhXO
 variantHelpers:
   - it#find#findindexof
 similarHelpers:

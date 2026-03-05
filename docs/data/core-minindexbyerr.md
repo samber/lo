@@ -4,6 +4,7 @@ slug: minindexbyerr
 sourceRef: find.go#L404
 category: core
 subCategory: find
+playUrl: https://go.dev/play/p/MUqi_NvTKM1
 signatures:
   - "func MinIndexByErr[T any](collection []T, comparison func(a T, b T) (bool, error)) (T, int, error)"
 variantHelpers:
