@@ -67,18 +67,6 @@ func BenchmarkValues(b *testing.B) {
 	}
 }
 
-func BenchmarkUniqValues(b *testing.B) {
-	for _, n := range coreLengths {
-		m1 := genMap(n)
-		m2 := genMap(n)
-		b.Run(strconv.Itoa(n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.UniqValues(m1, m2)
-			}
-		})
-	}
-}
-
 func BenchmarkValueOr(b *testing.B) {
 	m := genMap(100)
 	b.Run("hit", func(b *testing.B) {
@@ -284,28 +272,6 @@ func BenchmarkFilterMapToSlice(b *testing.B) {
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.FilterMapToSlice(m, func(k string, v int) (string, bool) { return k, v%2 == 0 })
-			}
-		})
-	}
-}
-
-func BenchmarkFilterKeys(b *testing.B) {
-	for _, n := range coreLengths {
-		m := genMap(n)
-		b.Run(strconv.Itoa(n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.FilterKeys(m, func(_ string, v int) bool { return v%2 == 0 })
-			}
-		})
-	}
-}
-
-func BenchmarkFilterValues(b *testing.B) {
-	for _, n := range coreLengths {
-		m := genMap(n)
-		b.Run(strconv.Itoa(n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.FilterValues(m, func(_ string, v int) bool { return v%2 == 0 })
 			}
 		})
 	}
@@ -738,18 +704,6 @@ func BenchmarkIntersectBy(b *testing.B) {
 	}
 }
 
-func BenchmarkDifference(b *testing.B) {
-	for _, n := range coreLengths {
-		a := genSliceInt(n)
-		c := genSliceInt(n)
-		b.Run(strconv.Itoa(n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_, _ = lo.Difference(a, c)
-			}
-		})
-	}
-}
-
 func BenchmarkUnion(b *testing.B) {
 	for _, n := range coreLengths {
 		a := genSliceInt(n)
@@ -1047,32 +1001,6 @@ func BenchmarkCoreToSlicePtr(b *testing.B) {
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.ToSlicePtr(ints)
-			}
-		})
-	}
-}
-
-func BenchmarkFromSlicePtr(b *testing.B) {
-	for _, n := range coreLengths {
-		ptrs := lo.ToSlicePtr(genSliceInt(n))
-		b.Run(strconv.Itoa(n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.FromSlicePtr(ptrs)
-			}
-		})
-	}
-}
-
-func BenchmarkFromSlicePtrOr(b *testing.B) {
-	for _, n := range coreLengths {
-		ptrs := lo.ToSlicePtr(genSliceInt(n))
-		// sprinkle nils
-		for j := 0; j < n/10; j++ {
-			ptrs[j*10] = nil
-		}
-		b.Run(strconv.Itoa(n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.FromSlicePtrOr(ptrs, -1)
 			}
 		})
 	}

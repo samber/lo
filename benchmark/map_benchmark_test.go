@@ -74,52 +74,46 @@ func BenchmarkMap(b *testing.B) {
 	})
 }
 
-// @TODO: also apply to UniqValues.
 func BenchmarkUniqKeys(b *testing.B) {
 	m := []map[int64]int64{
-		mapGenerator(100000),
-		mapGenerator(100000),
-		mapGenerator(100000),
+		mapGenerator(1000),
+		mapGenerator(1000),
+		mapGenerator(1000),
 	}
-
-	// allocate just in time + ordered
-	b.Run("lo.UniqKeys.jit-alloc", func(b *testing.B) {
+	b.Run("lo.UniqKeys", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			seen := make(map[int64]struct{})
-			result := make([]int64, 0)
-
-			for i := range m {
-				for k := range m[i] {
-					if _, exists := seen[k]; exists {
-						continue
-					}
-					seen[k] = struct{}{}
-					result = append(result, k) //nolint:staticcheck
-				}
-			}
+			_ = lo.UniqKeys(m...)
 		}
 	})
+}
 
-	// preallocate + unordered
-	b.Run("lo.UniqKeys.preallocate", func(b *testing.B) {
+func BenchmarkUniqValues(b *testing.B) {
+	m := []map[int64]int64{
+		mapGenerator(1000),
+		mapGenerator(1000),
+		mapGenerator(1000),
+	}
+	b.Run("lo.UniqValues", func(b *testing.B) {
 		for n := 0; n < b.N; n++ {
-			size := 0
-			for i := range m {
-				size += len(m[i])
-			}
-			seen := make(map[int64]struct{}, size)
+			_ = lo.UniqValues(m...)
+		}
+	})
+}
 
-			for i := range m {
-				for k := range m[i] {
-					seen[k] = struct{}{}
-				}
-			}
+func BenchmarkFilterKeys(b *testing.B) {
+	m := mapGenerator(1000)
+	b.Run("lo.FilterKeys", func(b *testing.B) {
+		for n := 0; n < b.N; n++ {
+			_ = lo.FilterKeys(m, func(k, v int64) bool { return k%2 == 0 })
+		}
+	})
+}
 
-			result := make([]int64, 0, len(seen))
-
-			for k := range seen {
-				result = append(result, k) //nolint:staticcheck
-			}
+func BenchmarkFilterValues(b *testing.B) {
+	m := mapGenerator(1000)
+	b.Run("lo.FilterValues", func(b *testing.B) {
+		for n := 0; n < b.N; n++ {
+			_ = lo.FilterValues(m, func(k, v int64) bool { return v%2 == 0 })
 		}
 	})
 }

@@ -27,7 +27,7 @@ func UniqKeys[K comparable, V any](in ...map[K]V) []K {
 	}
 
 	seen := make(map[K]struct{}, size)
-	result := make([]K, 0)
+	result := make([]K, 0, size)
 
 	for i := range in {
 		for k := range in[i] {
@@ -76,7 +76,7 @@ func UniqValues[K, V comparable](in ...map[K]V) []V {
 	}
 
 	seen := make(map[V]struct{}, size)
-	result := make([]V, 0)
+	result := make([]V, 0, size)
 
 	for i := range in {
 		for _, v := range in[i] {
@@ -465,7 +465,7 @@ func FilterMapToSliceErr[K comparable, V, R any](in map[K]V, iteratee func(key K
 // It is a mix of lo.Filter() and lo.Keys().
 // Play: https://go.dev/play/p/OFlKXlPrBAe
 func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) []K {
-	result := make([]K, 0)
+	result := make([]K, 0, len(in))
 
 	for k, v := range in {
 		if predicate(k, v) {
@@ -480,7 +480,7 @@ func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) 
 // It is a mix of lo.Filter() and lo.Values().
 // Play: https://go.dev/play/p/YVD5r_h-LX-
 func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) []V {
-	result := make([]V, 0)
+	result := make([]V, 0, len(in))
 
 	for k, v := range in {
 		if predicate(k, v) {
@@ -498,7 +498,7 @@ func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V
 // The order of the keys in the input map is not specified.
 // Play: https://go.dev/play/p/j2gUQzCTu4t
 func FilterKeysErr[K comparable, V any](in map[K]V, predicate func(key K, value V) (bool, error)) ([]K, error) {
-	result := make([]K, 0)
+	result := make([]K, 0, len(in))
 
 	for k, v := range in {
 		ok, err := predicate(k, v)
@@ -520,7 +520,7 @@ func FilterKeysErr[K comparable, V any](in map[K]V, predicate func(key K, value 
 // The order of the keys in the input map is not specified.
 // Play: https://go.dev/play/p/hKvHlqLzbdE
 func FilterValuesErr[K comparable, V any](in map[K]V, predicate func(key K, value V) (bool, error)) ([]V, error) {
-	result := make([]V, 0)
+	result := make([]V, 0, len(in))
 
 	for k, v := range in {
 		ok, err := predicate(k, v)
