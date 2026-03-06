@@ -103,7 +103,7 @@ func ValueOr[K comparable, V any](in map[K]V, key K, fallback V) V {
 // PickBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/kdg8GR_QMmf
 func PickBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) bool) Map {
-	r := Map{}
+	r := make(Map, len(in))
 	for k, v := range in {
 		if predicate(k, v) {
 			r[k] = v
@@ -115,7 +115,7 @@ func PickBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, val
 // PickByErr returns same map type filtered by given predicate.
 // It returns the first error returned by the predicate.
 func PickByErr[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) (bool, error)) (Map, error) {
-	r := Map{}
+	r := make(Map, len(in))
 	for k, v := range in {
 		ok, err := predicate(k, v)
 		if err != nil {
@@ -131,7 +131,7 @@ func PickByErr[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, 
 // PickByKeys returns same map type filtered by given keys.
 // Play: https://go.dev/play/p/R1imbuci9qU
 func PickByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
-	r := Map{}
+	r := make(Map, len(keys))
 	for i := range keys {
 		if v, ok := in[keys[i]]; ok {
 			r[keys[i]] = v
@@ -143,7 +143,7 @@ func PickByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
 // PickByValues returns same map type filtered by given values.
 // Play: https://go.dev/play/p/-_PPkSbO1Kc
 func PickByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
-	r := Map{}
+	r := make(Map, len(values))
 
 	seen := Keyify(values)
 	for k, v := range in {
@@ -157,7 +157,7 @@ func PickByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
 // OmitBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/EtBsR43bdsd
 func OmitBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) bool) Map {
-	r := Map{}
+	r := make(Map, len(in))
 	for k, v := range in {
 		if !predicate(k, v) {
 			r[k] = v
@@ -169,7 +169,7 @@ func OmitBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, val
 // OmitByErr returns same map type filtered by given predicate.
 // It returns the first error returned by the predicate.
 func OmitByErr[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) (bool, error)) (Map, error) {
-	r := Map{}
+	r := make(Map, len(in))
 	for k, v := range in {
 		ok, err := predicate(k, v)
 		if err != nil {
@@ -185,7 +185,7 @@ func OmitByErr[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, 
 // OmitByKeys returns same map type filtered by given keys.
 // Play: https://go.dev/play/p/t1QjCrs-ysk
 func OmitByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
-	r := Map{}
+	r := make(Map, len(in))
 	for k, v := range in {
 		r[k] = v
 	}
@@ -198,7 +198,7 @@ func OmitByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
 // OmitByValues returns same map type filtered by given values.
 // Play: https://go.dev/play/p/9UYZi-hrs8j
 func OmitByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
-	r := Map{}
+	r := make(Map, len(in))
 
 	seen := Keyify(values)
 	for k, v := range in {
