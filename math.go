@@ -196,7 +196,7 @@ func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
 
 	mode := make([]T, 0)
 	maxFreq := 0
-	frequency := make(map[T]int)
+	frequency := make(map[T]int, len(collection))
 
 	for _, item := range collection {
 		frequency[item]++
