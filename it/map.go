@@ -27,7 +27,11 @@ func Keys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 // Play: https://go.dev/play/p/_NicwfgAHbO
 func UniqKeys[K comparable, V any](in ...map[K]V) iter.Seq[K] {
 	return func(yield func(K) bool) {
-		seen := make(map[K]struct{})
+		var total int
+		for i := range in {
+			total += len(in[i])
+		}
+		seen := make(map[K]struct{}, total)
 
 		for i := range in {
 			for k := range in[i] {
@@ -62,7 +66,11 @@ func Values[K comparable, V any](in ...map[K]V) iter.Seq[V] {
 // Play: https://go.dev/play/p/QQv4zGrk-fF
 func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V] {
 	return func(yield func(V) bool) {
-		seen := make(map[V]struct{})
+		var total int
+		for i := range in {
+			total += len(in[i])
+		}
+		seen := make(map[V]struct{}, total)
 
 		for i := range in {
 			for _, v := range in[i] {
