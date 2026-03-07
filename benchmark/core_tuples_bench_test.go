@@ -30,3 +30,17 @@ func BenchmarkZip2_Unequal(b *testing.B) {
 		})
 	}
 }
+
+func BenchmarkUnzip2(b *testing.B) {
+	for _, n := range lengths {
+		tuples := make([]lo.Tuple2[int, string], n)
+		for i := range tuples {
+			tuples[i] = lo.Tuple2[int, string]{A: i, B: "x"}
+		}
+		b.Run(fmt.Sprintf("n_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				lo.Unzip2(tuples)
+			}
+		})
+	}
+}

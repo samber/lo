@@ -105,6 +105,8 @@ func Zip2[A, B any](a []A, b []B) []Tuple2[A, B] {
 
 	result := make([]Tuple2[A, B], size)
 
+	// Perf: separate loops per input slice improve CPU cache locality (each loop reads
+	// one contiguous memory region) and enable bounds-check elimination by the compiler.
 	for i := range a {
 		result[i].A = a[i]
 	}
