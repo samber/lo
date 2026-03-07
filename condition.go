@@ -28,29 +28,29 @@ type ifElse[T any] struct {
 
 // If is a single line if/else statement.
 // Play: https://go.dev/play/p/WSw3ApMxhyW
-func If[T any](condition bool, result T) *ifElse[T] { //nolint:revive
+func If[T any](condition bool, result T) ifElse[T] { //nolint:revive
 	if condition {
-		return &ifElse[T]{result, true}
+		return ifElse[T]{result, true}
 	}
 
 	var t T
-	return &ifElse[T]{t, false}
+	return ifElse[T]{t, false}
 }
 
 // IfF is a single line if/else statement whose options are functions.
 // Play: https://go.dev/play/p/WSw3ApMxhyW
-func IfF[T any](condition bool, resultF func() T) *ifElse[T] { //nolint:revive
+func IfF[T any](condition bool, resultF func() T) ifElse[T] { //nolint:revive
 	if condition {
-		return &ifElse[T]{resultF(), true}
+		return ifElse[T]{resultF(), true}
 	}
 
 	var t T
-	return &ifElse[T]{t, false}
+	return ifElse[T]{t, false}
 }
 
 // ElseIf.
 // Play: https://go.dev/play/p/WSw3ApMxhyW
-func (i *ifElse[T]) ElseIf(condition bool, result T) *ifElse[T] {
+func (i ifElse[T]) ElseIf(condition bool, result T) ifElse[T] {
 	if !i.done && condition {
 		i.result = result
 		i.done = true
@@ -61,7 +61,7 @@ func (i *ifElse[T]) ElseIf(condition bool, result T) *ifElse[T] {
 
 // ElseIfF.
 // Play: https://go.dev/play/p/WSw3ApMxhyW
-func (i *ifElse[T]) ElseIfF(condition bool, resultF func() T) *ifElse[T] {
+func (i ifElse[T]) ElseIfF(condition bool, resultF func() T) ifElse[T] {
 	if !i.done && condition {
 		i.result = resultF()
 		i.done = true
@@ -72,7 +72,7 @@ func (i *ifElse[T]) ElseIfF(condition bool, resultF func() T) *ifElse[T] {
 
 // Else.
 // Play: https://go.dev/play/p/WSw3ApMxhyW
-func (i *ifElse[T]) Else(result T) T {
+func (i ifElse[T]) Else(result T) T {
 	if i.done {
 		return i.result
 	}
@@ -82,7 +82,7 @@ func (i *ifElse[T]) Else(result T) T {
 
 // ElseF.
 // Play: https://go.dev/play/p/WSw3ApMxhyW
-func (i *ifElse[T]) ElseF(resultF func() T) T {
+func (i ifElse[T]) ElseF(resultF func() T) T {
 	if i.done {
 		return i.result
 	}
@@ -98,10 +98,10 @@ type switchCase[T comparable, R any] struct {
 
 // Switch is a pure functional switch/case/default statement.
 // Play: https://go.dev/play/p/TGbKUMAeRUd
-func Switch[T comparable, R any](predicate T) *switchCase[T, R] { //nolint:revive
+func Switch[T comparable, R any](predicate T) switchCase[T, R] { //nolint:revive
 	var result R
 
-	return &switchCase[T, R]{
+	return switchCase[T, R]{
 		predicate,
 		result,
 		false,
@@ -110,7 +110,7 @@ func Switch[T comparable, R any](predicate T) *switchCase[T, R] { //nolint:reviv
 
 // Case.
 // Play: https://go.dev/play/p/TGbKUMAeRUd
-func (s *switchCase[T, R]) Case(val T, result R) *switchCase[T, R] {
+func (s switchCase[T, R]) Case(val T, result R) switchCase[T, R] {
 	if !s.done && s.predicate == val {
 		s.result = result
 		s.done = true
@@ -121,7 +121,7 @@ func (s *switchCase[T, R]) Case(val T, result R) *switchCase[T, R] {
 
 // CaseF.
 // Play: https://go.dev/play/p/TGbKUMAeRUd
-func (s *switchCase[T, R]) CaseF(val T, callback func() R) *switchCase[T, R] {
+func (s switchCase[T, R]) CaseF(val T, callback func() R) switchCase[T, R] {
 	if !s.done && s.predicate == val {
 		s.result = callback()
 		s.done = true
@@ -132,7 +132,7 @@ func (s *switchCase[T, R]) CaseF(val T, callback func() R) *switchCase[T, R] {
 
 // Default.
 // Play: https://go.dev/play/p/TGbKUMAeRUd
-func (s *switchCase[T, R]) Default(result R) R {
+func (s switchCase[T, R]) Default(result R) R {
 	if !s.done {
 		s.result = result
 	}
@@ -142,7 +142,7 @@ func (s *switchCase[T, R]) Default(result R) R {
 
 // DefaultF.
 // Play: https://go.dev/play/p/TGbKUMAeRUd
-func (s *switchCase[T, R]) DefaultF(callback func() R) R {
+func (s switchCase[T, R]) DefaultF(callback func() R) R {
 	if !s.done {
 		s.result = callback()
 	}
