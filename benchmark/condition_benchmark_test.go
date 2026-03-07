@@ -32,7 +32,7 @@ func BenchmarkIfElseIfChain(b *testing.B) {
 
 func BenchmarkSwitch(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_ = lo.Switch[int, string](i % 3).
+		_ = lo.Switch[int, string](i%3).
 			Case(0, "zero").
 			Case(1, "one").
 			Default("other")
@@ -41,7 +41,7 @@ func BenchmarkSwitch(b *testing.B) {
 
 func BenchmarkSwitchChain(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_ = lo.Switch[int, string](i % 5).
+		_ = lo.Switch[int, string](i%5).
 			Case(0, "zero").
 			Case(1, "one").
 			Case(2, "two").
