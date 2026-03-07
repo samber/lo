@@ -730,7 +730,7 @@ func TestInterleave(t *testing.T) {
 		},
 	}
 	for _, tc := range testCases {
-		tc := tc
+		tc := tc //nolint:modernize
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tc.want, slices.Collect(Interleave(tc.in...)))
@@ -852,7 +852,7 @@ func TestAssociate(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
-		tc := tc
+		tc := tc //nolint:modernize
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tc.want, Associate(slices.Values(tc.in), transform))
@@ -884,7 +884,7 @@ func TestAssociateI(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
-		tc := tc
+		tc := tc //nolint:modernize
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tc.want, AssociateI(slices.Values(tc.in), transform))
@@ -920,7 +920,7 @@ func TestSeqToMap(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
-		tc := tc
+		tc := tc //nolint:modernize
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tc.want, SeqToMap(slices.Values(tc.in), transform))
@@ -952,7 +952,7 @@ func TestSeqToMapI(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
-		tc := tc
+		tc := tc //nolint:modernize
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tc.want, SeqToMapI(slices.Values(tc.in), transform))
@@ -988,7 +988,7 @@ func TestFilterSeqToMap(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
-		tc := tc
+		tc := tc //nolint:modernize
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tc.want, FilterSeqToMap(slices.Values(tc.in), transform))
@@ -1020,7 +1020,7 @@ func TestFilterSeqToMapI(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
-		tc := tc
+		tc := tc //nolint:modernize
 		t.Run(fmt.Sprintf("test_%d", i), func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tc.want, FilterSeqToMapI(slices.Values(tc.in), transform))

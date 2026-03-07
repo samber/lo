@@ -241,8 +241,8 @@ func TestProductByErr(t *testing.T) {
 	// Test normal operation (no error) - table driven
 	tests := []struct {
 		name     string
-		input    interface{}
-		expected interface{}
+		input    any
+		expected any
 	}{
 		{
 			name:     "float32 slice",
@@ -403,8 +403,8 @@ func TestMeanByErr(t *testing.T) {
 	// Test normal operation (no error) - table driven
 	tests := []struct {
 		name     string
-		input    interface{}
-		expected interface{}
+		input    any
+		expected any
 	}{
 		{
 			name:     "float32 slice",
