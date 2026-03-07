@@ -21,6 +21,8 @@ func TernaryF[T any](condition bool, ifFunc, elseFunc func() T) T {
 	return elseFunc()
 }
 
+// Perf: value receivers (not pointer) allow the compiler to fully inline the entire
+// If().ElseIf().Else() chain, eliminating all function call overhead.
 type ifElse[T any] struct {
 	result T
 	done   bool
@@ -90,6 +92,8 @@ func (i ifElse[T]) ElseF(resultF func() T) T {
 	return resultF()
 }
 
+// Perf: value receivers (not pointer) allow the compiler to fully inline the entire
+// Switch().Case().Default() chain, eliminating all function call overhead.
 type switchCase[T comparable, R any] struct {
 	predicate T
 	result    R

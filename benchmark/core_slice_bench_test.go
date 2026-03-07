@@ -2,14 +2,12 @@ package benchmark
 
 import (
 	"fmt"
-	"math/rand"
+	"sort"
 	"strconv"
 	"testing"
 
 	"github.com/samber/lo"
 )
-
-var lengths = []int{10, 100, 1000}
 
 func BenchmarkChunk(b *testing.B) {
 	for _, n := range lengths {
@@ -29,34 +27,6 @@ func BenchmarkChunk(b *testing.B) {
 			}
 		})
 	}
-}
-
-func genSliceString(n int) []string {
-	res := make([]string, 0, n)
-	for i := 0; i < n; i++ {
-		res = append(res, strconv.Itoa(rand.Intn(100_000)))
-	}
-	return res
-}
-
-func genSliceInt(n int) []int {
-	res := make([]int, 0, n)
-	for i := 0; i < n; i++ {
-		res = append(res, rand.Intn(100_000))
-	}
-	return res
-}
-
-type heavy = [100]int
-
-func genSliceHeavy(n int) []heavy {
-	result := make([]heavy, n)
-	for i := range result {
-		for j := range result[i] {
-			result[i][j] = i + j
-		}
-	}
-	return result
 }
 
 func BenchmarkFlatten(b *testing.B) {
@@ -219,53 +189,6 @@ func BenchmarkReplace(b *testing.B) {
 	}
 }
 
-func BenchmarkToSlicePtr(b *testing.B) {
-	preallocated := make([]int, 100000)
-	for i := 0; i < b.N; i++ {
-		_ = lo.ToSlicePtr(preallocated)
-	}
-}
-
-func BenchmarkFromSlicePtr(b *testing.B) {
-	for _, n := range lengths {
-		ptrs := lo.ToSlicePtr(genSliceInt(n))
-		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.FromSlicePtr(ptrs)
-			}
-		})
-	}
-
-	for _, n := range lengths {
-		ptrs := lo.ToSlicePtr(genSliceString(n))
-		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.FromSlicePtr(ptrs)
-			}
-		})
-	}
-}
-
-func BenchmarkFromSlicePtrOr(b *testing.B) {
-	for _, n := range lengths {
-		ptrs := lo.ToSlicePtr(genSliceInt(n))
-		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.FromSlicePtrOr(ptrs, -1)
-			}
-		})
-	}
-
-	for _, n := range lengths {
-		ptrs := lo.ToSlicePtr(genSliceString(n))
-		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.FromSlicePtrOr(ptrs, "default")
-			}
-		})
-	}
-}
-
 func BenchmarkReject(b *testing.B) {
 	for _, n := range lengths {
 		strs := genSliceString(n)
@@ -362,14 +285,6 @@ func BenchmarkRepeatBy(b *testing.B) {
 			}
 		})
 	}
-}
-
-type clonableString struct {
-	val string
-}
-
-func (c clonableString) Clone() clonableString {
-	return clonableString{c.val}
 }
 
 func BenchmarkFill(b *testing.B) {
@@ -869,6 +784,18 @@ func BenchmarkIsSortedBy(b *testing.B) {
 	}
 }
 
+func BenchmarkIsSortedBySorted(b *testing.B) {
+	for _, n := range lengths {
+		data := genSliceInt(n)
+		sort.Ints(data)
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				lo.IsSortedBy(data, func(v int) int { return v })
+			}
+		})
+	}
+}
+
 func BenchmarkSplice(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
@@ -1042,6 +969,46 @@ func BenchmarkDifference(b *testing.B) {
 		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_, _ = lo.Difference(strs1, strs2)
+			}
+		})
+	}
+}
+
+func BenchmarkFromSlicePtr(b *testing.B) {
+	for _, n := range lengths {
+		ptrs := lo.ToSlicePtr(genSliceInt(n))
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.FromSlicePtr(ptrs)
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ptrs := lo.ToSlicePtr(genSliceString(n))
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.FromSlicePtr(ptrs)
+			}
+		})
+	}
+}
+
+func BenchmarkFromSlicePtrOr(b *testing.B) {
+	for _, n := range lengths {
+		ptrs := lo.ToSlicePtr(genSliceInt(n))
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.FromSlicePtrOr(ptrs, -1)
+			}
+		})
+	}
+
+	for _, n := range lengths {
+		ptrs := lo.ToSlicePtr(genSliceString(n))
+		b.Run(fmt.Sprintf("strings_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.FromSlicePtrOr(ptrs, "default")
 			}
 		})
 	}
