@@ -143,7 +143,7 @@ func Assign[K comparable, V any, Map ~map[K]V](maps ...iter.Seq[Map]) Map {
 	for i := range maps {
 		for item := range maps[i] {
 			for k, v := range item {
-				out[k] = v
+				out[k] = v //nolint:modernize
 			}
 		}
 	}
