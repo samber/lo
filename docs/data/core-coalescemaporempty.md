@@ -1,7 +1,7 @@
 ---
 name: CoalesceMapOrEmpty
 slug: coalescemaporempty
-sourceRef: type_manipulation.go#L207
+sourceRef: type_manipulation.go#L211
 category: core
 subCategory: type
 signatures:
