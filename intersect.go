@@ -257,6 +257,7 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 // UnionBy is like Union except that it accepts iteratee which is invoked for each element of each collections
 // to generate the criterion by which uniqueness is computed.
 // Result values are chosen from the first collections in which the value occurs.
+// Play: TODO
 func UnionBy[T any, V comparable, Slice ~[]T](iteratee func(item T) V, lists ...Slice) Slice {
 	var capLen int
 
