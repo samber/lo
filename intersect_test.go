@@ -308,6 +308,92 @@ func TestUnion(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestUnionBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	testFunc := func(i int) int {
+		return i / 2
+	}
+
+	result1 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+	result2 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7})
+	result3 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{})
+	result4 := UnionBy(testFunc, []int{0, 1, 2}, []int{0, 1, 2})
+	result5 := UnionBy(testFunc, []int{}, []int{})
+	is.Equal([]int{0, 2, 4, 10}, result1)
+	is.Equal([]int{0, 2, 4, 6}, result2)
+	is.Equal([]int{0, 2, 4}, result3)
+	is.Equal([]int{0, 2}, result4)
+	is.Equal([]int{}, result5)
+
+	result11 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
+	result12 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7}, []int{8, 9})
+	result13 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{}, []int{})
+	result14 := UnionBy(testFunc, []int{0, 1, 2}, []int{0, 1, 2}, []int{0, 1, 2})
+	result15 := UnionBy(testFunc, []int{}, []int{}, []int{})
+	is.Equal([]int{0, 2, 4, 10}, result11)
+	is.Equal([]int{0, 2, 4, 6, 8}, result12)
+	is.Equal([]int{0, 2, 4}, result13)
+	is.Equal([]int{0, 2}, result14)
+	is.Equal([]int{}, result15)
+}
+
+func TestUnionByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	testFunc := func(i int) (int, error) {
+		return i / 2, nil
+	}
+
+	result1, err1 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+	result2, err2 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7})
+	result3, err3 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{})
+	result4, err4 := UnionByErr(testFunc, []int{0, 1, 2}, []int{0, 1, 2})
+	result5, err5 := UnionByErr(testFunc, []int{}, []int{})
+	is.NoError(err1)
+	is.NoError(err2)
+	is.NoError(err3)
+	is.NoError(err4)
+	is.NoError(err5)
+	is.Equal([]int{0, 2, 4, 10}, result1)
+	is.Equal([]int{0, 2, 4, 6}, result2)
+	is.Equal([]int{0, 2, 4}, result3)
+	is.Equal([]int{0, 2}, result4)
+	is.Equal([]int{}, result5)
+
+	result11, err11 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
+	result12, err12 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7}, []int{8, 9})
+	result13, err13 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{}, []int{})
+	result14, err14 := UnionByErr(testFunc, []int{0, 1, 2}, []int{0, 1, 2}, []int{0, 1, 2})
+	result15, err15 := UnionByErr(testFunc, []int{}, []int{}, []int{})
+	is.NoError(err11)
+	is.NoError(err12)
+	is.NoError(err13)
+	is.NoError(err14)
+	is.NoError(err15)
+	is.Equal([]int{0, 2, 4, 10}, result11)
+	is.Equal([]int{0, 2, 4, 6, 8}, result12)
+	is.Equal([]int{0, 2, 4}, result13)
+	is.Equal([]int{0, 2}, result14)
+	is.Equal([]int{}, result15)
+
+	// Test error case
+	errFunc := func(i int) (int, error) {
+		if i == 2 {
+			return 0, assert.AnError
+		}
+		return i / 2, nil
+	}
+
+	_, err6 := UnionByErr(errFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+	is.Error(err6)
+
+	_, err7 := UnionByErr(errFunc, []int{0, 1, 3, 4, 5}, []int{2, 10})
+	is.Error(err7)
+}
+
 func TestWithout(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
