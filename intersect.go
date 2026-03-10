@@ -254,6 +254,32 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	return result
 }
 
+// UnionBy is like Union except that it accepts iteratee which is invoked for each element of each collections
+// to generate the criterion by which uniqueness is computed.
+// Result values are chosen from the first collections in which the value occurs.
+func UnionBy[T any, V comparable, Slice ~[]T](iteratee func(item T) V, lists ...Slice) Slice {
+	var capLen int
+
+	for _, list := range lists {
+		capLen += len(list)
+	}
+
+	result := make(Slice, 0, capLen)
+	seen := make(map[V]struct{}, capLen)
+
+	for i := range lists {
+		for j := range lists[i] {
+			value := iteratee(lists[i][j])
+			if _, ok := seen[value]; !ok {
+				seen[value] = struct{}{}
+				result = append(result, lists[i][j])
+			}
+		}
+	}
+
+	return result
+}
+
 // Without returns a slice excluding all given values.
 // Play: https://go.dev/play/p/PcAVtYJsEsS
 func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
