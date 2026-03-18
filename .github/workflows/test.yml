@@ -42,10 +42,9 @@ jobs:
         run: make coverage
         if: matrix.go == 'stable'
 
-      - name: Codecov
-        uses: codecov/codecov-action@v5
+      - name: Upload coverage to Qlty
+        uses: qltysh/qlty-action/coverage@v2
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: unittests
-          verbose: true
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: cover.out
         if: matrix.go == 'stable'
