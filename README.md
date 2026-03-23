@@ -54,6 +54,9 @@ I wanted a **short name**, similar to "Lodash", and no Go package uses this name
 
 ```sh
 go get github.com/samber/lo@v1
+
+# AI Agent Skill
+npx skills add https://github.com/samber/cc-skills-golang --skill golang-samber-lo
 ```
 
 This library is v1 and follows SemVer strictly.
