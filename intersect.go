@@ -363,3 +363,53 @@ func ElementsMatchBy[T any, K comparable](list1, list2 []T, iteratee func(item T
 
 	return true
 }
+
+type xorTracker struct {
+	keep         bool
+	alreadyAdded bool
+}
+
+// Xor is the logical inverse of Intersect.
+// Xor returns an array of unique values that is the symmetric difference of the given slices.
+// The order of result values is determined by the order they occur in the slices.
+// Also known as the symmetric difference of two sets or the disjunctive union.
+// See https://en.wikipedia.org/wiki/Symmetric_difference
+func Xor[T comparable, Slice ~[]T](lists ...Slice) Slice {
+	if len(lists) == 0 {
+		return Slice{}
+	}
+
+	ks := make(map[T]*xorTracker)
+	uniqLists := make([]Slice, len(lists))
+
+	var keeps int
+	for i, list := range lists {
+		uniqList := Uniq(list)
+		uniqLists[i] = uniqList
+		for _, e := range uniqList {
+			if _, ok := ks[e]; !ok {
+				keeps++
+				ks[e] = &xorTracker{keep: true}
+			} else if ks[e].keep {
+				// we found a value that exists in more than 1 list
+				keeps--
+				ks[e].keep = false
+			}
+		}
+	}
+
+	result := make([]T, keeps)
+
+	var resultIndex int
+	for _, uniqList := range uniqLists {
+		for _, e := range uniqList {
+			if _, ok := ks[e]; ok && ks[e].keep && !ks[e].alreadyAdded {
+				result[resultIndex] = e
+				resultIndex++
+				ks[e].alreadyAdded = true
+			}
+		}
+	}
+
+	return result
+}

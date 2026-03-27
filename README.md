@@ -263,6 +263,7 @@ Supported intersection helpers:
 - [IntersectBy](#intersectby)
 - [Difference](#difference)
 - [Union](#union)
+- [Xor](#xor)
 - [Without](#without)
 - [WithoutBy](#withoutby)
 - [WithoutEmpty](#withoutempty)
@@ -3042,6 +3043,27 @@ result3 := lo.IntersectBy(transform, []int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 
 result4 := lo.IntersectBy(transform, []int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1, 2, 0, 3, 0})
 // []int{3}
+```
+
+### Xor
+
+Xor is the logical inverse of Intersect. In other words, it returns values that are present in only 1 of any given list input.
+Xor returns an array of unique values that is the symmetric difference of the given slices.
+The order of result values is determined by the order they occur in the slices.
+Also known as the symmetric difference of two sets or the disjunctive union.
+See https://en.wikipedia.org/wiki/Symmetric_difference
+
+```go
+result := lo.Xor([]int{0, 1, 2}, []int{0, 2, 6})
+// []int{1, 6}
+
+// duplicates within a slice are ignored
+result := lo.Xor([]int{0, 1, 1, 2}, []int{0, 2, 6})
+// []int{1, 6}
+
+// accepts any number of slices as input
+result := lo.Xor([]int{0, 1, 1, 2, 3, 4, 5}, []int{0, 2}, []int{1, 5})
+// []int{3, 4}
 ```
 
 ### Difference
