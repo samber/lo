@@ -30,6 +30,12 @@ The main package is complemented by several specialized sub-packages:
 - **lo/mutable**: In-place mutation helpers for memory-efficient operations
 - **lo/it**: Iterator helpers for lazy evaluation and streaming
 
+AI Agent Skill:
+
+```bash
+npx skills add https://github.com/samber/cc-skills-golang --skill golang-samber-lo
+```
+
 ## Design Philosophy
 
 Lo is built on a foundation of pragmatic engineering principles that balance power, safety, and performance:
