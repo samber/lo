@@ -1,10 +1,6 @@
 package parallel
 
-import (
-	"context"
-	"sync"
-	"sync/atomic"
-)
+import "sync"
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // `transform` is called in parallel. Result keep the same order.
@@ -151,68 +147,53 @@ func runErr(n int, fn func(int) error, o options) error {
 		concurrency = n
 	}
 
-	// NOTE: using int32 atomic + sync.Once because atomic.Pointer requires Go 1.19+
-	// and this module targets Go 1.18. Can be simplified once the minimum version is bumped.
-	var (
-		once     sync.Once
-		hasErr   int32
-		firstErr error
-	)
-
-	setErr := func(err error) {
-		once.Do(func() {
-			firstErr = err
-			atomic.StoreInt32(&hasErr, 1)
-		})
-	}
-
 	workers := minInt(concurrency, n)
 	work := make(chan int)
+	errCh := make(chan error, 1)
 
 	var wg sync.WaitGroup
 	wg.Add(workers)
-
 	for w := 0; w < workers; w++ {
 		go func() {
 			defer wg.Done()
 			for i := range work {
-				if atomic.LoadInt32(&hasErr) != 0 {
-					continue
-				}
 				if err := fn(i); err != nil {
-					setErr(err)
+					select {
+					case errCh <- err:
+					default:
+					}
 				}
 			}
 		}()
 	}
 
+	var ctxDone <-chan struct{}
+	if o.ctx != nil {
+		ctxDone = o.ctx.Done()
+	}
+
 	for i := 0; i < n; i++ {
-		if atomic.LoadInt32(&hasErr) != 0 {
-			break
-		}
-		if !sendWork(o.ctx, work, i) {
-			setErr(o.ctx.Err())
-			break
+		select {
+		case work <- i:
+		case err := <-errCh:
+			close(work)
+			wg.Wait()
+			return err
+		case <-ctxDone:
+			close(work)
+			wg.Wait()
+			return o.ctx.Err()
 		}
 	}
 
 	close(work)
 	wg.Wait()
 
-	return firstErr
-}
-
-// sendWork sends an index to the work channel, respecting context cancellation.
-func sendWork(ctx context.Context, work chan<- int, i int) bool {
-	if ctx == nil {
-		work <- i
-		return true
-	}
 	select {
-	case work <- i:
-		return true
-	case <-ctx.Done():
-		return false
+	case err := <-errCh:
+		return err
+	default:
+		return nil
 	}
 }
 
