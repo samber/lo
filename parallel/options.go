@@ -28,7 +28,7 @@ func WithContext(ctx context.Context) Option {
 }
 
 func buildOptions(opts []Option) options {
-	o := options{}
+	o := options{ctx: context.Background()}
 	for _, opt := range opts {
 		opt(&o)
 	}

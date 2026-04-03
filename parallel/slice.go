@@ -170,15 +170,10 @@ func runErr(n int, fn func(int) error, o options) error {
 		}()
 	}
 
-	// A nil channel blocks forever in select, so if no context was provided
-	// the ctxDone case is effectively disabled.
-	var ctxDone <-chan struct{}
-	if o.ctx != nil {
-		ctxDone = o.ctx.Done()
-	}
-
 	// Dispatch work. The select races work sends against errors and context
 	// cancellation, so we stop dispatching as soon as either fires.
+	// context.Background().Done() returns nil, which blocks forever in
+	// select — so the ctx case is effectively disabled when no context is set.
 	for i := 0; i < n; i++ {
 		select {
 		case work <- i:
@@ -186,7 +181,7 @@ func runErr(n int, fn func(int) error, o options) error {
 			close(work)
 			wg.Wait()
 			return err
-		case <-ctxDone:
+		case <-o.ctx.Done():
 			close(work)
 			wg.Wait()
 			return o.ctx.Err()
