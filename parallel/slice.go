@@ -149,6 +149,9 @@ func runErr(n int, fn func(int) error, o options) error {
 
 	workers := minInt(concurrency, n)
 	work := make(chan int)
+
+	// First error wins: buffer of 1 means only the first push succeeds;
+	// subsequent errors hit the default branch and are discarded.
 	errCh := make(chan error, 1)
 
 	var wg sync.WaitGroup
@@ -167,11 +170,15 @@ func runErr(n int, fn func(int) error, o options) error {
 		}()
 	}
 
+	// A nil channel blocks forever in select, so if no context was provided
+	// the ctxDone case is effectively disabled.
 	var ctxDone <-chan struct{}
 	if o.ctx != nil {
 		ctxDone = o.ctx.Done()
 	}
 
+	// Dispatch work. The select races work sends against errors and context
+	// cancellation, so we stop dispatching as soon as either fires.
 	for i := 0; i < n; i++ {
 		select {
 		case work <- i:
@@ -186,6 +193,8 @@ func runErr(n int, fn func(int) error, o options) error {
 		}
 	}
 
+	// All items dispatched. Wait for in-flight workers, then check if any
+	// of them produced an error we haven't seen yet.
 	close(work)
 	wg.Wait()
 
