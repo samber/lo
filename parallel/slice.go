@@ -171,8 +171,6 @@ func runErr(n int, fn func(int) error, o options) error {
 
 	var wg sync.WaitGroup
 	wg.Add(workers)
-	defer wg.Wait()
-	defer close(work)
 
 	for w := 0; w < workers; w++ {
 		go func() {
@@ -197,6 +195,9 @@ func runErr(n int, fn func(int) error, o options) error {
 			break
 		}
 	}
+
+	close(work)
+	wg.Wait()
 
 	return firstErr
 }

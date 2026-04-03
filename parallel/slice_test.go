@@ -302,6 +302,23 @@ func TestConcurrencyEdgeCases(t *testing.T) {
 	is.Equal([]int{2, 4, 6, 8, 10}, r)
 }
 
+func TestMapErrRaceOnReturn(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Reproduces a data race: the sender breaks on hasErr and returns firstErr
+	// before wg.Wait() ensures the worker has finished writing firstErr.
+	// Run with -race to detect.
+	for i := 0; i < 100; i++ {
+		_, err := MapErr([]int{1}, func(x, _ int) (int, error) {
+			time.Sleep(time.Millisecond)
+			return 0, errors.New("fail")
+		}, WithConcurrency(1))
+		is.Error(err)
+		is.Equal("fail", err.Error())
+	}
+}
+
 func TestGroupBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
