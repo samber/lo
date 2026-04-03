@@ -302,6 +302,34 @@ func TestConcurrencyEdgeCases(t *testing.T) {
 	is.Equal([]int{2, 4, 6, 8, 10}, r)
 }
 
+// TestErrWorkersDrainChannel verifies that the worker pool shuts down cleanly
+// after an error: the sender stops dispatching, workers drain remaining items,
+// and the function returns promptly.
+func TestErrWorkersDrainChannel(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	done := make(chan struct{})
+	go func() {
+		defer close(done)
+		err := ForEachErr([]int{1, 2, 3, 4, 5}, func(x, _ int) error {
+			time.Sleep(10 * time.Millisecond)
+			if x == 1 {
+				return fmt.Errorf("fail on %d", x)
+			}
+			return nil
+		}, WithConcurrency(2))
+		is.Error(err)
+	}()
+
+	select {
+	case <-done:
+		// completed without deadlock
+	case <-time.After(2 * time.Second):
+		t.Fatal("deadlock: worker pool did not shut down after error")
+	}
+}
+
 func TestMapErrRaceOnReturn(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
