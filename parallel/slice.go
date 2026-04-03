@@ -1,83 +1,93 @@
 package parallel
 
-import "sync"
+import (
+	"context"
+	"sync"
+	"sync/atomic"
+)
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // `transform` is called in parallel. Result keep the same order.
+// An optional WithConcurrency option can be provided to limit the number
+// of goroutines running at the same time. When set, only that many worker
+// goroutines are started (a bounded worker pool), rather than one per item.
 // Play: https://go.dev/play/p/sCJaB3quRMC
-func Map[T, R any](collection []T, transform func(item T, index int) R) []R {
+func Map[T, R any](collection []T, transform func(item T, index int) R, opts ...Option) []R {
 	result := make([]R, len(collection))
-
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
-
-	for i, item := range collection {
-		go func(_item T, _i int) {
-			res := transform(_item, _i)
-
-			result[_i] = res
-
-			wg.Done()
-		}(item, i)
-	}
-
-	wg.Wait()
-
+	forEach(collection, func(item T, i int) {
+		result[i] = transform(item, i)
+	}, buildOptions(opts))
 	return result
+}
+
+// MapErr manipulates a slice and transforms it to a slice of another type.
+// `transform` is called in parallel. Result keep the same order.
+// Returns the first error encountered and stops processing further items.
+// When WithConcurrency is set, a bounded worker pool is used instead of
+// one goroutine per item. Supports WithContext for cancellation.
+func MapErr[T, R any](collection []T, transform func(item T, index int) (R, error), opts ...Option) ([]R, error) {
+	result := make([]R, len(collection))
+	err := forEachErr(collection, func(item T, i int) error {
+		r, err := transform(item, i)
+		if err != nil {
+			return err
+		}
+		result[i] = r
+		return nil
+	}, buildOptions(opts))
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 // ForEach iterates over elements of collection and invokes callback for each element.
 // `iteratee` is called in parallel.
+// An optional WithConcurrency option can be provided to limit the number
+// of goroutines running at the same time. When set, only that many worker
+// goroutines are started (a bounded worker pool), rather than one per item.
 // Play: https://go.dev/play/p/sCJaB3quRMC
-func ForEach[T any](collection []T, callback func(item T, index int)) {
-	var wg sync.WaitGroup
-	wg.Add(len(collection))
+func ForEach[T any](collection []T, callback func(item T, index int), opts ...Option) {
+	forEach(collection, callback, buildOptions(opts))
+}
 
-	for i, item := range collection {
-		go func(_item T, _i int) {
-			callback(_item, _i)
-			wg.Done()
-		}(item, i)
-	}
-
-	wg.Wait()
+// ForEachErr iterates over elements of collection and invokes callback for each element.
+// `callback` is called in parallel.
+// Returns the first error encountered and stops processing further items.
+// When WithConcurrency is set, a bounded worker pool is used instead of
+// one goroutine per item. Supports WithContext for cancellation.
+func ForEachErr[T any](collection []T, callback func(item T, index int) error, opts ...Option) error {
+	return forEachErr(collection, callback, buildOptions(opts))
 }
 
 // Times invokes the iteratee n times, returning a slice of the results of each invocation.
 // The iteratee is invoked with index as argument.
 // `iteratee` is called in parallel.
+// An optional WithConcurrency option can be provided to limit the number
+// of goroutines running at the same time. When set, only that many worker
+// goroutines are started (a bounded worker pool), rather than one per item.
 // Play: https://go.dev/play/p/ZNnWNcJ4Au-
-func Times[T any](count int, iteratee func(index int) T) []T {
+func Times[T any](count int, iteratee func(index int) T, opts ...Option) []T {
 	result := make([]T, count)
-
-	var wg sync.WaitGroup
-	wg.Add(count)
-
-	for i := 0; i < count; i++ {
-		go func(_i int) {
-			item := iteratee(_i)
-
-			result[_i] = item
-
-			wg.Done()
-		}(i)
-	}
-
-	wg.Wait()
-
+	_ = runErr(count, func(i int) error {
+		result[i] = iteratee(i)
+		return nil
+	}, buildOptions(opts))
 	return result
 }
 
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // The order of grouped values is determined by the order they occur in the collection.
 // `iteratee` is called in parallel.
+// An optional WithConcurrency option can be provided to limit the number
+// of goroutines running at the same time.
 // Play: https://go.dev/play/p/EkyvA0gw4dj
-func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) map[U]Slice {
+func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U, opts ...Option) map[U]Slice {
 	result := map[U]Slice{}
 
 	keys := Map(collection, func(item T, _ int) U {
 		return iteratee(item)
-	})
+	}, opts...)
 
 	for i, item := range collection {
 		result[keys[i]] = append(result[keys[i]], item)
@@ -91,14 +101,16 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 // of running each element of collection through iteratee.
 // The order of groups is determined by their first appearance in the collection.
 // `iteratee` is called in parallel.
+// An optional WithConcurrency option can be provided to limit the number
+// of goroutines running at the same time.
 // Play: https://go.dev/play/p/GwBQdMgx2nC
-func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K) []Slice {
+func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K, opts ...Option) []Slice {
 	result := []Slice{}
 	seen := map[K]int{}
 
 	keys := Map(collection, func(item T, _ int) K {
 		return iteratee(item)
-	})
+	}, opts...)
 
 	for i := range collection {
 		resultIndex, ok := seen[keys[i]]
@@ -111,4 +123,101 @@ func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee fun
 	}
 
 	return result
+}
+
+// forEach executes fn for each element in collection, in parallel.
+func forEach[T any](collection []T, fn func(T, int), o options) {
+	_ = forEachErr(collection, func(item T, i int) error {
+		fn(item, i)
+		return nil
+	}, o)
+}
+
+// forEachErr executes fn for each element in collection, in parallel, with error handling.
+func forEachErr[T any](collection []T, fn func(T, int) error, o options) error {
+	return runErr(len(collection), func(i int) error {
+		return fn(collection[i], i)
+	}, o)
+}
+
+// runErr is the core parallel executor. It runs fn for each index 0..n-1 using a
+// bounded worker pool. Returns the first error; stops scheduling on error or context cancellation.
+func runErr(n int, fn func(int) error, o options) error {
+	if n == 0 {
+		return nil
+	}
+	concurrency := o.concurrency
+	if concurrency <= 0 {
+		concurrency = n
+	}
+
+	// NOTE: using int32 atomic + sync.Once because atomic.Pointer requires Go 1.19+
+	// and this module targets Go 1.18. Can be simplified once the minimum version is bumped.
+	var (
+		once     sync.Once
+		hasErr   int32
+		firstErr error
+	)
+
+	setErr := func(err error) {
+		once.Do(func() {
+			firstErr = err
+			atomic.StoreInt32(&hasErr, 1)
+		})
+	}
+
+	workers := minInt(concurrency, n)
+	work := make(chan int)
+
+	var wg sync.WaitGroup
+	wg.Add(workers)
+	defer wg.Wait()
+	defer close(work)
+
+	for w := 0; w < workers; w++ {
+		go func() {
+			defer wg.Done()
+			for i := range work {
+				if atomic.LoadInt32(&hasErr) != 0 {
+					continue
+				}
+				if err := fn(i); err != nil {
+					setErr(err)
+				}
+			}
+		}()
+	}
+
+	for i := 0; i < n; i++ {
+		if atomic.LoadInt32(&hasErr) != 0 {
+			break
+		}
+		if !sendWork(o.ctx, work, i) {
+			setErr(o.ctx.Err())
+			break
+		}
+	}
+
+	return firstErr
+}
+
+// sendWork sends an index to the work channel, respecting context cancellation.
+func sendWork(ctx context.Context, work chan<- int, i int) bool {
+	if ctx == nil {
+		work <- i
+		return true
+	}
+	select {
+	case work <- i:
+		return true
+	case <-ctx.Done():
+		return false
+	}
+}
+
+func minInt(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
