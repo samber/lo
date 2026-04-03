@@ -174,31 +174,32 @@ func runErr(n int, fn func(int) error, o options) error {
 	// cancellation, so we stop dispatching as soon as either fires.
 	// context.Background().Done() returns nil, which blocks forever in
 	// select — so the ctx case is effectively disabled when no context is set.
-	for i := 0; i < n; i++ {
-		select {
-		case work <- i:
-		case err := <-errCh:
-			close(work)
-			wg.Wait()
-			return err
-		case <-o.ctx.Done():
-			close(work)
-			wg.Wait()
-			return o.ctx.Err()
+	err := func() error {
+		for i := 0; i < n; i++ {
+			select {
+			case work <- i:
+			case err := <-errCh:
+				return err
+			case <-o.ctx.Done():
+				return o.ctx.Err()
+			}
 		}
-	}
+		return nil
+	}()
 
-	// All items dispatched. Wait for in-flight workers, then check if any
-	// of them produced an error we haven't seen yet.
+	// Stop workers and wait for in-flight items to finish.
 	close(work)
 	wg.Wait()
 
-	select {
-	case err := <-errCh:
-		return err
-	default:
-		return nil
+	// If dispatch saw no error, check if any in-flight worker produced one.
+	// Closing errCh is safe here — all writers (workers) are done after wg.Wait().
+	// Reading from a closed buffered channel returns the buffered value or nil.
+	close(errCh)
+	if err == nil {
+		err = <-errCh
 	}
+
+	return err
 }
 
 func minInt(a, b int) int {
