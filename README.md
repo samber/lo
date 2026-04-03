@@ -328,6 +328,7 @@ Type manipulation helpers:
 - [EmptyableToPtr](#emptyabletoptr)
 - [FromPtr](#fromptr)
 - [FromPtrOr](#fromptror)
+- [MapPtr](#mapptr)
 - [ToSlicePtr](#tosliceptr)
 - [FromSlicePtr](#fromsliceptr)
 - [FromSlicePtrOr](#fromsliceptror)
@@ -4105,6 +4106,18 @@ value := lo.FromPtrOr(&str, "empty")
 
 value := lo.FromPtrOr(nil, "empty")
 // "empty"
+```
+
+### MapPtr
+
+Transforms pointer value if it's non-nil. Otherwise returns nil.
+```go
+n := 42
+value := lo.MapPtr(&n, strconv.Itoa)
+// *string{"42"}
+
+value := lo.MapPtr(nil, strconv.Itoa)
+// nil
 ```
 
 ### ToSlicePtr
