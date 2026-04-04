@@ -347,6 +347,37 @@ func TestMapErrRaceOnReturn(t *testing.T) {
 	}
 }
 
+func TestErrStopsDispatchingPromptly(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// With concurrency=1, after the sole worker returns an error and loops
+	// back to range-work, both work<-i and errCh are ready in the sender's
+	// select. A flat select picks randomly, so over many runs extra items
+	// get processed. A nested select that checks errCh first should ensure
+	// only the erroring item is processed.
+	maxProcessed := 0
+	for run := 0; run < 200; run++ {
+		processed := 0
+		_ = ForEachErr(make([]int, 100), func(_, i int) error {
+			processed++
+			if i == 0 {
+				return errors.New("fail")
+			}
+			return nil
+		}, WithConcurrency(1))
+
+		if processed > maxProcessed {
+			maxProcessed = processed
+		}
+	}
+
+	// With error priority, only the erroring item (index 0) should be
+	// processed. Without priority, maxProcessed would exceed 1 across
+	// 200 runs due to random select behavior.
+	is.LessOrEqual(maxProcessed, 1)
+}
+
 func TestGroupBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

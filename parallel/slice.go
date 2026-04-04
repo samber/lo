@@ -170,12 +170,20 @@ func runErr(n int, fn func(int) error, o options) error {
 		}()
 	}
 
-	// Dispatch work. The select races work sends against errors and context
-	// cancellation, so we stop dispatching as soon as either fires.
+	// Dispatch work. Before each send, do a non-blocking priority check on
+	// errCh and ctx so errors/cancellation are caught immediately rather than
+	// competing with work sends in a flat select.
 	// context.Background().Done() returns nil, which blocks forever in
 	// select — so the ctx case is effectively disabled when no context is set.
 	err := func() error {
 		for i := 0; i < n; i++ {
+			select {
+			case err := <-errCh:
+				return err
+			case <-o.ctx.Done():
+				return o.ctx.Err()
+			default:
+			}
 			select {
 			case work <- i:
 			case err := <-errCh:
