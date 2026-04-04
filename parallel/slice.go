@@ -176,19 +176,13 @@ func runUnbounded(n int, fn func(int)) {
 func runErrUnbounded(ctx context.Context, n int, fn func(int) error) error {
 	errCh := make(chan error, 1)
 	var wg sync.WaitGroup
-	wg.Add(n)
 	for i := 0; i < n; i++ {
+		if len(errCh) > 0 || ctx.Err() != nil {
+			break
+		}
+		wg.Add(1)
 		go func(_i int) {
 			defer wg.Done()
-			select {
-			case <-ctx.Done():
-				select {
-				case errCh <- ctx.Err():
-				default:
-				}
-				return
-			default:
-			}
 			if err := fn(_i); err != nil {
 				select {
 				case errCh <- err:
@@ -199,7 +193,10 @@ func runErrUnbounded(ctx context.Context, n int, fn func(int) error) error {
 	}
 	wg.Wait()
 	close(errCh)
-	return <-errCh
+	if err := <-errCh; err != nil {
+		return err
+	}
+	return ctx.Err()
 }
 
 // runErr is the core parallel executor. It runs fn for each index 0..n-1 using a

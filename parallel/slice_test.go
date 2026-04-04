@@ -378,6 +378,32 @@ func TestErrStopsDispatchingPromptly(t *testing.T) {
 	is.LessOrEqual(maxProcessed, 1)
 }
 
+func TestMapErrUnboundedReturnsError(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// No WithConcurrency — hits runErrUnbounded path.
+	// The spawn loop checks errCh before each goroutine, so once an
+	// error is reported it stops spawning. Already-launched goroutines
+	// still run to completion.
+	// Use 10000 items so the spawn loop takes long enough for the
+	// erroring goroutine to finish and report before all are spawned.
+	n := 10000
+	var processed int64
+	_, err := MapErr(make([]int, n), func(_, i int) (int, error) {
+		atomic.AddInt64(&processed, 1)
+		if i == 0 {
+			return 0, errors.New("fail")
+		}
+		return i, nil
+	})
+
+	is.Error(err)
+	is.Equal("fail", err.Error())
+	// Spawn loop should have stopped early — significantly fewer than n.
+	is.Less(atomic.LoadInt64(&processed), int64(n))
+}
+
 func TestGroupBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
