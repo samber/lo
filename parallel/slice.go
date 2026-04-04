@@ -21,7 +21,7 @@ func Map[T, R any](collection []T, transform func(item T, index int) R, opts ...
 // Returns the first error encountered and stops processing further items.
 // When WithConcurrency is set, a bounded worker pool is used instead of
 // one goroutine per item. Supports WithContext for cancellation.
-func MapErr[T, R any](collection []T, transform func(item T, index int) (R, error), opts ...Option) ([]R, error) {
+func MapErr[T, R any](collection []T, transform func(item T, index int) (R, error), opts ...ErrOption) ([]R, error) {
 	result := make([]R, len(collection))
 	err := forEachErr(collection, func(item T, i int) error {
 		r, err := transform(item, i)
@@ -52,7 +52,7 @@ func ForEach[T any](collection []T, callback func(item T, index int), opts ...Op
 // Returns the first error encountered and stops processing further items.
 // When WithConcurrency is set, a bounded worker pool is used instead of
 // one goroutine per item. Supports WithContext for cancellation.
-func ForEachErr[T any](collection []T, callback func(item T, index int) error, opts ...Option) error {
+func ForEachErr[T any](collection []T, callback func(item T, index int) error, opts ...ErrOption) error {
 	return forEachErr(collection, callback, buildOptions(opts))
 }
 
