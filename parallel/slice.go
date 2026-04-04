@@ -1,6 +1,9 @@
 package parallel
 
-import "sync"
+import (
+	"context"
+	"sync"
+)
 
 // Map manipulates a slice and transforms it to a slice of another type.
 // `transform` is called in parallel. Result keep the same order.
@@ -168,6 +171,37 @@ func runUnbounded(n int, fn func(int)) {
 	wg.Wait()
 }
 
+// runErrUnbounded runs fn for each index 0..n-1 with one goroutine per item,
+// collecting the first error. Each goroutine checks ctx before doing work.
+func runErrUnbounded(ctx context.Context, n int, fn func(int) error) error {
+	errCh := make(chan error, 1)
+	var wg sync.WaitGroup
+	wg.Add(n)
+	for i := 0; i < n; i++ {
+		go func(_i int) {
+			defer wg.Done()
+			select {
+			case <-ctx.Done():
+				select {
+				case errCh <- ctx.Err():
+				default:
+				}
+				return
+			default:
+			}
+			if err := fn(_i); err != nil {
+				select {
+				case errCh <- err:
+				default:
+				}
+			}
+		}(i)
+	}
+	wg.Wait()
+	close(errCh)
+	return <-errCh
+}
+
 // runErr is the core parallel executor. It runs fn for each index 0..n-1 using a
 // bounded worker pool. Returns the first error; stops scheduling on error or context cancellation.
 func runErr(n int, fn func(int) error, o options) error {
@@ -176,7 +210,7 @@ func runErr(n int, fn func(int) error, o options) error {
 	}
 	concurrency := o.concurrency
 	if concurrency <= 0 {
-		concurrency = n
+		return runErrUnbounded(o.ctx, n, fn)
 	}
 
 	workers := minInt(concurrency, n)
