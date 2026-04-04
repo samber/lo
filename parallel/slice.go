@@ -10,6 +10,12 @@ import "sync"
 // Play: https://go.dev/play/p/sCJaB3quRMC
 func Map[T, R any](collection []T, transform func(item T, index int) R, opts ...Option) []R {
 	result := make([]R, len(collection))
+	if len(opts) == 0 {
+		runUnbounded(len(collection), func(i int) {
+			result[i] = transform(collection[i], i)
+		})
+		return result
+	}
 	forEach(collection, func(item T, i int) {
 		result[i] = transform(item, i)
 	}, buildOptions(opts))
@@ -44,6 +50,12 @@ func MapErr[T, R any](collection []T, transform func(item T, index int) (R, erro
 // goroutines are started (a bounded worker pool), rather than one per item.
 // Play: https://go.dev/play/p/sCJaB3quRMC
 func ForEach[T any](collection []T, callback func(item T, index int), opts ...Option) {
+	if len(opts) == 0 {
+		runUnbounded(len(collection), func(i int) {
+			callback(collection[i], i)
+		})
+		return
+	}
 	forEach(collection, callback, buildOptions(opts))
 }
 
@@ -65,6 +77,12 @@ func ForEachErr[T any](collection []T, callback func(item T, index int) error, o
 // Play: https://go.dev/play/p/ZNnWNcJ4Au-
 func Times[T any](count int, iteratee func(index int) T, opts ...Option) []T {
 	result := make([]T, count)
+	if len(opts) == 0 {
+		runUnbounded(count, func(i int) {
+			result[i] = iteratee(i)
+		})
+		return result
+	}
 	_ = runErr(count, func(i int) error {
 		result[i] = iteratee(i)
 		return nil
@@ -134,6 +152,20 @@ func forEachErr[T any](collection []T, fn func(T, int) error, o options) error {
 	return runErr(len(collection), func(i int) error {
 		return fn(collection[i], i)
 	}, o)
+}
+
+// runUnbounded runs fn for each index 0..n-1 with one goroutine per item.
+// This is the original upstream implementation — no channels, no error handling.
+func runUnbounded(n int, fn func(int)) {
+	var wg sync.WaitGroup
+	wg.Add(n)
+	for i := 0; i < n; i++ {
+		go func(_i int) {
+			fn(_i)
+			wg.Done()
+		}(i)
+	}
+	wg.Wait()
 }
 
 // runErr is the core parallel executor. It runs fn for each index 0..n-1 using a
