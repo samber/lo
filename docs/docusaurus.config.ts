@@ -74,8 +74,17 @@ const config: Config = {
     locales: ['en'],
   },
 
-  headTags: [
-    // DNS prefetch for better performance
+    headTags: [
+	      // SEO
+        {
+        tagName: 'script',
+        attributes: {
+            'async': 'true',
+            'src': 'https://analytics.ahrefs.com/analytics.js',
+            'data-key': 'ZlVVDleFCGZPB8Nd2KkKrw'
+        },
+    },
+        // DNS prefetch for better performance
     {
       tagName: 'link',
       attributes: {
