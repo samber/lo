@@ -6,6 +6,14 @@ import Heading from '@theme/Heading';
 import CodeBlock from '@theme/CodeBlock';
 import '../../../src/prism-include-languages.js';
 
+declare global {
+  interface Window {
+    posthog?: {
+      capture: (event: string, properties?: Record<string, unknown>) => void;
+    };
+  }
+}
+
 interface HelperCardProps {
   helper: HelperDefinition;
 }
@@ -125,31 +133,34 @@ export default function HelperCard({
             </span>
           </div>
           {sourceRef && (
-            <a 
+            <a
               href={sourceRef}
               target="_blank"
               rel="noopener noreferrer"
               className="helper-card__source"
+              onClick={() => window.posthog?.capture('helper_source_clicked', { helper: helper.slug, category: helper.category })}
             >
               🧩 Source
             </a>
           )}
           {godocUrl && (
-            <a 
+            <a
               href={godocUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="helper-card__godoc"
+              onClick={() => window.posthog?.capture('helper_godoc_clicked', { helper: helper.slug, category: helper.category })}
             >
               📚 GoDoc
             </a>
           )}
           {helper.playUrl && (
-            <a 
+            <a
               href={helper.playUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="helper-card__playground"
+              onClick={() => window.posthog?.capture('helper_playground_clicked', { helper: helper.slug, category: helper.category })}
             >
               🎮 Try on Go Playground
             </a>
@@ -243,10 +254,11 @@ function SimilarHelpers({
               const displayName = nameRaw || name;
               const isSameSection = type === currentTypeLower; // compare only type for label
               return (
-                <a 
+                <a
                   key={index}
                   href={href}
                   className="helper-card__similar-link"
+                  onClick={() => window.posthog?.capture('helper_similar_clicked', { from: currentName, to: name, title: title.toLowerCase() })}
                 >
                   {isSameSection ? (
                     displayName

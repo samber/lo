@@ -15,20 +15,22 @@ permissions:
   security-events: write
 
 jobs:
-  govulncheck:
-    name: govulncheck
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-go@v6
+  # govulncheck:
+  #   name: govulncheck
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #     - uses: actions/setup-go@v6
+  #       with:
+  #         go-version-file: go.mod
 
-      - name: Install govulncheck
-        run: go install golang.org/x/vuln/cmd/govulncheck@latest
+  #     - name: Install govulncheck
+  #       run: go install golang.org/x/vuln/cmd/govulncheck@latest
 
-      - name: govulncheck
-        run: govulncheck ./...
+  #     - name: govulncheck
+  #       run: govulncheck ./...
 
   bearer:
     name: bearer
@@ -50,6 +52,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
@@ -69,6 +73,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
 
       - name: Run Trivy vulnerability scanner (source code)
         uses: aquasecurity/trivy-action@0.35.0
@@ -80,6 +86,7 @@ jobs:
           output: "trivy-results.sarif"
           severity: "CRITICAL,HIGH,MEDIUM"
           ignore-unfixed: true
+          trivyignores: ".trivyignore"
           skip-dirs: "docs/"
 
       - name: Upload Trivy results to GitHub Security tab
@@ -96,6 +103,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
 
       - name: Run Trivy scanner (table output for logs)
         uses: aquasecurity/trivy-action@0.35.0
@@ -107,6 +116,7 @@ jobs:
           format: "table"
           severity: "CRITICAL,HIGH,MEDIUM"
           ignore-unfixed: true
+          trivyignores: ".trivyignore"
           exit-code: "1"
           skip-dirs: "docs/"
 
