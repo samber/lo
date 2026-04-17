@@ -48,6 +48,8 @@ export function onRouteDidUpdate(): void {
   // Re-run on each navigation in case DOM changed
 }
 
-// Runs once on initial load
-trackSponsorClicks();
-trackSearch();
+// Runs once on initial load (browser only)
+if (typeof document !== 'undefined') {
+  trackSponsorClicks();
+  trackSearch();
+}
