@@ -2958,13 +2958,12 @@ If the subset is empty Some returns false.
 ```go
 ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // true
-```
-
-[[play](https://go.dev/play/p/Lj4ceFkeT9V)]
 
 ok := lo.Some([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
 // false
 ```
+
+[[play](https://go.dev/play/p/Lj4ceFkeT9V)]
 
 ### SomeBy
 
