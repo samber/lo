@@ -22,30 +22,30 @@
     "check-similar-keys-exist-in-directory": "node ./scripts/check-similar-keys-exist-in-directory.js"
   },
   "dependencies": {
-    "@docusaurus/core": "3.9.1",
-    "@docusaurus/faster": "^3.9.1",
-    "@docusaurus/plugin-css-cascade-layers": "^3.9.1",
-    "@docusaurus/plugin-ideal-image": "^3.9.1",
-    "@docusaurus/plugin-svgr": "^3.9.1",
-    "@docusaurus/plugin-vercel-analytics": "^3.9.1",
-    "@docusaurus/preset-classic": "3.9.1",
-    "@docusaurus/theme-mermaid": "^3.9.1",
-    "@mdx-js/react": "^3.0.0",
-    "@mermaid-js/layout-elk": "^0.1.9",
-    "classnames": "^2.3.2",
-    "clsx": "^2.0.0",
-    "marked": "^17.0.1",
-    "posthog-docusaurus": "^2.0.5",
-    "prism-react-renderer": "^2.3.0",
-    "prismjs": "^1.29.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+      "@docusaurus/core": "3.10.0",
+      "@docusaurus/faster": "^3.10.0",
+      "@docusaurus/plugin-css-cascade-layers": "^3.10.0",
+      "@docusaurus/plugin-ideal-image": "^3.10.0",
+      "@docusaurus/plugin-svgr": "^3.10.0",
+      "@docusaurus/plugin-vercel-analytics": "^3.10.0",
+      "@docusaurus/preset-classic": "3.10.0",
+      "@docusaurus/theme-mermaid": "^3.10.0",
+      "@mdx-js/react": "^3.0.0",
+      "@mermaid-js/layout-elk": "^0.1.9",
+      "classnames": "^2.3.2",
+      "clsx": "^2.0.0",
+      "marked": "^17.0.1",
+      "posthog-docusaurus": "^2.0.5",
+      "prism-react-renderer": "^2.3.0",
+      "prismjs": "^1.29.0",
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.9.1",
-    "@docusaurus/tsconfig": "3.9.1",
-    "@docusaurus/types": "3.9.1",
-    "typescript": "~6.0.2"
+      "@docusaurus/module-type-aliases": "3.10.0",
+      "@docusaurus/tsconfig": "3.10.0",
+      "@docusaurus/types": "3.10.0",
+      "typescript": "~6.0.2"
   },
   "browserslist": {
     "production": [
