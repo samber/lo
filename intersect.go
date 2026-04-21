@@ -229,6 +229,42 @@ func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
 	return left, right
 }
 
+// DifferenceBy returns the difference between two collections using a custom key selector function.
+// The first value is the collection of elements from left whose keys are absent from right.
+// The second value is the collection of elements from right whose keys are absent from left.
+func DifferenceBy[T any, R comparable, Slice ~[]T](left, right Slice, iteratee func(item T) R) (notInRight, notInLeft Slice) {
+	notInLeft = make(Slice, 0, len(right))
+	notInRight = make(Slice, 0, len(left))
+
+	seenLeft := make(map[R]struct{}, len(left))
+	inLeft := make([]R, len(left))
+	seenRight := make(map[R]struct{}, len(right))
+	inRight := make([]R, len(right))
+
+	for i := range left {
+		inLeft[i] = iteratee(left[i])
+		seenLeft[inLeft[i]] = struct{}{}
+	}
+	for i := range right {
+		inRight[i] = iteratee(right[i])
+		seenRight[inRight[i]] = struct{}{}
+	}
+
+	for i := range inLeft {
+		if _, ok := seenRight[inLeft[i]]; !ok {
+			notInRight = append(notInRight, left[i])
+		}
+	}
+
+	for i := range inRight {
+		if _, ok := seenLeft[inRight[i]]; !ok {
+			notInLeft = append(notInLeft, right[i])
+		}
+	}
+
+	return notInRight, notInLeft
+}
+
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
 // Play: https://go.dev/play/p/-hsqZNTH0ej
