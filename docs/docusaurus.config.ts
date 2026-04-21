@@ -25,13 +25,13 @@ const config: Config = {
       ssgWorkerThreads: true,
       mdxCrossCompilerCache: true,
     },
-    experimental_storage: {
-      type: 'localStorage',
-      namespace: true,
-    },
   },
+    storage: {
+        type: 'localStorage',
+        namespace: true,
+    },
 
-  // Set the production url of your site here
+    // Set the production url of your site here
   url: 'https://lo.samber.dev',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
