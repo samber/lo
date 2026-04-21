@@ -32,7 +32,7 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://ro.samber.dev',
+  url: 'https://lo.samber.dev',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -135,13 +135,9 @@ const config: Config = {
         content: '@samuelberthe',
       },
     },
-    {
-      tagName: 'link',
-      attributes: {
-        rel: 'canonical',
-        href: 'https://lo.samber.dev',
-      },
-    },
+    // NOTE: do not add a global <link rel="canonical"> here.
+    // Docusaurus generates correct per-page canonical tags from the `url` field above.
+    // A global canonical in headTags applies to ALL pages and conflicts with those.
   ],
 
   customFields: {

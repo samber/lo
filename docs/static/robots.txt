@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lo.samber.dev/sitemap.xml
