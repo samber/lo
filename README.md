@@ -3048,14 +3048,20 @@ result4 := lo.IntersectBy(transform, []int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1,
 
 Returns the difference between two collections.
 
-- The first value is the collection of elements absent from list2.
-- The second value is the collection of elements absent from list1.
+- The first value is the collection of elements from `left` absent from `right`.
+- The second value is the collection of elements from `right` absent from `left`.
 
 ```go
-left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
+left := []int{0, 1, 2, 3, 4, 5}
+right := []int{0, 2, 6}
+
+notInRight, notInLeft := lo.Difference(left, right)
 // []int{1, 3, 4, 5}, []int{6}
 
-left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+left = []int{0, 1, 2, 3, 4, 5}
+right = []int{0, 1, 2, 3, 4, 5}
+
+notInRight, notInLeft = lo.Difference(left, right)
 // []int{}, []int{}
 ```
 

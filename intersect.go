@@ -204,29 +204,29 @@ func IntersectBy[T any, K comparable, Slice ~[]T](transform func(T) K, lists ...
 }
 
 // Difference returns the difference between two collections.
-// The first value is the collection of elements absent from list2.
-// The second value is the collection of elements absent from list1.
+// The first value is the collection of elements from left absent from right.
+// The second value is the collection of elements from right absent from left.
 // Play: https://go.dev/play/p/pKE-JgzqRpz
-func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
-	left := make(Slice, 0, len(list1))
-	right := make(Slice, 0, len(list2))
+func Difference[T comparable, Slice ~[]T](left, right Slice) (notInRight, notInLeft Slice) {
+	notInRight = make(Slice, 0, len(left))
+	notInLeft = make(Slice, 0, len(right))
 
-	seenLeft := Keyify(list1)
-	seenRight := Keyify(list2)
+	seenLeft := Keyify(left)
+	seenRight := Keyify(right)
 
-	for i := range list1 {
-		if _, ok := seenRight[list1[i]]; !ok {
-			left = append(left, list1[i])
+	for i := range left {
+		if _, ok := seenRight[left[i]]; !ok {
+			notInRight = append(notInRight, left[i])
 		}
 	}
 
-	for i := range list2 {
-		if _, ok := seenLeft[list2[i]]; !ok {
-			right = append(right, list2[i])
+	for i := range right {
+		if _, ok := seenLeft[right[i]]; !ok {
+			notInLeft = append(notInLeft, right[i])
 		}
 	}
 
-	return left, right
+	return notInRight, notInLeft
 }
 
 // DifferenceBy returns the difference between two collections using a custom key selector function.
