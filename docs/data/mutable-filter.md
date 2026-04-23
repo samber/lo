@@ -10,7 +10,7 @@ similarHelpers:
   - core#slice#filterreject
   - core#slice#filtermap
   - parallel#slice#filter
-  - it#chunkstring
+  - iter#chunkstring
 variantHelpers:
   - "mutable#slice#filter"
   - "mutable#slice#filteri"

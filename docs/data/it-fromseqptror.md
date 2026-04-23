@@ -2,12 +2,12 @@
 name: FromSeqPtrOr
 slug: fromseqptror
 sourceRef: it/type_manipulation.go#L11
-category: it
+category: iter
 subCategory: type
 signatures:
   - "func FromSeqPtrOr[T any](collection iter.Seq[*T], fallback T) iter.Seq[T]"
 variantHelpers:
-  - it#type#fromseqptr
+  - iter#type#fromseqptr
 playUrl: "https://go.dev/play/p/LJ17S4pvOjo"
 similarHelpers: []
 position: 242

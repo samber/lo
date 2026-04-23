@@ -2,7 +2,7 @@
 name: Reject
 slug: reject
 sourceRef: it/seq.go#L586
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Reject[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I"
@@ -10,15 +10,15 @@ signatures:
   - "func RejectMap[T, R any](collection iter.Seq[T], callback func(item T) (R, bool)) iter.Seq[R]"
   - "func RejectMapI[T, R any](collection iter.Seq[T], callback func(item T, index int) (R, bool)) iter.Seq[R]"
 variantHelpers:
-  - it#sequence#reject
-  - it#sequence#rejecti
-  - it#sequence#rejectmap
-  - it#sequence#rejectmapi
+  - iter#sequence#reject
+  - iter#sequence#rejecti
+  - iter#sequence#rejectmap
+  - iter#sequence#rejectmapi
 similarHelpers:
   - core#slice#reject
   - core#slice#filter
-  - it#sequence#filter
-  - it#sequence#filtermap
+  - iter#sequence#filter
+  - iter#sequence#filtermap
 position: 180
 ---
 

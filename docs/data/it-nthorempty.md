@@ -2,13 +2,13 @@
 name: NthOrEmpty
 slug: nthorempty
 sourceRef: it/find.go#L444
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func NthOrEmpty[T any, N constraints.Integer](collection iter.Seq[T], nth N) T"
 playUrl: https://go.dev/play/p/pC0Zhu3EUhe
 variantHelpers:
-  - it#find#nthorempty
+  - iter#find#nthorempty
 similarHelpers:
   - core#slice#nthorempty
 position: 600

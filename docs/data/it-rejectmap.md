@@ -2,17 +2,17 @@
 name: RejectMap
 slug: rejectmap
 sourceRef: it/seq.go#L608
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func RejectMap[T, R any](collection iter.Seq[T], callback func(item T) (R, bool)) iter.Seq[R]"
 variantHelpers:
-  - it#sequence#rejectmap
+  - iter#sequence#rejectmap
 similarHelpers:
-  - it#sequence#filtermap
-  - it#sequence#map
-  - it#sequence#filter
-  - it#sequence#reject
+  - iter#sequence#filtermap
+  - iter#sequence#map
+  - iter#sequence#filter
+  - iter#sequence#reject
 position: 42
 ---
 

@@ -14,7 +14,7 @@ similarHelpers:
   - core#slice#filter
   - core#slice#takefilter
   - core#slice#first
-  - it#sequence#takewhile
+  - iter#sequence#takewhile
 position: 195
 signatures:
   - "func TakeWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice"

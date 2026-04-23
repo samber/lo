@@ -2,7 +2,7 @@
 name: Keyify
 slug: keyify
 sourceRef: it/seq.go#L720
-category: it
+category: iter
 subCategory: slice
 signatures:
   - "func Keyify[T comparable](collection iter.Seq[T]) map[T]struct{}"

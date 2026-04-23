@@ -2,18 +2,18 @@
 name: SampleBy
 slug: sampleby
 sourceRef: it/find.go#L455
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func SampleBy[T any](collection iter.Seq[T], randomIntGenerator func(int) int) T"
 playUrl: https://go.dev/play/p/QQooySxORib
 variantHelpers:
-  - it#find#sampleby
+  - iter#find#sampleby
 similarHelpers:
   - core#slice#sample
-  - it#find#sample
-  - it#find#samples
-  - it#find#samplesby
+  - iter#find#sample
+  - iter#find#samples
+  - iter#find#samplesby
 position: 160
 ---
 

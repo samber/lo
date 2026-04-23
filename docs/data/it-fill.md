@@ -2,7 +2,7 @@
 name: Fill
 slug: fill
 sourceRef: it/seq.go#L26
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Fill[T lo.Clonable[T], I ~func(func(T) bool)](collection I, initial T) I"

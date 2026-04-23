@@ -2,13 +2,13 @@
 name: LastOr
 slug: lastor
 sourceRef: it/find.go#L407
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func LastOr[T any](collection iter.Seq[T], fallback T) T"
 playUrl: https://go.dev/play/p/HNubjW2Mrxs
 variantHelpers:
-  - it#find#lastor
+  - iter#find#lastor
 similarHelpers:
   - core#slice#lastor
 position: 570

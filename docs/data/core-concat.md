@@ -8,7 +8,7 @@ playUrl: https://go.dev/play/p/Ux2UuR2xpRK
 variantHelpers:
   - core#slice#concat
 similarHelpers:
-  - it#sequence#concat
+  - iter#sequence#concat
   - core#slice#flatten
   - core#intersection#union
 position: 160

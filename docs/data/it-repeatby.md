@@ -2,17 +2,17 @@
 name: RepeatBy
 slug: repeatby
 sourceRef: it/seq.go#L388
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func RepeatBy[T any](count int, callback func(index int) T) iter.Seq[T]"
 playUrl: https://go.dev/play/p/i7BuZQBcUzZ
 variantHelpers:
-  - it#sequence#repeatby
+  - iter#sequence#repeatby
 similarHelpers:
   - core#slice#repeat
   - core#slice#times
-  - it#sequence#times
+  - iter#sequence#times
 position: 130
 ---
 

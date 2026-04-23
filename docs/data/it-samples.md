@@ -2,18 +2,18 @@
 name: Samples
 slug: samples
 sourceRef: it/find.go#L467
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func Samples[T any, I ~func(func(T) bool)](collection I, count int) I"
 playUrl: https://go.dev/play/p/GUTFx9LQ8pP
 variantHelpers:
-  - it#find#samples
+  - iter#find#samples
 similarHelpers:
   - core#slice#samples
-  - it#find#sample
-  - it#find#sampleby
-  - it#find#samplesby
+  - iter#find#sample
+  - iter#find#sampleby
+  - iter#find#samplesby
 position: 610
 ---
 

@@ -2,13 +2,13 @@
 name: LatestBy
 slug: latestby
 sourceRef: it/find.go#L353
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func LatestBy[T any](collection iter.Seq[T], transform func(item T) time.Time) T"
 playUrl: https://go.dev/play/p/o_daRzHrDUU
 variantHelpers:
-  - it#find#latestby
+  - iter#find#latestby
 similarHelpers:
   - core#slice#latestby
 position: 530

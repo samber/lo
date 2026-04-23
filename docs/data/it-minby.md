@@ -2,17 +2,17 @@
 name: MinBy
 slug: minby
 sourceRef: it/find.go#L242
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func MinBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) T"
 playUrl: https://go.dev/play/p/J5koo8khN-g
 variantHelpers:
-  - it#find#minby
+  - iter#find#minby
 similarHelpers:
   - core#slice#minby
-  - it#find#maxby
-  - it#find#min
+  - iter#find#maxby
+  - iter#find#min
 position: 140
 ---
 

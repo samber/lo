@@ -2,11 +2,11 @@
 name: Mean
 slug: mean
 sourceRef: exp/simd/math_avx.go#L352
-category: exp
+category: experimental
 subCategory: simd
 similarHelpers:
-  - exp#simd#mean
-  - exp#simd#meanby
+  - experimental#simd#mean
+  - experimental#simd#meanby
 position: 10
 signatures:
   - "func MeanInt8x16[T ~int8](collection []T) T"

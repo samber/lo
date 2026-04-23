@@ -2,16 +2,16 @@
 name: Chunk
 slug: chunk
 sourceRef: it/seq.go#L264
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Chunk[T any](collection iter.Seq[T], size int) iter.Seq[[]T]"
 playUrl: https://go.dev/play/p/qo8esZ_L60Q
 variantHelpers:
-  - it#sequence#chunk
+  - iter#sequence#chunk
 similarHelpers:
   - core#slice#chunk
-  - it#sequence#partitionby
+  - iter#sequence#partitionby
 position: 60
 ---
 

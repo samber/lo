@@ -2,17 +2,17 @@
 name: Buffer
 slug: buffer
 sourceRef: it/seq.go#L1162
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Buffer[T any](seq iter.Seq[T], size int) iter.Seq[[]T]"
 playUrl: https://go.dev/play/p/zDZdcCA20ut
 variantHelpers:
-  - it#sequence#buffer
+  - iter#sequence#buffer
 similarHelpers:
-  - it#sequence#chunk
-  - it#sequence#sliding
-  - it#sequence#window
+  - iter#sequence#chunk
+  - iter#sequence#sliding
+  - iter#sequence#window
 position: 65
 ---
 

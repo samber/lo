@@ -2,17 +2,17 @@
 name: Range
 slug: range
 sourceRef: it/math.go#L12
-category: it
+category: iter
 subCategory: math
 signatures:
   - "func Range(elementNum int) iter.Seq[int]"
 playUrl: "https://go.dev/play/p/79QUZBa8Ukn"
 variantHelpers:
-  - it#math#range
+  - iter#math#range
 similarHelpers:
   - core#slice#range
-  - it#math#rangefrom
-  - it#math#rangewithsteps
+  - iter#math#rangefrom
+  - iter#math#rangewithsteps
 position: 0
 ---
 

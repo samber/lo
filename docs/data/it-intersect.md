@@ -2,18 +2,18 @@
 name: Intersect
 slug: intersect
 sourceRef: it/intersect.go#L78
-category: it
+category: iter
 subCategory: intersect
 signatures:
   - "func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I"
 playUrl: "https://go.dev/play/p/kz3cGhGZZWF"
 variantHelpers:
-  - it#intersect#intersect
+  - iter#intersect#intersect
 similarHelpers:
-  - it#intersect#intersectby
+  - iter#intersect#intersectby
   - core#slice#intersect
   - core#slice#intersectby
-  - it#intersect#union
+  - iter#intersect#union
 position: 10
 ---
 

@@ -2,16 +2,16 @@
 name: LastIndexOf
 slug: lastindexof
 sourceRef: it/find.go#L34
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func LastIndexOf[T comparable](collection iter.Seq[T], element T) int"
 playUrl: https://go.dev/play/p/QPATR3VC5wT
 variantHelpers:
-  - it#find#lastindexof
+  - iter#find#lastindexof
 similarHelpers:
   - core#slice#lastindexof
-  - it#find#indexof
+  - iter#find#indexof
 position: 10
 ---
 

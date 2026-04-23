@@ -2,17 +2,17 @@
 name: First
 slug: first
 sourceRef: it/find.go#L362
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func First[T any](collection iter.Seq[T]) (T, bool)"
 playUrl: https://go.dev/play/p/EhNyrc8jPfY
 variantHelpers:
-  - it#find#first
+  - iter#find#first
 similarHelpers:
   - core#slice#first
-  - it#find#last
-  - it#find#firstor
+  - iter#find#last
+  - iter#find#firstor
 position: 120
 ---
 

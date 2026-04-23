@@ -2,18 +2,18 @@
 name: DropLast
 slug: droplast
 sourceRef: it/seq.go#L512
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func DropLast[T any, I ~func(func(T) bool)](collection I, n int) I"
 variantHelpers:
-  - it#sequence#droplast
+  - iter#sequence#droplast
 similarHelpers:
-  - it#sequence#drop
-  - it#sequence#dropwhile
-  - it#sequence#droplastwhile
-  - it#sequence#trim
-  - it#sequence#trimsuffix
+  - iter#sequence#drop
+  - iter#sequence#dropwhile
+  - iter#sequence#droplastwhile
+  - iter#sequence#trim
+  - iter#sequence#trimsuffix
 position: 78
 ---
 

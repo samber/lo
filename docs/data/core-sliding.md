@@ -12,7 +12,7 @@ similarHelpers:
   - core#slice#chunk
   - core#slice#partitionby
   - core#slice#flatten
-  - it#sequence#sliding
+  - iter#sequence#sliding
 position: 150
 signatures:
   - "func Sliding[T any, Slice ~[]T](collection Slice, size, step int) []Slice"

@@ -2,12 +2,12 @@
 name: ToAnySeq
 slug: toanyseq
 sourceRef: it/type_manipulation.go#L11
-category: it
+category: iter
 subCategory: type
 signatures:
   - "func ToAnySeq[T any](collection iter.Seq[T]) iter.Seq[any]"
 variantHelpers:
-  - it#type#fromanyseq
+  - iter#type#fromanyseq
 playUrl: "https://go.dev/play/p/ktE4IMXDMxv"
 similarHelpers:
   - core#type#toany

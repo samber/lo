@@ -2,13 +2,13 @@
 name: NthOr
 slug: nthor
 sourceRef: it/find.go#L433
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func NthOr[T any, N constraints.Integer](collection iter.Seq[T], nth N, fallback T) T"
 playUrl: https://go.dev/play/p/MNweuhpy4Ym
 variantHelpers:
-  - it#find#nthor
+  - iter#find#nthor
 similarHelpers:
   - core#slice#nthor
 position: 590

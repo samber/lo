@@ -2,13 +2,13 @@
 name: SomeBy
 slug: someby
 sourceRef: it/intersect.go#L56
-category: it
+category: iter
 subCategory: intersect
 signatures:
   - "func SomeBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool"
 playUrl: https://go.dev/play/p/PDT6dWCl7Md
 variantHelpers:
-  - it#intersect#someby
+  - iter#intersect#someby
 similarHelpers:
   - core#slice#someby
 position: 670

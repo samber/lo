@@ -13,7 +13,7 @@ similarHelpers:
   - core#slice#takewhile
   - core#slice#filtermap
   - core#slice#filterreject
-  - it#sequence#takefilter
+  - iter#sequence#takefilter
 position: 125
 signatures:
   - "func TakeFilter[T any, Slice ~[]T](collection Slice, n int, predicate func(item T, index int) bool) Slice"

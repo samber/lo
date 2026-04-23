@@ -2,13 +2,13 @@
 name: NoneBy
 slug: noneby
 sourceRef: it/intersect.go#L69
-category: it
+category: iter
 subCategory: intersect
 signatures:
   - "func NoneBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool"
 playUrl: https://go.dev/play/p/PR7ddQ7Ckz5
 variantHelpers:
-  - it#intersect#noneby
+  - iter#intersect#noneby
 similarHelpers:
   - core#slice#noneby
 position: 690

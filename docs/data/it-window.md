@@ -2,13 +2,13 @@
 name: Window
 slug: window
 sourceRef: it/seq.go#L318
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Window[T any](collection iter.Seq[T], size int) iter.Seq[[]T]"
 playUrl: https://go.dev/play/p/_1BzQYtKBhi
 variantHelpers:
-  - it#sequence#window
+  - iter#sequence#window
 similarHelpers:
   - core#slice#window
 position: 70

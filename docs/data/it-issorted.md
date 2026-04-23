@@ -2,7 +2,7 @@
 name: IsSorted
 slug: issorted
 sourceRef: it/seq.go#L720
-category: it
+category: iter
 subCategory: slice
 signatures:
   - "func IsSorted[T constraints.Ordered](collection iter.Seq[T]) bool"

@@ -2,13 +2,13 @@
 name: SumBy
 slug: sumby
 sourceRef: it/math.go#L74
-category: it
+category: iter
 subCategory: math
 signatures:
   - "func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], transform func(item T) R) R"
 playUrl: https://go.dev/play/p/ZNiqXNMu5QP
 variantHelpers:
-  - it#math#sumby
+  - iter#math#sumby
 similarHelpers:
   - core#slice#sumby
   - core#slice#sum

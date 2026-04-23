@@ -2,16 +2,16 @@
 name: FindOrElse
 slug: findorelse
 sourceRef: it/find.go#L147
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func FindOrElse[T any](collection iter.Seq[T], fallback T, predicate func(item T) bool) T"
 playUrl: https://go.dev/play/p/1harvaiGMfI
 variantHelpers:
-  - it#find#findorelse
+  - iter#find#findorelse
 similarHelpers:
   - core#slice#findorelse
-  - it#find#find
+  - iter#find#find
 position: 70
 ---
 

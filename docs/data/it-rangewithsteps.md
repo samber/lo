@@ -2,17 +2,17 @@
 name: RangeWithSteps
 slug: rangewithsteps
 sourceRef: it/math.go#L35
-category: it
+category: iter
 subCategory: math
 signatures:
   - "func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step T) iter.Seq[T]"
 playUrl: "https://go.dev/play/p/qxm2YNLG0vT"
 variantHelpers:
-  - it#math#rangewithsteps
+  - iter#math#rangewithsteps
 similarHelpers:
   - core#slice#rangewithsteps
-  - it#math#range
-  - it#math#rangefrom
+  - iter#math#range
+  - iter#math#rangefrom
 position: 20
 ---
 

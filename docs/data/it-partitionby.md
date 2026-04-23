@@ -2,7 +2,7 @@
 name: PartitionBy
 slug: partitionby
 sourceRef: it/seq.go#L26
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func PartitionBy[T any, K comparable](collection iter.Seq[T], transform func(item T) K) [][]T"

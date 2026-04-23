@@ -2,15 +2,15 @@
 name: Sum / SumBy
 slug: sum
 sourceRef: it/math.go#L59
-category: it
+category: iter
 subCategory: math
 signatures:
   - "func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T]) T"
   - "func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], iteratee func(item T) R) R"
 playUrl: "https://go.dev/play/p/nHbGFOEIeTa"
 variantHelpers:
-  - it#math#sum
-  - it#math#sumby
+  - iter#math#sum
+  - iter#math#sumby
 similarHelpers:
   - core#slice#sum
   - core#slice#sumby

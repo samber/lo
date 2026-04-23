@@ -2,18 +2,18 @@
 name: MapToSeq
 slug: maptoseq
 sourceRef: it/map.go#L164
-category: it
+category: iter
 subCategory: map
 signatures:
   - "func MapToSeq[K comparable, V, R any](in map[K]V, transform func(key K, value V) R) iter.Seq[R]"
 variantHelpers:
-  - it#map#maptoseq
+  - iter#map#maptoseq
 similarHelpers:
   - core#map#maptoslice
-  - it#map#values
-  - it#map#keys
-  - it#map#entries
-  - it#map#filtermaptoseq
+  - iter#map#values
+  - iter#map#keys
+  - iter#map#entries
+  - iter#map#filtermaptoseq
 position: 52
 ---
 

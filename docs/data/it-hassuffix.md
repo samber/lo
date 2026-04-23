@@ -2,16 +2,16 @@
 name: HasSuffix
 slug: hassuffix
 sourceRef: it/find.go#L71
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func HasSuffix[T comparable](collection iter.Seq[T], suffix ...T) bool"
 playUrl: https://go.dev/play/p/r6bF9Rmq5S0
 variantHelpers:
-  - it#find#hassuffix
+  - iter#find#hassuffix
 similarHelpers:
   - core#slice#hassuffix
-  - it#find#hasprefix
+  - iter#find#hasprefix
 position: 30
 ---
 

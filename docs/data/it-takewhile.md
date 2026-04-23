@@ -2,12 +2,12 @@
 name: TakeWhile
 slug: takewhile
 sourceRef: it/seq.go#L706
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func TakeWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I"
 variantHelpers:
-  - it#sequence#takewhile
+  - iter#sequence#takewhile
 similarHelpers:
   - core#slice#takewhile
 position: 120

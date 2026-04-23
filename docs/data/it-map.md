@@ -2,19 +2,19 @@
 name: Map
 slug: map
 sourceRef: it/seq.go#L51
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Map[T, R any](collection iter.Seq[T], transform func(item T) R) iter.Seq[R]"
   - "func MapI[T, R any](collection iter.Seq[T], transform func(item T, index int) R) iter.Seq[R]"
 playUrl: "https://go.dev/play/p/rWZiPB-RZOo"
 variantHelpers:
-  - it#sequence#map
-  - it#sequence#mapi
+  - iter#sequence#map
+  - iter#sequence#mapi
 similarHelpers:
   - core#slice#map
-  - it#sequence#filtermap
-  - it#sequence#flatmap
+  - iter#sequence#filtermap
+  - iter#sequence#flatmap
 position: 20
 ---
 

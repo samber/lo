@@ -2,13 +2,13 @@
 name: WithoutBy
 slug: withoutby
 sourceRef: it/intersect.go#L159
-category: it
+category: iter
 subCategory: intersect
 signatures:
   - "func WithoutBy[T any, K comparable, I ~func(func(T) bool)](collection I, transform func(item T) K, exclude ...K) I"
 playUrl: "https://go.dev/play/p/Hm734hnLnLI"
 variantHelpers:
-  - it#intersect#withoutby
+  - iter#intersect#withoutby
 similarHelpers:
   - core#slice#withoutby
 position: 700

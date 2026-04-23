@@ -2,13 +2,13 @@
 name: EveryBy
 slug: everyby
 sourceRef: it/intersect.go#L43
-category: it
+category: iter
 subCategory: intersect
 signatures:
   - "func EveryBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool"
 playUrl: https://go.dev/play/p/7OvV1BRWsER
 variantHelpers:
-  - it#intersect#everyby
+  - iter#intersect#everyby
 similarHelpers:
   - core#slice#everyby
 position: 660

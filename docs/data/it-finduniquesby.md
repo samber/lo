@@ -2,13 +2,13 @@
 name: FindUniquesBy
 slug: finduniquesby
 sourceRef: it/find.go#L163
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func FindUniquesBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I"
 playUrl: https://go.dev/play/p/TiwGIzeDuML
 variantHelpers:
-  - it#find#finduniquesby
+  - iter#find#finduniquesby
 similarHelpers:
   - core#slice#finduniquesby
 position: 630

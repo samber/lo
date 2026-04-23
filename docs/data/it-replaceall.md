@@ -2,12 +2,12 @@
 name: ReplaceAll
 slug: replaceall
 sourceRef: it/seq.go#L699
-category: it
+category: iter
 subCategory: slice
 signatures:
   - "func ReplaceAll[T comparable, I ~func(func(T) bool)](collection I, old, nEw T) I"
 variantHelpers:
-  - it#slice#replaceall
+  - iter#slice#replaceall
 similarHelpers:
   - core#slice#replaceall
 position: 191

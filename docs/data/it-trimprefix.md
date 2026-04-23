@@ -2,7 +2,7 @@
 name: TrimPrefix
 slug: trimprefix
 sourceRef: it/seq.go#L778
-category: it
+category: iter
 subCategory: string
 signatures:
   - "func TrimPrefix[T comparable, I ~func(func(T) bool)](collection I, prefix []T) I"

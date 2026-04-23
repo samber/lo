@@ -2,13 +2,13 @@
 name: UniqKeys
 slug: uniqkeys
 sourceRef: it/map.go#L26
-category: it
+category: iter
 subCategory: map
 signatures:
   - "func UniqKeys[K comparable, V any](in ...map[K]V) iter.Seq[K]"
 playUrl: "https://go.dev/play/p/_NicwfgAHbO"
 variantHelpers:
-  - it#map#uniqkeys
+  - iter#map#uniqkeys
 similarHelpers:
   - core#slice#uniqkeys
 position: 800

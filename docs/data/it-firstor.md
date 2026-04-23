@@ -2,13 +2,13 @@
 name: FirstOr
 slug: firstor
 sourceRef: it/find.go#L377
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func FirstOr[T any](collection iter.Seq[T], fallback T) T"
 playUrl: https://go.dev/play/p/wGFXI5NHkE2
 variantHelpers:
-  - it#find#firstor
+  - iter#find#firstor
 similarHelpers:
   - core#slice#firstor
 position: 550

@@ -2,17 +2,17 @@
 name: ForEach
 slug: foreach
 sourceRef: it/seq.go#L166
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func ForEach[T any](collection iter.Seq[T], callback func(item T))"
 playUrl: "https://go.dev/play/p/agIsKpG-S-P"
 variantHelpers:
-  - it#sequence#foreach
-  - it#sequence#foreachi
+  - iter#sequence#foreach
+  - iter#sequence#foreachi
 similarHelpers:
   - core#slice#foreach
-  - it#sequence#map
+  - iter#sequence#map
 position: 40
 ---
 

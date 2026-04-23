@@ -2,16 +2,16 @@
 name: Assign
 slug: assign
 sourceRef: it/map.go#L122
-category: it
+category: iter
 subCategory: map
 signatures:
   - "func Assign[K comparable, V any, Map ~map[K]V](maps ...iter.Seq[Map]) Map"
 variantHelpers:
-  - it#map#assign
+  - iter#map#assign
 similarHelpers:
   - core#map#assign
-  - it#map#fromentries
-  - it#map#invert
+  - iter#map#fromentries
+  - iter#map#invert
 position: 50
 ---
 

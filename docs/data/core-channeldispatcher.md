@@ -9,8 +9,8 @@ signatures:
 similarHelpers:
   - core#channel#fanin
   - core#channel#fanout
-  - it#channel#seqtochannel
-  - it#channel#channeltoseq
+  - iter#channel#seqtochannel
+  - iter#channel#channeltoseq
 position: 250
 ---
 

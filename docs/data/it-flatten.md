@@ -2,7 +2,7 @@
 name: Flatten
 slug: flatten
 sourceRef: it/seq.go#L26
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Flatten[T any, I ~func(func(T) bool)](collection []I) I"

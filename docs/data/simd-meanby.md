@@ -2,11 +2,11 @@
 name: MeanBy
 slug: meanby
 sourceRef: exp/simd/math.go#L1006
-category: exp
+category: experimental
 subCategory: simd
 similarHelpers:
-  - exp#simd#mean
-  - exp#simd#sumby
+  - experimental#simd#mean
+  - experimental#simd#sumby
 position: 30
 signatures:
   - "func MeanByInt8[T any, R ~int8](collection []T, iteratee func(item T) R) R"

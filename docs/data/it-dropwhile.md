@@ -2,14 +2,14 @@
 name: DropWhile
 slug: dropwhile
 sourceRef: it/seq.go#L180
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func DropWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I"
 variantHelpers: []
 similarHelpers:
   - core#slice#dropwhile
-  - it#sequence#drop
+  - iter#sequence#drop
 position: 162
 ---
 

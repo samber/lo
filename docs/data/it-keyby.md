@@ -2,13 +2,13 @@
 name: KeyBy
 slug: keyby
 sourceRef: it/seq.go#L398
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func KeyBy[K comparable, V any](collection iter.Seq[V], transform func(item V) K) map[K]V"
 playUrl: https://go.dev/play/p/MMaHpzTqY0a
 variantHelpers:
-  - it#map#associate
+  - iter#map#associate
 similarHelpers:
   - core#slice#keyby
   - core#slice#associate

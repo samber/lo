@@ -2,13 +2,13 @@
 name: MinIndexBy
 slug: minindexby
 sourceRef: it/find.go#L258
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func MinIndexBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) (T, int)"
 playUrl: https://go.dev/play/p/blldzWJpqVa
 variantHelpers:
-  - it#find#minindexby
+  - iter#find#minindexby
 similarHelpers:
   - core#slice#minindexby
 position: 470

@@ -2,13 +2,13 @@
 name: Mode
 slug: mode
 sourceRef: it/math.go#L124
-category: it
+category: iter
 subCategory: math
 signatures:
   - "func Mode[T constraints.Integer | constraints.Float](collection iter.Seq[T]) []T"
 playUrl: "https://go.dev/play/p/c_cmMMA5EhH"
 variantHelpers:
-  - it#math#mode
+  - iter#math#mode
 similarHelpers:
   - core#slice#mode
 position: 40

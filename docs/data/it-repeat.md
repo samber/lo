@@ -2,13 +2,13 @@
 name: Repeat
 slug: repeat
 sourceRef: it/seq.go#L384
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Repeat[T lo.Clonable[T]](count int, initial T) iter.Seq[T]"
 playUrl: https://go.dev/play/p/xs-aq0p_uDP
 variantHelpers:
-  - it#slice#repeatby
+  - iter#slice#repeatby
 similarHelpers:
   - core#slice#repeat
   - core#slice#repeatby

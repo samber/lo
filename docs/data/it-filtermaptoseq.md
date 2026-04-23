@@ -2,17 +2,17 @@
 name: FilterMapToSeq
 slug: filtermaptoseq
 sourceRef: it/map.go#L178
-category: it
+category: iter
 subCategory: map
 signatures:
   - "func FilterMapToSeq[K comparable, V, R any](in map[K]V, transform func(key K, value V) (R, bool)) iter.Seq[R]"
 variantHelpers:
-  - it#map#filtermaptoseq
+  - iter#map#filtermaptoseq
 similarHelpers:
-  - it#map#maptoseq
+  - iter#map#maptoseq
   - core#map#filtermaptoslice
-  - it#map#filterkeys
-  - it#map#filtervalues
+  - iter#map#filterkeys
+  - iter#map#filtervalues
 position: 54
 ---
 

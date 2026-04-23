@@ -2,13 +2,13 @@
 name: Concat
 slug: concat
 sourceRef: it/seq.go#L358
-category: it
+category: iter
 subCategory: sequence
 playUrl: https://go.dev/play/p/Fa0u7xT2JOR
 variantHelpers:
-  - it#sequence#concat
+  - iter#sequence#concat
 similarHelpers:
-  - it#sequence#flatten
+  - iter#sequence#flatten
   - core#slice#concat
 position: 160
 signatures:

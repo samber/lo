@@ -2,13 +2,13 @@
 name: UniqBy
 slug: uniqby
 sourceRef: it/seq.go#L225
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I"
 playUrl: https://go.dev/play/p/HKrt3AvwMTR
 variantHelpers:
-  - it#slice#uniq
+  - iter#slice#uniq
 similarHelpers:
   - core#slice#uniqby
   - core#slice#uniq

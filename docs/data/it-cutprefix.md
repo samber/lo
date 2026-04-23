@@ -2,7 +2,7 @@
 name: CutPrefix
 slug: cutprefix
 sourceRef: it/seq.go#L778
-category: it
+category: iter
 subCategory: string
 signatures:
   - "func CutPrefix[T comparable, I ~func(func(T) bool)](collection I, separator []T) (after I, found bool)"

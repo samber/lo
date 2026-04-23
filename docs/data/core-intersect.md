@@ -9,8 +9,8 @@ variantHelpers:
   - core#intersect#intersect
 similarHelpers:
   - core#intersect#intersectby
-  - it#intersect#intersect
-  - it#intersect#intersectby
+  - iter#intersect#intersect
+  - iter#intersect#intersectby
   - core#intersect#difference
   - core#intersect#union
   - core#intersect#without

@@ -2,7 +2,7 @@
 name: Interleave
 slug: interleave
 sourceRef: it/seq.go#L26
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Interleave[T any](collections ...iter.Seq[T]) iter.Seq[T]"

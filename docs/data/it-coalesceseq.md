@@ -2,14 +2,14 @@
 name: CoalesceSeq
 slug: coalesceseq
 sourceRef: it/type_manipulation.go#L65
-category: it
+category: iter
 subCategory: type
 signatures:
   - "func CoalesceSeq[T any](v ...iter.Seq[T]) (iter.Seq[T], bool)"
 variantHelpers:
-  - it#type#coalesceseq
+  - iter#type#coalesceseq
 similarHelpers:
-  - it#type#coalesceseqorempty
+  - iter#type#coalesceseqorempty
   - core#type#coalesce
   - core#type#coalesceslice
 position: 100

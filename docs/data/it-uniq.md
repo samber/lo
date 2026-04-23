@@ -2,16 +2,16 @@
 name: Uniq
 slug: uniq
 sourceRef: it/seq.go#L216
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Uniq[T comparable, I ~func(func(T) bool)](collection I) I"
 playUrl: https://go.dev/play/p/D-SenTW-ipj
 variantHelpers:
-  - it#sequence#uniq
+  - iter#sequence#uniq
 similarHelpers:
   - core#slice#uniq
-  - it#sequence#uniqby
+  - iter#sequence#uniqby
 position: 50
 ---
 

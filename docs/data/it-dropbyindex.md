@@ -2,13 +2,13 @@
 name: DropByIndex
 slug: dropbyindex
 sourceRef: it/seq.go#L581
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func DropByIndex[T any, I ~func(func(T) bool)](collection I, indexes ...int) I"
 playUrl: https://go.dev/play/p/vPbrZYgiU4q
 variantHelpers:
-  - it#slice#drop
+  - iter#slice#drop
 similarHelpers:
   - core#slice#dropbyindex
   - core#slice#withoutnth

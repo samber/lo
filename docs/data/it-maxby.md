@@ -2,17 +2,17 @@
 name: MaxBy
 slug: maxby
 sourceRef: it/find.go#L310
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func MaxBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) T"
 playUrl: https://go.dev/play/p/yBhXFJb5oxC
 variantHelpers:
-  - it#find#maxby
+  - iter#find#maxby
 similarHelpers:
   - core#slice#maxby
-  - it#find#minby
-  - it#find#max
+  - iter#find#minby
+  - iter#find#max
 position: 150
 ---
 
