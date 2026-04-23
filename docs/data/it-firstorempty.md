@@ -2,13 +2,13 @@
 name: FirstOrEmpty
 slug: firstorempty
 sourceRef: it/find.go#L370
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func FirstOrEmpty[T any](collection iter.Seq[T]) T"
 playUrl: https://go.dev/play/p/NTUTgPCfevx
 variantHelpers:
-  - it#find#firstorempty
+  - iter#find#firstorempty
 similarHelpers:
   - core#slice#firstorempty
 position: 540

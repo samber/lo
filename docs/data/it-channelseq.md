@@ -2,15 +2,15 @@
 name: ChannelToSeq
 slug: channeltoseq
 sourceRef: it/channel.go#L39
-category: it
+category: iter
 subCategory: channel
 signatures:
   - "func ChannelToSeq[T any](ch <-chan T) iter.Seq[T]"
 playUrl: "https://go.dev/play/p/IXqSs2Ooqpm"
 variantHelpers:
-  - it#channel#channeltoseq
+  - iter#channel#channeltoseq
 similarHelpers:
-  - it#channel#seqtochannel
+  - iter#channel#seqtochannel
 position: 10
 ---
 

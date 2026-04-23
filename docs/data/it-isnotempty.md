@@ -2,13 +2,13 @@
 name: IsNotEmpty
 slug: isnotempty
 sourceRef: it/type_manipulation.go#L59
-category: it
+category: iter
 subCategory: condition
 signatures:
   - "func IsNotEmpty[T any](collection iter.Seq[T]) bool"
 playUrl: "https://go.dev/play/p/G7hH3jJ0De5" 
 variantHelpers:
-  - it#condition#isempty
+  - iter#condition#isempty
 similarHelpers:
   - core#slice#isnotempty
   - core#slice#isempty

@@ -2,16 +2,16 @@
 name: ForEachWhile
 slug: foreachwhile
 sourceRef: it/seq.go#L180
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func ForEachWhile[T any](collection iter.Seq[T], predicate func(item T) bool)"
   - "func ForEachWhileI[T any](collection iter.Seq[T], predicate func(item T, index int) bool)"
 variantHelpers:
-  - it#sequence#foreachwhile
-  - it#sequence#foreachwhilei
+  - iter#sequence#foreachwhile
+  - iter#sequence#foreachwhilei
 similarHelpers:
-  - it#sequence#foreach
+  - iter#sequence#foreach
 position: 160
 ---
 

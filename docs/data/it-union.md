@@ -2,16 +2,16 @@
 name: Union
 slug: union
 sourceRef: it/intersect.go#L136
-category: it
+category: iter
 subCategory: intersect
 signatures:
   - "func Union[T comparable, I ~func(func(T) bool)](lists ...I) I"
 playUrl: "https://go.dev/play/p/ImIoFNpSUUB"
 variantHelpers:
-  - it#intersect#union
+  - iter#intersect#union
 similarHelpers:
   - core#slice#union
-  - it#intersect#intersect
+  - iter#intersect#intersect
 position: 20
 ---
 

@@ -2,7 +2,7 @@
 name: TrimSuffix
 slug: trimsuffix
 sourceRef: it/seq.go#L778
-category: it
+category: iter
 subCategory: string
 signatures:
   - "func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I"

@@ -2,16 +2,16 @@
 name: Subset
 slug: subset
 sourceRef: it/seq.go#L667
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Subset[T any, I ~func(func(T) bool)](collection I, offset, length int) I"
 variantHelpers:
-  - it#sequence#subset
+  - iter#sequence#subset
 similarHelpers:
-  - it#sequence#slice
-  - it#sequence#drop
-  - it#sequence#dropright
+  - iter#sequence#slice
+  - iter#sequence#drop
+  - iter#sequence#dropright
   - core#slice#slice
 position: 120
 ---

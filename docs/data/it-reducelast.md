@@ -2,17 +2,17 @@
 name: ReduceLast
 slug: reducelast
 sourceRef: it/seq.go#L153
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func ReduceLast[T, R any](collection iter.Seq[T], accumulator func(agg R, item T) R, initial R) R"
   - "func ReduceLastI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, index int) R, initial R) R"
 playUrl: https://go.dev/play/p/D2ZGZ2pN270
 variantHelpers:
-  - it#sequence#reduce
-  - it#sequence#reducei
-  - it#sequence#reducelast
-  - it#sequence#reducelasti
+  - iter#sequence#reduce
+  - iter#sequence#reducei
+  - iter#sequence#reducelast
+  - iter#sequence#reducelasti
 similarHelpers:
   - core#slice#reducelast
   - core#slice#reducelasti

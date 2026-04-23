@@ -2,10 +2,10 @@
 name: Max
 slug: max
 sourceRef: exp/simd/math_avx.go#L1279
-category: exp
+category: experimental
 subCategory: simd
 similarHelpers:
-  - exp#simd#max
+  - experimental#simd#max
 position: 30
 signatures:
   - "func MaxInt8x16[T ~int8](collection []T) T"

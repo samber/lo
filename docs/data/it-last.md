@@ -2,17 +2,17 @@
 name: Last
 slug: last
 sourceRef: it/find.go#L389
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func Last[T any](collection iter.Seq[T]) (T, bool)"
 playUrl: https://go.dev/play/p/eGZV-sSmn_Q
 variantHelpers:
-  - it#find#last
+  - iter#find#last
 similarHelpers:
   - core#slice#last
-  - it#find#first
-  - it#find#lastor
+  - iter#find#first
+  - iter#find#lastor
 position: 130
 ---
 

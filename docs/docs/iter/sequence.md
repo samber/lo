@@ -19,6 +19,6 @@ This page lists all operations on sequences, available in the `it` lo sub-packag
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList 
-  category="it"
+  category="iter"
   subCategory="sequence"
 />

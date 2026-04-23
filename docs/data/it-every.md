@@ -2,17 +2,17 @@
 name: Every
 slug: every
 sourceRef: it/intersect.go#L25
-category: it
+category: iter
 subCategory: intersect
 signatures:
   - "func Every[T comparable](collection iter.Seq[T], subset ...T) bool"
 playUrl: "https://go.dev/play/p/rwM9Y353aIC"
 variantHelpers:
-  - it#intersect#every
+  - iter#intersect#every
 similarHelpers:
   - core#slice#every
-  - it#intersect#some
-  - it#intersect#none
+  - iter#intersect#some
+  - iter#intersect#none
 position: 30
 ---
 

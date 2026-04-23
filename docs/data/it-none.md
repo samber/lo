@@ -2,13 +2,13 @@
 name: None
 slug: none
 sourceRef: it/intersect.go#L63
-category: it
+category: iter
 subCategory: intersect
 signatures:
   - "func None[T comparable](collection iter.Seq[T], subset ...T) bool"
 playUrl: "https://go.dev/play/p/L7mm5S4a8Yo"
 variantHelpers:
-  - it#intersect#none
+  - iter#intersect#none
 similarHelpers:
   - core#slice#none
 position: 680

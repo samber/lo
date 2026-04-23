@@ -2,7 +2,7 @@
 name: Empty
 slug: sequencestate
 sourceRef: it/type_manipulation.go#L43
-category: it
+category: iter
 subCategory: type
 signatures:
   - "func Empty[T any]() iter.Seq[T]"
@@ -11,11 +11,11 @@ signatures:
   - "func CoalesceSeq[T any](v ...iter.Seq[T]) (iter.Seq[T], bool)"
   - "func CoalesceSeqOrEmpty[T any](v ...iter.Seq[T]) iter.Seq[T]"
 variantHelpers:
-  - it#type#empty
-  - it#type#isempty
-  - it#type#isnotempty
-  - it#type#coalesceseq
-  - it#type#coalesceseqorempty
+  - iter#type#empty
+  - iter#type#isempty
+  - iter#type#isnotempty
+  - iter#type#coalesceseq
+  - iter#type#coalesceseqorempty
 similarHelpers:
   - core#type#isempty
   - core#type#isnotempty

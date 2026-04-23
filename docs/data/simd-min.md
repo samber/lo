@@ -2,10 +2,10 @@
 name: Min
 slug: min
 sourceRef: exp/simd/math_avx.go#L833
-category: exp
+category: experimental
 subCategory: simd
 similarHelpers:
-  - exp#simd#min
+  - experimental#simd#min
 position: 20
 signatures:
   - "func MinInt8x16[T ~int8](collection []T) T"

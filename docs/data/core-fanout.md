@@ -9,7 +9,7 @@ signatures:
 similarHelpers:
   - core#channel#fanin
   - core#channel#channeldispatcher
-  - it#channel#channelseq
+  - iter#channel#channelseq
 position: 256
 ---
 

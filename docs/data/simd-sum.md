@@ -2,11 +2,11 @@
 name: Sum
 slug: sum
 sourceRef: exp/simd/math_avx.go#L14
-category: exp
+category: experimental
 subCategory: simd
 similarHelpers:
-  - exp#simd#sum
-  - exp#simd#sumby
+  - experimental#simd#sum
+  - experimental#simd#sumby
 position: 0
 signatures:
   - "func SumInt8x16[T ~int8](collection []T) T"

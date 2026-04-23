@@ -2,12 +2,12 @@
 name: Take
 slug: take
 sourceRef: it/seq.go#L682
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Take[T any, I ~func(func(T) bool)](collection I, n int) I"
 variantHelpers:
-  - it#sequence#take
+  - iter#sequence#take
 similarHelpers:
   - core#slice#take
 position: 110

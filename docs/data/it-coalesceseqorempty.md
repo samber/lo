@@ -2,14 +2,14 @@
 name: CoalesceSeqOrEmpty
 slug: coalesceseqorempty
 sourceRef: it/type_manipulation.go#L76
-category: it
+category: iter
 subCategory: type
 signatures:
   - "func CoalesceSeqOrEmpty[T any](v ...iter.Seq[T]) iter.Seq[T]"
 variantHelpers:
-  - it#type#coalesceseqorempty
+  - iter#type#coalesceseqorempty
 similarHelpers:
-  - it#type#coalesceseq
+  - iter#type#coalesceseq
   - core#type#coalesceorempty
   - core#type#coalescesliceorempty
 position: 102

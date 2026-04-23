@@ -2,10 +2,10 @@
 name: Clamp
 slug: clamp
 sourceRef: exp/simd/math_avx.go#L453
-category: exp
+category: experimental
 subCategory: simd
 similarHelpers:
-  - exp#simd#clamp
+  - experimental#simd#clamp
 position: 40
 signatures:
   - "func ClampInt8x16[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice"

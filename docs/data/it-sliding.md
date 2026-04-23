@@ -2,13 +2,13 @@
 name: Sliding
 slug: sliding
 sourceRef: it/seq.go#L329
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T]"
 playUrl: https://go.dev/play/p/mzhO4CZeiik
 variantHelpers:
-  - it#sequence#sliding
+  - iter#sequence#sliding
 similarHelpers:
   - core#slice#sliding
 position: 80

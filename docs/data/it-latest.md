@@ -2,13 +2,13 @@
 name: Latest
 slug: latest
 sourceRef: it/find.go#L346
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func Latest(times iter.Seq[time.Time]) time.Time"
 playUrl: https://go.dev/play/p/r5Yq6ATSHoH
 variantHelpers:
-  - it#find#latest
+  - iter#find#latest
 similarHelpers:
   - core#slice#latest
 position: 520

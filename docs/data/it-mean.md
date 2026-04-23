@@ -2,15 +2,15 @@
 name: Mean / MeanBy
 slug: mean
 sourceRef: it/math.go#L80
-category: it
+category: iter
 subCategory: math
 signatures:
   - "func Mean[T constraints.Float | constraints.Integer](collection iter.Seq[T]) T"
   - "func MeanBy[T any, R constraints.Float | constraints.Integer](collection iter.Seq[T], iteratee func(item T) R) R"
 playUrl: "https://go.dev/play/p/Lez0CsvVRl_l"
 variantHelpers:
-  - it#math#mean
-  - it#math#meanby
+  - iter#math#mean
+  - iter#math#meanby
 similarHelpers:
   - core#slice#mean
   - core#slice#meanby

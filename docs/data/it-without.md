@@ -2,16 +2,16 @@
 name: Without
 slug: without
 sourceRef: it/intersect.go#L155
-category: it
+category: iter
 subCategory: intersect
 signatures:
   - "func Without[T comparable, I ~func(func(T) bool)](collection I, exclude ...T) I"
 playUrl: "https://go.dev/play/p/LbN55AVBZ7h"
 variantHelpers:
-  - it#intersect#without
+  - iter#intersect#without
 similarHelpers:
   - core#slice#without
-  - it#intersect#intersect
+  - iter#intersect#intersect
 position: 50
 ---
 

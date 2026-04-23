@@ -2,17 +2,17 @@
 name: IsEmpty
 slug: isempty
 sourceRef: it/type_manipulation.go#L50
-category: it
+category: iter
 subCategory: type
 signatures:
   - "func IsEmpty[T any](collection iter.Seq[T]) bool"
 playUrl: https://go.dev/play/p/krZ-laaVi2C
 variantHelpers:
-  - it#type#isempty
+  - iter#type#isempty
 similarHelpers:
-  - it#type#isnotempty
-  - it#type#empty
-  - it#sequence#length
+  - iter#type#isnotempty
+  - iter#type#empty
+  - iter#sequence#length
 position: 10
 ---
 

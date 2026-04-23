@@ -2,15 +2,15 @@
 name: TakeFilter
 slug: takefilter
 sourceRef: it/seq.go#L725
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func TakeFilter[T any, I ~func(func(T) bool)](collection I, n int, predicate func(item T) bool) I"
   - "func TakeFilterI[T any, I ~func(func(T) bool)](collection I, n int, predicate func(item T, index int) bool) I"
 playUrl: https://go.dev/play/p/Db68Bhu4MCA
 variantHelpers:
-  - it#sequence#takefilter
-  - it#sequence#takefilteri
+  - iter#sequence#takefilter
+  - iter#sequence#takefilteri
 similarHelpers:
   - core#slice#takefilter
 position: 130

@@ -2,17 +2,17 @@
 name: FindLastIndexOf
 slug: findlastindexof
 sourceRef: it/find.go#L127
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func FindLastIndexOf[T any](collection iter.Seq[T], predicate func(item T) bool) (T, int, bool)"
 playUrl: https://go.dev/play/p/ezz6hXaC4Md
 variantHelpers:
-  - it#find#findlastindexof
+  - iter#find#findlastindexof
 similarHelpers:
   - core#slice#findlastindexof
-  - it#find#findindexof
-  - it#find#find
+  - iter#find#findindexof
+  - iter#find#find
 position: 60
 ---
 

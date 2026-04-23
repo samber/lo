@@ -2,11 +2,11 @@
 name: SumBy
 slug: sumby
 sourceRef: exp/simd/math.go#L841
-category: exp
+category: experimental
 subCategory: simd
 similarHelpers:
-  - exp#simd#sum
-  - exp#simd#meanby
+  - experimental#simd#sum
+  - experimental#simd#meanby
 position: 20
 signatures:
   - "func SumByInt8[T any, R ~int8](collection []T, iteratee func(item T) R) R"

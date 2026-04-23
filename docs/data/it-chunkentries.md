@@ -2,17 +2,17 @@
 name: ChunkEntries
 slug: chunkentries
 sourceRef: it/map.go#L138
-category: it
+category: iter
 subCategory: map
 signatures:
   - "func ChunkEntries[K comparable, V any](m map[K]V, size int) iter.Seq[map[K]V]"
 variantHelpers:
-  - it#map#chunkentries
+  - iter#map#chunkentries
 similarHelpers:
   - core#map#chunkentries
-  - it#sequence#chunk
-  - it#map#keys
-  - it#map#values
+  - iter#sequence#chunk
+  - iter#map#keys
+  - iter#map#values
 position: 60
 ---
 

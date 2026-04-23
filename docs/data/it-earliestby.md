@@ -2,13 +2,13 @@
 name: EarliestBy
 slug: earliestby
 sourceRef: it/find.go#L285
-category: it
+category: iter
 subCategory: find
 signatures:
   - "func EarliestBy[T any](collection iter.Seq[T], transform func(item T) time.Time) T"
 playUrl: https://go.dev/play/p/y_Pf3Jmw-B4
 variantHelpers:
-  - it#find#earliestby
+  - iter#find#earliestby
 similarHelpers:
   - core#slice#earliestby
 position: 510

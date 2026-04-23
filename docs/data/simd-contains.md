@@ -2,10 +2,10 @@
 name: Contains
 slug: contains
 sourceRef: exp/simd/intersect_avx512.go#L9
-category: exp
+category: experimental
 subCategory: simd
 similarHelpers:
-  - exp#simd#contains
+  - experimental#simd#contains
 position: 0
 signatures:
   - "func ContainsInt8x16[T ~int8](collection []T, target T) bool"

@@ -2,16 +2,16 @@
 name: Drop
 slug: drop
 sourceRef: it/seq.go#L498
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Drop[T any, I ~func(func(T) bool)](collection I, n int) I"
 playUrl: https://go.dev/play/p/O1J1-uWc3z9
 variantHelpers:
-  - it#sequence#drop
+  - iter#sequence#drop
 similarHelpers:
   - core#slice#drop
-  - it#sequence#droplast
+  - iter#sequence#droplast
 position: 100
 ---
 

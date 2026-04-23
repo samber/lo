@@ -2,17 +2,17 @@
 name: SeqToChannel
 slug: seqtochannel
 sourceRef: it/channel.go#L12
-category: it
+category: iter
 subCategory: channel
 signatures:
   - "func SeqToChannel[T any](bufferSize int, collection iter.Seq[T]) <-chan T"
   - "func SeqToChannel2[K, V any](bufferSize int, collection iter.Seq2[K, V]) <-chan Tuple2[K, V]"
 playUrl: "https://go.dev/play/p/id3jqJPffT6"
 variantHelpers:
-  - it#channel#seqtochannel
-  - it#channel#seqtochannel2
+  - iter#channel#seqtochannel
+  - iter#channel#seqtochannel2
 similarHelpers:
-  - it#channel#channeltoseq
+  - iter#channel#channeltoseq
 position: 0
 ---
 

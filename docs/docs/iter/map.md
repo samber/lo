@@ -19,6 +19,6 @@ This page lists all operations on maps, available in the `it` lo sub-package.
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList 
-  category="it"
+  category="iter"
   subCategory="map"
 />

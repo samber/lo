@@ -2,16 +2,16 @@
 name: Splice
 slug: splice
 sourceRef: it/seq.go#L744
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Splice[T any, I ~func(func(T) bool)](collection I, index int, elements ...T) I"
 variantHelpers:
-  - it#sequence#splice
+  - iter#sequence#splice
 similarHelpers:
-  - it#sequence#slice
-  - it#sequence#replace
-  - it#sequence#replaceall
+  - iter#sequence#slice
+  - iter#sequence#replace
+  - iter#sequence#replaceall
   - core#slice#splice
 position: 122
 ---

@@ -2,15 +2,15 @@
 name: Reduce
 slug: reduce
 sourceRef: it/seq.go#L133
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Reduce[T, R any](collection iter.Seq[T], accumulator func(agg R, item T) R, initial R) R"
   - "func ReduceI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, index int) R, initial R) R"
 playUrl: "https://go.dev/play/p/FmkVUf39ZP_Y"
 variantHelpers:
-  - it#sequence#reduce
-  - it#sequence#reducei
+  - iter#sequence#reduce
+  - iter#sequence#reducei
 similarHelpers:
   - core#slice#reduce
   - core#slice#reducei

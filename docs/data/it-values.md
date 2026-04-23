@@ -2,17 +2,17 @@
 name: Values
 slug: values
 sourceRef: it/map.go#L44
-category: it
+category: iter
 subCategory: map
 signatures:
   - "func Values[K comparable, V any](in ...map[K]V) iter.Seq[V]"
 playUrl: https://go.dev/play/p/-WehUfGtC6C
 variantHelpers:
-  - it#map#values
+  - iter#map#values
 similarHelpers:
   - core#slice#values
-  - it#map#keys
-  - it#map#uniqvalues
+  - iter#map#keys
+  - iter#map#uniqvalues
 position: 10
 ---
 

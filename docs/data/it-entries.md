@@ -2,17 +2,17 @@
 name: Entries
 slug: entries
 sourceRef: it/map.go#L77
-category: it
+category: iter
 subCategory: map
 signatures:
   - "func Entries[K comparable, V any](in ...map[K]V) iter.Seq2[K, V]"
 playUrl: https://go.dev/play/p/ckLxqTE9KCz
 variantHelpers:
-  - it#map#entries
+  - iter#map#entries
 similarHelpers:
   - core#slice#entries
-  - it#map#fromentries
-  - it#map#topairs
+  - iter#map#fromentries
+  - iter#map#topairs
 position: 20
 ---
 

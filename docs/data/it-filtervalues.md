@@ -2,17 +2,17 @@
 name: FilterValues
 slug: filtervalues
 sourceRef: it/map.go#L253
-category: it
+category: iter
 subCategory: map
 signatures:
   - "func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) []V"
 variantHelpers:
-  - it#map#filtervalues
+  - iter#map#filtervalues
 similarHelpers:
   - core#map#filtervalues
-  - it#map#filterkeys
-  - it#map#keys
-  - it#map#values
+  - iter#map#filterkeys
+  - iter#map#keys
+  - iter#map#values
 position: 58
 ---
 

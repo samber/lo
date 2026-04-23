@@ -2,15 +2,15 @@
 name: Product / ProductBy
 slug: product
 sourceRef: it/math.go#L70
-category: it
+category: iter
 subCategory: math
 signatures:
   - "func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T]) T"
   - "func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection iter.Seq[T], iteratee func(item T) R) R"
 playUrl: "https://go.dev/play/p/AOMCD1Yl5Bc"
 variantHelpers:
-  - it#math#product
-  - it#math#productby
+  - iter#math#product
+  - iter#math#productby
 similarHelpers:
   - core#slice#product
   - core#slice#productby

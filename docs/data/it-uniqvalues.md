@@ -2,13 +2,13 @@
 name: UniqValues
 slug: uniqvalues
 sourceRef: it/map.go#L59
-category: it
+category: iter
 subCategory: map
 signatures:
   - "func UniqValues[K, V comparable](in ...map[K]V) iter.Seq[V]"
 playUrl: https://go.dev/play/p/QQv4zGrk-fF
 variantHelpers:
-  - it#map#uniqvalues
+  - iter#map#uniqvalues
 similarHelpers:
   - core#slice#uniqvalues
 position: 810

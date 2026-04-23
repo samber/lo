@@ -43,6 +43,6 @@ BenchmarkSumInt8/xlarge/AVX512-x64-4              10107534      118.1 ns/op
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList
-  category="exp"
+  category="experimental"
   subCategory="simd"
 />

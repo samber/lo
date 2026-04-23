@@ -2,13 +2,13 @@
 name: Slice
 slug: slice
 sourceRef: it/seq.go#L680
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Slice[T any, I ~func(func(T) bool)](collection I, start, end int) I"
 playUrl: "https://go.dev/play/p/5WqJN9-zv" 
 variantHelpers:
-  - it#slice#drop
+  - iter#slice#drop
 similarHelpers:
   - core#slice#slice
   - core#slice#chunk

@@ -2,13 +2,13 @@
 name: FromPairs
 slug: frompairs
 sourceRef: it/map.go#L104
-category: it
+category: iter
 subCategory: map
 signatures:
   - "func FromPairs[K comparable, V any](entries ...iter.Seq2[K, V]) map[K]V"
 playUrl: "https://go.dev/play/p/K3wL9j7TmXs" 
 variantHelpers:
-  - it#map#fromentries
+  - iter#map#fromentries
 similarHelpers:
   - core#slice#frompairs
   - core#slice#fromentries

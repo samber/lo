@@ -9,8 +9,8 @@ signatures:
 similarHelpers:
   - core#channel#channeltoslice
   - core#channel#buffer
-  - it#channel#seqtochannel
-  - it#channel#channeltoseq
+  - iter#channel#seqtochannel
+  - iter#channel#channeltoseq
 position: 251
 ---
 
