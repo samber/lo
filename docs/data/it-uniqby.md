@@ -8,7 +8,7 @@ signatures:
   - "func UniqBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I"
 playUrl: https://go.dev/play/p/HKrt3AvwMTR
 variantHelpers:
-  - iter#slice#uniq
+  - iter#sequence#uniq
 similarHelpers:
   - core#slice#uniqby
   - core#slice#uniq

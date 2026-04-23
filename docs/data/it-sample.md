@@ -12,8 +12,8 @@ variantHelpers:
 similarHelpers:
   - core#slice#sample
   - iter#find#samples
-  - iter#find#sampleBy
-  - iter#find#samplesBy
+  - iter#find#sampleby
+  - iter#find#samplesby
 position: 160
 ---
 

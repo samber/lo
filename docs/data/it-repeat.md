@@ -8,7 +8,7 @@ signatures:
   - "func Repeat[T lo.Clonable[T]](count int, initial T) iter.Seq[T]"
 playUrl: https://go.dev/play/p/xs-aq0p_uDP
 variantHelpers:
-  - iter#slice#repeatby
+  - iter#sequence#repeatby
 similarHelpers:
   - core#slice#repeat
   - core#slice#repeatby

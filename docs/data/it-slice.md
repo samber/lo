@@ -8,7 +8,7 @@ signatures:
   - "func Slice[T any, I ~func(func(T) bool)](collection I, start, end int) I"
 playUrl: "https://go.dev/play/p/5WqJN9-zv" 
 variantHelpers:
-  - iter#slice#drop
+  - iter#sequence#slice
 similarHelpers:
   - core#slice#slice
   - core#slice#chunk

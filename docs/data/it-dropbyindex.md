@@ -8,7 +8,7 @@ signatures:
   - "func DropByIndex[T any, I ~func(func(T) bool)](collection I, indexes ...int) I"
 playUrl: https://go.dev/play/p/vPbrZYgiU4q
 variantHelpers:
-  - iter#slice#drop
+  - iter#sequence#drop
 similarHelpers:
   - core#slice#dropbyindex
   - core#slice#withoutnth
