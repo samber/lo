@@ -8,7 +8,7 @@ signatures:
   - "func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int"
 playUrl: https://go.dev/play/p/m6G0o3huCOG
 variantHelpers:
-  - iter#find#count
+  - iter#sequence#count
 similarHelpers:
   - core#slice#countby
   - core#slice#count
