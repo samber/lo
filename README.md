@@ -263,6 +263,8 @@ Supported intersection helpers:
 - [IntersectBy](#intersectby)
 - [Difference](#difference)
 - [Union](#union)
+- [UnionBy](#unionby)
+- [UnionByErr](#unionbyerr)
 - [Without](#without)
 - [WithoutBy](#withoutby)
 - [WithoutEmpty](#withoutempty)
@@ -3067,6 +3069,34 @@ Returns all distinct elements from given collections. Result will not change the
 ```go
 union := lo.Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2}, []int{0, 10})
 // []int{0, 1, 2, 3, 4, 5, 10}
+```
+
+### UnionBy
+
+Returns all distinct elements from predicate returns. Result will not change the order of elements relatively.
+
+```go
+predicate := func(i int) int {
+    return i / 2
+}
+union := lo.UnionBy(predicate, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
+// []int{0, 2, 4, 10}
+```
+
+### UnionByErr
+
+Returns all distinct elements from predicate returns. Result will not change the order of elements relatively. It returns the first error returned by the iteratee.
+
+```go
+predicate := func(i int) (int, error) {
+    if i == 42 {
+        return 0, errors.New("invalid value")
+    }
+    return i / 2, nil
+}
+union, err := lo.UnionByErr(predicate, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
+// union: []int{0, 2, 4, 10}
+// err: nil
 ```
 
 ### Without
