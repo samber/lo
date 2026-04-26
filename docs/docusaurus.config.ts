@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'lo',
-  tagline: 'A reusable utility library for Go: slices, maps, and more',
+  title: 'samber/lo — Go Generics Utility Library',
+  tagline: 'Type-safe utility library for Go using generics: slices, maps, and more',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future

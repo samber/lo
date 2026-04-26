@@ -5,4 +5,65 @@ Allow: /
 Disallow: /search
 Disallow: /tags/
 
+# AI crawlers — explicit allowlist for citation eligibility
+User-agent: GPTBot
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: CCBot
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
+User-agent: Bytespider
+Allow: /
+Disallow: /search
+Disallow: /tags/
+
 Sitemap: https://lo.samber.dev/sitemap.xml
