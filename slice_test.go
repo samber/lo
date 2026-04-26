@@ -800,6 +800,100 @@ func TestUniqBy(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestIsUniq(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name  string
+		input []int
+		want  bool
+	}{
+		{
+			name:  "nil slice",
+			input: nil,
+			want:  true,
+		},
+		{
+			name:  "empty slice",
+			input: []int{},
+			want:  true,
+		},
+		{
+			name:  "single item",
+			input: []int{1},
+			want:  true,
+		},
+		{
+			name:  "unique",
+			input: []int{1, 2, 3},
+			want:  true,
+		},
+		{
+			name:  "non unique",
+			input: []int{1, 2, 1},
+			want:  false,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			is.Equal(tt.want, IsUniq(tt.input))
+		})
+	}
+}
+
+func TestIsUniqBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	tests := []struct {
+		name  string
+		input []int
+		want  bool
+	}{
+		{
+			name:  "nil slice",
+			input: nil,
+			want:  true,
+		},
+		{
+			name:  "empty slice",
+			input: []int{},
+			want:  true,
+		},
+		{
+			name:  "single item",
+			input: []int{1},
+			want:  true,
+		},
+		{
+			name:  "unique",
+			input: []int{1, 2, 3},
+			want:  true,
+		},
+		{
+			name:  "non unique",
+			input: []int{1, 2, 4},
+			want:  false,
+		},
+	}
+
+	iteratee := func(i int) int { return i % 3 }
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			is.Equal(tt.want, IsUniqBy(tt.input, iteratee))
+		})
+	}
+}
+
 func TestUniqByErr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
