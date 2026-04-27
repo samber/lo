@@ -1013,3 +1013,67 @@ func BenchmarkFromSlicePtrOr(b *testing.B) {
 		})
 	}
 }
+
+func BenchmarkChunkIntSmallDataSmallChunk(b *testing.B) {
+	data := genSliceInt(100)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = lo.Chunk(data, 3)
+	}
+}
+
+func BenchmarkChunkIntSmallDataLargeChunk(b *testing.B) {
+	data := genSliceInt(100)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = lo.Chunk(data, 50)
+	}
+}
+
+func BenchmarkChunkIntMediumDataSmallChunk(b *testing.B) {
+	data := genSliceInt(10_000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = lo.Chunk(data, 7)
+	}
+}
+
+func BenchmarkChunkIntMediumDataLargeChunk(b *testing.B) {
+	data := genSliceInt(10_000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = lo.Chunk(data, 1024)
+	}
+}
+
+func BenchmarkChunkIntLargeDataSmallChunk(b *testing.B) {
+	data := genSliceInt(1_000_000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = lo.Chunk(data, 13)
+	}
+}
+
+func BenchmarkChunkIntLargeDataLargeChunk(b *testing.B) {
+	data := genSliceInt(1_000_000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = lo.Chunk(data, 8192)
+	}
+}
+
+func BenchmarkChunkStringMediumDataSmallChunk(b *testing.B) {
+	data := genSliceString(10_000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = lo.Chunk(data, 7)
+	}
+}
+
+func BenchmarkChunkStringMediumDataLargeChunk(b *testing.B) {
+	data := genSliceString(10_000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = lo.Chunk(data, 1024)
+	}
+}

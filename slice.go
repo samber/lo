@@ -351,29 +351,38 @@ func GroupByMapErr[T any, K comparable, V any](collection []T, transform func(it
 // Chunk returns a slice of elements split into groups of length size. If the slice can't be split evenly,
 // the final chunk will be the remaining elements.
 // Play: https://go.dev/play/p/kEMkFbdu85g
+// Chunk returns a slice of elements split into groups of length size.
+// If the slice can't be split evenly, the final chunk will be the remaining elements.
+// Copy chunk in a new slice, to prevent memory leak and free memory from initial collection.
+// Play: https://go.dev/play/p/kEMkFbdu85g
 func Chunk[T any, Slice ~[]T](collection Slice, size int) []Slice {
 	if size <= 0 {
 		panic("lo.Chunk: size must be greater than 0")
 	}
 
-	chunksNum := len(collection) / size
-	if len(collection)%size != 0 {
-		chunksNum++
+	if len(collection) == 0 {
+		return []Slice{}
 	}
 
-	result := make([]Slice, 0, chunksNum)
-
-	for i := 0; i < chunksNum; i++ {
-		last := (i + 1) * size
-		if last > len(collection) {
-			last = len(collection)
-		}
-
-		// Copy chunk in a new slice, to prevent memory leak and free memory from initial collection.
-		newSlice := make(Slice, last-i*size)
-		copy(newSlice, collection[i*size:last])
-		result = append(result, newSlice)
+	// Reason: https://github.com/golang/go/issues/77287
+	clone := func(s Slice) Slice {
+		dst := make(Slice, len(s))
+		copy(dst, s)
+		return dst
 	}
+
+	chunksNum := (len(collection) + size - 1) / size
+	result := make([]Slice, chunksNum)
+
+	// Process all full-sized chunks
+	i := 0
+	for ; i < chunksNum-1; i++ {
+		pos := i * size
+		result[i] = clone(collection[pos : pos+size])
+	}
+
+	// Handle the final chunk (may be smaller than size)
+	result[chunksNum-1] = clone(collection[i*size:])
 
 	return result
 }
