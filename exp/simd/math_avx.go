@@ -23,26 +23,19 @@ func SumInt8x16[T ~int8](collection []T) T {
 	const lanes = simdLanes16
 
 	base := unsafeSliceInt8(collection, length)
-	var acc archsimd.Int8x16
 
-	i := uint(0)
-	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt8x16Slice(base[i : i+lanes])
-		acc = acc.Add(v)
+	i := length % lanes
+
+	acc := archsimd.LoadInt8x16SlicePart(base[:i])
+
+	for ; i < length; i += lanes {
+		acc = acc.Add(archsimd.LoadInt8x16Slice(base[i : i+lanes]))
 	}
 
 	var buf [lanes]int8
 	acc.Store(&buf)
-	var sum T
-	for k := uint(0); k < lanes; k++ {
-		sum += T(buf[k])
-	}
 
-	for ; i < length; i++ {
-		sum += collection[i]
-	}
-
-	return sum
+	return T(sum16(&buf))
 }
 
 // SumInt16x8 sums a slice of int16 using AVX SIMD (Int16x8, 8 lanes).
@@ -57,26 +50,19 @@ func SumInt16x8[T ~int16](collection []T) T {
 	const lanes = simdLanes8
 
 	base := unsafeSliceInt16(collection, length)
-	var acc archsimd.Int16x8
 
-	i := uint(0)
-	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt16x8Slice(base[i : i+lanes])
-		acc = acc.Add(v)
+	i := length % lanes
+
+	acc := archsimd.LoadInt16x8SlicePart(base[:i])
+
+	for ; i < length; i += lanes {
+		acc = acc.Add(archsimd.LoadInt16x8Slice(base[i : i+lanes]))
 	}
 
 	var buf [lanes]int16
 	acc.Store(&buf)
-	var sum T
-	for k := uint(0); k < lanes; k++ {
-		sum += T(buf[k])
-	}
 
-	for ; i < length; i++ {
-		sum += collection[i]
-	}
-
-	return sum
+	return T(sum8(&buf))
 }
 
 // SumInt32x4 sums a slice of int32 using AVX SIMD (Int32x4, 4 lanes).
@@ -91,26 +77,19 @@ func SumInt32x4[T ~int32](collection []T) T {
 	const lanes = simdLanes4
 
 	base := unsafeSliceInt32(collection, length)
-	var acc archsimd.Int32x4
 
-	i := uint(0)
-	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt32x4Slice(base[i : i+lanes])
-		acc = acc.Add(v)
+	i := length % lanes
+
+	acc := archsimd.LoadInt32x4SlicePart(base[:i])
+
+	for ; i < length; i += lanes {
+		acc = acc.Add(archsimd.LoadInt32x4Slice(base[i : i+lanes]))
 	}
 
 	var buf [lanes]int32
 	acc.Store(&buf)
-	var sum T
-	for k := uint(0); k < lanes; k++ {
-		sum += T(buf[k])
-	}
 
-	for ; i < length; i++ {
-		sum += collection[i]
-	}
-
-	return sum
+	return T(sum4(&buf))
 }
 
 // SumInt64x2 sums a slice of int64 using AVX SIMD (Int64x2, 2 lanes).
@@ -125,26 +104,19 @@ func SumInt64x2[T ~int64](collection []T) T {
 	const lanes = simdLanes2
 
 	base := unsafeSliceInt64(collection, length)
-	var acc archsimd.Int64x2
 
-	i := uint(0)
-	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
-		acc = acc.Add(v)
+	i := length % lanes
+
+	acc := archsimd.LoadInt64x2SlicePart(base[:i])
+
+	for ; i < length; i += lanes {
+		acc = acc.Add(archsimd.LoadInt64x2Slice(base[i : i+lanes]))
 	}
 
 	var buf [lanes]int64
 	acc.Store(&buf)
-	var sum T
-	for k := uint(0); k < lanes; k++ {
-		sum += T(buf[k])
-	}
 
-	for ; i < length; i++ {
-		sum += collection[i]
-	}
-
-	return sum
+	return T(sum2(&buf))
 }
 
 // SumUint8x16 sums a slice of uint8 using AVX SIMD (Uint8x16, 16 lanes).
@@ -159,26 +131,19 @@ func SumUint8x16[T ~uint8](collection []T) T {
 	const lanes = simdLanes16
 
 	base := unsafeSliceUint8(collection, length)
-	var acc archsimd.Uint8x16
 
-	i := uint(0)
-	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint8x16Slice(base[i : i+lanes])
-		acc = acc.Add(v)
+	i := length % lanes
+
+	acc := archsimd.LoadUint8x16SlicePart(base[:i])
+
+	for ; i < length; i += lanes {
+		acc = acc.Add(archsimd.LoadUint8x16Slice(base[i : i+lanes]))
 	}
 
 	var buf [lanes]uint8
 	acc.Store(&buf)
-	var sum T
-	for k := uint(0); k < lanes; k++ {
-		sum += T(buf[k])
-	}
 
-	for ; i < length; i++ {
-		sum += collection[i]
-	}
-
-	return sum
+	return T(sum16(&buf))
 }
 
 // SumUint16x8 sums a slice of uint16 using AVX SIMD (Uint16x8, 8 lanes).
@@ -193,26 +158,19 @@ func SumUint16x8[T ~uint16](collection []T) T {
 	const lanes = simdLanes8
 
 	base := unsafeSliceUint16(collection, length)
-	var acc archsimd.Uint16x8
 
-	i := uint(0)
-	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint16x8Slice(base[i : i+lanes])
-		acc = acc.Add(v)
+	i := length % lanes
+
+	acc := archsimd.LoadUint16x8SlicePart(base[:i])
+
+	for ; i < length; i += lanes {
+		acc = acc.Add(archsimd.LoadUint16x8Slice(base[i : i+lanes]))
 	}
 
 	var buf [lanes]uint16
 	acc.Store(&buf)
-	var sum T
-	for k := uint(0); k < lanes; k++ {
-		sum += T(buf[k])
-	}
 
-	for ; i < length; i++ {
-		sum += collection[i]
-	}
-
-	return sum
+	return T(sum8(&buf))
 }
 
 // SumUint32x4 sums a slice of uint32 using AVX SIMD (Uint32x4, 4 lanes).
@@ -227,26 +185,19 @@ func SumUint32x4[T ~uint32](collection []T) T {
 	const lanes = simdLanes4
 
 	base := unsafeSliceUint32(collection, length)
-	var acc archsimd.Uint32x4
 
-	i := uint(0)
-	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint32x4Slice(base[i : i+lanes])
-		acc = acc.Add(v)
+	i := length % lanes
+
+	acc := archsimd.LoadUint32x4SlicePart(base[:i])
+
+	for ; i < length; i += lanes {
+		acc = acc.Add(archsimd.LoadUint32x4Slice(base[i : i+lanes]))
 	}
 
 	var buf [lanes]uint32
 	acc.Store(&buf)
-	var sum T
-	for k := uint(0); k < lanes; k++ {
-		sum += T(buf[k])
-	}
 
-	for ; i < length; i++ {
-		sum += collection[i]
-	}
-
-	return sum
+	return T(sum4(&buf))
 }
 
 // SumUint64x2 sums a slice of uint64 using AVX SIMD (Uint64x2, 2 lanes).
@@ -261,26 +212,19 @@ func SumUint64x2[T ~uint64](collection []T) T {
 	const lanes = simdLanes2
 
 	base := unsafeSliceUint64(collection, length)
-	var acc archsimd.Uint64x2
 
-	i := uint(0)
-	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
-		acc = acc.Add(v)
+	i := length % lanes
+
+	acc := archsimd.LoadUint64x2SlicePart(base[:i])
+
+	for ; i < length; i += lanes {
+		acc = acc.Add(archsimd.LoadUint64x2Slice(base[i : i+lanes]))
 	}
 
 	var buf [lanes]uint64
 	acc.Store(&buf)
-	var sum T
-	for k := uint(0); k < lanes; k++ {
-		sum += T(buf[k])
-	}
 
-	for ; i < length; i++ {
-		sum += collection[i]
-	}
-
-	return sum
+	return T(sum2(&buf))
 }
 
 // SumFloat32x4 sums a slice of float32 using AVX SIMD (Float32x4, 4 lanes).
@@ -294,26 +238,19 @@ func SumFloat32x4[T ~float32](collection []T) T {
 	const lanes = simdLanes4
 
 	base := unsafeSliceFloat32(collection, length)
-	var acc archsimd.Float32x4
 
-	i := uint(0)
-	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadFloat32x4Slice(base[i : i+lanes])
-		acc = acc.Add(v)
+	i := length % lanes
+
+	acc := archsimd.LoadFloat32x4SlicePart(base[:i])
+
+	for ; i < length; i += lanes {
+		acc = acc.Add(archsimd.LoadFloat32x4Slice(base[i : i+lanes]))
 	}
 
 	var buf [lanes]float32
 	acc.Store(&buf)
-	var sum T
-	for k := uint(0); k < lanes; k++ {
-		sum += T(buf[k])
-	}
 
-	for ; i < length; i++ {
-		sum += collection[i]
-	}
-
-	return sum
+	return T(sum4(&buf))
 }
 
 // SumFloat64x2 sums a slice of float64 using AVX SIMD (Float64x2, 2 lanes).
@@ -327,26 +264,19 @@ func SumFloat64x2[T ~float64](collection []T) T {
 	const lanes = simdLanes2
 
 	base := unsafeSliceFloat64(collection, length)
-	var acc archsimd.Float64x2
 
-	i := uint(0)
-	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadFloat64x2Slice(base[i : i+lanes])
-		acc = acc.Add(v)
+	i := length % lanes
+
+	acc := archsimd.LoadFloat64x2SlicePart(base[:i])
+
+	for ; i < length; i += lanes {
+		acc = acc.Add(archsimd.LoadFloat64x2Slice(base[i : i+lanes]))
 	}
 
 	var buf [lanes]float64
 	acc.Store(&buf)
-	var sum T
-	for k := uint(0); k < lanes; k++ {
-		sum += T(buf[k])
-	}
 
-	for ; i < length; i++ {
-		sum += collection[i]
-	}
-
-	return sum
+	return T(sum2(&buf))
 }
 
 // MeanInt8x16 calculates the mean of a slice of int8 using AVX SIMD
