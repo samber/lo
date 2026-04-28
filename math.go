@@ -2,6 +2,7 @@ package lo
 
 import (
 	"math"
+	"sort"
 
 	"github.com/samber/lo/internal/constraints"
 )
@@ -211,4 +212,81 @@ func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
 	}
 
 	return mode
+}
+
+// Median calculates the median of a collection of numbers
+func Median[T constraints.Float | constraints.Integer](collection []T) T {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	sorted := make([]T, length)
+	copy(sorted, collection)
+	sort.Slice(sorted, func(i, j int) bool {
+		return sorted[i] < sorted[j]
+	})
+
+	mid := length / 2
+	if length%2 == 1 {
+		return sorted[mid]
+	}
+
+	return (sorted[mid-1] + sorted[mid]) / 2
+}
+
+// MedianBy calculates the median of a collection of numbers using the given return value from the iteration function
+func MedianBy[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(item T) R) R {
+	length := len(collection)
+	if length == 0 {
+		return 0
+	}
+
+	values := make([]R, length)
+	for i, item := range collection {
+		values[i] = iteratee(item)
+	}
+
+	sort.Slice(values, func(i, j int) bool {
+		return values[i] < values[j]
+	})
+
+	mid := length / 2
+	if length%2 == 1 {
+		return values[mid]
+	}
+
+	return (values[mid-1] + values[mid]) / 2
+}
+
+// MedianByErr calculates the median of a collection of numbers using the given return value from the iteration function
+// If the iteratee returns an error, iteration stops and the error is returned
+// If collection is empty 0 and nil error are returned
+func MedianByErr[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(item T) (R, error)) (R, error) {
+	length := len(collection)
+	if length == 0 {
+		return 0, nil
+	}
+
+	values := make([]R, length)
+	for i, item := range collection {
+		val, err := iteratee(item)
+		if err != nil {
+			return 0, err
+		}
+		values[i] = val
+	}
+
+	sorted := make([]R, length)
+	copy(sorted, values)
+	sort.Slice(sorted, func(i, j int) bool {
+		return sorted[i] < sorted[j]
+	})
+
+	mid := length / 2
+	if length%2 == 1 {
+		return sorted[mid], nil
+	}
+
+	return (sorted[mid-1] + sorted[mid]) / 2, nil
 }
