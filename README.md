@@ -262,6 +262,7 @@ Supported intersection helpers:
 - [Intersect](#intersect)
 - [IntersectBy](#intersectby)
 - [Difference](#difference)
+- [DifferenceBy](#differenceby)
 - [Union](#union)
 - [Without](#without)
 - [WithoutBy](#withoutby)
@@ -3047,18 +3048,54 @@ result4 := lo.IntersectBy(transform, []int{0, 3, 5, 7}, []int{3, 5}, []int{0, 1,
 
 Returns the difference between two collections.
 
-- The first value is the collection of elements absent from list2.
-- The second value is the collection of elements absent from list1.
+- The first value is the collection of elements from `left` absent from `right`.
+- The second value is the collection of elements from `right` absent from `left`.
 
 ```go
-left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
+left := []int{0, 1, 2, 3, 4, 5}
+right := []int{0, 2, 6}
+
+notInRight, notInLeft := lo.Difference(left, right)
 // []int{1, 3, 4, 5}, []int{6}
 
-left, right := lo.Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+left = []int{0, 1, 2, 3, 4, 5}
+right = []int{0, 1, 2, 3, 4, 5}
+
+notInRight, notInLeft = lo.Difference(left, right)
 // []int{}, []int{}
 ```
 
 [[play](https://go.dev/play/p/pKE-JgzqRpz)]
+
+### DifferenceBy
+
+Returns the difference between two collections using a custom key selector function.
+
+- The first value is the collection of elements from `left` whose keys are absent from `right`.
+- The second value is the collection of elements from `right` whose keys are absent from `left`.
+
+```go
+type User struct {
+    ID int
+    Name string
+}
+
+left := []User{
+    {ID: 1, Name: "Alice"},
+    {ID: 2, Name: "Bob"},
+    {ID: 3, Name: "Charlie"},
+}
+
+right := []User{
+    {ID: 2, Name: "Robert"},
+    {ID: 4, Name: "David"},
+}
+
+notInRight, notInLeft := lo.DifferenceBy(left, right, func(user User) int {
+    return user.ID
+})
+// []User{{ID: 1, Name: "Alice"}, {ID: 3, Name: "Charlie"}}, []User{{ID: 4, Name: "David"}}
+```
 
 ### Union
 

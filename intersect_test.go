@@ -255,23 +255,74 @@ func TestDifference(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	left1, right1 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
-	is.Equal([]int{1, 3, 4, 5}, left1)
-	is.Equal([]int{6}, right1)
+	notInRight1, notInLeft1 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
+	is.Equal([]int{1, 3, 4, 5}, notInRight1)
+	is.Equal([]int{6}, notInLeft1)
 
-	left2, right2 := Difference([]int{1, 2, 3, 4, 5}, []int{0, 6})
-	is.Equal([]int{1, 2, 3, 4, 5}, left2)
-	is.Equal([]int{0, 6}, right2)
+	notInRight2, notInLeft2 := Difference([]int{1, 2, 3, 4, 5}, []int{0, 6})
+	is.Equal([]int{1, 2, 3, 4, 5}, notInRight2)
+	is.Equal([]int{0, 6}, notInLeft2)
 
-	left3, right3 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
-	is.Empty(left3)
-	is.Empty(right3)
+	notInRight3, notInLeft3 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
+	is.Empty(notInRight3)
+	is.Empty(notInLeft3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
-	a, b := Difference(allStrings, allStrings)
-	is.IsType(a, allStrings, "type preserved")
-	is.IsType(b, allStrings, "type preserved")
+	notInRight4, notInLeft4 := Difference(allStrings, allStrings)
+	is.IsType(notInRight4, allStrings, "type preserved")
+	is.IsType(notInLeft4, allStrings, "type preserved")
+}
+
+func TestDifferenceBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type User struct {
+		ID   int
+		Name string
+	}
+
+	left := []User{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+		{ID: 3, Name: "Charlie"},
+	}
+
+	right := []User{
+		{ID: 2, Name: "Robert"},
+		{ID: 4, Name: "David"},
+	}
+
+	notInRight1, notInLeft1 := DifferenceBy(left, right, func(u User) int {
+		return u.ID
+	})
+	is.Equal([]User{{ID: 1, Name: "Alice"}, {ID: 3, Name: "Charlie"}}, notInRight1)
+	is.Equal([]User{{ID: 4, Name: "David"}}, notInLeft1)
+
+	notInRight2, notInLeft2 := DifferenceBy(
+		[]User{{ID: 1, Name: "Alice"}, {ID: 1, Name: "Alicia"}, {ID: 2, Name: "Bob"}},
+		[]User{{ID: 2, Name: "Bobby"}, {ID: 3, Name: "Charlie"}, {ID: 3, Name: "Charlotte"}},
+		func(u User) int {
+			return u.ID
+		},
+	)
+	is.Equal([]User{{ID: 1, Name: "Alice"}, {ID: 1, Name: "Alicia"}}, notInRight2)
+	is.Equal([]User{{ID: 3, Name: "Charlie"}, {ID: 3, Name: "Charlotte"}}, notInLeft2)
+
+	notInRight3, notInLeft3 := DifferenceBy(left, left, func(u User) string {
+		return u.Name
+	})
+	is.Empty(notInRight3)
+	is.Empty(notInLeft3)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	notInRight4, notInLeft4 := DifferenceBy(allStrings, allStrings, func(s string) string {
+		return s
+	})
+	is.IsType(notInRight4, allStrings, "type preserved")
+	is.IsType(notInLeft4, allStrings, "type preserved")
 }
 
 func TestUnion(t *testing.T) {
