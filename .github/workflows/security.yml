@@ -77,7 +77,7 @@ jobs:
           go-version-file: go.mod
 
       - name: Run Trivy vulnerability scanner (source code)
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: "fs"
           scan-ref: "."
@@ -107,7 +107,7 @@ jobs:
           go-version-file: go.mod
 
       - name: Run Trivy scanner (table output for logs)
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@v0.36.0
         if: always()
         with:
           scan-type: "fs"
@@ -121,7 +121,7 @@ jobs:
           skip-dirs: "docs/"
 
       - name: Run Trivy scanner (license)
-        uses: aquasecurity/trivy-action@0.35.0
+        uses: aquasecurity/trivy-action@v0.36.0
         if: always()
         with:
           scan-type: fs
