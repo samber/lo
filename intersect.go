@@ -254,6 +254,62 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	return result
 }
 
+// UnionBy is like Union except that it accepts iteratee which is invoked for each element of each collections
+// to generate the criterion by which uniqueness is computed.
+// Result values are chosen from the first collections in which the value occurs.
+// Play: TODO.
+func UnionBy[T any, V comparable, Slice ~[]T](iteratee func(item T) V, lists ...Slice) Slice {
+	var capLen int
+
+	for _, list := range lists {
+		capLen += len(list)
+	}
+
+	result := make(Slice, 0, capLen)
+	seen := make(map[V]struct{}, capLen)
+
+	for i := range lists {
+		for j := range lists[i] {
+			value := iteratee(lists[i][j])
+			if _, ok := seen[value]; !ok {
+				seen[value] = struct{}{}
+				result = append(result, lists[i][j])
+			}
+		}
+	}
+
+	return result
+}
+
+// UnionByErr is like UnionBy except that it accepts iteratee which can return an error.
+// It returns the first error returned by the iteratee.
+// Play: TODO.
+func UnionByErr[T any, V comparable, Slice ~[]T](iteratee func(item T) (V, error), lists ...Slice) (Slice, error) {
+	var capLen int
+
+	for _, list := range lists {
+		capLen += len(list)
+	}
+
+	result := make(Slice, 0, capLen)
+	seen := make(map[V]struct{}, capLen)
+
+	for i := range lists {
+		for j := range lists[i] {
+			value, err := iteratee(lists[i][j])
+			if err != nil {
+				return nil, err
+			}
+			if _, ok := seen[value]; !ok {
+				seen[value] = struct{}{}
+				result = append(result, lists[i][j])
+			}
+		}
+	}
+
+	return result, nil
+}
+
 // Without returns a slice excluding all given values.
 // Play: https://go.dev/play/p/PcAVtYJsEsS
 func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
