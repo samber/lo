@@ -76,6 +76,13 @@ const config: Config = {
 
     headTags: [
 	      // SEO
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'msvalidate.01',
+        content: '4576E3F85783A82149A0DB35A150F7EB',
+      },
+    },
         {
         tagName: 'script',
         attributes: {
