@@ -21,6 +21,6 @@ Returns a new slice containing all the elements in collections. Concat conserves
 ```go
 list1 := []int{0, 1}
 list2 := []int{2, 3, 4, 5}
-flat := lo.Flatten(list1, list2)
+concat := lo.Concat(list1, list2)
 // []int{0, 1, 2, 3, 4, 5}
 ```
