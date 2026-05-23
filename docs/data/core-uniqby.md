@@ -10,6 +10,7 @@ variantHelpers:
 similarHelpers:
   - core#slice#uniqbyerr
   - core#slice#uniq
+  - core#slice#isuniqby
   - core#slice#uniqmap
   - core#slice#partitionby
 position: 110
