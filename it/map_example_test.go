@@ -156,13 +156,6 @@ func ExampleFilterValues() {
 	// Output: [foo]
 }
 
-func ExampleSeqToSeq2() {
-	result := maps.Collect(SeqToSeq2(slices.Values([]string{"foo", "bar", "baz"})))
-
-	fmt.Printf("%v %v %v %v", len(result), result[0], result[1], result[2])
-	// Output: 3 foo bar baz
-}
-
 func ExampleSeq2KeyToSeq() {
 	result := slices.Collect(Seq2KeyToSeq(maps.All(map[string]int{
 		"foo": 1,

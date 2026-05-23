@@ -5,6 +5,7 @@ package it
 import (
 	"fmt"
 	"iter"
+	"maps"
 	"math"
 	"slices"
 	"strconv"
@@ -770,4 +771,11 @@ func ExampleTrimSuffix() {
 	// TrimSuffix with suffix {1,2}: [1 2 1 2 3]
 	// TrimSuffix with string suffix: [hello world]
 	// TrimSuffix with suffix {5,6} (not present): [1 2 1 2 3]
+}
+
+func ExampleSeqToSeq2() {
+	result := maps.Collect(SeqToSeq2(slices.Values([]string{"foo", "bar", "baz"})))
+
+	fmt.Printf("%v %v %v %v", len(result), result[0], result[1], result[2])
+	// Output: 3 foo bar baz
 }

@@ -5,6 +5,7 @@ package it
 import (
 	"fmt"
 	"iter"
+	"maps"
 	"math"
 	"slices"
 	"strconv"
@@ -1819,4 +1820,15 @@ func TestBuffer(t *testing.T) {
 	// stop after first batch (early termination)
 	batches4 := slices.Collect(Take(Buffer(RangeFrom(1, 6), 2), 1))
 	is.Equal([][]int{{1, 2}}, batches4)
+}
+
+func TestSeqToSeq2(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := maps.Collect(SeqToSeq2(values("foo", "bar")))
+	is.Equal(map[int]string{0: "foo", 1: "bar"}, r1)
+
+	r2 := maps.Collect(SeqToSeq2(values[string]()))
+	is.Empty(r2)
 }
