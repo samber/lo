@@ -478,6 +478,7 @@ func Reverse[T any, I ~func(func(T) bool)](collection I) I {
 	slice := slices.Collect(iter.Seq[T](collection))
 
 	return I(func(yield func(T) bool) {
+		//nolint:modernize // backward loop can't use slices.Backward (Go 1.24+), lo supports Go 1.18+
 		for i := len(slice) - 1; i >= 0; i-- {
 			if !yield(slice[i]) {
 				return
