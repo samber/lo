@@ -4,12 +4,15 @@ slug: isuniq
 sourceRef: slice.go#L290
 category: core
 subCategory: slice
+playUrl:
 variantHelpers:
   - core#slice#isuniq
 similarHelpers:
   - core#slice#isuniqby
   - core#slice#uniq
-position: 120
+  - core#slice#finduniques
+  - core#find#findduplicates
+position: 112
 signatures:
   - "func IsUniq[T comparable, Slice ~[]T](collection Slice) bool"
 ---
@@ -23,5 +26,3 @@ lo.IsUniq([]int{1, 2, 3})
 lo.IsUniq([]int{1, 2, 1})
 // false
 ```
-
-

@@ -4,12 +4,15 @@ slug: isuniqby
 sourceRef: slice.go#L307
 category: core
 subCategory: slice
+playUrl:
 variantHelpers:
   - core#slice#isuniqby
 similarHelpers:
   - core#slice#isuniq
   - core#slice#uniqby
-position: 130
+  - core#slice#finduniques
+  - core#find#findduplicates
+position: 113
 signatures:
   - "func IsUniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) bool"
 ---
@@ -32,5 +35,3 @@ lo.IsUniqBy([]User{{ID: 1}, {ID: 2}, {ID: 1}}, func(u User) int {
 })
 // false
 ```
-
-
