@@ -11,6 +11,7 @@ variantHelpers:
 similarHelpers:
   - core#slice#uniqby
   - core#slice#uniq
+  - core#slice#isuniq
   - core#slice#uniqmap
   - core#slice#partitionby
 position: 111

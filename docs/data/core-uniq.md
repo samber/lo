@@ -9,6 +9,7 @@ variantHelpers:
   - core#slice#uniq
 similarHelpers:
   - core#slice#uniqby
+  - core#slice#isuniq
   - core#slice#uniqmap
   - core#slice#uniqkeys
   - core#slice#uniqvalues
