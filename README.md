@@ -117,6 +117,8 @@ Supported helpers for slices:
 - [Times](#times)
 - [Uniq](#uniq)
 - [UniqBy](#uniqby)
+- [IsUniq](#isuniq)
+- [IsUniqBy](#isuniqby)
 - [GroupBy](#groupby)
 - [GroupByMap](#groupbymap)
 - [Chunk](#chunk)
@@ -698,6 +700,37 @@ result, err := lo.UniqByErr([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, error) {
 ```
 
 [[play](https://go.dev/play/p/g42Z3QSb53u)]
+
+### IsUniq
+
+Returns true if all elements in the slice are unique, false otherwise. Returns true for nil and empty slices.
+
+```go
+lo.IsUniq([]int{1, 2, 3})
+// true
+
+lo.IsUniq([]int{1, 2, 1})
+// false
+```
+
+### IsUniqBy
+
+Returns true if all elements in the slice are unique based on a custom criterion. It accepts `iteratee` which is invoked for each element in the slice to generate the criterion by which uniqueness is computed. Returns true for nil and empty slices.
+
+```go
+type User struct {
+    ID   int
+    Name string
+}
+
+users := []User{{ID: 1, Name: "Alice"}, {ID: 2, Name: "Bob"}, {ID: 1, Name: "Charlie"}}
+
+lo.IsUniqBy(users, func(u User) int { return u.ID })
+// false
+
+lo.IsUniqBy(users, func(u User) string { return u.Name })
+// true
+```
 
 ### GroupBy
 
