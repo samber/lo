@@ -285,6 +285,40 @@ func UniqByErr[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(
 	return result, nil
 }
 
+// IsUniq returns true if all elements in the slice are unique, false otherwise
+// Returns true for nil and empty slices.
+func IsUniq[T comparable, Slice ~[]T](collection Slice) bool {
+	seen := make(map[T]struct{}, len(collection))
+
+	for i := range collection {
+		if _, ok := seen[collection[i]]; ok {
+			return false
+		}
+
+		seen[collection[i]] = struct{}{}
+	}
+
+	return true
+}
+
+// IsUniqBy returns true if all elements in the slice are unique based on a custom criterion. It accepts `iteratee` which is
+// invoked for each element in the slice to generate the criterion by which uniqueness is computed.
+// Returns true for nil and empty slices.
+func IsUniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) bool {
+	seen := make(map[U]struct{}, len(collection))
+
+	for i := range collection {
+		key := iteratee(collection[i])
+		if _, ok := seen[key]; ok {
+			return false
+		}
+
+		seen[key] = struct{}{}
+	}
+
+	return true
+}
+
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // Play: https://go.dev/play/p/XnQBd_v6brd
 func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) map[U]Slice {
