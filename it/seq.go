@@ -1164,6 +1164,21 @@ func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I
 	}
 }
 
+// SeqToSeq2 converts a sequence into a sequence of key-value pairs, where the first
+// element of iter.Seq2 is the index (starting from 0 and incrementing by 1 for each item).
+// Play: https://go.dev/play/p/V5wL9xY8nQr
+func SeqToSeq2[T any](in iter.Seq[T]) iter.Seq2[int, T] {
+	return func(yield func(int, T) bool) {
+		var i int
+		for item := range in {
+			if !yield(i, item) {
+				return
+			}
+			i++
+		}
+	}
+}
+
 // Buffer returns a sequence of slices, each containing up to size items read from the channel.
 // The last slice may be smaller if the channel closes before filling the buffer.
 // Play: https://go.dev/play/p/zDZdcCA20ut

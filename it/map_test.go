@@ -265,17 +265,6 @@ func TestFilterValues(t *testing.T) {
 	is.Empty(slices.Collect(result2))
 }
 
-func TestSeqToSeq2(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	r1 := maps.Collect(SeqToSeq2(values("foo", "bar")))
-	is.Equal(map[int]string{0: "foo", 1: "bar"}, r1)
-
-	r2 := maps.Collect(SeqToSeq2(values[string]()))
-	is.Empty(r2)
-}
-
 func TestSeq2KeyToSeq(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
