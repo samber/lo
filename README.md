@@ -3106,7 +3106,7 @@ union := lo.Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2}, []int{0, 10})
 
 ### UnionBy
 
-Returns all distinct elements from predicate returns. Result will not change the order of elements relatively.
+Returns all distinct elements from given collections based on an iteratee function. Result will not change the order of elements relatively.
 
 ```go
 predicate := func(i int) int {
@@ -3118,7 +3118,7 @@ union := lo.UnionBy(predicate, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0
 
 ### UnionByErr
 
-Returns all distinct elements from predicate returns. Result will not change the order of elements relatively. It returns the first error returned by the iteratee.
+Returns all distinct elements from given collections based on an iteratee function. Result will not change the order of elements relatively. It returns the first error returned by the iteratee.
 
 ```go
 predicate := func(i int) (int, error) {

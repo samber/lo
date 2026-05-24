@@ -9,6 +9,7 @@ variantHelpers:
   - core#intersect#unionby
 similarHelpers:
   - core#intersect#union
+  - core#intersect#unionbyerr
   - core#intersect#intersect
   - core#intersect#intersectby
   - core#slice#uniq

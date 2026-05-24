@@ -337,6 +337,11 @@ func TestUnionBy(t *testing.T) {
 	is.Equal([]int{0, 2, 4}, result13)
 	is.Equal([]int{0, 2}, result14)
 	is.Equal([]int{}, result15)
+
+	type myStrings []string
+	allStrings := myStrings{"foo", "bar", "baz"}
+	nonempty := UnionBy(func(s string) string { return s }, allStrings, allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestUnionByErr(t *testing.T) {
@@ -380,18 +385,25 @@ func TestUnionByErr(t *testing.T) {
 	is.Equal([]int{}, result15)
 
 	// Test error case
+	callCount := 0
 	errFunc := func(i int) (int, error) {
+		callCount++
 		if i == 2 {
 			return 0, assert.AnError
 		}
 		return i / 2, nil
 	}
 
-	_, err6 := UnionByErr(errFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
-	is.Error(err6)
+	result6, err6 := UnionByErr(errFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+	is.ErrorIs(err6, assert.AnError)
+	is.Nil(result6)
+	is.Equal(3, callCount, "should stop at first error")
 
-	_, err7 := UnionByErr(errFunc, []int{0, 1, 3, 4, 5}, []int{2, 10})
-	is.Error(err7)
+	callCount = 0
+	result7, err7 := UnionByErr(errFunc, []int{0, 1, 3, 4, 5}, []int{2, 10})
+	is.ErrorIs(err7, assert.AnError)
+	is.Nil(result7)
+	is.Equal(6, callCount, "should stop at first error")
 }
 
 func TestWithout(t *testing.T) {

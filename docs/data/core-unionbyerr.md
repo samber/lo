@@ -6,7 +6,6 @@ category: core
 subCategory: intersect
 playUrl:
 variantHelpers:
-  - core#intersect#unionby
   - core#intersect#unionbyerr
 similarHelpers:
   - core#intersect#unionby

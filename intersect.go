@@ -254,10 +254,9 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	return result
 }
 
-// UnionBy is like Union except that it accepts iteratee which is invoked for each element of each collections
+// UnionBy is like Union except that it accepts an iteratee which is invoked for each element of each collection
 // to generate the criterion by which uniqueness is computed.
-// Result values are chosen from the first collections in which the value occurs.
-// Play: TODO.
+// Result values are chosen from the first collection in which the value occurs.
 func UnionBy[T any, V comparable, Slice ~[]T](iteratee func(item T) V, lists ...Slice) Slice {
 	var capLen int
 
@@ -281,9 +280,8 @@ func UnionBy[T any, V comparable, Slice ~[]T](iteratee func(item T) V, lists ...
 	return result
 }
 
-// UnionByErr is like UnionBy except that it accepts iteratee which can return an error.
+// UnionByErr is like UnionBy except that it accepts an iteratee which can return an error.
 // It returns the first error returned by the iteratee.
-// Play: TODO.
 func UnionByErr[T any, V comparable, Slice ~[]T](iteratee func(item T) (V, error), lists ...Slice) (Slice, error) {
 	var capLen int
 
