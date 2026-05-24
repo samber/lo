@@ -478,6 +478,7 @@ func Reverse[T any, I ~func(func(T) bool)](collection I) I {
 	slice := slices.Collect(iter.Seq[T](collection))
 
 	return I(func(yield func(T) bool) {
+		//nolint:modernize // backward loop can't use slices.Backward (Go 1.24+), lo supports Go 1.18+
 		for i := len(slice) - 1; i >= 0; i-- {
 			if !yield(slice[i]) {
 				return
@@ -1159,6 +1160,21 @@ func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I
 					return
 				}
 			}
+		}
+	}
+}
+
+// SeqToSeq2 converts a sequence into a sequence of key-value pairs, where the first
+// element of iter.Seq2 is the index (starting from 0 and incrementing by 1 for each item).
+// Play: https://go.dev/play/p/V5wL9xY8nQr
+func SeqToSeq2[T any](in iter.Seq[T]) iter.Seq2[int, T] {
+	return func(yield func(int, T) bool) {
+		var i int
+		for item := range in {
+			if !yield(i, item) {
+				return
+			}
+			i++
 		}
 	}
 }

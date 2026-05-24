@@ -219,6 +219,8 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - Times: Execute function n times and collect results
 - Uniq: Remove duplicate elements
 - UniqBy: Remove duplicates by key function
+- IsUniq: Check if all elements are unique
+- IsUniqBy: Check if all elements are unique by key function
 - GroupBy: Group elements by key function
 - GroupByMap: Group elements by key function into map
 - Chunk: Split slice into chunks of specified size

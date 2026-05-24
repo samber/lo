@@ -10,6 +10,8 @@ variantHelpers:
 similarHelpers:
   - core#slice#uniq
   - core#slice#uniqby
+  - core#slice#isuniq
+  - core#slice#isuniqby
   - core#slice#map
   - core#slice#filtermap
 position: 20

@@ -232,20 +232,6 @@ func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V
 	}
 }
 
-// SeqToSeq2 converts a sequence into a sequence of key-value pairs keyed by index.
-// Play: https://go.dev/play/p/V5wL9xY8nQr
-func SeqToSeq2[T any](in iter.Seq[T]) iter.Seq2[int, T] {
-	return func(yield func(int, T) bool) {
-		var i int
-		for item := range in {
-			if !yield(i, item) {
-				return
-			}
-			i++
-		}
-	}
-}
-
 // Seq2KeyToSeq converts a sequence of key-value pairs into a sequence of keys.
 // Play: https://go.dev/play/p/W6xM7zZ9oSt
 func Seq2KeyToSeq[K, V any](in iter.Seq2[K, V]) iter.Seq[K] {
