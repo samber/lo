@@ -375,3 +375,50 @@ func TestWaitForWithContext(t *testing.T) { //nolint:paralleltest
 		is.False(ok)
 	})
 }
+
+func TestBatchConcurrentProcess(t *testing.T) {
+	is := assert.New(t)
+
+	arr := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	respArr := make([]int, len(arr))
+	ch := BatchConcurrentProcess(ctx, 20, arr, func(index int, item int) {
+		item = item * 2
+		// suppose some network call delay
+		time.Sleep(10 * time.Millisecond)
+		respArr[index] = item
+	})
+	<-ch
+	is.Equal(respArr, []int{2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40})
+}
+
+func TestBatchConcurrentProcess_MaxConcurrency(t *testing.T) {
+	is := assert.New(t)
+
+	arr := make([]int, 20)
+	ctx := context.Background()
+
+	var (
+		mu          sync.Mutex
+		current     int
+		maxObserved int
+	)
+
+	done := BatchConcurrentProcess(ctx, 5, arr, func(index int, item int) {
+		mu.Lock()
+		current++
+		if current > maxObserved {
+			maxObserved = current
+		}
+		mu.Unlock()
+
+		time.Sleep(20 * time.Millisecond)
+
+		mu.Lock()
+		current--
+		mu.Unlock()
+	})
+	<-done
+	is.LessOrEqual(maxObserved, 5, "concurrency exceeded limit")
+}
