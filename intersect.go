@@ -265,6 +265,35 @@ func DifferenceBy[T any, R comparable, Slice ~[]T](left, right Slice, iteratee f
 	return notInRight, notInLeft
 }
 
+// ClassifyBy splits left and right into missing and shared groups based on the derived key.
+func ClassifyBy[K comparable, T any](left, right []T, key func(item T) K) (notInRight, inLeft, inRight, notInLeft []T) {
+	rightByKey := make(map[K]T, len(right))
+	for _, item := range right {
+		rightByKey[key(item)] = item
+	}
+
+	leftByKey := make(map[K]T, len(left))
+	for _, item := range left {
+		k := key(item)
+		leftByKey[k] = item
+		if _, ok := rightByKey[k]; ok {
+			inLeft = append(inLeft, item)
+			continue
+		}
+		notInRight = append(notInRight, item)
+	}
+
+	for _, item := range right {
+		k := key(item)
+		if _, ok := leftByKey[k]; ok {
+			inRight = append(inRight, item)
+			continue
+		}
+		notInLeft = append(notInLeft, item)
+	}
+	return notInRight, inLeft, inRight, notInLeft
+}
+
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
 // Play: https://go.dev/play/p/-hsqZNTH0ej
