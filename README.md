@@ -169,6 +169,7 @@ Supported helpers for slices:
 - [TrimPrefix](#TrimPrefix)
 - [TrimRight](#TrimRight)
 - [TrimSuffix](#TrimSuffix)
+- [Join](#Join)
 
 Supported helpers for maps:
 
@@ -1653,6 +1654,18 @@ result := lo.TrimSuffix([]string{"hello", "world", "hello", "test"}, []string{"t
 ```
 
 [[play](https://go.dev/play/p/IjEUrV0iofq)]
+
+### Join
+Joins every collection item into a string, using the specified separator. If the separator is nil, it is considered as an empty string.
+
+```go
+result1 := lo.Join([]int{1, 2, 3, 4}, " - ")
+// "1 - 2 - 3 - 4"
+
+result2 := lo.Join([]string{"a", "b", "c", "d"}, 2)
+// "a2b2c2d"
+```
+[[play](https://go.dev/play/p/uEwlghJIHmN)]
 
 ### Keys
 
