@@ -4149,3 +4149,27 @@ func ExampleIntersectBy() {
 	// Output:
 	// [0]
 }
+
+func ExampleDifferenceBy() {
+	type User struct {
+		ID   int
+		Name string
+	}
+
+	left := []User{{ID: 1, Name: "Alice"}, {ID: 2, Name: "Bob"}, {ID: 3, Name: "Charlie"}}
+	right := []User{{ID: 2, Name: "Robert"}, {ID: 4, Name: "David"}}
+
+	notInRight, notInLeft := DifferenceBy(
+		left,
+		right,
+		func(user User) int {
+			return user.ID
+		},
+	)
+
+	fmt.Printf("%v\n", notInRight)
+	fmt.Printf("%v", notInLeft)
+	// Output:
+	// [{1 Alice} {3 Charlie}]
+	// [{4 David}]
+}
