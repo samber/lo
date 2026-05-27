@@ -1,7 +1,9 @@
 package lo
 
 import (
+	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/samber/lo/internal/constraints"
 	"github.com/samber/lo/mutable"
@@ -1338,4 +1340,29 @@ func TrimSuffix[T comparable, Slice ~[]T](collection, suffix Slice) Slice {
 	}
 
 	return collection
+}
+
+// Join joins every collection item into a string, using the specified separator. If the separator
+// is nil, it is considered as an empty string.
+// Play: https://go.dev/play/p/uEwlghJIHmN
+func Join[T any, Slice ~[]T](collection Slice, separator any) string {
+	switch len(collection) {
+	case 0:
+		return ""
+	case 1:
+		return fmt.Sprint(collection[0])
+	}
+
+	if separator == nil {
+		separator = ""
+	}
+
+	var result strings.Builder
+
+	fmt.Fprint(&result, collection[0])
+	ForEach(collection[1:], func(item T, _ int) {
+		fmt.Fprintf(&result, "%v%v", separator, item)
+	})
+
+	return result.String()
 }
