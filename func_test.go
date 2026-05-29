@@ -78,3 +78,25 @@ func TestPartial5(t *testing.T) {
 	is.Equal("26", f(10, 9, -3, 0, 5))
 	is.Equal("21", f(-5, 8, 7, -1, 7))
 }
+
+func TestFuncWithIndexNoReturn(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var result string
+	f := FuncWithIndexNoReturn(func(x string) {
+		result = x
+	})
+	f("lo", 0)
+	is.Equal("lo", result)
+}
+
+func TestFuncWithIndex(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	f := FuncWithIndex(func(x string) string {
+		return x
+	})
+	is.Equal("lo", f("lo", 0))
+}
