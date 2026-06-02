@@ -2587,6 +2587,33 @@ func TestFilterReject(t *testing.T) {
 	is.IsType(b, allStrings, "type preserved")
 }
 
+func TestFilterRejectUnstable(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	left1, right1 := FilterReject([]int{1, 2, 3, 4}, func(x, _ int) bool {
+		return x%2 == 0
+	})
+
+	is.Equal([]int{2, 4}, left1)
+	is.Equal([]int{1, 3}, right1)
+
+	left2, right2 := FilterRejectUnstable([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
+		return len(x) > 3
+	})
+
+	is.Equal([]string{"Smith", "Domin", "Olivia"}, left2)
+	is.Equal([]string{"bar", "foo"}, right2)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	a, b := FilterRejectUnstable(allStrings, func(x string, _ int) bool {
+		return len(x) > 0
+	})
+	is.IsType(a, allStrings, "type preserved")
+	is.IsType(b, allStrings, "type preserved")
+}
+
 func TestCount(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
