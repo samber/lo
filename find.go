@@ -346,7 +346,7 @@ func FindDuplicatesByErr[T any, U comparable, Slice ~[]T](collection Slice, iter
 	return result, nil
 }
 
-// Min search the minimum value of a collection.
+// Min searches the minimum value of a collection.
 // Returns zero value when the collection is empty.
 // Play: https://go.dev/play/p/fJFLwpY8eMN
 func Min[T constraints.Ordered](collection []T) T {
@@ -369,7 +369,7 @@ func Min[T constraints.Ordered](collection []T) T {
 	return mIn
 }
 
-// MinIndex search the minimum value of a collection and the index of the minimum value.
+// MinIndex searches the minimum value of a collection and the index of the minimum value.
 // Returns (zero value, -1) when the collection is empty.
 // Play: https://go.dev/play/p/RxAidik4p50
 func MinIndex[T constraints.Ordered](collection []T) (T, int) {
@@ -396,7 +396,7 @@ func MinIndex[T constraints.Ordered](collection []T) (T, int) {
 	return mIn, index
 }
 
-// MinBy search the minimum value of a collection using the given comparison function.
+// MinBy searches the minimum value of a collection using the given comparison function.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns zero value when the collection is empty.
 // Play: https://go.dev/play/p/-B1PsrHVnfx
@@ -420,7 +420,7 @@ func MinBy[T any](collection []T, less func(a, b T) bool) T {
 	return mIn
 }
 
-// MinByErr search the minimum value of a collection using the given comparison function.
+// MinByErr searches the minimum value of a collection using the given comparison function.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns zero value and nil error when the collection is empty.
 // If the comparison function returns an error, iteration stops and the error is returned.
@@ -450,7 +450,7 @@ func MinByErr[T any](collection []T, less func(a, b T) (bool, error)) (T, error)
 	return mIn, nil
 }
 
-// MinIndexBy search the minimum value of a collection using the given comparison function and the index of the minimum value.
+// MinIndexBy searches the minimum value of a collection using the given comparison function and the index of the minimum value.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
 // Play: https://go.dev/play/p/zwwPRqWhnUY
@@ -478,7 +478,7 @@ func MinIndexBy[T any](collection []T, less func(a, b T) bool) (T, int) {
 	return mIn, index
 }
 
-// MinIndexByErr search the minimum value of a collection using the given comparison function and the index of the minimum value.
+// MinIndexByErr searches the minimum value of a collection using the given comparison function and the index of the minimum value.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
 // Comparison function can return an error to stop iteration immediately.
@@ -513,7 +513,7 @@ func MinIndexByErr[T any](collection []T, less func(a, b T) (bool, error)) (T, i
 	return mIn, index, nil
 }
 
-// Earliest search the minimum time.Time of a collection.
+// Earliest searches the minimum time.Time of a collection.
 // Returns zero value when the collection is empty.
 // Play: https://go.dev/play/p/pRyy0c6hsBs
 func Earliest(times ...time.Time) time.Time {
@@ -536,7 +536,7 @@ func Earliest(times ...time.Time) time.Time {
 	return mIn
 }
 
-// EarliestBy search the minimum time.Time of a collection using the given iteratee function.
+// EarliestBy searches the minimum time.Time of a collection using the given iteratee function.
 // Returns zero value when the collection is empty.
 // Play: https://go.dev/play/p/0XvCF6vuLXC
 func EarliestBy[T any](collection []T, iteratee func(item T) time.Time) T {
@@ -561,7 +561,7 @@ func EarliestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 	return earliest
 }
 
-// EarliestByErr search the minimum time.Time of a collection using the given iteratee function.
+// EarliestByErr searches the minimum time.Time of a collection using the given iteratee function.
 // Returns zero value and nil error when the collection is empty.
 // If the iteratee returns an error, iteration stops and the error is returned.
 // Play: https://go.dev/play/p/zJUBUj7ANvq
@@ -643,7 +643,7 @@ func MaxIndex[T constraints.Ordered](collection []T) (T, int) {
 	return mAx, index
 }
 
-// MaxBy search the maximum value of a collection using the given comparison function.
+// MaxBy searches the maximum value of a collection using the given comparison function.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns zero value when the collection is empty.
 //
@@ -671,7 +671,7 @@ func MaxBy[T any](collection []T, greater func(a, b T) bool) T {
 	return mAx
 }
 
-// MaxByErr search the maximum value of a collection using the given comparison function.
+// MaxByErr searches the maximum value of a collection using the given comparison function.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns zero value and nil error when the collection is empty.
 // If the comparison function returns an error, iteration stops and the error is returned.
@@ -704,7 +704,7 @@ func MaxByErr[T any](collection []T, greater func(a, b T) (bool, error)) (T, err
 	return mAx, nil
 }
 
-// MaxIndexBy search the maximum value of a collection using the given comparison function and the index of the maximum value.
+// MaxIndexBy searches the maximum value of a collection using the given comparison function and the index of the maximum value.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
 //
@@ -736,7 +736,7 @@ func MaxIndexBy[T any](collection []T, greater func(a, b T) bool) (T, int) {
 	return mAx, index
 }
 
-// MaxIndexByErr search the maximum value of a collection using the given comparison function and the index of the maximum value.
+// MaxIndexByErr searches the maximum value of a collection using the given comparison function and the index of the maximum value.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns (zero value, -1, nil) when the collection is empty.
 // If the comparison function returns an error, iteration stops and the error is returned.
@@ -772,7 +772,7 @@ func MaxIndexByErr[T any](collection []T, greater func(a, b T) (bool, error)) (T
 	return mAx, index, nil
 }
 
-// Latest search the maximum time.Time of a collection.
+// Latest searches the maximum time.Time of a collection.
 // Returns zero value when the collection is empty.
 // Play: https://go.dev/play/p/dBfdf5s8s-Y
 func Latest(times ...time.Time) time.Time {
@@ -795,7 +795,7 @@ func Latest(times ...time.Time) time.Time {
 	return mAx
 }
 
-// LatestBy search the maximum time.Time of a collection using the given iteratee function.
+// LatestBy searches the maximum time.Time of a collection using the given iteratee function.
 // Returns zero value when the collection is empty.
 // Play: https://go.dev/play/p/p1HA8XumaMU
 func LatestBy[T any](collection []T, iteratee func(item T) time.Time) T {
@@ -820,7 +820,7 @@ func LatestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 	return latest
 }
 
-// LatestByErr search the maximum time.Time of a collection using the given iteratee function.
+// LatestByErr searches the maximum time.Time of a collection using the given iteratee function.
 // Returns zero value and nil error when the collection is empty.
 // If the iteratee returns an error, iteration stops and the error is returned.
 // Play: https://go.dev/play/p/WpBUptwnxuG
