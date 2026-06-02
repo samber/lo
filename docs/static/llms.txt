@@ -273,6 +273,7 @@ Lo is built on a foundation of pragmatic engineering principles that balance pow
 - TrimPrefix: Remove prefix from string if present
 - TrimRight: Remove whitespace from end of string
 - TrimSuffix: Remove suffix from string if present
+- Join: Join elements using separator
 
 ### String
 - RandomString: Generate random string of specified length

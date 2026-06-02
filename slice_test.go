@@ -3319,3 +3319,130 @@ func TestTrimSuffix(t *testing.T) {
 	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
 }
+
+func TestJoin(t *testing.T) {
+	t.Parallel()
+
+	t.Run("[]string input", func(t *testing.T) {
+		tests := []struct {
+			name      string
+			input     []string
+			separator any
+			want      string
+		}{
+			{
+				name:      "empty array",
+				input:     []string{},
+				separator: ", ",
+				want:      "",
+			},
+			{
+				name:      "one element array",
+				input:     []string{"a"},
+				separator: ", ",
+				want:      "a",
+			},
+			{
+				name:      "multiple element array",
+				input:     []string{"a", "b", "c"},
+				separator: ", ",
+				want:      "a, b, c",
+			},
+			{
+				name:      "empty separator",
+				input:     []string{"a", "b", "c"},
+				separator: "",
+				want:      "abc",
+			},
+			{
+				name:      "nil separator",
+				input:     []string{"a", "b", "c"},
+				separator: nil,
+				want:      "abc",
+			},
+			{
+				name:      "int separator",
+				input:     []string{"a", "b", "c"},
+				separator: 2,
+				want:      "a2b2c",
+			},
+			{
+				name:      "nil input",
+				input:     nil,
+				separator: ", ",
+				want:      "",
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt // capture range variable
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+
+				got := Join(tt.input, tt.separator)
+
+				is.Equal(tt.want, got)
+			})
+		}
+	})
+
+	t.Run("[]int input", func(t *testing.T) {
+		tests := []struct {
+			name      string
+			input     []int
+			separator any
+			want      string
+		}{
+			{
+				name:      "empty array",
+				input:     []int{},
+				separator: ", ",
+				want:      "",
+			},
+			{
+				name:      "one element array",
+				input:     []int{1},
+				separator: ", ",
+				want:      "1",
+			},
+			{
+				name:      "multiple element array",
+				input:     []int{1, 2, 3},
+				separator: ", ",
+				want:      "1, 2, 3",
+			},
+			{
+				name:      "empty separator",
+				input:     []int{1, 2, 3},
+				separator: "",
+				want:      "123",
+			},
+			{
+				name:      "nil separator",
+				input:     []int{1, 2, 3},
+				separator: nil,
+				want:      "123",
+			},
+			{
+				name:      "int separator",
+				input:     []int{1, 2, 3},
+				separator: 2,
+				want:      "12223",
+			},
+		}
+
+		for _, tt := range tests {
+			tt := tt // capture range variable
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+
+				got := Join(tt.input, tt.separator)
+
+				is.Equal(tt.want, got)
+			})
+		}
+	})
+
+}

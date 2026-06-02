@@ -4149,3 +4149,14 @@ func ExampleIntersectBy() {
 	// Output:
 	// [0]
 }
+
+func ExampleJoin() {
+	result1 := Join([]int{1, 2, 3, 4}, " - ")
+	fmt.Printf("%v\n", result1)
+
+	result2 := Join([]string{"a", "b", "c", "d"}, 2)
+	fmt.Printf("%v", result2)
+	// Output:
+	// 1 - 2 - 3 - 4
+	// a2b2c2d
+}
