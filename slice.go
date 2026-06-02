@@ -987,6 +987,34 @@ func FilterReject[T any, Slice ~[]T](collection Slice, predicate func(T, int) bo
 	return kept, rejected
 }
 
+// FilterRejectUnstable mixes Filter and Reject, this method returns two slices, one for the elements of collection that
+// predicate returns true for and one for the elements that predicate does not return true for.
+//
+// Unstable implementation is 2 times more memory efficient than the original one,
+// but it returns rejected elements in reverse order due to implementation details.
+// Play: https://go.dev/play/p/EurlBKKDpdT
+func FilterRejectUnstable[T any, Slice ~[]T](collection Slice, predicate func(T, int) bool) (kept, rejected Slice) {
+	n := len(collection)
+	result := make(Slice, n)
+
+	keptEnd := 0
+	rejectEnd := n - 1
+
+	for i := 0; i < n; i++ {
+		if predicate(collection[i], i) {
+			result[keptEnd] = collection[i]
+			keptEnd++
+
+			continue
+		}
+
+		result[rejectEnd] = collection[i]
+		rejectEnd--
+	}
+
+	return result[:keptEnd], result[keptEnd:]
+}
+
 // Count counts the number of elements in the collection that equal value.
 // Play: https://go.dev/play/p/Y3FlK54yveC
 func Count[T comparable](collection []T, value T) int {
