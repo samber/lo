@@ -27,23 +27,6 @@ What makes it different from **samber/ro**?
 - lo: synchronous helpers across finite sequences (maps, slices...)
 - ro: processing of infinite data streams for event-driven scenarios
 
-----
-
-<div align="center">
-  <sup><b>💖 Sponsored by:</b></sup>
-  <br>
-  <a href="https://www.dbos.dev/?utm_campaign=gh-smbr">
-    <div>
-	  <img width="200" alt="dbos" src="https://github.com/user-attachments/assets/d583cb62-7735-4d3c-beb7-e6ef1a5faf49" />
-    </div>
-    <div>
-      DBOS - Durable workflow orchestration library for Go
-    </div>
-  </a>
-</div>
-
-----
-
 **Why this name?**
 
 I wanted a **short name**, similar to "Lodash", and no Go package uses this name.
