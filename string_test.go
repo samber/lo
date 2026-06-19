@@ -97,6 +97,12 @@ func TestSubstring(t *testing.T) {
 	str29 := Substring("🏠🐶🐱"[1:], 0, 2)
 	str30 := Substring("привет", 6, math.MaxUint)
 	str31 := Substring("привет", 6+1, math.MaxUint)
+	// Negative offset beyond the rune length clamps to the start of the string,
+	// even for multibyte strings whose byte length exceeds their rune length.
+	str32 := Substring("héllo", -6, 2)
+	str33 := Substring("héllo", -6, 1)
+	str34 := Substring("日本語", -4, 1)
+	str35 := Substring("日本語", -5, 2)
 
 	is.Empty(str0)
 	is.Empty(str1)
@@ -130,6 +136,10 @@ func TestSubstring(t *testing.T) {
 	is.Equal("��", str29)
 	is.Empty(str30)
 	is.Empty(str31)
+	is.Equal("hé", str32)
+	is.Equal("h", str33)
+	is.Equal("日", str34)
+	is.Equal("日本", str35)
 }
 
 func BenchmarkSubstring(b *testing.B) {
