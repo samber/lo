@@ -1870,3 +1870,76 @@ func CrossJoinByErr9[A, B, C, D, E, F, G, H, I, Out any](listA []A, listB []B, l
 
 	return result, nil
 }
+
+// NestJoin executes a condition join (Theta Join) between two slices using a
+// Nested Loop Join algorithm.
+//
+// It iterates through every element in the 'left' slice and compares it with
+// every element in the 'right' slice using the provided 'match' predicate.
+// If 'match' returns true, the 'mapper' function is invoked to combine the two
+// elements into a single result of type 'R'.
+//
+// Since it evaluates all possible pairs, it supports arbitrary matching criteria
+// (e.g., inequalities, regex, or complex logical conditions).
+//
+// Time Complexity: O(N * M), where N is len(left) and M is len(right).
+// Space Complexity: O(1) beyond the memory required for the resulting slice.
+func NestJoin[J, K, R any](
+	left []J,
+	right []K,
+	match func(J, K) bool,
+	mapper func(J, K) R,
+) []R {
+	var r []R
+
+	for _, j := range left {
+		for _, k := range right {
+			if !match(j, k) {
+				continue
+			}
+			r = append(r, mapper(j, k))
+		}
+	}
+
+	return r
+}
+
+// LeftJoin performs a left outer join between two slices based on a common key.
+//
+// It builds a lookup table (map) from the 'right' slice using 'rk' to extract keys.
+// Then, it iterates through the 'left' slice, retrieves the corresponding element
+// from the map using the key extracted by 'lk', and projects the result using 'mapper'.
+//
+// Behavior Notes:
+//   - If multiple elements in 'right' share the same key, 'KeyBy' will overwrite
+//     previous values, keeping only the last one.
+//   - If a key from the 'left' slice does not exist in 'right', the 'mapper'
+//     is still called, passing the zero value of type 'RE' for the right side.
+//   - The length of the returned slice is always equal to len(left).
+//
+// Time Complexity: O(N + M), where N is len(left) and M is len(right), leveraging
+// hash-based lookup for optimal performance with large datasets.
+// Space Complexity: O(M) to store the intermediate lookup map for the right slice.
+func LeftJoin[K comparable, LE, RE, R any](
+	left []LE,
+	right []RE,
+	lk func(item LE) K,
+	rk func(item RE) K,
+	mapper func(LE, RE) R,
+) []R {
+	if len(left) == 0 {
+		return nil
+	}
+
+	var r = make([]R, 0, len(left))
+
+	rm := KeyBy(right, rk)
+
+	for _, j := range left {
+		k := lk(j)
+		re := rm[k]
+		r = append(r, mapper(j, re))
+	}
+
+	return r
+}
