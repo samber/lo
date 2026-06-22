@@ -1,7 +1,7 @@
 ---
 name: EmptyableToPtr
 slug: emptyabletoptr
-sourceRef: type_manipulation.go#L41
+sourceRef: type_manipulation.go#L45
 category: core
 subCategory: type
 signatures:
