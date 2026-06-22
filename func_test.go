@@ -35,7 +35,7 @@ func TestPartial2(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	add := func(x float64, y int, z int) string {
+	add := func(x float64, y, z int) string {
 		return strconv.Itoa(int(x) + y + z)
 	}
 	f := Partial2(add, 5)
@@ -47,7 +47,7 @@ func TestPartial3(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	add := func(x float64, y int, z int, a float32) string {
+	add := func(x float64, y, z int, a float32) string {
 		return strconv.Itoa(int(x) + y + z + int(a))
 	}
 	f := Partial3(add, 5)
@@ -59,7 +59,7 @@ func TestPartial4(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	add := func(x float64, y int, z int, a float32, b int32) string {
+	add := func(x float64, y, z int, a float32, b int32) string {
 		return strconv.Itoa(int(x) + y + z + int(a) + int(b))
 	}
 	f := Partial4(add, 5)
@@ -71,7 +71,7 @@ func TestPartial5(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	add := func(x float64, y int, z int, a float32, b int32, c int) string {
+	add := func(x float64, y, z int, a float32, b int32, c int) string {
 		return strconv.Itoa(int(x) + y + z + int(a) + int(b) + c)
 	}
 	f := Partial5(add, 5)

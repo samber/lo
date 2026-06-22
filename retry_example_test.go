@@ -1,9 +1,9 @@
 //go:build !race
-// +build !race
 
 package lo
 
 import (
+	"errors"
 	"fmt"
 	"sync"
 	"sync/atomic"
@@ -85,7 +85,7 @@ func ExampleNewDebounceBy() {
 func ExampleAttempt() {
 	count1, err1 := Attempt(2, func(i int) error {
 		if i == 0 {
-			return fmt.Errorf("error")
+			return errors.New("error")
 		}
 
 		return nil
@@ -93,7 +93,7 @@ func ExampleAttempt() {
 
 	count2, err2 := Attempt(2, func(i int) error {
 		if i < 10 {
-			return fmt.Errorf("error")
+			return errors.New("error")
 		}
 
 		return nil
@@ -109,7 +109,7 @@ func ExampleAttempt() {
 func ExampleAttemptWithDelay() {
 	count1, time1, err1 := AttemptWithDelay(2, time.Millisecond, func(i int, _ time.Duration) error {
 		if i == 0 {
-			return fmt.Errorf("error")
+			return errors.New("error")
 		}
 
 		return nil
@@ -117,7 +117,7 @@ func ExampleAttemptWithDelay() {
 
 	count2, time2, err2 := AttemptWithDelay(2, time.Millisecond, func(i int, _ time.Duration) error {
 		if i < 10 {
-			return fmt.Errorf("error")
+			return errors.New("error")
 		}
 
 		return nil
@@ -157,7 +157,7 @@ func ExampleTransaction() {
 				fmt.Println("step 3")
 
 				if true {
-					return state, fmt.Errorf("error")
+					return state, errors.New("error")
 				}
 
 				return state + 42, nil
@@ -226,7 +226,7 @@ func ExampleTransaction_error() {
 		).
 		Then(
 			func(state int) (int, error) {
-				return state, fmt.Errorf("error")
+				return state, errors.New("error")
 			},
 			func(state int) int {
 				return state - 15

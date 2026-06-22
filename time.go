@@ -1,85 +1,99 @@
 package lo
 
-import "time"
+import (
+	"time"
+)
 
 // Duration returns the time taken to execute a function.
-func Duration(cb func()) time.Duration {
-	return Duration0(cb)
+// Play: https://go.dev/play/p/LFhKq2vY9Ty
+func Duration(callback func()) time.Duration {
+	return Duration0(callback)
 }
 
 // Duration0 returns the time taken to execute a function.
-func Duration0(cb func()) time.Duration {
+// Play: https://go.dev/play/p/HQfbBbAXaFP
+func Duration0(callback func()) time.Duration {
 	start := time.Now()
-	cb()
+	callback()
 	return time.Since(start)
 }
 
 // Duration1 returns the time taken to execute a function.
-func Duration1[A any](cb func() A) (A, time.Duration) {
+// Play: https://go.dev/play/p/HQfbBbAXaFP
+func Duration1[A any](callback func() A) (A, time.Duration) {
 	start := time.Now()
-	a := cb()
+	a := callback()
 	return a, time.Since(start)
 }
 
 // Duration2 returns the time taken to execute a function.
-func Duration2[A, B any](cb func() (A, B)) (A, B, time.Duration) {
+// Play: https://go.dev/play/p/HQfbBbAXaFP
+func Duration2[A, B any](callback func() (A, B)) (A, B, time.Duration) {
 	start := time.Now()
-	a, b := cb()
+	a, b := callback()
 	return a, b, time.Since(start)
 }
 
 // Duration3 returns the time taken to execute a function.
-func Duration3[A, B, C any](cb func() (A, B, C)) (A, B, C, time.Duration) {
+// Play: https://go.dev/play/p/xr863iwkAxQ
+func Duration3[A, B, C any](callback func() (A, B, C)) (A, B, C, time.Duration) {
 	start := time.Now()
-	a, b, c := cb()
+	a, b, c := callback()
 	return a, b, c, time.Since(start)
 }
 
 // Duration4 returns the time taken to execute a function.
-func Duration4[A, B, C, D any](cb func() (A, B, C, D)) (A, B, C, D, time.Duration) {
+// Play: https://go.dev/play/p/xr863iwkAxQ
+func Duration4[A, B, C, D any](callback func() (A, B, C, D)) (A, B, C, D, time.Duration) {
 	start := time.Now()
-	a, b, c, d := cb()
+	a, b, c, d := callback()
 	return a, b, c, d, time.Since(start)
 }
 
 // Duration5 returns the time taken to execute a function.
-func Duration5[A, B, C, D, E any](cb func() (A, B, C, D, E)) (A, B, C, D, E, time.Duration) {
+// Play: https://go.dev/play/p/xr863iwkAxQ
+func Duration5[A, B, C, D, E any](callback func() (A, B, C, D, E)) (A, B, C, D, E, time.Duration) {
 	start := time.Now()
-	a, b, c, d, e := cb()
+	a, b, c, d, e := callback()
 	return a, b, c, d, e, time.Since(start)
 }
 
 // Duration6 returns the time taken to execute a function.
-func Duration6[A, B, C, D, E, F any](cb func() (A, B, C, D, E, F)) (A, B, C, D, E, F, time.Duration) {
+// Play: https://go.dev/play/p/mR4bTQKO-Tf
+func Duration6[A, B, C, D, E, F any](callback func() (A, B, C, D, E, F)) (A, B, C, D, E, F, time.Duration) {
 	start := time.Now()
-	a, b, c, d, e, f := cb()
+	a, b, c, d, e, f := callback()
 	return a, b, c, d, e, f, time.Since(start)
 }
 
 // Duration7 returns the time taken to execute a function.
-func Duration7[A, B, C, D, E, F, G any](cb func() (A, B, C, D, E, F, G)) (A, B, C, D, E, F, G, time.Duration) {
+// Play: https://go.dev/play/p/jgIAcBWWInS
+func Duration7[A, B, C, D, E, F, G any](callback func() (A, B, C, D, E, F, G)) (A, B, C, D, E, F, G, time.Duration) {
 	start := time.Now()
-	a, b, c, d, e, f, g := cb()
+	a, b, c, d, e, f, g := callback()
 	return a, b, c, d, e, f, g, time.Since(start)
 }
 
 // Duration8 returns the time taken to execute a function.
-func Duration8[A, B, C, D, E, F, G, H any](cb func() (A, B, C, D, E, F, G, H)) (A, B, C, D, E, F, G, H, time.Duration) {
+// Play: https://go.dev/play/p/T8kxpG1c5Na
+func Duration8[A, B, C, D, E, F, G, H any](callback func() (A, B, C, D, E, F, G, H)) (A, B, C, D, E, F, G, H, time.Duration) {
 	start := time.Now()
-	a, b, c, d, e, f, g, h := cb()
+	a, b, c, d, e, f, g, h := callback()
 	return a, b, c, d, e, f, g, h, time.Since(start)
 }
 
 // Duration9 returns the time taken to execute a function.
-func Duration9[A, B, C, D, E, F, G, H, I any](cb func() (A, B, C, D, E, F, G, H, I)) (A, B, C, D, E, F, G, H, I, time.Duration) {
+// Play: https://go.dev/play/p/bg9ix2VrZ0j
+func Duration9[A, B, C, D, E, F, G, H, I any](callback func() (A, B, C, D, E, F, G, H, I)) (A, B, C, D, E, F, G, H, I, time.Duration) {
 	start := time.Now()
-	a, b, c, d, e, f, g, h, i := cb()
+	a, b, c, d, e, f, g, h, i := callback()
 	return a, b, c, d, e, f, g, h, i, time.Since(start)
 }
 
 // Duration10 returns the time taken to execute a function.
-func Duration10[A, B, C, D, E, F, G, H, I, J any](cb func() (A, B, C, D, E, F, G, H, I, J)) (A, B, C, D, E, F, G, H, I, J, time.Duration) {
+// Play: https://go.dev/play/p/Y3n7oJXqJbk
+func Duration10[A, B, C, D, E, F, G, H, I, J any](callback func() (A, B, C, D, E, F, G, H, I, J)) (A, B, C, D, E, F, G, H, I, J, time.Duration) {
 	start := time.Now()
-	a, b, c, d, e, f, g, h, i, j := cb()
+	a, b, c, d, e, f, g, h, i, j := callback()
 	return a, b, c, d, e, f, g, h, i, j, time.Since(start)
 }

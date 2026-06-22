@@ -1,0 +1,8 @@
+{
+  "label": "👣 Mutable",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Mutable operations on slices, maps, and channels"
+  }
+}

@@ -2,14 +2,15 @@ name: Tests
 
 on:
   push:
-    tags:
     branches:
+      - master
   pull_request:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         go:
           - "1.18"
@@ -19,15 +20,17 @@ jobs:
           - "1.22"
           - "1.23"
           - "1.24"
-          - "1.x"
+          - "1.25"
+          - "1.26"
+          - "stable"
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
-          stable: false
 
       - name: Build
         run: make build
@@ -35,14 +38,14 @@ jobs:
       - name: Test
         run: make test
 
-      - name: Test
+      - name: Test coverage
         run: make coverage
+        if: matrix.go == 'stable'
 
       - name: Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./cover.out
           flags: unittests
           verbose: true
-        if: matrix.go == '1.18'
+        if: matrix.go == 'stable'

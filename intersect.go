@@ -1,6 +1,7 @@
 package lo
 
 // Contains returns true if an element is present in a collection.
+// Play: https://go.dev/play/p/W1EvyqY6t9j
 func Contains[T comparable](collection []T, element T) bool {
 	for i := range collection {
 		if collection[i] == element {
@@ -12,6 +13,7 @@ func Contains[T comparable](collection []T, element T) bool {
 }
 
 // ContainsBy returns true if predicate function return true.
+// Play: https://go.dev/play/p/W1EvyqY6t9j
 func ContainsBy[T any](collection []T, predicate func(item T) bool) bool {
 	for i := range collection {
 		if predicate(collection[i]) {
@@ -22,10 +24,17 @@ func ContainsBy[T any](collection []T, predicate func(item T) bool) bool {
 	return false
 }
 
-// Every returns true if all elements of a subset are contained into a collection or if the subset is empty.
-func Every[T comparable](collection []T, subset []T) bool {
-	for i := range subset {
-		if !Contains(collection, subset[i]) {
+// Every returns true if all elements of a subset are contained in a collection or if the subset is empty.
+// Play: https://go.dev/play/p/W1EvyqY6t9j
+func Every[T comparable](collection, subset []T) bool {
+	if len(subset) == 0 {
+		return true
+	}
+
+	seen := Keyify(collection)
+
+	for _, item := range subset {
+		if _, ok := seen[item]; !ok {
 			return false
 		}
 	}
@@ -34,6 +43,7 @@ func Every[T comparable](collection []T, subset []T) bool {
 }
 
 // EveryBy returns true if the predicate returns true for all elements in the collection or if the collection is empty.
+// Play: https://go.dev/play/p/dn1-vhHsq9x
 func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 	for i := range collection {
 		if !predicate(collection[i]) {
@@ -44,11 +54,17 @@ func EveryBy[T any](collection []T, predicate func(item T) bool) bool {
 	return true
 }
 
-// Some returns true if at least 1 element of a subset is contained into a collection.
+// Some returns true if at least 1 element of a subset is contained in a collection.
 // If the subset is empty Some returns false.
-func Some[T comparable](collection []T, subset []T) bool {
-	for i := range subset {
-		if Contains(collection, subset[i]) {
+// Play: https://go.dev/play/p/Lj4ceFkeT9V
+func Some[T comparable](collection, subset []T) bool {
+	if len(subset) == 0 {
+		return false
+	}
+
+	seen := Keyify(subset)
+	for i := range collection {
+		if _, ok := seen[collection[i]]; ok {
 			return true
 		}
 	}
@@ -58,6 +74,7 @@ func Some[T comparable](collection []T, subset []T) bool {
 
 // SomeBy returns true if the predicate returns true for any of the elements in the collection.
 // If the collection is empty SomeBy returns false.
+// Play: https://go.dev/play/p/DXF-TORBudx
 func SomeBy[T any](collection []T, predicate func(item T) bool) bool {
 	for i := range collection {
 		if predicate(collection[i]) {
@@ -68,10 +85,16 @@ func SomeBy[T any](collection []T, predicate func(item T) bool) bool {
 	return false
 }
 
-// None returns true if no element of a subset are contained into a collection or if the subset is empty.
-func None[T comparable](collection []T, subset []T) bool {
-	for i := range subset {
-		if Contains(collection, subset[i]) {
+// None returns true if no element of a subset is contained in a collection or if the subset is empty.
+// Play: https://go.dev/play/p/fye7JsmxzPV
+func None[T comparable](collection, subset []T) bool {
+	if len(subset) == 0 {
+		return true
+	}
+
+	seen := Keyify(subset)
+	for i := range collection {
+		if _, ok := seen[collection[i]]; ok {
 			return false
 		}
 	}
@@ -80,6 +103,7 @@ func None[T comparable](collection []T, subset []T) bool {
 }
 
 // NoneBy returns true if the predicate returns true for none of the elements in the collection or if the collection is empty.
+// Play: https://go.dev/play/p/O64WZ32H58S
 func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 	for i := range collection {
 		if predicate(collection[i]) {
@@ -90,18 +114,89 @@ func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 	return true
 }
 
-// Intersect returns the intersection between two collections.
-func Intersect[T comparable, Slice ~[]T](list1 Slice, list2 Slice) Slice {
-	result := Slice{}
-	seen := map[T]struct{}{}
-
-	for i := range list1 {
-		seen[list1[i]] = struct{}{}
+// Intersect returns the intersection between collections.
+// Play: https://go.dev/play/p/uuElL9X9e58
+func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
+	if len(lists) == 0 {
+		return Slice{}
 	}
 
-	for i := range list2 {
-		if _, ok := seen[list2[i]]; ok {
-			result = append(result, list2[i])
+	last := lists[len(lists)-1]
+
+	seen := make(map[T]bool, len(last))
+
+	for _, item := range last {
+		seen[item] = false
+	}
+
+	for i := len(lists) - 2; i > 0 && len(seen) != 0; i-- {
+		for _, item := range lists[i] {
+			if _, ok := seen[item]; ok {
+				seen[item] = true
+			}
+		}
+
+		for k, v := range seen {
+			if v {
+				seen[k] = false
+			} else {
+				delete(seen, k)
+			}
+		}
+	}
+
+	result := make(Slice, 0, len(seen))
+
+	for _, item := range lists[0] {
+		if _, ok := seen[item]; ok {
+			result = append(result, item)
+			delete(seen, item)
+		}
+	}
+
+	return result
+}
+
+// IntersectBy returns the intersection between two collections using a custom key selector function.
+// Play: https://go.dev/play/p/uWF8y2-zmtf
+func IntersectBy[T any, K comparable, Slice ~[]T](transform func(T) K, lists ...Slice) Slice {
+	if len(lists) == 0 {
+		return Slice{}
+	}
+
+	last := lists[len(lists)-1]
+
+	seen := make(map[K]bool, len(last))
+
+	for _, item := range last {
+		k := transform(item)
+		seen[k] = false
+	}
+
+	for i := len(lists) - 2; i > 0 && len(seen) != 0; i-- {
+		for _, item := range lists[i] {
+			k := transform(item)
+			if _, ok := seen[k]; ok {
+				seen[k] = true
+			}
+		}
+
+		for k, v := range seen {
+			if v {
+				seen[k] = false
+			} else {
+				delete(seen, k)
+			}
+		}
+	}
+
+	result := make(Slice, 0, len(seen))
+
+	for _, item := range lists[0] {
+		k := transform(item)
+		if _, ok := seen[k]; ok {
+			result = append(result, item)
+			delete(seen, k)
 		}
 	}
 
@@ -109,22 +204,15 @@ func Intersect[T comparable, Slice ~[]T](list1 Slice, list2 Slice) Slice {
 }
 
 // Difference returns the difference between two collections.
-// The first value is the collection of element absent of list2.
-// The second value is the collection of element absent of list1.
-func Difference[T comparable, Slice ~[]T](list1 Slice, list2 Slice) (Slice, Slice) {
-	left := Slice{}
-	right := Slice{}
+// The first value is the collection of elements absent from list2.
+// The second value is the collection of elements absent from list1.
+// Play: https://go.dev/play/p/pKE-JgzqRpz
+func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
+	left := make(Slice, 0, len(list1))
+	right := make(Slice, 0, len(list2))
 
-	seenLeft := map[T]struct{}{}
-	seenRight := map[T]struct{}{}
-
-	for i := range list1 {
-		seenLeft[list1[i]] = struct{}{}
-	}
-
-	for i := range list2 {
-		seenRight[list2[i]] = struct{}{}
-	}
+	seenLeft := Keyify(list1)
+	seenRight := Keyify(list2)
 
 	for i := range list1 {
 		if _, ok := seenRight[list1[i]]; !ok {
@@ -143,6 +231,7 @@ func Difference[T comparable, Slice ~[]T](list1 Slice, list2 Slice) (Slice, Slic
 
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
+// Play: https://go.dev/play/p/-hsqZNTH0ej
 func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	var capLen int
 
@@ -165,12 +254,64 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	return result
 }
 
-// Without returns slice excluding all given values.
-func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
-	excludeMap := make(map[T]struct{}, len(exclude))
-	for i := range exclude {
-		excludeMap[exclude[i]] = struct{}{}
+// UnionBy is like Union except that it accepts an iteratee which is invoked for each element of each collection
+// to generate the criterion by which uniqueness is computed.
+// Result values are chosen from the first collection in which the value occurs.
+func UnionBy[T any, V comparable, Slice ~[]T](iteratee func(item T) V, lists ...Slice) Slice {
+	var capLen int
+
+	for _, list := range lists {
+		capLen += len(list)
 	}
+
+	result := make(Slice, 0, capLen)
+	seen := make(map[V]struct{}, capLen)
+
+	for i := range lists {
+		for j := range lists[i] {
+			value := iteratee(lists[i][j])
+			if _, ok := seen[value]; !ok {
+				seen[value] = struct{}{}
+				result = append(result, lists[i][j])
+			}
+		}
+	}
+
+	return result
+}
+
+// UnionByErr is like UnionBy except that it accepts an iteratee which can return an error.
+// It returns the first error returned by the iteratee.
+func UnionByErr[T any, V comparable, Slice ~[]T](iteratee func(item T) (V, error), lists ...Slice) (Slice, error) {
+	var capLen int
+
+	for _, list := range lists {
+		capLen += len(list)
+	}
+
+	result := make(Slice, 0, capLen)
+	seen := make(map[V]struct{}, capLen)
+
+	for i := range lists {
+		for j := range lists[i] {
+			value, err := iteratee(lists[i][j])
+			if err != nil {
+				return nil, err
+			}
+			if _, ok := seen[value]; !ok {
+				seen[value] = struct{}{}
+				result = append(result, lists[i][j])
+			}
+		}
+	}
+
+	return result, nil
+}
+
+// Without returns a slice excluding all given values.
+// Play: https://go.dev/play/p/PcAVtYJsEsS
+func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
+	excludeMap := Keyify(exclude)
 
 	result := make(Slice, 0, len(collection))
 	for i := range collection {
@@ -182,14 +323,12 @@ func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
 }
 
 // WithoutBy filters a slice by excluding elements whose extracted keys match any in the exclude list.
-// It returns a new slice containing only the elements whose keys are not in the exclude list.
-func WithoutBy[T any, K comparable](collection []T, iteratee func(item T) K, exclude ...K) []T {
-	excludeMap := make(map[K]struct{}, len(exclude))
-	for _, e := range exclude {
-		excludeMap[e] = struct{}{}
-	}
+// Returns a new slice containing only the elements whose keys are not in the exclude list.
+// Play: https://go.dev/play/p/VgWJOF01NbJ
+func WithoutBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K, exclude ...K) Slice {
+	excludeMap := Keyify(exclude)
 
-	result := make([]T, 0, len(collection))
+	result := make(Slice, 0, len(collection))
 	for _, item := range collection {
 		if _, ok := excludeMap[iteratee(item)]; !ok {
 			result = append(result, item)
@@ -198,23 +337,36 @@ func WithoutBy[T any, K comparable](collection []T, iteratee func(item T) K, exc
 	return result
 }
 
-// WithoutEmpty returns slice excluding zero values.
+// WithoutByErr filters a slice by excluding elements whose extracted keys match any in the exclude list.
+// It returns the first error returned by the iteratee.
+func WithoutByErr[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) (K, error), exclude ...K) (Slice, error) {
+	excludeMap := Keyify(exclude)
+
+	result := make(Slice, 0, len(collection))
+	for _, item := range collection {
+		key, err := iteratee(item)
+		if err != nil {
+			return nil, err
+		}
+		if _, ok := excludeMap[key]; !ok {
+			result = append(result, item)
+		}
+	}
+	return result, nil
+}
+
+// WithoutEmpty returns a slice excluding zero values.
 //
 // Deprecated: Use lo.Compact instead.
+// Play: https://go.dev/play/p/iZvYJWuniJm
 func WithoutEmpty[T comparable, Slice ~[]T](collection Slice) Slice {
 	return Compact(collection)
 }
 
-// WithoutNth returns slice excluding nth value.
-func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice {
-	length := len(collection)
-
-	toRemove := make(map[int]struct{}, len(nths))
-	for i := range nths {
-		if nths[i] >= 0 && nths[i] <= length-1 {
-			toRemove[nths[i]] = struct{}{}
-		}
-	}
+// WithoutNth returns a slice excluding the nth value.
+// Play: https://go.dev/play/p/5g3F9R2H1xL
+func WithoutNth[T any, Slice ~[]T](collection Slice, nths ...int) Slice {
+	toRemove := Keyify(nths)
 
 	result := make(Slice, 0, len(collection))
 	for i := range collection {
@@ -227,16 +379,18 @@ func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice {
 }
 
 // ElementsMatch returns true if lists contain the same set of elements (including empty set).
-// If there are duplicate elements, the number of appearances of each of them in both lists should match.
+// If there are duplicate elements, the number of occurrences in each list should match.
 // The order of elements is not checked.
-func ElementsMatch[T comparable, Slice ~[]T](list1 Slice, list2 Slice) bool {
+// Play: https://go.dev/play/p/XWSEM4Ic_t0
+func ElementsMatch[T comparable, Slice ~[]T](list1, list2 Slice) bool {
 	return ElementsMatchBy(list1, list2, func(item T) T { return item })
 }
 
 // ElementsMatchBy returns true if lists contain the same set of elements' keys (including empty set).
-// If there are duplicate keys, the number of appearances of each of them in both lists should match.
+// If there are duplicate keys, the number of occurrences in each list should match.
 // The order of elements is not checked.
-func ElementsMatchBy[T any, K comparable](list1 []T, list2 []T, iteratee func(item T) K) bool {
+// Play: https://go.dev/play/p/XWSEM4Ic_t0
+func ElementsMatchBy[T any, K comparable](list1, list2 []T, iteratee func(item T) K) bool {
 	if len(list1) != len(list2) {
 		return false
 	}

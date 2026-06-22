@@ -1,6 +1,8 @@
 package lo
 
 import (
+	"errors"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,8 +15,8 @@ func TestContains(t *testing.T) {
 	result1 := Contains([]int{0, 1, 2, 3, 4, 5}, 5)
 	result2 := Contains([]int{0, 1, 2, 3, 4, 5}, 6)
 
-	is.Equal(result1, true)
-	is.Equal(result2, false)
+	is.True(result1)
+	is.False(result2)
 }
 
 func TestContainsBy(t *testing.T) {
@@ -34,10 +36,10 @@ func TestContainsBy(t *testing.T) {
 	result3 := ContainsBy(a2, func(t string) bool { return t == "ccc" })
 	result4 := ContainsBy(a2, func(t string) bool { return t == "ddd" })
 
-	is.Equal(result1, false)
-	is.Equal(result2, true)
-	is.Equal(result3, true)
-	is.Equal(result4, false)
+	is.False(result1)
+	is.True(result2)
+	is.True(result3)
+	is.False(result4)
 }
 
 func TestEvery(t *testing.T) {
@@ -176,17 +178,29 @@ func TestIntersect(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
-	result2 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
-	result3 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
-	result4 := Intersect([]int{0, 6}, []int{0, 1, 2, 3, 4, 5})
-	result5 := Intersect([]int{0, 6, 0}, []int{0, 1, 2, 3, 4, 5})
+	result0 := Intersect[int, []int]()
+	result1 := Intersect([]int{1})
+	result2 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
+	result3 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+	result4 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
+	result5 := Intersect([]int{0, 6}, []int{0, 1, 2, 3, 4, 5})
+	result6 := Intersect([]int{0, 6, 0}, []int{0, 1, 2, 3, 4, 5})
+	result7 := Intersect([]int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+	result8 := Intersect([]int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{1, 6})
+	result9 := Intersect([]int{0, 1, 1}, []int{2}, []int{3})
+	resultA := Intersect([]int{0, 1, 1})
 
-	is.Equal(result1, []int{0, 2})
-	is.Equal(result2, []int{0})
-	is.Equal(result3, []int{})
-	is.Equal(result4, []int{0})
-	is.Equal(result5, []int{0})
+	is.Empty(result0)
+	is.ElementsMatch([]int{1}, result1)
+	is.ElementsMatch([]int{0, 2}, result2)
+	is.ElementsMatch([]int{0}, result3)
+	is.Empty(result4)
+	is.ElementsMatch([]int{0}, result5)
+	is.ElementsMatch([]int{0}, result6)
+	is.ElementsMatch([]int{0}, result7)
+	is.Empty(result8)
+	is.Empty(result9)
+	is.ElementsMatch([]int{0, 1}, resultA)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -194,21 +208,64 @@ func TestIntersect(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestIntersectBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type User struct {
+		ID   int
+		Name string
+	}
+
+	list1 := []User{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+		{ID: 3, Name: "Charlie"},
+	}
+
+	list2 := []User{
+		{ID: 2, Name: "Robert"},
+		{ID: 3, Name: "Charlie"},
+		{ID: 4, Name: "Alice"},
+	}
+
+	intersectByID := IntersectBy(func(u User) int {
+		return u.ID
+	}, list1, list2)
+	is.ElementsMatch(intersectByID, []User{{ID: 2, Name: "Bob"}, {ID: 3, Name: "Charlie"}})
+
+	intersectByName := IntersectBy(func(u User) string {
+		return u.Name
+	}, list1, list2)
+	is.ElementsMatch(intersectByName, []User{{ID: 3, Name: "Charlie"}, {ID: 1, Name: "Alice"}})
+
+	intersectByIDAndName := IntersectBy(func(u User) string {
+		return strconv.Itoa(u.ID) + u.Name
+	}, list1, list2)
+	is.ElementsMatch(intersectByIDAndName, []User{{ID: 3, Name: "Charlie"}})
+
+	result := IntersectBy(strconv.Itoa, []int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
+	is.ElementsMatch(result, []int{0})
+
+	result = IntersectBy(strconv.Itoa, []int{0, 1, 1})
+	is.ElementsMatch(result, []int{0, 1})
+}
+
 func TestDifference(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
 	left1, right1 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
-	is.Equal(left1, []int{1, 3, 4, 5})
-	is.Equal(right1, []int{6})
+	is.Equal([]int{1, 3, 4, 5}, left1)
+	is.Equal([]int{6}, right1)
 
 	left2, right2 := Difference([]int{1, 2, 3, 4, 5}, []int{0, 6})
-	is.Equal(left2, []int{1, 2, 3, 4, 5})
-	is.Equal(right2, []int{0, 6})
+	is.Equal([]int{1, 2, 3, 4, 5}, left2)
+	is.Equal([]int{0, 6}, right2)
 
 	left3, right3 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
-	is.Equal(left3, []int{})
-	is.Equal(right3, []int{})
+	is.Empty(left3)
+	is.Empty(right3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -224,29 +281,129 @@ func TestUnion(t *testing.T) {
 	result1 := Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
 	result2 := Union([]int{0, 1, 2, 3, 4, 5}, []int{6, 7})
 	result3 := Union([]int{0, 1, 2, 3, 4, 5}, []int{})
-	result4 := Union([]int{0, 1, 2}, []int{0, 1, 2})
-	result5 := Union([]int{}, []int{})
-	is.Equal(result1, []int{0, 1, 2, 3, 4, 5, 10})
-	is.Equal(result2, []int{0, 1, 2, 3, 4, 5, 6, 7})
-	is.Equal(result3, []int{0, 1, 2, 3, 4, 5})
-	is.Equal(result4, []int{0, 1, 2})
-	is.Equal(result5, []int{})
+	result4 := Union([]int{0, 1, 2}, []int{0, 1, 2, 3, 3})
+	result5 := Union([]int{0, 1, 2}, []int{0, 1, 2})
+	result6 := Union([]int{}, []int{})
+	is.Equal([]int{0, 1, 2, 3, 4, 5, 10}, result1)
+	is.Equal([]int{0, 1, 2, 3, 4, 5, 6, 7}, result2)
+	is.Equal([]int{0, 1, 2, 3, 4, 5}, result3)
+	is.Equal([]int{0, 1, 2, 3}, result4)
+	is.Equal([]int{0, 1, 2}, result5)
+	is.Empty(result6)
 
 	result11 := Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
 	result12 := Union([]int{0, 1, 2, 3, 4, 5}, []int{6, 7}, []int{8, 9})
 	result13 := Union([]int{0, 1, 2, 3, 4, 5}, []int{}, []int{})
 	result14 := Union([]int{0, 1, 2}, []int{0, 1, 2}, []int{0, 1, 2})
 	result15 := Union([]int{}, []int{}, []int{})
-	is.Equal(result11, []int{0, 1, 2, 3, 4, 5, 10, 11})
-	is.Equal(result12, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9})
-	is.Equal(result13, []int{0, 1, 2, 3, 4, 5})
-	is.Equal(result14, []int{0, 1, 2})
-	is.Equal(result15, []int{})
+	is.Equal([]int{0, 1, 2, 3, 4, 5, 10, 11}, result11)
+	is.Equal([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, result12)
+	is.Equal([]int{0, 1, 2, 3, 4, 5}, result13)
+	is.Equal([]int{0, 1, 2}, result14)
+	is.Empty(result15)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Union(allStrings, allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestUnionBy(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	testFunc := func(i int) int {
+		return i / 2
+	}
+
+	result1 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+	result2 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7})
+	result3 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{})
+	result4 := UnionBy(testFunc, []int{0, 1, 2}, []int{0, 1, 2})
+	result5 := UnionBy(testFunc, []int{}, []int{})
+	is.Equal([]int{0, 2, 4, 10}, result1)
+	is.Equal([]int{0, 2, 4, 6}, result2)
+	is.Equal([]int{0, 2, 4}, result3)
+	is.Equal([]int{0, 2}, result4)
+	is.Equal([]int{}, result5)
+
+	result11 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
+	result12 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7}, []int{8, 9})
+	result13 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{}, []int{})
+	result14 := UnionBy(testFunc, []int{0, 1, 2}, []int{0, 1, 2}, []int{0, 1, 2})
+	result15 := UnionBy(testFunc, []int{}, []int{}, []int{})
+	is.Equal([]int{0, 2, 4, 10}, result11)
+	is.Equal([]int{0, 2, 4, 6, 8}, result12)
+	is.Equal([]int{0, 2, 4}, result13)
+	is.Equal([]int{0, 2}, result14)
+	is.Equal([]int{}, result15)
+
+	type myStrings []string
+	allStrings := myStrings{"foo", "bar", "baz"}
+	nonempty := UnionBy(func(s string) string { return s }, allStrings, allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestUnionByErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	testFunc := func(i int) (int, error) {
+		return i / 2, nil
+	}
+
+	result1, err1 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+	result2, err2 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7})
+	result3, err3 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{})
+	result4, err4 := UnionByErr(testFunc, []int{0, 1, 2}, []int{0, 1, 2})
+	result5, err5 := UnionByErr(testFunc, []int{}, []int{})
+	is.NoError(err1)
+	is.NoError(err2)
+	is.NoError(err3)
+	is.NoError(err4)
+	is.NoError(err5)
+	is.Equal([]int{0, 2, 4, 10}, result1)
+	is.Equal([]int{0, 2, 4, 6}, result2)
+	is.Equal([]int{0, 2, 4}, result3)
+	is.Equal([]int{0, 2}, result4)
+	is.Equal([]int{}, result5)
+
+	result11, err11 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
+	result12, err12 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7}, []int{8, 9})
+	result13, err13 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{}, []int{})
+	result14, err14 := UnionByErr(testFunc, []int{0, 1, 2}, []int{0, 1, 2}, []int{0, 1, 2})
+	result15, err15 := UnionByErr(testFunc, []int{}, []int{}, []int{})
+	is.NoError(err11)
+	is.NoError(err12)
+	is.NoError(err13)
+	is.NoError(err14)
+	is.NoError(err15)
+	is.Equal([]int{0, 2, 4, 10}, result11)
+	is.Equal([]int{0, 2, 4, 6, 8}, result12)
+	is.Equal([]int{0, 2, 4}, result13)
+	is.Equal([]int{0, 2}, result14)
+	is.Equal([]int{}, result15)
+
+	// Test error case
+	callCount := 0
+	errFunc := func(i int) (int, error) {
+		callCount++
+		if i == 2 {
+			return 0, assert.AnError
+		}
+		return i / 2, nil
+	}
+
+	result6, err6 := UnionByErr(errFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
+	is.ErrorIs(err6, assert.AnError)
+	is.Nil(result6)
+	is.Equal(3, callCount, "should stop at first error")
+
+	callCount = 0
+	result7, err7 := UnionByErr(errFunc, []int{0, 1, 3, 4, 5}, []int{2, 10})
+	is.ErrorIs(err7, assert.AnError)
+	is.Nil(result7)
+	is.Equal(6, callCount, "should stop at first error")
 }
 
 func TestWithout(t *testing.T) {
@@ -258,11 +415,11 @@ func TestWithout(t *testing.T) {
 	result3 := Without([]int{}, 0, 1, 2, 3, 4, 5)
 	result4 := Without([]int{0, 1, 2}, 0, 1, 2)
 	result5 := Without([]int{})
-	is.Equal(result1, []int{10})
-	is.Equal(result2, []int{7})
-	is.Equal(result3, []int{})
-	is.Equal(result4, []int{})
-	is.Equal(result5, []int{})
+	is.Equal([]int{10}, result1)
+	is.Equal([]int{7}, result2)
+	is.Empty(result3)
+	is.Empty(result4)
+	is.Empty(result5)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -285,9 +442,148 @@ func TestWithoutBy(t *testing.T) {
 		}, "nick", "lily")
 	result2 := WithoutBy([]User{}, func(item User) int { return item.Age }, 1, 2, 3)
 	result3 := WithoutBy([]User{}, func(item User) string { return item.Name })
-	is.Equal(result1, []User{{Name: "peter"}})
-	is.Equal(result2, []User{})
-	is.Equal(result3, []User{})
+	is.Equal([]User{{Name: "peter"}}, result1)
+	is.Empty(result2)
+	is.Empty(result3)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := WithoutBy(allStrings, func(s string) string {
+		return s
+	})
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+func TestWithoutByErr(t *testing.T) {
+	t.Parallel()
+
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	tests := []struct {
+		name          string
+		input         []User
+		iteratee      func(User) (string, error)
+		exclude       []string
+		want          []User
+		wantErr       string
+		wantCallCount int
+	}{
+		{
+			name:  "exclude by name",
+			input: []User{{Name: "nick"}, {Name: "peter"}},
+			iteratee: func(item User) (string, error) {
+				return item.Name, nil
+			},
+			exclude:       []string{"nick", "lily"},
+			want:          []User{{Name: "peter"}},
+			wantErr:       "",
+			wantCallCount: 2,
+		},
+		{
+			name:  "empty exclude list",
+			input: []User{{Name: "nick"}, {Name: "peter"}},
+			iteratee: func(item User) (string, error) {
+				return item.Name, nil
+			},
+			exclude:       []string{},
+			want:          []User{{Name: "nick"}, {Name: "peter"}},
+			wantErr:       "",
+			wantCallCount: 2,
+		},
+		{
+			name:  "error on second element",
+			input: []User{{Name: "nick"}, {Name: "peter"}, {Name: "lily"}},
+			iteratee: func(item User) (string, error) {
+				if item.Name == "peter" {
+					return "", errors.New("peter not allowed")
+				}
+				return item.Name, nil
+			},
+			exclude:       []string{"nick"},
+			want:          nil,
+			wantErr:       "peter not allowed",
+			wantCallCount: 2, // stops early at error
+		},
+		{
+			name:  "error on first element",
+			input: []User{{Name: "nick"}, {Name: "peter"}},
+			iteratee: func(item User) (string, error) {
+				return "", errors.New("first element error")
+			},
+			exclude:       []string{"nick"},
+			want:          nil,
+			wantErr:       "first element error",
+			wantCallCount: 1,
+		},
+		{
+			name:  "all excluded",
+			input: []User{{Name: "nick"}, {Name: "peter"}},
+			iteratee: func(item User) (string, error) {
+				return item.Name, nil
+			},
+			exclude:       []string{"nick", "peter", "lily"},
+			want:          []User{},
+			wantErr:       "",
+			wantCallCount: 2,
+		},
+		{
+			name:  "none excluded",
+			input: []User{{Name: "nick"}, {Name: "peter"}},
+			iteratee: func(item User) (string, error) {
+				return item.Name, nil
+			},
+			exclude:       []string{"alice"},
+			want:          []User{{Name: "nick"}, {Name: "peter"}},
+			wantErr:       "",
+			wantCallCount: 2,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt // capture range variable
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			callCount := 0
+			wrappedIteratee := func(item User) (string, error) {
+				callCount++
+				return tt.iteratee(item)
+			}
+
+			got, err := WithoutByErr(tt.input, wrappedIteratee, tt.exclude...)
+
+			if tt.wantErr != "" {
+				is.Error(err)
+				is.Equal(tt.wantErr, err.Error())
+				is.Nil(got)
+				if tt.wantCallCount > 0 {
+					is.Equal(tt.wantCallCount, callCount, "should stop early on error")
+				}
+			} else {
+				is.NoError(err)
+				is.Equal(tt.want, got)
+				is.Equal(tt.wantCallCount, callCount)
+			}
+		})
+	}
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty, err := WithoutByErr(allStrings, func(s string) (string, error) {
+			return s, nil
+		})
+
+		is.NoError(err)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestWithoutEmpty(t *testing.T) {
@@ -298,10 +594,10 @@ func TestWithoutEmpty(t *testing.T) {
 	result2 := WithoutEmpty([]int{1, 2})
 	result3 := WithoutEmpty([]int{})
 	result4 := WithoutEmpty([]*int{ToPtr(0), ToPtr(1), nil, ToPtr(2)})
-	is.Equal(result1, []int{1, 2})
-	is.Equal(result2, []int{1, 2})
-	is.Equal(result3, []int{})
-	is.Equal(result4, []*int{ToPtr(0), ToPtr(1), ToPtr(2)})
+	is.Equal([]int{1, 2}, result1)
+	is.Equal([]int{1, 2}, result2)
+	is.Empty(result3)
+	is.Equal([]*int{ToPtr(0), ToPtr(1), ToPtr(2)}, result4)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -320,7 +616,7 @@ func TestWithoutNth(t *testing.T) {
 	is.Equal([]int{1, 2}, result2)
 
 	result3 := WithoutNth([]int{})
-	is.Equal([]int{}, result3)
+	is.Empty(result3)
 
 	result4 := WithoutNth([]int{0, 1, 2, 3}, -1, 4)
 	is.Equal([]int{0, 1, 2, 3}, result4)
@@ -329,6 +625,10 @@ func TestWithoutNth(t *testing.T) {
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := WithoutNth(allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
+
+	// This works for non-comparable as well
+	result5 := WithoutNth([]func() int{func() int { return 1 }, func() int { return 2 }, func() int { return 3 }}, 1)
+	is.Equal([]int{1, 3}, Map(result5, func(f func() int, _ int) int { return f() }))
 }
 
 func TestElementsMatch(t *testing.T) {

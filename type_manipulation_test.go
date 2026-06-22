@@ -27,7 +27,7 @@ func TestIsNil(t *testing.T) {
 
 	var ifaceWithNilValue any = (*string)(nil) //nolint:staticcheck
 	is.True(IsNil(ifaceWithNilValue))
-	is.False(ifaceWithNilValue == nil) //nolint:staticcheck
+	is.False(ifaceWithNilValue == nil) //nolint:staticcheck,testifylint
 }
 
 func TestIsNotNil(t *testing.T) {
@@ -51,7 +51,7 @@ func TestIsNotNil(t *testing.T) {
 
 	var ifaceWithNilValue any = (*string)(nil) //nolint:staticcheck
 	is.False(IsNotNil(ifaceWithNilValue))
-	is.True(ifaceWithNilValue != nil) //nolint:staticcheck
+	is.True(ifaceWithNilValue != nil) //nolint:staticcheck,testifylint
 }
 
 func TestToPtr(t *testing.T) {
@@ -60,7 +60,7 @@ func TestToPtr(t *testing.T) {
 
 	result1 := ToPtr([]int{1, 2})
 
-	is.Equal(*result1, []int{1, 2})
+	is.Equal([]int{1, 2}, *result1)
 }
 
 func TestNil(t *testing.T) {
@@ -75,11 +75,11 @@ func TestNil(t *testing.T) {
 
 	is.Equal(expNilFloat64, nilFloat64)
 	is.Nil(nilFloat64)
-	is.NotEqual(nil, nilFloat64)
+	is.NotEqual(nil, nilFloat64) //nolint:testifylint
 
 	is.Equal(expNilString, nilString)
 	is.Nil(nilString)
-	is.NotEqual(nil, nilString)
+	is.NotEqual(nil, nilString) //nolint:testifylint
 
 	is.NotEqual(nilString, nilFloat64)
 }
@@ -94,12 +94,12 @@ func TestEmptyableToPtr(t *testing.T) {
 	is.Nil(EmptyableToPtr[map[int]int](nil))
 	is.Nil(EmptyableToPtr[error](nil))
 
-	is.Equal(*EmptyableToPtr(42), 42)
-	is.Equal(*EmptyableToPtr("nonempty"), "nonempty")
-	is.Equal(*EmptyableToPtr([]int{}), []int{})
-	is.Equal(*EmptyableToPtr([]int{1, 2}), []int{1, 2})
-	is.Equal(*EmptyableToPtr(map[int]int{}), map[int]int{})
-	is.Equal(*EmptyableToPtr(assert.AnError), assert.AnError)
+	is.Equal(42, *EmptyableToPtr(42))
+	is.Equal("nonempty", *EmptyableToPtr("nonempty"))
+	is.Empty(*EmptyableToPtr([]int{}))
+	is.Equal([]int{1, 2}, *EmptyableToPtr([]int{1, 2}))
+	is.Empty(*EmptyableToPtr(map[int]int{}))
+	is.Equal(assert.AnError, *EmptyableToPtr(assert.AnError))
 }
 
 func TestFromPtr(t *testing.T) {
@@ -110,10 +110,10 @@ func TestFromPtr(t *testing.T) {
 	ptr := &str1
 
 	is.Equal("foo", FromPtr(ptr))
-	is.Equal("", FromPtr[string](nil))
-	is.Equal(0, FromPtr[int](nil))
+	is.Empty(FromPtr[string](nil))
+	is.Zero(FromPtr[int](nil))
 	is.Nil(FromPtr[*string](nil))
-	is.EqualValues(ptr, FromPtr(&ptr))
+	is.Equal(ptr, FromPtr(&ptr))
 }
 
 func TestFromPtrOr(t *testing.T) {
@@ -142,27 +142,29 @@ func TestToSlicePtr(t *testing.T) {
 	str2 := "bar"
 	result1 := ToSlicePtr([]string{str1, str2})
 
-	is.Equal(result1, []*string{&str1, &str2})
+	is.Equal([]*string{&str1, &str2}, result1)
 }
 
 func TestFromSlicePtr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
 	str2 := "bar"
 	result1 := FromSlicePtr([]*string{&str1, &str2, nil})
 
-	is.Equal(result1, []string{str1, str2, ""})
+	is.Equal([]string{str1, str2, ""}, result1)
 }
 
 func TestFromSlicePtrOr(t *testing.T) {
+	t.Parallel()
 	is := assert.New(t)
 
 	str1 := "foo"
 	str2 := "bar"
 	result1 := FromSlicePtrOr([]*string{&str1, &str2, nil}, "fallback")
 
-	is.Equal(result1, []string{str1, str2, "fallback"})
+	is.Equal([]string{str1, str2, "fallback"}, result1)
 }
 
 func TestToAnySlice(t *testing.T) {
@@ -175,7 +177,7 @@ func TestToAnySlice(t *testing.T) {
 	out2 := ToAnySlice(in2)
 
 	is.Equal([]any{0, 1, 2, 3}, out1)
-	is.Equal([]any{}, out2)
+	is.Empty(out2)
 }
 
 func TestFromAnySlice(t *testing.T) {
@@ -186,7 +188,7 @@ func TestFromAnySlice(t *testing.T) {
 		out1, ok1 := FromAnySlice[string]([]any{"foobar", 42})
 		out2, ok2 := FromAnySlice[string]([]any{"foobar", "42"})
 
-		is.Equal([]string{}, out1)
+		is.Empty(out1)
 		is.False(ok1)
 		is.Equal([]string{"foobar", "42"}, out2)
 		is.True(ok2)
@@ -197,7 +199,6 @@ func TestEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	//nolint:unused
 	type test struct{}
 
 	is.Empty(Empty[string]())
@@ -212,7 +213,6 @@ func TestIsEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	//nolint:unused
 	type test struct {
 		foobar string
 	}
@@ -229,7 +229,6 @@ func TestIsNotEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	//nolint:unused
 	type test struct {
 		foobar string
 	}
@@ -270,7 +269,7 @@ func TestCoalesce(t *testing.T) {
 	result9, ok9 := Coalesce(zeroStruct, struct1)
 	result10, ok10 := Coalesce(zeroStruct, struct1, struct2)
 
-	is.Equal(0, result1)
+	is.Zero(result1)
 	is.False(ok1)
 
 	is.Equal(3, result2)
@@ -288,16 +287,16 @@ func TestCoalesce(t *testing.T) {
 	is.Equal(str1, result6)
 	is.True(ok6)
 
-	is.Equal(result7, 1)
+	is.Equal(1, result7)
 	is.True(ok7)
 
-	is.Equal(result8, zeroStruct)
+	is.Zero(result8)
 	is.False(ok8)
 
-	is.Equal(result9, struct1)
+	is.Equal(struct1, result9)
 	is.True(ok9)
 
-	is.Equal(result10, struct1)
+	is.Equal(struct1, result10)
 	is.True(ok10)
 }
 
@@ -329,16 +328,16 @@ func TestCoalesceOrEmpty(t *testing.T) {
 	result9 := CoalesceOrEmpty(zeroStruct, struct1)
 	result10 := CoalesceOrEmpty(zeroStruct, struct1, struct2)
 
-	is.Equal(0, result1)
+	is.Zero(result1)
 	is.Equal(3, result2)
 	is.Nil(result3)
 	is.Equal(str1, result4)
 	is.Equal(str1, result5)
 	is.Equal(str1, result6)
-	is.Equal(result7, 1)
-	is.Equal(result8, zeroStruct)
-	is.Equal(result9, struct1)
-	is.Equal(result10, struct1)
+	is.Equal(1, result7)
+	is.Zero(result8)
+	is.Equal(struct1, result9)
+	is.Equal(struct1, result10)
 }
 
 func TestCoalesceSlice(t *testing.T) {
@@ -363,27 +362,22 @@ func TestCoalesceSlice(t *testing.T) {
 
 	is.NotNil(result1)
 	is.Empty(result1)
-	is.Equal([]int{}, result1)
 	is.False(ok1)
 
 	is.NotNil(result2)
 	is.Empty(result2)
-	is.Equal([]int{}, result2)
 	is.False(ok2)
 
 	is.NotNil(result3)
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 	is.False(ok3)
 
 	is.NotNil(result4)
 	is.Empty(result4)
-	is.Equal([]int{}, result4)
 	is.False(ok4)
 
 	is.NotNil(result5)
 	is.Empty(result5)
-	is.Equal([]int{}, result5)
 	is.False(ok5)
 
 	is.NotNil(result6)
@@ -429,19 +423,14 @@ func TestCoalesceSliceOrEmpty(t *testing.T) {
 
 	is.NotNil(result1)
 	is.Empty(result1)
-	is.Equal([]int{}, result1)
 	is.NotNil(result2)
 	is.Empty(result2)
-	is.Equal([]int{}, result2)
 	is.NotNil(result3)
 	is.Empty(result3)
-	is.Equal([]int{}, result3)
 	is.NotNil(result4)
 	is.Empty(result4)
-	is.Equal([]int{}, result4)
 	is.NotNil(result5)
 	is.Empty(result5)
-	is.Equal([]int{}, result5)
 	is.NotNil(result6)
 	is.Equal(slice2, result6)
 	is.NotNil(result7)
@@ -476,27 +465,22 @@ func TestCoalesceMap(t *testing.T) {
 
 	is.NotNil(result1)
 	is.Empty(result1)
-	is.Equal(map[int]int{}, result1)
 	is.False(ok1)
 
 	is.NotNil(result2)
 	is.Empty(result2)
-	is.Equal(map[int]int{}, result2)
 	is.False(ok2)
 
 	is.NotNil(result3)
 	is.Empty(result3)
-	is.Equal(map[int]int{}, result3)
 	is.False(ok3)
 
 	is.NotNil(result4)
 	is.Empty(result4)
-	is.Equal(map[int]int{}, result4)
 	is.False(ok4)
 
 	is.NotNil(result5)
 	is.Empty(result5)
-	is.Equal(map[int]int{}, result5)
 	is.False(ok5)
 
 	is.NotNil(result6)
@@ -542,19 +526,14 @@ func TestCoalesceMapOrEmpty(t *testing.T) {
 
 	is.NotNil(result1)
 	is.Empty(result1)
-	is.Equal(map[int]int{}, result1)
 	is.NotNil(result2)
 	is.Empty(result2)
-	is.Equal(map[int]int{}, result2)
 	is.NotNil(result3)
 	is.Empty(result3)
-	is.Equal(map[int]int{}, result3)
 	is.NotNil(result4)
 	is.Empty(result4)
-	is.Equal(map[int]int{}, result4)
 	is.NotNil(result5)
 	is.Empty(result5)
-	is.Equal(map[int]int{}, result5)
 	is.NotNil(result6)
 	is.Equal(map2, result6)
 	is.NotNil(result7)

@@ -1,53 +1,65 @@
 package lo
 
 import (
+	"math"
+
 	"github.com/samber/lo/internal/constraints"
 )
 
-// Range creates an array of numbers (positive and/or negative) with given length.
-// Play: https://go.dev/play/p/0r6VimXAi9H
+// Range creates a slice of numbers (positive and/or negative) with given length.
+// Play: https://go.dev/play/p/rho00R0WuHs
 func Range(elementNum int) []int {
-	length := If(elementNum < 0, -elementNum).Else(elementNum)
+	step := Ternary(elementNum < 0, -1, 1)
+	length := elementNum * step
 	result := make([]int, length)
-	step := If(elementNum < 0, -1).Else(1)
 	for i, j := 0, 0; i < length; i, j = i+1, j+step {
 		result[i] = j
 	}
 	return result
 }
 
-// RangeFrom creates an array of numbers from start with specified length.
+// RangeFrom creates a slice of numbers from start with specified length.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum int) []T {
-	length := If(elementNum < 0, -elementNum).Else(elementNum)
+	step := Ternary(elementNum < 0, -1, 1)
+	length := elementNum * step
 	result := make([]T, length)
-	step := If(elementNum < 0, -1).Else(1)
 	for i, j := 0, start; i < length; i, j = i+1, j+T(step) {
 		result[i] = j
 	}
 	return result
 }
 
-// RangeWithSteps creates an array of numbers (positive and/or negative) progressing from start up to, but not including end.
-// step set to zero will return empty array.
+// RangeWithSteps creates a slice of numbers (positive and/or negative) progressing from start up to, but not including end.
+// step set to zero will return an empty slice.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step T) []T {
-	result := []T{}
 	if start == end || step == 0 {
-		return result
+		return []T{}
 	}
+
+	capacity := func(count, delta T) int {
+		// Use math.Ceil instead of (count-1)/delta+1 because integer division
+		// fails for floats (e.g., 5.5/2.5=2.2 → ceil=3, not 2).
+		return int(math.Ceil(float64(count) / float64(delta)))
+	}
+
 	if start < end {
 		if step < 0 {
-			return result
+			return []T{}
 		}
+
+		result := make([]T, 0, capacity(end-start, step))
 		for i := start; i < end; i += step {
 			result = append(result, i)
 		}
 		return result
 	}
 	if step > 0 {
-		return result
+		return []T{}
 	}
+
+	result := make([]T, 0, capacity(start-end, -step))
 	for i := start; i > end; i += step {
 		result = append(result, i)
 	}
@@ -56,11 +68,11 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 
 // Clamp clamps number within the inclusive lower and upper bounds.
 // Play: https://go.dev/play/p/RU4lJNC2hlI
-func Clamp[T constraints.Ordered](value T, min T, max T) T {
-	if value < min {
-		return min
-	} else if value > max {
-		return max
+func Clamp[T constraints.Ordered](value, mIn, mAx T) T {
+	if value < mIn {
+		return mIn
+	} else if value > mAx {
+		return mAx
 	}
 	return value
 }
@@ -68,7 +80,7 @@ func Clamp[T constraints.Ordered](value T, min T, max T) T {
 // Sum sums the values in a collection. If collection is empty 0 is returned.
 // Play: https://go.dev/play/p/upfeJVqs4Bt
 func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
-	var sum T = 0
+	var sum T
 	for i := range collection {
 		sum += collection[i]
 	}
@@ -78,24 +90,31 @@ func Sum[T constraints.Float | constraints.Integer | constraints.Complex](collec
 // SumBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 0 is returned.
 // Play: https://go.dev/play/p/Dz_a_7jN_ca
 func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) R) R {
-	var sum R = 0
+	var sum R
 	for i := range collection {
-		sum = sum + iteratee(collection[i])
+		sum += iteratee(collection[i])
 	}
 	return sum
 }
 
-// Product gets the product of the values in a collection. If collection is empty 0 is returned.
+// SumByErr summarizes the values in a collection using the given return value from the iteration function.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// If collection is empty 0 and nil error are returned.
+func SumByErr[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) (R, error)) (R, error) {
+	var sum R
+	for i := range collection {
+		v, err := iteratee(collection[i])
+		if err != nil {
+			return sum, err
+		}
+		sum += v
+	}
+	return sum, nil
+}
+
+// Product gets the product of the values in a collection. If collection is empty 1 is returned.
 // Play: https://go.dev/play/p/2_kjM_smtAH
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
-	if collection == nil {
-		return 1
-	}
-
-	if len(collection) == 0 {
-		return 1
-	}
-
 	var product T = 1
 	for i := range collection {
 		product *= collection[i]
@@ -103,40 +122,93 @@ func Product[T constraints.Float | constraints.Integer | constraints.Complex](co
 	return product
 }
 
-// ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 0 is returned.
+// ProductBy summarizes the values in a collection using the given return value from the iteration function. If collection is empty 1 is returned.
 // Play: https://go.dev/play/p/wadzrWr9Aer
 func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) R) R {
-	if collection == nil {
-		return 1
-	}
-
-	if len(collection) == 0 {
-		return 1
-	}
-
 	var product R = 1
 	for i := range collection {
-		product = product * iteratee(collection[i])
+		product *= iteratee(collection[i])
 	}
 	return product
 }
 
+// ProductByErr summarizes the values in a collection using the given return value from the iteration function.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// If collection is empty 1 and nil error are returned.
+func ProductByErr[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) (R, error)) (R, error) {
+	var product R = 1
+	for i := range collection {
+		v, err := iteratee(collection[i])
+		if err != nil {
+			return product, err
+		}
+		product *= v
+	}
+	return product, nil
+}
+
 // Mean calculates the mean of a collection of numbers.
+// Play: https://go.dev/play/p/tPURSuteUsP
 func Mean[T constraints.Float | constraints.Integer](collection []T) T {
-	var length = T(len(collection))
+	length := T(len(collection))
 	if length == 0 {
 		return 0
 	}
-	var sum = Sum(collection)
+	sum := Sum(collection)
 	return sum / length
 }
 
 // MeanBy calculates the mean of a collection of numbers using the given return value from the iteration function.
+// Play: https://go.dev/play/p/j7TsVwBOZ7P
 func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(item T) R) R {
-	var length = R(len(collection))
+	length := R(len(collection))
 	if length == 0 {
 		return 0
 	}
-	var sum = SumBy(collection, iteratee)
+	sum := SumBy(collection, iteratee)
 	return sum / length
+}
+
+// MeanByErr calculates the mean of a collection of numbers using the given return value from the iteration function.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// If collection is empty 0 and nil error are returned.
+func MeanByErr[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(item T) (R, error)) (R, error) {
+	length := R(len(collection))
+	if length == 0 {
+		return 0, nil
+	}
+	sum, err := SumByErr(collection, iteratee)
+	if err != nil {
+		return 0, err
+	}
+	return sum / length, nil
+}
+
+// Mode returns the mode (most frequent value) of a collection.
+// If multiple values have the same highest frequency, then multiple values are returned.
+// If the collection is empty, then the zero value of T is returned.
+// Play: https://go.dev/play/p/PbiviqnV5zX
+func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
+	length := T(len(collection))
+	if length == 0 {
+		return []T{}
+	}
+
+	mode := make([]T, 0)
+	maxFreq := 0
+	frequency := make(map[T]int, len(collection))
+
+	for _, item := range collection {
+		frequency[item]++
+		count := frequency[item]
+
+		if count > maxFreq {
+			maxFreq = count
+			mode = []T{item}
+		} else if count == maxFreq {
+			mode = append(mode, item)
+		}
+	}
+
+	return mode
 }

@@ -1,0 +1,41 @@
+---
+name: LastIndexOf
+slug: lastindexof
+sourceRef: it/find.go#L34
+category: iter
+subCategory: find
+signatures:
+  - "func LastIndexOf[T comparable](collection iter.Seq[T], element T) int"
+playUrl: https://go.dev/play/p/QPATR3VC5wT
+variantHelpers:
+  - iter#find#lastindexof
+similarHelpers:
+  - core#slice#lastindexof
+  - iter#find#indexof
+position: 10
+---
+
+Returns the index at which the last occurrence of a value is found in the sequence, or -1 if the value is not found.
+
+Examples:
+
+```go
+seq := func(yield func(int) bool) {
+    _ = yield(10)
+    _ = yield(20)
+    _ = yield(30)
+    _ = yield(20)
+}
+idx := it.LastIndexOf(seq, 20)
+// idx == 3
+```
+
+```go
+seq := func(yield func(string) bool) {
+    _ = yield("apple")
+    _ = yield("banana")
+    _ = yield("cherry")
+}
+idx := it.LastIndexOf(seq, "orange")
+// idx == -1
+```
