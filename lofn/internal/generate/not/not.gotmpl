@@ -1,0 +1,13 @@
+{{- define "decls-types" -}}
+{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }}
+{{- end }}
+{{- define "decls-args" -}}
+({{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}v{{ add $i 1 }} T{{ add $i 1 }}{{ end }})
+{{- end }}
+func Not{{ if ne .N 1 }}{{ .N }}{{ end }}[{{ template "decls-types" . }} any](
+	pred func({{ template "decls-types" . }}) bool,
+) func({{ template "decls-types" . }}) bool {
+	return func{{ template "decls-args" . }} bool {
+		return !pred({{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}v{{ add $i 1 }}{{ end }})
+	}
+}

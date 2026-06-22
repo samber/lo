@@ -1,0 +1,25 @@
+{{- define "decls-types" -}}{{ $N := .N }}
+	{{- range $i := .N }}
+		{{- if ne $i 0 }}, {{ end -}}
+		M{{ add $i 1 }} ~map[K{{ add $i 1}}]
+		{{- if eq $N (add $i 1) }}T{{ else }}M{{ add $i 2 }}{{ end -}}
+	{{- end }}
+	{{- range $i := .N }}, K{{ add $i 1 }}{{ end }} comparable
+{{- end }}
+{{- define "decls-args" -}}
+m1 M1{{ range $i := .N }}, k{{ add $i 1 }} K{{ add $i 1 }}{{ end }}
+{{- end }}
+func Nested{{ .N }}[{{ template "decls-types" . }}, T any](
+	{{ template "decls-args" . }},
+) (v T, ok bool) {
+
+	{{ range $i := (sub .N 1) -}}
+	m{{ add $i 2 }}, ok := m{{ add $i 1 }}[k{{ add $i 1 }}]
+	if !ok {
+		return
+	}
+
+	{{ end -}}
+	v, ok = m{{ .N }}[k{{ .N }}]
+	return
+}
