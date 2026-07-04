@@ -302,7 +302,8 @@ func Words(str string) []string {
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
 // Play: https://go.dev/play/p/uLTZZQXqnsa
 func Capitalize(str string) string {
-	c := titleCaserPool.Get().(*cases.Caser) //nolint:forcetypeassert
+	// Pool.New always returns *cases.Caser, so the assertion never fails.
+	c, _ := titleCaserPool.Get().(*cases.Caser)
 	defer titleCaserPool.Put(c)
 	return c.String(str)
 }
