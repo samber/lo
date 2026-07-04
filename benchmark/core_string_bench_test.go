@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/samber/lo"
+	"golang.org/x/text/language"
 )
 
 func BenchmarkRandomString(b *testing.B) {
@@ -73,5 +74,41 @@ func BenchmarkEllipsis(b *testing.B) {
 	s := lo.RandomString(200, lo.LettersCharset)
 	for i := 0; i < b.N; i++ {
 		_ = lo.Ellipsis(s, 50)
+	}
+}
+
+func BenchmarkCapitalizeWithLanguage(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = lo.CapitalizeWithLanguage("hello world", language.English)
+	}
+}
+
+func BenchmarkCapitalizeWithLanguageTurkish(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = lo.CapitalizeWithLanguage("istanbul", language.Turkish)
+	}
+}
+
+func BenchmarkPascalCaseWithLanguage(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = lo.PascalCaseWithLanguage("some_long_variable_name", language.English)
+	}
+}
+
+func BenchmarkCamelCaseWithLanguage(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = lo.CamelCaseWithLanguage("some_long_variable_name", language.English)
+	}
+}
+
+func BenchmarkKebabCaseWithLanguage(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = lo.KebabCaseWithLanguage("someLongVariableName", language.English)
+	}
+}
+
+func BenchmarkSnakeCaseWithLanguage(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = lo.SnakeCaseWithLanguage("someLongVariableName", language.English)
 	}
 }
