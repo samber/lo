@@ -4,6 +4,7 @@ import (
 	"math"
 	"regexp"
 	"strings"
+	"sync"
 	"unicode"
 	"unicode/utf8"
 
@@ -29,6 +30,16 @@ var (
 	splitNumberLetterReg = regexp.MustCompile(`([0-9])([a-zA-Z])`)
 	maximumCapacity      = math.MaxInt>>1 + 1
 )
+
+// titleCaserPool reuses cases.Title casers: constructing one is far more
+// expensive than the casing itself, and a Caser is not safe for concurrent
+// use, so it cannot be a plain package-level singleton.
+var titleCaserPool = sync.Pool{
+	New: func() any {
+		c := cases.Title(language.English)
+		return &c
+	},
+}
 
 // RandomString return a random string.
 // Play: https://go.dev/play/p/rRseOQVVum4
@@ -291,7 +302,9 @@ func Words(str string) []string {
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
 // Play: https://go.dev/play/p/uLTZZQXqnsa
 func Capitalize(str string) string {
-	return cases.Title(language.English).String(str)
+	c := titleCaserPool.Get().(*cases.Caser) //nolint:forcetypeassert
+	defer titleCaserPool.Put(c)
+	return c.String(str)
 }
 
 // Ellipsis trims and truncates a string to a specified length in runes and appends an ellipsis
