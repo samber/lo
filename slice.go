@@ -1050,7 +1050,7 @@ func CountValues[T comparable](collection []T) map[T]int {
 // Is equivalent to chaining lo.Map and lo.CountValues.
 // Play: https://go.dev/play/p/2U0dG1SnOmS
 func CountValuesBy[T any, U comparable](collection []T, transform func(item T) U) map[U]int {
-	result := make(map[U]int)
+	result := make(map[U]int, len(collection))
 
 	for i := range collection {
 		result[transform(collection[i])]++
