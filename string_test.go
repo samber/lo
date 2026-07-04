@@ -8,6 +8,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/text/language"
 )
 
 func TestRandomString(t *testing.T) {
@@ -536,6 +537,58 @@ func TestCapitalize(t *testing.T) {
 			assert.Equalf(t, tc.want, Capitalize(tc.in), "Capitalize(%v)", tc.in)
 		})
 	}
+}
+
+func TestCapitalizeWithLanguage(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// English: plain I
+	is.Equal("Istanbul", CapitalizeWithLanguage("istanbul", language.English))
+	is.Equal("Hello", CapitalizeWithLanguage("heLLO", language.English))
+
+	// Turkish: lowercase i → title İ (dotted capital I, U+0130)
+	is.Equal("İstanbul", CapitalizeWithLanguage("istanbul", language.Turkish))
+	// Turkish: ISTANBUL starts with capital I (the uppercase form of ı); title case
+	// keeps it as I and lowercases the rest → "Istanbul" (not "İstanbul").
+	is.Equal("Istanbul", CapitalizeWithLanguage("ISTANBUL", language.Turkish))
+}
+
+func TestPascalCaseWithLanguage(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal("IstanbulCity", PascalCaseWithLanguage("istanbul city", language.English))
+	// Turkish: lowercase i → title İ (dotted capital I, U+0130)
+	is.Equal("İstanbulCity", PascalCaseWithLanguage("istanbul city", language.Turkish))
+}
+
+func TestCamelCaseWithLanguage(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal("istanbulCity", CamelCaseWithLanguage("istanbul city", language.English))
+	// Turkish: capital I lowercases to ı (dotless i, U+0131), so first word → "ıstanbul".
+	// Second word title-cased: C stays C, capital I → lowercase ı → "Cıty".
+	is.Equal("ıstanbulCıty", CamelCaseWithLanguage("ISTANBUL CITY", language.Turkish))
+}
+
+func TestKebabCaseWithLanguage(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal("istanbul-city", KebabCaseWithLanguage("ISTANBUL CITY", language.English))
+	// Turkish: I lowercases to ı (dotless i, U+0131)
+	is.Equal("ıstanbul-cıty", KebabCaseWithLanguage("ISTANBUL CITY", language.Turkish))
+}
+
+func TestSnakeCaseWithLanguage(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	is.Equal("istanbul_city", SnakeCaseWithLanguage("ISTANBUL CITY", language.English))
+	// Turkish: I lowercases to ı (dotless i, U+0131)
+	is.Equal("ıstanbul_cıty", SnakeCaseWithLanguage("ISTANBUL CITY", language.Turkish))
 }
 
 func TestEllipsis(t *testing.T) {

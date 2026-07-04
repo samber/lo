@@ -31,14 +31,48 @@ var (
 	maximumCapacity      = math.MaxInt>>1 + 1
 )
 
-// titleCaserPool reuses cases.Title casers: constructing one is far more
-// expensive than the casing itself, and a Caser is not safe for concurrent
-// use, so it cannot be a plain package-level singleton.
-var titleCaserPool = sync.Pool{
-	New: func() any {
-		c := cases.Title(language.English)
-		return &c
-	},
+// Constructing a Caser is far more expensive than using one, and a Caser is not safe for
+// concurrent use, so they cannot be plain package-level singletons.
+//
+// English gets dedicated pools so the default (non-WithLanguage) functions pay zero sync.Map
+// overhead. Other languages share pools lazily created in titleCaserPools / lowerCaserPools.
+var (
+	englishTitleCaserPool = sync.Pool{New: func() any { c := cases.Title(language.English); return &c }}
+	englishLowerCaserPool = sync.Pool{New: func() any { c := cases.Lower(language.English); return &c }}
+
+	titleCaserPools sync.Map // map[string]*sync.Pool  (BCP 47 tag → pool of *cases.Caser)
+	lowerCaserPools sync.Map // map[string]*sync.Pool  (BCP 47 tag → pool of *cases.Caser)
+)
+
+// acquireTitleCaser returns a pool and a ready-to-use title Caser for the given language tag.
+// Caller must return the Caser: defer pool.Put(c).
+// Load-before-LoadOrStore avoids allocating a throwaway *sync.Pool on every call once the
+// entry is warm (LoadOrStore evaluates its value argument unconditionally).
+func acquireTitleCaser(tag language.Tag) (*sync.Pool, *cases.Caser) {
+	key := tag.String()
+	if v, ok := titleCaserPools.Load(key); ok {
+		pool := v.(*sync.Pool) // always *sync.Pool: we only ever store that type
+		return pool, pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+	}
+	p := &sync.Pool{New: func() any { c := cases.Title(tag); return &c }}
+	actual, _ := titleCaserPools.LoadOrStore(key, p)
+	pool := actual.(*sync.Pool) // always *sync.Pool: we only ever store that type
+	return pool, pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+}
+
+// acquireLowerCaser returns a pool and a ready-to-use lower Caser for the given language tag.
+// Caller must return the Caser: defer pool.Put(c).
+// Same Load-before-LoadOrStore pattern as acquireTitleCaser.
+func acquireLowerCaser(tag language.Tag) (*sync.Pool, *cases.Caser) {
+	key := tag.String()
+	if v, ok := lowerCaserPools.Load(key); ok {
+		pool := v.(*sync.Pool) // always *sync.Pool: we only ever store that type
+		return pool, pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+	}
+	p := &sync.Pool{New: func() any { c := cases.Lower(tag); return &c }}
+	actual, _ := lowerCaserPools.LoadOrStore(key, p)
+	pool := actual.(*sync.Pool) // always *sync.Pool: we only ever store that type
+	return pool, pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
 }
 
 // RandomString return a random string.
@@ -241,8 +275,28 @@ func RuneLength(str string) int {
 // Play: https://go.dev/play/p/uxER7XpRHLB
 func PascalCase(str string) string {
 	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	c := englishTitleCaserPool.Get().(*cases.Caser)
+	defer englishTitleCaserPool.Put(c)
 	for i := range items {
-		items[i] = Capitalize(items[i])
+		items[i] = c.String(items[i])
+	}
+	return strings.Join(items, "")
+}
+
+// PascalCaseWithLanguage converts string to pascal case using language-aware title casing.
+// This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
+func PascalCaseWithLanguage(str string, tag language.Tag) string {
+	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	pool, c := acquireTitleCaser(tag)
+	defer pool.Put(c)
+	for i := range items {
+		items[i] = c.String(items[i])
 	}
 	return strings.Join(items, "")
 }
@@ -251,12 +305,34 @@ func PascalCase(str string) string {
 // Play: https://go.dev/play/p/4JNDzaMwXkm
 func CamelCase(str string) string {
 	items := Words(str)
-	for i, item := range items {
-		item = strings.ToLower(item)
-		if i > 0 {
-			item = Capitalize(item)
-		}
-		items[i] = item
+	if len(items) == 0 {
+		return ""
+	}
+	lc := englishLowerCaserPool.Get().(*cases.Caser)
+	tc := englishTitleCaserPool.Get().(*cases.Caser)
+	defer englishLowerCaserPool.Put(lc)
+	defer englishTitleCaserPool.Put(tc)
+	items[0] = lc.String(items[0])
+	for i := 1; i < len(items); i++ {
+		items[i] = tc.String(items[i])
+	}
+	return strings.Join(items, "")
+}
+
+// CamelCaseWithLanguage converts string to camel case using language-aware casing.
+// This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
+func CamelCaseWithLanguage(str string, tag language.Tag) string {
+	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	lPool, lc := acquireLowerCaser(tag)
+	tPool, tc := acquireTitleCaser(tag)
+	defer lPool.Put(lc)
+	defer tPool.Put(tc)
+	items[0] = lc.String(items[0])
+	for i := 1; i < len(items); i++ {
+		items[i] = tc.String(items[i])
 	}
 	return strings.Join(items, "")
 }
@@ -265,8 +341,28 @@ func CamelCase(str string) string {
 // Play: https://go.dev/play/p/ZBeMB4-pq45
 func KebabCase(str string) string {
 	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	c := englishLowerCaserPool.Get().(*cases.Caser)
+	defer englishLowerCaserPool.Put(c)
 	for i := range items {
-		items[i] = strings.ToLower(items[i])
+		items[i] = c.String(items[i])
+	}
+	return strings.Join(items, "-")
+}
+
+// KebabCaseWithLanguage converts string to kebab case using language-aware lowercasing.
+// This matters for languages such as Turkish where "I" lowercases to "ı" (dotless i), not "i".
+func KebabCaseWithLanguage(str string, tag language.Tag) string {
+	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	pool, c := acquireLowerCaser(tag)
+	defer pool.Put(c)
+	for i := range items {
+		items[i] = c.String(items[i])
 	}
 	return strings.Join(items, "-")
 }
@@ -275,8 +371,28 @@ func KebabCase(str string) string {
 // Play: https://go.dev/play/p/ziB0V89IeVH
 func SnakeCase(str string) string {
 	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	c := englishLowerCaserPool.Get().(*cases.Caser)
+	defer englishLowerCaserPool.Put(c)
 	for i := range items {
-		items[i] = strings.ToLower(items[i])
+		items[i] = c.String(items[i])
+	}
+	return strings.Join(items, "_")
+}
+
+// SnakeCaseWithLanguage converts string to snake case using language-aware lowercasing.
+// This matters for languages such as Turkish where "I" lowercases to "ı" (dotless i), not "i".
+func SnakeCaseWithLanguage(str string, tag language.Tag) string {
+	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	pool, c := acquireLowerCaser(tag)
+	defer pool.Put(c)
+	for i := range items {
+		items[i] = c.String(items[i])
 	}
 	return strings.Join(items, "_")
 }
@@ -302,9 +418,17 @@ func Words(str string) []string {
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
 // Play: https://go.dev/play/p/uLTZZQXqnsa
 func Capitalize(str string) string {
-	// Pool.New always returns *cases.Caser, so the assertion never fails.
-	c, _ := titleCaserPool.Get().(*cases.Caser)
-	defer titleCaserPool.Put(c)
+	c := englishTitleCaserPool.Get().(*cases.Caser)
+	defer englishTitleCaserPool.Put(c)
+	return c.String(str)
+}
+
+// CapitalizeWithLanguage converts the first character of string to upper case and the remaining to
+// lower case, using language-aware title casing.
+// This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
+func CapitalizeWithLanguage(str string, tag language.Tag) string {
+	pool, c := acquireTitleCaser(tag)
+	defer pool.Put(c)
 	return c.String(str)
 }
 
