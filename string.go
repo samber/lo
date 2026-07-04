@@ -51,13 +51,15 @@ var (
 func acquireTitleCaser(tag language.Tag) (*sync.Pool, *cases.Caser) {
 	key := tag.String()
 	if v, ok := titleCaserPools.Load(key); ok {
-		pool := v.(*sync.Pool) // always *sync.Pool: we only ever store that type
-		return pool, pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+		pool, _ := v.(*sync.Pool)         // always *sync.Pool: we only ever store that type
+		c, _ := pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+		return pool, c
 	}
 	p := &sync.Pool{New: func() any { c := cases.Title(tag); return &c }}
 	actual, _ := titleCaserPools.LoadOrStore(key, p)
-	pool := actual.(*sync.Pool) // always *sync.Pool: we only ever store that type
-	return pool, pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+	pool, _ := actual.(*sync.Pool)    // always *sync.Pool: we only ever store that type
+	c, _ := pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+	return pool, c
 }
 
 // acquireLowerCaser returns a pool and a ready-to-use lower Caser for the given language tag.
@@ -66,13 +68,15 @@ func acquireTitleCaser(tag language.Tag) (*sync.Pool, *cases.Caser) {
 func acquireLowerCaser(tag language.Tag) (*sync.Pool, *cases.Caser) {
 	key := tag.String()
 	if v, ok := lowerCaserPools.Load(key); ok {
-		pool := v.(*sync.Pool) // always *sync.Pool: we only ever store that type
-		return pool, pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+		pool, _ := v.(*sync.Pool)         // always *sync.Pool: we only ever store that type
+		c, _ := pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+		return pool, c
 	}
 	p := &sync.Pool{New: func() any { c := cases.Lower(tag); return &c }}
 	actual, _ := lowerCaserPools.LoadOrStore(key, p)
-	pool := actual.(*sync.Pool) // always *sync.Pool: we only ever store that type
-	return pool, pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+	pool, _ := actual.(*sync.Pool)    // always *sync.Pool: we only ever store that type
+	c, _ := pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+	return pool, c
 }
 
 // RandomString return a random string.
@@ -278,7 +282,7 @@ func PascalCase(str string) string {
 	if len(items) == 0 {
 		return ""
 	}
-	c := englishTitleCaserPool.Get().(*cases.Caser)
+	c, _ := englishTitleCaserPool.Get().(*cases.Caser)
 	defer englishTitleCaserPool.Put(c)
 	for i := range items {
 		items[i] = c.String(items[i])
@@ -308,8 +312,8 @@ func CamelCase(str string) string {
 	if len(items) == 0 {
 		return ""
 	}
-	lc := englishLowerCaserPool.Get().(*cases.Caser)
-	tc := englishTitleCaserPool.Get().(*cases.Caser)
+	lc, _ := englishLowerCaserPool.Get().(*cases.Caser)
+	tc, _ := englishTitleCaserPool.Get().(*cases.Caser)
 	defer englishLowerCaserPool.Put(lc)
 	defer englishTitleCaserPool.Put(tc)
 	items[0] = lc.String(items[0])
@@ -344,7 +348,7 @@ func KebabCase(str string) string {
 	if len(items) == 0 {
 		return ""
 	}
-	c := englishLowerCaserPool.Get().(*cases.Caser)
+	c, _ := englishLowerCaserPool.Get().(*cases.Caser)
 	defer englishLowerCaserPool.Put(c)
 	for i := range items {
 		items[i] = c.String(items[i])
@@ -374,7 +378,7 @@ func SnakeCase(str string) string {
 	if len(items) == 0 {
 		return ""
 	}
-	c := englishLowerCaserPool.Get().(*cases.Caser)
+	c, _ := englishLowerCaserPool.Get().(*cases.Caser)
 	defer englishLowerCaserPool.Put(c)
 	for i := range items {
 		items[i] = c.String(items[i])
@@ -418,7 +422,7 @@ func Words(str string) []string {
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
 // Play: https://go.dev/play/p/uLTZZQXqnsa
 func Capitalize(str string) string {
-	c := englishTitleCaserPool.Get().(*cases.Caser)
+	c, _ := englishTitleCaserPool.Get().(*cases.Caser)
 	defer englishTitleCaserPool.Put(c)
 	return c.String(str)
 }
