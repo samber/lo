@@ -1,7 +1,7 @@
 ---
 name: CountValues
 slug: countvalues
-sourceRef: slice.go#L610
+sourceRef: slice.go#L1039
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/-p-PyLT4dfy

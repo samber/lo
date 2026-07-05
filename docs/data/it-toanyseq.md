@@ -1,7 +1,7 @@
 ---
 name: ToAnySeq
 slug: toanyseq
-sourceRef: it/type_manipulation.go#L11
+sourceRef: it/type_manipulation.go#L32
 category: iter
 subCategory: type
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: SumByErr
 slug: sumbyerr
-sourceRef: math.go#L102
+sourceRef: math.go#L103
 category: core
 subCategory: math
 variantHelpers:

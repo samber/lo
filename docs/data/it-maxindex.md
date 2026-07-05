@@ -1,7 +1,7 @@
 ---
 name: MaxIndex
 slug: maxindex
-sourceRef: it/find.go#L299
+sourceRef: it/find.go#L320
 category: iter
 subCategory: find
 signatures:

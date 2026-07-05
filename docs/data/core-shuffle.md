@@ -1,7 +1,7 @@
 ---
 name: Shuffle
 slug: shuffle
-sourceRef: slice.go#L322
+sourceRef: slice.go#L573
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/whgrQWwOy-j

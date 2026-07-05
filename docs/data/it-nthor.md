@@ -1,7 +1,7 @@
 ---
 name: NthOr
 slug: nthor
-sourceRef: it/find.go#L433
+sourceRef: it/find.go#L472
 category: iter
 subCategory: find
 signatures:

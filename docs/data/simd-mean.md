@@ -1,7 +1,7 @@
 ---
 name: Mean
 slug: mean
-sourceRef: exp/simd/math_avx.go#L352
+sourceRef: exp/simd/math_avx.go#L353
 category: experimental
 subCategory: simd
 similarHelpers:

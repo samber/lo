@@ -1,7 +1,7 @@
 ---
 name: RuneLength
 slug: runelength
-sourceRef: string.go#L160
+sourceRef: string.go#L274
 category: core
 subCategory: string
 playUrl: https://go.dev/play/p/BXT52mBk0zO

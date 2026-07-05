@@ -1,7 +1,7 @@
 ---
 name: Every
 slug: every
-sourceRef: it/intersect.go#L25
+sourceRef: it/intersect.go#L33
 category: iter
 subCategory: intersect
 signatures:

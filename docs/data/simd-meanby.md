@@ -1,7 +1,7 @@
 ---
 name: MeanBy
 slug: meanby
-sourceRef: exp/simd/math.go#L1006
+sourceRef: exp/simd/math.go#L1023
 category: experimental
 subCategory: simd
 similarHelpers:

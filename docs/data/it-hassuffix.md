@@ -1,7 +1,7 @@
 ---
 name: HasSuffix
 slug: hassuffix
-sourceRef: it/find.go#L71
+sourceRef: it/find.go#L74
 category: iter
 subCategory: find
 signatures:

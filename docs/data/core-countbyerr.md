@@ -1,7 +1,7 @@
 ---
 name: CountByErr
 slug: countbyerr
-sourceRef: slice.go#L863
+sourceRef: slice.go#L1021
 category: core
 subCategory: slice
 signatures:

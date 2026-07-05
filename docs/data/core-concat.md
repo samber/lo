@@ -1,7 +1,7 @@
 ---
 name: Concat
 slug: concat
-sourceRef: slice.go#L282
+sourceRef: slice.go#L488
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/Ux2UuR2xpRK

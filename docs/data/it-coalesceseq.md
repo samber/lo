@@ -1,7 +1,7 @@
 ---
 name: CoalesceSeq
 slug: coalesceseq
-sourceRef: it/type_manipulation.go#L65
+sourceRef: it/type_manipulation.go#L74
 category: iter
 subCategory: type
 signatures:

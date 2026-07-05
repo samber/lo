@@ -1,7 +1,7 @@
 ---
 name: Buffer
 slug: buffer
-sourceRef: channel.go#L214
+sourceRef: channel.go#L209
 category: core
 subCategory: channel
 signatures:

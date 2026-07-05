@@ -1,7 +1,7 @@
 ---
 name: Reduce
 slug: reduce
-sourceRef: slice.go#L87
+sourceRef: slice.go#L141
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/CgHYNUpOd1I

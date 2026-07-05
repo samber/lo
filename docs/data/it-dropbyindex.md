@@ -1,7 +1,7 @@
 ---
 name: DropByIndex
 slug: dropbyindex
-sourceRef: it/seq.go#L581
+sourceRef: it/seq.go#L745
 category: iter
 subCategory: sequence
 signatures:

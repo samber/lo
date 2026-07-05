@@ -1,7 +1,7 @@
 ---
 name: Times
 slug: times
-sourceRef: it/seq.go#L202
+sourceRef: it/seq.go#L223
 category: iter
 subCategory: sequence
 signatures:

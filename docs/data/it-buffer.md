@@ -1,7 +1,7 @@
 ---
 name: Buffer
 slug: buffer
-sourceRef: it/seq.go#L1162
+sourceRef: it/seq.go#L1185
 category: iter
 subCategory: sequence
 signatures:

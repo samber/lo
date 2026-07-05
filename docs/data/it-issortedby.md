@@ -1,7 +1,7 @@
 ---
 name: IsSortedBy
 slug: issortedby
-sourceRef: it/seq.go#L720
+sourceRef: it/seq.go#L947
 category: iter
 subCategory: slice
 signatures:

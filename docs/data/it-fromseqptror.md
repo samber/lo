@@ -1,7 +1,7 @@
 ---
 name: FromSeqPtrOr
 slug: fromseqptror
-sourceRef: it/type_manipulation.go#L11
+sourceRef: it/type_manipulation.go#L26
 category: iter
 subCategory: type
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: FirstOrEmpty
 slug: firstorempty
-sourceRef: it/find.go#L370
+sourceRef: it/find.go#L396
 category: iter
 subCategory: find
 signatures:

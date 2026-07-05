@@ -1,7 +1,7 @@
 ---
 name: Mean / MeanBy
 slug: mean
-sourceRef: it/math.go#L80
+sourceRef: it/math.go#L108
 category: iter
 subCategory: math
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: DropLast
 slug: dropslice
-sourceRef: it/seq.go#L510
+sourceRef: it/seq.go#L643
 category: iter
 subCategory: slice
 signatures:

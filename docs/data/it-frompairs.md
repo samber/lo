@@ -1,7 +1,7 @@
 ---
 name: FromPairs
 slug: frompairs
-sourceRef: it/map.go#L104
+sourceRef: it/map.go#L122
 category: iter
 subCategory: map
 signatures:

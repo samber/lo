@@ -1,7 +1,7 @@
 ---
 name: Repeat
 slug: repeat
-sourceRef: it/seq.go#L384
+sourceRef: it/seq.go#L504
 category: iter
 subCategory: sequence
 signatures:

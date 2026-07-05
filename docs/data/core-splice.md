@@ -1,7 +1,7 @@
 ---
 name: Splice
 slug: splice
-sourceRef: slice.go#L748
+sourceRef: slice.go#L1196
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/G5_GhkeSUBA

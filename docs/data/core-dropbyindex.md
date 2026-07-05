@@ -1,7 +1,7 @@
 ---
 name: DropByIndex
 slug: dropbyindex
-sourceRef: slice.go#L501
+sourceRef: slice.go#L856
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/bPIH4npZRxS

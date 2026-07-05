@@ -1,7 +1,7 @@
 ---
 name: Union
 slug: union
-sourceRef: it/intersect.go#L136
+sourceRef: it/intersect.go#L217
 category: iter
 subCategory: intersect
 signatures:

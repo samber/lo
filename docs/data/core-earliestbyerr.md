@@ -1,7 +1,7 @@
 ---
 name: EarliestByErr
 slug: earliestbyerr
-sourceRef: find.go#L484
+sourceRef: find.go#L568
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/zJUBUj7ANvq

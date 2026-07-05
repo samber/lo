@@ -1,7 +1,7 @@
 ---
 name: WithoutBy
 slug: withoutby
-sourceRef: it/intersect.go#L159
+sourceRef: it/intersect.go#L245
 category: iter
 subCategory: intersect
 signatures:

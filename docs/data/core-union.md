@@ -1,7 +1,7 @@
 ---
 name: Union
 slug: union
-sourceRef: intersect.go#L157
+sourceRef: intersect.go#L235
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/-hsqZNTH0ej

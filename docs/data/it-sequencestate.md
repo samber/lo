@@ -1,7 +1,7 @@
 ---
 name: Empty
 slug: sequencestate
-sourceRef: it/type_manipulation.go#L43
+sourceRef: it/type_manipulation.go#L50
 category: iter
 subCategory: type
 signatures:

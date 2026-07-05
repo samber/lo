@@ -1,7 +1,7 @@
 ---
 name: ProductBy
 slug: productby
-sourceRef: math.go#L125
+sourceRef: math.go#L127
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/wadzrWr9Aer

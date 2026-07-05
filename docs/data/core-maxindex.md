@@ -1,7 +1,7 @@
 ---
 name: MaxIndex
 slug: maxindex
-sourceRef: find.go#L432
+sourceRef: find.go#L622
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/RFkB4Mzb1qt

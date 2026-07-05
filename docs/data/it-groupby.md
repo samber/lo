@@ -1,7 +1,7 @@
 ---
 name: GroupBy
 slug: groupby
-sourceRef: it/seq.go#L244
+sourceRef: it/seq.go#L268
 category: iter
 subCategory: sequence
 signatures:

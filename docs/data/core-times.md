@@ -1,7 +1,7 @@
 ---
 name: Times
 slug: times
-sourceRef: slice.go#L127
+sourceRef: slice.go#L212
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/vgQj3Glr6lT

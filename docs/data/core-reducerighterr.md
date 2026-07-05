@@ -1,7 +1,7 @@
 ---
 name: ReduceRightErr
 slug: reducerighterr
-sourceRef: slice.go#L153
+sourceRef: slice.go#L177
 category: core
 subCategory: slice
 signatures:

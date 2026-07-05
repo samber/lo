@@ -1,7 +1,7 @@
 ---
 name: BufferWithTimeout
 slug: bufferwithtimeout
-sourceRef: channel.go#L214
+sourceRef: channel.go#L251
 category: core
 subCategory: channel
 signatures:

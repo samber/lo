@@ -1,7 +1,7 @@
 ---
 name: Clamp
 slug: clamp
-sourceRef: exp/simd/math_avx.go#L453
+sourceRef: exp/simd/math_avx.go#L454
 category: experimental
 subCategory: simd
 similarHelpers:

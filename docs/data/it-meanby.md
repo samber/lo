@@ -1,7 +1,7 @@
 ---
 name: MeanBy
 slug: meanby
-sourceRef: it/math.go#L106
+sourceRef: it/math.go#L115
 category: iter
 subCategory: math
 signatures:

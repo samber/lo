@@ -1,7 +1,7 @@
 ---
 name: FilterMap
 slug: filtermap
-sourceRef: it/seq.go#L86
+sourceRef: it/seq.go#L94
 category: iter
 subCategory: sequence
 signatures:

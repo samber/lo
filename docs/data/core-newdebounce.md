@@ -1,7 +1,7 @@
 ---
 name: NewDebounce
 slug: newdebounce
-sourceRef: retry.go#L54
+sourceRef: retry.go#L56
 category: core
 subCategory: concurrency
 playUrl: https://go.dev/play/p/_IPY7ROzbMk

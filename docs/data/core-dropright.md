@@ -1,7 +1,7 @@
 ---
 name: DropRight
 slug: dropright
-sourceRef: slice.go#L457
+sourceRef: slice.go#L771
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/GG0nXkSJJa3

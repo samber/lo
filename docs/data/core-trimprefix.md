@@ -1,7 +1,7 @@
 ---
 name: TrimPrefix
 slug: trimprefix
-sourceRef: slice.go#L858
+sourceRef: slice.go#L1306
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/8O2RoWYzi8J

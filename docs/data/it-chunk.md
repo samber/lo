@@ -1,7 +1,7 @@
 ---
 name: Chunk
 slug: chunk
-sourceRef: it/seq.go#L264
+sourceRef: it/seq.go#L290
 category: iter
 subCategory: sequence
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: FilterMapToSeq
 slug: filtermaptoseq
-sourceRef: it/map.go#L178
+sourceRef: it/map.go#L199
 category: iter
 subCategory: map
 signatures:

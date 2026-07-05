@@ -1,7 +1,7 @@
 ---
 name: GroupByMap
 slug: groupbymap
-sourceRef: slice.go#L194
+sourceRef: slice.go#L356
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/iMeruQ3_W80

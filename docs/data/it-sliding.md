@@ -1,7 +1,7 @@
 ---
 name: Sliding
 slug: sliding
-sourceRef: it/seq.go#L329
+sourceRef: it/seq.go#L332
 category: iter
 subCategory: sequence
 signatures:

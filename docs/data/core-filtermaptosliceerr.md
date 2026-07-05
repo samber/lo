@@ -1,7 +1,7 @@
 ---
 name: FilterMapToSliceErr
 slug: filtermaptosliceerr
-sourceRef: map.go#L443
+sourceRef: map.go#L448
 category: core
 subCategory: map
 signatures:

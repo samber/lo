@@ -1,7 +1,7 @@
 ---
 name: RangeWithSteps
 slug: rangewithsteps
-sourceRef: it/math.go#L35
+sourceRef: it/math.go#L43
 category: iter
 subCategory: math
 signatures:

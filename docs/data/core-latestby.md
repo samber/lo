@@ -1,7 +1,7 @@
 ---
 name: LatestBy
 slug: latestby
-sourceRef: find.go#L530
+sourceRef: find.go#L801
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/p1HA8XumaMU

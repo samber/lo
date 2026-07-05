@@ -1,7 +1,7 @@
 ---
 name: SamplesBy
 slug: samplesby
-sourceRef: it/find.go#L474
+sourceRef: it/find.go#L518
 category: iter
 subCategory: find
 signatures:

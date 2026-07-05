@@ -1,7 +1,7 @@
 ---
 name: Reverse
 slug: reverse
-sourceRef: slice.go#L331
+sourceRef: slice.go#L582
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/iv2e9jslfBM

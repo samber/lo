@@ -1,7 +1,7 @@
 ---
 name: FindErr
 slug: finderr
-sourceRef: find.go#L83
+sourceRef: find.go#L88
 category: core
 subCategory: find
 signatures:

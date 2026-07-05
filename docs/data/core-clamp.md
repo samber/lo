@@ -1,7 +1,7 @@
 ---
 name: Clamp
 slug: clamp
-sourceRef: math.go#L59
+sourceRef: math.go#L71
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/RU4lJNC2hlI

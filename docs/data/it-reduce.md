@@ -1,7 +1,7 @@
 ---
 name: Reduce
 slug: reduce
-sourceRef: it/seq.go#L133
+sourceRef: it/seq.go#L146
 category: iter
 subCategory: sequence
 signatures:

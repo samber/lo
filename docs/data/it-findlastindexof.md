@@ -1,7 +1,7 @@
 ---
 name: FindLastIndexOf
 slug: findlastindexof
-sourceRef: it/find.go#L127
+sourceRef: it/find.go#L133
 category: iter
 subCategory: find
 signatures:

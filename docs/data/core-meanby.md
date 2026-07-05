@@ -1,7 +1,7 @@
 ---
 name: MeanBy
 slug: meanby
-sourceRef: math.go#L161
+sourceRef: math.go#L163
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/j7TsVwBOZ7P

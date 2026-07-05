@@ -1,7 +1,7 @@
 ---
 name: MapErr
 slug: maperr
-sourceRef: slice.go#L36
+sourceRef: slice.go#L57
 category: core
 subCategory: slice
 signatures:

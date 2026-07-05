@@ -1,7 +1,7 @@
 ---
 name: Entries
 slug: entries
-sourceRef: it/map.go#L77
+sourceRef: it/map.go#L90
 category: iter
 subCategory: map
 signatures:

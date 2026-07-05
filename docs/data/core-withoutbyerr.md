@@ -1,7 +1,7 @@
 ---
 name: WithoutByErr
 slug: withoutbyerr
-sourceRef: intersect.go#L287
+sourceRef: intersect.go#L342
 category: core
 subCategory: intersect
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: IntersectBy
 slug: intersectby
-sourceRef: intersect.go#L174
+sourceRef: intersect.go#L162
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/uWF8y2-zmtf

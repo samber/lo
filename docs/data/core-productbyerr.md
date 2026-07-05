@@ -1,7 +1,7 @@
 ---
 name: ProductByErr
 slug: productbyerr
-sourceRef: math.go#L134
+sourceRef: math.go#L138
 category: core
 subCategory: math
 variantHelpers:

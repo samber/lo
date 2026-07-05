@@ -1,7 +1,7 @@
 ---
 name: Sum / SumBy
 slug: sum
-sourceRef: it/math.go#L59
+sourceRef: it/math.go#L72
 category: iter
 subCategory: math
 signatures:

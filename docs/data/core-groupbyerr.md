@@ -1,7 +1,7 @@
 ---
 name: GroupByErr
 slug: groupbyerr
-sourceRef: slice.go#L279
+sourceRef: slice.go#L339
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/BzKPcY3AdX2

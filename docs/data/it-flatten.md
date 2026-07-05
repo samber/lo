@@ -1,7 +1,7 @@
 ---
 name: Flatten
 slug: flatten
-sourceRef: it/seq.go#L26
+sourceRef: it/seq.go#L417
 category: iter
 subCategory: sequence
 signatures:

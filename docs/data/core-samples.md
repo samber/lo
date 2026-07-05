@@ -1,7 +1,7 @@
 ---
 name: Samples
 slug: samples
-sourceRef: find.go#L679
+sourceRef: find.go#L982
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/QYRD8aufD0C

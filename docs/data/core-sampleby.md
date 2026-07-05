@@ -1,7 +1,7 @@
 ---
 name: SampleBy
 slug: sampleby
-sourceRef: find.go#L669
+sourceRef: find.go#L972
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/HDmKmMgq0XN

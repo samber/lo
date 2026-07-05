@@ -1,7 +1,7 @@
 ---
 name: Intersect
 slug: intersect
-sourceRef: intersect.go#L103
+sourceRef: intersect.go#L119
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/uuElL9X9e58

@@ -1,7 +1,7 @@
 ---
 name: TakeFilter
 slug: takefilter
-sourceRef: it/seq.go#L725
+sourceRef: it/seq.go#L753
 category: iter
 subCategory: sequence
 signatures:

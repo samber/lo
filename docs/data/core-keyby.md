@@ -1,7 +1,7 @@
 ---
 name: KeyBy
 slug: keyby
-sourceRef: slice.go#L374
+sourceRef: slice.go#L641
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/ccUiUL_Lnel

@@ -1,7 +1,7 @@
 ---
 name: ForEachWhile
 slug: foreachwhile
-sourceRef: slice.go#L116
+sourceRef: slice.go#L201
 category: core
 subCategory: slice
 signatures:

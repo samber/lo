@@ -1,7 +1,7 @@
 ---
 name: Substring
 slug: substring
-sourceRef: string.go#L105
+sourceRef: string.go#L158
 category: core
 subCategory: string
 playUrl: https://go.dev/play/p/emzCC9zBjHu

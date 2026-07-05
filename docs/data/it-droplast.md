@@ -1,7 +1,7 @@
 ---
 name: DropLast
 slug: droplast
-sourceRef: it/seq.go#L512
+sourceRef: it/seq.go#L643
 category: iter
 subCategory: sequence
 signatures:

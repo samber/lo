@@ -1,7 +1,7 @@
 ---
 name: Drop
 slug: drop
-sourceRef: it/seq.go#L498
+sourceRef: it/seq.go#L628
 category: iter
 subCategory: sequence
 signatures:

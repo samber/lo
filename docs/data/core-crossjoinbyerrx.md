@@ -1,7 +1,7 @@
 ---
 name: CrossJoinByErrX
 slug: crossjoinbyerrx
-sourceRef: tuples.go#L1320
+sourceRef: tuples.go#L1615
 category: core
 subCategory: tuple
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: EveryBy
 slug: everyby
-sourceRef: intersect.go#L41
+sourceRef: intersect.go#L47
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/dn1-vhHsq9x

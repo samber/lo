@@ -1,7 +1,7 @@
 ---
 name: Range
 slug: range
-sourceRef: it/math.go#L12
+sourceRef: it/math.go#L14
 category: iter
 subCategory: math
 signatures:

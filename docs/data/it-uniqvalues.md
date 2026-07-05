@@ -1,7 +1,7 @@
 ---
 name: UniqValues
 slug: uniqvalues
-sourceRef: it/map.go#L59
+sourceRef: it/map.go#L67
 category: iter
 subCategory: map
 signatures:

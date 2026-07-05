@@ -1,7 +1,7 @@
 ---
 name: Max
 slug: max
-sourceRef: exp/simd/math_avx.go#L1279
+sourceRef: exp/simd/math_avx.go#L1116
 category: experimental
 subCategory: simd
 similarHelpers:

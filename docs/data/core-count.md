@@ -1,7 +1,7 @@
 ---
 name: Count
 slug: count
-sourceRef: slice.go#L582
+sourceRef: slice.go#L992
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/Y3FlK54yveC

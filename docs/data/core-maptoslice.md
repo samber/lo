@@ -1,7 +1,7 @@
 ---
 name: MapToSlice
 slug: maptoslice
-sourceRef: map.go#L367
+sourceRef: map.go#L399
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/4f5hbHyMf5h

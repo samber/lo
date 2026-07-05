@@ -1,7 +1,7 @@
 ---
 name: ReplaceAll
 slug: replaceall
-sourceRef: it/seq.go#L699
+sourceRef: it/seq.go#L927
 category: iter
 subCategory: slice
 signatures:

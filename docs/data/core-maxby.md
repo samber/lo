@@ -1,7 +1,7 @@
 ---
 name: MaxBy
 slug: maxby
-sourceRef: find.go#L507
+sourceRef: find.go#L654
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/PJCc-ThrwX1

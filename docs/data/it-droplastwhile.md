@@ -1,7 +1,7 @@
 ---
 name: DropLastWhile
 slug: droplastwhile
-sourceRef: it/seq.go#L180
+sourceRef: it/seq.go#L687
 category: iter
 subCategory: sequence
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: FlatMap
 slug: flatmap
-sourceRef: it/seq.go#L109
+sourceRef: it/seq.go#L120
 category: iter
 subCategory: sequence
 signatures:

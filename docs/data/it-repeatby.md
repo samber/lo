@@ -1,7 +1,7 @@
 ---
 name: RepeatBy
 slug: repeatby
-sourceRef: it/seq.go#L388
+sourceRef: it/seq.go#L510
 category: iter
 subCategory: sequence
 signatures:

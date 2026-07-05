@@ -1,7 +1,7 @@
 ---
 name: MapEntries
 slug: mapentries
-sourceRef: map.go#L336
+sourceRef: map.go#L370
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/VuvNQzxKimT

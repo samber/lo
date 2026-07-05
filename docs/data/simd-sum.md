@@ -1,7 +1,7 @@
 ---
 name: Sum
 slug: sum
-sourceRef: exp/simd/math_avx.go#L14
+sourceRef: exp/simd/math_avx.go#L18
 category: experimental
 subCategory: simd
 similarHelpers:

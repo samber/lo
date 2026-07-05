@@ -1,7 +1,7 @@
 ---
 name: ContainsBy
 slug: containsby
-sourceRef: it/intersect.go#L17
+sourceRef: it/intersect.go#L20
 category: iter
 subCategory: intersect
 signatures:

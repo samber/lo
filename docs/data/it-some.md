@@ -1,7 +1,7 @@
 ---
 name: Some
 slug: some
-sourceRef: it/intersect.go#L52
+sourceRef: it/intersect.go#L67
 category: iter
 subCategory: intersect
 signatures:

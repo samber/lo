@@ -1,7 +1,7 @@
 ---
 name: TrimSuffix
 slug: trimsuffix
-sourceRef: slice.go#L884
+sourceRef: slice.go#L1331
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/IjEUrV0iofq

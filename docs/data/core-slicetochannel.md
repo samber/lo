@@ -1,7 +1,7 @@
 ---
 name: SliceToChannel
 slug: slicetochannel
-sourceRef: channel.go#L18
+sourceRef: channel.go#L161
 category: core
 subCategory: channel
 signatures:

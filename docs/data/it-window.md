@@ -1,7 +1,7 @@
 ---
 name: Window
 slug: window
-sourceRef: it/seq.go#L318
+sourceRef: it/seq.go#L319
 category: iter
 subCategory: sequence
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: Splice
 slug: splice
-sourceRef: it/seq.go#L744
+sourceRef: it/seq.go#L964
 category: iter
 subCategory: sequence
 signatures:

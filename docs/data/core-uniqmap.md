@@ -1,7 +1,7 @@
 ---
 name: UniqMap
 slug: uniqmap
-sourceRef: slice.go#L38
+sourceRef: slice.go#L73
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/fygzLBhvUdB

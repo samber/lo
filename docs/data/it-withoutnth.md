@@ -1,7 +1,7 @@
 ---
 name: WithoutNth
 slug: withoutnth
-sourceRef: it/intersect.go#L167
+sourceRef: it/intersect.go#L253
 category: iter
 subCategory: intersect
 signatures:

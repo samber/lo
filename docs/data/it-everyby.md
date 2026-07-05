@@ -1,7 +1,7 @@
 ---
 name: EveryBy
 slug: everyby
-sourceRef: it/intersect.go#L43
+sourceRef: it/intersect.go#L53
 category: iter
 subCategory: intersect
 signatures:

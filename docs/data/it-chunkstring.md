@@ -1,7 +1,7 @@
 ---
 name: ChunkString
 slug: chunkstring
-sourceRef: it/string.go#L130
+sourceRef: it/string.go#L13
 category: iter
 subCategory: string
 playUrl: "https://go.dev/play/p/Bcc5ixTQQoQ"

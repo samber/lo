@@ -1,7 +1,7 @@
 ---
 name: Replace
 slug: replace
-sourceRef: it/seq.go#L699
+sourceRef: it/seq.go#L912
 category: iter
 subCategory: slice
 signatures:

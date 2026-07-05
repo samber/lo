@@ -1,7 +1,7 @@
 ---
 name: ToSeqPtr
 slug: toseqptr
-sourceRef: it/type_manipulation.go#L11
+sourceRef: it/type_manipulation.go#L13
 category: iter
 subCategory: type
 signatures:

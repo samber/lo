@@ -1,7 +1,7 @@
 ---
 name: Map
 slug: map
-sourceRef: mutable/slice.go#L41
+sourceRef: mutable/slice.go#L43
 category: mutable
 subCategory: slice
 playUrl: https://go.dev/play/p/0jY3Z0B7O_5

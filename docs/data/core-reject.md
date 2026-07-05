@@ -1,7 +1,7 @@
 ---
 name: Reject
 slug: reject
-sourceRef: slice.go#L532
+sourceRef: slice.go#L923
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/pFCF5WVB225
