@@ -60,6 +60,16 @@ position: 0
   - Cross-references to helpers that users might want to consider as alternatives
 - **position**: Position in the list (0, 10, 20, 30...). Order must follow the order in source code. Helpers are grouped by category+sub-category and displayed on a page. Position number is reset for each page.
 
+## Keeping sourceRef in Sync
+
+The `sourceRef` field (format `file.go#L123`) points to a specific line number in the Go source. Any change to a `.go` file (adding, removing, or reordering functions) shifts line numbers for everything below the change in that file, which can make existing `sourceRef` values stale — not just for the function being edited, but for every other documented helper in the same file.
+
+Whenever Go source code is modified:
+
+1. Run `gopls symbols <file>` for every changed `.go` file to list all symbols (functions/methods/types) with their current line numbers.
+2. Cross-reference each symbol against the `sourceRef` fields in `docs/data/*.md` files that document helpers from that file.
+3. Update any `sourceRef` whose line number no longer matches.
+
 ## Content Structure
 
 After the frontmatter, include:
