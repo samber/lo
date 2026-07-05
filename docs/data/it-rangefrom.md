@@ -1,7 +1,7 @@
 ---
 name: RangeFrom
 slug: rangefrom
-sourceRef: it/math.go#L25
+sourceRef: it/math.go#L28
 category: iter
 subCategory: math
 signatures:

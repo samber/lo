@@ -1,7 +1,7 @@
 ---
 name: ElementsMatchBy
 slug: elementsmatchby
-sourceRef: it/intersect.go#L183
+sourceRef: it/intersect.go#L274
 category: iter
 subCategory: intersect
 signatures:

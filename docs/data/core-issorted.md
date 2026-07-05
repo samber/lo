@@ -1,7 +1,7 @@
 ---
 name: IsSorted
 slug: issorted
-sourceRef: slice.go#L722
+sourceRef: slice.go#L1163
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/mc3qR-t4mcx

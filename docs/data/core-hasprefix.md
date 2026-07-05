@@ -1,7 +1,7 @@
 ---
 name: HasPrefix
 slug: hasprefix
-sourceRef: find.go#L41
+sourceRef: find.go#L40
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/SrljzVDpMQM

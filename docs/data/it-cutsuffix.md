@@ -1,7 +1,7 @@
 ---
 name: CutSuffix
 slug: cutsuffix
-sourceRef: it/seq.go#L778
+sourceRef: it/seq.go#L1059
 category: iter
 subCategory: string
 signatures:

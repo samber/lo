@@ -1,7 +1,7 @@
 ---
 name: IsNotEmpty
 slug: isnotempty
-sourceRef: it/type_manipulation.go#L59
+sourceRef: it/type_manipulation.go#L67
 category: iter
 subCategory: condition
 signatures:

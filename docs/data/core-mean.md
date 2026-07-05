@@ -1,7 +1,7 @@
 ---
 name: Mean
 slug: mean
-sourceRef: math.go#L126
+sourceRef: math.go#L152
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/tPURSuteUsP

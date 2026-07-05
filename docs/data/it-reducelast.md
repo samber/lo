@@ -1,7 +1,7 @@
 ---
 name: ReduceLast
 slug: reducelast
-sourceRef: it/seq.go#L153
+sourceRef: it/seq.go#L168
 category: iter
 subCategory: sequence
 signatures:

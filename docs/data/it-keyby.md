@@ -1,7 +1,7 @@
 ---
 name: KeyBy
 slug: keyby
-sourceRef: it/seq.go#L398
+sourceRef: it/seq.go#L523
 category: iter
 subCategory: sequence
 signatures:

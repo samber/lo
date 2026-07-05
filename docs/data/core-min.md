@@ -1,7 +1,7 @@
 ---
 name: Min
 slug: min
-sourceRef: find.go#L265
+sourceRef: find.go#L352
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/fJFLwpY8eMN

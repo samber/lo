@@ -1,7 +1,7 @@
 ---
 name: Slice
 slug: slice
-sourceRef: slice.go#L658
+sourceRef: slice.go#L1087
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/8XWYhfMMA1h

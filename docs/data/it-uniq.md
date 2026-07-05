@@ -1,7 +1,7 @@
 ---
 name: Uniq
 slug: uniq
-sourceRef: it/seq.go#L216
+sourceRef: it/seq.go#L238
 category: iter
 subCategory: sequence
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: Max
 slug: max
-sourceRef: find.go#L410
+sourceRef: find.go#L599
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/wYvG8gRRFw-

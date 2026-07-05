@@ -1,7 +1,7 @@
 ---
 name: First
 slug: first
-sourceRef: it/find.go#L362
+sourceRef: it/find.go#L385
 category: iter
 subCategory: find
 signatures:

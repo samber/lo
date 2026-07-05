@@ -1,7 +1,7 @@
 ---
 name: Generator
 slug: generator
-sourceRef: channel.go#L18
+sourceRef: channel.go#L191
 category: core
 subCategory: channel
 signatures:

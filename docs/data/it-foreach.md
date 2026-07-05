@@ -1,7 +1,7 @@
 ---
 name: ForEach
 slug: foreach
-sourceRef: it/seq.go#L166
+sourceRef: it/seq.go#L183
 category: iter
 subCategory: sequence
 signatures:

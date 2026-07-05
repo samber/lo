@@ -1,7 +1,7 @@
 ---
 name: ZipX
 slug: zipx
-sourceRef: it/tuples.go#L14
+sourceRef: it/tuples.go#L15
 category: iter
 subCategory: tuple
 signatures:

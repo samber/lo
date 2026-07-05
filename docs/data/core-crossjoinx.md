@@ -1,7 +1,7 @@
 ---
 name: CrossJoinX
 slug: crossjoinx
-sourceRef: tuples.go#L891
+sourceRef: tuples.go#L1318
 category: core
 subCategory: tuple
 signatures:

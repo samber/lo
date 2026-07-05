@@ -1,7 +1,7 @@
 ---
 name: MinIndexByErr
 slug: minindexbyerr
-sourceRef: find.go#L404
+sourceRef: find.go#L486
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/MUqi_NvTKM1

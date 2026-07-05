@@ -1,7 +1,7 @@
 ---
 name: Max
 slug: max
-sourceRef: it/find.go#L295
+sourceRef: it/find.go#L312
 category: iter
 subCategory: find
 signatures:

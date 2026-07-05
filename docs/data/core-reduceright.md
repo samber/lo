@@ -1,7 +1,7 @@
 ---
 name: ReduceRight
 slug: reduceright
-sourceRef: slice.go#L97
+sourceRef: slice.go#L167
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/Fq3W70l7wXF

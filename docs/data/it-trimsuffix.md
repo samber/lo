@@ -1,7 +1,7 @@
 ---
 name: TrimSuffix
 slug: trimsuffix
-sourceRef: it/seq.go#L778
+sourceRef: it/seq.go#L1127
 category: iter
 subCategory: string
 signatures:

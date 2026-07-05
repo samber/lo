@@ -1,7 +1,7 @@
 ---
 name: Chunk
 slug: chunk
-sourceRef: slice.go#L209
+sourceRef: slice.go#L388
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/kEMkFbdu85g

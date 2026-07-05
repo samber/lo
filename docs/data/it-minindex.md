@@ -1,7 +1,7 @@
 ---
 name: MinIndex
 slug: minindex
-sourceRef: it/find.go#L231
+sourceRef: it/find.go#L246
 category: iter
 subCategory: find
 signatures:

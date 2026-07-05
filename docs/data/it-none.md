@@ -1,7 +1,7 @@
 ---
 name: None
 slug: none
-sourceRef: it/intersect.go#L63
+sourceRef: it/intersect.go#L95
 category: iter
 subCategory: intersect
 signatures:

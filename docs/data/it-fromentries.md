@@ -1,7 +1,7 @@
 ---
 name: FromEntries
 slug: fromentries
-sourceRef: it/map.go#L96
+sourceRef: it/map.go#L111
 category: iter
 subCategory: map
 signatures:

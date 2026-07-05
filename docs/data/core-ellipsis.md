@@ -1,7 +1,7 @@
 ---
 name: Ellipsis
 slug: ellipsis
-sourceRef: string.go#L235
+sourceRef: string.go#L443
 category: core
 subCategory: string
 playUrl: https://go.dev/play/p/qE93rgqe1TW

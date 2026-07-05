@@ -1,7 +1,7 @@
 ---
 name: ChannelToSeq
 slug: channeltoseq
-sourceRef: it/channel.go#L39
+sourceRef: it/channel.go#L45
 category: iter
 subCategory: channel
 signatures:

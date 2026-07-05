@@ -1,7 +1,7 @@
 ---
 name: Subset
 slug: subset
-sourceRef: it/seq.go#L667
+sourceRef: it/seq.go#L877
 category: iter
 subCategory: sequence
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: NoneBy
 slug: noneby
-sourceRef: it/intersect.go#L69
+sourceRef: it/intersect.go#L109
 category: iter
 subCategory: intersect
 signatures:

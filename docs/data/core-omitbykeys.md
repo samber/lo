@@ -1,7 +1,7 @@
 ---
 name: OmitByKeys
 slug: omitbykeys
-sourceRef: map.go#L154
+sourceRef: map.go#L187
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/t1QjCrs-ysk

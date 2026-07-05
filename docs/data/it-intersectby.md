@@ -1,7 +1,7 @@
 ---
 name: IntersectBy
 slug: intersectby
-sourceRef: it/intersect.go#L78
+sourceRef: it/intersect.go#L169
 category: iter
 subCategory: intersect
 signatures:

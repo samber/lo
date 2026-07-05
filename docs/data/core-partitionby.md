@@ -1,7 +1,7 @@
 ---
 name: PartitionBy
 slug: partitionby
-sourceRef: slice.go#L240
+sourceRef: slice.go#L419
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/NfQ_nGjkgXW

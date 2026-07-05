@@ -1,7 +1,7 @@
 ---
 name: CoalesceSeqOrEmpty
 slug: coalesceseqorempty
-sourceRef: it/type_manipulation.go#L76
+sourceRef: it/type_manipulation.go#L86
 category: iter
 subCategory: type
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: Drain
 slug: drain
-sourceRef: it/seq.go#L26
+sourceRef: it/seq.go#L27
 category: iter
 subCategory: sequence
 signatures:

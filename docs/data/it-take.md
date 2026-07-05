@@ -1,7 +1,7 @@
 ---
 name: Take
 slug: take
-sourceRef: it/seq.go#L682
+sourceRef: it/seq.go#L711
 category: iter
 subCategory: sequence
 signatures:

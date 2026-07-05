@@ -1,7 +1,7 @@
 ---
 name: MapToSeq
 slug: maptoseq
-sourceRef: it/map.go#L164
+sourceRef: it/map.go#L184
 category: iter
 subCategory: map
 signatures:

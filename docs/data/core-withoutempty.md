@@ -1,7 +1,7 @@
 ---
 name: WithoutEmpty
 slug: withoutempty
-sourceRef: intersect.go#L218
+sourceRef: intersect.go#L362
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/iZvYJWuniJm

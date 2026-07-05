@@ -1,7 +1,7 @@
 ---
 name: Invert
 slug: invert
-sourceRef: it/map.go#L111
+sourceRef: it/map.go#L128
 category: iter
 subCategory: map
 signatures:

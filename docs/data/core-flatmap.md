@@ -1,7 +1,7 @@
 ---
 name: FlatMap
 slug: flatmap
-sourceRef: slice.go#L74
+sourceRef: slice.go#L110
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/pFCF5WVB225

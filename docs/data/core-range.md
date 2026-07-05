@@ -1,7 +1,7 @@
 ---
 name: Range
 slug: range
-sourceRef: math.go#L9
+sourceRef: math.go#L11
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/rho00R0WuHs

@@ -1,7 +1,7 @@
 ---
 name: MapToSliceErr
 slug: maptosliceerr
-sourceRef: map.go#L379
+sourceRef: map.go#L411
 category: core
 subCategory: map
 signatures:

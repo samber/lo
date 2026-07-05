@@ -1,7 +1,7 @@
 ---
 name: FindUniquesBy
 slug: finduniquesby
-sourceRef: it/find.go#L163
+sourceRef: it/find.go#L177
 category: iter
 subCategory: find
 signatures:

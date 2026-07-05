@@ -1,7 +1,7 @@
 ---
 name: Nth
 slug: nth
-sourceRef: it/find.go#L417
+sourceRef: it/find.go#L448
 category: iter
 subCategory: find
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: MaxIndexByErr
 slug: maxindexbyerr
-sourceRef: find.go#L591
+sourceRef: find.go#L746
 category: core
 subCategory: find
 variantHelpers:

@@ -1,7 +1,7 @@
 ---
 name: EarliestBy
 slug: earliestby
-sourceRef: find.go#L462
+sourceRef: find.go#L542
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/0XvCF6vuLXC

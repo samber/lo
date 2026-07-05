@@ -1,7 +1,7 @@
 ---
 name: RangeWithSteps
 slug: rangewithsteps
-sourceRef: math.go#L34
+sourceRef: math.go#L36
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/0r6VimXAi9H

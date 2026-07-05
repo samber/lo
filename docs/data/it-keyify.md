@@ -1,7 +1,7 @@
 ---
 name: Keyify
 slug: keyify
-sourceRef: it/seq.go#L720
+sourceRef: it/seq.go#L616
 category: iter
 subCategory: slice
 signatures:

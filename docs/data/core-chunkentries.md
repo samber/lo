@@ -1,7 +1,7 @@
 ---
 name: ChunkEntries
 slug: chunkentries
-sourceRef: map.go#L253
+sourceRef: map.go#L289
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/X_YQL6mmoD-

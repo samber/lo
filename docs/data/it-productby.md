@@ -1,7 +1,7 @@
 ---
 name: ProductBy
 slug: productby
-sourceRef: it/math.go#L90
+sourceRef: it/math.go#L97
 category: iter
 subCategory: math
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: RejectMap
 slug: rejectmap
-sourceRef: it/seq.go#L608
+sourceRef: it/seq.go#L809
 category: iter
 subCategory: sequence
 signatures:

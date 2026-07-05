@@ -1,7 +1,7 @@
 ---
 name: SeqToSeq2
 slug: seqtoseq2
-sourceRef: it/seq.go#L1167
+sourceRef: it/seq.go#L1170
 category: iter
 subCategory: sequence
 signatures:

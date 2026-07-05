@@ -1,7 +1,7 @@
 ---
 name: ZipByErrX
 slug: zipbyerrx
-sourceRef: tuples.go#L444
+sourceRef: tuples.go#L521
 category: core
 subCategory: tuple
 signatures:

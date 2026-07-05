@@ -1,7 +1,7 @@
 ---
 name: FirstOr
 slug: firstor
-sourceRef: it/find.go#L377
+sourceRef: it/find.go#L404
 category: iter
 subCategory: find
 signatures:

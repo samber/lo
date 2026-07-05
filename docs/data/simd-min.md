@@ -1,7 +1,7 @@
 ---
 name: Min
 slug: min
-sourceRef: exp/simd/math_avx.go#L833
+sourceRef: exp/simd/math_avx.go#L758
 category: experimental
 subCategory: simd
 similarHelpers:

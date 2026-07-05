@@ -1,7 +1,7 @@
 ---
 name: TakeWhile
 slug: takewhile
-sourceRef: it/seq.go#L706
+sourceRef: it/seq.go#L732
 category: iter
 subCategory: sequence
 signatures:

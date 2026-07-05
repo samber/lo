@@ -1,7 +1,7 @@
 ---
 name: ReduceErr
 slug: reduceerr
-sourceRef: slice.go#L128
+sourceRef: slice.go#L152
 category: core
 subCategory: slice
 signatures:

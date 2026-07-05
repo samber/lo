@@ -1,7 +1,7 @@
 ---
 name: SumBy
 slug: sumby
-sourceRef: math.go#L80
+sourceRef: math.go#L92
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/Dz_a_7jN_ca

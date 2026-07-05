@@ -1,7 +1,7 @@
 ---
 name: Trim
 slug: trim
-sourceRef: slice.go#L842
+sourceRef: slice.go#L1268
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/LZLfLj5C8Lg

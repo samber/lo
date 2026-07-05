@@ -1,7 +1,7 @@
 ---
 name: FromAnySeq
 slug: fromanyseq
-sourceRef: it/type_manipulation.go#L11
+sourceRef: it/type_manipulation.go#L39
 category: iter
 subCategory: type
 signatures:

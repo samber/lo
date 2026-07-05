@@ -1,7 +1,7 @@
 ---
 name: Shuffle
 slug: shuffle
-sourceRef: it/seq.go#L357
+sourceRef: it/seq.go#L467
 category: iter
 subCategory: sequence
 signatures:

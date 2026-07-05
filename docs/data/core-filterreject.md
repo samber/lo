@@ -1,7 +1,7 @@
 ---
 name: FilterReject
 slug: filterreject
-sourceRef: slice.go#L565
+sourceRef: slice.go#L975
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/lHSEGSznJjB

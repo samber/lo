@@ -1,7 +1,7 @@
 ---
 name: GroupBy
 slug: groupby
-sourceRef: slice.go#L180
+sourceRef: slice.go#L324
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/XnQBd_v6brd

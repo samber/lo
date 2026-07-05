@@ -1,7 +1,7 @@
 ---
 name: LatestByErr
 slug: latestbyerr
-sourceRef: find.go#L737
+sourceRef: find.go#L827
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/WpBUptwnxuG

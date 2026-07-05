@@ -1,7 +1,7 @@
 ---
 name: DropWhile
 slug: dropwhile
-sourceRef: slice.go#L472
+sourceRef: slice.go#L786
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/b_PYomVQLGy

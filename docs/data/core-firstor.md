@@ -1,7 +1,7 @@
 ---
 name: FirstOr
 slug: firstor
-sourceRef: find.go#L574
+sourceRef: find.go#L877
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/x9CxQyRFXeZ

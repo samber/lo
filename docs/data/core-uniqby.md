@@ -1,7 +1,7 @@
 ---
 name: UniqBy
 slug: uniqby
-sourceRef: slice.go#L160
+sourceRef: slice.go#L245
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/g42Z3QSb53u

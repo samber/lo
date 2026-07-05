@@ -1,7 +1,7 @@
 ---
 name: Compact
 slug: compact
-sourceRef: it/seq.go#L699
+sourceRef: it/seq.go#L933
 category: iter
 subCategory: slice
 signatures:

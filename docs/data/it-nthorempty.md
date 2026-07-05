@@ -1,7 +1,7 @@
 ---
 name: NthOrEmpty
 slug: nthorempty
-sourceRef: it/find.go#L444
+sourceRef: it/find.go#L484
 category: iter
 subCategory: find
 signatures:

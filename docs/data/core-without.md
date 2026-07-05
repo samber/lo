@@ -1,7 +1,7 @@
 ---
 name: Without
 slug: without
-sourceRef: intersect.go#L181
+sourceRef: intersect.go#L313
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/PcAVtYJsEsS

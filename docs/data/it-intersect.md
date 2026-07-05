@@ -1,7 +1,7 @@
 ---
 name: Intersect
 slug: intersect
-sourceRef: it/intersect.go#L78
+sourceRef: it/intersect.go#L123
 category: iter
 subCategory: intersect
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: MaxIndexBy
 slug: maxindexby
-sourceRef: it/find.go#L326
+sourceRef: it/find.go#L350
 category: iter
 subCategory: find
 signatures:

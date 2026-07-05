@@ -1,7 +1,7 @@
 ---
 name: CountBy
 slug: countby
-sourceRef: slice.go#L849
+sourceRef: slice.go#L1006
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/5GMQP5vNT4q

@@ -1,7 +1,7 @@
 ---
 name: RejectMap
 slug: rejectmap
-sourceRef: slice.go#L550
+sourceRef: slice.go#L960
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/bmXhtuM2OMq

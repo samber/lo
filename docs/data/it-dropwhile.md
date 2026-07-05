@@ -1,7 +1,7 @@
 ---
 name: DropWhile
 slug: dropwhile
-sourceRef: it/seq.go#L180
+sourceRef: it/seq.go#L671
 category: iter
 subCategory: sequence
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: Filter
 slug: filter
-sourceRef: it/seq.go#L33
+sourceRef: it/seq.go#L34
 category: iter
 subCategory: sequence
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: Concat
 slug: concat
-sourceRef: it/seq.go#L358
+sourceRef: it/seq.go#L431
 category: iter
 subCategory: sequence
 playUrl: https://go.dev/play/p/Fa0u7xT2JOR

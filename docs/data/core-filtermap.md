@@ -1,7 +1,7 @@
 ---
 name: FilterMap
 slug: filtermap
-sourceRef: slice.go#L58
+sourceRef: slice.go#L94
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/CgHYNUpOd1I

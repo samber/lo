@@ -1,7 +1,7 @@
 ---
 name: MinBy
 slug: minby
-sourceRef: find.go#L329
+sourceRef: find.go#L403
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/-B1PsrHVnfx

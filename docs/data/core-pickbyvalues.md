@@ -1,7 +1,7 @@
 ---
 name: PickByValues
 slug: pickbyvalues
-sourceRef: map.go#L130
+sourceRef: map.go#L145
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/-_PPkSbO1Kc

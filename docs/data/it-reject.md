@@ -1,7 +1,7 @@
 ---
 name: Reject
 slug: reject
-sourceRef: it/seq.go#L586
+sourceRef: it/seq.go#L785
 category: iter
 subCategory: sequence
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: Associate
 slug: associate
-sourceRef: it/seq.go#L412
+sourceRef: it/seq.go#L539
 category: iter
 subCategory: map
 signatures:

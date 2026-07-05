@@ -1,7 +1,7 @@
 ---
 name: Slice
 slug: slice
-sourceRef: it/seq.go#L680
+sourceRef: it/seq.go#L891
 category: iter
 subCategory: sequence
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: IsEmpty
 slug: isempty
-sourceRef: it/type_manipulation.go#L50
+sourceRef: it/type_manipulation.go#L57
 category: iter
 subCategory: type
 signatures:

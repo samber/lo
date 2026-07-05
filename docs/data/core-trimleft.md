@@ -1,7 +1,7 @@
 ---
 name: TrimLeft
 slug: trimleft
-sourceRef: slice.go#L847
+sourceRef: slice.go#L1295
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/fJK-AhROy9w

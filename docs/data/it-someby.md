@@ -1,7 +1,7 @@
 ---
 name: SomeBy
 slug: someby
-sourceRef: it/intersect.go#L56
+sourceRef: it/intersect.go#L82
 category: iter
 subCategory: intersect
 signatures:

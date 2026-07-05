@@ -1,7 +1,7 @@
 ---
 name: Without
 slug: without
-sourceRef: it/intersect.go#L155
+sourceRef: it/intersect.go#L237
 category: iter
 subCategory: intersect
 signatures:

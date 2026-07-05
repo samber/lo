@@ -1,7 +1,7 @@
 ---
 name: LastIndexOf
 slug: lastindexof
-sourceRef: find.go#L27
+sourceRef: find.go#L26
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/Eo7W0lvKTky

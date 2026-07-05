@@ -1,7 +1,7 @@
 ---
 name: CountValues
 slug: countvalues
-sourceRef: it/seq.go#L720
+sourceRef: it/seq.go#L856
 category: iter
 subCategory: slice
 signatures:

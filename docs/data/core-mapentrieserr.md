@@ -1,7 +1,7 @@
 ---
 name: MapEntriesErr
 slug: mapentrieserr
-sourceRef: map.go#L351
+sourceRef: map.go#L383
 category: core
 subCategory: map
 signatures:

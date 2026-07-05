@@ -1,7 +1,7 @@
 ---
 name: UniqKeys
 slug: uniqkeys
-sourceRef: it/map.go#L26
+sourceRef: it/map.go#L28
 category: iter
 subCategory: map
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: CrossJoinByX
 slug: crossjoinbyx
-sourceRef: it/tuples.go#L439
+sourceRef: it/tuples.go#L428
 category: iter
 subCategory: tuple
 signatures:

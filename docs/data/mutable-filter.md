@@ -1,7 +1,7 @@
 ---
 name: Filter
 slug: filter
-sourceRef: mutable/slice.go#L11
+sourceRef: mutable/slice.go#L15
 category: mutable
 subCategory: slice
 playUrl: https://go.dev/play/p/0jY3Z0B7O_5

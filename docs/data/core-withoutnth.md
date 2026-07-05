@@ -1,7 +1,7 @@
 ---
 name: WithoutNth
 slug: withoutnth
-sourceRef: intersect.go#L223
+sourceRef: intersect.go#L368
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/AIro-_UtL9c

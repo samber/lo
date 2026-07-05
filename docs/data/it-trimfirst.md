@@ -1,7 +1,7 @@
 ---
 name: TrimFirst
 slug: trimfirst
-sourceRef: it/seq.go#L778
+sourceRef: it/seq.go#L1076
 category: iter
 subCategory: string
 signatures:

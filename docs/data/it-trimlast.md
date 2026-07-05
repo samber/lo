@@ -1,7 +1,7 @@
 ---
 name: TrimLast
 slug: trimlast
-sourceRef: it/seq.go#L778
+sourceRef: it/seq.go#L1121
 category: iter
 subCategory: string
 signatures:

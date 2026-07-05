@@ -1,7 +1,7 @@
 ---
 name: Map
 slug: map
-sourceRef: it/seq.go#L51
+sourceRef: it/seq.go#L54
 category: iter
 subCategory: sequence
 signatures:

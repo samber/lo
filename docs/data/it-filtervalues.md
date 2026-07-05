@@ -1,7 +1,7 @@
 ---
 name: FilterValues
 slug: filtervalues
-sourceRef: it/map.go#L253
+sourceRef: it/map.go#L225
 category: iter
 subCategory: map
 signatures:

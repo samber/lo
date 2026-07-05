@@ -1,7 +1,7 @@
 ---
 name: Window
 slug: window
-sourceRef: slice.go#L289
+sourceRef: slice.go#L495
 category: core
 subCategory: slice
 variantHelpers:

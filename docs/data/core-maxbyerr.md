@@ -1,7 +1,7 @@
 ---
 name: MaxByErr
 slug: maxbyerr
-sourceRef: find.go#L528
+sourceRef: find.go#L683
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/s-63-6_9zqM

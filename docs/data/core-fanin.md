@@ -1,7 +1,7 @@
 ---
 name: FanIn
 slug: fanin
-sourceRef: channel.go#L18
+sourceRef: channel.go#L260
 category: core
 subCategory: channel
 signatures:

@@ -1,7 +1,7 @@
 ---
 name: MinByErr
 slug: minbyerr
-sourceRef: find.go#L349
+sourceRef: find.go#L428
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/nvDYGS8q895

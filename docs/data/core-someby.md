@@ -1,7 +1,7 @@
 ---
 name: SomeBy
 slug: someby
-sourceRef: intersect.go#L67
+sourceRef: intersect.go#L78
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/DXF-TORBudx

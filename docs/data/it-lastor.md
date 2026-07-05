@@ -1,7 +1,7 @@
 ---
 name: LastOr
 slug: lastor
-sourceRef: it/find.go#L407
+sourceRef: it/find.go#L437
 category: iter
 subCategory: find
 signatures:

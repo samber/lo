@@ -1,7 +1,7 @@
 ---
 name: HasPrefix
 slug: hasprefix
-sourceRef: it/find.go#L49
+sourceRef: it/find.go#L51
 category: iter
 subCategory: find
 signatures:

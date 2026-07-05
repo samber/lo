@@ -1,7 +1,7 @@
 ---
 name: KeyByErr
 slug: keybyerr
-sourceRef: slice.go#L576
+sourceRef: slice.go#L655
 category: core
 subCategory: slice
 signatures:

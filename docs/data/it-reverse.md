@@ -1,7 +1,7 @@
 ---
 name: Reverse
 slug: reverse
-sourceRef: it/seq.go#L366
+sourceRef: it/seq.go#L477
 category: iter
 subCategory: sequence
 signatures:

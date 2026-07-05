@@ -1,7 +1,7 @@
 ---
 name: Mode
 slug: mode
-sourceRef: it/math.go#L124
+sourceRef: it/math.go#L134
 category: iter
 subCategory: math
 signatures:

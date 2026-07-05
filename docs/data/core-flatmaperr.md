@@ -1,7 +1,7 @@
 ---
 name: FlatMapErr
 slug: flatmaperr
-sourceRef: slice.go#L99
+sourceRef: slice.go#L124
 category: core
 subCategory: slice
 signatures:

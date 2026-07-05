@@ -1,7 +1,7 @@
 ---
 name: CountBy
 slug: countby
-sourceRef: it/seq.go#L325
+sourceRef: it/seq.go#L841
 category: iter
 subCategory: find
 signatures:

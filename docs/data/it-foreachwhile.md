@@ -1,7 +1,7 @@
 ---
 name: ForEachWhile
 slug: foreachwhile
-sourceRef: it/seq.go#L180
+sourceRef: it/seq.go#L202
 category: iter
 subCategory: sequence
 signatures:

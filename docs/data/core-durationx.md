@@ -1,7 +1,7 @@
 ---
 name: DurationX
 slug: durationx
-sourceRef: time.go#L7
+sourceRef: time.go#L9
 category: core
 subCategory: time
 signatures:

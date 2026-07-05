@@ -1,7 +1,7 @@
 ---
 name: WithoutBy
 slug: withoutby
-sourceRef: intersect.go#L273
+sourceRef: intersect.go#L328
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/VgWJOF01NbJ

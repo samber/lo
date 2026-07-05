@@ -1,7 +1,7 @@
 ---
 name: Product
 slug: product
-sourceRef: math.go#L90
+sourceRef: math.go#L117
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/2_kjM_smtAH

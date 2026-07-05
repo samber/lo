@@ -1,7 +1,7 @@
 ---
 name: UniqBy
 slug: uniqby
-sourceRef: it/seq.go#L225
+sourceRef: it/seq.go#L248
 category: iter
 subCategory: sequence
 signatures:

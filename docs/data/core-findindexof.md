@@ -1,7 +1,7 @@
 ---
 name: FindIndexOf
 slug: findindexof
-sourceRef: find.go#L87
+sourceRef: find.go#L107
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/XWSEM4Ic_t0

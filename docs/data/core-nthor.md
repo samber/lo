@@ -1,7 +1,7 @@
 ---
 name: NthOr
 slug: nthor
-sourceRef: find.go#L635
+sourceRef: find.go#L943
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/njKcNhBBVsF

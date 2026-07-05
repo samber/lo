@@ -1,7 +1,7 @@
 ---
 name: MapValues
 slug: mapvalues
-sourceRef: map.go#L310
+sourceRef: map.go#L342
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/T_8xAfvcf0W

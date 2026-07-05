@@ -1,7 +1,7 @@
 ---
 name: Earliest
 slug: earliest
-sourceRef: it/find.go#L278
+sourceRef: it/find.go#L296
 category: iter
 subCategory: find
 signatures:

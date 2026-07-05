@@ -1,7 +1,7 @@
 ---
 name: UnzipByErrX
 slug: unzipbyerrx
-sourceRef: tuples.go#L1024
+sourceRef: tuples.go#L1101
 category: core
 subCategory: tuple
 signatures:

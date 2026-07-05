@@ -1,7 +1,7 @@
 ---
 name: RandomString
 slug: randomstring
-sourceRef: string.go#L35
+sourceRef: string.go#L84
 category: core
 subCategory: string
 playUrl: https://go.dev/play/p/rRseOQVVum4

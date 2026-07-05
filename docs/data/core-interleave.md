@@ -1,7 +1,7 @@
 ---
 name: Interleave
 slug: interleave
-sourceRef: slice.go#L282
+sourceRef: slice.go#L533
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/KOVtGUt-tdI

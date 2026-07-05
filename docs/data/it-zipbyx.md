@@ -1,7 +1,7 @@
 ---
 name: ZipByX
 slug: zipbyx
-sourceRef: it/tuples.go#L295
+sourceRef: it/tuples.go#L283
 category: iter
 subCategory: tuple
 signatures:

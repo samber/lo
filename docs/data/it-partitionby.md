@@ -1,7 +1,7 @@
 ---
 name: PartitionBy
 slug: partitionby
-sourceRef: it/seq.go#L26
+sourceRef: it/seq.go#L396
 category: iter
 subCategory: sequence
 signatures:

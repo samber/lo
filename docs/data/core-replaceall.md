@@ -1,7 +1,7 @@
 ---
 name: ReplaceAll
 slug: replaceall
-sourceRef: slice.go#L700
+sourceRef: slice.go#L1126
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/a9xZFUHfYcV

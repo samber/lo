@@ -1,7 +1,7 @@
 ---
 name: Nth
 slug: nth
-sourceRef: find.go#L617
+sourceRef: find.go#L920
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/mNFI9-kIZZ5

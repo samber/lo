@@ -1,7 +1,7 @@
 ---
 name: SumBy
 slug: sumby
-sourceRef: exp/simd/math.go#L841
+sourceRef: exp/simd/math.go#L848
 category: experimental
 subCategory: simd
 similarHelpers:

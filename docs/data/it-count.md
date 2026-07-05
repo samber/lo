@@ -1,7 +1,7 @@
 ---
 name: Count / CountBy
 slug: count
-sourceRef: it/seq.go#L630
+sourceRef: it/seq.go#L834
 category: iter
 subCategory: sequence
 signatures:
