@@ -307,4 +307,14 @@ func BenchmarkSamples(b *testing.B) {
 			}
 		})
 	}
+
+	// sparse: sample a few items from a large collection
+	for _, n := range []int{1_000, 100_000} {
+		ints := genSliceInt(n)
+		b.Run("sparse_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Samples(ints, 10)
+			}
+		})
+	}
 }
