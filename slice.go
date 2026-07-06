@@ -1111,10 +1111,18 @@ func Replace[T comparable, Slice ~[]T](collection Slice, old, nEw T, n int) Slic
 	result := make(Slice, len(collection))
 	copy(result, collection)
 
+	if n == 0 {
+		return result
+	}
+
 	for i := range result {
-		if result[i] == old && n != 0 {
+		if result[i] == old {
 			result[i] = nEw
-			n--
+			// Stop scanning once the n first instances have been replaced.
+			// A negative n never reaches 0 and replaces all instances.
+			if n--; n == 0 {
+				break
+			}
 		}
 	}
 
