@@ -2,7 +2,6 @@ package lo
 
 import (
 	"math"
-	"regexp"
 	"strings"
 	"sync"
 	"unicode"
@@ -24,11 +23,7 @@ var (
 	SpecialCharset          = []rune("!@#$%^&*()_+-=[]{}|;':\",./<>?")
 	AllCharset              = append(AlphanumericCharset, SpecialCharset...)
 
-	// bearer:disable go_lang_permissive_regex_validation
-	splitWordReg = regexp.MustCompile(`([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`)
-	// bearer:disable go_lang_permissive_regex_validation
-	splitNumberLetterReg = regexp.MustCompile(`([0-9])([a-zA-Z])`)
-	maximumCapacity      = math.MaxInt>>1 + 1
+	maximumCapacity = math.MaxInt>>1 + 1
 )
 
 // Constructing a Caser is far more expensive than using one, and a Caser is not safe for
@@ -404,19 +399,103 @@ func SnakeCaseWithLanguage(str string, tag language.Tag) string {
 // Words splits string into a slice of its words.
 // Play: https://go.dev/play/p/-f3VIQqiaVw
 func Words(str string) []string {
-	str = splitWordReg.ReplaceAllString(str, `$1$3$5$7 $2$4$6$8$9`)
+	buf := splitWordBoundaries(str)
 	// example: Int8Value => Int 8Value => Int 8 Value
-	str = splitNumberLetterReg.ReplaceAllString(str, "$1 $2")
-	var result strings.Builder
-	result.Grow(len(str))
-	for _, r := range str {
+	buf = splitNumberLetter(buf)
+	return fieldsAlnum(string(buf))
+}
+
+func isASCIILower(c byte) bool  { return 'a' <= c && c <= 'z' }
+func isASCIIUpper(c byte) bool  { return 'A' <= c && c <= 'Z' }
+func isASCIIDigit(c byte) bool  { return '0' <= c && c <= '9' }
+func isASCIILetter(c byte) bool { return isASCIILower(c) || isASCIIUpper(c) }
+
+// splitWordBoundaries inserts a space at case and letter/digit boundaries. It is the
+// manual-scan equivalent of replacing
+// `([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`
+// with `$1$3$5$7 $2$4$6$8$9`, preserving the regexp's non-overlapping
+// leftmost-match consumption.
+func splitWordBoundaries(s string) []byte {
+	out := make([]byte, 0, len(s)+8)
+	i := 0
+	for i < len(s) {
+		c := s[i]
+		if i+1 < len(s) {
+			d := s[i+1]
+			if (isASCIILower(c) && (isASCIIUpper(d) || isASCIIDigit(d))) ||
+				(isASCIILetter(c) && isASCIIDigit(d)) ||
+				(isASCIIDigit(c) && isASCIILetter(d)) {
+				out = append(out, c, ' ', d)
+				i += 2
+				continue
+			}
+			if i+2 < len(s) {
+				if e := s[i+2]; isASCIIUpper(c) && isASCIIUpper(d) && isASCIILower(e) {
+					out = append(out, c, ' ', d, e)
+					i += 3
+					continue
+				}
+			}
+		}
+		out = append(out, c)
+		i++
+	}
+	return out
+}
+
+// splitNumberLetter inserts a space between a digit and a following letter. It is the
+// manual-scan equivalent of replacing `([0-9])([a-zA-Z])` with `$1 $2`,
+// preserving the regexp's non-overlapping leftmost-match consumption.
+func splitNumberLetter(s []byte) []byte {
+	out := make([]byte, 0, len(s)+8)
+	i := 0
+	for i < len(s) {
+		c := s[i]
+		if i+1 < len(s) {
+			if d := s[i+1]; isASCIIDigit(c) && isASCIILetter(d) {
+				out = append(out, c, ' ', d)
+				i += 2
+				continue
+			}
+		}
+		out = append(out, c)
+		i++
+	}
+	return out
+}
+
+// fieldsAlnum returns the maximal runs of unicode letters and digits in s,
+// like strings.Fields after mapping every other rune to a space.
+func fieldsAlnum(s string) []string {
+	count := 0
+	inField := false
+	for _, r := range s {
 		if unicode.IsLetter(r) || unicode.IsDigit(r) {
-			result.WriteRune(r)
+			if !inField {
+				count++
+				inField = true
+			}
 		} else {
-			result.WriteRune(' ')
+			inField = false
 		}
 	}
-	return strings.Fields(result.String())
+
+	fields := make([]string, 0, count)
+	start := -1
+	for i, r := range s {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			if start < 0 {
+				start = i
+			}
+		} else if start >= 0 {
+			fields = append(fields, s[start:i])
+			start = -1
+		}
+	}
+	if start >= 0 {
+		fields = append(fields, s[start:])
+	}
+	return fields
 }
 
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
