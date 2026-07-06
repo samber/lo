@@ -996,8 +996,36 @@ func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerato
 		count = size
 	}
 
-	indexes := Range(size)
 	results := make(Slice, count)
+
+	// When only a small fraction of the collection is sampled, track displaced
+	// indexes in a map instead of materializing the whole index permutation,
+	// keeping time and memory proportional to count instead of size. Both
+	// paths consume the random generator and select elements identically.
+	if count <= size/16 {
+		displaced := make(map[int]int, count)
+
+		for i, n := 0, size; i < count; i, n = i+1, n-1 {
+			index := randomIntGenerator(n)
+
+			j, ok := displaced[index]
+			if !ok {
+				j = index
+			}
+			results[i] = collection[j]
+
+			// Removes index: swap it with the last (virtual) element.
+			last, ok := displaced[n-1]
+			if !ok {
+				last = n - 1
+			}
+			displaced[index] = last
+		}
+
+		return results
+	}
+
+	indexes := Range(size)
 
 	for i := range results {
 		n := len(indexes)
