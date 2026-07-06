@@ -1609,7 +1609,7 @@ func TestSamplesBySparse(t *testing.T) {
 			result := SamplesBy(collection, count, r.Intn)
 
 			is.Len(result, count)
-			is.Equal(count, len(Uniq(result)), "sparse branch must not return duplicate elements")
+			is.Len(Uniq(result), count, "sparse branch must not return duplicate elements")
 			for _, v := range result {
 				is.True(v >= 0 && v < len(collection), "sampled value must belong to the collection")
 			}
@@ -1662,6 +1662,6 @@ func TestSamplesBySparseBoundary(t *testing.T) {
 		result := SamplesBy(collection, count, rand.New(rand.NewSource(7)).Intn)
 
 		is.Len(result, count)
-		is.Equal(count, len(Uniq(result)))
+		is.Len(Uniq(result), count)
 	}
 }
