@@ -1587,3 +1587,81 @@ func TestSamplesBy(t *testing.T) {
 	nonempty := SamplesBy(allStrings, 2, r.Intn)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
+
+// SamplesBy switches between two different algorithms depending on the
+// count/size ratio: a map-based "sparse" selection (count <= size/16) and an
+// index-slice-based "dense" selection (count > size/16). A collection small
+// enough to fit the sparse branch's threshold with a non-trivial count
+// (e.g. the {"a", "b", "c"} slices used above) never exercises the sparse
+// branch at all, so it needs its own coverage on a large collection.
+func TestSamplesBySparse(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := Range(10_000)
+	threshold := len(collection) / 16
+
+	for _, count := range []int{1, 2, 10, threshold} {
+		is.LessOrEqual(count, threshold, "sanity check: count must land in the sparse branch")
+
+		for seed := int64(0); seed < 10; seed++ {
+			r := rand.New(rand.NewSource(seed))
+			result := SamplesBy(collection, count, r.Intn)
+
+			is.Len(result, count)
+			is.Equal(count, len(Uniq(result)), "sparse branch must not return duplicate elements")
+			for _, v := range result {
+				is.True(v >= 0 && v < len(collection), "sampled value must belong to the collection")
+			}
+		}
+	}
+}
+
+// The sparse (map-based) and dense (index-slice-based) branches are two
+// independent implementations of the same abstract algorithm: draw
+// randomIntGenerator(n) for n = size, size-1, size-2, ... and swap the pick
+// out of the remaining pool. Because both branches consume the generator
+// with the exact same sequence of n values regardless of which one runs,
+// seeding two generators identically and requesting a smaller sparse count
+// and a larger dense count from the same collection must produce the same
+// prefix of picks. This pins down the equivalence promised by the comment in
+// find.go and would catch a regression in either branch that the two
+// single-branch tests above could miss (e.g. one branch drifting out of
+// sync with the other after an edit to just one of them).
+func TestSamplesBySparseDenseEquivalence(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := Range(1_000)
+	threshold := len(collection) / 16
+
+	sparseCount := threshold     // <= threshold: takes the sparse branch
+	denseCount := threshold + 10 // > threshold: takes the dense branch
+
+	for seed := int64(0); seed < 10; seed++ {
+		sparse := SamplesBy(collection, sparseCount, rand.New(rand.NewSource(seed)).Intn)
+		dense := SamplesBy(collection, denseCount, rand.New(rand.NewSource(seed)).Intn)
+
+		is.Equal(sparse, dense[:sparseCount])
+	}
+}
+
+// Exercises the boundary of the count <= size/16 condition itself: one count
+// value on each side of the threshold, on the very same collection, so a
+// future change to the condition (e.g. an off-by-one on the comparison
+// operator or the division) is caught even if each branch is otherwise
+// individually correct.
+func TestSamplesBySparseBoundary(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := Range(1_000)
+	threshold := len(collection) / 16
+
+	for _, count := range []int{threshold, threshold + 1} {
+		result := SamplesBy(collection, count, rand.New(rand.NewSource(7)).Intn)
+
+		is.Len(result, count)
+		is.Equal(count, len(Uniq(result)))
+	}
+}
