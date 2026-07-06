@@ -45,3 +45,51 @@ func Partial5[T1, T2, T3, T4, T5, T6, R any](f func(T1, T2, T3, T4, T5, T6) R, a
 		return f(arg1, t2, t3, t4, t5, t6)
 	}
 }
+
+// Curry2 is a function that takes a function with one parameter and returns a curried version of it.
+func Curry2[A, B, R any](f func(A, B) R) func(A) func(B) R {
+	return func(a A) func(B) R {
+		return func(b B) R {
+			return f(a, b)
+		}
+	}
+}
+
+// Curry3 is a function that takes a function with three parameters and returns a curried version of it.
+func Curry3[A, B, C, R any](f func(A, B, C) R) func(A) func(B) func(C) R {
+	return func(a A) func(B) func(C) R {
+		return func(b B) func(C) R {
+			return func(c C) R {
+				return f(a, b, c)
+			}
+		}
+	}
+}
+
+// Curry4 is a function that takes a function with four parameters and returns a curried version of it.
+func Curry4[A, B, C, D, R any](f func(A, B, C, D) R) func(A) func(B) func(C) func(D) R {
+	return func(a A) func(B) func(C) func(D) R {
+		return func(b B) func(C) func(D) R {
+			return func(c C) func(D) R {
+				return func(d D) R {
+					return f(a, b, c, d)
+				}
+			}
+		}
+	}
+}
+
+// Curry5 is a function that takes a function with five parameters and returns a curried version of it.
+func Curry5[A, B, C, D, E, R any](f func(A, B, C, D, E) R) func(A) func(B) func(C) func(D) func(E) R {
+	return func(a A) func(B) func(C) func(D) func(E) R {
+		return func(b B) func(C) func(D) func(E) R {
+			return func(c C) func(D) func(E) R {
+				return func(d D) func(E) R {
+					return func(e E) R {
+						return f(a, b, c, d, e)
+					}
+				}
+			}
+		}
+	}
+}
