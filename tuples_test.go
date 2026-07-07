@@ -2,6 +2,7 @@ package lo
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 	"testing"
@@ -1612,4 +1613,307 @@ func TestUnzipByErr(t *testing.T) {
 		is.NoError(err)
 		is.Equal(2, callbackCount)
 	})
+}
+
+func ExampleNestJoin() {
+	type User struct {
+		Id   uint64
+		Name string
+	}
+
+	type Book struct {
+		Id     uint64
+		Title  string
+		Author uint64 // = User.Id
+	}
+
+	type BookWithUser struct {
+		Book
+		UserName string
+	}
+
+	user1 := User{
+		Id:   1,
+		Name: "tt",
+	}
+	book1 := Book{
+		Id:     1,
+		Title:  "Watcher from mikey",
+		Author: 1,
+	}
+	UserBookMatcher := func(j User, k Book) bool {
+		return j.Id == k.Author
+	}
+
+	result := NestJoin([]User{user1}, []Book{book1}, UserBookMatcher, func(j User, k Book) BookWithUser {
+		return BookWithUser{
+			Book:     k,
+			UserName: j.Name,
+		}
+	})
+	fmt.Printf("%v", result)
+	// Output: [{{1 Watcher from mikey 1} tt}]
+}
+
+func TestNestJoin(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type User struct {
+		Id   uint64
+		Name string
+	}
+
+	type Book struct {
+		Id     uint64
+		Title  string
+		Author uint64 // = User.Id
+	}
+
+	type BookWithUser struct {
+		Book
+		UserName string
+	}
+
+	UserBookMatcher := func(j User, k Book) bool {
+		return j.Id == k.Author
+	}
+
+	user1 := User{
+		Id:   1,
+		Name: "tt",
+	}
+	user2 := User{
+		Id:   2,
+		Name: "t2",
+	}
+	book1 := Book{
+		Id:     1,
+		Title:  "Watcher from mikey",
+		Author: 1,
+	}
+	book2 := Book{
+		Id:     2,
+		Title:  "Day after day",
+		Author: 2,
+	}
+	type args struct {
+		users []User
+		books []Book
+	}
+	for _, tt := range []struct {
+		args args
+		want []BookWithUser
+	}{
+		{
+			args: args{
+				users: []User{user1},
+				books: []Book{book1},
+			},
+			want: []BookWithUser{
+				{
+					Book:     book1,
+					UserName: user1.Name,
+				},
+			},
+		},
+		{
+			args: args{
+				users: []User{user2},
+				books: []Book{book2},
+			},
+			want: []BookWithUser{
+				{
+					Book:     book2,
+					UserName: user2.Name,
+				},
+			},
+		},
+		{
+			args: args{
+				users: []User{user1},
+				books: []Book{book2},
+			},
+			want: nil,
+		},
+		{
+			args: args{
+				users: nil,
+				books: nil,
+			},
+			want: nil,
+		},
+	} {
+		r := NestJoin(tt.args.users, tt.args.books, UserBookMatcher, func(j User, k Book) BookWithUser {
+			return BookWithUser{
+				Book:     k,
+				UserName: j.Name,
+			}
+		})
+		is.Equal(r, tt.want)
+	}
+}
+
+func ExampleLeftJoin() {
+	type User struct {
+		Id   uint64
+		Name string
+	}
+
+	type Book struct {
+		Id     uint64
+		Title  string
+		Author uint64 // = User.Id
+	}
+
+	type BookWithUser struct {
+		Book
+		UserName string
+	}
+
+	user1 := User{
+		Id:   1,
+		Name: "tt",
+	}
+	user2 := User{
+		Id:   2,
+		Name: "t2",
+	}
+	book1 := Book{
+		Id:     1,
+		Title:  "Watcher from mikey",
+		Author: 1,
+	}
+	lk := func(item User) uint64 {
+		return item.Id
+	}
+	rk := func(item Book) uint64 {
+		return item.Author
+	}
+
+	result := LeftJoin([]User{user1, user2}, []Book{book1}, lk, rk, func(j User, k Book) BookWithUser {
+		return BookWithUser{
+			Book:     k,
+			UserName: j.Name,
+		}
+	})
+	fmt.Printf("%v", result)
+	// Output: [{{1 Watcher from mikey 1} tt} {{0  0} t2}]
+}
+
+func TestLeftJoin(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	type User struct {
+		Id   uint64
+		Name string
+	}
+
+	type Book struct {
+		Id     uint64
+		Title  string
+		Author uint64 // = User.Id
+	}
+
+	type BookWithUser struct {
+		Book
+		UserName string
+	}
+
+	user1 := User{
+		Id:   1,
+		Name: "tt",
+	}
+	user2 := User{
+		Id:   2,
+		Name: "t2",
+	}
+	book1 := Book{
+		Id:     1,
+		Title:  "Watcher from mikey",
+		Author: 1,
+	}
+	book2 := Book{
+		Id:     2,
+		Title:  "Day after day",
+		Author: 2,
+	}
+
+	lk := func(item User) uint64 {
+		return item.Id
+	}
+	rk := func(item Book) uint64 {
+		return item.Author
+	}
+
+	type args struct {
+		users []User
+		books []Book
+		lk    func(item User) uint64
+		rk    func(item Book) uint64
+	}
+	for _, tt := range []struct {
+		args args
+		want []BookWithUser
+	}{
+		{
+			args: args{
+				users: []User{user1},
+				books: []Book{book1},
+				lk:    lk,
+				rk:    rk,
+			},
+			want: []BookWithUser{
+				{
+					Book:     book1,
+					UserName: user1.Name,
+				},
+			},
+		},
+		{
+			args: args{
+				users: []User{user2},
+				books: []Book{book2},
+				lk:    lk,
+				rk:    rk,
+			},
+			want: []BookWithUser{
+				{
+					Book:     book2,
+					UserName: user2.Name,
+				},
+			},
+		},
+		{
+			args: args{
+				users: []User{user1},
+				books: []Book{book2},
+				lk:    lk,
+				rk:    rk,
+			},
+			want: []BookWithUser{
+				{
+					UserName: user1.Name,
+				},
+			},
+		},
+		{
+			args: args{
+				users: nil,
+				books: nil,
+				lk:    lk,
+				rk:    rk,
+			},
+			want: nil,
+		},
+	} {
+		r := LeftJoin(tt.args.users, tt.args.books, tt.args.lk, tt.args.rk, func(j User, k Book) BookWithUser {
+			return BookWithUser{
+				Book:     k,
+				UserName: j.Name,
+			}
+		})
+		is.Equal(r, tt.want)
+	}
 }

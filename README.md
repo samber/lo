@@ -216,6 +216,8 @@ Supported helpers for tuples:
 - [UnzipBy2 -> UnzipBy9](#unzipby2---unzipby9)
 - [CrossJoin2 -> CrossJoin2](#crossjoin2---crossjoin9)
 - [CrossJoinBy2 -> CrossJoinBy2](#crossjoinby2---crossjoinby9)
+- [NestJoin](#NestJoin)
+- [LeftJoin](#LeftJoin)
 
 Supported helpers for time and duration:
 
@@ -2605,6 +2607,97 @@ result, err := lo.CrossJoinByErr2([]string{"hello", "john"}, []int{1, 2}, func(a
     return fmt.Sprintf("%s - %d", a, b), nil
 })
 // []string(nil), error("john not allowed")
+```
+
+### NestJoin
+
+```go
+type User struct {
+    Id   uint64
+    Name string
+}
+
+type Book struct {
+    Id     uint64
+    Title  string
+    Author uint64 // = User.Id
+}
+
+type BookWithUser struct {
+    Book
+    UserName string
+}
+
+user1 := User{
+    Id:   1,
+    Name: "tt",
+}
+book1 := Book{
+    Id:     1,
+    Title:  "Watcher from mikey",
+    Author: 1,
+}
+UserBookMatcher := func(j User, k Book) bool {
+    return j.Id == k.Author
+}
+
+result := NestJoin([]User{user1}, []Book{book1}, UserBookMatcher, func(j User, k Book) BookWithUser {
+    return BookWithUser{
+        Book:     k,
+        UserName: j.Name,
+    }
+})
+fmt.Printf("%v", result)
+// Output: [{{1 Watcher from mikey 1} tt}]
+```
+
+### LeftJoin
+
+```go
+type User struct {
+    Id   uint64
+    Name string
+}
+
+type Book struct {
+    Id     uint64
+    Title  string
+    Author uint64 // = User.Id
+}
+
+type BookWithUser struct {
+    Book
+    UserName string
+}
+
+user1 := User{
+    Id:   1,
+    Name: "tt",
+}
+user2 := User{
+    Id:   2,
+    Name: "t2",
+}
+book1 := Book{
+    Id:     1,
+    Title:  "Watcher from mikey",
+    Author: 1,
+}
+lk := func(item User) uint64 {
+    return item.Id
+}
+rk := func(item Book) uint64 {
+    return item.Author
+}
+
+result := LeftJoin([]User{user1, user2}, []Book{book1}, lk, rk, func(j User, k Book) BookWithUser {
+    return BookWithUser{
+        Book:     k,
+        UserName: j.Name,
+    }
+})
+fmt.Printf("%v", result)
+// Output: [{{1 Watcher from mikey 1} tt} {{0  0} t2}]
 ```
 
 ### Duration
