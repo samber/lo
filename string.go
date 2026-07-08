@@ -192,8 +192,8 @@ func substring[T ~string](str T, offset int, length uint) T {
 		// Otherwise proceed to trimming by length
 		fallthrough
 
-	// Zero offset or offset less than minus string length - start from beginning
-	case offset < -len(str), offset == 0:
+	// Zero offset or offset less than minus string length (in runes) - start from beginning
+	case offset < -utf8.RuneCountInString(string(str)), offset == 0:
 		// Count length runes from the start
 		for i := range str {
 			if length == 0 {
