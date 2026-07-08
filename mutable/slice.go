@@ -20,6 +20,10 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Sl
 			j++
 		}
 	}
+	var zero T
+	for i := j; i < len(collection); i++ {
+		collection[i] = zero
+	}
 	return collection[:j]
 }
 
@@ -33,6 +37,10 @@ func FilterI[T any, Slice ~[]T](collection Slice, predicate func(item T, index i
 			collection[j] = collection[i]
 			j++
 		}
+	}
+	var zero T
+	for i := j; i < len(collection); i++ {
+		collection[i] = zero
 	}
 	return collection[:j]
 }

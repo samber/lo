@@ -15,7 +15,7 @@ func TestFilter(t *testing.T) {
 		return x%2 == 0
 	})
 
-	is.Equal([]int{2, 4, 3, 4}, input1)
+	is.Equal([]int{2, 4, 0, 0}, input1)
 	is.Equal([]int{2, 4}, r1)
 
 	input2 := []string{"", "foo", "", "bar", ""}
@@ -23,7 +23,7 @@ func TestFilter(t *testing.T) {
 		return len(x) > 0
 	})
 
-	is.Equal([]string{"foo", "bar", "", "bar", ""}, input2)
+	is.Equal([]string{"foo", "bar", "", "", ""}, input2)
 	is.Equal([]string{"foo", "bar"}, r2)
 }
 
