@@ -184,6 +184,32 @@ func BenchmarkWithoutNth(b *testing.B) {
 	}
 }
 
+// BenchmarkDifferenceSmall exercises the small-both-sides regime (len <= 8 per
+// side) where Difference takes the allocation-free nested-scan path instead of
+// building two Keyify maps. The main BenchmarkDifference only uses lengths >= 10
+// and never hits this path, so the win would be invisible without these cases.
+func BenchmarkDifferenceSmall(b *testing.B) {
+	for _, n := range []int{2, 4, 8} {
+		ints1 := genSliceInt(n)
+		ints2 := genSliceInt(n)
+		b.Run("small_both_ints_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _ = lo.Difference(ints1, ints2)
+			}
+		})
+	}
+
+	for _, n := range []int{2, 4, 8} {
+		strs1 := genSliceString(n)
+		strs2 := genSliceString(n)
+		b.Run("small_both_strings_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _ = lo.Difference(strs1, strs2)
+			}
+		})
+	}
+}
+
 func BenchmarkElementsMatch(b *testing.B) {
 	for _, n := range lengths {
 		a := genSliceInt(n)
