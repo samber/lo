@@ -432,6 +432,15 @@ func BenchmarkTimes(b *testing.B) {
 }
 
 func BenchmarkUniq(b *testing.B) {
+	// small_ sub-cases exercise the linear-scan small regime (len <= threshold).
+	for _, n := range []int{4, 8} {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("small_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Uniq(ints)
+			}
+		})
+	}
 	for _, n := range lengths {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
@@ -443,6 +452,15 @@ func BenchmarkUniq(b *testing.B) {
 }
 
 func BenchmarkUniqBy(b *testing.B) {
+	// small_ sub-cases exercise the linear-scan small regime (len <= threshold).
+	for _, n := range []int{4, 8} {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("small_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.UniqBy(ints, func(v int) int { return v % 100 })
+			}
+		})
+	}
 	for _, n := range lengths {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
