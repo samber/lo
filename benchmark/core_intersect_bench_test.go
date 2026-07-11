@@ -134,6 +134,15 @@ func BenchmarkUnion(b *testing.B) {
 			}
 		})
 	}
+
+	// small: total element count within the small-scan threshold (two 4-element lists).
+	smallA := []int{1, 2, 3, 4}
+	smallC := []int{3, 4, 5, 6}
+	b.Run("small", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.Union(smallA, smallC)
+		}
+	})
 }
 
 func BenchmarkWithout(b *testing.B) {
