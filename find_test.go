@@ -282,7 +282,10 @@ func TestFindKeyBy(t *testing.T) {
 	is.False(ok2)
 }
 
-func TestFindUniques(t *testing.T) {
+// TestFindUniquesSmallScan exercises the small-scan path (all collections
+// here are <= findSmallThreshold). See TestFindUniquesMapPath for the
+// map-based path.
+func TestFindUniquesSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -335,7 +338,10 @@ func TestFindUniquesSmallMapBoundary(t *testing.T) {
 	is.Equal(append(append([]int{}, small...), 7), mapped)
 }
 
-func TestFindUniquesBy(t *testing.T) {
+// TestFindUniquesBySmallScan exercises the small-scan path (all collections
+// here are <= findSmallThreshold). See TestFindUniquesByMapPath for the
+// map-based path.
+func TestFindUniquesBySmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -400,7 +406,10 @@ func TestFindUniquesBySmallMapBoundary(t *testing.T) {
 	is.Equal(append(append([]int{}, small...), 7), mapped)
 }
 
-func TestFindDuplicates(t *testing.T) {
+// TestFindDuplicatesSmallScan exercises the small-scan path (all
+// collections here are <= findSmallThreshold). See
+// TestFindDuplicatesMapPath for the map-based path.
+func TestFindDuplicatesSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -448,7 +457,10 @@ func TestFindDuplicatesSmallMapBoundary(t *testing.T) {
 	is.Equal(FindDuplicates(collection8), FindDuplicates(collection9))
 }
 
-func TestFindDuplicatesBy(t *testing.T) {
+// TestFindDuplicatesBySmallScan exercises the small-scan path (all
+// collections here are <= findSmallThreshold). See
+// TestFindDuplicatesByMapPath for the map-based path.
+func TestFindDuplicatesBySmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
