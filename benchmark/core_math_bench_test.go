@@ -121,4 +121,14 @@ func BenchmarkMode(b *testing.B) {
 			}
 		})
 	}
+	// Small-collection sub-cases (len <= 8) exercise the allocation-free
+	// nested-scan path, which the default lengths (>= 10) never reach.
+	for _, n := range []int{4, 8} {
+		ints := genSliceInt(n)
+		b.Run("small_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Mode(ints)
+			}
+		})
+	}
 }

@@ -501,6 +501,10 @@ func TestMeanByErr(t *testing.T) {
 	}
 }
 
+// TestMode already mixes calls whose collection is <= smallModeThreshold
+// (the modeSmall path, e.g. result1-4) with a call above it (result5, 9
+// elements, modeLarge), so unlike some of its dual-path siblings it needs no
+// separate SmallScan/MapPath split: it already exercises both paths.
 func TestMode(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
