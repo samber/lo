@@ -468,8 +468,17 @@ func TestWithoutByLarge(t *testing.T) {
 	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	exclude := []int{0, 1, 2, 3, 4}
 	is.Greater(len(exclude), withoutSmallExcludeThreshold, "sanity check: exclude must exceed withoutSmallExcludeThreshold")
-
 	is.Equal([]int{5, 6, 7, 8, 9}, WithoutBy(collection, byKey, exclude...))
+
+	excludeAll := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	is.Greater(len(excludeAll), withoutSmallExcludeThreshold, "sanity check: excludeAll must exceed withoutSmallExcludeThreshold")
+	is.Empty(WithoutBy(collection, byKey, excludeAll...))
+
+	type myStrings []string
+	allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	nonempty := WithoutBy(allStrings, func(s string) string { return s }, "z", "y", "x", "w", "v")
+	is.Equal(allStrings, nonempty)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestWithoutByErr(t *testing.T) {
