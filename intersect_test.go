@@ -175,7 +175,7 @@ func TestNoneBy(t *testing.T) {
 }
 
 // TestIntersect already mixes two-list calls within the small-product bound
-// (the intersectSmallScan path) with 3+-list calls (always intersectLargeScan,
+// (the intersectSmall path) with 3+-list calls (always intersectLarge,
 // since the small path only applies to exactly 2 lists), so unlike some of
 // its dual-path siblings it needs no separate SmallScan/MapPath split: it
 // already exercises both paths (see result2-6 for small-scan,

@@ -126,17 +126,17 @@ const intersectSmallProduct = 64
 // Play: https://go.dev/play/p/uuElL9X9e58
 func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	if len(lists) == 2 && len(lists[0])*len(lists[1]) <= intersectSmallProduct {
-		return intersectSmallScan[T, Slice](lists[0], lists[1])
+		return intersectSmall[T, Slice](lists[0], lists[1])
 	}
 
-	return intersectLargeScan[T, Slice](lists...)
+	return intersectLarge[T, Slice](lists...)
 }
 
-// intersectSmallScan computes the two-list intersection without a map: it emits
+// intersectSmall computes the two-list intersection without a map: it emits
 // elements of a (in order) that appear in b, deduping by scanning the result
 // already built. Equality uses == to match the map-based path (including NaN,
 // which never compares equal and is therefore never emitted by either path).
-func intersectSmallScan[T comparable, Slice ~[]T](a, b Slice) Slice {
+func intersectSmall[T comparable, Slice ~[]T](a, b Slice) Slice {
 	result := make(Slice, 0)
 
 	for _, item := range a {
@@ -166,7 +166,7 @@ func intersectSmallScan[T comparable, Slice ~[]T](a, b Slice) Slice {
 	return result
 }
 
-func intersectLargeScan[T comparable, Slice ~[]T](lists ...Slice) Slice {
+func intersectLarge[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	if len(lists) == 0 {
 		return Slice{}
 	}
