@@ -478,7 +478,7 @@ func TestWithoutBySmallScan(t *testing.T) {
 }
 
 // WithoutBy dispatches on len(exclude) <= withoutSmallExcludeThreshold (4): an
-// exclude list of 5 keys forces the withoutByMapBy path, which the table
+// exclude list of 5 keys forces the withoutByLarge path, which the table
 // above never exercises (its exclude lists are all <= 3 elements).
 func TestWithoutByMapPath(t *testing.T) {
 	t.Parallel()
