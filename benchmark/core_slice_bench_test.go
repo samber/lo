@@ -736,13 +736,9 @@ func BenchmarkSlice(b *testing.B) {
 func BenchmarkReplaceAll(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
-		var old int
-		if n > 0 {
-			old = ints[n/4]
-		}
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				_ = lo.ReplaceAll(ints, old, 123123)
+				_ = lo.ReplaceAll(ints, ints[n/4], 123123)
 			}
 		})
 	}
@@ -819,10 +815,7 @@ func BenchmarkSplice(b *testing.B) {
 func BenchmarkCut(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
-		sep := ints[:0]
-		if n >= 3 {
-			sep = ints[n/4 : n/4+3]
-		}
+		sep := ints[n/4 : n/4+3]
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_, _, _ = lo.Cut(ints, sep)
@@ -834,10 +827,7 @@ func BenchmarkCut(b *testing.B) {
 func BenchmarkCutPrefix(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
-		prefix := ints[:0]
-		if n >= 3 {
-			prefix = ints[:3]
-		}
+		prefix := ints[:3]
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_, _ = lo.CutPrefix(ints, prefix)
@@ -849,10 +839,7 @@ func BenchmarkCutPrefix(b *testing.B) {
 func BenchmarkCutSuffix(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
-		suffix := ints[:0]
-		if n >= 3 {
-			suffix = ints[n-3:]
-		}
+		suffix := ints[n-3:]
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_, _ = lo.CutSuffix(ints, suffix)
@@ -864,10 +851,7 @@ func BenchmarkCutSuffix(b *testing.B) {
 func BenchmarkTrim(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
-		cutset := ints[:0]
-		if n >= 3 {
-			cutset = ints[:3]
-		}
+		cutset := ints[:3]
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.Trim(ints, cutset)
@@ -879,10 +863,7 @@ func BenchmarkTrim(b *testing.B) {
 func BenchmarkTrimLeft(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
-		cutset := ints[:0]
-		if n >= 3 {
-			cutset = ints[:3]
-		}
+		cutset := ints[:3]
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.TrimLeft(ints, cutset)
@@ -894,10 +875,7 @@ func BenchmarkTrimLeft(b *testing.B) {
 func BenchmarkTrimRight(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
-		cutset := ints[:0]
-		if n >= 3 {
-			cutset = ints[n-3:]
-		}
+		cutset := ints[n-3:]
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.TrimRight(ints, cutset)
@@ -909,10 +887,7 @@ func BenchmarkTrimRight(b *testing.B) {
 func BenchmarkTrimPrefix(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
-		prefix := ints[:0]
-		if n >= 3 {
-			prefix = ints[:3]
-		}
+		prefix := ints[:3]
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.TrimPrefix(ints, prefix)
@@ -924,10 +899,7 @@ func BenchmarkTrimPrefix(b *testing.B) {
 func BenchmarkTrimSuffix(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
-		suffix := ints[:0]
-		if n >= 3 {
-			suffix = ints[n-3:]
-		}
+		suffix := ints[n-3:]
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.TrimSuffix(ints, suffix)
