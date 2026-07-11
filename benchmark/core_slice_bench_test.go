@@ -432,8 +432,6 @@ func BenchmarkTimes(b *testing.B) {
 }
 
 func BenchmarkUniq(b *testing.B) {
-	// lengths includes 4 and 8, exercising the linear-scan small regime
-	// (len <= threshold) alongside the default map-based sizes.
 	for _, n := range lengths {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
@@ -445,8 +443,6 @@ func BenchmarkUniq(b *testing.B) {
 }
 
 func BenchmarkUniqBy(b *testing.B) {
-	// lengths includes 4 and 8, exercising the linear-scan small regime
-	// (len <= threshold) alongside the default map-based sizes.
 	for _, n := range lengths {
 		ints := genSliceInt(n)
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
