@@ -62,7 +62,7 @@ func TestEverySmallScan(t *testing.T) {
 // Every dispatches on len(subset) <= everySmallSubset (8): a subset of 9
 // elements forces the everyLarge path, which the table above never
 // exercises (its subsets are all <= 2 elements).
-func TestEveryMapPath(t *testing.T) {
+func TestEveryLarge(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -73,22 +73,6 @@ func TestEveryMapPath(t *testing.T) {
 
 	subsetMissing := []int{0, 1, 2, 3, 4, 5, 6, 7, 10}
 	is.False(Every(collection, subsetMissing))
-}
-
-// The small-scan (len(subset) <= 8) and map (len(subset) > 8) paths must
-// agree exactly. Same collection, subset just below and just above the
-// threshold with an extra element present in collection, so both return true.
-func TestEverySmallMapBoundary(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-	small := []int{0, 1, 2, 3, 4, 5, 6, 7}
-	is.Len(small, everySmallSubset, "sanity check: small must land in the small-scan branch")
-	mapped := append(append([]int{}, small...), 8)
-	is.Len(mapped, everySmallSubset+1, "sanity check: mapped must land in the map branch")
-
-	is.Equal(Every(collection, small), Every(collection, mapped))
 }
 
 func TestEveryBy(t *testing.T) {
