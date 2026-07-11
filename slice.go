@@ -219,10 +219,24 @@ func Times[T any](count int, iteratee func(index int) T) []T {
 	return result
 }
 
+// uniqSmallInputThreshold is the input-size cutoff below which Uniq/UniqBy skip
+// the seen map and rely on a linear scan of already-collected values/keys. For
+// tiny inputs the scan avoids the map allocation and per-element hashing; above
+// it the map's O(1) lookups win. Kept conservative (crossover is ~8-16).
+const uniqSmallInputThreshold = 8
+
 // Uniq returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the slice.
 // Play: https://go.dev/play/p/DTzbeXZ6iEN
 func Uniq[T comparable, Slice ~[]T](collection Slice) Slice {
+	if len(collection) <= uniqSmallInputThreshold {
+		return uniqSmall(collection)
+	}
+	return uniqLarge(collection)
+}
+
+// uniqLarge is the dense-regime implementation backed by a seen map.
+func uniqLarge[T comparable, Slice ~[]T](collection Slice) Slice {
 	result := make(Slice, 0, len(collection))
 	seen := make(map[T]struct{}, len(collection))
 
@@ -238,11 +252,44 @@ func Uniq[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
+// uniqSmall is the small-regime implementation: it detects duplicates by
+// linearly scanning the already-collected result instead of using a map.
+func uniqSmall[T comparable, Slice ~[]T](collection Slice) Slice {
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		seen := false
+		for j := range result {
+			if result[j] == collection[i] {
+				seen = true
+				break
+			}
+		}
+		if seen {
+			continue
+		}
+
+		result = append(result, collection[i])
+	}
+
+	return result
+}
+
 // UniqBy returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
 // invoked for each element in the slice to generate the criterion by which uniqueness is computed.
 // Play: https://go.dev/play/p/g42Z3QSb53u
 func UniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	// The iteratee is invoked exactly once per element in both paths; see
+	// uniqSmallInputThreshold for the map-vs-scan tradeoff.
+	if len(collection) <= uniqSmallInputThreshold {
+		return uniqBySmall(collection, iteratee)
+	}
+	return uniqByLarge(collection, iteratee)
+}
+
+// uniqByLarge is the dense-regime implementation backed by a seen map.
+func uniqByLarge[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	result := make(Slice, 0, len(collection))
 	seen := make(map[U]struct{}, len(collection))
 
@@ -254,6 +301,37 @@ func UniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(ite
 		}
 
 		seen[key] = struct{}{}
+		result = append(result, collection[i])
+	}
+
+	return result
+}
+
+// uniqBySmall is the small-regime implementation: it detects duplicate keys
+// by linearly scanning the already-collected keys instead of using a map. The
+// derived keys (type U) are compared, and the iteratee is invoked once per
+// element, matching the map path's semantics exactly.
+func uniqBySmall[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	result := make(Slice, 0, len(collection))
+	// keys mirrors result 1:1 so we can compare derived keys without re-invoking
+	// the (possibly side-effecting) iteratee.
+	keys := make([]U, 0, len(collection))
+
+	for i := range collection {
+		key := iteratee(collection[i])
+
+		seen := false
+		for j := range keys {
+			if keys[j] == key {
+				seen = true
+				break
+			}
+		}
+		if seen {
+			continue
+		}
+
+		keys = append(keys, key)
 		result = append(result, collection[i])
 	}
 
