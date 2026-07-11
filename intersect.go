@@ -39,13 +39,13 @@ func Every[T comparable](collection, subset []T) bool {
 	}
 
 	if len(subset) <= everySmallSubset {
-		return everyBySmallScan(collection, subset)
+		return everySmall(collection, subset)
 	}
-	return everyByMap(collection, subset)
+	return everyLarge(collection, subset)
 }
 
-// everyByMap builds a hash-set of collection, best when subset is large.
-func everyByMap[T comparable](collection, subset []T) bool {
+// everyLarge builds a hash-set of collection, best when subset is large.
+func everyLarge[T comparable](collection, subset []T) bool {
 	seen := Keyify(collection)
 
 	for _, item := range subset {
@@ -57,8 +57,8 @@ func everyByMap[T comparable](collection, subset []T) bool {
 	return true
 }
 
-// everyBySmallScan scans collection directly, allocation-free for a small subset.
-func everyBySmallScan[T comparable](collection, subset []T) bool {
+// everySmall scans collection directly, allocation-free for a small subset.
+func everySmall[T comparable](collection, subset []T) bool {
 	for _, item := range subset {
 		if !Contains(collection, item) {
 			return false

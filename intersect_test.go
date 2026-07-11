@@ -60,7 +60,7 @@ func TestEverySmallScan(t *testing.T) {
 }
 
 // Every dispatches on len(subset) <= everySmallSubset (8): a subset of 9
-// elements forces the everyByMap path, which the table above never
+// elements forces the everyLarge path, which the table above never
 // exercises (its subsets are all <= 2 elements).
 func TestEveryMapPath(t *testing.T) {
 	t.Parallel()
