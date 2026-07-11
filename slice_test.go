@@ -794,8 +794,14 @@ func TestUniqLarge(t *testing.T) {
 
 	collection := []int{1, 2, 2, 3, 4, 4, 5, 6, 7, 8, 9, 1}
 	is.Greater(len(collection), uniqSmallInputThreshold, "sanity check: collection must exceed uniqSmallInputThreshold")
-
 	is.Equal([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, Uniq(collection))
+
+	type myStrings []string
+	allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	is.Greater(len(allStrings), uniqSmallInputThreshold, "sanity check: allStrings must exceed uniqSmallInputThreshold")
+	nonempty := Uniq(allStrings)
+	is.Equal(allStrings, nonempty)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 // TestUniqBySmall exercises the small-scan path (all collections here are
@@ -827,8 +833,14 @@ func TestUniqByLarge(t *testing.T) {
 	collection := []int{10, 20, 30, 20, 40, 50, 60, 70, 80, 90, 40, 10}
 	is.Greater(len(collection), uniqSmallInputThreshold, "sanity check: collection must exceed uniqSmallInputThreshold")
 	byTen := func(v int) int { return v / 10 }
-
 	is.Equal([]int{10, 20, 30, 40, 50, 60, 70, 80, 90}, UniqBy(collection, byTen))
+
+	type myStrings []string
+	allStrings := myStrings{"a", "bb", "ccc", "dddd", "eeeee", "ffffff", "ggggggg", "hhhhhhhh", "iiiiiiiii"}
+	is.Greater(len(allStrings), uniqSmallInputThreshold, "sanity check: allStrings must exceed uniqSmallInputThreshold")
+	nonempty := UniqBy(allStrings, func(s string) int { return len(s) })
+	is.Equal(allStrings, nonempty)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestIsUniq(t *testing.T) {
