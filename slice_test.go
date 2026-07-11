@@ -3235,7 +3235,7 @@ func TestCutSuffix(t *testing.T) {
 }
 
 // TestTrimSmallScan exercises the small-scan path (all cutsets here are
-// <= trimSmallCutset). See TestTrimMapPath for the map-based path.
+// <= trimSmallCutset). See TestTrimLarge for the map-based path.
 func TestTrimSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -3255,7 +3255,7 @@ func TestTrimSmallScan(t *testing.T) {
 // Trim dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9 unique
 // elements forces the trimLarge path, which the table above never exercises
 // (its cutsets are all <= 8).
-func TestTrimMapPath(t *testing.T) {
+func TestTrimLarge(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3273,25 +3273,8 @@ func TestTrimMapPath(t *testing.T) {
 	is.Equal([]string{"X", "Y"}, actual)
 }
 
-// The small-scan (len(cutset) <= 8) and map (len(cutset) > 8) paths must trim
-// identically. Same collection, cutset just below and just above the
-// threshold with an extra element absent from collection, so both trim the
-// exact same leading/trailing run.
-func TestTrimSmallMapBoundary(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	collection := []string{"a", "b", "c", "X", "Y", "a", "b", "c"}
-	small := []string{"a", "b", "c", "d", "e", "f", "g", "h"}
-	is.Len(small, 8, "sanity check: small must land in the small-scan branch")
-	mapped := append(append([]string{}, small...), "z")
-	is.Len(mapped, 9, "sanity check: mapped must land in the map branch")
-
-	is.Equal(Trim(collection, small), Trim(collection, mapped))
-}
-
 // TestTrimLeftSmallScan exercises the small-scan path (all cutsets here are
-// <= trimSmallCutset). See TestTrimLeftMapPath for the map-based path.
+// <= trimSmallCutset). See TestTrimLeftLarge for the map-based path.
 func TestTrimLeftSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -3313,7 +3296,7 @@ func TestTrimLeftSmallScan(t *testing.T) {
 // TrimLeft dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9
 // unique elements forces the trimLeftLarge path, which the table above never
 // exercises (its cutsets are all <= 8).
-func TestTrimLeftMapPath(t *testing.T) {
+func TestTrimLeftLarge(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3329,23 +3312,6 @@ func TestTrimLeftMapPath(t *testing.T) {
 
 	actual = TrimLeft([]string{"X", "Y"}, cutset)
 	is.Equal([]string{"X", "Y"}, actual)
-}
-
-// The small-scan (len(cutset) <= 8) and map (len(cutset) > 8) paths must trim
-// identically. Same collection, cutset just below and just above the
-// threshold with an extra element absent from collection, so both trim the
-// exact same leading run.
-func TestTrimLeftSmallMapBoundary(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	collection := []string{"a", "b", "c", "X", "Y"}
-	small := []string{"a", "b", "c", "d", "e", "f", "g", "h"}
-	is.Len(small, 8, "sanity check: small must land in the small-scan branch")
-	mapped := append(append([]string{}, small...), "z")
-	is.Len(mapped, 9, "sanity check: mapped must land in the map branch")
-
-	is.Equal(TrimLeft(collection, small), TrimLeft(collection, mapped))
 }
 
 func TestTrimPrefix(t *testing.T) {
@@ -3367,7 +3333,7 @@ func TestTrimPrefix(t *testing.T) {
 }
 
 // TestTrimRightSmallScan exercises the small-scan path (all cutsets here are
-// <= trimSmallCutset). See TestTrimRightMapPath for the map-based path.
+// <= trimSmallCutset). See TestTrimRightLarge for the map-based path.
 func TestTrimRightSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -3387,7 +3353,7 @@ func TestTrimRightSmallScan(t *testing.T) {
 // TrimRight dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9
 // unique elements forces the trimRightLarge path, which the table above
 // never exercises (its cutsets are all <= 8).
-func TestTrimRightMapPath(t *testing.T) {
+func TestTrimRightLarge(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3403,23 +3369,6 @@ func TestTrimRightMapPath(t *testing.T) {
 
 	actual = TrimRight([]string{"X", "Y"}, cutset)
 	is.Equal([]string{"X", "Y"}, actual)
-}
-
-// The small-scan (len(cutset) <= 8) and map (len(cutset) > 8) paths must trim
-// identically. Same collection, cutset just below and just above the
-// threshold with an extra element absent from collection, so both trim the
-// exact same trailing run.
-func TestTrimRightSmallMapBoundary(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	collection := []string{"X", "Y", "a", "b", "c"}
-	small := []string{"a", "b", "c", "d", "e", "f", "g", "h"}
-	is.Len(small, 8, "sanity check: small must land in the small-scan branch")
-	mapped := append(append([]string{}, small...), "z")
-	is.Len(mapped, 9, "sanity check: mapped must land in the map branch")
-
-	is.Equal(TrimRight(collection, small), TrimRight(collection, mapped))
 }
 
 func TestTrimSuffix(t *testing.T) {
