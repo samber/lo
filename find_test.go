@@ -308,7 +308,7 @@ func TestFindUniquesSmallScan(t *testing.T) {
 }
 
 // FindUniques dispatches on len(collection) <= findSmallThreshold (8): a
-// collection of 12 elements forces the findUniquesByMap path, which the
+// collection of 12 elements forces the findUniquesLarge path, which the
 // table above never exercises (its collections are all <= 6 elements).
 func TestFindUniquesMapPath(t *testing.T) {
 	t.Parallel()
@@ -374,7 +374,7 @@ func TestFindUniquesBySmallScan(t *testing.T) {
 }
 
 // FindUniquesBy dispatches on len(collection) <= findSmallThreshold (8): a
-// collection of 12 elements forces the findUniquesByMapBy path, which the
+// collection of 12 elements forces the findUniquesByLarge path, which the
 // table above never exercises (its collections are all <= 6 elements).
 func TestFindUniquesByMapPath(t *testing.T) {
 	t.Parallel()
@@ -429,7 +429,7 @@ func TestFindDuplicatesSmallScan(t *testing.T) {
 }
 
 // FindDuplicates dispatches on len(collection) <= findSmallThreshold (8): a
-// collection of 12 elements forces the findDuplicatesByMap path, which the
+// collection of 12 elements forces the findDuplicatesLarge path, which the
 // table above never exercises (its collections are all <= 6 elements).
 func TestFindDuplicatesMapPath(t *testing.T) {
 	t.Parallel()
@@ -488,7 +488,7 @@ func TestFindDuplicatesBySmallScan(t *testing.T) {
 }
 
 // FindDuplicatesBy dispatches on len(collection) <= findSmallThreshold (8): a
-// collection of 12 elements forces the findDuplicatesByMapBy path, which the
+// collection of 12 elements forces the findDuplicatesByLarge path, which the
 // table above never exercises (its collections are all <= 5 elements).
 func TestFindDuplicatesByMapPath(t *testing.T) {
 	t.Parallel()
