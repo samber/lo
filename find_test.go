@@ -304,6 +304,37 @@ func TestFindUniques(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+// FindUniques dispatches on len(collection) <= findSmallThreshold (8): a
+// collection of 12 elements forces the findUniquesByMap path, which the
+// table above never exercises (its collections are all <= 6 elements).
+func TestFindUniquesMapPath(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := []int{10, 20, 30, 20, 40, 50, 60, 70, 80, 90, 40, 10}
+	is.Greater(len(collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
+
+	is.Equal([]int{30, 50, 60, 70, 80, 90}, FindUniques(collection))
+}
+
+// The small-scan (len(collection) <= 8) and map (len(collection) > 8) paths
+// must agree exactly. Appending one never-before-seen element to an 8-element
+// collection only grows the small-scan result by that element and pushes the
+// call onto the map path, so the two results must otherwise match exactly.
+func TestFindUniquesSmallMapBoundary(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection8 := []int{1, 2, 2, 3, 4, 4, 5, 6}
+	is.Len(collection8, findSmallThreshold, "sanity check: collection8 must land in the small-scan branch")
+	collection9 := append(append([]int{}, collection8...), 7)
+	is.Len(collection9, findSmallThreshold+1, "sanity check: collection9 must land in the map branch")
+
+	small := FindUniques(collection8)
+	mapped := FindUniques(collection9)
+	is.Equal(append(append([]int{}, small...), 7), mapped)
+}
+
 func TestFindUniquesBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -336,6 +367,39 @@ func TestFindUniquesBy(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+// FindUniquesBy dispatches on len(collection) <= findSmallThreshold (8): a
+// collection of 12 elements forces the findUniquesByMapBy path, which the
+// table above never exercises (its collections are all <= 6 elements).
+func TestFindUniquesByMapPath(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := []int{10, 20, 30, 20, 40, 50, 60, 70, 80, 90, 40, 10}
+	is.Greater(len(collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
+	byTen := func(v int) int { return v / 10 }
+
+	is.Equal([]int{30, 50, 60, 70, 80, 90}, FindUniquesBy(collection, byTen))
+}
+
+// The small-scan (len(collection) <= 8) and map (len(collection) > 8) paths
+// must agree exactly. Appending one never-before-seen key to an 8-element
+// collection only grows the small-scan result by that element and pushes the
+// call onto the map path, so the two results must otherwise match exactly.
+func TestFindUniquesBySmallMapBoundary(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection8 := []int{1, 2, 2, 3, 4, 4, 5, 6}
+	is.Len(collection8, findSmallThreshold, "sanity check: collection8 must land in the small-scan branch")
+	collection9 := append(append([]int{}, collection8...), 7)
+	is.Len(collection9, findSmallThreshold+1, "sanity check: collection9 must land in the map branch")
+	identity := func(v int) int { return v }
+
+	small := FindUniquesBy(collection8, identity)
+	mapped := FindUniquesBy(collection9, identity)
+	is.Equal(append(append([]int{}, small...), 7), mapped)
+}
+
 func TestFindDuplicates(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -353,6 +417,35 @@ func TestFindDuplicates(t *testing.T) {
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := FindDuplicates(allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+// FindDuplicates dispatches on len(collection) <= findSmallThreshold (8): a
+// collection of 12 elements forces the findDuplicatesByMap path, which the
+// table above never exercises (its collections are all <= 6 elements).
+func TestFindDuplicatesMapPath(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := []int{10, 20, 30, 20, 40, 50, 60, 70, 80, 90, 40, 10}
+	is.Greater(len(collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
+
+	is.Equal([]int{10, 20, 40}, FindDuplicates(collection))
+}
+
+// The small-scan (len(collection) <= 8) and map (len(collection) > 8) paths
+// must agree exactly. Appending one never-before-seen element to an
+// 8-element collection doesn't change which values are duplicated, so both
+// results must be identical despite crossing the threshold.
+func TestFindDuplicatesSmallMapBoundary(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection8 := []int{1, 2, 2, 3, 4, 4, 5, 6}
+	is.Len(collection8, findSmallThreshold, "sanity check: collection8 must land in the small-scan branch")
+	collection9 := append(append([]int{}, collection8...), 7)
+	is.Len(collection9, findSmallThreshold+1, "sanity check: collection9 must land in the map branch")
+
+	is.Equal(FindDuplicates(collection8), FindDuplicates(collection9))
 }
 
 func TestFindDuplicatesBy(t *testing.T) {
@@ -380,6 +473,37 @@ func TestFindDuplicatesBy(t *testing.T) {
 		return i
 	})
 	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+// FindDuplicatesBy dispatches on len(collection) <= findSmallThreshold (8): a
+// collection of 12 elements forces the findDuplicatesByMapBy path, which the
+// table above never exercises (its collections are all <= 5 elements).
+func TestFindDuplicatesByMapPath(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := []int{10, 20, 30, 20, 40, 50, 60, 70, 80, 90, 40, 10}
+	is.Greater(len(collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
+	byTen := func(v int) int { return v / 10 }
+
+	is.Equal([]int{10, 20, 40}, FindDuplicatesBy(collection, byTen))
+}
+
+// The small-scan (len(collection) <= 8) and map (len(collection) > 8) paths
+// must agree exactly. Appending one never-before-seen key to an 8-element
+// collection doesn't change which keys are duplicated, so both results must
+// be identical despite crossing the threshold.
+func TestFindDuplicatesBySmallMapBoundary(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection8 := []int{1, 2, 2, 3, 4, 4, 5, 6}
+	is.Len(collection8, findSmallThreshold, "sanity check: collection8 must land in the small-scan branch")
+	collection9 := append(append([]int{}, collection8...), 7)
+	is.Len(collection9, findSmallThreshold+1, "sanity check: collection9 must land in the map branch")
+	identity := func(v int) int { return v }
+
+	is.Equal(FindDuplicatesBy(collection8, identity), FindDuplicatesBy(collection9, identity))
 }
 
 func TestFindDuplicatesByErr(t *testing.T) {

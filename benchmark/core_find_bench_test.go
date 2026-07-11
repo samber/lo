@@ -124,6 +124,10 @@ func BenchmarkFindKeyBy(b *testing.B) {
 	}
 }
 
+// smallFindCollection is a small (below the dual-path threshold) collection with a mix of
+// unique and duplicated values, shared by the small_ sub-cases below.
+var smallFindCollection = []int{1, 2, 3, 2, 4, 5, 1, 6}
+
 func BenchmarkFindUniques(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
@@ -133,6 +137,11 @@ func BenchmarkFindUniques(b *testing.B) {
 			}
 		})
 	}
+	b.Run("small", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.FindUniques(smallFindCollection)
+		}
+	})
 }
 
 func BenchmarkFindUniquesBy(b *testing.B) {
@@ -144,6 +153,11 @@ func BenchmarkFindUniquesBy(b *testing.B) {
 			}
 		})
 	}
+	b.Run("small", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.FindUniquesBy(smallFindCollection, func(v int) int { return v % 50 })
+		}
+	})
 }
 
 func BenchmarkFindDuplicates(b *testing.B) {
@@ -155,6 +169,11 @@ func BenchmarkFindDuplicates(b *testing.B) {
 			}
 		})
 	}
+	b.Run("small", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.FindDuplicates(smallFindCollection)
+		}
+	})
 }
 
 func BenchmarkFindDuplicatesBy(b *testing.B) {
@@ -166,6 +185,11 @@ func BenchmarkFindDuplicatesBy(b *testing.B) {
 			}
 		})
 	}
+	b.Run("small", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.FindDuplicatesBy(smallFindCollection, func(v int) int { return v % 50 })
+		}
+	})
 }
 
 func BenchmarkMin(b *testing.B) {

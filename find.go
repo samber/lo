@@ -167,10 +167,23 @@ func FindKeyBy[K comparable, V any](object map[K]V, predicate func(key K, value 
 	return Empty[K](), false
 }
 
+// findSmallThreshold is the max collection size for which an allocation-free nested scan
+// beats building a map[T]bool: below this size, a handful of == comparisons per element
+// costs less than the map allocation and hashing the map-based path always pays.
+const findSmallThreshold = 8
+
 // FindUniques returns a slice with all the elements that appear in the collection only once.
 // The order of result values is determined by the order they occur in the collection.
 // Play: https://go.dev/play/p/NV5vMK_2Z_n
 func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
+	if len(collection) <= findSmallThreshold {
+		return findUniquesBySmallScan(collection)
+	}
+	return findUniquesByMap(collection)
+}
+
+// findUniquesByMap builds a map[T]bool tracking seen/duplicated state, best for a large collection.
+func findUniquesByMap[T comparable, Slice ~[]T](collection Slice) Slice {
 	isDupl := make(map[T]bool, len(collection))
 
 	duplicates := 0
@@ -197,11 +210,40 @@ func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
+// findUniquesBySmallScan counts occurrences with a nested linear scan, allocation-free for
+// a small collection. An element appearing exactly once is emitted at its (only) occurrence,
+// so the natural iteration order matches the original collection order.
+func findUniquesBySmallScan[T comparable, Slice ~[]T](collection Slice) Slice {
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		count := 0
+		for j := range collection {
+			if collection[j] == collection[i] {
+				count++
+			}
+		}
+		if count == 1 {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result
+}
+
 // FindUniquesBy returns a slice with all the elements that appear in the collection only once.
 // The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
 // invoked for each element in the slice to generate the criterion by which uniqueness is computed.
 // Play: https://go.dev/play/p/2vmxCs4kW_m
 func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	if len(collection) <= findSmallThreshold {
+		return findUniquesBySmallScanBy(collection, iteratee)
+	}
+	return findUniquesByMapBy(collection, iteratee)
+}
+
+// findUniquesByMapBy builds a map[U]bool tracking seen/duplicated key state, best for a large collection.
+func findUniquesByMapBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
 	duplicates := 0
@@ -232,10 +274,44 @@ func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee f
 	return result
 }
 
+// findUniquesBySmallScanBy counts key occurrences with a nested linear scan, allocation-free
+// for a small collection. The iteratee is invoked exactly once per element (keys are
+// precomputed), matching the single-invocation contract of the map-based path.
+func findUniquesBySmallScanBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	keys := make([]U, len(collection))
+	for i := range collection {
+		keys[i] = iteratee(collection[i])
+	}
+
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		count := 0
+		for j := range keys {
+			if keys[j] == keys[i] {
+				count++
+			}
+		}
+		if count == 1 {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result
+}
+
 // FindDuplicates returns a slice with the first occurrence of each duplicated element in the collection.
 // The order of result values is determined by the order they occur in the collection.
 // Play: https://go.dev/play/p/muFgL_XBwoP
 func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
+	if len(collection) <= findSmallThreshold {
+		return findDuplicatesBySmallScan(collection)
+	}
+	return findDuplicatesByMap(collection)
+}
+
+// findDuplicatesByMap builds a map[T]bool tracking seen/duplicated state, best for a large collection.
+func findDuplicatesByMap[T comparable, Slice ~[]T](collection Slice) Slice {
 	isDupl := make(map[T]bool, len(collection))
 
 	duplicates := 0
@@ -263,11 +339,45 @@ func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
+// findDuplicatesBySmallScan scans linearly for duplicates, allocation-free for a small
+// collection. A distinct duplicated value is emitted at its FIRST occurrence in the
+// collection (matching the map-based path, which classifies every value's total count
+// before its emission pass runs), then skipped on later occurrences.
+func findDuplicatesBySmallScan[T comparable, Slice ~[]T](collection Slice) Slice {
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		if Contains(result, collection[i]) {
+			continue // already emitted
+		}
+
+		count := 0
+		for j := range collection {
+			if collection[j] == collection[i] {
+				count++
+			}
+		}
+		if count >= 2 {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result
+}
+
 // FindDuplicatesBy returns a slice with the first occurrence of each duplicated element in the collection.
 // The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
 // invoked for each element in the slice to generate the criterion by which uniqueness is computed.
 // Play: https://go.dev/play/p/LKdYdNHuGJG
 func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	if len(collection) <= findSmallThreshold {
+		return findDuplicatesBySmallScanBy(collection, iteratee)
+	}
+	return findDuplicatesByMapBy(collection, iteratee)
+}
+
+// findDuplicatesByMapBy builds a map[U]bool tracking seen/duplicated key state, best for a large collection.
+func findDuplicatesByMapBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
 	duplicates := 0
@@ -293,6 +403,39 @@ func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iterate
 		if duplicated := isDupl[key]; duplicated {
 			result = append(result, collection[i])
 			isDupl[key] = false
+		}
+	}
+
+	return result
+}
+
+// findDuplicatesBySmallScanBy scans linearly for duplicate keys, allocation-free for a small
+// collection. The iteratee is invoked exactly once per element (keys are precomputed). A
+// distinct duplicated key is emitted at its FIRST occurrence (matching the map-based path,
+// which classifies every key's total count before its emission pass runs).
+func findDuplicatesBySmallScanBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	keys := make([]U, len(collection))
+	for i := range collection {
+		keys[i] = iteratee(collection[i])
+	}
+
+	result := make(Slice, 0, len(collection))
+	emittedKeys := make([]U, 0, len(collection))
+
+	for i := range collection {
+		if Contains(emittedKeys, keys[i]) {
+			continue // already emitted
+		}
+
+		count := 0
+		for j := range keys {
+			if keys[j] == keys[i] {
+				count++
+			}
+		}
+		if count >= 2 {
+			result = append(result, collection[i])
+			emittedKeys = append(emittedKeys, keys[i])
 		}
 	}
 
