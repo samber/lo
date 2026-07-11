@@ -114,9 +114,59 @@ func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 	return true
 }
 
+// intersectSmallProduct bounds the product len(lists[0])*len(lists[1]) below
+// which the common two-list case uses a linear scan instead of building a hash
+// map. For tiny inputs the map's allocation and hashing overhead dominates, so
+// an O(n*m) scan (deduping against the already-built result) is cheaper. Above
+// the bound the quadratic scan grows faster than the map's O(n+m), so we fall
+// back to the map-based implementation.
+const intersectSmallProduct = 64
+
 // Intersect returns the intersection between collections.
 // Play: https://go.dev/play/p/uuElL9X9e58
 func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
+	if len(lists) == 2 && len(lists[0])*len(lists[1]) <= intersectSmallProduct {
+		return intersectSmallScan[T, Slice](lists[0], lists[1])
+	}
+
+	return intersectLargeScan[T, Slice](lists...)
+}
+
+// intersectSmallScan computes the two-list intersection without a map: it emits
+// elements of a (in order) that appear in b, deduping by scanning the result
+// already built. Equality uses == to match the map-based path (including NaN,
+// which never compares equal and is therefore never emitted by either path).
+func intersectSmallScan[T comparable, Slice ~[]T](a, b Slice) Slice {
+	result := make(Slice, 0)
+
+	for _, item := range a {
+		found := false
+		for j := range b {
+			if b[j] == item {
+				found = true
+				break
+			}
+		}
+		if !found {
+			continue
+		}
+
+		dup := false
+		for k := range result {
+			if result[k] == item {
+				dup = true
+				break
+			}
+		}
+		if !dup {
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
+
+func intersectLargeScan[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	if len(lists) == 0 {
 		return Slice{}
 	}

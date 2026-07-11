@@ -174,6 +174,12 @@ func TestNoneBy(t *testing.T) {
 	is.True(result4)
 }
 
+// TestIntersect already mixes two-list calls within the small-product bound
+// (the intersectSmallScan path) with 3+-list calls (always intersectLargeScan,
+// since the small path only applies to exactly 2 lists), so unlike some of
+// its dual-path siblings it needs no separate SmallScan/MapPath split: it
+// already exercises both paths (see result2-6 for small-scan,
+// result7-result9/resultA for the map path via 1 or 3+ lists).
 func TestIntersect(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
