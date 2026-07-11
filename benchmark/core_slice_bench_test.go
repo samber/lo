@@ -980,6 +980,8 @@ func BenchmarkFilterTakeVsFilterAndTake(b *testing.B) {
 	})
 }
 
+// lengths includes 4 and 8, exercising Difference's allocation-free nested-scan
+// path (both sides <= threshold) alongside the default map-based sizes.
 func BenchmarkDifference(b *testing.B) {
 	for _, n := range lengths {
 		ints1 := genSliceInt(n)
