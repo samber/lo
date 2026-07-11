@@ -316,8 +316,18 @@ func TestFindUniquesLarge(t *testing.T) {
 
 	collection := []int{10, 20, 30, 20, 40, 50, 60, 70, 80, 90, 40, 10}
 	is.Greater(len(collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
-
 	is.Equal([]int{30, 50, 60, 70, 80, 90}, FindUniques(collection))
+
+	allDup := []int{1, 1, 2, 2, 3, 3, 4, 4, 5, 5}
+	is.Greater(len(allDup), findSmallThreshold, "sanity check: allDup must exceed findSmallThreshold")
+	is.Empty(FindUniques(allDup))
+
+	type myInts []int
+	allUnique := myInts{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	is.Greater(len(allUnique), findSmallThreshold, "sanity check: allUnique must exceed findSmallThreshold")
+	nonempty := FindUniques(allUnique)
+	is.Equal(myInts{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, nonempty)
+	is.IsType(nonempty, allUnique, "type preserved")
 }
 
 // TestFindUniquesBySmallScan exercises the small-scan path (all collections
@@ -365,8 +375,17 @@ func TestFindUniquesByLarge(t *testing.T) {
 	collection := []int{10, 20, 30, 20, 40, 50, 60, 70, 80, 90, 40, 10}
 	is.Greater(len(collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
 	byTen := func(v int) int { return v / 10 }
-
 	is.Equal([]int{30, 50, 60, 70, 80, 90}, FindUniquesBy(collection, byTen))
+
+	allDup := []int{10, 11, 20, 21, 30, 31, 40, 41, 50, 51}
+	is.Greater(len(allDup), findSmallThreshold, "sanity check: allDup must exceed findSmallThreshold")
+	is.Empty(FindUniquesBy(allDup, byTen))
+
+	type myStrings []string
+	allStrings := myStrings{"a", "bb", "ccc", "dddd", "eeeee", "ffffff", "ggggggg", "hhhhhhhh", "iiiiiiiii"}
+	is.Greater(len(allStrings), findSmallThreshold, "sanity check: allStrings must exceed findSmallThreshold")
+	nonempty := FindUniquesBy(allStrings, func(s string) int { return len(s) })
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 // TestFindDuplicatesSmallScan exercises the small-scan path (all
@@ -400,8 +419,17 @@ func TestFindDuplicatesLarge(t *testing.T) {
 
 	collection := []int{10, 20, 30, 20, 40, 50, 60, 70, 80, 90, 40, 10}
 	is.Greater(len(collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
-
 	is.Equal([]int{10, 20, 40}, FindDuplicates(collection))
+
+	noDup := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	is.Greater(len(noDup), findSmallThreshold, "sanity check: noDup must exceed findSmallThreshold")
+	is.Empty(FindDuplicates(noDup))
+
+	type myStrings []string
+	allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	is.Greater(len(allStrings), findSmallThreshold, "sanity check: allStrings must exceed findSmallThreshold")
+	nonempty := FindDuplicates(allStrings)
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 // TestFindDuplicatesBySmallScan exercises the small-scan path (all
@@ -444,8 +472,17 @@ func TestFindDuplicatesByLarge(t *testing.T) {
 	collection := []int{10, 20, 30, 20, 40, 50, 60, 70, 80, 90, 40, 10}
 	is.Greater(len(collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
 	byTen := func(v int) int { return v / 10 }
-
 	is.Equal([]int{10, 20, 40}, FindDuplicatesBy(collection, byTen))
+
+	noDup := []int{10, 21, 32, 43, 54, 65, 76, 87, 98, 109}
+	is.Greater(len(noDup), findSmallThreshold, "sanity check: noDup must exceed findSmallThreshold")
+	is.Empty(FindDuplicatesBy(noDup, byTen))
+
+	type myStrings []string
+	allStrings := myStrings{"a", "bb", "ccc", "dddd", "eeeee", "ffffff", "ggggggg", "hhhhhhhh", "iiiiiiiii"}
+	is.Greater(len(allStrings), findSmallThreshold, "sanity check: allStrings must exceed findSmallThreshold")
+	nonempty := FindDuplicatesBy(allStrings, func(s string) int { return len(s) })
+	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestFindDuplicatesByErr(t *testing.T) {
