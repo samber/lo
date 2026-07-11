@@ -110,21 +110,12 @@ func BenchmarkNoneBy(b *testing.B) {
 }
 
 func BenchmarkIntersect(b *testing.B) {
+	// lengths includes 4 and 8, exercising the linear-scan fast path
+	// (product <= 64) alongside the default map-based sizes.
 	for _, n := range lengths {
 		a := genSliceInt(n)
 		c := genSliceInt(n)
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				_ = lo.Intersect(a, c)
-			}
-		})
-	}
-
-	// small two-list sub-cases (product <= 64) exercise the linear-scan fast path
-	for _, n := range []int{2, 4, 8} {
-		a := genSliceInt(n)
-		c := genSliceInt(n)
-		b.Run("small_"+strconv.Itoa(n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.Intersect(a, c)
 			}
