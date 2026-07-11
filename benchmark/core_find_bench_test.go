@@ -124,8 +124,6 @@ func BenchmarkFindKeyBy(b *testing.B) {
 	}
 }
 
-// lengths includes 4 and 8, exercising the allocation-free nested-scan path
-// alongside the default map-based sizes for all four benchmarks below.
 func BenchmarkFindUniques(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
