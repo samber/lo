@@ -9,11 +9,11 @@ import (
 
 func BenchmarkContains(b *testing.B) {
 	for _, n := range lengths {
-		ints := genSliceInt(n)
-		var target int
-		if n > 0 {
-			target = ints[n-1]
+		if n == 0 {
+			continue
 		}
+		ints := genSliceInt(n)
+		target := ints[n-1]
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.Contains(ints, target)
@@ -24,11 +24,11 @@ func BenchmarkContains(b *testing.B) {
 
 func BenchmarkContainsBy(b *testing.B) {
 	for _, n := range lengths {
-		ints := genSliceInt(n)
-		var target int
-		if n > 0 {
-			target = ints[n-1]
+		if n == 0 {
+			continue
 		}
+		ints := genSliceInt(n)
+		target := ints[n-1]
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.ContainsBy(ints, func(v int) bool { return v == target })
@@ -62,11 +62,11 @@ func BenchmarkEveryBy(b *testing.B) {
 
 func BenchmarkSome(b *testing.B) {
 	for _, n := range lengths {
-		ints := genSliceInt(n)
-		subset := []int{}
-		if n > 0 {
-			subset = []int{ints[n-1]}
+		if n == 0 {
+			continue
 		}
+		ints := genSliceInt(n)
+		subset := []int{ints[n-1]}
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.Some(ints, subset)
