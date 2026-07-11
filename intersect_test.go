@@ -43,7 +43,7 @@ func TestContainsBy(t *testing.T) {
 }
 
 // TestEverySmallScan exercises the small-scan path (all subsets here are
-// <= everySmallSubset). See TestEveryMapPath for the map-based path.
+// <= everySmallSubset). See TestEveryLarge for the map-based path.
 func TestEverySmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
