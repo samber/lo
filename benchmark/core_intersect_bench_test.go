@@ -124,9 +124,6 @@ func BenchmarkIntersectBy(b *testing.B) {
 	}
 }
 
-// lengths includes 4 and 8, and Union's default loop builds two same-size
-// lists from n, so n=4 (total element count 8) already exercises the
-// small-scan path alongside the default map-based sizes.
 func BenchmarkUnion(b *testing.B) {
 	for _, n := range lengths {
 		a := genSliceInt(n)
