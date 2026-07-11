@@ -101,8 +101,6 @@ func BenchmarkNoneBy(b *testing.B) {
 }
 
 func BenchmarkIntersect(b *testing.B) {
-	// lengths includes 4 and 8, exercising the linear-scan fast path
-	// (product <= 64) alongside the default map-based sizes.
 	for _, n := range lengths {
 		a := genSliceInt(n)
 		c := genSliceInt(n)
