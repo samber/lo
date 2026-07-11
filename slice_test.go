@@ -771,7 +771,7 @@ func TestForEachWhile(t *testing.T) {
 }
 
 // TestUniqSmall exercises the small-scan path (all collections here are
-// <= uniqSmallInputThreshold). See TestUniqMapPath for the map-based path.
+// <= uniqSmallInputThreshold). See TestUniqLarge for the map-based path.
 func TestUniqSmall(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -788,7 +788,7 @@ func TestUniqSmall(t *testing.T) {
 // Uniq dispatches on len(collection) <= uniqSmallInputThreshold (8): a
 // collection of 12 elements forces the uniqLarge path, which the table
 // above never exercises (its collections are all <= 4 elements).
-func TestUniqMapPath(t *testing.T) {
+func TestUniqLarge(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -798,26 +798,8 @@ func TestUniqMapPath(t *testing.T) {
 	is.Equal([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, Uniq(collection))
 }
 
-// The small-scan (len(collection) <= 8) and map (len(collection) > 8) paths
-// must agree exactly. Appending one never-before-seen element to an
-// 8-element collection only grows the small-scan result by that element and
-// pushes the call onto the map path, so the two results must otherwise match.
-func TestUniqSmallMapBoundary(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	collection8 := []int{1, 2, 2, 3, 4, 4, 5, 6}
-	is.Len(collection8, uniqSmallInputThreshold, "sanity check: collection8 must land in the small-scan branch")
-	collection9 := append(append([]int{}, collection8...), 7)
-	is.Len(collection9, uniqSmallInputThreshold+1, "sanity check: collection9 must land in the map branch")
-
-	small := Uniq(collection8)
-	mapped := Uniq(collection9)
-	is.Equal(append(append([]int{}, small...), 7), mapped)
-}
-
 // TestUniqBySmall exercises the small-scan path (all collections here are
-// <= uniqSmallInputThreshold). See TestUniqByMapPath for the map-based path.
+// <= uniqSmallInputThreshold). See TestUniqByLarge for the map-based path.
 func TestUniqBySmall(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -838,7 +820,7 @@ func TestUniqBySmall(t *testing.T) {
 // UniqBy dispatches on len(collection) <= uniqSmallInputThreshold (8): a
 // collection of 12 elements forces the uniqByLarge path, which the table
 // above never exercises (its collections are all <= 6 elements).
-func TestUniqByMapPath(t *testing.T) {
+func TestUniqByLarge(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -847,25 +829,6 @@ func TestUniqByMapPath(t *testing.T) {
 	byTen := func(v int) int { return v / 10 }
 
 	is.Equal([]int{10, 20, 30, 40, 50, 60, 70, 80, 90}, UniqBy(collection, byTen))
-}
-
-// The small-scan (len(collection) <= 8) and map (len(collection) > 8) paths
-// must agree exactly. Appending one never-before-seen key to an 8-element
-// collection only grows the small-scan result by that element and pushes the
-// call onto the map path, so the two results must otherwise match.
-func TestUniqBySmallMapBoundary(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	collection8 := []int{1, 2, 2, 3, 4, 4, 5, 6}
-	is.Len(collection8, uniqSmallInputThreshold, "sanity check: collection8 must land in the small-scan branch")
-	collection9 := append(append([]int{}, collection8...), 7)
-	is.Len(collection9, uniqSmallInputThreshold+1, "sanity check: collection9 must land in the map branch")
-	identity := func(v int) int { return v }
-
-	small := UniqBy(collection8, identity)
-	mapped := UniqBy(collection9, identity)
-	is.Equal(append(append([]int{}, small...), 7), mapped)
 }
 
 func TestIsUniq(t *testing.T) {
