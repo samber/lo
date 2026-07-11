@@ -113,8 +113,6 @@ func BenchmarkMeanBy(b *testing.B) {
 }
 
 func BenchmarkMode(b *testing.B) {
-	// lengths includes 4 and 8, exercising the allocation-free nested-scan
-	// path alongside the default map-based sizes.
 	for _, n := range lengths {
 		ints := genSliceInt(n)
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
