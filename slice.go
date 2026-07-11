@@ -1295,12 +1295,12 @@ func cutsetContains[T comparable, Slice ~[]T](cutset Slice, value T) bool {
 // Play: https://go.dev/play/p/LZLfLj5C8Lg
 func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	if len(cutset) <= trimSmallCutset {
-		return trimBySmallScan(collection, cutset)
+		return trimSmall(collection, cutset)
 	}
-	return trimByMap(collection, cutset)
+	return trimLarge(collection, cutset)
 }
 
-func trimByMap[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+func trimLarge[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	i := 0
@@ -1325,7 +1325,7 @@ func trimByMap[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	return append(result, collection[i:j+1]...)
 }
 
-func trimBySmallScan[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+func trimSmall[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	i := 0
 	for ; i < len(collection); i++ {
 		if !cutsetContains(cutset, collection[i]) {
@@ -1352,12 +1352,12 @@ func trimBySmallScan[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 // Play: https://go.dev/play/p/fJK-AhROy9w
 func TrimLeft[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	if len(cutset) <= trimSmallCutset {
-		return trimLeftBySmallScan(collection, cutset)
+		return trimLeftSmall(collection, cutset)
 	}
-	return trimLeftByMap(collection, cutset)
+	return trimLeftLarge(collection, cutset)
 }
 
-func trimLeftByMap[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+func trimLeftLarge[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	return DropWhile(collection, func(item T) bool {
@@ -1366,7 +1366,7 @@ func trimLeftByMap[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	})
 }
 
-func trimLeftBySmallScan[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+func trimLeftSmall[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	// Mirrors DropWhile exactly (same make cap and append) but tests membership
 	// against cutset directly to stay allocation-free.
 	i := 0
@@ -1398,12 +1398,12 @@ func TrimPrefix[T comparable, Slice ~[]T](collection, prefix Slice) Slice {
 // Play: https://go.dev/play/p/9V_N8sRyyiZ
 func TrimRight[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	if len(cutset) <= trimSmallCutset {
-		return trimRightBySmallScan(collection, cutset)
+		return trimRightSmall(collection, cutset)
 	}
-	return trimRightByMap(collection, cutset)
+	return trimRightLarge(collection, cutset)
 }
 
-func trimRightByMap[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+func trimRightLarge[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	return DropRightWhile(collection, func(item T) bool {
@@ -1412,7 +1412,7 @@ func trimRightByMap[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	})
 }
 
-func trimRightBySmallScan[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+func trimRightSmall[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	// Mirrors DropRightWhile exactly (same make cap and append) but tests
 	// membership against cutset directly to stay allocation-free.
 	i := len(collection) - 1

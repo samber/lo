@@ -3253,7 +3253,7 @@ func TestTrimSmallScan(t *testing.T) {
 }
 
 // Trim dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9 unique
-// elements forces the trimByMap path, which the table above never exercises
+// elements forces the trimLarge path, which the table above never exercises
 // (its cutsets are all <= 8).
 func TestTrimMapPath(t *testing.T) {
 	t.Parallel()
@@ -3311,7 +3311,7 @@ func TestTrimLeftSmallScan(t *testing.T) {
 }
 
 // TrimLeft dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9
-// unique elements forces the trimLeftByMap path, which the table above never
+// unique elements forces the trimLeftLarge path, which the table above never
 // exercises (its cutsets are all <= 8).
 func TestTrimLeftMapPath(t *testing.T) {
 	t.Parallel()
@@ -3385,7 +3385,7 @@ func TestTrimRightSmallScan(t *testing.T) {
 }
 
 // TrimRight dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9
-// unique elements forces the trimRightByMap path, which the table above
+// unique elements forces the trimRightLarge path, which the table above
 // never exercises (its cutsets are all <= 8).
 func TestTrimRightMapPath(t *testing.T) {
 	t.Parallel()
