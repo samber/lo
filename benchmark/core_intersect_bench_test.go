@@ -144,6 +144,12 @@ func BenchmarkWithout(b *testing.B) {
 				_ = lo.Without(ints, 1, 2, 3, 4, 5)
 			}
 		})
+		// small_k1: single exclude value, the dominant real-world variadic call shape.
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Without(ints, 1)
+			}
+		})
 	}
 }
 
@@ -153,6 +159,12 @@ func BenchmarkWithoutBy(b *testing.B) {
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.WithoutBy(ints, func(v int) int { return v % 100 }, 1, 2, 3, 4, 5)
+			}
+		})
+		// small_k1: single exclude value, the dominant real-world variadic call shape.
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.WithoutBy(ints, func(v int) int { return v % 100 }, 1)
 			}
 		})
 	}

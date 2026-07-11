@@ -308,9 +308,22 @@ func UnionByErr[T any, V comparable, Slice ~[]T](iteratee func(item T) (V, error
 	return result, nil
 }
 
+// withoutSmallExcludeThreshold is the max exclude size for which a linear scan beats
+// building a hash-set: variadic Without(By) calls overwhelmingly pass 1-4 values, and for
+// that size Keyify's map allocation + hashing costs more than a handful of == comparisons.
+const withoutSmallExcludeThreshold = 4
+
 // Without returns a slice excluding all given values.
 // Play: https://go.dev/play/p/PcAVtYJsEsS
 func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
+	if len(exclude) <= withoutSmallExcludeThreshold {
+		return withoutBySmallScan(collection, exclude)
+	}
+	return withoutByMap(collection, exclude)
+}
+
+// withoutByMap excludes values using a hash-set, best for a large exclude list.
+func withoutByMap[T comparable, Slice ~[]T](collection Slice, exclude []T) Slice {
 	excludeMap := Keyify(exclude)
 
 	result := make(Slice, 0, len(collection))
@@ -322,15 +335,45 @@ func Without[T comparable, Slice ~[]T](collection Slice, exclude ...T) Slice {
 	return result
 }
 
+// withoutBySmallScan excludes values with a linear scan, allocation-free for a small exclude list.
+func withoutBySmallScan[T comparable, Slice ~[]T](collection Slice, exclude []T) Slice {
+	result := make(Slice, 0, len(collection))
+	for i := range collection {
+		if !Contains(exclude, collection[i]) {
+			result = append(result, collection[i])
+		}
+	}
+	return result
+}
+
 // WithoutBy filters a slice by excluding elements whose extracted keys match any in the exclude list.
 // Returns a new slice containing only the elements whose keys are not in the exclude list.
 // Play: https://go.dev/play/p/VgWJOF01NbJ
 func WithoutBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K, exclude ...K) Slice {
+	if len(exclude) <= withoutSmallExcludeThreshold {
+		return withoutBySmallScanBy(collection, iteratee, exclude)
+	}
+	return withoutByMapBy(collection, iteratee, exclude)
+}
+
+// withoutByMapBy excludes values using a hash-set, best for a large exclude list.
+func withoutByMapBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K, exclude []K) Slice {
 	excludeMap := Keyify(exclude)
 
 	result := make(Slice, 0, len(collection))
 	for _, item := range collection {
 		if _, ok := excludeMap[iteratee(item)]; !ok {
+			result = append(result, item)
+		}
+	}
+	return result
+}
+
+// withoutBySmallScanBy excludes values with a linear scan, allocation-free for a small exclude list.
+func withoutBySmallScanBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K, exclude []K) Slice {
+	result := make(Slice, 0, len(collection))
+	for _, item := range collection {
+		if !Contains(exclude, iteratee(item)) {
 			result = append(result, item)
 		}
 	}

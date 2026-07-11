@@ -406,6 +406,9 @@ func TestUnionByErr(t *testing.T) {
 	is.Equal(6, callCount, "should stop at first error")
 }
 
+// TestWithout already mixes exclude lists on both sides of
+// withoutSmallExcludeThreshold, so unlike its siblings it isn't split into a
+// separate SmallScan/MapPath pair: it already exercises both paths.
 func TestWithout(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -427,7 +430,27 @@ func TestWithout(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-func TestWithoutBy(t *testing.T) {
+// The small-scan (len(exclude) <= 4) and map (len(exclude) > 4) paths must
+// exclude identically. Same collection, exclude just below and just above
+// the threshold with an extra value absent from collection, so both exclude
+// the exact same elements.
+func TestWithoutSmallMapBoundary(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	small := []int{0, 1, 2, 3}
+	is.Len(small, withoutSmallExcludeThreshold, "sanity check: small must land in the small-scan branch")
+	mapped := append(append([]int{}, small...), -1)
+	is.Len(mapped, withoutSmallExcludeThreshold+1, "sanity check: mapped must land in the map branch")
+
+	is.Equal(Without(collection, small...), Without(collection, mapped...))
+}
+
+// TestWithoutBySmallScan exercises the small-scan path (all exclude lists
+// here are <= withoutSmallExcludeThreshold). See TestWithoutByMapPath for
+// the map-based path.
+func TestWithoutBySmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -452,6 +475,39 @@ func TestWithoutBy(t *testing.T) {
 		return s
 	})
 	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+// WithoutBy dispatches on len(exclude) <= withoutSmallExcludeThreshold (4): an
+// exclude list of 5 keys forces the withoutByMapBy path, which the table
+// above never exercises (its exclude lists are all <= 3 elements).
+func TestWithoutByMapPath(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	byKey := func(v int) int { return v }
+	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	exclude := []int{0, 1, 2, 3, 4}
+	is.Greater(len(exclude), withoutSmallExcludeThreshold, "sanity check: exclude must exceed withoutSmallExcludeThreshold")
+
+	is.Equal([]int{5, 6, 7, 8, 9}, WithoutBy(collection, byKey, exclude...))
+}
+
+// The small-scan (len(exclude) <= 4) and map (len(exclude) > 4) paths must
+// exclude identically. Same collection, exclude just below and just above
+// the threshold with an extra key absent from collection, so both exclude
+// the exact same elements.
+func TestWithoutBySmallMapBoundary(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	byKey := func(v int) int { return v }
+	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	small := []int{0, 1, 2, 3}
+	is.Len(small, withoutSmallExcludeThreshold, "sanity check: small must land in the small-scan branch")
+	mapped := append(append([]int{}, small...), -1)
+	is.Len(mapped, withoutSmallExcludeThreshold+1, "sanity check: mapped must land in the map branch")
+
+	is.Equal(WithoutBy(collection, byKey, small...), WithoutBy(collection, byKey, mapped...))
 }
 
 func TestWithoutByErr(t *testing.T) {
