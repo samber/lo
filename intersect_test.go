@@ -42,7 +42,9 @@ func TestContainsBy(t *testing.T) {
 	is.False(result4)
 }
 
-func TestEvery(t *testing.T) {
+// TestEverySmallScan exercises the small-scan path (all subsets here are
+// <= everySmallSubset). See TestEveryMapPath for the map-based path.
+func TestEverySmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -55,6 +57,38 @@ func TestEvery(t *testing.T) {
 	is.False(result2)
 	is.False(result3)
 	is.True(result4)
+}
+
+// Every dispatches on len(subset) <= everySmallSubset (8): a subset of 9
+// elements forces the everyByMap path, which the table above never
+// exercises (its subsets are all <= 2 elements).
+func TestEveryMapPath(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	subsetPresent := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+	is.Greater(len(subsetPresent), everySmallSubset, "sanity check: subset must exceed everySmallSubset")
+	is.True(Every(collection, subsetPresent))
+
+	subsetMissing := []int{0, 1, 2, 3, 4, 5, 6, 7, 10}
+	is.False(Every(collection, subsetMissing))
+}
+
+// The small-scan (len(subset) <= 8) and map (len(subset) > 8) paths must
+// agree exactly. Same collection, subset just below and just above the
+// threshold with an extra element present in collection, so both return true.
+func TestEverySmallMapBoundary(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	small := []int{0, 1, 2, 3, 4, 5, 6, 7}
+	is.Len(small, everySmallSubset, "sanity check: small must land in the small-scan branch")
+	mapped := append(append([]int{}, small...), 8)
+	is.Len(mapped, everySmallSubset+1, "sanity check: mapped must land in the map branch")
+
+	is.Equal(Every(collection, small), Every(collection, mapped))
 }
 
 func TestEveryBy(t *testing.T) {

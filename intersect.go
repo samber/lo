@@ -24,6 +24,13 @@ func ContainsBy[T any](collection []T, predicate func(item T) bool) bool {
 	return false
 }
 
+// everySmallSubset is the max subset size for which scanning the collection
+// directly (Contains-style) beats building a hash-set: for a handful of
+// subset items, the map allocation and hashing over the (often much larger)
+// collection costs more than a few linear scans, and Every previously built
+// that map from the wrong (large) side regardless of subset size.
+const everySmallSubset = 8
+
 // Every returns true if all elements of a subset are contained in a collection or if the subset is empty.
 // Play: https://go.dev/play/p/W1EvyqY6t9j
 func Every[T comparable](collection, subset []T) bool {
@@ -31,10 +38,29 @@ func Every[T comparable](collection, subset []T) bool {
 		return true
 	}
 
+	if len(subset) <= everySmallSubset {
+		return everyBySmallScan(collection, subset)
+	}
+	return everyByMap(collection, subset)
+}
+
+// everyByMap builds a hash-set of collection, best when subset is large.
+func everyByMap[T comparable](collection, subset []T) bool {
 	seen := Keyify(collection)
 
 	for _, item := range subset {
 		if _, ok := seen[item]; !ok {
+			return false
+		}
+	}
+
+	return true
+}
+
+// everyBySmallScan scans collection directly, allocation-free for a small subset.
+func everyBySmallScan[T comparable](collection, subset []T) bool {
+	for _, item := range subset {
+		if !Contains(collection, item) {
 			return false
 		}
 	}
