@@ -279,7 +279,7 @@ func TestDifferenceSmallScan(t *testing.T) {
 
 // Difference dispatches on len(list1) <= differenceSmallThreshold &&
 // len(list2) <= differenceSmallThreshold (8): a pair of 9-element lists
-// forces the differenceLargeScan path, which the table above never
+// forces the differenceLarge path, which the table above never
 // exercises (its lists are all <= 6 elements).
 func TestDifferenceMapPath(t *testing.T) {
 	t.Parallel()

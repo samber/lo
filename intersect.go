@@ -216,12 +216,12 @@ func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
 	// Below the threshold an allocation-free nested O(n*m) scan is cheaper; above
 	// it the map lookups (O(n+m)) win.
 	if len(list1) <= differenceSmallThreshold && len(list2) <= differenceSmallThreshold {
-		return differenceSmallScan(list1, list2)
+		return differenceSmall(list1, list2)
 	}
-	return differenceLargeScan(list1, list2)
+	return differenceLarge(list1, list2)
 }
 
-func differenceLargeScan[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
+func differenceLarge[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
 	left := make(Slice, 0, len(list1))
 	right := make(Slice, 0, len(list2))
 
@@ -243,7 +243,7 @@ func differenceLargeScan[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, S
 	return left, right
 }
 
-func differenceSmallScan[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
+func differenceSmall[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
 	left := make(Slice, 0, len(list1))
 	right := make(Slice, 0, len(list2))
 
