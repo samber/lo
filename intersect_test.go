@@ -274,10 +274,6 @@ func TestDifference(t *testing.T) {
 	is.IsType(b, allStrings, "type preserved")
 }
 
-// TestUnion already mixes calls whose total element count is <= unionSmallThreshold
-// (the unionSmall path, e.g. result4/result5) with calls above it (unionLarge,
-// e.g. result1 at 9 total elements), so unlike some of its dual-path siblings
-// it needs no separate SmallScan/MapPath split: it already exercises both paths.
 func TestUnion(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
