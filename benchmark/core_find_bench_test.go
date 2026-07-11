@@ -33,6 +33,9 @@ func BenchmarkLastIndexOf(b *testing.B) {
 
 func BenchmarkHasPrefix(b *testing.B) {
 	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
 		ints := genSliceInt(n)
 		prefix := ints[:n/10+1]
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
@@ -45,6 +48,9 @@ func BenchmarkHasPrefix(b *testing.B) {
 
 func BenchmarkHasSuffix(b *testing.B) {
 	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
 		ints := genSliceInt(n)
 		suffix := ints[n-n/10-1:]
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
