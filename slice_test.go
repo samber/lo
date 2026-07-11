@@ -3234,7 +3234,9 @@ func TestCutSuffix(t *testing.T) {
 	is.Equal([]string{"a", "a", "b"}, actualAfterS)
 }
 
-func TestTrim(t *testing.T) {
+// TestTrimSmallScan exercises the small-scan path (all cutsets here are
+// <= trimSmallCutset). See TestTrimMapPath for the map-based path.
+func TestTrimSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3288,7 +3290,9 @@ func TestTrimSmallMapBoundary(t *testing.T) {
 	is.Equal(Trim(collection, small), Trim(collection, mapped))
 }
 
-func TestTrimLeft(t *testing.T) {
+// TestTrimLeftSmallScan exercises the small-scan path (all cutsets here are
+// <= trimSmallCutset). See TestTrimLeftMapPath for the map-based path.
+func TestTrimLeftSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3362,7 +3366,9 @@ func TestTrimPrefix(t *testing.T) {
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
 }
 
-func TestTrimRight(t *testing.T) {
+// TestTrimRightSmallScan exercises the small-scan path (all cutsets here are
+// <= trimSmallCutset). See TestTrimRightMapPath for the map-based path.
+func TestTrimRightSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
