@@ -854,6 +854,17 @@ func BenchmarkTrim(b *testing.B) {
 			}
 		})
 	}
+
+	// small_k1: single-element cutset exercises the allocation-free small-scan path.
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		cutset := ints[:1]
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Trim(ints, cutset)
+			}
+		})
+	}
 }
 
 func BenchmarkTrimLeft(b *testing.B) {
@@ -866,6 +877,17 @@ func BenchmarkTrimLeft(b *testing.B) {
 			}
 		})
 	}
+
+	// small_k1: single-element cutset exercises the allocation-free small-scan path.
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		cutset := ints[:1]
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.TrimLeft(ints, cutset)
+			}
+		})
+	}
 }
 
 func BenchmarkTrimRight(b *testing.B) {
@@ -873,6 +895,17 @@ func BenchmarkTrimRight(b *testing.B) {
 		ints := genSliceInt(n)
 		cutset := ints[n-3:]
 		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.TrimRight(ints, cutset)
+			}
+		})
+	}
+
+	// small_k1: single-element cutset exercises the allocation-free small-scan path.
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		cutset := ints[n-1:]
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.TrimRight(ints, cutset)
 			}

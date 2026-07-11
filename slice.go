@@ -1271,9 +1271,36 @@ func CutSuffix[T comparable, Slice ~[]T](collection, separator Slice) (before Sl
 	return collection, false
 }
 
+// trimSmallCutset is the cutset-size threshold below which Trim/TrimLeft/TrimRight
+// skip building a Keyify map and test membership with a direct linear scan instead.
+// For tiny cutsets the map's allocation and hashing cost dominate, so an
+// allocation-free scan over a handful of elements is faster; larger cutsets amortize
+// the map build and win on lookup cost.
+const trimSmallCutset = 8
+
+// cutsetContains reports whether value is present in cutset using a linear scan.
+// It is shared by the small-cutset fast paths of Trim/TrimLeft/TrimRight so the
+// three stay in sync, and uses the same == equality as the Keyify map lookup
+// (identical behavior for NaN keys, which are never matched by either path).
+func cutsetContains[T comparable, Slice ~[]T](cutset Slice, value T) bool {
+	for i := range cutset {
+		if cutset[i] == value {
+			return true
+		}
+	}
+	return false
+}
+
 // Trim removes all the leading and trailing cutset from the collection.
 // Play: https://go.dev/play/p/LZLfLj5C8Lg
 func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	if len(cutset) <= trimSmallCutset {
+		return trimBySmallScan(collection, cutset)
+	}
+	return trimByMap(collection, cutset)
+}
+
+func trimByMap[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	i := 0
@@ -1298,15 +1325,59 @@ func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	return append(result, collection[i:j+1]...)
 }
 
+func trimBySmallScan[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	i := 0
+	for ; i < len(collection); i++ {
+		if !cutsetContains(cutset, collection[i]) {
+			break
+		}
+	}
+
+	if i >= len(collection) {
+		return Slice{}
+	}
+
+	j := len(collection) - 1
+	for ; j >= 0; j-- {
+		if !cutsetContains(cutset, collection[j]) {
+			break
+		}
+	}
+
+	result := make(Slice, 0, j+1-i)
+	return append(result, collection[i:j+1]...)
+}
+
 // TrimLeft removes all the leading cutset from the collection.
 // Play: https://go.dev/play/p/fJK-AhROy9w
 func TrimLeft[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	if len(cutset) <= trimSmallCutset {
+		return trimLeftBySmallScan(collection, cutset)
+	}
+	return trimLeftByMap(collection, cutset)
+}
+
+func trimLeftByMap[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	return DropWhile(collection, func(item T) bool {
 		_, ok := set[item]
 		return ok
 	})
+}
+
+func trimLeftBySmallScan[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	// Mirrors DropWhile exactly (same make cap and append) but tests membership
+	// against cutset directly to stay allocation-free.
+	i := 0
+	for ; i < len(collection); i++ {
+		if !cutsetContains(cutset, collection[i]) {
+			break
+		}
+	}
+
+	result := make(Slice, 0, len(collection)-i)
+	return append(result, collection[i:]...)
 }
 
 // TrimPrefix removes all the leading prefix from the collection.
@@ -1326,12 +1397,33 @@ func TrimPrefix[T comparable, Slice ~[]T](collection, prefix Slice) Slice {
 // TrimRight removes all the trailing cutset from the collection.
 // Play: https://go.dev/play/p/9V_N8sRyyiZ
 func TrimRight[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	if len(cutset) <= trimSmallCutset {
+		return trimRightBySmallScan(collection, cutset)
+	}
+	return trimRightByMap(collection, cutset)
+}
+
+func trimRightByMap[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	return DropRightWhile(collection, func(item T) bool {
 		_, ok := set[item]
 		return ok
 	})
+}
+
+func trimRightBySmallScan[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	// Mirrors DropRightWhile exactly (same make cap and append) but tests
+	// membership against cutset directly to stay allocation-free.
+	i := len(collection) - 1
+	for ; i >= 0; i-- {
+		if !cutsetContains(cutset, collection[i]) {
+			break
+		}
+	}
+
+	result := make(Slice, 0, i+1)
+	return append(result, collection[:i+1]...)
 }
 
 // TrimSuffix removes all the trailing suffix from the collection.
