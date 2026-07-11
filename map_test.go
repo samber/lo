@@ -29,6 +29,10 @@ func TestKeys(t *testing.T) {
 	is.ElementsMatch(r5, []string{"bar", "bar", "foo"})
 }
 
+// TestUniqKeys already mixes single-map calls (the uniqKeysSingle path) with
+// multi-map and zero-map calls (the uniqKeysMerge path), so unlike its
+// dual-path siblings it needs no separate SmallScan/MapPath split: it
+// already exercises both paths (see r1/r2 for single, r3/r4/r5/r6 for merge).
 func TestUniqKeys(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
