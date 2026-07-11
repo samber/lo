@@ -252,7 +252,7 @@ func TestIntersectBy(t *testing.T) {
 }
 
 // TestDifferenceSmallScan exercises the small-scan path (all lists here are
-// <= differenceSmallThreshold). See TestDifferenceMapPath for the map-based
+// <= differenceSmallThreshold). See TestDifferenceLarge for the map-based
 // path.
 func TestDifferenceSmallScan(t *testing.T) {
 	t.Parallel()
