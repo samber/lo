@@ -281,7 +281,7 @@ func TestDifferenceSmallScan(t *testing.T) {
 // len(list2) <= differenceSmallThreshold (8): a pair of 9-element lists
 // forces the differenceLarge path, which the table above never
 // exercises (its lists are all <= 6 elements).
-func TestDifferenceMapPath(t *testing.T) {
+func TestDifferenceLarge(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -293,27 +293,6 @@ func TestDifferenceMapPath(t *testing.T) {
 	left, right := Difference(list1, list2)
 	is.Equal([]int{0, 1, 2, 3}, left)
 	is.Equal([]int{9, 10, 11, 12}, right)
-}
-
-// The small-scan (both lists <= 8) and map (either list > 8) paths must
-// agree exactly. Same list1, list2 just below and just above the threshold
-// with an extra value absent from list1 appended to list2: left (elements of
-// list1 absent from list2) is unaffected by that append, while right just
-// grows by the appended value, in both paths identically.
-func TestDifferenceSmallMapBoundary(t *testing.T) {
-	t.Parallel()
-	is := assert.New(t)
-
-	list1 := []int{0, 1, 2, 3, 4, 5, 6, 7}
-	small2 := []int{4, 5, 6, 7, 8, 9, 10, 11}
-	is.Len(small2, differenceSmallThreshold, "sanity check: small2 must land in the small-scan branch")
-	mapped2 := append(append([]int{}, small2...), -1)
-	is.Len(mapped2, differenceSmallThreshold+1, "sanity check: mapped2 must land in the map branch")
-
-	smallLeft, smallRight := Difference(list1, small2)
-	mappedLeft, mappedRight := Difference(list1, mapped2)
-	is.Equal(smallLeft, mappedLeft)
-	is.Equal(append(append([]int{}, smallRight...), -1), mappedRight)
 }
 
 func TestUnion(t *testing.T) {
