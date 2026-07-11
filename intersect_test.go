@@ -406,9 +406,6 @@ func TestUnionByErr(t *testing.T) {
 	is.Equal(6, callCount, "should stop at first error")
 }
 
-// TestWithout already mixes exclude lists on both sides of
-// withoutSmallExcludeThreshold, so unlike its siblings it isn't split into a
-// separate SmallScan/MapPath pair: it already exercises both paths.
 func TestWithout(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
