@@ -251,7 +251,10 @@ func TestIntersectBy(t *testing.T) {
 	is.ElementsMatch(result, []int{0, 1})
 }
 
-func TestDifference(t *testing.T) {
+// TestDifferenceSmallScan exercises the small-scan path (all lists here are
+// <= differenceSmallThreshold). See TestDifferenceLarge for the map-based
+// path.
+func TestDifferenceSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -270,6 +273,37 @@ func TestDifference(t *testing.T) {
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
 	a, b := Difference(allStrings, allStrings)
+	is.IsType(a, allStrings, "type preserved")
+	is.IsType(b, allStrings, "type preserved")
+}
+
+// Difference dispatches on len(list1) <= differenceSmallThreshold &&
+// len(list2) <= differenceSmallThreshold (8): a pair of 9-element lists
+// forces the differenceLarge path, which the table above never
+// exercises (its lists are all <= 6 elements).
+func TestDifferenceLarge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	list1 := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+	list2 := []int{4, 5, 6, 7, 8, 9, 10, 11, 12}
+	is.Greater(len(list1), differenceSmallThreshold, "sanity check: list1 must exceed differenceSmallThreshold")
+	is.Greater(len(list2), differenceSmallThreshold, "sanity check: list2 must exceed differenceSmallThreshold")
+	left, right := Difference(list1, list2)
+	is.Equal([]int{0, 1, 2, 3}, left)
+	is.Equal([]int{9, 10, 11, 12}, right)
+
+	same := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+	leftSame, rightSame := Difference(same, same)
+	is.Empty(leftSame)
+	is.Empty(rightSame)
+
+	type myStrings []string
+	allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	is.Greater(len(allStrings), differenceSmallThreshold, "sanity check: allStrings must exceed differenceSmallThreshold")
+	a, b := Difference(allStrings, allStrings)
+	is.Empty(a)
+	is.Empty(b)
 	is.IsType(a, allStrings, "type preserved")
 	is.IsType(b, allStrings, "type preserved")
 }

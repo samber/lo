@@ -203,11 +203,25 @@ func IntersectBy[T any, K comparable, Slice ~[]T](transform func(T) K, lists ...
 	return result
 }
 
+// differenceSmallThreshold is the per-side length below which Difference uses a
+// nested allocation-free scan instead of building two Keyify maps: for tiny
+// inputs the map hashing + heap allocation overhead dominates the O(n*m) scan.
+const differenceSmallThreshold = 8
+
 // Difference returns the difference between two collections.
 // The first value is the collection of elements absent from list2.
 // The second value is the collection of elements absent from list1.
 // Play: https://go.dev/play/p/pKE-JgzqRpz
 func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
+	// Below the threshold an allocation-free nested O(n*m) scan is cheaper; above
+	// it the map lookups (O(n+m)) win.
+	if len(list1) <= differenceSmallThreshold && len(list2) <= differenceSmallThreshold {
+		return differenceSmall(list1, list2)
+	}
+	return differenceLarge(list1, list2)
+}
+
+func differenceLarge[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
 	left := make(Slice, 0, len(list1))
 	right := make(Slice, 0, len(list2))
 
@@ -222,6 +236,41 @@ func Difference[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
 
 	for i := range list2 {
 		if _, ok := seenLeft[list2[i]]; !ok {
+			right = append(right, list2[i])
+		}
+	}
+
+	return left, right
+}
+
+func differenceSmall[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice) {
+	left := make(Slice, 0, len(list1))
+	right := make(Slice, 0, len(list2))
+
+	// Same == equality as the map path: an element is kept only when no equal
+	// element exists in the other list (NaN never matches, mirroring map keys).
+	for i := range list1 {
+		found := false
+		for j := range list2 {
+			if list1[i] == list2[j] {
+				found = true
+				break
+			}
+		}
+		if !found {
+			left = append(left, list1[i])
+		}
+	}
+
+	for i := range list2 {
+		found := false
+		for j := range list1 {
+			if list2[i] == list1[j] {
+				found = true
+				break
+			}
+		}
+		if !found {
 			right = append(right, list2[i])
 		}
 	}
