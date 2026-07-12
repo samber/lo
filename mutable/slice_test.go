@@ -10,12 +10,17 @@ func TestFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
+	// Regression for #842: the removed-from slots in the backing array
+	// used to leak old element values (the input below would have been
+	// observed as [2 4 3 4], with 4 duplicated). They're now zeroed out
+	// so callers who hold the original slice reference see zero values
+	// instead of phantom duplicates.
 	input1 := []int{1, 2, 3, 4}
 	r1 := Filter(input1, func(x int) bool {
 		return x%2 == 0
 	})
 
-	is.Equal([]int{2, 4, 3, 4}, input1)
+	is.Equal([]int{2, 4, 0, 0}, input1)
 	is.Equal([]int{2, 4}, r1)
 
 	input2 := []string{"", "foo", "", "bar", ""}
@@ -23,7 +28,7 @@ func TestFilter(t *testing.T) {
 		return len(x) > 0
 	})
 
-	is.Equal([]string{"foo", "bar", "", "bar", ""}, input2)
+	is.Equal([]string{"foo", "bar", "", "", ""}, input2)
 	is.Equal([]string{"foo", "bar"}, r2)
 }
 

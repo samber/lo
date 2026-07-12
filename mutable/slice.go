@@ -2,15 +2,12 @@ package mutable
 
 import "github.com/samber/lo/internal/xrand"
 
-// Filter overwrites collection's underlying array with the elements that satisfy
-// predicate, in their original order, and returns a slice header whose length is the
-// number kept. Use FilterI if you need the element's index.
-//
-// The caller's original slice variable still has its original length: only the returned
-// slice has the new shorter length. Anything past that point in the original array is
-// leftover from before the call (often duplicates of the last kept element). Either
-// assign the result back, or re-slice with the returned length, if you want to discard
-// the leftover.
+// Filter is like lo.Filter but reuses the input slice's buffer instead of
+// allocating a new one. The returned slice may be shorter than the input,
+// so callers must use the return value. Removed slots in the backing array
+// are zeroed out so the surviving elements don't keep stale references
+// alive (and so callers who accidentally inspect the original slice past
+// the new length see zero values, not phantom duplicates).
 // Play: https://go.dev/play/p/0jY3Z0B7O_5
 func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	j := 0
@@ -20,12 +17,16 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Sl
 			j++
 		}
 	}
+	var zero T
+	for k := j; k < len(collection); k++ {
+		collection[k] = zero
+	}
 	return collection[:j]
 }
 
-// FilterI is like Filter but passes the element's index to predicate as well.
-// See Filter for the in-place semantics (the caller's original slice keeps its length;
-// only the returned slice has the new shorter length).
+// FilterI is like Filter but the predicate also receives the element's
+// index in the input slice. The same caveats apply: callers must use the
+// return value, and removed slots are zeroed out.
 func FilterI[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
 	j := 0
 	for i := range collection {
@@ -34,11 +35,15 @@ func FilterI[T any, Slice ~[]T](collection Slice, predicate func(item T, index i
 			j++
 		}
 	}
+	var zero T
+	for k := j; k < len(collection); k++ {
+		collection[k] = zero
+	}
 	return collection[:j]
 }
 
-// Map applies transform to each element of collection in place. Use MapI if you need
-// the element's index.
+// Map applies transform to each element of collection in-place. The length
+// of the slice is unchanged.
 // Play: https://go.dev/play/p/0jY3Z0B7O_5
 func Map[T any, Slice ~[]T](collection Slice, transform func(item T) T) {
 	for i := range collection {
@@ -46,7 +51,7 @@ func Map[T any, Slice ~[]T](collection Slice, transform func(item T) T) {
 	}
 }
 
-// MapI is like Map but passes the element's index to transform as well.
+// MapI is like Map but the transform also receives the element's index.
 func MapI[T any, Slice ~[]T](collection Slice, transform func(item T, index int) T) {
 	for i := range collection {
 		collection[i] = transform(collection[i], i)
