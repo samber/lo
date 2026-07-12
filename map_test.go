@@ -51,6 +51,18 @@ func TestUniqKeys(t *testing.T) {
 	// check order
 	r6 := UniqKeys(map[string]int{"foo": 1}, map[string]int{"bar": 3})
 	is.Equal([]string{"foo", "bar"}, r6)
+
+	// multiple maps, all empty (still takes the merge path, not the single-map shortcut)
+	r7 := UniqKeys(map[string]int{}, map[string]int{})
+	is.Empty(r7)
+
+	// a nil map is a valid, empty map
+	r8 := UniqKeys[string, int](nil)
+	is.Empty(r8)
+
+	// dedup across more than two maps, keeping first-occurrence order
+	r9 := UniqKeys(map[string]int{"foo": 1}, map[string]int{"foo": 2, "bar": 3}, map[string]int{"bar": 4, "baz": 5})
+	is.Equal([]string{"foo", "bar", "baz"}, r9)
 }
 
 func TestHasKey(t *testing.T) {
