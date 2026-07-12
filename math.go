@@ -186,7 +186,7 @@ func MeanByErr[T any, R constraints.Float | constraints.Integer](collection []T,
 
 // Mode returns the mode (most frequent value) of a collection.
 // If multiple values have the same highest frequency, then multiple values are returned.
-// If the collection is empty, then the zero value of T is returned.
+// If the collection is empty, then an empty slice is returned.
 // Play: https://go.dev/play/p/PbiviqnV5zX
 func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
 	// Building a map[T]int frequency table allocates a map header plus buckets,
