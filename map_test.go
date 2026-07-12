@@ -29,7 +29,17 @@ func TestKeys(t *testing.T) {
 	is.ElementsMatch(r5, []string{"bar", "bar", "foo"})
 }
 
-func TestUniqKeys(t *testing.T) {
+// TestUniqKeysZero exercises the len(in) == 0 branch: no maps at all.
+func TestUniqKeysZero(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := UniqKeys[string, int]()
+	is.Empty(r1)
+}
+
+// TestUniqKeysSingle exercises the len(in) == 1 branch, which delegates to Keys().
+func TestUniqKeysSingle(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -39,18 +49,33 @@ func TestUniqKeys(t *testing.T) {
 	r2 := UniqKeys(map[string]int{})
 	is.Empty(r2)
 
-	r3 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
-	is.ElementsMatch(r3, []string{"bar", "baz", "foo"})
+	// a nil map is a valid, empty map
+	r3 := UniqKeys[string, int](nil)
+	is.Empty(r3)
+}
 
-	r4 := UniqKeys[string, int]()
-	is.Empty(r4)
+// TestUniqKeysMultiple exercises the len(in) > 1 branch, which dedups via a seen-set.
+func TestUniqKeysMultiple(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
 
-	r5 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
-	is.ElementsMatch(r5, []string{"bar", "foo"})
+	r1 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+	is.ElementsMatch(r1, []string{"bar", "baz", "foo"})
+
+	r2 := UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3})
+	is.ElementsMatch(r2, []string{"bar", "foo"})
 
 	// check order
-	r6 := UniqKeys(map[string]int{"foo": 1}, map[string]int{"bar": 3})
-	is.Equal([]string{"foo", "bar"}, r6)
+	r3 := UniqKeys(map[string]int{"foo": 1}, map[string]int{"bar": 3})
+	is.Equal([]string{"foo", "bar"}, r3)
+
+	// multiple maps, all empty
+	r4 := UniqKeys(map[string]int{}, map[string]int{})
+	is.Empty(r4)
+
+	// dedup across more than two maps, keeping first-occurrence order
+	r5 := UniqKeys(map[string]int{"foo": 1}, map[string]int{"foo": 2, "bar": 3}, map[string]int{"bar": 4, "baz": 5})
+	is.Equal([]string{"foo", "bar", "baz"}, r5)
 }
 
 func TestHasKey(t *testing.T) {

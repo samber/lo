@@ -29,6 +29,12 @@ func BenchmarkUniqKeys(b *testing.B) {
 				_ = lo.UniqKeys(m1, m2)
 			}
 		})
+		// single: the dominant call shape, keys of one map are already unique.
+		b.Run("single_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.UniqKeys(m1)
+			}
+		})
 	}
 }
 
