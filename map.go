@@ -21,6 +21,16 @@ func Keys[K comparable, V any](in ...map[K]V) []K {
 // UniqKeys creates a slice of unique keys in the map.
 // Play: https://go.dev/play/p/TPKAb6ILdHk
 func UniqKeys[K comparable, V any](in ...map[K]V) []K {
+	if len(in) == 0 {
+		return []K{}
+	}
+
+	// The keys of a SINGLE map are already unique, so the dominant single-map call
+	// shape never needs a seen-set at all: just copy the keys out.
+	if len(in) == 1 {
+		return Keys(in[0])
+	}
+
 	size := 0
 	for i := range in {
 		size += len(in[i])
