@@ -231,8 +231,7 @@ func modeLarge[T constraints.Integer | constraints.Float](collection []T) []T {
 // map's key equality, so NaN (which never equals itself, hence count 0, just
 // like the map's unreachable NaN key) and interleaved ties behave identically.
 func modeSmall[T constraints.Integer | constraints.Float](collection []T) []T {
-	length := T(len(collection))
-	if length == 0 {
+	if len(collection) == 0 {
 		return []T{}
 	}
 
