@@ -323,7 +323,7 @@ func unionSmall[T comparable, Slice ~[]T](lists []Slice, capLen int) Slice {
 
 	for i := range lists {
 		for j := range lists[i] {
-			if !Contains(result, lists[i][j]) {
+			if !Contains([]T(result), lists[i][j]) {
 				result = append(result, lists[i][j])
 			}
 		}
