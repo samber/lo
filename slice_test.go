@@ -3260,7 +3260,7 @@ func TestTrimLarge(t *testing.T) {
 	is := assert.New(t)
 
 	cutset := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
-	is.Len(cutset, 9, "sanity check: cutset must exceed trimSmallCutset")
+	is.Greater(len(cutset), trimSmallCutset, "sanity check: cutset must exceed trimSmallCutset")
 
 	collection := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "X", "Y", "a", "b", "c", "d", "e", "f", "g", "h", "i"}
 	actual := Trim(collection, cutset)
@@ -3301,7 +3301,7 @@ func TestTrimLeftLarge(t *testing.T) {
 	is := assert.New(t)
 
 	cutset := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
-	is.Len(cutset, 9, "sanity check: cutset must exceed trimSmallCutset")
+	is.Greater(len(cutset), trimSmallCutset, "sanity check: cutset must exceed trimSmallCutset")
 
 	collection := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "X", "Y"}
 	actual := TrimLeft(collection, cutset)
@@ -3358,7 +3358,7 @@ func TestTrimRightLarge(t *testing.T) {
 	is := assert.New(t)
 
 	cutset := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
-	is.Len(cutset, 9, "sanity check: cutset must exceed trimSmallCutset")
+	is.Greater(len(cutset), trimSmallCutset, "sanity check: cutset must exceed trimSmallCutset")
 
 	collection := []string{"X", "Y", "a", "b", "c", "d", "e", "f", "g", "h", "i"}
 	actual := TrimRight(collection, cutset)
