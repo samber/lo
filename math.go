@@ -189,6 +189,10 @@ func MeanByErr[T any, R constraints.Float | constraints.Integer](collection []T,
 // If the collection is empty, then an empty slice is returned.
 // Play: https://go.dev/play/p/PbiviqnV5zX
 func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
+	if len(collection) == 0 {
+		return []T{}
+	}
+
 	// Building a map[T]int frequency table allocates a map header plus buckets,
 	// which dominates the runtime for tiny inputs. For small collections an
 	// allocation-free nested scan (O(n^2), but n is tiny) counts frequencies on
@@ -231,10 +235,6 @@ func modeLarge[T constraints.Integer | constraints.Float](collection []T) []T {
 // map's key equality, so NaN (which never equals itself, hence count 0, just
 // like the map's unreachable NaN key) and interleaved ties behave identically.
 func modeSmall[T constraints.Integer | constraints.Float](collection []T) []T {
-	if len(collection) == 0 {
-		return []T{}
-	}
-
 	mode := make([]T, 0)
 	maxFreq := 0
 
