@@ -3277,7 +3277,9 @@ func TestCutSuffix(t *testing.T) {
 	is.Equal([]string{"a", "a", "b"}, actualAfterS)
 }
 
-func TestTrim(t *testing.T) {
+// TestTrimSmallScan exercises the small-scan path (all cutsets here are
+// <= trimSmallCutset). See TestTrimLarge for the map-based path.
+func TestTrimSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3293,7 +3295,30 @@ func TestTrim(t *testing.T) {
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
 }
 
-func TestTrimLeft(t *testing.T) {
+// Trim dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9 unique
+// elements forces the trimLarge path, which the table above never exercises
+// (its cutsets are all <= 8).
+func TestTrimLarge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	cutset := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	is.Greater(len(cutset), trimSmallCutset, "sanity check: cutset must exceed trimSmallCutset")
+
+	collection := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "X", "Y", "a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	actual := Trim(collection, cutset)
+	is.Equal([]string{"X", "Y"}, actual)
+
+	actual = Trim(cutset, cutset)
+	is.Equal([]string{}, actual)
+
+	actual = Trim([]string{"X", "Y"}, cutset)
+	is.Equal([]string{"X", "Y"}, actual)
+}
+
+// TestTrimLeftSmallScan exercises the small-scan path (all cutsets here are
+// <= trimSmallCutset). See TestTrimLeftLarge for the map-based path.
+func TestTrimLeftSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3309,6 +3334,27 @@ func TestTrimLeft(t *testing.T) {
 	is.Equal([]string{}, actual)
 	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+}
+
+// TrimLeft dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9
+// unique elements forces the trimLeftLarge path, which the table above never
+// exercises (its cutsets are all <= 8).
+func TestTrimLeftLarge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	cutset := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	is.Greater(len(cutset), trimSmallCutset, "sanity check: cutset must exceed trimSmallCutset")
+
+	collection := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "X", "Y"}
+	actual := TrimLeft(collection, cutset)
+	is.Equal([]string{"X", "Y"}, actual)
+
+	actual = TrimLeft(cutset, cutset)
+	is.Equal([]string{}, actual)
+
+	actual = TrimLeft([]string{"X", "Y"}, cutset)
+	is.Equal([]string{"X", "Y"}, actual)
 }
 
 func TestTrimPrefix(t *testing.T) {
@@ -3329,7 +3375,9 @@ func TestTrimPrefix(t *testing.T) {
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
 }
 
-func TestTrimRight(t *testing.T) {
+// TestTrimRightSmallScan exercises the small-scan path (all cutsets here are
+// <= trimSmallCutset). See TestTrimRightLarge for the map-based path.
+func TestTrimRightSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3343,6 +3391,27 @@ func TestTrimRight(t *testing.T) {
 	is.Equal([]string{}, actual)
 	actual = TrimRight([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+}
+
+// TrimRight dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9
+// unique elements forces the trimRightLarge path, which the table above
+// never exercises (its cutsets are all <= 8).
+func TestTrimRightLarge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	cutset := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	is.Greater(len(cutset), trimSmallCutset, "sanity check: cutset must exceed trimSmallCutset")
+
+	collection := []string{"X", "Y", "a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	actual := TrimRight(collection, cutset)
+	is.Equal([]string{"X", "Y"}, actual)
+
+	actual = TrimRight(cutset, cutset)
+	is.Equal([]string{}, actual)
+
+	actual = TrimRight([]string{"X", "Y"}, cutset)
+	is.Equal([]string{"X", "Y"}, actual)
 }
 
 func TestTrimSuffix(t *testing.T) {
