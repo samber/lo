@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var lengths = []int{10, 100, 1000}
+var lengths = []int{0, 1, 4, 8, 10, 100, 1000}
 
 func genSliceString(n int) []string {
 	res := make([]string, 0, n)

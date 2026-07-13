@@ -186,14 +186,29 @@ func MeanByErr[T any, R constraints.Float | constraints.Integer](collection []T,
 
 // Mode returns the mode (most frequent value) of a collection.
 // If multiple values have the same highest frequency, then multiple values are returned.
-// If the collection is empty, then the zero value of T is returned.
+// If the collection is empty, then an empty slice is returned.
 // Play: https://go.dev/play/p/PbiviqnV5zX
 func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
-	length := T(len(collection))
-	if length == 0 {
+	if len(collection) == 0 {
 		return []T{}
 	}
 
+	// Building a map[T]int frequency table allocates a map header plus buckets,
+	// which dominates the runtime for tiny inputs. For small collections an
+	// allocation-free nested scan (O(n^2), but n is tiny) counts frequencies on
+	// the stack and is faster with zero heap traffic. Both paths run the exact
+	// same running-max + tie-append logic and use the same == equality, so the
+	// output (element order, duplicate/NaN handling, slice capacity) is identical.
+	const smallModeThreshold = 8
+	if len(collection) <= smallModeThreshold {
+		return modeSmall(collection)
+	}
+	return modeLarge(collection)
+}
+
+// modeLarge counts frequencies with a map, then keeps a running max with
+// tie-append. Used for large collections where the map beats the O(n^2) scan.
+func modeLarge[T constraints.Integer | constraints.Float](collection []T) []T {
 	mode := make([]T, 0)
 	maxFreq := 0
 	frequency := make(map[T]int, len(collection))
@@ -201,6 +216,37 @@ func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
 	for _, item := range collection {
 		frequency[item]++
 		count := frequency[item]
+
+		if count > maxFreq {
+			maxFreq = count
+			mode = []T{item}
+		} else if count == maxFreq {
+			mode = append(mode, item)
+		}
+	}
+
+	return mode
+}
+
+// modeSmall reproduces modeLarge exactly without allocating a map: for
+// each index i it counts how many earlier-or-equal positions hold the same
+// value (count == frequency[item] right after the map's increment), then runs
+// the identical running-max + tie-append pass. The == used here matches the
+// map's key equality, so NaN (which never equals itself, hence count 0, just
+// like the map's unreachable NaN key) and interleaved ties behave identically.
+func modeSmall[T constraints.Integer | constraints.Float](collection []T) []T {
+	mode := make([]T, 0)
+	maxFreq := 0
+
+	for i := range collection {
+		item := collection[i]
+
+		count := 0
+		for j := 0; j <= i; j++ {
+			if collection[j] == item {
+				count++
+			}
+		}
 
 		if count > maxFreq {
 			maxFreq = count

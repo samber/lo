@@ -9,6 +9,9 @@ import (
 
 func BenchmarkIndexOf(b *testing.B) {
 	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
 		ints := genSliceInt(n)
 		target := ints[n-1] // worst case: last element
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
@@ -21,6 +24,9 @@ func BenchmarkIndexOf(b *testing.B) {
 
 func BenchmarkLastIndexOf(b *testing.B) {
 	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
 		ints := genSliceInt(n)
 		target := ints[0]
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
@@ -63,6 +69,9 @@ func BenchmarkHasSuffix(b *testing.B) {
 
 func BenchmarkFind(b *testing.B) {
 	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
 		ints := genSliceInt(n)
 		target := ints[n-1]
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
@@ -75,6 +84,9 @@ func BenchmarkFind(b *testing.B) {
 
 func BenchmarkFindIndexOf(b *testing.B) {
 	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
 		ints := genSliceInt(n)
 		target := ints[n-1]
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
@@ -87,6 +99,9 @@ func BenchmarkFindIndexOf(b *testing.B) {
 
 func BenchmarkFindLastIndexOf(b *testing.B) {
 	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
 		ints := genSliceInt(n)
 		target := ints[0]
 		b.Run(strconv.Itoa(n), func(b *testing.B) {

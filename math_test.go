@@ -501,7 +501,9 @@ func TestMeanByErr(t *testing.T) {
 	}
 }
 
-func TestMode(t *testing.T) {
+// TestModeSmall exercises the small-scan path (all collections here are
+// <= smallModeThreshold). See TestModeLarge for the map-based path.
+func TestModeSmall(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -509,13 +511,25 @@ func TestMode(t *testing.T) {
 	result2 := Mode([]int32{2, 2, 3, 4})
 	result3 := Mode([]uint32{2, 2, 3, 3})
 	result4 := Mode([]uint32{})
-	result5 := Mode([]int{1, 2, 3, 4, 5, 6, 7, 8, 9})
 
 	is.Equal([]float32{3.3}, result1)
 	is.Equal([]int32{2}, result2)
 	is.Equal([]uint32{2, 3}, result3)
 	is.Empty(result4)
-	is.Equal([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, result5)
+}
+
+// Mode dispatches on len(collection) <= smallModeThreshold (8): a collection
+// of 9+ elements forces the modeLarge path, which the table above never
+// exercises (its collections are all <= 4 elements).
+func TestModeLarge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	result1 := Mode([]int{1, 2, 3, 4, 5, 6, 7, 8, 9})
+	is.Equal([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, result1)
+
+	result2 := Mode([]int{1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9})
+	is.Equal([]int{1, 2}, result2)
 }
 
 func TestModeCapacityConsistency(t *testing.T) {

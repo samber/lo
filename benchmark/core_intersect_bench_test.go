@@ -9,6 +9,9 @@ import (
 
 func BenchmarkContains(b *testing.B) {
 	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
 		ints := genSliceInt(n)
 		target := ints[n-1]
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
@@ -21,6 +24,9 @@ func BenchmarkContains(b *testing.B) {
 
 func BenchmarkContainsBy(b *testing.B) {
 	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
 		ints := genSliceInt(n)
 		target := ints[n-1]
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
@@ -40,6 +46,14 @@ func BenchmarkEvery(b *testing.B) {
 				_ = lo.Every(ints, subset)
 			}
 		})
+		// small_k1: tiny subset against a large collection, the asymmetric regime
+		// where building a map of the whole collection wastes an O(n) allocation.
+		smallSubset := ints[:1]
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Every(ints, smallSubset)
+			}
+		})
 	}
 }
 
@@ -56,6 +70,9 @@ func BenchmarkEveryBy(b *testing.B) {
 
 func BenchmarkSome(b *testing.B) {
 	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
 		ints := genSliceInt(n)
 		subset := []int{ints[n-1]}
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
@@ -110,6 +127,17 @@ func BenchmarkIntersect(b *testing.B) {
 			}
 		})
 	}
+
+	// small two-list sub-cases (product <= 64) exercise the linear-scan fast path
+	for _, n := range []int{2, 4, 8} {
+		a := genSliceInt(n)
+		c := genSliceInt(n)
+		b.Run("small_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Intersect(a, c)
+			}
+		})
+	}
 }
 
 func BenchmarkIntersectBy(b *testing.B) {
@@ -134,6 +162,15 @@ func BenchmarkUnion(b *testing.B) {
 			}
 		})
 	}
+
+	// small: total element count within the small-scan threshold (two 4-element lists).
+	smallA := []int{1, 2, 3, 4}
+	smallC := []int{3, 4, 5, 6}
+	b.Run("small", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.Union(smallA, smallC)
+		}
+	})
 }
 
 func BenchmarkWithout(b *testing.B) {
@@ -142,6 +179,12 @@ func BenchmarkWithout(b *testing.B) {
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.Without(ints, 1, 2, 3, 4, 5)
+			}
+		})
+		// small_k1: single exclude value, the dominant real-world variadic call shape.
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Without(ints, 1)
 			}
 		})
 	}
@@ -153,6 +196,12 @@ func BenchmarkWithoutBy(b *testing.B) {
 		b.Run(strconv.Itoa(n), func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				_ = lo.WithoutBy(ints, func(v int) int { return v % 100 }, 1, 2, 3, 4, 5)
+			}
+		})
+		// small_k1: single exclude value, the dominant real-world variadic call shape.
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.WithoutBy(ints, func(v int) int { return v % 100 }, 1)
 			}
 		})
 	}

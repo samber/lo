@@ -42,7 +42,9 @@ func TestContainsBy(t *testing.T) {
 	is.False(result4)
 }
 
-func TestEvery(t *testing.T) {
+// TestEverySmallScan exercises the small-scan path (all subsets here are
+// <= everySmallSubset). See TestEveryLarge for the map-based path.
+func TestEverySmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -55,6 +57,22 @@ func TestEvery(t *testing.T) {
 	is.False(result2)
 	is.False(result3)
 	is.True(result4)
+}
+
+// Every dispatches on len(subset) <= everySmallSubset (8): a subset of 9
+// elements forces the everyLarge path, which the table above never
+// exercises (its subsets are all <= 2 elements).
+func TestEveryLarge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	subsetPresent := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+	is.Greater(len(subsetPresent), everySmallSubset, "sanity check: subset must exceed everySmallSubset")
+	is.True(Every(collection, subsetPresent))
+
+	subsetMissing := []int{0, 1, 2, 3, 4, 5, 6, 7, 10}
+	is.False(Every(collection, subsetMissing))
 }
 
 func TestEveryBy(t *testing.T) {
@@ -206,6 +224,10 @@ func TestIntersect(t *testing.T) {
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Intersect(allStrings, allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
+
+	// single-list call: len(lists) != 2, so it takes the map path too.
+	nonemptyLarge := Intersect(allStrings)
+	is.IsType(nonemptyLarge, allStrings, "type preserved (map path)")
 }
 
 func TestIntersectBy(t *testing.T) {
@@ -251,7 +273,10 @@ func TestIntersectBy(t *testing.T) {
 	is.ElementsMatch(result, []int{0, 1})
 }
 
-func TestDifference(t *testing.T) {
+// TestDifferenceSmallScan exercises the small-scan path (all lists here are
+// <= differenceSmallThreshold). See TestDifferenceLarge for the map-based
+// path.
+func TestDifferenceSmallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -270,6 +295,37 @@ func TestDifference(t *testing.T) {
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
 	a, b := Difference(allStrings, allStrings)
+	is.IsType(a, allStrings, "type preserved")
+	is.IsType(b, allStrings, "type preserved")
+}
+
+// Difference dispatches on len(list1) <= differenceSmallThreshold &&
+// len(list2) <= differenceSmallThreshold (8): a pair of 9-element lists
+// forces the differenceLarge path, which the table above never
+// exercises (its lists are all <= 6 elements).
+func TestDifferenceLarge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	list1 := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+	list2 := []int{4, 5, 6, 7, 8, 9, 10, 11, 12}
+	is.Greater(len(list1), differenceSmallThreshold, "sanity check: list1 must exceed differenceSmallThreshold")
+	is.Greater(len(list2), differenceSmallThreshold, "sanity check: list2 must exceed differenceSmallThreshold")
+	left, right := Difference(list1, list2)
+	is.Equal([]int{0, 1, 2, 3}, left)
+	is.Equal([]int{9, 10, 11, 12}, right)
+
+	same := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+	leftSame, rightSame := Difference(same, same)
+	is.Empty(leftSame)
+	is.Empty(rightSame)
+
+	type myStrings []string
+	allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	is.Greater(len(allStrings), differenceSmallThreshold, "sanity check: allStrings must exceed differenceSmallThreshold")
+	a, b := Difference(allStrings, allStrings)
+	is.Empty(a)
+	is.Empty(b)
 	is.IsType(a, allStrings, "type preserved")
 	is.IsType(b, allStrings, "type preserved")
 }
@@ -306,6 +362,12 @@ func TestUnion(t *testing.T) {
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Union(allStrings, allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
+
+	// total element count > unionSmallThreshold, so this takes the map path.
+	largeStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	nonemptyLarge := Union(largeStrings, largeStrings)
+	is.Equal(largeStrings, nonemptyLarge)
+	is.IsType(nonemptyLarge, largeStrings, "type preserved (map path)")
 }
 
 func TestUnionBy(t *testing.T) {
@@ -406,28 +468,55 @@ func TestUnionByErr(t *testing.T) {
 	is.Equal(6, callCount, "should stop at first error")
 }
 
-func TestWithout(t *testing.T) {
+// TestWithoutSmall exercises the small-scan path (all exclude lists here are
+// <= withoutSmallExcludeThreshold). See TestWithoutLarge for the map-based path.
+func TestWithoutSmall(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Without([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
-	result2 := Without([]int{0, 7}, 0, 1, 2, 3, 4, 5)
-	result3 := Without([]int{}, 0, 1, 2, 3, 4, 5)
-	result4 := Without([]int{0, 1, 2}, 0, 1, 2)
-	result5 := Without([]int{})
-	is.Equal([]int{10}, result1)
-	is.Equal([]int{7}, result2)
-	is.Empty(result3)
-	is.Empty(result4)
-	is.Empty(result5)
+	is.LessOrEqual(3, withoutSmallExcludeThreshold, "sanity check: exclude must not exceed withoutSmallExcludeThreshold")
+
+	result1 := Without([]int{0, 1, 2}, 0, 1, 2)
+	result2 := Without([]int{})
+	result3 := Without([]int{0, 1, 2, 3}, 1)
+	is.Empty(result1)
+	is.Empty(result2)
+	is.Equal([]int{0, 2, 3}, result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Without(allStrings, "")
+	is.Equal(myStrings{"foo", "bar"}, nonempty)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-func TestWithoutBy(t *testing.T) {
+// TestWithoutLarge exercises the map-based path (all exclude lists here
+// exceed withoutSmallExcludeThreshold). See TestWithoutSmall for the linear-scan path.
+func TestWithoutLarge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	exclude := []int{0, 1, 2, 3, 4, 5}
+	is.Greater(len(exclude), withoutSmallExcludeThreshold, "sanity check: exclude must exceed withoutSmallExcludeThreshold")
+
+	result1 := Without([]int{0, 2, 10}, exclude...)
+	result2 := Without([]int{0, 7}, exclude...)
+	result3 := Without([]int{}, exclude...)
+	is.Equal([]int{10}, result1)
+	is.Equal([]int{7}, result2)
+	is.Empty(result3)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Without(allStrings, "a", "b", "c", "d", "e")
+	is.Equal(allStrings, nonempty)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+// TestWithoutBySmall exercises the small-scan path (all exclude lists
+// here are <= withoutSmallExcludeThreshold). See TestWithoutByLarge for
+// the map-based path.
+func TestWithoutBySmall(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -451,6 +540,30 @@ func TestWithoutBy(t *testing.T) {
 	nonempty := WithoutBy(allStrings, func(s string) string {
 		return s
 	})
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+// WithoutBy dispatches on len(exclude) <= withoutSmallExcludeThreshold (4): an
+// exclude list of 5 keys forces the withoutByLarge path, which the table
+// above never exercises (its exclude lists are all <= 3 elements).
+func TestWithoutByLarge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	byKey := func(v int) int { return v }
+	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	exclude := []int{0, 1, 2, 3, 4}
+	is.Greater(len(exclude), withoutSmallExcludeThreshold, "sanity check: exclude must exceed withoutSmallExcludeThreshold")
+	is.Equal([]int{5, 6, 7, 8, 9}, WithoutBy(collection, byKey, exclude...))
+
+	excludeAll := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	is.Greater(len(excludeAll), withoutSmallExcludeThreshold, "sanity check: excludeAll must exceed withoutSmallExcludeThreshold")
+	is.Empty(WithoutBy(collection, byKey, excludeAll...))
+
+	type myStrings []string
+	allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	nonempty := WithoutBy(allStrings, func(s string) string { return s }, "z", "y", "x", "w", "v")
+	is.Equal(allStrings, nonempty)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
