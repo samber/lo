@@ -39,7 +39,7 @@ func BenchmarkLastIndexOf(b *testing.B) {
 
 func BenchmarkHasPrefix(b *testing.B) {
 	for _, n := range lengths {
-		if n < 3 {
+		if n == 0 {
 			continue
 		}
 		ints := genSliceInt(n)
@@ -54,7 +54,7 @@ func BenchmarkHasPrefix(b *testing.B) {
 
 func BenchmarkHasSuffix(b *testing.B) {
 	for _, n := range lengths {
-		if n < 3 {
+		if n == 0 {
 			continue
 		}
 		ints := genSliceInt(n)
