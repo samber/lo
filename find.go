@@ -167,9 +167,9 @@ func FindKeyBy[K comparable, V any](object map[K]V, predicate func(key K, value 
 	return Empty[K](), false
 }
 
-// findSmallThreshold is the max collection size for which an allocation-free nested scan
-// beats building a map[T]bool: below this size, a handful of == comparisons per element
-// costs less than the map allocation and hashing the map-based path always pays.
+// findSmallThreshold is the max collection size for which a nested O(n²) scan
+// (avoiding the map used in the large-collection path) is faster than hashing
+// and allocating for a map-based implementation.
 const findSmallThreshold = 8
 
 // FindUniques returns a slice with all the elements that appear in the collection only once.
@@ -210,8 +210,8 @@ func findUniquesLarge[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
-// findUniquesSmall counts occurrences with a nested linear scan, allocation-free for
-// a small collection. An element appearing exactly once is emitted at its (only) occurrence,
+// findUniquesSmall counts occurrences with a nested linear scan, avoiding map allocations
+// for a small collection. An element appearing exactly once is emitted at its (only) occurrence,
 // so the natural iteration order matches the original collection order.
 func findUniquesSmall[T comparable, Slice ~[]T](collection Slice) Slice {
 	result := make(Slice, 0, len(collection))
@@ -274,7 +274,7 @@ func findUniquesByLarge[T any, U comparable, Slice ~[]T](collection Slice, itera
 	return result
 }
 
-// findUniquesBySmall counts key occurrences with a nested linear scan, allocation-free
+// findUniquesBySmall counts key occurrences with a nested linear scan, avoiding map allocations
 // for a small collection. The iteratee is invoked exactly once per element (keys are
 // precomputed), matching the single-invocation contract of the map-based path.
 func findUniquesBySmall[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
@@ -339,7 +339,7 @@ func findDuplicatesLarge[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
-// findDuplicatesSmall scans linearly for duplicates, allocation-free for a small
+// findDuplicatesSmall scans linearly for duplicates, avoiding map allocations for a small
 // collection. A distinct duplicated value is emitted at its FIRST occurrence in the
 // collection (matching the map-based path, which classifies every value's total count
 // before its emission pass runs), then skipped on later occurrences.
@@ -409,7 +409,7 @@ func findDuplicatesByLarge[T any, U comparable, Slice ~[]T](collection Slice, it
 	return result
 }
 
-// findDuplicatesBySmall scans linearly for duplicate keys, allocation-free for a small
+// findDuplicatesBySmall scans linearly for duplicate keys, avoiding map allocations for a small
 // collection. The iteratee is invoked exactly once per element (keys are precomputed). A
 // distinct duplicated key is emitted at its FIRST occurrence (matching the map-based path,
 // which classifies every key's total count before its emission pass runs).
