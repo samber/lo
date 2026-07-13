@@ -125,6 +125,10 @@ const intersectSmallProduct = 64
 // Intersect returns the intersection between collections.
 // Play: https://go.dev/play/p/uuElL9X9e58
 func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
+	if len(lists) == 0 {
+		return Slice{}
+	}
+
 	if len(lists) == 2 && len(lists[0])*len(lists[1]) <= intersectSmallProduct {
 		return intersectSmall[T, Slice](lists[0], lists[1])
 	}
@@ -167,10 +171,6 @@ func intersectSmall[T comparable, Slice ~[]T](a, b Slice) Slice {
 }
 
 func intersectLarge[T comparable, Slice ~[]T](lists ...Slice) Slice {
-	if len(lists) == 0 {
-		return Slice{}
-	}
-
 	last := lists[len(lists)-1]
 
 	seen := make(map[T]bool, len(last))
