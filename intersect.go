@@ -316,8 +316,8 @@ func unionLarge[T comparable, Slice ~[]T](lists []Slice, capLen int) Slice {
 	return result
 }
 
-// unionSmall dedups by scanning the already-built result, allocation-free for a
-// small total element count (no seen-set needed).
+// unionSmall dedups by scanning the already-built result; for a small total element count
+// this avoids allocating/maintaining a seen-set.
 func unionSmall[T comparable, Slice ~[]T](lists []Slice, capLen int) Slice {
 	result := make(Slice, 0, capLen)
 
