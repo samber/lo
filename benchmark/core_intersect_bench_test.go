@@ -46,6 +46,14 @@ func BenchmarkEvery(b *testing.B) {
 				_ = lo.Every(ints, subset)
 			}
 		})
+		// small_k1: tiny subset against a large collection, the asymmetric regime
+		// where building a map of the whole collection wastes an O(n) allocation.
+		smallSubset := ints[:1]
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Every(ints, smallSubset)
+			}
+		})
 	}
 }
 
