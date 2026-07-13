@@ -224,6 +224,10 @@ func TestIntersect(t *testing.T) {
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Intersect(allStrings, allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
+
+	// single-list call: len(lists) != 2, so it takes the map path too.
+	nonemptyLarge := Intersect(allStrings)
+	is.IsType(nonemptyLarge, allStrings, "type preserved (map path)")
 }
 
 func TestIntersectBy(t *testing.T) {

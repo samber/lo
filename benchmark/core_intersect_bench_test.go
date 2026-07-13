@@ -127,6 +127,17 @@ func BenchmarkIntersect(b *testing.B) {
 			}
 		})
 	}
+
+	// small two-list sub-cases (product <= 64) exercise the linear-scan fast path
+	for _, n := range []int{2, 4, 8} {
+		a := genSliceInt(n)
+		c := genSliceInt(n)
+		b.Run("small_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Intersect(a, c)
+			}
+		})
+	}
 }
 
 func BenchmarkIntersectBy(b *testing.B) {
