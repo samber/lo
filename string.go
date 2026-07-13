@@ -245,6 +245,10 @@ func ChunkString[T ~string](str T, size int) []T {
 		panic("lo.ChunkString: size must be greater than 0")
 	}
 
+	if len(str) == 0 {
+		return []T{}
+	}
+
 	if size >= len(str) {
 		return []T{str}
 	}
