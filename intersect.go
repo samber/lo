@@ -278,6 +278,11 @@ func differenceSmall[T comparable, Slice ~[]T](list1, list2 Slice) (Slice, Slice
 	return left, right
 }
 
+// unionSmallThreshold is the max total element count for which deduping by scanning the
+// already-built result beats maintaining a seen-set: the result slice is allocated either
+// way, so below this size the seen-map is pure overhead.
+const unionSmallThreshold = 8
+
 // Union returns all distinct elements from given collections.
 // result returns will not change the order of elements relatively.
 // Play: https://go.dev/play/p/-hsqZNTH0ej
@@ -288,6 +293,14 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 		capLen += len(list)
 	}
 
+	if capLen <= unionSmallThreshold {
+		return unionSmall(lists, capLen)
+	}
+	return unionLarge(lists, capLen)
+}
+
+// unionLarge dedups using a seen-set, best for a large total element count.
+func unionLarge[T comparable, Slice ~[]T](lists []Slice, capLen int) Slice {
 	result := make(Slice, 0, capLen)
 	seen := make(map[T]struct{}, capLen)
 
@@ -295,6 +308,22 @@ func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
 		for j := range lists[i] {
 			if _, ok := seen[lists[i][j]]; !ok {
 				seen[lists[i][j]] = struct{}{}
+				result = append(result, lists[i][j])
+			}
+		}
+	}
+
+	return result
+}
+
+// unionSmall dedups by scanning the already-built result; for a small total element count
+// this avoids allocating/maintaining a seen-set.
+func unionSmall[T comparable, Slice ~[]T](lists []Slice, capLen int) Slice {
+	result := make(Slice, 0, capLen)
+
+	for i := range lists {
+		for j := range lists[i] {
+			if !Contains([]T(result), lists[i][j]) {
 				result = append(result, lists[i][j])
 			}
 		}

@@ -340,6 +340,12 @@ func TestUnion(t *testing.T) {
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Union(allStrings, allStrings)
 	is.IsType(nonempty, allStrings, "type preserved")
+
+	// total element count > unionSmallThreshold, so this takes the map path.
+	largeStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+	nonemptyLarge := Union(largeStrings, largeStrings)
+	is.Equal(largeStrings, nonemptyLarge)
+	is.IsType(nonemptyLarge, largeStrings, "type preserved (map path)")
 }
 
 func TestUnionBy(t *testing.T) {
