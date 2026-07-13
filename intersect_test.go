@@ -406,31 +406,55 @@ func TestUnionByErr(t *testing.T) {
 	is.Equal(6, callCount, "should stop at first error")
 }
 
-func TestWithout(t *testing.T) {
+// TestWithoutSmall exercises the small-scan path (all exclude lists here are
+// <= withoutSmallExcludeThreshold). See TestWithoutLarge for the map-based path.
+func TestWithoutSmall(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Without([]int{0, 2, 10}, 0, 1, 2, 3, 4, 5)
-	result2 := Without([]int{0, 7}, 0, 1, 2, 3, 4, 5)
-	result3 := Without([]int{}, 0, 1, 2, 3, 4, 5)
-	result4 := Without([]int{0, 1, 2}, 0, 1, 2)
-	result5 := Without([]int{})
-	is.Equal([]int{10}, result1)
-	is.Equal([]int{7}, result2)
-	is.Empty(result3)
-	is.Empty(result4)
-	is.Empty(result5)
+	is.LessOrEqual(3, withoutSmallExcludeThreshold, "sanity check: exclude must not exceed withoutSmallExcludeThreshold")
+
+	result1 := Without([]int{0, 1, 2}, 0, 1, 2)
+	result2 := Without([]int{})
+	result3 := Without([]int{0, 1, 2, 3}, 1)
+	is.Empty(result1)
+	is.Empty(result2)
+	is.Equal([]int{0, 2, 3}, result3)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Without(allStrings, "")
+	is.Equal(myStrings{"foo", "bar"}, nonempty)
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-// TestWithoutBySmallScan exercises the small-scan path (all exclude lists
+// TestWithoutLarge exercises the map-based path (all exclude lists here
+// exceed withoutSmallExcludeThreshold). See TestWithoutSmall for the linear-scan path.
+func TestWithoutLarge(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	exclude := []int{0, 1, 2, 3, 4, 5}
+	is.Greater(len(exclude), withoutSmallExcludeThreshold, "sanity check: exclude must exceed withoutSmallExcludeThreshold")
+
+	result1 := Without([]int{0, 2, 10}, exclude...)
+	result2 := Without([]int{0, 7}, exclude...)
+	result3 := Without([]int{}, exclude...)
+	is.Equal([]int{10}, result1)
+	is.Equal([]int{7}, result2)
+	is.Empty(result3)
+
+	type myStrings []string
+	allStrings := myStrings{"", "foo", "bar"}
+	nonempty := Without(allStrings, "a", "b", "c", "d", "e")
+	is.Equal(allStrings, nonempty)
+	is.IsType(nonempty, allStrings, "type preserved")
+}
+
+// TestWithoutBySmall exercises the small-scan path (all exclude lists
 // here are <= withoutSmallExcludeThreshold). See TestWithoutByLarge for
 // the map-based path.
-func TestWithoutBySmallScan(t *testing.T) {
+func TestWithoutBySmall(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
