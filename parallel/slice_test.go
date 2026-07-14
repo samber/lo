@@ -11,10 +11,10 @@ import (
 
 func TestMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("constant transform", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		result := Map([]int{1, 2, 3, 4}, func(x, _ int) string {
 			return "Hello"
@@ -24,6 +24,7 @@ func TestMap(t *testing.T) {
 
 	t.Run("formats int64 as string", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		result := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
 			return strconv.FormatInt(x, 10)
@@ -58,10 +59,10 @@ func TestTimes(t *testing.T) {
 
 func TestGroupBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("groups by modulo", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		result := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
 			return i % 3
@@ -81,6 +82,7 @@ func TestGroupBy(t *testing.T) {
 
 	t.Run("preserves named slice type", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStrings []string
 		allStrings := myStrings{"", "foo", "bar"}
@@ -93,7 +95,6 @@ func TestGroupBy(t *testing.T) {
 
 func TestPartitionBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	oddEven := func(x int) string {
 		if x < 0 {
@@ -106,6 +107,7 @@ func TestPartitionBy(t *testing.T) {
 
 	t.Run("partitions a non-empty collection", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		result := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
 
@@ -122,6 +124,7 @@ func TestPartitionBy(t *testing.T) {
 
 	t.Run("empty collection", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		result := PartitionBy([]int{}, oddEven)
 		is.Empty(result)
@@ -129,6 +132,7 @@ func TestPartitionBy(t *testing.T) {
 
 	t.Run("preserves named slice type", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStrings []string
 		allStrings := myStrings{"", "foo", "bar"}
