@@ -501,9 +501,9 @@ func TestMeanByErr(t *testing.T) {
 	}
 }
 
-// TestModeSmall exercises the small-scan path (all collections here are
-// <= smallModeThreshold). See TestModeLarge for the map-based path.
-func TestModeSmall(t *testing.T) {
+// TestMode_small exercises the small-scan path (all collections here are
+// <= smallModeThreshold). See TestMode_large for the map-based path.
+func TestMode_small(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -521,7 +521,7 @@ func TestModeSmall(t *testing.T) {
 // Mode dispatches on len(collection) <= smallModeThreshold (8): a collection
 // of 9+ elements forces the modeLarge path, which the table above never
 // exercises (its collections are all <= 4 elements).
-func TestModeLarge(t *testing.T) {
+func TestMode_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -532,7 +532,7 @@ func TestModeLarge(t *testing.T) {
 	is.Equal([]int{1, 2}, result2)
 }
 
-func TestModeCapacityConsistency(t *testing.T) {
+func TestMode_capacityConsistency(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 

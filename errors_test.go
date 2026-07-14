@@ -324,7 +324,7 @@ func (es joinErrors) As(t any) bool {
 	return false
 }
 
-func TestMustUserCustomHandler(t *testing.T) { //nolint:paralleltest
+func TestMust_userCustomHandler(t *testing.T) { //nolint:paralleltest
 	oldMustChecker := MustChecker
 	MustChecker = mustCheckerWithStack
 	defer func() {

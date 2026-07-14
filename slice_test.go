@@ -770,9 +770,9 @@ func TestForEachWhile(t *testing.T) {
 	is.IsIncreasing(callParams2)
 }
 
-// TestUniqSmall exercises the small-scan path (all collections here are
-// <= uniqSmallInputThreshold). See TestUniqLarge for the map-based path.
-func TestUniqSmall(t *testing.T) {
+// TestUniq_small exercises the small-scan path (all collections here are
+// <= uniqSmallInputThreshold). See TestUniq_large for the map-based path.
+func TestUniq_small(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -788,7 +788,7 @@ func TestUniqSmall(t *testing.T) {
 // Uniq dispatches on len(collection) <= uniqSmallInputThreshold (8): a
 // collection of 12 elements forces the uniqLarge path, which the table
 // above never exercises (its collections are all <= 4 elements).
-func TestUniqLarge(t *testing.T) {
+func TestUniq_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -804,9 +804,9 @@ func TestUniqLarge(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-// TestUniqBySmall exercises the small-scan path (all collections here are
-// <= uniqSmallInputThreshold). See TestUniqByLarge for the map-based path.
-func TestUniqBySmall(t *testing.T) {
+// TestUniqBy_small exercises the small-scan path (all collections here are
+// <= uniqSmallInputThreshold). See TestUniqBy_large for the map-based path.
+func TestUniqBy_small(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -826,7 +826,7 @@ func TestUniqBySmall(t *testing.T) {
 // UniqBy dispatches on len(collection) <= uniqSmallInputThreshold (8): a
 // collection of 12 elements forces the uniqByLarge path, which the table
 // above never exercises (its collections are all <= 6 elements).
-func TestUniqByLarge(t *testing.T) {
+func TestUniqBy_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3118,7 +3118,7 @@ func TestSplice(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-func TestCutSuccess(t *testing.T) {
+func TestCut_success(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3165,7 +3165,7 @@ func TestCutSuccess(t *testing.T) {
 	is.Equal([]string{"b"}, actualRight)
 }
 
-func TestCutFail(t *testing.T) {
+func TestCut_fail(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3277,9 +3277,9 @@ func TestCutSuffix(t *testing.T) {
 	is.Equal([]string{"a", "a", "b"}, actualAfterS)
 }
 
-// TestTrimSmallScan exercises the small-scan path (all cutsets here are
-// <= trimSmallCutset). See TestTrimLarge for the map-based path.
-func TestTrimSmallScan(t *testing.T) {
+// TestTrim_smallScan exercises the small-scan path (all cutsets here are
+// <= trimSmallCutset). See TestTrim_large for the map-based path.
+func TestTrim_smallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3298,7 +3298,7 @@ func TestTrimSmallScan(t *testing.T) {
 // Trim dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9 unique
 // elements forces the trimLarge path, which the table above never exercises
 // (its cutsets are all <= 8).
-func TestTrimLarge(t *testing.T) {
+func TestTrim_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3316,9 +3316,9 @@ func TestTrimLarge(t *testing.T) {
 	is.Equal([]string{"X", "Y"}, actual)
 }
 
-// TestTrimLeftSmallScan exercises the small-scan path (all cutsets here are
-// <= trimSmallCutset). See TestTrimLeftLarge for the map-based path.
-func TestTrimLeftSmallScan(t *testing.T) {
+// TestTrimLeft_smallScan exercises the small-scan path (all cutsets here are
+// <= trimSmallCutset). See TestTrimLeft_large for the map-based path.
+func TestTrimLeft_smallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3339,7 +3339,7 @@ func TestTrimLeftSmallScan(t *testing.T) {
 // TrimLeft dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9
 // unique elements forces the trimLeftLarge path, which the table above never
 // exercises (its cutsets are all <= 8).
-func TestTrimLeftLarge(t *testing.T) {
+func TestTrimLeft_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3375,9 +3375,9 @@ func TestTrimPrefix(t *testing.T) {
 	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
 }
 
-// TestTrimRightSmallScan exercises the small-scan path (all cutsets here are
-// <= trimSmallCutset). See TestTrimRightLarge for the map-based path.
-func TestTrimRightSmallScan(t *testing.T) {
+// TestTrimRight_smallScan exercises the small-scan path (all cutsets here are
+// <= trimSmallCutset). See TestTrimRight_large for the map-based path.
+func TestTrimRight_smallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -3396,7 +3396,7 @@ func TestTrimRightSmallScan(t *testing.T) {
 // TrimRight dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9
 // unique elements forces the trimRightLarge path, which the table above
 // never exercises (its cutsets are all <= 8).
-func TestTrimRightLarge(t *testing.T) {
+func TestTrimRight_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 

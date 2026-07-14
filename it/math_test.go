@@ -193,7 +193,7 @@ func TestMode(t *testing.T) {
 	is.Equal([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, result5)
 }
 
-func TestModeCapacityConsistency(t *testing.T) {
+func TestMode_capacityConsistency(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
