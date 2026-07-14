@@ -42,9 +42,9 @@ func TestContainsBy(t *testing.T) {
 	is.False(result4)
 }
 
-// TestEverySmallScan exercises the small-scan path (all subsets here are
-// <= everySmallSubset). See TestEveryLarge for the map-based path.
-func TestEverySmallScan(t *testing.T) {
+// TestEvery_smallScan exercises the small-scan path (all subsets here are
+// <= everySmallSubset). See TestEvery_large for the map-based path.
+func TestEvery_smallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -62,7 +62,7 @@ func TestEverySmallScan(t *testing.T) {
 // Every dispatches on len(subset) <= everySmallSubset (8): a subset of 9
 // elements forces the everyLarge path, which the table above never
 // exercises (its subsets are all <= 2 elements).
-func TestEveryLarge(t *testing.T) {
+func TestEvery_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -273,10 +273,10 @@ func TestIntersectBy(t *testing.T) {
 	is.ElementsMatch(result, []int{0, 1})
 }
 
-// TestDifferenceSmallScan exercises the small-scan path (all lists here are
-// <= differenceSmallThreshold). See TestDifferenceLarge for the map-based
+// TestDifference_smallScan exercises the small-scan path (all lists here are
+// <= differenceSmallThreshold). See TestDifference_large for the map-based
 // path.
-func TestDifferenceSmallScan(t *testing.T) {
+func TestDifference_smallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -303,7 +303,7 @@ func TestDifferenceSmallScan(t *testing.T) {
 // len(list2) <= differenceSmallThreshold (8): a pair of 9-element lists
 // forces the differenceLarge path, which the table above never
 // exercises (its lists are all <= 6 elements).
-func TestDifferenceLarge(t *testing.T) {
+func TestDifference_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -468,9 +468,9 @@ func TestUnionByErr(t *testing.T) {
 	is.Equal(6, callCount, "should stop at first error")
 }
 
-// TestWithoutSmall exercises the small-scan path (all exclude lists here are
-// <= withoutSmallExcludeThreshold). See TestWithoutLarge for the map-based path.
-func TestWithoutSmall(t *testing.T) {
+// TestWithout_small exercises the small-scan path (all exclude lists here are
+// <= withoutSmallExcludeThreshold). See TestWithout_large for the map-based path.
+func TestWithout_small(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -490,9 +490,9 @@ func TestWithoutSmall(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-// TestWithoutLarge exercises the map-based path (all exclude lists here
-// exceed withoutSmallExcludeThreshold). See TestWithoutSmall for the linear-scan path.
-func TestWithoutLarge(t *testing.T) {
+// TestWithout_large exercises the map-based path (all exclude lists here
+// exceed withoutSmallExcludeThreshold). See TestWithout_small for the linear-scan path.
+func TestWithout_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -513,10 +513,10 @@ func TestWithoutLarge(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-// TestWithoutBySmall exercises the small-scan path (all exclude lists
-// here are <= withoutSmallExcludeThreshold). See TestWithoutByLarge for
+// TestWithoutBy_small exercises the small-scan path (all exclude lists
+// here are <= withoutSmallExcludeThreshold). See TestWithoutBy_large for
 // the map-based path.
-func TestWithoutBySmall(t *testing.T) {
+func TestWithoutBy_small(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -546,7 +546,7 @@ func TestWithoutBySmall(t *testing.T) {
 // WithoutBy dispatches on len(exclude) <= withoutSmallExcludeThreshold (4): an
 // exclude list of 5 keys forces the withoutByLarge path, which the table
 // above never exercises (its exclude lists are all <= 3 elements).
-func TestWithoutByLarge(t *testing.T) {
+func TestWithoutBy_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 

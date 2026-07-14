@@ -282,10 +282,10 @@ func TestFindKeyBy(t *testing.T) {
 	is.False(ok2)
 }
 
-// TestFindUniquesSmallScan exercises the small-scan path (all collections
-// here are <= findSmallThreshold). See TestFindUniquesLarge for the
+// TestFindUniques_smallScan exercises the small-scan path (all collections
+// here are <= findSmallThreshold). See TestFindUniques_large for the
 // map-based path.
-func TestFindUniquesSmallScan(t *testing.T) {
+func TestFindUniques_smallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -310,7 +310,7 @@ func TestFindUniquesSmallScan(t *testing.T) {
 // FindUniques dispatches on len(collection) <= findSmallThreshold (8): a
 // collection of 12 elements forces the findUniquesLarge path, which the
 // table above never exercises (its collections are all <= 6 elements).
-func TestFindUniquesLarge(t *testing.T) {
+func TestFindUniques_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -330,10 +330,10 @@ func TestFindUniquesLarge(t *testing.T) {
 	is.IsType(nonempty, allUnique, "type preserved")
 }
 
-// TestFindUniquesBySmallScan exercises the small-scan path (all collections
-// here are <= findSmallThreshold). See TestFindUniquesByLarge for the
+// TestFindUniquesBy_smallScan exercises the small-scan path (all collections
+// here are <= findSmallThreshold). See TestFindUniquesBy_large for the
 // map-based path.
-func TestFindUniquesBySmallScan(t *testing.T) {
+func TestFindUniquesBy_smallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -368,7 +368,7 @@ func TestFindUniquesBySmallScan(t *testing.T) {
 // FindUniquesBy dispatches on len(collection) <= findSmallThreshold (8): a
 // collection of 12 elements forces the findUniquesByLarge path, which the
 // table above never exercises (its collections are all <= 6 elements).
-func TestFindUniquesByLarge(t *testing.T) {
+func TestFindUniquesBy_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -388,10 +388,10 @@ func TestFindUniquesByLarge(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-// TestFindDuplicatesSmallScan exercises the small-scan path (all
+// TestFindDuplicates_smallScan exercises the small-scan path (all
 // collections here are <= findSmallThreshold). See
-// TestFindDuplicatesLarge for the map-based path.
-func TestFindDuplicatesSmallScan(t *testing.T) {
+// TestFindDuplicates_large for the map-based path.
+func TestFindDuplicates_smallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -413,7 +413,7 @@ func TestFindDuplicatesSmallScan(t *testing.T) {
 // FindDuplicates dispatches on len(collection) <= findSmallThreshold (8): a
 // collection of 12 elements forces the findDuplicatesLarge path, which the
 // table above never exercises (its collections are all <= 6 elements).
-func TestFindDuplicatesLarge(t *testing.T) {
+func TestFindDuplicates_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -432,10 +432,10 @@ func TestFindDuplicatesLarge(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
-// TestFindDuplicatesBySmallScan exercises the small-scan path (all
+// TestFindDuplicatesBy_smallScan exercises the small-scan path (all
 // collections here are <= findSmallThreshold). See
-// TestFindDuplicatesByLarge for the map-based path.
-func TestFindDuplicatesBySmallScan(t *testing.T) {
+// TestFindDuplicatesBy_large for the map-based path.
+func TestFindDuplicatesBy_smallScan(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -465,7 +465,7 @@ func TestFindDuplicatesBySmallScan(t *testing.T) {
 // FindDuplicatesBy dispatches on len(collection) <= findSmallThreshold (8): a
 // collection of 12 elements forces the findDuplicatesByLarge path, which the
 // table above never exercises (its collections are all <= 5 elements).
-func TestFindDuplicatesByLarge(t *testing.T) {
+func TestFindDuplicatesBy_large(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -1697,7 +1697,7 @@ func TestSamplesBy(t *testing.T) {
 // enough to fit the sparse branch's threshold with a non-trivial count
 // (e.g. the {"a", "b", "c"} slices used above) never exercises the sparse
 // branch at all, so it needs its own coverage on a large collection.
-func TestSamplesBySparse(t *testing.T) {
+func TestSamplesBy_sparse(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -1731,7 +1731,7 @@ func TestSamplesBySparse(t *testing.T) {
 // find.go and would catch a regression in either branch that the two
 // single-branch tests above could miss (e.g. one branch drifting out of
 // sync with the other after an edit to just one of them).
-func TestSamplesBySparseDenseEquivalence(t *testing.T) {
+func TestSamplesBy_sparseDenseEquivalence(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -1754,7 +1754,7 @@ func TestSamplesBySparseDenseEquivalence(t *testing.T) {
 // future change to the condition (e.g. an off-by-one on the comparison
 // operator or the division) is caught even if each branch is otherwise
 // individually correct.
-func TestSamplesBySparseBoundary(t *testing.T) {
+func TestSamplesBy_sparseBoundary(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 

@@ -29,8 +29,8 @@ func TestKeys(t *testing.T) {
 	is.ElementsMatch(r5, []string{"bar", "bar", "foo"})
 }
 
-// TestUniqKeysZero exercises the len(in) == 0 branch: no maps at all.
-func TestUniqKeysZero(t *testing.T) {
+// TestUniqKeys_zero exercises the len(in) == 0 branch: no maps at all.
+func TestUniqKeys_zero(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -38,8 +38,8 @@ func TestUniqKeysZero(t *testing.T) {
 	is.Empty(r1)
 }
 
-// TestUniqKeysSingle exercises the len(in) == 1 branch, which delegates to Keys().
-func TestUniqKeysSingle(t *testing.T) {
+// TestUniqKeys_single exercises the len(in) == 1 branch, which delegates to Keys().
+func TestUniqKeys_single(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
@@ -54,8 +54,8 @@ func TestUniqKeysSingle(t *testing.T) {
 	is.Empty(r3)
 }
 
-// TestUniqKeysMultiple exercises the len(in) > 1 branch, which dedups via a seen-set.
-func TestUniqKeysMultiple(t *testing.T) {
+// TestUniqKeys_multiple exercises the len(in) > 1 branch, which dedups via a seen-set.
+func TestUniqKeys_multiple(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
