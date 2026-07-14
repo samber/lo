@@ -8,10 +8,10 @@ import (
 
 func TestFilter(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("int slice", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		input := []int{1, 2, 3, 4}
 		result := Filter(input, func(x int) bool {
@@ -24,6 +24,7 @@ func TestFilter(t *testing.T) {
 
 	t.Run("string slice", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		input := []string{"", "foo", "", "bar", ""}
 		result := Filter(input, func(x string) bool {
@@ -49,7 +50,6 @@ func TestFilterI(t *testing.T) {
 
 func TestMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -75,6 +75,7 @@ func TestMap(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			list := append([]int{}, tt.input...)
 			Map(list, func(x int) int {
@@ -106,10 +107,10 @@ func TestMapI(t *testing.T) {
 
 func TestShuffle(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("non-empty slice", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		list := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 		Shuffle(list)
@@ -118,6 +119,7 @@ func TestShuffle(t *testing.T) {
 
 	t.Run("empty slice", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		list := []int{}
 		Shuffle(list)
@@ -127,7 +129,6 @@ func TestShuffle(t *testing.T) {
 
 func TestReverse(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -155,6 +156,7 @@ func TestReverse(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			list := append([]int{}, tt.input...)
 			Reverse(list)
@@ -164,6 +166,7 @@ func TestReverse(t *testing.T) {
 
 	t.Run("preserves named slice type", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStrings []string
 		allStrings := myStrings{"", "foo", "bar"}
@@ -174,7 +177,6 @@ func TestReverse(t *testing.T) {
 
 func TestFill(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -200,6 +202,7 @@ func TestFill(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			list := append([]string{}, tt.input...)
 			Fill(list, tt.value)
