@@ -13,124 +13,137 @@ import (
 
 func TestRandomString(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	str1 := RandomString(100, LowerCaseLettersCharset)
-	is.Equal(100, RuneLength(str1))
-	is.Subset(LowerCaseLettersCharset, []rune(str1))
+	t.Run("length and charset", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	str2 := RandomString(100, LowerCaseLettersCharset)
-	is.NotEqual(str1, str2)
+		tests := []struct {
+			name    string
+			size    int
+			charset []rune
+		}{
+			{name: "lowercase letters", size: 100, charset: LowerCaseLettersCharset},
+			{name: "non-utf8 charset", size: 100, charset: []rune("明1好休2林森")},
+			{name: "single-rune charset", size: 10, charset: []rune{65}},
+		}
 
-	noneUtf8Charset := []rune("明1好休2林森")
-	str3 := RandomString(100, noneUtf8Charset)
-	is.Equal(100, RuneLength(str3))
-	is.Subset(noneUtf8Charset, []rune(str3))
+		for _, tt := range tests {
+			tt := tt
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
 
-	is.PanicsWithValue("lo.RandomString: charset must not be empty", func() { RandomString(100, []rune{}) })
-	is.PanicsWithValue("lo.RandomString: size must be greater than 0", func() { RandomString(0, LowerCaseLettersCharset) })
+				str := RandomString(tt.size, tt.charset)
+				is.Equal(tt.size, RuneLength(str))
+				is.Subset(tt.charset, []rune(str))
+			})
+		}
+	})
 
-	str4 := RandomString(10, []rune{65})
-	is.Equal(10, RuneLength(str4))
-	is.Subset([]rune{65, 65, 65, 65, 65, 65, 65, 65, 65, 65}, []rune(str4))
+	t.Run("distinct calls produce distinct strings", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		str1 := RandomString(100, LowerCaseLettersCharset)
+		str2 := RandomString(100, LowerCaseLettersCharset)
+		is.NotEqual(str1, str2)
+	})
+
+	t.Run("panics", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		is.PanicsWithValue("lo.RandomString: charset must not be empty", func() { RandomString(100, []rune{}) })
+		is.PanicsWithValue("lo.RandomString: size must be greater than 0", func() { RandomString(0, LowerCaseLettersCharset) })
+	})
 }
 
 func TestChunkString(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := ChunkString("12345", 2)
-	is.Equal([]string{"12", "34", "5"}, result1)
+	tests := []struct {
+		name     string
+		str      string
+		size     int
+		expected []string
+	}{
+		{name: "even split", str: "12345", size: 2, expected: []string{"12", "34", "5"}},
+		{name: "exact multiple", str: "123456", size: 2, expected: []string{"12", "34", "56"}},
+		{name: "size equals length", str: "123456", size: 6, expected: []string{"123456"}},
+		{name: "size greater than length", str: "123456", size: 10, expected: []string{"123456"}},
+		{name: "empty string", str: "", size: 2, expected: []string{""}}, // @TODO: should be [] - see https://github.com/samber/lo/issues/788
+		{name: "unicode string", str: "明1好休2林森", size: 2, expected: []string{"明1", "好休", "2林", "森"}},
+	}
 
-	result2 := ChunkString("123456", 2)
-	is.Equal([]string{"12", "34", "56"}, result2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tt.expected, ChunkString(tt.str, tt.size))
+		})
+	}
 
-	result3 := ChunkString("123456", 6)
-	is.Equal([]string{"123456"}, result3)
+	t.Run("panics on zero size", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	result4 := ChunkString("123456", 10)
-	is.Equal([]string{"123456"}, result4)
-
-	result5 := ChunkString("", 2)
-	is.Equal([]string{""}, result5) // @TODO: should be [] - see https://github.com/samber/lo/issues/788
-
-	result6 := ChunkString("明1好休2林森", 2)
-	is.Equal([]string{"明1", "好休", "2林", "森"}, result6)
-
-	is.PanicsWithValue("lo.ChunkString: size must be greater than 0", func() {
-		ChunkString("12345", 0)
+		is.PanicsWithValue("lo.ChunkString: size must be greater than 0", func() {
+			ChunkString("12345", 0)
+		})
 	})
 }
 
 func TestSubstring(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	str0 := Substring("hello", 5, 10)
-	str1 := Substring("hello", 0, 0)
-	str2 := Substring("hello", 10, 2)
-	str3 := Substring("hello", -10, 2)
-	str4 := Substring("hello", 0, 10)
-	str5 := Substring("hello", 0, 2)
-	str6 := Substring("hello", 2, 2)
-	str7 := Substring("hello", 2, 5)
-	str8 := Substring("hello", 2, 3)
-	str9 := Substring("hello", 2, 4)
-	str10 := Substring("hello", -2, 4)
-	str11 := Substring("hello", -4, 1)
-	str12 := Substring("hello", -4, math.MaxUint)
-	str13 := Substring("🏠🐶🐱", 0, 2)
-	str14 := Substring("你好，世界", 0, 3)
-	str15 := Substring("🏠🐶🐱", 1, 2)
-	str16 := Substring("🏠🐶🐱", -2, 2)
-	str17 := Substring("🏠🐶🐱", 3, 3)
-	str18 := Substring("🏠🐶🐱", 4, 3)
-	str19 := Substring("hello", 5, 1)
-	str20 := Substring("hello", -5, 5)
-	str21 := Substring("hello", -5, 4)
-	str22 := Substring("hello", -5, math.MaxUint)
-	str23 := Substring("\x00\x00\x00", 0, math.MaxUint)
-	str24 := Substring(string(utf8.RuneError), 0, math.MaxUint)
-	str25 := Substring("привет"[1:], 0, 6)
-	str26 := Substring("привет"[:2*5+1], 0, 6)
-	str27 := Substring("привет"[:2*5+1], -2, math.MaxUint)
-	str28 := Substring("🏠🐶🐱"[1:], 0, math.MaxUint)
-	str29 := Substring("🏠🐶🐱"[1:], 0, 2)
-	str30 := Substring("привет", 6, math.MaxUint)
-	str31 := Substring("привет", 6+1, math.MaxUint)
+	tests := []struct {
+		name     string
+		str      string
+		offset   int
+		length   uint
+		expected string
+	}{
+		{name: "offset beyond length, large requested length", str: "hello", offset: 5, length: 10, expected: ""},
+		{name: "zero length", str: "hello", offset: 0, length: 0, expected: ""},
+		{name: "offset beyond length", str: "hello", offset: 10, length: 2, expected: ""},
+		{name: "negative offset within bounds", str: "hello", offset: -10, length: 2, expected: "he"},
+		{name: "length exceeds string", str: "hello", offset: 0, length: 10, expected: "hello"},
+		{name: "simple prefix", str: "hello", offset: 0, length: 2, expected: "he"},
+		{name: "middle slice", str: "hello", offset: 2, length: 2, expected: "ll"},
+		{name: "middle to end, exact length", str: "hello", offset: 2, length: 5, expected: "llo"},
+		{name: "middle, length 3", str: "hello", offset: 2, length: 3, expected: "llo"},
+		{name: "middle, length 4 clipped", str: "hello", offset: 2, length: 4, expected: "llo"},
+		{name: "negative offset, length 4", str: "hello", offset: -2, length: 4, expected: "lo"},
+		{name: "negative offset, length 1", str: "hello", offset: -4, length: 1, expected: "e"},
+		{name: "negative offset, max length", str: "hello", offset: -4, length: math.MaxUint, expected: "ello"},
+		{name: "emoji prefix", str: "🏠🐶🐱", offset: 0, length: 2, expected: "🏠🐶"},
+		{name: "cjk prefix", str: "你好，世界", offset: 0, length: 3, expected: "你好，"},
+		{name: "emoji offset 1", str: "🏠🐶🐱", offset: 1, length: 2, expected: "🐶🐱"},
+		{name: "emoji negative offset", str: "🏠🐶🐱", offset: -2, length: 2, expected: "🐶🐱"},
+		{name: "emoji offset at rune count", str: "🏠🐶🐱", offset: 3, length: 3, expected: ""},
+		{name: "emoji offset beyond rune count", str: "🏠🐶🐱", offset: 4, length: 3, expected: ""},
+		{name: "offset at length, length 1", str: "hello", offset: 5, length: 1, expected: ""},
+		{name: "negative offset, full length", str: "hello", offset: -5, length: 5, expected: "hello"},
+		{name: "negative offset, length 4 of full string", str: "hello", offset: -5, length: 4, expected: "hell"},
+		{name: "negative offset, max length of full string", str: "hello", offset: -5, length: math.MaxUint, expected: "hello"},
+		{name: "null bytes", str: "\x00\x00\x00", offset: 0, length: math.MaxUint, expected: ""},
+		{name: "utf8 rune error", str: string(utf8.RuneError), offset: 0, length: math.MaxUint, expected: "�"},
+		{name: "invalid utf8 from byte offset", str: "привет"[1:], offset: 0, length: 6, expected: "�ривет"},
+		{name: "invalid utf8 truncated tail", str: "привет"[:2*5+1], offset: 0, length: 6, expected: "приве�"},
+		{name: "invalid utf8 negative offset", str: "привет"[:2*5+1], offset: -2, length: math.MaxUint, expected: "е�"},
+		{name: "invalid utf8 emoji tail, max length", str: "🏠🐶🐱"[1:], offset: 0, length: math.MaxUint, expected: "���🐶🐱"},
+		{name: "invalid utf8 emoji tail, length 2", str: "🏠🐶🐱"[1:], offset: 0, length: 2, expected: "��"},
+		{name: "cyrillic offset at rune count", str: "привет", offset: 6, length: math.MaxUint, expected: ""},
+		{name: "cyrillic offset beyond rune count", str: "привет", offset: 6 + 1, length: math.MaxUint, expected: ""},
+	}
 
-	is.Empty(str0)
-	is.Empty(str1)
-	is.Empty(str2)
-	is.Equal("he", str3)
-	is.Equal("hello", str4)
-	is.Equal("he", str5)
-	is.Equal("ll", str6)
-	is.Equal("llo", str7)
-	is.Equal("llo", str8)
-	is.Equal("llo", str9)
-	is.Equal("lo", str10)
-	is.Equal("e", str11)
-	is.Equal("ello", str12)
-	is.Equal("🏠🐶", str13)
-	is.Equal("你好，", str14)
-	is.Equal("🐶🐱", str15)
-	is.Equal("🐶🐱", str16)
-	is.Empty(str17)
-	is.Empty(str18)
-	is.Empty(str19)
-	is.Equal("hello", str20)
-	is.Equal("hell", str21)
-	is.Equal("hello", str22)
-	is.Empty(str23)
-	is.Equal("�", str24)
-	is.Equal("�ривет", str25)
-	is.Equal("приве�", str26)
-	is.Equal("е�", str27)
-	is.Equal("���🐶🐱", str28)
-	is.Equal("��", str29)
-	is.Empty(str30)
-	is.Empty(str31)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tt.expected, Substring(tt.str, tt.offset, tt.length))
+		})
+	}
 }
 
 func BenchmarkSubstring(b *testing.B) {
@@ -541,99 +554,181 @@ func TestCapitalize(t *testing.T) {
 
 func TestCapitalizeWithLanguage(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	// English: plain I
-	is.Equal("Istanbul", CapitalizeWithLanguage("istanbul", language.English))
-	is.Equal("Hello", CapitalizeWithLanguage("heLLO", language.English))
+	tests := []struct {
+		name string
+		in   string
+		lang language.Tag
+		want string
+	}{
+		{name: "english plain I", in: "istanbul", lang: language.English, want: "Istanbul"},
+		{name: "english mixed case", in: "heLLO", lang: language.English, want: "Hello"},
+		// Turkish: lowercase i → title İ (dotted capital I, U+0130)
+		{name: "turkish lowercase i", in: "istanbul", lang: language.Turkish, want: "İstanbul"},
+		// Turkish: ISTANBUL starts with capital I (the uppercase form of ı); title case
+		// keeps it as I and lowercases the rest → "Istanbul" (not "İstanbul").
+		{name: "turkish uppercase ISTANBUL", in: "ISTANBUL", lang: language.Turkish, want: "Istanbul"},
+	}
 
-	// Turkish: lowercase i → title İ (dotted capital I, U+0130)
-	is.Equal("İstanbul", CapitalizeWithLanguage("istanbul", language.Turkish))
-	// Turkish: ISTANBUL starts with capital I (the uppercase form of ı); title case
-	// keeps it as I and lowercases the rest → "Istanbul" (not "İstanbul").
-	is.Equal("Istanbul", CapitalizeWithLanguage("ISTANBUL", language.Turkish))
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tt.want, CapitalizeWithLanguage(tt.in, tt.lang))
+		})
+	}
 }
 
 func TestPascalCaseWithLanguage(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.Equal("IstanbulCity", PascalCaseWithLanguage("istanbul city", language.English))
-	// Turkish: lowercase i → title İ (dotted capital I, U+0130)
-	is.Equal("İstanbulCity", PascalCaseWithLanguage("istanbul city", language.Turkish))
+	tests := []struct {
+		name string
+		in   string
+		lang language.Tag
+		want string
+	}{
+		{name: "english", in: "istanbul city", lang: language.English, want: "IstanbulCity"},
+		// Turkish: lowercase i → title İ (dotted capital I, U+0130)
+		{name: "turkish lowercase i", in: "istanbul city", lang: language.Turkish, want: "İstanbulCity"},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tt.want, PascalCaseWithLanguage(tt.in, tt.lang))
+		})
+	}
 }
 
 func TestCamelCaseWithLanguage(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.Equal("istanbulCity", CamelCaseWithLanguage("istanbul city", language.English))
-	// Turkish: capital I lowercases to ı (dotless i, U+0131), so first word → "ıstanbul".
-	// Second word title-cased: C stays C, capital I → lowercase ı → "Cıty".
-	is.Equal("ıstanbulCıty", CamelCaseWithLanguage("ISTANBUL CITY", language.Turkish))
+	tests := []struct {
+		name string
+		in   string
+		lang language.Tag
+		want string
+	}{
+		{name: "english", in: "istanbul city", lang: language.English, want: "istanbulCity"},
+		// Turkish: capital I lowercases to ı (dotless i, U+0131), so first word → "ıstanbul".
+		// Second word title-cased: C stays C, capital I → lowercase ı → "Cıty".
+		{name: "turkish uppercase ISTANBUL CITY", in: "ISTANBUL CITY", lang: language.Turkish, want: "ıstanbulCıty"},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tt.want, CamelCaseWithLanguage(tt.in, tt.lang))
+		})
+	}
 }
 
 func TestKebabCaseWithLanguage(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.Equal("istanbul-city", KebabCaseWithLanguage("ISTANBUL CITY", language.English))
-	// Turkish: I lowercases to ı (dotless i, U+0131)
-	is.Equal("ıstanbul-cıty", KebabCaseWithLanguage("ISTANBUL CITY", language.Turkish))
+	tests := []struct {
+		name string
+		in   string
+		lang language.Tag
+		want string
+	}{
+		{name: "english", in: "ISTANBUL CITY", lang: language.English, want: "istanbul-city"},
+		// Turkish: I lowercases to ı (dotless i, U+0131)
+		{name: "turkish", in: "ISTANBUL CITY", lang: language.Turkish, want: "ıstanbul-cıty"},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tt.want, KebabCaseWithLanguage(tt.in, tt.lang))
+		})
+	}
 }
 
 func TestSnakeCaseWithLanguage(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.Equal("istanbul_city", SnakeCaseWithLanguage("ISTANBUL CITY", language.English))
-	// Turkish: I lowercases to ı (dotless i, U+0131)
-	is.Equal("ıstanbul_cıty", SnakeCaseWithLanguage("ISTANBUL CITY", language.Turkish))
+	tests := []struct {
+		name string
+		in   string
+		lang language.Tag
+		want string
+	}{
+		{name: "english", in: "ISTANBUL CITY", lang: language.English, want: "istanbul_city"},
+		// Turkish: I lowercases to ı (dotless i, U+0131)
+		{name: "turkish", in: "ISTANBUL CITY", lang: language.Turkish, want: "ıstanbul_cıty"},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tt.want, SnakeCaseWithLanguage(tt.in, tt.lang))
+		})
+	}
 }
 
 func TestEllipsis(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.Equal("...", Ellipsis("12", 0))
-	is.Equal("...", Ellipsis("12", 1))
-	is.Equal("12", Ellipsis("12", 2))
-	is.Equal("12", Ellipsis("12", 3))
-	is.Equal("12345", Ellipsis("12345", 5))
-	is.Equal("1...", Ellipsis("12345", 4))
-	is.Equal("1...", Ellipsis("	12345  ", 4))
-	is.Equal("12345", Ellipsis("12345", 6))
-	is.Equal("12345", Ellipsis("12345", 10))
-	is.Equal("12345", Ellipsis("  12345  ", 10))
-	is.Equal("...", Ellipsis("12345", 3))
-	is.Equal("...", Ellipsis("12345", 2))
-	is.Equal("...", Ellipsis("12345", -1))
-	is.Equal("hello...", Ellipsis(" hello   world ", 9))
+	tests := []struct {
+		name     string
+		str      string
+		length   int
+		expected string
+	}{
+		{name: "length 0", str: "12", length: 0, expected: "..."},
+		{name: "length 1", str: "12", length: 1, expected: "..."},
+		{name: "length equals string length", str: "12", length: 2, expected: "12"},
+		{name: "length exceeds string length", str: "12", length: 3, expected: "12"},
+		{name: "exact length", str: "12345", length: 5, expected: "12345"},
+		{name: "truncate to 1 char", str: "12345", length: 4, expected: "1..."},
+		{name: "leading tab trimmed before truncation", str: "\t12345  ", length: 4, expected: "1..."},
+		{name: "length exceeds string length by 1", str: "12345", length: 6, expected: "12345"},
+		{name: "length well beyond string length", str: "12345", length: 10, expected: "12345"},
+		{name: "surrounding whitespace trimmed", str: "  12345  ", length: 10, expected: "12345"},
+		{name: "length 3 on 5-char string", str: "12345", length: 3, expected: "..."},
+		{name: "length 2 on 5-char string", str: "12345", length: 2, expected: "..."},
+		{name: "negative length", str: "12345", length: -1, expected: "..."},
+		{name: "internal whitespace collapsed and truncated", str: " hello   world ", length: 9, expected: "hello..."},
 
-	// Unicode: rune-based truncation (not byte-based)
-	is.Equal("hello...", Ellipsis("hello 世界! 你好", 8))      // CJK characters: "hello" (5 runes) + "..." = 8 runes
-	is.Equal("hello 世界...", Ellipsis("hello 世界! 你好", 11))  // truncate within CJK text
-	is.Equal("hello 世界! 你好", Ellipsis("hello 世界! 你好", 12)) // exact length, no truncation
-	is.Equal("hello 世界! 你好", Ellipsis("hello 世界! 你好", 20)) // length exceeds string, no truncation
-	is.Equal("🏠🐶🐱🌟", Ellipsis("🏠🐶🐱🌟", 5))                  // length > rune count, no truncation
-	is.Equal("🏠🐶🐱🌟", Ellipsis("🏠🐶🐱🌟", 4))                  // exact length, no truncation
-	is.Equal("...", Ellipsis("🏠🐶🐱🌟", 3))                   // length == 3, returns "..."
-	is.Equal("...", Ellipsis("🏠🐶🐱🌟", 2))                   // length < 3, returns "..."
-	is.Equal("🏠🐶...", Ellipsis("🏠🐶🐱🌟🎉🌈", 5))               // 6 emoji, truncate to 2 + "..."
-	is.Equal("café", Ellipsis("café", 4))                  // accented char counts as 1 rune
-	is.Equal("...", Ellipsis("café", 3))                   // length == 3, returns "..."
-	is.Equal("ca...", Ellipsis("café au lait", 5))         // mixed ASCII and accented
+		// Unicode: rune-based truncation (not byte-based)
+		{name: "CJK characters: hello (5 runes) + ... = 8 runes", str: "hello 世界! 你好", length: 8, expected: "hello..."},
+		{name: "truncate within CJK text", str: "hello 世界! 你好", length: 11, expected: "hello 世界..."},
+		{name: "CJK exact length, no truncation", str: "hello 世界! 你好", length: 12, expected: "hello 世界! 你好"},
+		{name: "CJK length exceeds string, no truncation", str: "hello 世界! 你好", length: 20, expected: "hello 世界! 你好"},
+		{name: "length > rune count, no truncation", str: "🏠🐶🐱🌟", length: 5, expected: "🏠🐶🐱🌟"},
+		{name: "emoji exact length, no truncation", str: "🏠🐶🐱🌟", length: 4, expected: "🏠🐶🐱🌟"},
+		{name: "emoji length == 3, returns ...", str: "🏠🐶🐱🌟", length: 3, expected: "..."},
+		{name: "emoji length < 3, returns ...", str: "🏠🐶🐱🌟", length: 2, expected: "..."},
+		{name: "6 emoji, truncate to 2 + ...", str: "🏠🐶🐱🌟🎉🌈", length: 5, expected: "🏠🐶..."},
+		{name: "accented char counts as 1 rune", str: "café", length: 4, expected: "café"},
+		{name: "accented, length == 3, returns ...", str: "café", length: 3, expected: "..."},
+		{name: "mixed ASCII and accented", str: "café au lait", length: 5, expected: "ca..."},
 
-	// Combining emoji (Rainbow Flag is 4 runes: U+1F3F3 + U+FE0F + U+200D + U+1F308)
-	// "aà😁🏳️‍🌈pabc" = 1 + 1 + 1 + 4 + 1 + 1 + 1 + 1 = 11 runes total
-	is.Equal("...", Ellipsis("aà😁🏳️‍🌈pabc", 2))    // only "..."
-	is.Equal("...", Ellipsis("aà😁🏳️‍🌈pabc", 3))    // only "..."
-	is.Equal("a...", Ellipsis("aà😁🏳️‍🌈pabc", 4))   // 1 rune + "..."
-	is.Equal("aà...", Ellipsis("aà😁🏳️‍🌈pabc", 5))  // 2 runes + "..."
-	is.Equal("aà😁...", Ellipsis("aà😁🏳️‍🌈pabc", 6)) // 3 runes + "..."
-	// @TODO: fix these tests
-	// is.Equal("aà😁🏳️‍🌈...", Ellipsis("aà😁🏳️‍🌈pabc", 7)) // 4 runes + "..."
-	// is.Equal("aà😁🏳️‍🌈p...", Ellipsis("aà😁🏳️‍🌈pabc", 8))  // 5 runes + "..."
-	// is.Equal("aà😁🏳️‍🌈pabc", Ellipsis("aà😁🏳️‍🌈pabc", 9))  // exact length, no truncation
-	// is.Equal("aà😁🏳️‍🌈pabc", Ellipsis("aà😁🏳️‍🌈pabc", 10)) // length exceeds string, no truncation
+		// Combining emoji (Rainbow Flag is 4 runes: U+1F3F3 + U+FE0F + U+200D + U+1F308)
+		// "aà😁🏳️‍🌈pabc" = 1 + 1 + 1 + 4 + 1 + 1 + 1 + 1 = 11 runes total
+		{name: "combining emoji, length 2: only ...", str: "aà😁🏳️‍🌈pabc", length: 2, expected: "..."},
+		{name: "combining emoji, length 3: only ...", str: "aà😁🏳️‍🌈pabc", length: 3, expected: "..."},
+		{name: "combining emoji, 1 rune + ...", str: "aà😁🏳️‍🌈pabc", length: 4, expected: "a..."},
+		{name: "combining emoji, 2 runes + ...", str: "aà😁🏳️‍🌈pabc", length: 5, expected: "aà..."},
+		{name: "combining emoji, 3 runes + ...", str: "aà😁🏳️‍🌈pabc", length: 6, expected: "aà😁..."},
+		// @TODO: fix these cases
+		// {name: "4 runes + ...", str: "aà😁🏳️‍🌈pabc", length: 7, expected: "aà😁🏳️‍🌈..."},
+		// {name: "5 runes + ...", str: "aà😁🏳️‍🌈pabc", length: 8, expected: "aà😁🏳️‍🌈p..."},
+		// {name: "exact length, no truncation", str: "aà😁🏳️‍🌈pabc", length: 9, expected: "aà😁🏳️‍🌈pabc"},
+		// {name: "length exceeds string, no truncation", str: "aà😁🏳️‍🌈pabc", length: 10, expected: "aà😁🏳️‍🌈pabc"},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tt.expected, Ellipsis(tt.str, tt.length))
+		})
+	}
 }
