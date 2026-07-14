@@ -15,11 +15,23 @@ func TestContains(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Contains(values(0, 1, 2, 3, 4, 5), 5)
-	result2 := Contains(values(0, 1, 2, 3, 4, 5), 6)
+	tests := []struct {
+		name     string
+		seq      iter.Seq[int]
+		target   int
+		expected bool
+	}{
+		{name: "found", seq: values(0, 1, 2, 3, 4, 5), target: 5, expected: true},
+		{name: "not found", seq: values(0, 1, 2, 3, 4, 5), target: 6, expected: false},
+	}
 
-	is.True(result1)
-	is.False(result2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is.Equal(tt.expected, Contains(tt.seq, tt.target))
+		})
+	}
 }
 
 func TestContainsBy(t *testing.T) {
@@ -31,182 +43,243 @@ func TestContainsBy(t *testing.T) {
 		B string
 	}
 
-	a1 := values(a{A: 1, B: "1"}, a{A: 2, B: "2"}, a{A: 3, B: "3"})
-	result1 := ContainsBy(a1, func(t a) bool { return t.A == 1 && t.B == "2" })
-	result2 := ContainsBy(a1, func(t a) bool { return t.A == 2 && t.B == "2" })
+	t.Run("struct type", func(t *testing.T) {
+		t.Parallel()
 
-	a2 := values("aaa", "bbb", "ccc")
-	result3 := ContainsBy(a2, func(t string) bool { return t == "ccc" })
-	result4 := ContainsBy(a2, func(t string) bool { return t == "ddd" })
+		a1 := values(a{A: 1, B: "1"}, a{A: 2, B: "2"}, a{A: 3, B: "3"})
 
-	is.False(result1)
-	is.True(result2)
-	is.True(result3)
-	is.False(result4)
+		tests := []struct {
+			name      string
+			predicate func(a) bool
+			expected  bool
+		}{
+			{name: "no match", predicate: func(t a) bool { return t.A == 1 && t.B == "2" }, expected: false},
+			{name: "match", predicate: func(t a) bool { return t.A == 2 && t.B == "2" }, expected: true},
+		}
+
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is.Equal(tt.expected, ContainsBy(a1, tt.predicate))
+			})
+		}
+	})
+
+	t.Run("string type", func(t *testing.T) {
+		t.Parallel()
+
+		a2 := values("aaa", "bbb", "ccc")
+
+		tests := []struct {
+			name      string
+			predicate func(string) bool
+			expected  bool
+		}{
+			{name: "match", predicate: func(t string) bool { return t == "ccc" }, expected: true},
+			{name: "no match", predicate: func(t string) bool { return t == "ddd" }, expected: false},
+		}
+
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is.Equal(tt.expected, ContainsBy(a2, tt.predicate))
+			})
+		}
+	})
 }
 
 func TestEvery(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Every(values(0, 1, 2, 3, 4, 5), 0, 2)
-	result2 := Every(values(0, 1, 2, 3, 4, 5), 0, 6)
-	result3 := Every(values(0, 1, 2, 3, 4, 5), -1, 6)
-	result4 := Every(values(0, 1, 2, 3, 4, 5))
+	tests := []struct {
+		name     string
+		args     []int
+		expected bool
+	}{
+		{name: "both present", args: []int{0, 2}, expected: true},
+		{name: "one present one missing", args: []int{0, 6}, expected: false},
+		{name: "both missing", args: []int{-1, 6}, expected: false},
+		{name: "no args", args: nil, expected: true},
+	}
 
-	is.True(result1)
-	is.False(result2)
-	is.False(result3)
-	is.True(result4)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is.Equal(tt.expected, Every(values(0, 1, 2, 3, 4, 5), tt.args...))
+		})
+	}
 }
 
 func TestEveryBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := EveryBy(values(1, 2, 3, 4), func(x int) bool {
-		return x < 5
-	})
+	tests := []struct {
+		name      string
+		seq       iter.Seq[int]
+		predicate func(int) bool
+		expected  bool
+	}{
+		{name: "all match", seq: values(1, 2, 3, 4), predicate: func(x int) bool { return x < 5 }, expected: true},
+		{name: "some match", seq: values(1, 2, 3, 4), predicate: func(x int) bool { return x < 3 }, expected: false},
+		{name: "none match", seq: values(1, 2, 3, 4), predicate: func(x int) bool { return x < 0 }, expected: false},
+		{name: "empty collection", seq: values[int](), predicate: func(x int) bool { return x < 5 }, expected: true},
+	}
 
-	is.True(result1)
-
-	result2 := EveryBy(values(1, 2, 3, 4), func(x int) bool {
-		return x < 3
-	})
-
-	is.False(result2)
-
-	result3 := EveryBy(values(1, 2, 3, 4), func(x int) bool {
-		return x < 0
-	})
-
-	is.False(result3)
-
-	result4 := EveryBy(values[int](), func(x int) bool {
-		return x < 5
-	})
-
-	is.True(result4)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is.Equal(tt.expected, EveryBy(tt.seq, tt.predicate))
+		})
+	}
 }
 
 func TestSome(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Some(values(0, 1, 2, 3, 4, 5), 0, 2)
-	result2 := Some(values(0, 1, 2, 3, 4, 5), 0, 6)
-	result3 := Some(values(0, 1, 2, 3, 4, 5), -1, 6)
-	result4 := Some(values(0, 1, 2, 3, 4, 5))
+	tests := []struct {
+		name     string
+		args     []int
+		expected bool
+	}{
+		{name: "both present", args: []int{0, 2}, expected: true},
+		{name: "one present one missing", args: []int{0, 6}, expected: true},
+		{name: "both missing", args: []int{-1, 6}, expected: false},
+		{name: "no args", args: nil, expected: false},
+	}
 
-	is.True(result1)
-	is.True(result2)
-	is.False(result3)
-	is.False(result4)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is.Equal(tt.expected, Some(values(0, 1, 2, 3, 4, 5), tt.args...))
+		})
+	}
 }
 
 func TestSomeBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := SomeBy(values(1, 2, 3, 4), func(x int) bool {
-		return x < 5
-	})
+	tests := []struct {
+		name      string
+		seq       iter.Seq[int]
+		predicate func(int) bool
+		expected  bool
+	}{
+		{name: "some match", seq: values(1, 2, 3, 4), predicate: func(x int) bool { return x < 5 }, expected: true},
+		{name: "one match", seq: values(1, 2, 3, 4), predicate: func(x int) bool { return x < 3 }, expected: true},
+		{name: "none match", seq: values(1, 2, 3, 4), predicate: func(x int) bool { return x < 0 }, expected: false},
+		{name: "empty collection", seq: values[int](), predicate: func(x int) bool { return x < 5 }, expected: false},
+	}
 
-	is.True(result1)
-
-	result2 := SomeBy(values(1, 2, 3, 4), func(x int) bool {
-		return x < 3
-	})
-
-	is.True(result2)
-
-	result3 := SomeBy(values(1, 2, 3, 4), func(x int) bool {
-		return x < 0
-	})
-
-	is.False(result3)
-
-	result4 := SomeBy(values[int](), func(x int) bool {
-		return x < 5
-	})
-
-	is.False(result4)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is.Equal(tt.expected, SomeBy(tt.seq, tt.predicate))
+		})
+	}
 }
 
 func TestNone(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := None(values(0, 1, 2, 3, 4, 5), 0, 2)
-	result2 := None(values(0, 1, 2, 3, 4, 5), 0, 6)
-	result3 := None(values(0, 1, 2, 3, 4, 5), -1, 6)
-	result4 := None(values(0, 1, 2, 3, 4, 5))
+	tests := []struct {
+		name     string
+		args     []int
+		expected bool
+	}{
+		{name: "both present", args: []int{0, 2}, expected: false},
+		{name: "one present one missing", args: []int{0, 6}, expected: false},
+		{name: "both missing", args: []int{-1, 6}, expected: true},
+		{name: "no args", args: nil, expected: true},
+	}
 
-	is.False(result1)
-	is.False(result2)
-	is.True(result3)
-	is.True(result4)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is.Equal(tt.expected, None(values(0, 1, 2, 3, 4, 5), tt.args...))
+		})
+	}
 }
 
 func TestNoneBy(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := NoneBy(values(1, 2, 3, 4), func(x int) bool {
-		return x < 5
-	})
+	tests := []struct {
+		name      string
+		seq       iter.Seq[int]
+		predicate func(int) bool
+		expected  bool
+	}{
+		{name: "some match", seq: values(1, 2, 3, 4), predicate: func(x int) bool { return x < 5 }, expected: false},
+		{name: "one match", seq: values(1, 2, 3, 4), predicate: func(x int) bool { return x < 3 }, expected: false},
+		{name: "none match", seq: values(1, 2, 3, 4), predicate: func(x int) bool { return x < 0 }, expected: true},
+		{name: "empty collection", seq: values[int](), predicate: func(x int) bool { return x < 5 }, expected: true},
+	}
 
-	is.False(result1)
-
-	result2 := NoneBy(values(1, 2, 3, 4), func(x int) bool {
-		return x < 3
-	})
-
-	is.False(result2)
-
-	result3 := NoneBy(values(1, 2, 3, 4), func(x int) bool {
-		return x < 0
-	})
-
-	is.True(result3)
-
-	result4 := NoneBy(values[int](), func(x int) bool {
-		return x < 5
-	})
-
-	is.True(result4)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is.Equal(tt.expected, NoneBy(tt.seq, tt.predicate))
+		})
+	}
 }
 
 func TestIntersect(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Intersect([]iter.Seq[int]{}...)
-	result2 := Intersect(values(0, 1, 2, 3, 4, 5))
-	result3 := Intersect(values(0, 1, 2, 3, 4, 5), values(0, 6))
-	result4 := Intersect(values(0, 1, 2, 3, 4, 5), values(-1, 6))
-	result5 := Intersect(values(0, 6, 0), values(0, 1, 2, 3, 4, 5))
-	result6 := Intersect(values(0, 1, 2, 3, 4, 5), values(0, 6, 0))
-	result7 := Intersect(values(0, 1, 2), values(1, 2, 3), values(2, 3, 4))
-	result8 := Intersect(values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5))
-	result9 := Intersect(values(0, 1, 2), values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5))
-	resultA := Intersect(values(0, 1, 1))
+	tests := []struct {
+		name     string
+		inputs   []iter.Seq[int]
+		expected []int
+	}{
+		{name: "no sequences", inputs: []iter.Seq[int]{}, expected: nil},
+		{name: "single sequence", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5)}, expected: []int{0, 1, 2, 3, 4, 5}},
+		{name: "one common element", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values(0, 6)}, expected: []int{0}},
+		{name: "no common element", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values(-1, 6)}, expected: nil},
+		{name: "duplicates in first sequence", inputs: []iter.Seq[int]{values(0, 6, 0), values(0, 1, 2, 3, 4, 5)}, expected: []int{0}},
+		{name: "duplicates in second sequence", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values(0, 6, 0)}, expected: []int{0}},
+		{name: "three sequences", inputs: []iter.Seq[int]{values(0, 1, 2), values(1, 2, 3), values(2, 3, 4)}, expected: []int{2}},
+		{name: "four sequences no overlap", inputs: []iter.Seq[int]{values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5)}, expected: nil},
+		{name: "five sequences with duplicate no overlap", inputs: []iter.Seq[int]{values(0, 1, 2), values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5)}, expected: nil},
+		{name: "duplicates within single sequence", inputs: []iter.Seq[int]{values(0, 1, 1)}, expected: []int{0, 1}},
+	}
 
-	is.Empty(slices.Collect(result1))
-	is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result2))
-	is.Equal([]int{0}, slices.Collect(result3))
-	is.Empty(slices.Collect(result4))
-	is.Equal([]int{0}, slices.Collect(result5))
-	is.Equal([]int{0}, slices.Collect(result6))
-	is.Equal([]int{2}, slices.Collect(result7))
-	is.Empty(slices.Collect(result8))
-	is.Empty(slices.Collect(result9))
-	is.Equal([]int{0, 1}, slices.Collect(resultA))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := slices.Collect(Intersect(tt.inputs...))
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := Intersect(allStrings, allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := Intersect(allStrings, allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestIntersectBy(t *testing.T) {
@@ -215,87 +288,132 @@ func TestIntersectBy(t *testing.T) {
 
 	transform := strconv.Itoa
 
-	result1 := IntersectBy(transform, []iter.Seq[int]{}...)
-	result2 := IntersectBy(transform, values(0, 1, 2, 3, 4, 5))
-	result3 := IntersectBy(transform, values(0, 1, 2, 3, 4, 5), values(0, 6))
-	result4 := IntersectBy(transform, values(0, 1, 2, 3, 4, 5), values(-1, 6))
-	result5 := IntersectBy(transform, values(0, 6, 0), values(0, 1, 2, 3, 4, 5))
-	result6 := IntersectBy(transform, values(0, 1, 2, 3, 4, 5), values(0, 6, 0))
-	result7 := IntersectBy(transform, values(0, 1, 2), values(1, 2, 3), values(2, 3, 4))
-	result8 := IntersectBy(transform, values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5))
-	result9 := IntersectBy(transform, values(0, 1, 2), values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5))
-	resultA := IntersectBy(transform, values(0, 1, 1))
+	tests := []struct {
+		name     string
+		inputs   []iter.Seq[int]
+		expected []int
+	}{
+		{name: "no sequences", inputs: []iter.Seq[int]{}, expected: nil},
+		{name: "single sequence", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5)}, expected: []int{0, 1, 2, 3, 4, 5}},
+		{name: "one common element", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values(0, 6)}, expected: []int{0}},
+		{name: "no common element", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values(-1, 6)}, expected: nil},
+		{name: "duplicates in first sequence", inputs: []iter.Seq[int]{values(0, 6, 0), values(0, 1, 2, 3, 4, 5)}, expected: []int{0}},
+		{name: "duplicates in second sequence", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values(0, 6, 0)}, expected: []int{0}},
+		{name: "three sequences", inputs: []iter.Seq[int]{values(0, 1, 2), values(1, 2, 3), values(2, 3, 4)}, expected: []int{2}},
+		{name: "four sequences no overlap", inputs: []iter.Seq[int]{values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5)}, expected: nil},
+		{name: "five sequences with duplicate no overlap", inputs: []iter.Seq[int]{values(0, 1, 2), values(0, 1, 2), values(1, 2, 3), values(2, 3, 4), values(3, 4, 5)}, expected: nil},
+		{name: "duplicates within single sequence", inputs: []iter.Seq[int]{values(0, 1, 1)}, expected: []int{0, 1}},
+	}
 
-	is.Empty(slices.Collect(result1))
-	is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result2))
-	is.Equal([]int{0}, slices.Collect(result3))
-	is.Empty(slices.Collect(result4))
-	is.Equal([]int{0}, slices.Collect(result5))
-	is.Equal([]int{0}, slices.Collect(result6))
-	is.Equal([]int{2}, slices.Collect(result7))
-	is.Empty(slices.Collect(result8))
-	is.Empty(slices.Collect(result9))
-	is.Equal([]int{0, 1}, slices.Collect(resultA))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := slices.Collect(IntersectBy(transform, tt.inputs...))
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := IntersectBy(func(s string) string { return s + s }, allStrings, allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := IntersectBy(func(s string) string { return s + s }, allStrings, allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestUnion(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Union(values(0, 1, 2, 3, 4, 5), values(0, 2, 10))
-	result2 := Union(values(0, 1, 2, 3, 4, 5), values(6, 7))
-	result3 := Union(values(0, 1, 2, 3, 4, 5), values[int]())
-	result4 := Union(values(0, 1, 2), values(0, 1, 2, 3, 3))
-	result5 := Union(values(0, 1, 2), values(0, 1, 2))
-	result6 := Union(values[int](), values[int]())
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 10}, slices.Collect(result1))
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 6, 7}, slices.Collect(result2))
-	is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result3))
-	is.Equal([]int{0, 1, 2, 3}, slices.Collect(result4))
-	is.Equal([]int{0, 1, 2}, slices.Collect(result5))
-	is.Empty(slices.Collect(result6))
+	tests := []struct {
+		name     string
+		inputs   []iter.Seq[int]
+		expected []int
+	}{
+		{name: "two sequences with new elements", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values(0, 2, 10)}, expected: []int{0, 1, 2, 3, 4, 5, 10}},
+		{name: "two disjoint sequences", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values(6, 7)}, expected: []int{0, 1, 2, 3, 4, 5, 6, 7}},
+		{name: "second sequence empty", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values[int]()}, expected: []int{0, 1, 2, 3, 4, 5}},
+		{name: "second sequence with duplicates", inputs: []iter.Seq[int]{values(0, 1, 2), values(0, 1, 2, 3, 3)}, expected: []int{0, 1, 2, 3}},
+		{name: "two identical sequences", inputs: []iter.Seq[int]{values(0, 1, 2), values(0, 1, 2)}, expected: []int{0, 1, 2}},
+		{name: "two empty sequences", inputs: []iter.Seq[int]{values[int](), values[int]()}, expected: nil},
+		{name: "three sequences with new elements", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values(0, 2, 10), values(0, 1, 11)}, expected: []int{0, 1, 2, 3, 4, 5, 10, 11}},
+		{name: "three disjoint sequences", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values(6, 7), values(8, 9)}, expected: []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}},
+		{name: "three sequences two empty", inputs: []iter.Seq[int]{values(0, 1, 2, 3, 4, 5), values[int](), values[int]()}, expected: []int{0, 1, 2, 3, 4, 5}},
+		{name: "three identical sequences", inputs: []iter.Seq[int]{values(0, 1, 2), values(0, 1, 2), values(0, 1, 2)}, expected: []int{0, 1, 2}},
+		{name: "three empty sequences", inputs: []iter.Seq[int]{values[int](), values[int](), values[int]()}, expected: nil},
+	}
 
-	result11 := Union(values(0, 1, 2, 3, 4, 5), values(0, 2, 10), values(0, 1, 11))
-	result12 := Union(values(0, 1, 2, 3, 4, 5), values(6, 7), values(8, 9))
-	result13 := Union(values(0, 1, 2, 3, 4, 5), values[int](), values[int]())
-	result14 := Union(values(0, 1, 2), values(0, 1, 2), values(0, 1, 2))
-	result15 := Union(values[int](), values[int](), values[int]())
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 10, 11}, slices.Collect(result11))
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, slices.Collect(result12))
-	is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result13))
-	is.Equal([]int{0, 1, 2}, slices.Collect(result14))
-	is.Empty(slices.Collect(result15))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := slices.Collect(Union(tt.inputs...))
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := Union(allStrings, allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := Union(allStrings, allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestWithout(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Without(values(0, 2, 10), 0, 1, 2, 3, 4, 5)
-	result2 := Without(values(0, 7), 0, 1, 2, 3, 4, 5)
-	result3 := Without(values[int](), 0, 1, 2, 3, 4, 5)
-	result4 := Without(values(0, 1, 2), 0, 1, 2)
-	result5 := Without(values[int]())
-	is.Equal([]int{10}, slices.Collect(result1))
-	is.Equal([]int{7}, slices.Collect(result2))
-	is.Empty(slices.Collect(result3))
-	is.Empty(slices.Collect(result4))
-	is.Empty(slices.Collect(result5))
+	tests := []struct {
+		name     string
+		seq      iter.Seq[int]
+		exclude  []int
+		expected []int
+	}{
+		{name: "removes some elements", seq: values(0, 2, 10), exclude: []int{0, 1, 2, 3, 4, 5}, expected: []int{10}},
+		{name: "removes one element", seq: values(0, 7), exclude: []int{0, 1, 2, 3, 4, 5}, expected: []int{7}},
+		{name: "empty sequence", seq: values[int](), exclude: []int{0, 1, 2, 3, 4, 5}, expected: nil},
+		{name: "removes all elements", seq: values(0, 1, 2), exclude: []int{0, 1, 2}, expected: nil},
+		{name: "empty sequence no exclude", seq: values[int](), exclude: nil, expected: nil},
+	}
 
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := Without(allStrings, "")
-	is.IsType(nonempty, allStrings, "type preserved")
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := slices.Collect(Without(tt.seq, tt.exclude...))
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := Without(allStrings, "")
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestWithoutBy(t *testing.T) {
@@ -307,57 +425,123 @@ func TestWithoutBy(t *testing.T) {
 		Age  int
 	}
 
-	result1 := WithoutBy(values(User{Name: "nick"}, User{Name: "peter"}),
-		func(item User) string {
-			return item.Name
-		}, "nick", "lily")
-	result2 := WithoutBy(values[User](), func(item User) int { return item.Age }, 1, 2, 3)
-	result3 := WithoutBy(values[User](), func(item User) string { return item.Name })
-	is.Equal([]User{{Name: "peter"}}, slices.Collect(result1))
-	is.Empty(slices.Collect(result2))
-	is.Empty(slices.Collect(result3))
+	// result1 and result3 share the same generic instantiation (K=string), so
+	// they're grouped in one table; result2 uses K=int and can't share the
+	// row type, so it gets its own subtest per the multi-instantiation rule.
+	t.Run("string key", func(t *testing.T) {
+		t.Parallel()
 
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := WithoutBy(allStrings, func(string) string { return "" })
-	is.IsType(nonempty, allStrings, "type preserved")
+		byName := func(item User) string { return item.Name }
+
+		tests := []struct {
+			name     string
+			seq      iter.Seq[User]
+			exclude  []string
+			expected []User
+		}{
+			{name: "excludes by name", seq: values(User{Name: "nick"}, User{Name: "peter"}), exclude: []string{"nick", "lily"}, expected: []User{{Name: "peter"}}},
+			{name: "empty sequence no exclude", seq: values[User](), exclude: nil, expected: nil},
+		}
+
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				result := slices.Collect(WithoutBy(tt.seq, byName, tt.exclude...))
+				if tt.expected == nil {
+					is.Empty(result)
+				} else {
+					is.Equal(tt.expected, result)
+				}
+			})
+		}
+	})
+
+	t.Run("int key", func(t *testing.T) {
+		t.Parallel()
+
+		result := WithoutBy(values[User](), func(item User) int { return item.Age }, 1, 2, 3)
+		is.Empty(slices.Collect(result))
+	})
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := WithoutBy(allStrings, func(string) string { return "" })
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestWithoutNth(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := WithoutNth(values(5, 6, 7), 1, 0)
-	is.Equal([]int{7}, slices.Collect(result1))
+	tests := []struct {
+		name     string
+		seq      iter.Seq[int]
+		nths     []int
+		expected []int
+	}{
+		{name: "removes indices", seq: values(5, 6, 7), nths: []int{1, 0}, expected: []int{7}},
+		{name: "no indices", seq: values(1, 2), nths: nil, expected: []int{1, 2}},
+		{name: "empty sequence", seq: values[int](), nths: nil, expected: nil},
+		{name: "out of range indices", seq: values(0, 1, 2, 3), nths: []int{-1, 4}, expected: []int{0, 1, 2, 3}},
+	}
 
-	result2 := WithoutNth(values(1, 2))
-	is.Equal([]int{1, 2}, slices.Collect(result2))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := slices.Collect(WithoutNth(tt.seq, tt.nths...))
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
-	result3 := WithoutNth(values[int]())
-	is.Empty(slices.Collect(result3))
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	result4 := WithoutNth(values(0, 1, 2, 3), -1, 4)
-	is.Equal([]int{0, 1, 2, 3}, slices.Collect(result4))
-
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := WithoutNth(allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := WithoutNth(allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestElementsMatch(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.False(ElementsMatch(values[int](), values(1)))
-	is.False(ElementsMatch(values(1), values(2)))
-	is.False(ElementsMatch(values(1), values(1, 2)))
-	is.False(ElementsMatch(values(1, 1, 2), values(2, 2, 1)))
+	tests := []struct {
+		name     string
+		a        iter.Seq[int]
+		b        iter.Seq[int]
+		expected bool
+	}{
+		{name: "empty vs non-empty", a: values[int](), b: values(1), expected: false},
+		{name: "different single elements", a: values(1), b: values(2), expected: false},
+		{name: "different lengths", a: values(1), b: values(1, 2), expected: false},
+		{name: "different element counts", a: values(1, 1, 2), b: values(2, 2, 1), expected: false},
+		{name: "same single element", a: values(1), b: values(1), expected: true},
+		{name: "same repeated elements", a: values(1, 1), b: values(1, 1), expected: true},
+		{name: "same elements different order", a: values(1, 2), b: values(2, 1), expected: true},
+		{name: "same multiset different order", a: values(1, 1, 2), b: values(1, 2, 1), expected: true},
+	}
 
-	is.True(ElementsMatch(values(1), values(1)))
-	is.True(ElementsMatch(values(1, 1), values(1, 1)))
-	is.True(ElementsMatch(values(1, 2), values(2, 1)))
-	is.True(ElementsMatch(values(1, 1, 2), values(1, 2, 1)))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is.Equal(tt.expected, ElementsMatch(tt.a, tt.b))
+		})
+	}
 }
 
 func TestElementsMatchBy(t *testing.T) {
