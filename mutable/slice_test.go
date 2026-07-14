@@ -10,21 +10,29 @@ func TestFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	input1 := []int{1, 2, 3, 4}
-	r1 := Filter(input1, func(x int) bool {
-		return x%2 == 0
+	t.Run("int slice", func(t *testing.T) {
+		t.Parallel()
+
+		input := []int{1, 2, 3, 4}
+		result := Filter(input, func(x int) bool {
+			return x%2 == 0
+		})
+
+		is.Equal([]int{2, 4, 3, 4}, input)
+		is.Equal([]int{2, 4}, result)
 	})
 
-	is.Equal([]int{2, 4, 3, 4}, input1)
-	is.Equal([]int{2, 4}, r1)
+	t.Run("string slice", func(t *testing.T) {
+		t.Parallel()
 
-	input2 := []string{"", "foo", "", "bar", ""}
-	r2 := Filter(input2, func(x string) bool {
-		return len(x) > 0
+		input := []string{"", "foo", "", "bar", ""}
+		result := Filter(input, func(x string) bool {
+			return len(x) > 0
+		})
+
+		is.Equal([]string{"foo", "bar", "", "bar", ""}, input)
+		is.Equal([]string{"foo", "bar"}, result)
 	})
-
-	is.Equal([]string{"foo", "bar", "", "bar", ""}, input2)
-	is.Equal([]string{"foo", "bar"}, r2)
 }
 
 func TestFilterI(t *testing.T) {
@@ -43,17 +51,38 @@ func TestMap(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	list := []int{1, 2, 3, 4}
-	Map(list, func(x int) int {
-		return x * 2
-	})
-	is.Equal([]int{2, 4, 6, 8}, list)
+	tests := []struct {
+		name     string
+		input    []int
+		multiply int
+		expected []int
+	}{
+		{
+			name:     "multiply by 2",
+			input:    []int{1, 2, 3, 4},
+			multiply: 2,
+			expected: []int{2, 4, 6, 8},
+		},
+		{
+			name:     "multiply by 4",
+			input:    []int{1, 2, 3, 4},
+			multiply: 4,
+			expected: []int{4, 8, 12, 16},
+		},
+	}
 
-	list = []int{1, 2, 3, 4}
-	Map(list, func(x int) int {
-		return x * 4
-	})
-	is.Equal([]int{4, 8, 12, 16}, list)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			list := append([]int{}, tt.input...)
+			Map(list, func(x int) int {
+				return x * tt.multiply
+			})
+			is.Equal(tt.expected, list)
+		})
+	}
 }
 
 func TestMapI(t *testing.T) {
@@ -79,46 +108,102 @@ func TestShuffle(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	list := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	Shuffle(list)
-	is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, list)
+	t.Run("non-empty slice", func(t *testing.T) {
+		t.Parallel()
 
-	list = []int{}
-	Shuffle(list)
-	is.Empty(list)
+		list := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+		Shuffle(list)
+		is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, list)
+	})
+
+	t.Run("empty slice", func(t *testing.T) {
+		t.Parallel()
+
+		list := []int{}
+		Shuffle(list)
+		is.Empty(list)
+	})
 }
 
 func TestReverse(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	list := []int{0, 1, 2, 3, 4, 5}
-	Reverse(list)
-	is.Equal([]int{5, 4, 3, 2, 1, 0}, list)
+	tests := []struct {
+		name     string
+		input    []int
+		expected []int
+	}{
+		{
+			name:     "even length",
+			input:    []int{0, 1, 2, 3, 4, 5},
+			expected: []int{5, 4, 3, 2, 1, 0},
+		},
+		{
+			name:     "odd length",
+			input:    []int{0, 1, 2, 3, 4, 5, 6},
+			expected: []int{6, 5, 4, 3, 2, 1, 0},
+		},
+		{
+			name:     "empty",
+			input:    []int{},
+			expected: []int{},
+		},
+	}
 
-	list = []int{0, 1, 2, 3, 4, 5, 6}
-	Reverse(list)
-	is.Equal([]int{6, 5, 4, 3, 2, 1, 0}, list)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 
-	list = []int{}
-	Reverse(list)
-	is.Empty(list)
+			list := append([]int{}, tt.input...)
+			Reverse(list)
+			is.Equal(tt.expected, list)
+		})
+	}
 
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	Reverse(allStrings)
-	is.IsType(myStrings{"", "foo", "bar"}, allStrings, "type preserved")
+	t.Run("preserves named slice type", func(t *testing.T) {
+		t.Parallel()
+
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		Reverse(allStrings)
+		is.IsType(myStrings{"", "foo", "bar"}, allStrings, "type preserved")
+	})
 }
 
 func TestFill(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	list1 := []string{"a", "0"}
-	Fill(list1, "b")
-	is.Equal([]string{"b", "b"}, list1)
+	tests := []struct {
+		name     string
+		input    []string
+		value    string
+		expected []string
+	}{
+		{
+			name:     "non-empty slice",
+			input:    []string{"a", "0"},
+			value:    "b",
+			expected: []string{"b", "b"},
+		},
+		{
+			name:     "empty slice",
+			input:    []string{},
+			value:    "b",
+			expected: []string{},
+		},
+	}
 
-	list2 := []string{}
-	Fill(list2, "b")
-	is.Empty(list2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			list := append([]string{}, tt.input...)
+			Fill(list, tt.value)
+			is.Equal(tt.expected, list)
+		})
+	}
 }
