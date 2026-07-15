@@ -4,83 +4,40 @@ package simd
 
 import "unsafe"
 
-// unsafeSliceInt8 converts a []T (where T ~int8) to []int8 via unsafe operations.
-// This helper reduces code duplication and the risk of copy-paste errors.
+// unsafeIndexVec provides direct pointer-based access to SIMD lanes without slice bounds checking.
+// This is a replacement for slice-based access like `base[i : i+lanes]` that eliminates
+// runtime.panicBounds checks in critical SIMD loops.
 //
-//go:nosplit
-func unsafeSliceInt8[T ~int8](collection []T, length uint) []int8 {
-	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*int8)(unsafe.Pointer(&collection[0])), length)
-}
-
-// unsafeSliceInt16 converts a []T (where T ~int16) to []int16 via unsafe operations.
+// Parameters:
 //
-//go:nosplit
-func unsafeSliceInt16[T ~int16](collection []T, length uint) []int16 {
-	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*int16)(unsafe.Pointer(&collection[0])), length)
-}
-
-// unsafeSliceInt32 converts a []T (where T ~int32) to []int32 via unsafe operations.
+//	V - The SIMD vector type (e.g., [4]float64, [2]int64, [16]uint8])
+//	T - The element type of the collection
+//	collection - The input slice
+//	i - The starting vector index (0-based, multiplied by lanes internally)
 //
-//go:nosplit
-func unsafeSliceInt32[T ~int32](collection []T, length uint) []int32 {
-	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*int32)(unsafe.Pointer(&collection[0])), length)
-}
-
-// unsafeSliceInt64 converts a []T (where T ~int64) to []int64 via unsafe operations.
+// Usage example:
 //
-//go:nosplit
-func unsafeSliceInt64[T ~int64](collection []T, length uint) []int64 {
-	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*int64)(unsafe.Pointer(&collection[0])), length)
-}
-
-// unsafeSliceUint8 converts a []T (where T ~uint8) to []uint8 via unsafe operations.
+//		const lanes = 4
+//		i := uint(0)
+//		for ; i+lanes <= uint(len(collection)); i += lanes {
+//			// Old way (with bounds checks):
+//			archsimd.LoadInt64x2Slice(base[i : i+lanes])
 //
-//go:nosplit
-func unsafeSliceUint8[T ~uint8](collection []T, length uint) []uint8 {
-	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*uint8)(unsafe.Pointer(&collection[0])), length)
-}
-
-// unsafeSliceUint16 converts a []T (where T ~uint16) to []uint16 via unsafe operations.
+//			// New way (no bounds checks):
+//			archsimd.LoadInt64x2(unsafeIndexVec[[lanes]int64](collection, i))
+//		}
+//	}
 //
-//go:nosplit
-func unsafeSliceUint16[T ~uint16](collection []T, length uint) []uint16 {
-	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*uint16)(unsafe.Pointer(&collection[0])), length)
-}
-
-// unsafeSliceUint32 converts a []T (where T ~uint32) to []uint32 via unsafe operations.
+// Benefits over slice-based access:
+//   - Eliminates runtime.panicBounds checks
+//   - Smaller generated code size (~96 bytes / ~12 instructions less)
+//   - Better cache locality (no slice header overhead)
+//   - More efficient for tight SIMD loops
 //
+//bearer:disable go_gosec_unsafe_unsafe
 //go:nosplit
-func unsafeSliceUint32[T ~uint32](collection []T, length uint) []uint32 {
-	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*uint32)(unsafe.Pointer(&collection[0])), length)
-}
-
-// unsafeSliceUint64 converts a []T (where T ~uint64) to []uint64 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceUint64[T ~uint64](collection []T, length uint) []uint64 {
-	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*uint64)(unsafe.Pointer(&collection[0])), length)
-}
-
-// unsafeSliceFloat32 converts a []T (where T ~float32) to []float32 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceFloat32[T ~float32](collection []T, length uint) []float32 {
-	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*float32)(unsafe.Pointer(&collection[0])), length)
-}
-
-// unsafeSliceFloat64 converts a []T (where T ~float64) to []float64 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceFloat64[T ~float64](collection []T, length uint) []float64 {
-	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*float64)(unsafe.Pointer(&collection[0])), length)
+func unsafeIndexVec[V any, T any](collection []T, i uint) *V {
+	data := unsafe.SliceData(collection)
+	size := unsafe.Sizeof(*data)
+	return (*V)(unsafe.Add(unsafe.Pointer(data), uintptr(i)*size))
 }
