@@ -394,7 +394,6 @@ func TestMin(t *testing.T) {
 
 	t.Run("ints", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -431,7 +430,6 @@ func TestMinIndex(t *testing.T) {
 
 	t.Run("ints", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name          string
@@ -588,7 +586,6 @@ func TestMax(t *testing.T) {
 
 	t.Run("ints", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -625,7 +622,6 @@ func TestMaxIndex(t *testing.T) {
 
 	t.Run("ints", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name          string
