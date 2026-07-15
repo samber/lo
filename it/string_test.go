@@ -11,27 +11,68 @@ import (
 
 func TestChunkString(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := ChunkString("12345", 2)
-	is.Equal([]string{"12", "34", "5"}, slices.Collect(result1))
+	tests := []struct {
+		name     string
+		input    string
+		size     int
+		expected []string
+	}{
+		{
+			name:     "size smaller than length, remainder",
+			input:    "12345",
+			size:     2,
+			expected: []string{"12", "34", "5"},
+		},
+		{
+			name:     "size smaller than length, exact",
+			input:    "123456",
+			size:     2,
+			expected: []string{"12", "34", "56"},
+		},
+		{
+			name:     "size equal to length",
+			input:    "123456",
+			size:     6,
+			expected: []string{"123456"},
+		},
+		{
+			name:     "size greater than length",
+			input:    "123456",
+			size:     10,
+			expected: []string{"123456"},
+		},
+		{
+			name:     "empty string",
+			input:    "",
+			size:     2,
+			expected: []string{""}, // @TODO: should be [] - see https://github.com/samber/lo/issues/788
+		},
+		{
+			name:     "multi-byte runes",
+			input:    "明1好休2林森",
+			size:     2,
+			expected: []string{"明1", "好休", "2林", "森"},
+		},
+	}
 
-	result2 := ChunkString("123456", 2)
-	is.Equal([]string{"12", "34", "56"}, slices.Collect(result2))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	result3 := ChunkString("123456", 6)
-	is.Equal([]string{"123456"}, slices.Collect(result3))
+			result := ChunkString(tt.input, tt.size)
+			is.Equal(tt.expected, slices.Collect(result))
+		})
+	}
 
-	result4 := ChunkString("123456", 10)
-	is.Equal([]string{"123456"}, slices.Collect(result4))
+	t.Run("panics on non-positive size", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	result5 := ChunkString("", 2)
-	is.Equal([]string{""}, slices.Collect(result5)) // @TODO: should be [] - see https://github.com/samber/lo/issues/788
-
-	result6 := ChunkString("明1好休2林森", 2)
-	is.Equal([]string{"明1", "好休", "2林", "森"}, slices.Collect(result6))
-
-	is.PanicsWithValue("it.ChunkString: size must be greater than 0", func() {
-		ChunkString("12345", 0)
+		is.PanicsWithValue("it.ChunkString: size must be greater than 0", func() {
+			ChunkString("12345", 0)
+		})
 	})
 }

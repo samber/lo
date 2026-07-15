@@ -15,329 +15,541 @@ import (
 
 func TestIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := IndexOf(values(0, 1, 2, 1, 2, 3), 2)
-	result2 := IndexOf(values(0, 1, 2, 1, 2, 3), 6)
+	tests := []struct {
+		name     string
+		input    []int
+		target   int
+		expected int
+	}{
+		{name: "found", input: []int{0, 1, 2, 1, 2, 3}, target: 2, expected: 2},
+		{name: "not found", input: []int{0, 1, 2, 1, 2, 3}, target: 6, expected: -1},
+	}
 
-	is.Equal(2, result1)
-	is.Equal(-1, result2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := IndexOf(values(tt.input...), tt.target)
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestLastIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := LastIndexOf(values(0, 1, 2, 1, 2, 3), 2)
-	result2 := LastIndexOf(values(0, 1, 2, 1, 2, 3), 6)
+	tests := []struct {
+		name     string
+		input    []int
+		target   int
+		expected int
+	}{
+		{name: "found", input: []int{0, 1, 2, 1, 2, 3}, target: 2, expected: 4},
+		{name: "not found", input: []int{0, 1, 2, 1, 2, 3}, target: 6, expected: -1},
+	}
 
-	is.Equal(4, result1)
-	is.Equal(-1, result2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := LastIndexOf(values(tt.input...), tt.target)
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestHasPrefix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.True(HasPrefix(values(1, 2, 3, 4), 1, 2, 3, 4))
-	is.True(HasPrefix(values(1, 2, 3, 4), 1, 2))
-	is.False(HasPrefix(values(1, 2, 3, 4), 42))
-	is.False(HasPrefix(values(1, 2), 1, 2, 3, 4))
-	is.True(HasPrefix(values(1, 2, 3, 4)))
+	tests := []struct {
+		name     string
+		input    []int
+		prefix   []int
+		expected bool
+	}{
+		{name: "full prefix match", input: []int{1, 2, 3, 4}, prefix: []int{1, 2, 3, 4}, expected: true},
+		{name: "partial prefix match", input: []int{1, 2, 3, 4}, prefix: []int{1, 2}, expected: true},
+		{name: "no match", input: []int{1, 2, 3, 4}, prefix: []int{42}, expected: false},
+		{name: "prefix longer than input", input: []int{1, 2}, prefix: []int{1, 2, 3, 4}, expected: false},
+		{name: "empty prefix", input: []int{1, 2, 3, 4}, prefix: []int{}, expected: true},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := HasPrefix(values(tt.input...), tt.prefix...)
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestHasSuffix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.True(HasSuffix(values(1, 2, 3, 4), 1, 2, 3, 4))
-	is.True(HasSuffix(values(1, 2, 3, 4), 3, 4))
-	is.True(HasSuffix(values(1, 2, 3, 4, 5), 3, 4, 5))
-	is.False(HasSuffix(values(1, 2, 3, 4), 42))
-	is.False(HasSuffix(values(1, 2), 1, 2, 3, 4))
-	is.True(HasSuffix(values(1, 2, 3, 4)))
-	is.False(HasSuffix(values(0), 0, 0))
+	tests := []struct {
+		name     string
+		input    []int
+		suffix   []int
+		expected bool
+	}{
+		{name: "full suffix match", input: []int{1, 2, 3, 4}, suffix: []int{1, 2, 3, 4}, expected: true},
+		{name: "partial suffix match", input: []int{1, 2, 3, 4}, suffix: []int{3, 4}, expected: true},
+		{name: "partial suffix match longer input", input: []int{1, 2, 3, 4, 5}, suffix: []int{3, 4, 5}, expected: true},
+		{name: "no match", input: []int{1, 2, 3, 4}, suffix: []int{42}, expected: false},
+		{name: "suffix longer than input", input: []int{1, 2}, suffix: []int{1, 2, 3, 4}, expected: false},
+		{name: "empty suffix", input: []int{1, 2, 3, 4}, suffix: []int{}, expected: true},
+		{name: "suffix longer than single-element input", input: []int{0}, suffix: []int{0, 0}, expected: false},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := HasSuffix(values(tt.input...), tt.suffix...)
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestFind(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	index := 0
-	result1, ok1 := Find(values("a", "b", "c", "d"), func(item string) bool {
-		is.Equal([]string{"a", "b", "c", "d"}[index], item)
-		index++
-		return item == "b"
-	})
+	tests := []struct {
+		name           string
+		input          []string
+		expectedResult string
+		expectedOk     bool
+	}{
+		{name: "finds matching element", input: []string{"a", "b", "c", "d"}, expectedResult: "b", expectedOk: true},
+		{name: "element not found", input: []string{"foobar"}, expectedResult: "", expectedOk: false},
+	}
 
-	result2, ok2 := Find(values("foobar"), func(item string) bool {
-		is.Equal("foobar", item)
-		return item == "b"
-	})
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	is.True(ok1)
-	is.Equal("b", result1)
-	is.False(ok2)
-	is.Empty(result2)
+			index := 0
+			result, ok := Find(values(tt.input...), func(item string) bool {
+				is.Equal(tt.input[index], item)
+				index++
+				return item == "b"
+			})
+
+			is.Equal(tt.expectedOk, ok)
+			is.Equal(tt.expectedResult, result)
+		})
+	}
 }
 
 func TestFindIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	index := 0
-	item1, index1, ok1 := FindIndexOf(values("a", "b", "c", "d", "b"), func(item string) bool {
-		is.Equal([]string{"a", "b", "c", "d", "b"}[index], item)
-		index++
-		return item == "b"
-	})
-	item2, index2, ok2 := FindIndexOf(values("foobar"), func(item string) bool {
-		is.Equal("foobar", item)
-		return item == "b"
-	})
+	tests := []struct {
+		name          string
+		input         []string
+		expectedItem  string
+		expectedIndex int
+		expectedOk    bool
+	}{
+		{name: "finds matching element", input: []string{"a", "b", "c", "d", "b"}, expectedItem: "b", expectedIndex: 1, expectedOk: true},
+		{name: "element not found", input: []string{"foobar"}, expectedItem: "", expectedIndex: -1, expectedOk: false},
+	}
 
-	is.Equal("b", item1)
-	is.True(ok1)
-	is.Equal(1, index1)
-	is.Empty(item2)
-	is.False(ok2)
-	is.Equal(-1, index2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			index := 0
+			item, idx, ok := FindIndexOf(values(tt.input...), func(item string) bool {
+				is.Equal(tt.input[index], item)
+				index++
+				return item == "b"
+			})
+
+			is.Equal(tt.expectedItem, item)
+			is.Equal(tt.expectedOk, ok)
+			is.Equal(tt.expectedIndex, idx)
+		})
+	}
 }
 
 func TestFindLastIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	item1, index1, ok1 := FindLastIndexOf(values("a", "b", "c", "d", "b"), func(item string) bool {
-		return item == "b"
-	})
-	item2, index2, ok2 := FindLastIndexOf(values("foobar"), func(item string) bool {
-		return item == "b"
-	})
+	tests := []struct {
+		name          string
+		input         []string
+		expectedItem  string
+		expectedIndex int
+		expectedOk    bool
+	}{
+		{name: "finds last matching element", input: []string{"a", "b", "c", "d", "b"}, expectedItem: "b", expectedIndex: 4, expectedOk: true},
+		{name: "element not found", input: []string{"foobar"}, expectedItem: "", expectedIndex: -1, expectedOk: false},
+	}
 
-	is.Equal("b", item1)
-	is.True(ok1)
-	is.Equal(4, index1)
-	is.Empty(item2)
-	is.False(ok2)
-	is.Equal(-1, index2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			item, idx, ok := FindLastIndexOf(values(tt.input...), func(item string) bool {
+				return item == "b"
+			})
+
+			is.Equal(tt.expectedItem, item)
+			is.Equal(tt.expectedOk, ok)
+			is.Equal(tt.expectedIndex, idx)
+		})
+	}
 }
 
 func TestFindOrElse(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	index := 0
-	result1 := FindOrElse(values("a", "b", "c", "d"), "x", func(item string) bool {
-		is.Equal([]string{"a", "b", "c", "d"}[index], item)
-		index++
-		return item == "b"
-	})
-	result2 := FindOrElse(values("foobar"), "x", func(item string) bool {
-		is.Equal("foobar", item)
-		return item == "b"
-	})
+	tests := []struct {
+		name     string
+		input    []string
+		expected string
+	}{
+		{name: "finds matching element", input: []string{"a", "b", "c", "d"}, expected: "b"},
+		{name: "falls back when not found", input: []string{"foobar"}, expected: "x"},
+	}
 
-	is.Equal("b", result1)
-	is.Equal("x", result2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			index := 0
+			result := FindOrElse(values(tt.input...), "x", func(item string) bool {
+				is.Equal(tt.input[index], item)
+				index++
+				return item == "b"
+			})
+
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestFindUniques(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := FindUniques(values(1, 2, 3))
-	is.Equal([]int{1, 2, 3}, slices.Collect(result1))
+	tests := []struct {
+		name     string
+		input    []int
+		expected []int
+	}{
+		{name: "all unique", input: []int{1, 2, 3}, expected: []int{1, 2, 3}},
+		{name: "some duplicates", input: []int{1, 2, 2, 3, 1, 2}, expected: []int{3}},
+		{name: "all duplicates", input: []int{1, 2, 2, 1}, expected: nil},
+		{name: "empty", input: []int{}, expected: nil},
+	}
 
-	result2 := FindUniques(values(1, 2, 2, 3, 1, 2))
-	is.Equal([]int{3}, slices.Collect(result2))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := FindUniques(values(tt.input...))
+			is.Equal(tt.expected, slices.Collect(result))
+		})
+	}
 
-	result3 := FindUniques(values(1, 2, 2, 1))
-	is.Empty(slices.Collect(result3))
+	t.Run("preserves iterator type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	result4 := FindUniques(values[int]())
-	is.Empty(slices.Collect(result4))
-
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := FindUniques(allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := FindUniques(allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestFindUniquesBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := FindUniquesBy(values(0, 1, 2), func(i int) int {
-		return i % 3
-	})
-	is.Equal([]int{0, 1, 2}, slices.Collect(result1))
+	mod3 := func(i int) int { return i % 3 }
 
-	result2 := FindUniquesBy(values(0, 1, 2, 3, 4), func(i int) int {
-		return i % 3
-	})
-	is.Equal([]int{2}, slices.Collect(result2))
+	tests := []struct {
+		name     string
+		input    []int
+		expected []int
+	}{
+		{name: "all unique keys", input: []int{0, 1, 2}, expected: []int{0, 1, 2}},
+		{name: "one unique key", input: []int{0, 1, 2, 3, 4}, expected: []int{2}},
+		{name: "no unique key", input: []int{0, 1, 2, 3, 4, 5}, expected: nil},
+		{name: "empty", input: []int{}, expected: nil},
+	}
 
-	result3 := FindUniquesBy(values(0, 1, 2, 3, 4, 5), func(i int) int {
-		return i % 3
-	})
-	is.Empty(slices.Collect(result3))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := FindUniquesBy(values(tt.input...), mod3)
+			is.Equal(tt.expected, slices.Collect(result))
+		})
+	}
 
-	result4 := FindUniquesBy(values[int](), func(i int) int {
-		return i % 3
-	})
-	is.Empty(slices.Collect(result4))
+	t.Run("preserves iterator type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := FindUniquesBy(allStrings, func(i string) string {
-		return i
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := FindUniquesBy(allStrings, func(i string) string {
+			return i
+		})
+		is.IsType(nonempty, allStrings, "type preserved")
 	})
-	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestFindDuplicates(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := FindDuplicates(values(1, 2, 2, 1, 2, 3))
-	is.Equal([]int{2, 1}, slices.Collect(result1))
+	tests := []struct {
+		name     string
+		input    []int
+		expected []int
+	}{
+		{name: "has duplicates", input: []int{1, 2, 2, 1, 2, 3}, expected: []int{2, 1}},
+		{name: "no duplicates", input: []int{1, 2, 3}, expected: nil},
+		{name: "empty", input: []int{}, expected: nil},
+	}
 
-	result2 := FindDuplicates(values(1, 2, 3))
-	is.Empty(slices.Collect(result2))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := FindDuplicates(values(tt.input...))
+			is.Equal(tt.expected, slices.Collect(result))
+		})
+	}
 
-	result3 := FindDuplicates(values[int]())
-	is.Empty(slices.Collect(result3))
+	t.Run("preserves iterator type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := FindDuplicates(allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := FindDuplicates(allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestFindDuplicatesBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := FindDuplicatesBy(values(3, 4, 5, 6, 7), func(i int) int {
-		return i % 3
-	})
-	is.Equal([]int{3, 4}, slices.Collect(result1))
+	tests := []struct {
+		name     string
+		input    []int
+		keyFn    func(int) int
+		expected []int
+	}{
+		{name: "has duplicate keys", input: []int{3, 4, 5, 6, 7}, keyFn: func(i int) int { return i % 3 }, expected: []int{3, 4}},
+		{name: "no duplicate keys", input: []int{0, 1, 2, 3, 4}, keyFn: func(i int) int { return i % 5 }, expected: nil},
+		{name: "empty", input: []int{}, keyFn: func(i int) int { return i % 3 }, expected: nil},
+	}
 
-	result2 := FindDuplicatesBy(values(0, 1, 2, 3, 4), func(i int) int {
-		return i % 5
-	})
-	is.Empty(slices.Collect(result2))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := FindDuplicatesBy(values(tt.input...), tt.keyFn)
+			is.Equal(tt.expected, slices.Collect(result))
+		})
+	}
 
-	result3 := FindDuplicatesBy(values[int](), func(i int) int {
-		return i % 3
-	})
-	is.Empty(slices.Collect(result3))
+	t.Run("preserves iterator type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := FindDuplicatesBy(allStrings, func(i string) string {
-		return i
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := FindDuplicatesBy(allStrings, func(i string) string {
+			return i
+		})
+		is.IsType(nonempty, allStrings, "type preserved")
 	})
-	is.IsType(nonempty, allStrings, "type preserved")
 }
 
 func TestMin(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Min(values(1, 2, 3))
-	result2 := Min(values(3, 2, 1))
-	result3 := Min(values(time.Second, time.Minute, time.Hour))
-	result4 := Min(values[int]())
+	t.Run("ints", func(t *testing.T) {
+		t.Parallel()
 
-	is.Equal(1, result1)
-	is.Equal(1, result2)
-	is.Equal(time.Second, result3)
-	is.Zero(result4)
+		tests := []struct {
+			name     string
+			input    []int
+			expected int
+		}{
+			{name: "ascending", input: []int{1, 2, 3}, expected: 1},
+			{name: "descending", input: []int{3, 2, 1}, expected: 1},
+			{name: "empty", input: []int{}, expected: 0},
+		}
+
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+				result := Min(values(tt.input...))
+				is.Equal(tt.expected, result)
+			})
+		}
+	})
+
+	t.Run("durations", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := Min(values(time.Second, time.Minute, time.Hour))
+		is.Equal(time.Second, result)
+	})
 }
 
 func TestMinIndex(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1, index1 := MinIndex(values(1, 2, 3))
-	result2, index2 := MinIndex(values(3, 2, 1))
-	result3, index3 := MinIndex(values(time.Second, time.Minute, time.Hour))
-	result4, index4 := MinIndex(values[int]())
+	t.Run("ints", func(t *testing.T) {
+		t.Parallel()
 
-	is.Equal(1, result1)
-	is.Zero(index1)
+		tests := []struct {
+			name          string
+			input         []int
+			expected      int
+			expectedIndex int
+		}{
+			{name: "ascending", input: []int{1, 2, 3}, expected: 1, expectedIndex: 0},
+			{name: "descending", input: []int{3, 2, 1}, expected: 1, expectedIndex: 2},
+			{name: "empty", input: []int{}, expected: 0, expectedIndex: -1},
+		}
 
-	is.Equal(1, result2)
-	is.Equal(2, index2)
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+				result, index := MinIndex(values(tt.input...))
+				is.Equal(tt.expected, result)
+				is.Equal(tt.expectedIndex, index)
+			})
+		}
+	})
 
-	is.Equal(time.Second, result3)
-	is.Zero(index3)
+	t.Run("durations", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Zero(result4)
-	is.Equal(-1, index4)
+		result, index := MinIndex(values(time.Second, time.Minute, time.Hour))
+		is.Equal(time.Second, result)
+		is.Zero(index)
+	})
 }
 
 func TestMinBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := MinBy(values("s1", "string2", "s3"), func(item, mIn string) bool {
+	shorter := func(item, mIn string) bool {
 		return len(item) < len(mIn)
-	})
-	result2 := MinBy(values("string1", "string2", "s3"), func(item, mIn string) bool {
-		return len(item) < len(mIn)
-	})
-	result3 := MinBy(values[string](), func(item, mIn string) bool {
-		return len(item) < len(mIn)
-	})
+	}
 
-	is.Equal("s1", result1)
-	is.Equal("s3", result2)
-	is.Empty(result3)
+	tests := []struct {
+		name     string
+		input    []string
+		expected string
+	}{
+		{name: "shortest first", input: []string{"s1", "string2", "s3"}, expected: "s1"},
+		{name: "shortest last", input: []string{"string1", "string2", "s3"}, expected: "s3"},
+		{name: "empty", input: []string{}, expected: ""},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := MinBy(values(tt.input...), shorter)
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestMinIndexBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1, index1 := MinIndexBy(values("s1", "string2", "s3"), func(item, mIn string) bool {
+	shorter := func(item, mIn string) bool {
 		return len(item) < len(mIn)
-	})
-	result2, index2 := MinIndexBy(values("string1", "string2", "s3"), func(item, mIn string) bool {
-		return len(item) < len(mIn)
-	})
-	result3, index3 := MinIndexBy(values[string](), func(item, mIn string) bool {
-		return len(item) < len(mIn)
-	})
+	}
 
-	is.Equal("s1", result1)
-	is.Zero(index1)
+	tests := []struct {
+		name          string
+		input         []string
+		expected      string
+		expectedIndex int
+	}{
+		{name: "shortest first", input: []string{"s1", "string2", "s3"}, expected: "s1", expectedIndex: 0},
+		{name: "shortest last", input: []string{"string1", "string2", "s3"}, expected: "s3", expectedIndex: 2},
+		{name: "empty", input: []string{}, expected: "", expectedIndex: -1},
+	}
 
-	is.Equal("s3", result2)
-	is.Equal(2, index2)
-
-	is.Empty(result3)
-	is.Equal(-1, index3)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result, index := MinIndexBy(values(tt.input...), shorter)
+			is.Equal(tt.expected, result)
+			is.Equal(tt.expectedIndex, index)
+		})
+	}
 }
 
 func TestEarliest(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	a := time.Now()
 	b := a.Add(time.Hour)
-	result1 := Earliest(values(a, b))
-	result2 := Earliest(values[time.Time]())
 
-	is.Equal(a, result1)
-	is.Zero(result2)
+	tests := []struct {
+		name     string
+		input    []time.Time
+		expected time.Time
+	}{
+		{name: "non-empty", input: []time.Time{a, b}, expected: a},
+		{name: "empty", input: []time.Time{}, expected: time.Time{}},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := Earliest(values(tt.input...))
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestEarliestBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type foo struct {
 		bar time.Time
@@ -346,117 +558,190 @@ func TestEarliestBy(t *testing.T) {
 	t1 := time.Now()
 	t2 := t1.Add(time.Hour)
 	t3 := t1.Add(-time.Hour)
-	result1 := EarliestBy(values(foo{t1}, foo{t2}, foo{t3}), func(i foo) time.Time {
-		return i.bar
-	})
-	result2 := EarliestBy(values(foo{t1}), func(i foo) time.Time {
-		return i.bar
-	})
-	result3 := EarliestBy(values[foo](), func(i foo) time.Time {
-		return i.bar
-	})
+	extractBar := func(i foo) time.Time { return i.bar }
 
-	is.Equal(foo{t3}, result1)
-	is.Equal(foo{t1}, result2)
-	is.Zero(result3)
+	tests := []struct {
+		name     string
+		input    []foo
+		expected foo
+	}{
+		{name: "multiple items", input: []foo{{t1}, {t2}, {t3}}, expected: foo{t3}},
+		{name: "single item", input: []foo{{t1}}, expected: foo{t1}},
+		{name: "empty", input: []foo{}, expected: foo{}},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := EarliestBy(values(tt.input...), extractBar)
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestMax(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Max(values(1, 2, 3))
-	result2 := Max(values(3, 2, 1))
-	result3 := Max(values(time.Second, time.Minute, time.Hour))
-	result4 := Max(values[int]())
+	t.Run("ints", func(t *testing.T) {
+		t.Parallel()
 
-	is.Equal(3, result1)
-	is.Equal(3, result2)
-	is.Equal(time.Hour, result3)
-	is.Zero(result4)
+		tests := []struct {
+			name     string
+			input    []int
+			expected int
+		}{
+			{name: "ascending", input: []int{1, 2, 3}, expected: 3},
+			{name: "descending", input: []int{3, 2, 1}, expected: 3},
+			{name: "empty", input: []int{}, expected: 0},
+		}
+
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+				result := Max(values(tt.input...))
+				is.Equal(tt.expected, result)
+			})
+		}
+	})
+
+	t.Run("durations", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := Max(values(time.Second, time.Minute, time.Hour))
+		is.Equal(time.Hour, result)
+	})
 }
 
 func TestMaxIndex(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1, index1 := MaxIndex(values(1, 2, 3))
-	result2, index2 := MaxIndex(values(3, 2, 1))
-	result3, index3 := MaxIndex(values(time.Second, time.Minute, time.Hour))
-	result4, index4 := MaxIndex(values[int]())
+	t.Run("ints", func(t *testing.T) {
+		t.Parallel()
 
-	is.Equal(3, result1)
-	is.Equal(2, index1)
+		tests := []struct {
+			name          string
+			input         []int
+			expected      int
+			expectedIndex int
+		}{
+			{name: "ascending", input: []int{1, 2, 3}, expected: 3, expectedIndex: 2},
+			{name: "descending", input: []int{3, 2, 1}, expected: 3, expectedIndex: 0},
+			{name: "empty", input: []int{}, expected: 0, expectedIndex: -1},
+		}
 
-	is.Equal(3, result2)
-	is.Zero(index2)
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+				result, index := MaxIndex(values(tt.input...))
+				is.Equal(tt.expected, result)
+				is.Equal(tt.expectedIndex, index)
+			})
+		}
+	})
 
-	is.Equal(time.Hour, result3)
-	is.Equal(2, index3)
+	t.Run("durations", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Zero(result4)
-	is.Equal(-1, index4)
+		result, index := MaxIndex(values(time.Second, time.Minute, time.Hour))
+		is.Equal(time.Hour, result)
+		is.Equal(2, index)
+	})
 }
 
 func TestMaxBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := MaxBy(values("s1", "string2", "s3"), func(item, mAx string) bool {
+	longer := func(item, mAx string) bool {
 		return len(item) > len(mAx)
-	})
-	result2 := MaxBy(values("string1", "string2", "s3"), func(item, mAx string) bool {
-		return len(item) > len(mAx)
-	})
-	result3 := MaxBy(values[string](), func(item, mAx string) bool {
-		return len(item) > len(mAx)
-	})
+	}
 
-	is.Equal("string2", result1)
-	is.Equal("string1", result2)
-	is.Empty(result3)
+	tests := []struct {
+		name     string
+		input    []string
+		expected string
+	}{
+		{name: "longest last", input: []string{"s1", "string2", "s3"}, expected: "string2"},
+		{name: "longest first", input: []string{"string1", "string2", "s3"}, expected: "string1"},
+		{name: "empty", input: []string{}, expected: ""},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := MaxBy(values(tt.input...), longer)
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestMaxIndexBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1, index1 := MaxIndexBy(values("s1", "string2", "s3"), func(item, mAx string) bool {
+	longer := func(item, mAx string) bool {
 		return len(item) > len(mAx)
-	})
-	result2, index2 := MaxIndexBy(values("string1", "string2", "s3"), func(item, mAx string) bool {
-		return len(item) > len(mAx)
-	})
-	result3, index3 := MaxIndexBy(values[string](), func(item, mAx string) bool {
-		return len(item) > len(mAx)
-	})
+	}
 
-	is.Equal("string2", result1)
-	is.Equal(1, index1)
+	tests := []struct {
+		name          string
+		input         []string
+		expected      string
+		expectedIndex int
+	}{
+		{name: "longest last", input: []string{"s1", "string2", "s3"}, expected: "string2", expectedIndex: 1},
+		{name: "longest first", input: []string{"string1", "string2", "s3"}, expected: "string1", expectedIndex: 0},
+		{name: "empty", input: []string{}, expected: "", expectedIndex: -1},
+	}
 
-	is.Equal("string1", result2)
-	is.Zero(index2)
-
-	is.Empty(result3)
-	is.Equal(-1, index3)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result, index := MaxIndexBy(values(tt.input...), longer)
+			is.Equal(tt.expected, result)
+			is.Equal(tt.expectedIndex, index)
+		})
+	}
 }
 
 func TestLatest(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	a := time.Now()
 	b := a.Add(time.Hour)
-	result1 := Latest(values(a, b))
-	result2 := Latest(values[time.Time]())
 
-	is.Equal(b, result1)
-	is.Zero(result2)
+	tests := []struct {
+		name     string
+		input    []time.Time
+		expected time.Time
+	}{
+		{name: "non-empty", input: []time.Time{a, b}, expected: b},
+		{name: "empty", input: []time.Time{}, expected: time.Time{}},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := Latest(values(tt.input...))
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestLatestBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type foo struct {
 		bar time.Time
@@ -465,122 +750,253 @@ func TestLatestBy(t *testing.T) {
 	t1 := time.Now()
 	t2 := t1.Add(time.Hour)
 	t3 := t1.Add(-time.Hour)
-	result1 := LatestBy(values(foo{t1}, foo{t2}, foo{t3}), func(i foo) time.Time {
-		return i.bar
-	})
-	result2 := LatestBy(values(foo{t1}), func(i foo) time.Time {
-		return i.bar
-	})
-	result3 := LatestBy(values[foo](), func(i foo) time.Time {
-		return i.bar
-	})
+	extractBar := func(i foo) time.Time { return i.bar }
 
-	is.Equal(foo{t2}, result1)
-	is.Equal(foo{t1}, result2)
-	is.Zero(result3)
+	tests := []struct {
+		name     string
+		input    []foo
+		expected foo
+	}{
+		{name: "multiple items", input: []foo{{t1}, {t2}, {t3}}, expected: foo{t2}},
+		{name: "single item", input: []foo{{t1}}, expected: foo{t1}},
+		{name: "empty", input: []foo{}, expected: foo{}},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := LatestBy(values(tt.input...), extractBar)
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestFirst(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1, ok1 := First(values(1, 2, 3))
-	result2, ok2 := First(values[int]())
+	tests := []struct {
+		name       string
+		input      []int
+		expected   int
+		expectedOk bool
+	}{
+		{name: "non-empty", input: []int{1, 2, 3}, expected: 1, expectedOk: true},
+		{name: "empty", input: []int{}, expected: 0, expectedOk: false},
+	}
 
-	is.Equal(1, result1)
-	is.True(ok1)
-	is.Zero(result2)
-	is.False(ok2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result, ok := First(values(tt.input...))
+			is.Equal(tt.expected, result)
+			is.Equal(tt.expectedOk, ok)
+		})
+	}
 }
 
 func TestFirstOrEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := FirstOrEmpty(values(1, 2, 3))
-	result2 := FirstOrEmpty(values[int]())
-	result3 := FirstOrEmpty(values[string]())
+	t.Run("ints", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Equal(1, result1)
-	is.Zero(result2)
-	is.Empty(result3)
+		tests := []struct {
+			name     string
+			input    []int
+			expected int
+		}{
+			{name: "non-empty", input: []int{1, 2, 3}, expected: 1},
+			{name: "empty", input: []int{}, expected: 0},
+		}
+
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				result := FirstOrEmpty(values(tt.input...))
+				is.Equal(tt.expected, result)
+			})
+		}
+	})
+
+	t.Run("strings", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := FirstOrEmpty(values[string]())
+		is.Empty(result)
+	})
 }
 
 func TestFirstOr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := FirstOr(values(1, 2, 3), 63)
-	result2 := FirstOr(values[int](), 23)
-	result3 := FirstOr(values[string](), "test")
+	t.Run("ints", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Equal(1, result1)
-	is.Equal(23, result2)
-	is.Equal("test", result3)
+		tests := []struct {
+			name     string
+			input    []int
+			fallback int
+			expected int
+		}{
+			{name: "non-empty", input: []int{1, 2, 3}, fallback: 63, expected: 1},
+			{name: "empty", input: []int{}, fallback: 23, expected: 23},
+		}
+
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				result := FirstOr(values(tt.input...), tt.fallback)
+				is.Equal(tt.expected, result)
+			})
+		}
+	})
+
+	t.Run("strings", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := FirstOr(values[string](), "test")
+		is.Equal("test", result)
+	})
 }
 
 func TestLast(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1, ok1 := Last(values(1, 2, 3))
-	result2, ok2 := Last(values[int]())
+	tests := []struct {
+		name       string
+		input      []int
+		expected   int
+		expectedOk bool
+	}{
+		{name: "non-empty", input: []int{1, 2, 3}, expected: 3, expectedOk: true},
+		{name: "empty", input: []int{}, expected: 0, expectedOk: false},
+	}
 
-	is.Equal(3, result1)
-	is.True(ok1)
-	is.Zero(result2)
-	is.False(ok2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result, ok := Last(values(tt.input...))
+			is.Equal(tt.expected, result)
+			is.Equal(tt.expectedOk, ok)
+		})
+	}
 }
 
 func TestLastOrEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := LastOrEmpty(values(1, 2, 3))
-	result2 := LastOrEmpty(values[int]())
-	result3 := LastOrEmpty(values[string]())
+	t.Run("ints", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Equal(3, result1)
-	is.Zero(result2)
-	is.Empty(result3)
+		tests := []struct {
+			name     string
+			input    []int
+			expected int
+		}{
+			{name: "non-empty", input: []int{1, 2, 3}, expected: 3},
+			{name: "empty", input: []int{}, expected: 0},
+		}
+
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				result := LastOrEmpty(values(tt.input...))
+				is.Equal(tt.expected, result)
+			})
+		}
+	})
+
+	t.Run("strings", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := LastOrEmpty(values[string]())
+		is.Empty(result)
+	})
 }
 
 func TestLastOr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := LastOr(values(1, 2, 3), 63)
-	result2 := LastOr(values[int](), 23)
-	result3 := LastOr(values[string](), "test")
+	t.Run("ints", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Equal(3, result1)
-	is.Equal(23, result2)
-	is.Equal("test", result3)
+		tests := []struct {
+			name     string
+			input    []int
+			fallback int
+			expected int
+		}{
+			{name: "non-empty", input: []int{1, 2, 3}, fallback: 63, expected: 3},
+			{name: "empty", input: []int{}, fallback: 23, expected: 23},
+		}
+
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				result := LastOr(values(tt.input...), tt.fallback)
+				is.Equal(tt.expected, result)
+			})
+		}
+	})
+
+	t.Run("strings", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := LastOr(values[string](), "test")
+		is.Equal("test", result)
+	})
 }
 
 func TestNth(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1, err1 := Nth(values(0, 1, 2, 3), 2)
-	result2, err2 := Nth(values(0, 1, 2, 3), -2)
-	result3, err3 := Nth(values(0, 1, 2, 3), 42)
-	result4, err4 := Nth(values[int](), 0)
-	result5, err5 := Nth(values(42), 0)
-	result6, err6 := Nth(values(42), -1)
+	tests := []struct {
+		name        string
+		input       []int
+		n           int
+		expected    int
+		expectedErr string
+	}{
+		{name: "positive index in range", input: []int{0, 1, 2, 3}, n: 2, expected: 2},
+		{name: "negative index", input: []int{0, 1, 2, 3}, n: -2, expected: 0, expectedErr: "nth: -2 out of bounds"},
+		{name: "index out of range", input: []int{0, 1, 2, 3}, n: 42, expected: 0, expectedErr: "nth: 42 out of bounds"},
+		{name: "empty collection", input: []int{}, n: 0, expected: 0, expectedErr: "nth: 0 out of bounds"},
+		{name: "single element in range", input: []int{42}, n: 0, expected: 42},
+		{name: "single element out of range", input: []int{42}, n: -1, expected: 0, expectedErr: "nth: -1 out of bounds"},
+	}
 
-	is.Equal(2, result1)
-	is.NoError(err1)
-	is.Zero(result2)
-	is.EqualError(err2, "nth: -2 out of bounds")
-	is.Zero(result3)
-	is.EqualError(err3, "nth: 42 out of bounds")
-	is.Zero(result4)
-	is.EqualError(err4, "nth: 0 out of bounds")
-	is.Equal(42, result5)
-	is.NoError(err5)
-	is.Zero(result6)
-	is.EqualError(err6, "nth: -1 out of bounds")
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result, err := Nth(values(tt.input...), tt.n)
+			is.Equal(tt.expected, result)
+			if tt.expectedErr == "" {
+				is.NoError(err)
+			} else {
+				is.EqualError(err, tt.expectedErr)
+			}
+		})
+	}
 }
 
 func TestNthOr(t *testing.T) {
@@ -678,67 +1094,148 @@ func TestNthOrEmpty(t *testing.T) {
 
 func TestSample(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Sample(values("a", "b", "c"))
-	result2 := Sample(values[string]())
+	tests := []struct {
+		name        string
+		input       []string
+		expectEmpty bool
+	}{
+		{name: "non-empty", input: []string{"a", "b", "c"}, expectEmpty: false},
+		{name: "empty", input: []string{}, expectEmpty: true},
+	}
 
-	is.True(Contains(values("a", "b", "c"), result1))
-	is.Empty(result2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := Sample(values(tt.input...))
+			if tt.expectEmpty {
+				is.Empty(result)
+			} else {
+				is.True(Contains(values(tt.input...), result))
+			}
+		})
+	}
 }
 
 func TestSampleBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := SampleBy(values("a", "b", "c"), xrand.IntN)
-	result2 := SampleBy(values[string](), xrand.IntN)
+	tests := []struct {
+		name        string
+		input       []string
+		expectEmpty bool
+	}{
+		{name: "non-empty", input: []string{"a", "b", "c"}, expectEmpty: false},
+		{name: "empty", input: []string{}, expectEmpty: true},
+	}
 
-	is.True(Contains(values("a", "b", "c"), result1))
-	is.Empty(result2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := SampleBy(values(tt.input...), xrand.IntN)
+			if tt.expectEmpty {
+				is.Empty(result)
+			} else {
+				is.True(Contains(values(tt.input...), result))
+			}
+		})
+	}
 }
 
 func TestSamples(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Samples(values("a", "b", "c"), 3)
-	result2 := Samples(values[string](), 3)
+	tests := []struct {
+		name        string
+		input       []string
+		expectEmpty bool
+	}{
+		{name: "non-empty", input: []string{"a", "b", "c"}, expectEmpty: false},
+		{name: "empty", input: []string{}, expectEmpty: true},
+	}
 
-	is.ElementsMatch(slices.Collect(result1), []string{"a", "b", "c"})
-	is.Empty(slices.Collect(result2))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := slices.Collect(Samples(values(tt.input...), 3))
+			if tt.expectEmpty {
+				is.Empty(result)
+			} else {
+				is.ElementsMatch(result, tt.input)
+			}
+		})
+	}
 
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := Samples(allStrings, 2)
-	is.IsType(nonempty, allStrings, "type preserved")
+	t.Run("preserves iterator type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := Samples(allStrings, 2)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestSamplesBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := SamplesBy(values("a", "b", "c"), 3, xrand.IntN)
-	result2 := SamplesBy(values[string](), 3, xrand.IntN)
-	result3 := SamplesBy(values("a", "b", "c"), 3, func(n int) int { return n - 1 })
-	result4 := SamplesBy(values("a", "b", "c"), 3, func(int) int { return 0 })
-	result5 := SamplesBy(values("a", "b", "c"), 0, func(int) int { return 1 })
-	result6 := SamplesBy(values("a", "b", "c"), -1, nil)
+	tests := []struct {
+		name  string
+		input []string
+		n     int
+		keyFn func(int) int
+		mode  string // "elementsMatch", "equal", "empty"
+		exact []string
+	}{
+		{name: "random selection", input: []string{"a", "b", "c"}, n: 3, keyFn: xrand.IntN, mode: "elementsMatch"},
+		{name: "empty input", input: []string{}, n: 3, keyFn: xrand.IntN, mode: "empty"},
+		{name: "reverse order key", input: []string{"a", "b", "c"}, n: 3, keyFn: func(n int) int { return n - 1 }, mode: "equal", exact: []string{"c", "b", "a"}},
+		{name: "constant zero key", input: []string{"a", "b", "c"}, n: 3, keyFn: func(int) int { return 0 }, mode: "equal", exact: []string{"a", "c", "b"}},
+		{name: "zero count", input: []string{"a", "b", "c"}, n: 0, keyFn: func(int) int { return 1 }, mode: "empty"},
+		{name: "negative count with nil keyFn", input: []string{"a", "b", "c"}, n: -1, keyFn: nil, mode: "empty"},
+	}
 
-	// index out of range [1] with length 1
-	is.Panics(func() {
-		SamplesBy(values("a", "b", "c"), 3, func(int) int { return 1 })
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := slices.Collect(SamplesBy(values(tt.input...), tt.n, tt.keyFn))
+			switch tt.mode {
+			case "elementsMatch":
+				is.ElementsMatch(result, tt.input)
+			case "equal":
+				is.Equal(tt.exact, result)
+			case "empty":
+				is.Empty(result)
+			}
+		})
+	}
+
+	t.Run("panics on out of range key", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		// index out of range [1] with length 1
+		is.Panics(func() {
+			SamplesBy(values("a", "b", "c"), 3, func(int) int { return 1 })
+		})
 	})
 
-	is.ElementsMatch(slices.Collect(result1), []string{"a", "b", "c"})
-	is.Empty(slices.Collect(result2))
-	is.Equal([]string{"c", "b", "a"}, slices.Collect(result3))
-	is.Equal([]string{"a", "c", "b"}, slices.Collect(result4))
-	is.Empty(slices.Collect(result5))
-	is.Empty(slices.Collect(result6))
+	t.Run("preserves iterator type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	type myStrings iter.Seq[string]
-	allStrings := myStrings(values("", "foo", "bar"))
-	nonempty := SamplesBy(allStrings, 2, xrand.IntN)
-	is.IsType(nonempty, allStrings, "type preserved")
+		type myStrings iter.Seq[string]
+		allStrings := myStrings(values("", "foo", "bar"))
+		nonempty := SamplesBy(allStrings, 2, xrand.IntN)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }

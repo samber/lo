@@ -14,93 +14,117 @@ import (
 
 func TestKeys(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := slices.Collect(Keys(map[string]int{"foo": 1, "bar": 2}))
-	is.ElementsMatch(r1, []string{"bar", "foo"})
+	tests := []struct {
+		name     string
+		maps     []map[string]int
+		expected []string
+	}{
+		{name: "single map", maps: []map[string]int{{"foo": 1, "bar": 2}}, expected: []string{"bar", "foo"}},
+		{name: "empty map", maps: []map[string]int{{}}, expected: []string{}},
+		{name: "multiple maps", maps: []map[string]int{{"foo": 1, "bar": 2}, {"baz": 3}}, expected: []string{"bar", "baz", "foo"}},
+		{name: "no maps", maps: nil, expected: []string{}},
+		{name: "duplicate keys across maps", maps: []map[string]int{{"foo": 1, "bar": 2}, {"bar": 3}}, expected: []string{"bar", "bar", "foo"}},
+	}
 
-	r2 := slices.Collect(Keys(map[string]int{}))
-	is.Empty(r2)
-
-	r3 := slices.Collect(Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3}))
-	is.ElementsMatch(r3, []string{"bar", "baz", "foo"})
-
-	r4 := slices.Collect(Keys[string, int]())
-	is.Empty(r4)
-
-	r5 := slices.Collect(Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3}))
-	is.ElementsMatch(r5, []string{"bar", "bar", "foo"})
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.ElementsMatch(tt.expected, slices.Collect(Keys(tt.maps...)))
+		})
+	}
 }
 
 func TestUniqKeys(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := slices.Collect(UniqKeys(map[string]int{"foo": 1, "bar": 2}))
-	is.ElementsMatch(r1, []string{"bar", "foo"})
+	tests := []struct {
+		name     string
+		maps     []map[string]int
+		expected []string
+		exact    bool
+	}{
+		{name: "single map", maps: []map[string]int{{"foo": 1, "bar": 2}}, expected: []string{"bar", "foo"}},
+		{name: "empty map", maps: []map[string]int{{}}, expected: []string{}},
+		{name: "multiple maps", maps: []map[string]int{{"foo": 1, "bar": 2}, {"baz": 3}}, expected: []string{"bar", "baz", "foo"}},
+		{name: "no maps", maps: nil, expected: []string{}},
+		{name: "duplicate keys across maps are deduplicated", maps: []map[string]int{{"foo": 1, "bar": 2}, {"foo": 1, "bar": 3}}, expected: []string{"bar", "foo"}},
+		{name: "preserves first-seen order", maps: []map[string]int{{"foo": 1}, {"bar": 3}}, expected: []string{"foo", "bar"}, exact: true},
+	}
 
-	r2 := slices.Collect(UniqKeys(map[string]int{}))
-	is.Empty(r2)
-
-	r3 := slices.Collect(UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3}))
-	is.ElementsMatch(r3, []string{"bar", "baz", "foo"})
-
-	r4 := slices.Collect(UniqKeys[string, int]())
-	is.Empty(r4)
-
-	r5 := slices.Collect(UniqKeys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3}))
-	is.ElementsMatch(r5, []string{"bar", "foo"})
-
-	// check order
-	r6 := slices.Collect(UniqKeys(map[string]int{"foo": 1}, map[string]int{"bar": 3}))
-	is.Equal([]string{"foo", "bar"}, r6)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := slices.Collect(UniqKeys(tt.maps...))
+			if tt.exact {
+				is.Equal(tt.expected, result)
+			} else {
+				is.ElementsMatch(tt.expected, result)
+			}
+		})
+	}
 }
 
 func TestValues(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := slices.Collect(Values(map[string]int{"foo": 1, "bar": 2}))
-	is.ElementsMatch(r1, []int{1, 2})
+	tests := []struct {
+		name     string
+		maps     []map[string]int
+		expected []int
+	}{
+		{name: "single map", maps: []map[string]int{{"foo": 1, "bar": 2}}, expected: []int{1, 2}},
+		{name: "empty map", maps: []map[string]int{{}}, expected: []int{}},
+		{name: "multiple maps", maps: []map[string]int{{"foo": 1, "bar": 2}, {"baz": 3}}, expected: []int{1, 2, 3}},
+		{name: "no maps", maps: nil, expected: []int{}},
+		{name: "duplicate keys across maps", maps: []map[string]int{{"foo": 1, "bar": 2}, {"foo": 1, "bar": 3}}, expected: []int{1, 1, 2, 3}},
+	}
 
-	r2 := slices.Collect(Values(map[string]int{}))
-	is.Empty(r2)
-
-	r3 := slices.Collect(Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3}))
-	is.ElementsMatch(r3, []int{1, 2, 3})
-
-	r4 := slices.Collect(Values[string, int]())
-	is.Empty(r4)
-
-	r5 := slices.Collect(Values(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3}))
-	is.ElementsMatch(r5, []int{1, 1, 2, 3})
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.ElementsMatch(tt.expected, slices.Collect(Values(tt.maps...)))
+		})
+	}
 }
 
 func TestUniqValues(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := slices.Collect(UniqValues(map[string]int{"foo": 1, "bar": 2}))
-	is.ElementsMatch(r1, []int{1, 2})
+	tests := []struct {
+		name     string
+		maps     []map[string]int
+		expected []int
+		exact    bool
+	}{
+		{name: "single map", maps: []map[string]int{{"foo": 1, "bar": 2}}, expected: []int{1, 2}},
+		{name: "empty map", maps: []map[string]int{{}}, expected: []int{}},
+		{name: "multiple maps", maps: []map[string]int{{"foo": 1, "bar": 2}, {"baz": 3}}, expected: []int{1, 2, 3}},
+		{name: "no maps", maps: nil, expected: []int{}},
+		{name: "duplicate values across maps", maps: []map[string]int{{"foo": 1, "bar": 2}, {"foo": 1, "bar": 3}}, expected: []int{1, 2, 3}},
+		{name: "duplicate values within and across maps", maps: []map[string]int{{"foo": 1, "bar": 1}, {"foo": 1, "bar": 3}}, expected: []int{1, 3}},
+		{name: "preserves first-seen order", maps: []map[string]int{{"foo": 1}, {"bar": 3}}, expected: []int{1, 3}, exact: true},
+	}
 
-	r2 := slices.Collect(UniqValues(map[string]int{}))
-	is.Empty(r2)
-
-	r3 := slices.Collect(UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3}))
-	is.ElementsMatch(r3, []int{1, 2, 3})
-
-	r4 := slices.Collect(UniqValues[string, int]())
-	is.Empty(r4)
-
-	r5 := slices.Collect(UniqValues(map[string]int{"foo": 1, "bar": 2}, map[string]int{"foo": 1, "bar": 3}))
-	is.ElementsMatch(r5, []int{1, 2, 3})
-
-	r6 := slices.Collect(UniqValues(map[string]int{"foo": 1, "bar": 1}, map[string]int{"foo": 1, "bar": 3}))
-	is.ElementsMatch(r6, []int{1, 3})
-
-	// check order
-	r7 := slices.Collect(UniqValues(map[string]int{"foo": 1}, map[string]int{"bar": 3}))
-	is.Equal([]int{1, 3}, r7)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result := slices.Collect(UniqValues(tt.maps...))
+			if tt.exact {
+				is.Equal(tt.expected, result)
+			} else {
+				is.ElementsMatch(tt.expected, result)
+			}
+		})
+	}
 }
 
 func TestEntries(t *testing.T) {
@@ -143,148 +167,273 @@ func TestFromPairs(t *testing.T) {
 
 func TestInvert(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := Invert(maps.All(map[string]int{"a": 1, "b": 2}))
-	r2 := Invert(maps.All(map[string]int{"a": 1, "b": 2, "c": 1}))
+	t.Run("no collisions", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		r1 := Invert(maps.All(map[string]int{"a": 1, "b": 2}))
+		is.Equal(map[int]string{1: "a", 2: "b"}, maps.Collect(r1))
+	})
 
-	is.Equal(map[int]string{1: "a", 2: "b"}, maps.Collect(r1))
-	is.Len(maps.Collect(r2), 2)
+	t.Run("colliding values keep one key", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		r2 := Invert(maps.All(map[string]int{"a": 1, "b": 2, "c": 1}))
+		is.Len(maps.Collect(r2), 2)
+	})
 }
 
 func TestAssign(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Assign(values(map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4}))
-	is.Equal(map[string]int{"a": 1, "b": 3, "c": 4}, result1)
+	t.Run("merges maps with later keys overriding earlier ones", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		result1 := Assign(values(map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4}))
+		is.Equal(map[string]int{"a": 1, "b": 3, "c": 4}, result1)
+	})
 
-	type myMap map[string]int
-	before := myMap{"": 0, "foobar": 6, "baz": 3}
-	after := Assign(values(before, before))
-	is.IsType(myMap{}, after, "type preserved")
+	t.Run("preserves custom map type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		type myMap map[string]int
+		before := myMap{"": 0, "foobar": 6, "baz": 3}
+		after := Assign(values(before, before))
+		is.IsType(myMap{}, after, "type preserved")
+	})
 }
 
 func TestChunkEntries(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := ChunkEntries(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, 2)
-	result2 := ChunkEntries(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, 3)
-	result3 := ChunkEntries(map[string]int{}, 2)
-	result4 := ChunkEntries(map[string]int{"a": 1}, 2)
-	result5 := ChunkEntries(map[string]int{"a": 1, "b": 2}, 1)
+	t.Run("chunk counts", func(t *testing.T) {
+		t.Parallel()
 
-	is.Len(slices.Collect(result1), 3)
-	is.Len(slices.Collect(result2), 2)
-	is.Empty(slices.Collect(result3))
-	is.Len(slices.Collect(result4), 1)
-	is.Len(slices.Collect(result5), 2)
+		tests := []struct {
+			name        string
+			input       map[string]int
+			size        int
+			expectedLen int
+		}{
+			{name: "5 entries chunked by 2", input: map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, size: 2, expectedLen: 3},
+			{name: "5 entries chunked by 3", input: map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, size: 3, expectedLen: 2},
+			{name: "empty map", input: map[string]int{}, size: 2, expectedLen: 0},
+			{name: "single entry chunked by 2", input: map[string]int{"a": 1}, size: 2, expectedLen: 1},
+			{name: "2 entries chunked by 1", input: map[string]int{"a": 1, "b": 2}, size: 1, expectedLen: 2},
+		}
 
-	is.PanicsWithValue("it.ChunkEntries: size must be greater than 0", func() {
-		ChunkEntries(map[string]int{"a": 1}, 0)
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+				is.Len(slices.Collect(ChunkEntries(tt.input, tt.size)), tt.expectedLen)
+			})
+		}
 	})
-	is.PanicsWithValue("it.ChunkEntries: size must be greater than 0", func() {
-		ChunkEntries(map[string]int{"a": 1}, -1)
+
+	t.Run("panics on non-positive size", func(t *testing.T) {
+		t.Parallel()
+
+		tests := []struct {
+			name string
+			size int
+		}{
+			{name: "zero size", size: 0},
+			{name: "negative size", size: -1},
+		}
+
+		for _, tt := range tests {
+			tt := tt //nolint:modernize
+			t.Run(tt.name, func(t *testing.T) {
+				t.Parallel()
+				is := assert.New(t)
+				is.PanicsWithValue("it.ChunkEntries: size must be greater than 0", func() {
+					ChunkEntries(map[string]int{"a": 1}, tt.size)
+				})
+			})
+		}
 	})
 
-	type myStruct struct {
-		Name  string
-		Value int
-	}
+	t.Run("chunks a map of struct values", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	allStructs := []myStruct{{"one", 1}, {"two", 2}, {"three", 3}}
-	nonempty := ChunkEntries(map[string]myStruct{"a": allStructs[0], "b": allStructs[1], "c": allStructs[2]}, 2)
-	is.Len(slices.Collect(nonempty), 2)
+		type myStruct struct {
+			Name  string
+			Value int
+		}
 
-	originalMap := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
-	result6 := slices.Collect(ChunkEntries(originalMap, 2))
-	for k := range result6[0] {
-		result6[0][k] = 10
-	}
-	is.Equal(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, originalMap)
+		allStructs := []myStruct{{"one", 1}, {"two", 2}, {"three", 3}}
+		nonempty := ChunkEntries(map[string]myStruct{"a": allStructs[0], "b": allStructs[1], "c": allStructs[2]}, 2)
+		is.Len(slices.Collect(nonempty), 2)
+	})
+
+	t.Run("mutating a returned chunk does not affect the original map", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		originalMap := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
+		result := slices.Collect(ChunkEntries(originalMap, 2))
+		for k := range result[0] {
+			result[0][k] = 10
+		}
+		is.Equal(map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}, originalMap)
+	})
 }
 
 func TestMapToSeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := MapToSeq(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, v int) string {
-		return fmt.Sprintf("%d_%d", k, v)
-	})
-	result2 := MapToSeq(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, _ int) string {
-		return strconv.FormatInt(int64(k), 10)
-	})
+	tests := []struct {
+		name      string
+		input     map[int]int
+		transform func(k, v int) string
+		expected  []string
+	}{
+		{
+			name:      "formats key and value",
+			input:     map[int]int{1: 5, 2: 6, 3: 7, 4: 8},
+			transform: func(k, v int) string { return fmt.Sprintf("%d_%d", k, v) },
+			expected:  []string{"1_5", "2_6", "3_7", "4_8"},
+		},
+		{
+			name:      "formats key only",
+			input:     map[int]int{1: 5, 2: 6, 3: 7, 4: 8},
+			transform: func(k, _ int) string { return strconv.FormatInt(int64(k), 10) },
+			expected:  []string{"1", "2", "3", "4"},
+		},
+	}
 
-	is.ElementsMatch(slices.Collect(result1), []string{"1_5", "2_6", "3_7", "4_8"})
-	is.ElementsMatch(slices.Collect(result2), []string{"1", "2", "3", "4"})
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.ElementsMatch(tt.expected, slices.Collect(MapToSeq(tt.input, tt.transform)))
+		})
+	}
 }
 
 func TestFilterMapToSeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := FilterMapToSeq(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, v int) (string, bool) {
-		return fmt.Sprintf("%d_%d", k, v), k%2 == 0
-	})
-	result2 := FilterMapToSeq(map[int]int{1: 5, 2: 6, 3: 7, 4: 8}, func(k, _ int) (string, bool) {
-		return strconv.FormatInt(int64(k), 10), k%2 == 0
-	})
+	tests := []struct {
+		name     string
+		input    map[int]int
+		filter   func(k, v int) (string, bool)
+		expected []string
+	}{
+		{
+			name:     "formats key and value for even keys",
+			input:    map[int]int{1: 5, 2: 6, 3: 7, 4: 8},
+			filter:   func(k, v int) (string, bool) { return fmt.Sprintf("%d_%d", k, v), k%2 == 0 },
+			expected: []string{"2_6", "4_8"},
+		},
+		{
+			name:     "formats key only for even keys",
+			input:    map[int]int{1: 5, 2: 6, 3: 7, 4: 8},
+			filter:   func(k, _ int) (string, bool) { return strconv.FormatInt(int64(k), 10), k%2 == 0 },
+			expected: []string{"2", "4"},
+		},
+	}
 
-	is.ElementsMatch(slices.Collect(result1), []string{"2_6", "4_8"})
-	is.ElementsMatch(slices.Collect(result2), []string{"2", "4"})
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.ElementsMatch(tt.expected, slices.Collect(FilterMapToSeq(tt.input, tt.filter)))
+		})
+	}
 }
 
 func TestFilterKeys(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := FilterKeys(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) bool {
-		return v == "foo"
+	t.Run("int keys filtered by matching string value", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		result1 := FilterKeys(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) bool {
+			return v == "foo"
+		})
+		is.Equal([]int{1}, slices.Collect(result1))
 	})
-	is.Equal([]int{1}, slices.Collect(result1))
 
-	result2 := FilterKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
-		return false
+	t.Run("string keys with predicate always false", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		result2 := FilterKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
+			return false
+		})
+		is.Empty(slices.Collect(result2))
 	})
-	is.Empty(slices.Collect(result2))
 }
 
 func TestFilterValues(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := FilterValues(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) bool {
-		return v == "foo"
+	t.Run("string values filtered by matching predicate", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		result1 := FilterValues(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) bool {
+			return v == "foo"
+		})
+		is.Equal([]string{"foo"}, slices.Collect(result1))
 	})
-	is.Equal([]string{"foo"}, slices.Collect(result1))
 
-	result2 := FilterValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
-		return false
+	t.Run("int values with predicate always false", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		result2 := FilterValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
+			return false
+		})
+		is.Empty(slices.Collect(result2))
 	})
-	is.Empty(slices.Collect(result2))
 }
 
 func TestSeq2KeyToSeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := slices.Collect(Seq2KeyToSeq(maps.All(map[string]int{"foo": 4, "bar": 5})))
-	is.ElementsMatch([]string{"foo", "bar"}, r1)
+	tests := []struct {
+		name     string
+		input    map[string]int
+		expected []string
+	}{
+		{name: "non-empty map", input: map[string]int{"foo": 4, "bar": 5}, expected: []string{"foo", "bar"}},
+		{name: "empty map", input: map[string]int{}, expected: []string{}},
+	}
 
-	r2 := slices.Collect(Seq2KeyToSeq(maps.All(map[string]int{})))
-	is.Empty(r2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.ElementsMatch(tt.expected, slices.Collect(Seq2KeyToSeq(maps.All(tt.input))))
+		})
+	}
 }
 
 func TestSeq2ValueToSeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := slices.Collect(Seq2ValueToSeq(maps.All(map[string]int{"foo": 4, "bar": 5})))
-	is.ElementsMatch([]int{4, 5}, r1)
+	tests := []struct {
+		name     string
+		input    map[string]int
+		expected []int
+	}{
+		{name: "non-empty map", input: map[string]int{"foo": 4, "bar": 5}, expected: []int{4, 5}},
+		{name: "empty map", input: map[string]int{}, expected: []int{}},
+	}
 
-	r2 := slices.Collect(Seq2ValueToSeq(maps.All(map[string]int{})))
-	is.Empty(r2)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.ElementsMatch(tt.expected, slices.Collect(Seq2ValueToSeq(maps.All(tt.input))))
+		})
+	}
 }
 
 func BenchmarkAssign(b *testing.B) {
