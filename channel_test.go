@@ -99,16 +99,30 @@ func TestChannelDispatcher(t *testing.T) {
 func TestDispatchingStrategyRoundRobin(t *testing.T) {
 	t.Parallel()
 	testWithTimeout(t, 100*time.Millisecond)
-	is := assert.New(t)
 
 	children := createChannels[int](3, 2)
 	rochildren := channelsToReadOnly(children)
 	defer closeChannels(children)
 
-	is.Zero(DispatchingStrategyRoundRobin(42, 0, rochildren))
-	is.Equal(1, DispatchingStrategyRoundRobin(42, 1, rochildren))
-	is.Equal(2, DispatchingStrategyRoundRobin(42, 2, rochildren))
-	is.Zero(DispatchingStrategyRoundRobin(42, 3, rochildren))
+	tests := []struct {
+		name     string
+		index    uint64
+		expected int
+	}{
+		{name: "index 0 selects channel 0", index: 0, expected: 0},
+		{name: "index 1 selects channel 1", index: 1, expected: 1},
+		{name: "index 2 selects channel 2", index: 2, expected: 2},
+		{name: "index 3 wraps back to channel 0", index: 3, expected: 0},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, DispatchingStrategyRoundRobin(42, tt.index, rochildren))
+		})
+	}
 }
 
 func TestDispatchingStrategyRandom(t *testing.T) {
@@ -280,37 +294,46 @@ func TestBuffer(t *testing.T) {
 func TestBufferWithContext(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
 	testWithTimeout(t, 200*time.Millisecond)
-	is := assert.New(t)
 
-	ch1 := make(chan int, 10)
-	ctx, cancel := context.WithCancel(context.Background())
-	go func() {
-		ch1 <- 0
-		ch1 <- 1
-		ch1 <- 2
-		time.Sleep(5 * time.Millisecond)
-		cancel()
-		ch1 <- 3
-		ch1 <- 4
-		ch1 <- 5
-		close(ch1)
-	}()
-	items1, length1, _, ok1 := BufferWithContext(ctx, ch1, 20)
-	is.Equal([]int{0, 1, 2}, items1)
-	is.Equal(3, length1)
-	is.True(ok1)
+	t.Run("context cancelled mid-buffer", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
 
-	ch2 := make(chan int, 10)
-	ctx, cancel = context.WithCancel(context.Background())
-	defer cancel()
-	defer close(ch2)
-	for i := 0; i < 10; i++ {
-		ch2 <- i
-	}
-	items2, length2, _, ok2 := BufferWithContext(ctx, ch2, 5)
-	is.Equal([]int{0, 1, 2, 3, 4}, items2)
-	is.Equal(5, length2)
-	is.True(ok2)
+		ch1 := make(chan int, 10)
+		ctx, cancel := context.WithCancel(context.Background())
+		go func() {
+			ch1 <- 0
+			ch1 <- 1
+			ch1 <- 2
+			time.Sleep(5 * time.Millisecond)
+			cancel()
+			ch1 <- 3
+			ch1 <- 4
+			ch1 <- 5
+			close(ch1)
+		}()
+		items1, length1, _, ok1 := BufferWithContext(ctx, ch1, 20)
+		is.Equal([]int{0, 1, 2}, items1)
+		is.Equal(3, length1)
+		is.True(ok1)
+	})
+
+	t.Run("buffer fills before context cancellation", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
+		ch2 := make(chan int, 10)
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		defer close(ch2)
+		for i := 0; i < 10; i++ {
+			ch2 <- i
+		}
+		items2, length2, _, ok2 := BufferWithContext(ctx, ch2, 5)
+		is.Equal([]int{0, 1, 2, 3, 4}, items2)
+		is.Equal(5, length2)
+		is.True(ok2)
+	})
 }
 
 func TestBufferWithTimeout(t *testing.T) { //nolint:paralleltest

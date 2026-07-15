@@ -11,32 +11,79 @@ import (
 
 func TestT(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := T2("a", 1)
-	r2 := T3[string, int, float32]("b", 2, 3.0)
-	r3 := T4[string, int, float32]("c", 3, 4.0, true)
-	r4 := T5[string, int, float32]("d", 4, 5.0, false, "e")
-	r5 := T6[string, int, float32]("f", 5, 6.0, true, "g", 7)
-	r6 := T7[string, int, float32]("h", 6, 7.0, false, "i", 8, 9.0)
-	r7 := T8[string, int, float32]("j", 7, 8.0, true, "k", 9, 10.0, false)
-	r8 := T9[string, int, float32]("l", 8, 9.0, false, "m", 10, 11.0, true, "n")
+	t.Run("2 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Equal(Tuple2[string, int]{A: "a", B: 1}, r1)
-	is.Equal(Tuple3[string, int, float32]{A: "b", B: 2, C: 3.0}, r2)
-	is.Equal(Tuple4[string, int, float32, bool]{A: "c", B: 3, C: 4.0, D: true}, r3)
-	is.Equal(Tuple5[string, int, float32, bool, string]{A: "d", B: 4, C: 5.0, D: false, E: "e"}, r4)
-	is.Equal(Tuple6[string, int, float32, bool, string, int]{A: "f", B: 5, C: 6.0, D: true, E: "g", F: 7}, r5)
-	is.Equal(Tuple7[string, int, float32, bool, string, int, float64]{A: "h", B: 6, C: 7.0, D: false, E: "i", F: 8, G: 9.0}, r6)
-	is.Equal(Tuple8[string, int, float32, bool, string, int, float64, bool]{A: "j", B: 7, C: 8.0, D: true, E: "k", F: 9, G: 10.0, H: false}, r7)
-	is.Equal(Tuple9[string, int, float32, bool, string, int, float64, bool, string]{A: "l", B: 8, C: 9.0, D: false, E: "m", F: 10, G: 11.0, H: true, I: "n"}, r8)
+		r1 := T2("a", 1)
+		is.Equal(Tuple2[string, int]{A: "a", B: 1}, r1)
+	})
+
+	t.Run("3 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r2 := T3[string, int, float32]("b", 2, 3.0)
+		is.Equal(Tuple3[string, int, float32]{A: "b", B: 2, C: 3.0}, r2)
+	})
+
+	t.Run("4 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r3 := T4[string, int, float32]("c", 3, 4.0, true)
+		is.Equal(Tuple4[string, int, float32, bool]{A: "c", B: 3, C: 4.0, D: true}, r3)
+	})
+
+	t.Run("5 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r4 := T5[string, int, float32]("d", 4, 5.0, false, "e")
+		is.Equal(Tuple5[string, int, float32, bool, string]{A: "d", B: 4, C: 5.0, D: false, E: "e"}, r4)
+	})
+
+	t.Run("6 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r5 := T6[string, int, float32]("f", 5, 6.0, true, "g", 7)
+		is.Equal(Tuple6[string, int, float32, bool, string, int]{A: "f", B: 5, C: 6.0, D: true, E: "g", F: 7}, r5)
+	})
+
+	t.Run("7 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r6 := T7[string, int, float32]("h", 6, 7.0, false, "i", 8, 9.0)
+		is.Equal(Tuple7[string, int, float32, bool, string, int, float64]{A: "h", B: 6, C: 7.0, D: false, E: "i", F: 8, G: 9.0}, r6)
+	})
+
+	t.Run("8 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r7 := T8[string, int, float32]("j", 7, 8.0, true, "k", 9, 10.0, false)
+		is.Equal(Tuple8[string, int, float32, bool, string, int, float64, bool]{A: "j", B: 7, C: 8.0, D: true, E: "k", F: 9, G: 10.0, H: false}, r7)
+	})
+
+	t.Run("9 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r8 := T9[string, int, float32]("l", 8, 9.0, false, "m", 10, 11.0, true, "n")
+		is.Equal(Tuple9[string, int, float32, bool, string, int, float64, bool, string]{A: "l", B: 8, C: 9.0, D: false, E: "m", F: 10, G: 11.0, H: true, I: "n"}, r8)
+	})
 }
 
 func TestUnpack(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	{
+	t.Run("2 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		tuple := Tuple2[string, int]{"a", 1}
 
 		r1, r2 := Unpack2(tuple)
@@ -48,9 +95,12 @@ func TestUnpack(t *testing.T) {
 
 		is.Equal("a", r1)
 		is.Equal(1, r2)
-	}
+	})
 
-	{
+	t.Run("3 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		tuple := Tuple3[string, int, float64]{"a", 1, 1.0}
 
 		r1, r2, r3 := Unpack3(tuple)
@@ -64,9 +114,12 @@ func TestUnpack(t *testing.T) {
 		is.Equal("a", r1)
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
-	}
+	})
 
-	{
+	t.Run("4 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		tuple := Tuple4[string, int, float64, bool]{"a", 1, 1.0, true}
 
 		r1, r2, r3, r4 := Unpack4(tuple)
@@ -82,9 +135,12 @@ func TestUnpack(t *testing.T) {
 		is.Equal(1, r2)
 		is.Equal(1.0, r3)
 		is.True(r4)
-	}
+	})
 
-	{
+	t.Run("5 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		tuple := Tuple5[string, int, float64, bool, string]{"a", 1, 1.0, true, "b"}
 
 		r1, r2, r3, r4, r5 := Unpack5(tuple)
@@ -102,9 +158,12 @@ func TestUnpack(t *testing.T) {
 		is.Equal(1.0, r3)
 		is.True(r4)
 		is.Equal("b", r5)
-	}
+	})
 
-	{
+	t.Run("6 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		tuple := Tuple6[string, int, float64, bool, string, int]{"a", 1, 1.0, true, "b", 2}
 
 		r1, r2, r3, r4, r5, r6 := Unpack6(tuple)
@@ -124,9 +183,12 @@ func TestUnpack(t *testing.T) {
 		is.True(r4)
 		is.Equal("b", r5)
 		is.Equal(2, r6)
-	}
+	})
 
-	{
+	t.Run("7 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		tuple := Tuple7[string, int, float64, bool, string, int, float64]{"a", 1, 1.0, true, "b", 2, 3.0}
 
 		r1, r2, r3, r4, r5, r6, r7 := Unpack7(tuple)
@@ -148,9 +210,12 @@ func TestUnpack(t *testing.T) {
 		is.Equal("b", r5)
 		is.Equal(2, r6)
 		is.Equal(3.0, r7)
-	}
+	})
 
-	{
+	t.Run("8 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		tuple := Tuple8[string, int, float64, bool, string, int, float64, bool]{"a", 1, 1.0, true, "b", 2, 3.0, true}
 
 		r1, r2, r3, r4, r5, r6, r7, r8 := Unpack8(tuple)
@@ -174,9 +239,12 @@ func TestUnpack(t *testing.T) {
 		is.Equal(2, r6)
 		is.Equal(3.0, r7)
 		is.True(r8)
-	}
+	})
 
-	{
+	t.Run("9 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
 		tuple := Tuple9[string, int, float64, bool, string, int, float64, bool, string]{"a", 1, 1.0, true, "b", 2, 3.0, true, "c"}
 
 		r1, r2, r3, r4, r5, r6, r7, r8, r9 := Unpack9(tuple)
@@ -202,297 +270,375 @@ func TestUnpack(t *testing.T) {
 		is.Equal(3.0, r7)
 		is.True(r8)
 		is.Equal("c", r9)
-	}
+	})
 }
 
 func TestZip(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := Zip2(
-		[]string{"a", "b"},
-		[]int{1, 2},
-	)
+	t.Run("2 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	r2 := Zip3(
-		[]string{"a", "b", "c"},
-		[]int{1, 2, 3},
-		[]int{4, 5, 6},
-	)
+		r1 := Zip2(
+			[]string{"a", "b"},
+			[]int{1, 2},
+		)
 
-	r3 := Zip4(
-		[]string{"a", "b", "c", "d"},
-		[]int{1, 2, 3, 4},
-		[]int{5, 6, 7, 8},
-		[]bool{true, true, true, true},
-	)
+		is.Equal([]Tuple2[string, int]{
+			{A: "a", B: 1},
+			{A: "b", B: 2},
+		}, r1)
+	})
 
-	r4 := Zip5(
-		[]string{"a", "b", "c", "d", "e"},
-		[]int{1, 2, 3, 4, 5},
-		[]int{6, 7, 8, 9, 10},
-		[]bool{true, true, true, true, true},
-		[]float32{0.1, 0.2, 0.3, 0.4, 0.5},
-	)
+	t.Run("3 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	r5 := Zip6(
-		[]string{"a", "b", "c", "d", "e", "f"},
-		[]int{1, 2, 3, 4, 5, 6},
-		[]int{7, 8, 9, 10, 11, 12},
-		[]bool{true, true, true, true, true, true},
-		[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6},
-		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06},
-	)
+		r2 := Zip3(
+			[]string{"a", "b", "c"},
+			[]int{1, 2, 3},
+			[]int{4, 5, 6},
+		)
 
-	r6 := Zip7(
-		[]string{"a", "b", "c", "d", "e", "f", "g"},
-		[]int{1, 2, 3, 4, 5, 6, 7},
-		[]int{8, 9, 10, 11, 12, 13, 14},
-		[]bool{true, true, true, true, true, true, true},
-		[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7},
-		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07},
-		[]int8{1, 2, 3, 4, 5, 6, 7},
-	)
+		is.Equal([]Tuple3[string, int, int]{
+			{A: "a", B: 1, C: 4},
+			{A: "b", B: 2, C: 5},
+			{A: "c", B: 3, C: 6},
+		}, r2)
+	})
 
-	r7 := Zip8(
-		[]string{"a", "b", "c", "d", "e", "f", "g", "h"},
-		[]int{1, 2, 3, 4, 5, 6, 7, 8},
-		[]int{9, 10, 11, 12, 13, 14, 15, 16},
-		[]bool{true, true, true, true, true, true, true, true},
-		[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8},
-		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08},
-		[]int8{1, 2, 3, 4, 5, 6, 7, 8},
-		[]int16{1, 2, 3, 4, 5, 6, 7, 8},
-	)
+	t.Run("4 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	r8 := Zip9(
-		[]string{"a", "b", "c", "d", "e", "f", "g", "h", "i"},
-		[]int{1, 2, 3, 4, 5, 6, 7, 8, 9},
-		[]int{10, 11, 12, 13, 14, 15, 16, 17, 18},
-		[]bool{true, true, true, true, true, true, true, true, true},
-		[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9},
-		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09},
-		[]int8{1, 2, 3, 4, 5, 6, 7, 8, 9},
-		[]int16{1, 2, 3, 4, 5, 6, 7, 8, 9},
-		[]int32{1, 2, 3, 4, 5, 6, 7, 8, 9},
-	)
+		r3 := Zip4(
+			[]string{"a", "b", "c", "d"},
+			[]int{1, 2, 3, 4},
+			[]int{5, 6, 7, 8},
+			[]bool{true, true, true, true},
+		)
 
-	is.Equal([]Tuple2[string, int]{
-		{A: "a", B: 1},
-		{A: "b", B: 2},
-	}, r1)
+		is.Equal([]Tuple4[string, int, int, bool]{
+			{A: "a", B: 1, C: 5, D: true},
+			{A: "b", B: 2, C: 6, D: true},
+			{A: "c", B: 3, C: 7, D: true},
+			{A: "d", B: 4, C: 8, D: true},
+		}, r3)
+	})
 
-	is.Equal([]Tuple3[string, int, int]{
-		{A: "a", B: 1, C: 4},
-		{A: "b", B: 2, C: 5},
-		{A: "c", B: 3, C: 6},
-	}, r2)
+	t.Run("5 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Equal([]Tuple4[string, int, int, bool]{
-		{A: "a", B: 1, C: 5, D: true},
-		{A: "b", B: 2, C: 6, D: true},
-		{A: "c", B: 3, C: 7, D: true},
-		{A: "d", B: 4, C: 8, D: true},
-	}, r3)
+		r4 := Zip5(
+			[]string{"a", "b", "c", "d", "e"},
+			[]int{1, 2, 3, 4, 5},
+			[]int{6, 7, 8, 9, 10},
+			[]bool{true, true, true, true, true},
+			[]float32{0.1, 0.2, 0.3, 0.4, 0.5},
+		)
 
-	is.Equal([]Tuple5[string, int, int, bool, float32]{
-		{A: "a", B: 1, C: 6, D: true, E: 0.1},
-		{A: "b", B: 2, C: 7, D: true, E: 0.2},
-		{A: "c", B: 3, C: 8, D: true, E: 0.3},
-		{A: "d", B: 4, C: 9, D: true, E: 0.4},
-		{A: "e", B: 5, C: 10, D: true, E: 0.5},
-	}, r4)
+		is.Equal([]Tuple5[string, int, int, bool, float32]{
+			{A: "a", B: 1, C: 6, D: true, E: 0.1},
+			{A: "b", B: 2, C: 7, D: true, E: 0.2},
+			{A: "c", B: 3, C: 8, D: true, E: 0.3},
+			{A: "d", B: 4, C: 9, D: true, E: 0.4},
+			{A: "e", B: 5, C: 10, D: true, E: 0.5},
+		}, r4)
+	})
 
-	is.Equal([]Tuple6[string, int, int, bool, float32, float64]{
-		{A: "a", B: 1, C: 7, D: true, E: 0.1, F: 0.01},
-		{A: "b", B: 2, C: 8, D: true, E: 0.2, F: 0.02},
-		{A: "c", B: 3, C: 9, D: true, E: 0.3, F: 0.03},
-		{A: "d", B: 4, C: 10, D: true, E: 0.4, F: 0.04},
-		{A: "e", B: 5, C: 11, D: true, E: 0.5, F: 0.05},
-		{A: "f", B: 6, C: 12, D: true, E: 0.6, F: 0.06},
-	}, r5)
+	t.Run("6 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Equal([]Tuple7[string, int, int, bool, float32, float64, int8]{
-		{A: "a", B: 1, C: 8, D: true, E: 0.1, F: 0.01, G: 1},
-		{A: "b", B: 2, C: 9, D: true, E: 0.2, F: 0.02, G: 2},
-		{A: "c", B: 3, C: 10, D: true, E: 0.3, F: 0.03, G: 3},
-		{A: "d", B: 4, C: 11, D: true, E: 0.4, F: 0.04, G: 4},
-		{A: "e", B: 5, C: 12, D: true, E: 0.5, F: 0.05, G: 5},
-		{A: "f", B: 6, C: 13, D: true, E: 0.6, F: 0.06, G: 6},
-		{A: "g", B: 7, C: 14, D: true, E: 0.7, F: 0.07, G: 7},
-	}, r6)
+		r5 := Zip6(
+			[]string{"a", "b", "c", "d", "e", "f"},
+			[]int{1, 2, 3, 4, 5, 6},
+			[]int{7, 8, 9, 10, 11, 12},
+			[]bool{true, true, true, true, true, true},
+			[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6},
+			[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06},
+		)
 
-	is.Equal([]Tuple8[string, int, int, bool, float32, float64, int8, int16]{
-		{A: "a", B: 1, C: 9, D: true, E: 0.1, F: 0.01, G: 1, H: 1},
-		{A: "b", B: 2, C: 10, D: true, E: 0.2, F: 0.02, G: 2, H: 2},
-		{A: "c", B: 3, C: 11, D: true, E: 0.3, F: 0.03, G: 3, H: 3},
-		{A: "d", B: 4, C: 12, D: true, E: 0.4, F: 0.04, G: 4, H: 4},
-		{A: "e", B: 5, C: 13, D: true, E: 0.5, F: 0.05, G: 5, H: 5},
-		{A: "f", B: 6, C: 14, D: true, E: 0.6, F: 0.06, G: 6, H: 6},
-		{A: "g", B: 7, C: 15, D: true, E: 0.7, F: 0.07, G: 7, H: 7},
-		{A: "h", B: 8, C: 16, D: true, E: 0.8, F: 0.08, G: 8, H: 8},
-	}, r7)
+		is.Equal([]Tuple6[string, int, int, bool, float32, float64]{
+			{A: "a", B: 1, C: 7, D: true, E: 0.1, F: 0.01},
+			{A: "b", B: 2, C: 8, D: true, E: 0.2, F: 0.02},
+			{A: "c", B: 3, C: 9, D: true, E: 0.3, F: 0.03},
+			{A: "d", B: 4, C: 10, D: true, E: 0.4, F: 0.04},
+			{A: "e", B: 5, C: 11, D: true, E: 0.5, F: 0.05},
+			{A: "f", B: 6, C: 12, D: true, E: 0.6, F: 0.06},
+		}, r5)
+	})
 
-	is.Equal([]Tuple9[string, int, int, bool, float32, float64, int8, int16, int32]{
-		{A: "a", B: 1, C: 10, D: true, E: 0.1, F: 0.01, G: 1, H: 1, I: 1},
-		{A: "b", B: 2, C: 11, D: true, E: 0.2, F: 0.02, G: 2, H: 2, I: 2},
-		{A: "c", B: 3, C: 12, D: true, E: 0.3, F: 0.03, G: 3, H: 3, I: 3},
-		{A: "d", B: 4, C: 13, D: true, E: 0.4, F: 0.04, G: 4, H: 4, I: 4},
-		{A: "e", B: 5, C: 14, D: true, E: 0.5, F: 0.05, G: 5, H: 5, I: 5},
-		{A: "f", B: 6, C: 15, D: true, E: 0.6, F: 0.06, G: 6, H: 6, I: 6},
-		{A: "g", B: 7, C: 16, D: true, E: 0.7, F: 0.07, G: 7, H: 7, I: 7},
-		{A: "h", B: 8, C: 17, D: true, E: 0.8, F: 0.08, G: 8, H: 8, I: 8},
-		{A: "i", B: 9, C: 18, D: true, E: 0.9, F: 0.09, G: 9, H: 9, I: 9},
-	}, r8)
+	t.Run("7 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r6 := Zip7(
+			[]string{"a", "b", "c", "d", "e", "f", "g"},
+			[]int{1, 2, 3, 4, 5, 6, 7},
+			[]int{8, 9, 10, 11, 12, 13, 14},
+			[]bool{true, true, true, true, true, true, true},
+			[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7},
+			[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07},
+			[]int8{1, 2, 3, 4, 5, 6, 7},
+		)
+
+		is.Equal([]Tuple7[string, int, int, bool, float32, float64, int8]{
+			{A: "a", B: 1, C: 8, D: true, E: 0.1, F: 0.01, G: 1},
+			{A: "b", B: 2, C: 9, D: true, E: 0.2, F: 0.02, G: 2},
+			{A: "c", B: 3, C: 10, D: true, E: 0.3, F: 0.03, G: 3},
+			{A: "d", B: 4, C: 11, D: true, E: 0.4, F: 0.04, G: 4},
+			{A: "e", B: 5, C: 12, D: true, E: 0.5, F: 0.05, G: 5},
+			{A: "f", B: 6, C: 13, D: true, E: 0.6, F: 0.06, G: 6},
+			{A: "g", B: 7, C: 14, D: true, E: 0.7, F: 0.07, G: 7},
+		}, r6)
+	})
+
+	t.Run("8 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r7 := Zip8(
+			[]string{"a", "b", "c", "d", "e", "f", "g", "h"},
+			[]int{1, 2, 3, 4, 5, 6, 7, 8},
+			[]int{9, 10, 11, 12, 13, 14, 15, 16},
+			[]bool{true, true, true, true, true, true, true, true},
+			[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8},
+			[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08},
+			[]int8{1, 2, 3, 4, 5, 6, 7, 8},
+			[]int16{1, 2, 3, 4, 5, 6, 7, 8},
+		)
+
+		is.Equal([]Tuple8[string, int, int, bool, float32, float64, int8, int16]{
+			{A: "a", B: 1, C: 9, D: true, E: 0.1, F: 0.01, G: 1, H: 1},
+			{A: "b", B: 2, C: 10, D: true, E: 0.2, F: 0.02, G: 2, H: 2},
+			{A: "c", B: 3, C: 11, D: true, E: 0.3, F: 0.03, G: 3, H: 3},
+			{A: "d", B: 4, C: 12, D: true, E: 0.4, F: 0.04, G: 4, H: 4},
+			{A: "e", B: 5, C: 13, D: true, E: 0.5, F: 0.05, G: 5, H: 5},
+			{A: "f", B: 6, C: 14, D: true, E: 0.6, F: 0.06, G: 6, H: 6},
+			{A: "g", B: 7, C: 15, D: true, E: 0.7, F: 0.07, G: 7, H: 7},
+			{A: "h", B: 8, C: 16, D: true, E: 0.8, F: 0.08, G: 8, H: 8},
+		}, r7)
+	})
+
+	t.Run("9 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r8 := Zip9(
+			[]string{"a", "b", "c", "d", "e", "f", "g", "h", "i"},
+			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			[]int{10, 11, 12, 13, 14, 15, 16, 17, 18},
+			[]bool{true, true, true, true, true, true, true, true, true},
+			[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9},
+			[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09},
+			[]int8{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			[]int16{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			[]int32{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		)
+
+		is.Equal([]Tuple9[string, int, int, bool, float32, float64, int8, int16, int32]{
+			{A: "a", B: 1, C: 10, D: true, E: 0.1, F: 0.01, G: 1, H: 1, I: 1},
+			{A: "b", B: 2, C: 11, D: true, E: 0.2, F: 0.02, G: 2, H: 2, I: 2},
+			{A: "c", B: 3, C: 12, D: true, E: 0.3, F: 0.03, G: 3, H: 3, I: 3},
+			{A: "d", B: 4, C: 13, D: true, E: 0.4, F: 0.04, G: 4, H: 4, I: 4},
+			{A: "e", B: 5, C: 14, D: true, E: 0.5, F: 0.05, G: 5, H: 5, I: 5},
+			{A: "f", B: 6, C: 15, D: true, E: 0.6, F: 0.06, G: 6, H: 6, I: 6},
+			{A: "g", B: 7, C: 16, D: true, E: 0.7, F: 0.07, G: 7, H: 7, I: 7},
+			{A: "h", B: 8, C: 17, D: true, E: 0.8, F: 0.08, G: 8, H: 8, I: 8},
+			{A: "i", B: 9, C: 18, D: true, E: 0.9, F: 0.09, G: 9, H: 9, I: 9},
+		}, r8)
+	})
 }
 
 func TestZipBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := ZipBy2(
-		[]string{"a", "b"},
-		[]int{1, 2},
-		T2[string, int],
-	)
+	t.Run("2 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	r2 := ZipBy3(
-		[]string{"a", "b", "c"},
-		[]int{1, 2, 3},
-		[]int{4, 5, 6},
-		T3[string, int, int],
-	)
+		r1 := ZipBy2(
+			[]string{"a", "b"},
+			[]int{1, 2},
+			T2[string, int],
+		)
 
-	r3 := ZipBy4(
-		[]string{"a", "b", "c", "d"},
-		[]int{1, 2, 3, 4},
-		[]int{5, 6, 7, 8},
-		[]bool{true, true, true, true},
-		T4[string, int, int, bool],
-	)
+		is.Equal([]Tuple2[string, int]{
+			{A: "a", B: 1},
+			{A: "b", B: 2},
+		}, r1)
+	})
 
-	r4 := ZipBy5(
-		[]string{"a", "b", "c", "d", "e"},
-		[]int{1, 2, 3, 4, 5},
-		[]int{6, 7, 8, 9, 10},
-		[]bool{true, true, true, true, true},
-		[]float32{0.1, 0.2, 0.3, 0.4, 0.5},
-		T5[string, int, int, bool, float32],
-	)
+	t.Run("3 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	r5 := ZipBy6(
-		[]string{"a", "b", "c", "d", "e", "f"},
-		[]int{1, 2, 3, 4, 5, 6},
-		[]int{7, 8, 9, 10, 11, 12},
-		[]bool{true, true, true, true, true, true},
-		[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6},
-		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06},
-		T6[string, int, int, bool, float32, float64],
-	)
+		r2 := ZipBy3(
+			[]string{"a", "b", "c"},
+			[]int{1, 2, 3},
+			[]int{4, 5, 6},
+			T3[string, int, int],
+		)
 
-	r6 := ZipBy7(
-		[]string{"a", "b", "c", "d", "e", "f", "g"},
-		[]int{1, 2, 3, 4, 5, 6, 7},
-		[]int{8, 9, 10, 11, 12, 13, 14},
-		[]bool{true, true, true, true, true, true, true},
-		[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7},
-		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07},
-		[]int8{1, 2, 3, 4, 5, 6, 7},
-		T7[string, int, int, bool, float32, float64, int8],
-	)
+		is.Equal([]Tuple3[string, int, int]{
+			{A: "a", B: 1, C: 4},
+			{A: "b", B: 2, C: 5},
+			{A: "c", B: 3, C: 6},
+		}, r2)
+	})
 
-	r7 := ZipBy8(
-		[]string{"a", "b", "c", "d", "e", "f", "g", "h"},
-		[]int{1, 2, 3, 4, 5, 6, 7, 8},
-		[]int{9, 10, 11, 12, 13, 14, 15, 16},
-		[]bool{true, true, true, true, true, true, true, true},
-		[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8},
-		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08},
-		[]int8{1, 2, 3, 4, 5, 6, 7, 8},
-		[]int16{1, 2, 3, 4, 5, 6, 7, 8},
-		T8[string, int, int, bool, float32, float64, int8, int16],
-	)
+	t.Run("4 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	r8 := ZipBy9(
-		[]string{"a", "b", "c", "d", "e", "f", "g", "h", "i"},
-		[]int{1, 2, 3, 4, 5, 6, 7, 8, 9},
-		[]int{10, 11, 12, 13, 14, 15, 16, 17, 18},
-		[]bool{true, true, true, true, true, true, true, true, true},
-		[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9},
-		[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09},
-		[]int8{1, 2, 3, 4, 5, 6, 7, 8, 9},
-		[]int16{1, 2, 3, 4, 5, 6, 7, 8, 9},
-		[]int32{1, 2, 3, 4, 5, 6, 7, 8, 9},
-		T9[string, int, int, bool, float32, float64, int8, int16, int32],
-	)
+		r3 := ZipBy4(
+			[]string{"a", "b", "c", "d"},
+			[]int{1, 2, 3, 4},
+			[]int{5, 6, 7, 8},
+			[]bool{true, true, true, true},
+			T4[string, int, int, bool],
+		)
 
-	is.Equal([]Tuple2[string, int]{
-		{A: "a", B: 1},
-		{A: "b", B: 2},
-	}, r1)
+		is.Equal([]Tuple4[string, int, int, bool]{
+			{A: "a", B: 1, C: 5, D: true},
+			{A: "b", B: 2, C: 6, D: true},
+			{A: "c", B: 3, C: 7, D: true},
+			{A: "d", B: 4, C: 8, D: true},
+		}, r3)
+	})
 
-	is.Equal([]Tuple3[string, int, int]{
-		{A: "a", B: 1, C: 4},
-		{A: "b", B: 2, C: 5},
-		{A: "c", B: 3, C: 6},
-	}, r2)
+	t.Run("5 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Equal([]Tuple4[string, int, int, bool]{
-		{A: "a", B: 1, C: 5, D: true},
-		{A: "b", B: 2, C: 6, D: true},
-		{A: "c", B: 3, C: 7, D: true},
-		{A: "d", B: 4, C: 8, D: true},
-	}, r3)
+		r4 := ZipBy5(
+			[]string{"a", "b", "c", "d", "e"},
+			[]int{1, 2, 3, 4, 5},
+			[]int{6, 7, 8, 9, 10},
+			[]bool{true, true, true, true, true},
+			[]float32{0.1, 0.2, 0.3, 0.4, 0.5},
+			T5[string, int, int, bool, float32],
+		)
 
-	is.Equal([]Tuple5[string, int, int, bool, float32]{
-		{A: "a", B: 1, C: 6, D: true, E: 0.1},
-		{A: "b", B: 2, C: 7, D: true, E: 0.2},
-		{A: "c", B: 3, C: 8, D: true, E: 0.3},
-		{A: "d", B: 4, C: 9, D: true, E: 0.4},
-		{A: "e", B: 5, C: 10, D: true, E: 0.5},
-	}, r4)
+		is.Equal([]Tuple5[string, int, int, bool, float32]{
+			{A: "a", B: 1, C: 6, D: true, E: 0.1},
+			{A: "b", B: 2, C: 7, D: true, E: 0.2},
+			{A: "c", B: 3, C: 8, D: true, E: 0.3},
+			{A: "d", B: 4, C: 9, D: true, E: 0.4},
+			{A: "e", B: 5, C: 10, D: true, E: 0.5},
+		}, r4)
+	})
 
-	is.Equal([]Tuple6[string, int, int, bool, float32, float64]{
-		{A: "a", B: 1, C: 7, D: true, E: 0.1, F: 0.01},
-		{A: "b", B: 2, C: 8, D: true, E: 0.2, F: 0.02},
-		{A: "c", B: 3, C: 9, D: true, E: 0.3, F: 0.03},
-		{A: "d", B: 4, C: 10, D: true, E: 0.4, F: 0.04},
-		{A: "e", B: 5, C: 11, D: true, E: 0.5, F: 0.05},
-		{A: "f", B: 6, C: 12, D: true, E: 0.6, F: 0.06},
-	}, r5)
+	t.Run("6 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Equal([]Tuple7[string, int, int, bool, float32, float64, int8]{
-		{A: "a", B: 1, C: 8, D: true, E: 0.1, F: 0.01, G: 1},
-		{A: "b", B: 2, C: 9, D: true, E: 0.2, F: 0.02, G: 2},
-		{A: "c", B: 3, C: 10, D: true, E: 0.3, F: 0.03, G: 3},
-		{A: "d", B: 4, C: 11, D: true, E: 0.4, F: 0.04, G: 4},
-		{A: "e", B: 5, C: 12, D: true, E: 0.5, F: 0.05, G: 5},
-		{A: "f", B: 6, C: 13, D: true, E: 0.6, F: 0.06, G: 6},
-		{A: "g", B: 7, C: 14, D: true, E: 0.7, F: 0.07, G: 7},
-	}, r6)
+		r5 := ZipBy6(
+			[]string{"a", "b", "c", "d", "e", "f"},
+			[]int{1, 2, 3, 4, 5, 6},
+			[]int{7, 8, 9, 10, 11, 12},
+			[]bool{true, true, true, true, true, true},
+			[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6},
+			[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06},
+			T6[string, int, int, bool, float32, float64],
+		)
 
-	is.Equal([]Tuple8[string, int, int, bool, float32, float64, int8, int16]{
-		{A: "a", B: 1, C: 9, D: true, E: 0.1, F: 0.01, G: 1, H: 1},
-		{A: "b", B: 2, C: 10, D: true, E: 0.2, F: 0.02, G: 2, H: 2},
-		{A: "c", B: 3, C: 11, D: true, E: 0.3, F: 0.03, G: 3, H: 3},
-		{A: "d", B: 4, C: 12, D: true, E: 0.4, F: 0.04, G: 4, H: 4},
-		{A: "e", B: 5, C: 13, D: true, E: 0.5, F: 0.05, G: 5, H: 5},
-		{A: "f", B: 6, C: 14, D: true, E: 0.6, F: 0.06, G: 6, H: 6},
-		{A: "g", B: 7, C: 15, D: true, E: 0.7, F: 0.07, G: 7, H: 7},
-		{A: "h", B: 8, C: 16, D: true, E: 0.8, F: 0.08, G: 8, H: 8},
-	}, r7)
+		is.Equal([]Tuple6[string, int, int, bool, float32, float64]{
+			{A: "a", B: 1, C: 7, D: true, E: 0.1, F: 0.01},
+			{A: "b", B: 2, C: 8, D: true, E: 0.2, F: 0.02},
+			{A: "c", B: 3, C: 9, D: true, E: 0.3, F: 0.03},
+			{A: "d", B: 4, C: 10, D: true, E: 0.4, F: 0.04},
+			{A: "e", B: 5, C: 11, D: true, E: 0.5, F: 0.05},
+			{A: "f", B: 6, C: 12, D: true, E: 0.6, F: 0.06},
+		}, r5)
+	})
 
-	is.Equal([]Tuple9[string, int, int, bool, float32, float64, int8, int16, int32]{
-		{A: "a", B: 1, C: 10, D: true, E: 0.1, F: 0.01, G: 1, H: 1, I: 1},
-		{A: "b", B: 2, C: 11, D: true, E: 0.2, F: 0.02, G: 2, H: 2, I: 2},
-		{A: "c", B: 3, C: 12, D: true, E: 0.3, F: 0.03, G: 3, H: 3, I: 3},
-		{A: "d", B: 4, C: 13, D: true, E: 0.4, F: 0.04, G: 4, H: 4, I: 4},
-		{A: "e", B: 5, C: 14, D: true, E: 0.5, F: 0.05, G: 5, H: 5, I: 5},
-		{A: "f", B: 6, C: 15, D: true, E: 0.6, F: 0.06, G: 6, H: 6, I: 6},
-		{A: "g", B: 7, C: 16, D: true, E: 0.7, F: 0.07, G: 7, H: 7, I: 7},
-		{A: "h", B: 8, C: 17, D: true, E: 0.8, F: 0.08, G: 8, H: 8, I: 8},
-		{A: "i", B: 9, C: 18, D: true, E: 0.9, F: 0.09, G: 9, H: 9, I: 9},
-	}, r8)
+	t.Run("7 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r6 := ZipBy7(
+			[]string{"a", "b", "c", "d", "e", "f", "g"},
+			[]int{1, 2, 3, 4, 5, 6, 7},
+			[]int{8, 9, 10, 11, 12, 13, 14},
+			[]bool{true, true, true, true, true, true, true},
+			[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7},
+			[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07},
+			[]int8{1, 2, 3, 4, 5, 6, 7},
+			T7[string, int, int, bool, float32, float64, int8],
+		)
+
+		is.Equal([]Tuple7[string, int, int, bool, float32, float64, int8]{
+			{A: "a", B: 1, C: 8, D: true, E: 0.1, F: 0.01, G: 1},
+			{A: "b", B: 2, C: 9, D: true, E: 0.2, F: 0.02, G: 2},
+			{A: "c", B: 3, C: 10, D: true, E: 0.3, F: 0.03, G: 3},
+			{A: "d", B: 4, C: 11, D: true, E: 0.4, F: 0.04, G: 4},
+			{A: "e", B: 5, C: 12, D: true, E: 0.5, F: 0.05, G: 5},
+			{A: "f", B: 6, C: 13, D: true, E: 0.6, F: 0.06, G: 6},
+			{A: "g", B: 7, C: 14, D: true, E: 0.7, F: 0.07, G: 7},
+		}, r6)
+	})
+
+	t.Run("8 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r7 := ZipBy8(
+			[]string{"a", "b", "c", "d", "e", "f", "g", "h"},
+			[]int{1, 2, 3, 4, 5, 6, 7, 8},
+			[]int{9, 10, 11, 12, 13, 14, 15, 16},
+			[]bool{true, true, true, true, true, true, true, true},
+			[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8},
+			[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08},
+			[]int8{1, 2, 3, 4, 5, 6, 7, 8},
+			[]int16{1, 2, 3, 4, 5, 6, 7, 8},
+			T8[string, int, int, bool, float32, float64, int8, int16],
+		)
+
+		is.Equal([]Tuple8[string, int, int, bool, float32, float64, int8, int16]{
+			{A: "a", B: 1, C: 9, D: true, E: 0.1, F: 0.01, G: 1, H: 1},
+			{A: "b", B: 2, C: 10, D: true, E: 0.2, F: 0.02, G: 2, H: 2},
+			{A: "c", B: 3, C: 11, D: true, E: 0.3, F: 0.03, G: 3, H: 3},
+			{A: "d", B: 4, C: 12, D: true, E: 0.4, F: 0.04, G: 4, H: 4},
+			{A: "e", B: 5, C: 13, D: true, E: 0.5, F: 0.05, G: 5, H: 5},
+			{A: "f", B: 6, C: 14, D: true, E: 0.6, F: 0.06, G: 6, H: 6},
+			{A: "g", B: 7, C: 15, D: true, E: 0.7, F: 0.07, G: 7, H: 7},
+			{A: "h", B: 8, C: 16, D: true, E: 0.8, F: 0.08, G: 8, H: 8},
+		}, r7)
+	})
+
+	t.Run("9 elements", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r8 := ZipBy9(
+			[]string{"a", "b", "c", "d", "e", "f", "g", "h", "i"},
+			[]int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			[]int{10, 11, 12, 13, 14, 15, 16, 17, 18},
+			[]bool{true, true, true, true, true, true, true, true, true},
+			[]float32{0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9},
+			[]float64{0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09},
+			[]int8{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			[]int16{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			[]int32{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			T9[string, int, int, bool, float32, float64, int8, int16, int32],
+		)
+
+		is.Equal([]Tuple9[string, int, int, bool, float32, float64, int8, int16, int32]{
+			{A: "a", B: 1, C: 10, D: true, E: 0.1, F: 0.01, G: 1, H: 1, I: 1},
+			{A: "b", B: 2, C: 11, D: true, E: 0.2, F: 0.02, G: 2, H: 2, I: 2},
+			{A: "c", B: 3, C: 12, D: true, E: 0.3, F: 0.03, G: 3, H: 3, I: 3},
+			{A: "d", B: 4, C: 13, D: true, E: 0.4, F: 0.04, G: 4, H: 4, I: 4},
+			{A: "e", B: 5, C: 14, D: true, E: 0.5, F: 0.05, G: 5, H: 5, I: 5},
+			{A: "f", B: 6, C: 15, D: true, E: 0.6, F: 0.06, G: 6, H: 6, I: 6},
+			{A: "g", B: 7, C: 16, D: true, E: 0.7, F: 0.07, G: 7, H: 7, I: 7},
+			{A: "h", B: 8, C: 17, D: true, E: 0.8, F: 0.08, G: 8, H: 8, I: 8},
+			{A: "i", B: 9, C: 18, D: true, E: 0.9, F: 0.09, G: 9, H: 9, I: 9},
+		}, r8)
+	})
 }
 
 func TestUnzip(t *testing.T) {
@@ -519,7 +665,6 @@ func TestUnzipBy(t *testing.T) {
 
 func TestZipByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	// Test ZipByErr2
 	t.Run("ZipByErr2", func(t *testing.T) {
@@ -605,6 +750,7 @@ func TestZipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(a string, b int) (string, error) {
@@ -702,6 +848,7 @@ func TestZipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(a string, b int, c bool) (string, error) {
@@ -728,7 +875,6 @@ func TestZipByErr(t *testing.T) {
 	// Test ZipByErr4
 	t.Run("ZipByErr4", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name                  string
@@ -776,6 +922,7 @@ func TestZipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(a string, b int, c bool, d float32) (string, error) {
@@ -924,69 +1071,136 @@ func TestZipByErr(t *testing.T) {
 
 func TestCrossJoin(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	listOne := []string{"a", "b", "c"}
 	listTwo := []int{1, 2, 3}
 	emptyList := []any{}
 	mixedList := []any{9.6, 4, "foobar"}
 
-	results1 := CrossJoin2(emptyList, listTwo)
-	is.Empty(results1)
+	t.Run("empty list A", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	results2 := CrossJoin2(listOne, emptyList)
-	is.Empty(results2)
+		results := CrossJoin2(emptyList, listTwo)
+		is.Empty(results)
+	})
 
-	results3 := CrossJoin2(emptyList, emptyList)
-	is.Empty(results3)
+	t.Run("empty list B", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	results4 := CrossJoin2([]string{"a"}, listTwo)
-	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3)}, results4)
+		results := CrossJoin2(listOne, emptyList)
+		is.Empty(results)
+	})
 
-	results5 := CrossJoin2(listOne, []int{1})
-	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("b", 1), T2("c", 1)}, results5)
+	t.Run("empty lists A and B", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	results6 := CrossJoin2(listOne, listTwo)
-	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3), T2("b", 1), T2("b", 2), T2("b", 3), T2("c", 1), T2("c", 2), T2("c", 3)}, results6)
+		results := CrossJoin2(emptyList, emptyList)
+		is.Empty(results)
+	})
 
-	results7 := CrossJoin2(listOne, mixedList)
-	is.Equal([]Tuple2[string, any]{T2[string, any]("a", 9.6), T2[string, any]("a", 4), T2[string, any]("a", "foobar"), T2[string, any]("b", 9.6), T2[string, any]("b", 4), T2[string, any]("b", "foobar"), T2[string, any]("c", 9.6), T2[string, any]("c", 4), T2[string, any]("c", "foobar")}, results7)
+	t.Run("single element in list A", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		results := CrossJoin2([]string{"a"}, listTwo)
+		is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3)}, results)
+	})
+
+	t.Run("single element in list B", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		results := CrossJoin2(listOne, []int{1})
+		is.Equal([]Tuple2[string, int]{T2("a", 1), T2("b", 1), T2("c", 1)}, results)
+	})
+
+	t.Run("full cross join", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		results := CrossJoin2(listOne, listTwo)
+		is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3), T2("b", 1), T2("b", 2), T2("b", 3), T2("c", 1), T2("c", 2), T2("c", 3)}, results)
+	})
+
+	t.Run("mixed type list B", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		results := CrossJoin2(listOne, mixedList)
+		is.Equal([]Tuple2[string, any]{T2[string, any]("a", 9.6), T2[string, any]("a", 4), T2[string, any]("a", "foobar"), T2[string, any]("b", 9.6), T2[string, any]("b", 4), T2[string, any]("b", "foobar"), T2[string, any]("c", 9.6), T2[string, any]("c", 4), T2[string, any]("c", "foobar")}, results)
+	})
 }
 
 func TestCrossJoinBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	listOne := []string{"a", "b", "c"}
 	listTwo := []int{1, 2, 3}
 	emptyList := []any{}
 	mixedList := []any{9.6, 4, "foobar"}
 
-	results1 := CrossJoinBy2(emptyList, listTwo, T2[any, int])
-	is.Empty(results1)
+	t.Run("empty list A", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	results2 := CrossJoinBy2(listOne, emptyList, T2[string, any])
-	is.Empty(results2)
+		results := CrossJoinBy2(emptyList, listTwo, T2[any, int])
+		is.Empty(results)
+	})
 
-	results3 := CrossJoinBy2(emptyList, emptyList, T2[any, any])
-	is.Empty(results3)
+	t.Run("empty list B", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	results4 := CrossJoinBy2([]string{"a"}, listTwo, T2[string, int])
-	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3)}, results4)
+		results := CrossJoinBy2(listOne, emptyList, T2[string, any])
+		is.Empty(results)
+	})
 
-	results5 := CrossJoinBy2(listOne, []int{1}, T2[string, int])
-	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("b", 1), T2("c", 1)}, results5)
+	t.Run("empty lists A and B", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	results6 := CrossJoinBy2(listOne, listTwo, T2[string, int])
-	is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3), T2("b", 1), T2("b", 2), T2("b", 3), T2("c", 1), T2("c", 2), T2("c", 3)}, results6)
+		results := CrossJoinBy2(emptyList, emptyList, T2[any, any])
+		is.Empty(results)
+	})
 
-	results7 := CrossJoinBy2(listOne, mixedList, T2[string, any])
-	is.Equal([]Tuple2[string, any]{T2[string, any]("a", 9.6), T2[string, any]("a", 4), T2[string, any]("a", "foobar"), T2[string, any]("b", 9.6), T2[string, any]("b", 4), T2[string, any]("b", "foobar"), T2[string, any]("c", 9.6), T2[string, any]("c", 4), T2[string, any]("c", "foobar")}, results7)
+	t.Run("single element in list A", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		results := CrossJoinBy2([]string{"a"}, listTwo, T2[string, int])
+		is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3)}, results)
+	})
+
+	t.Run("single element in list B", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		results := CrossJoinBy2(listOne, []int{1}, T2[string, int])
+		is.Equal([]Tuple2[string, int]{T2("a", 1), T2("b", 1), T2("c", 1)}, results)
+	})
+
+	t.Run("full cross join", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		results := CrossJoinBy2(listOne, listTwo, T2[string, int])
+		is.Equal([]Tuple2[string, int]{T2("a", 1), T2("a", 2), T2("a", 3), T2("b", 1), T2("b", 2), T2("b", 3), T2("c", 1), T2("c", 2), T2("c", 3)}, results)
+	})
+
+	t.Run("mixed type list B", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		results := CrossJoinBy2(listOne, mixedList, T2[string, any])
+		is.Equal([]Tuple2[string, any]{T2[string, any]("a", 9.6), T2[string, any]("a", 4), T2[string, any]("a", "foobar"), T2[string, any]("b", 9.6), T2[string, any]("b", 4), T2[string, any]("b", "foobar"), T2[string, any]("c", 9.6), T2[string, any]("c", 4), T2[string, any]("c", "foobar")}, results)
+	})
 }
 
 func TestCrossJoinByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	// Test CrossJoinByErr2
 	t.Run("CrossJoinByErr2", func(t *testing.T) {
@@ -1043,6 +1257,7 @@ func TestCrossJoinByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				transform := func(a string, b int) (string, error) {
@@ -1113,6 +1328,7 @@ func TestCrossJoinByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				transform := func(a string, b int, c bool) (string, error) {
@@ -1283,7 +1499,6 @@ func TestCrossJoinByErr(t *testing.T) {
 
 func TestUnzipByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	// Test UnzipByErr2
 	t.Run("UnzipByErr2", func(t *testing.T) {
@@ -1354,6 +1569,7 @@ func TestUnzipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(str string) (string, int, error) {
@@ -1452,6 +1668,7 @@ func TestUnzipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(str string) (string, int, bool, error) {
@@ -1524,6 +1741,7 @@ func TestUnzipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(str string) (string, int, bool, float32, error) {
@@ -1546,6 +1764,7 @@ func TestUnzipByErr(t *testing.T) {
 	// Test UnzipByErr5
 	t.Run("UnzipByErr5", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		callbackCount := 0
 		_, _, _, _, _, err := UnzipByErr5([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, error) {
@@ -1560,6 +1779,7 @@ func TestUnzipByErr(t *testing.T) {
 	// Test UnzipByErr6
 	t.Run("UnzipByErr6", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		callbackCount := 0
 		_, _, _, _, _, _, err := UnzipByErr6([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, error) {
@@ -1574,6 +1794,7 @@ func TestUnzipByErr(t *testing.T) {
 	// Test UnzipByErr7
 	t.Run("UnzipByErr7", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		callbackCount := 0
 		_, _, _, _, _, _, _, err := UnzipByErr7([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, error) {
@@ -1588,6 +1809,7 @@ func TestUnzipByErr(t *testing.T) {
 	// Test UnzipByErr8
 	t.Run("UnzipByErr8", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		callbackCount := 0
 		_, _, _, _, _, _, _, _, err := UnzipByErr8([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, error) {
@@ -1602,6 +1824,7 @@ func TestUnzipByErr(t *testing.T) {
 	// Test UnzipByErr9
 	t.Run("UnzipByErr9", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		callbackCount := 0
 		_, _, _, _, _, _, _, _, _, err := UnzipByErr9([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, int64, error) {

@@ -10,53 +10,91 @@ import (
 
 func TestContains(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Contains([]int{0, 1, 2, 3, 4, 5}, 5)
-	result2 := Contains([]int{0, 1, 2, 3, 4, 5}, 6)
+	tests := []struct {
+		name     string
+		item     int
+		expected bool
+	}{
+		{name: "item present", item: 5, expected: true},
+		{name: "item absent", item: 6, expected: false},
+	}
 
-	is.True(result1)
-	is.False(result2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, Contains([]int{0, 1, 2, 3, 4, 5}, tt.item))
+		})
+	}
 }
 
 func TestContainsBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type a struct {
 		A int
 		B string
 	}
 
-	a1 := []a{{A: 1, B: "1"}, {A: 2, B: "2"}, {A: 3, B: "3"}}
-	result1 := ContainsBy(a1, func(t a) bool { return t.A == 1 && t.B == "2" })
-	result2 := ContainsBy(a1, func(t a) bool { return t.A == 2 && t.B == "2" })
+	t.Run("struct predicate: partial match on A only", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	a2 := []string{"aaa", "bbb", "ccc"}
-	result3 := ContainsBy(a2, func(t string) bool { return t == "ccc" })
-	result4 := ContainsBy(a2, func(t string) bool { return t == "ddd" })
+		a1 := []a{{A: 1, B: "1"}, {A: 2, B: "2"}, {A: 3, B: "3"}}
+		is.False(ContainsBy(a1, func(t a) bool { return t.A == 1 && t.B == "2" }))
+	})
 
-	is.False(result1)
-	is.True(result2)
-	is.True(result3)
-	is.False(result4)
+	t.Run("struct predicate: exact match", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		a1 := []a{{A: 1, B: "1"}, {A: 2, B: "2"}, {A: 3, B: "3"}}
+		is.True(ContainsBy(a1, func(t a) bool { return t.A == 2 && t.B == "2" }))
+	})
+
+	t.Run("string predicate: found", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		a2 := []string{"aaa", "bbb", "ccc"}
+		is.True(ContainsBy(a2, func(t string) bool { return t == "ccc" }))
+	})
+
+	t.Run("string predicate: not found", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		a2 := []string{"aaa", "bbb", "ccc"}
+		is.False(ContainsBy(a2, func(t string) bool { return t == "ddd" }))
+	})
 }
 
 // TestEvery_smallScan exercises the small-scan path (all subsets here are
 // <= everySmallSubset). See TestEvery_large for the map-based path.
 func TestEvery_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
-	result2 := Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
-	result3 := Every([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
-	result4 := Every([]int{0, 1, 2, 3, 4, 5}, []int{})
+	tests := []struct {
+		name     string
+		subset   []int
+		expected bool
+	}{
+		{name: "subset fully present", subset: []int{0, 2}, expected: true},
+		{name: "one element missing", subset: []int{0, 6}, expected: false},
+		{name: "all elements missing", subset: []int{-1, 6}, expected: false},
+		{name: "empty subset", subset: []int{}, expected: true},
+	}
 
-	is.True(result1)
-	is.False(result2)
-	is.False(result3)
-	is.True(result4)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, Every([]int{0, 1, 2, 3, 4, 5}, tt.subset))
+		})
+	}
 }
 
 // Every dispatches on len(subset) <= everySmallSubset (8): a subset of 9
@@ -69,170 +107,203 @@ func TestEvery_large(t *testing.T) {
 	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	subsetPresent := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
 	is.Greater(len(subsetPresent), everySmallSubset, "sanity check: subset must exceed everySmallSubset")
-	is.True(Every(collection, subsetPresent))
 
-	subsetMissing := []int{0, 1, 2, 3, 4, 5, 6, 7, 10}
-	is.False(Every(collection, subsetMissing))
+	tests := []struct {
+		name     string
+		subset   []int
+		expected bool
+	}{
+		{name: "large subset present", subset: subsetPresent, expected: true},
+		{name: "large subset missing element", subset: []int{0, 1, 2, 3, 4, 5, 6, 7, 10}, expected: false},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, Every(collection, tt.subset))
+		})
+	}
 }
 
 func TestEveryBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 5
-	})
+	tests := []struct {
+		name       string
+		collection []int
+		predicate  func(int) bool
+		expected   bool
+	}{
+		{name: "all match", collection: []int{1, 2, 3, 4}, predicate: func(x int) bool { return x < 5 }, expected: true},
+		{name: "some match", collection: []int{1, 2, 3, 4}, predicate: func(x int) bool { return x < 3 }, expected: false},
+		{name: "none match", collection: []int{1, 2, 3, 4}, predicate: func(x int) bool { return x < 0 }, expected: false},
+		{name: "empty collection", collection: []int{}, predicate: func(x int) bool { return x < 5 }, expected: true},
+	}
 
-	is.True(result1)
-
-	result2 := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 3
-	})
-
-	is.False(result2)
-
-	result3 := EveryBy([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 0
-	})
-
-	is.False(result3)
-
-	result4 := EveryBy([]int{}, func(x int) bool {
-		return x < 5
-	})
-
-	is.True(result4)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, EveryBy(tt.collection, tt.predicate))
+		})
+	}
 }
 
 func TestSome(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
-	result2 := Some([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
-	result3 := Some([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
-	result4 := Some([]int{0, 1, 2, 3, 4, 5}, []int{})
+	tests := []struct {
+		name     string
+		subset   []int
+		expected bool
+	}{
+		{name: "some elements present", subset: []int{0, 2}, expected: true},
+		{name: "one element present", subset: []int{0, 6}, expected: true},
+		{name: "no elements present", subset: []int{-1, 6}, expected: false},
+		{name: "empty subset", subset: []int{}, expected: false},
+	}
 
-	is.True(result1)
-	is.True(result2)
-	is.False(result3)
-	is.False(result4)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, Some([]int{0, 1, 2, 3, 4, 5}, tt.subset))
+		})
+	}
 }
 
 func TestSomeBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := SomeBy([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 5
-	})
+	tests := []struct {
+		name       string
+		collection []int
+		predicate  func(int) bool
+		expected   bool
+	}{
+		{name: "some match", collection: []int{1, 2, 3, 4}, predicate: func(x int) bool { return x < 5 }, expected: true},
+		{name: "one matches", collection: []int{1, 2, 3, 4}, predicate: func(x int) bool { return x < 3 }, expected: true},
+		{name: "none match", collection: []int{1, 2, 3, 4}, predicate: func(x int) bool { return x < 0 }, expected: false},
+		{name: "empty collection", collection: []int{}, predicate: func(x int) bool { return x < 5 }, expected: false},
+	}
 
-	is.True(result1)
-
-	result2 := SomeBy([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 3
-	})
-
-	is.True(result2)
-
-	result3 := SomeBy([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 0
-	})
-
-	is.False(result3)
-
-	result4 := SomeBy([]int{}, func(x int) bool {
-		return x < 5
-	})
-
-	is.False(result4)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, SomeBy(tt.collection, tt.predicate))
+		})
+	}
 }
 
 func TestNone(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := None([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
-	result2 := None([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
-	result3 := None([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
-	result4 := None([]int{0, 1, 2, 3, 4, 5}, []int{})
+	tests := []struct {
+		name     string
+		subset   []int
+		expected bool
+	}{
+		{name: "some elements present", subset: []int{0, 2}, expected: false},
+		{name: "one element present", subset: []int{0, 6}, expected: false},
+		{name: "no elements present", subset: []int{-1, 6}, expected: true},
+		{name: "empty subset", subset: []int{}, expected: true},
+	}
 
-	is.False(result1)
-	is.False(result2)
-	is.True(result3)
-	is.True(result4)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, None([]int{0, 1, 2, 3, 4, 5}, tt.subset))
+		})
+	}
 }
 
 func TestNoneBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := NoneBy([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 5
-	})
+	tests := []struct {
+		name       string
+		collection []int
+		predicate  func(int) bool
+		expected   bool
+	}{
+		{name: "all match (none is false)", collection: []int{1, 2, 3, 4}, predicate: func(x int) bool { return x < 5 }, expected: false},
+		{name: "some match", collection: []int{1, 2, 3, 4}, predicate: func(x int) bool { return x < 3 }, expected: false},
+		{name: "none match", collection: []int{1, 2, 3, 4}, predicate: func(x int) bool { return x < 0 }, expected: true},
+		{name: "empty collection", collection: []int{}, predicate: func(x int) bool { return x < 5 }, expected: true},
+	}
 
-	is.False(result1)
-
-	result2 := NoneBy([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 3
-	})
-
-	is.False(result2)
-
-	result3 := NoneBy([]int{1, 2, 3, 4}, func(x int) bool {
-		return x < 0
-	})
-
-	is.True(result3)
-
-	result4 := NoneBy([]int{}, func(x int) bool {
-		return x < 5
-	})
-
-	is.True(result4)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, NoneBy(tt.collection, tt.predicate))
+		})
+	}
 }
 
 func TestIntersect(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result0 := Intersect[int, []int]()
-	result1 := Intersect([]int{1})
-	result2 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
-	result3 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
-	result4 := Intersect([]int{0, 1, 2, 3, 4, 5}, []int{-1, 6})
-	result5 := Intersect([]int{0, 6}, []int{0, 1, 2, 3, 4, 5})
-	result6 := Intersect([]int{0, 6, 0}, []int{0, 1, 2, 3, 4, 5})
-	result7 := Intersect([]int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
-	result8 := Intersect([]int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{1, 6})
-	result9 := Intersect([]int{0, 1, 1}, []int{2}, []int{3})
-	resultA := Intersect([]int{0, 1, 1})
+	tests := []struct {
+		name     string
+		lists    [][]int
+		expected []int
+	}{
+		{name: "no lists", lists: [][]int{}, expected: []int{}},
+		{name: "single list", lists: [][]int{{1}}, expected: []int{1}},
+		{name: "two lists overlap", lists: [][]int{{0, 1, 2, 3, 4, 5}, {0, 2}}, expected: []int{0, 2}},
+		{name: "two lists partial overlap", lists: [][]int{{0, 1, 2, 3, 4, 5}, {0, 6}}, expected: []int{0}},
+		{name: "two lists no overlap", lists: [][]int{{0, 1, 2, 3, 4, 5}, {-1, 6}}, expected: []int{}},
+		{name: "reversed order still overlaps", lists: [][]int{{0, 6}, {0, 1, 2, 3, 4, 5}}, expected: []int{0}},
+		{name: "duplicate elements in first list", lists: [][]int{{0, 6, 0}, {0, 1, 2, 3, 4, 5}}, expected: []int{0}},
+		{name: "three lists overlap", lists: [][]int{{0, 6, 0, 3}, {0, 1, 2, 3, 4, 5}, {0, 6}}, expected: []int{0}},
+		{name: "three lists no common element", lists: [][]int{{0, 6, 0, 3}, {0, 1, 2, 3, 4, 5}, {1, 6}}, expected: []int{}},
+		{name: "three lists disjoint", lists: [][]int{{0, 1, 1}, {2}, {3}}, expected: []int{}},
+		{name: "single list with duplicates", lists: [][]int{{0, 1, 1}}, expected: []int{0, 1}},
+	}
 
-	is.Empty(result0)
-	is.ElementsMatch([]int{1}, result1)
-	is.ElementsMatch([]int{0, 2}, result2)
-	is.ElementsMatch([]int{0}, result3)
-	is.Empty(result4)
-	is.ElementsMatch([]int{0}, result5)
-	is.ElementsMatch([]int{0}, result6)
-	is.ElementsMatch([]int{0}, result7)
-	is.Empty(result8)
-	is.Empty(result9)
-	is.ElementsMatch([]int{0, 1}, resultA)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.ElementsMatch(tt.expected, Intersect(tt.lists...))
+		})
+	}
 
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := Intersect(allStrings, allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	// single-list call: len(lists) != 2, so it takes the map path too.
-	nonemptyLarge := Intersect(allStrings)
-	is.IsType(nonemptyLarge, allStrings, "type preserved (map path)")
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty := Intersect(allStrings, allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
+
+	t.Run("type preserved: map path (single list)", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		// single-list call: len(lists) != 2, so it takes the map path too.
+		nonemptyLarge := Intersect(allStrings)
+		is.IsType(nonemptyLarge, allStrings, "type preserved (map path)")
+	})
 }
 
 func TestIntersectBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type User struct {
 		ID   int
@@ -251,26 +322,52 @@ func TestIntersectBy(t *testing.T) {
 		{ID: 4, Name: "Alice"},
 	}
 
-	intersectByID := IntersectBy(func(u User) int {
-		return u.ID
-	}, list1, list2)
-	is.ElementsMatch(intersectByID, []User{{ID: 2, Name: "Bob"}, {ID: 3, Name: "Charlie"}})
+	t.Run("by ID", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	intersectByName := IntersectBy(func(u User) string {
-		return u.Name
-	}, list1, list2)
-	is.ElementsMatch(intersectByName, []User{{ID: 3, Name: "Charlie"}, {ID: 1, Name: "Alice"}})
+		intersectByID := IntersectBy(func(u User) int {
+			return u.ID
+		}, list1, list2)
+		is.ElementsMatch(intersectByID, []User{{ID: 2, Name: "Bob"}, {ID: 3, Name: "Charlie"}})
+	})
 
-	intersectByIDAndName := IntersectBy(func(u User) string {
-		return strconv.Itoa(u.ID) + u.Name
-	}, list1, list2)
-	is.ElementsMatch(intersectByIDAndName, []User{{ID: 3, Name: "Charlie"}})
+	t.Run("by Name", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	result := IntersectBy(strconv.Itoa, []int{0, 6, 0, 3}, []int{0, 1, 2, 3, 4, 5}, []int{0, 6})
-	is.ElementsMatch(result, []int{0})
+		intersectByName := IntersectBy(func(u User) string {
+			return u.Name
+		}, list1, list2)
+		is.ElementsMatch(intersectByName, []User{{ID: 3, Name: "Charlie"}, {ID: 1, Name: "Alice"}})
+	})
 
-	result = IntersectBy(strconv.Itoa, []int{0, 1, 1})
-	is.ElementsMatch(result, []int{0, 1})
+	t.Run("by ID and Name combined", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		intersectByIDAndName := IntersectBy(func(u User) string {
+			return strconv.Itoa(u.ID) + u.Name
+		}, list1, list2)
+		is.ElementsMatch(intersectByIDAndName, []User{{ID: 3, Name: "Charlie"}})
+	})
+
+	tests := []struct {
+		name     string
+		lists    [][]int
+		expected []int
+	}{
+		{name: "three lists via string conversion", lists: [][]int{{0, 6, 0, 3}, {0, 1, 2, 3, 4, 5}, {0, 6}}, expected: []int{0}},
+		{name: "single list with duplicates via string conversion", lists: [][]int{{0, 1, 1}}, expected: []int{0, 1}},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.ElementsMatch(t, tt.expected, IntersectBy(strconv.Itoa, tt.lists...))
+		})
+	}
 }
 
 // TestDifference_smallScan exercises the small-scan path (all lists here are
@@ -278,25 +375,40 @@ func TestIntersectBy(t *testing.T) {
 // path.
 func TestDifference_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	left1, right1 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 6})
-	is.Equal([]int{1, 3, 4, 5}, left1)
-	is.Equal([]int{6}, right1)
+	tests := []struct {
+		name      string
+		list1     []int
+		list2     []int
+		wantLeft  []int
+		wantRight []int
+	}{
+		{name: "some elements differ", list1: []int{0, 1, 2, 3, 4, 5}, list2: []int{0, 2, 6}, wantLeft: []int{1, 3, 4, 5}, wantRight: []int{6}},
+		{name: "no overlap", list1: []int{1, 2, 3, 4, 5}, list2: []int{0, 6}, wantLeft: []int{1, 2, 3, 4, 5}, wantRight: []int{0, 6}},
+		{name: "identical lists", list1: []int{0, 1, 2, 3, 4, 5}, list2: []int{0, 1, 2, 3, 4, 5}, wantLeft: []int{}, wantRight: []int{}},
+	}
 
-	left2, right2 := Difference([]int{1, 2, 3, 4, 5}, []int{0, 6})
-	is.Equal([]int{1, 2, 3, 4, 5}, left2)
-	is.Equal([]int{0, 6}, right2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			left, right := Difference(tt.list1, tt.list2)
+			is.Equal(tt.wantLeft, left)
+			is.Equal(tt.wantRight, right)
+		})
+	}
 
-	left3, right3 := Difference([]int{0, 1, 2, 3, 4, 5}, []int{0, 1, 2, 3, 4, 5})
-	is.Empty(left3)
-	is.Empty(right3)
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	a, b := Difference(allStrings, allStrings)
-	is.IsType(a, allStrings, "type preserved")
-	is.IsType(b, allStrings, "type preserved")
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		a, b := Difference(allStrings, allStrings)
+		is.IsType(a, allStrings, "type preserved")
+		is.IsType(b, allStrings, "type preserved")
+	})
 }
 
 // Difference dispatches on len(list1) <= differenceSmallThreshold &&
@@ -311,161 +423,209 @@ func TestDifference_large(t *testing.T) {
 	list2 := []int{4, 5, 6, 7, 8, 9, 10, 11, 12}
 	is.Greater(len(list1), differenceSmallThreshold, "sanity check: list1 must exceed differenceSmallThreshold")
 	is.Greater(len(list2), differenceSmallThreshold, "sanity check: list2 must exceed differenceSmallThreshold")
-	left, right := Difference(list1, list2)
-	is.Equal([]int{0, 1, 2, 3}, left)
-	is.Equal([]int{9, 10, 11, 12}, right)
 
 	same := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
-	leftSame, rightSame := Difference(same, same)
-	is.Empty(leftSame)
-	is.Empty(rightSame)
 
-	type myStrings []string
-	allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
-	is.Greater(len(allStrings), differenceSmallThreshold, "sanity check: allStrings must exceed differenceSmallThreshold")
-	a, b := Difference(allStrings, allStrings)
-	is.Empty(a)
-	is.Empty(b)
-	is.IsType(a, allStrings, "type preserved")
-	is.IsType(b, allStrings, "type preserved")
+	tests := []struct {
+		name      string
+		list1     []int
+		list2     []int
+		wantLeft  []int
+		wantRight []int
+	}{
+		{name: "partial overlap", list1: list1, list2: list2, wantLeft: []int{0, 1, 2, 3}, wantRight: []int{9, 10, 11, 12}},
+		{name: "identical lists", list1: same, list2: same, wantLeft: []int{}, wantRight: []int{}},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			left, right := Difference(tt.list1, tt.list2)
+			is.Equal(tt.wantLeft, left)
+			is.Equal(tt.wantRight, right)
+		})
+	}
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+		is.Greater(len(allStrings), differenceSmallThreshold, "sanity check: allStrings must exceed differenceSmallThreshold")
+		a, b := Difference(allStrings, allStrings)
+		is.Empty(a)
+		is.Empty(b)
+		is.IsType(a, allStrings, "type preserved")
+		is.IsType(b, allStrings, "type preserved")
+	})
 }
 
 func TestUnion(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
-	result2 := Union([]int{0, 1, 2, 3, 4, 5}, []int{6, 7})
-	result3 := Union([]int{0, 1, 2, 3, 4, 5}, []int{})
-	result4 := Union([]int{0, 1, 2}, []int{0, 1, 2, 3, 3})
-	result5 := Union([]int{0, 1, 2}, []int{0, 1, 2})
-	result6 := Union([]int{}, []int{})
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 10}, result1)
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 6, 7}, result2)
-	is.Equal([]int{0, 1, 2, 3, 4, 5}, result3)
-	is.Equal([]int{0, 1, 2, 3}, result4)
-	is.Equal([]int{0, 1, 2}, result5)
-	is.Empty(result6)
+	tests := []struct {
+		name     string
+		lists    [][]int
+		expected []int
+	}{
+		{name: "two lists with overlap", lists: [][]int{{0, 1, 2, 3, 4, 5}, {0, 2, 10}}, expected: []int{0, 1, 2, 3, 4, 5, 10}},
+		{name: "two disjoint lists", lists: [][]int{{0, 1, 2, 3, 4, 5}, {6, 7}}, expected: []int{0, 1, 2, 3, 4, 5, 6, 7}},
+		{name: "second list empty", lists: [][]int{{0, 1, 2, 3, 4, 5}, {}}, expected: []int{0, 1, 2, 3, 4, 5}},
+		{name: "duplicate elements deduped", lists: [][]int{{0, 1, 2}, {0, 1, 2, 3, 3}}, expected: []int{0, 1, 2, 3}},
+		{name: "identical lists", lists: [][]int{{0, 1, 2}, {0, 1, 2}}, expected: []int{0, 1, 2}},
+		{name: "both lists empty", lists: [][]int{{}, {}}, expected: []int{}},
+		{name: "three lists with overlap", lists: [][]int{{0, 1, 2, 3, 4, 5}, {0, 2, 10}, {0, 1, 11}}, expected: []int{0, 1, 2, 3, 4, 5, 10, 11}},
+		{name: "three disjoint lists", lists: [][]int{{0, 1, 2, 3, 4, 5}, {6, 7}, {8, 9}}, expected: []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}},
+		{name: "three lists two empty", lists: [][]int{{0, 1, 2, 3, 4, 5}, {}, {}}, expected: []int{0, 1, 2, 3, 4, 5}},
+		{name: "three identical lists", lists: [][]int{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}}, expected: []int{0, 1, 2}},
+		{name: "three empty lists", lists: [][]int{{}, {}, {}}, expected: []int{}},
+	}
 
-	result11 := Union([]int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
-	result12 := Union([]int{0, 1, 2, 3, 4, 5}, []int{6, 7}, []int{8, 9})
-	result13 := Union([]int{0, 1, 2, 3, 4, 5}, []int{}, []int{})
-	result14 := Union([]int{0, 1, 2}, []int{0, 1, 2}, []int{0, 1, 2})
-	result15 := Union([]int{}, []int{}, []int{})
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 10, 11}, result11)
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, result12)
-	is.Equal([]int{0, 1, 2, 3, 4, 5}, result13)
-	is.Equal([]int{0, 1, 2}, result14)
-	is.Empty(result15)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, Union(tt.lists...))
+		})
+	}
 
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := Union(allStrings, allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	// total element count > unionSmallThreshold, so this takes the map path.
-	largeStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
-	nonemptyLarge := Union(largeStrings, largeStrings)
-	is.Equal(largeStrings, nonemptyLarge)
-	is.IsType(nonemptyLarge, largeStrings, "type preserved (map path)")
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty := Union(allStrings, allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
+
+	t.Run("type preserved: map path (large input)", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		// total element count > unionSmallThreshold, so this takes the map path.
+		largeStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+		nonemptyLarge := Union(largeStrings, largeStrings)
+		is.Equal(largeStrings, nonemptyLarge)
+		is.IsType(nonemptyLarge, largeStrings, "type preserved (map path)")
+	})
 }
 
 func TestUnionBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testFunc := func(i int) int {
 		return i / 2
 	}
 
-	result1 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
-	result2 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7})
-	result3 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{})
-	result4 := UnionBy(testFunc, []int{0, 1, 2}, []int{0, 1, 2})
-	result5 := UnionBy(testFunc, []int{}, []int{})
-	is.Equal([]int{0, 2, 4, 10}, result1)
-	is.Equal([]int{0, 2, 4, 6}, result2)
-	is.Equal([]int{0, 2, 4}, result3)
-	is.Equal([]int{0, 2}, result4)
-	is.Equal([]int{}, result5)
+	tests := []struct {
+		name     string
+		lists    [][]int
+		expected []int
+	}{
+		{name: "two lists with overlap", lists: [][]int{{0, 1, 2, 3, 4, 5}, {0, 2, 10}}, expected: []int{0, 2, 4, 10}},
+		{name: "two disjoint lists", lists: [][]int{{0, 1, 2, 3, 4, 5}, {6, 7}}, expected: []int{0, 2, 4, 6}},
+		{name: "second list empty", lists: [][]int{{0, 1, 2, 3, 4, 5}, {}}, expected: []int{0, 2, 4}},
+		{name: "identical lists", lists: [][]int{{0, 1, 2}, {0, 1, 2}}, expected: []int{0, 2}},
+		{name: "both lists empty", lists: [][]int{{}, {}}, expected: []int{}},
+		{name: "three lists with overlap", lists: [][]int{{0, 1, 2, 3, 4, 5}, {0, 2, 10}, {0, 1, 11}}, expected: []int{0, 2, 4, 10}},
+		{name: "three disjoint lists", lists: [][]int{{0, 1, 2, 3, 4, 5}, {6, 7}, {8, 9}}, expected: []int{0, 2, 4, 6, 8}},
+		{name: "three lists two empty", lists: [][]int{{0, 1, 2, 3, 4, 5}, {}, {}}, expected: []int{0, 2, 4}},
+		{name: "three identical lists", lists: [][]int{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}}, expected: []int{0, 2}},
+		{name: "three empty lists", lists: [][]int{{}, {}, {}}, expected: []int{}},
+	}
 
-	result11 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
-	result12 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7}, []int{8, 9})
-	result13 := UnionBy(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{}, []int{})
-	result14 := UnionBy(testFunc, []int{0, 1, 2}, []int{0, 1, 2}, []int{0, 1, 2})
-	result15 := UnionBy(testFunc, []int{}, []int{}, []int{})
-	is.Equal([]int{0, 2, 4, 10}, result11)
-	is.Equal([]int{0, 2, 4, 6, 8}, result12)
-	is.Equal([]int{0, 2, 4}, result13)
-	is.Equal([]int{0, 2}, result14)
-	is.Equal([]int{}, result15)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, UnionBy(testFunc, tt.lists...))
+		})
+	}
 
-	type myStrings []string
-	allStrings := myStrings{"foo", "bar", "baz"}
-	nonempty := UnionBy(func(s string) string { return s }, allStrings, allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"foo", "bar", "baz"}
+		nonempty := UnionBy(func(s string) string { return s }, allStrings, allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestUnionByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testFunc := func(i int) (int, error) {
 		return i / 2, nil
 	}
 
-	result1, err1 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
-	result2, err2 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7})
-	result3, err3 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{})
-	result4, err4 := UnionByErr(testFunc, []int{0, 1, 2}, []int{0, 1, 2})
-	result5, err5 := UnionByErr(testFunc, []int{}, []int{})
-	is.NoError(err1)
-	is.NoError(err2)
-	is.NoError(err3)
-	is.NoError(err4)
-	is.NoError(err5)
-	is.Equal([]int{0, 2, 4, 10}, result1)
-	is.Equal([]int{0, 2, 4, 6}, result2)
-	is.Equal([]int{0, 2, 4}, result3)
-	is.Equal([]int{0, 2}, result4)
-	is.Equal([]int{}, result5)
-
-	result11, err11 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10}, []int{0, 1, 11})
-	result12, err12 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{6, 7}, []int{8, 9})
-	result13, err13 := UnionByErr(testFunc, []int{0, 1, 2, 3, 4, 5}, []int{}, []int{})
-	result14, err14 := UnionByErr(testFunc, []int{0, 1, 2}, []int{0, 1, 2}, []int{0, 1, 2})
-	result15, err15 := UnionByErr(testFunc, []int{}, []int{}, []int{})
-	is.NoError(err11)
-	is.NoError(err12)
-	is.NoError(err13)
-	is.NoError(err14)
-	is.NoError(err15)
-	is.Equal([]int{0, 2, 4, 10}, result11)
-	is.Equal([]int{0, 2, 4, 6, 8}, result12)
-	is.Equal([]int{0, 2, 4}, result13)
-	is.Equal([]int{0, 2}, result14)
-	is.Equal([]int{}, result15)
-
-	// Test error case
-	callCount := 0
-	errFunc := func(i int) (int, error) {
-		callCount++
-		if i == 2 {
-			return 0, assert.AnError
-		}
-		return i / 2, nil
+	tests := []struct {
+		name     string
+		lists    [][]int
+		expected []int
+	}{
+		{name: "two lists with overlap", lists: [][]int{{0, 1, 2, 3, 4, 5}, {0, 2, 10}}, expected: []int{0, 2, 4, 10}},
+		{name: "two disjoint lists", lists: [][]int{{0, 1, 2, 3, 4, 5}, {6, 7}}, expected: []int{0, 2, 4, 6}},
+		{name: "second list empty", lists: [][]int{{0, 1, 2, 3, 4, 5}, {}}, expected: []int{0, 2, 4}},
+		{name: "identical lists", lists: [][]int{{0, 1, 2}, {0, 1, 2}}, expected: []int{0, 2}},
+		{name: "both lists empty", lists: [][]int{{}, {}}, expected: []int{}},
+		{name: "three lists with overlap", lists: [][]int{{0, 1, 2, 3, 4, 5}, {0, 2, 10}, {0, 1, 11}}, expected: []int{0, 2, 4, 10}},
+		{name: "three disjoint lists", lists: [][]int{{0, 1, 2, 3, 4, 5}, {6, 7}, {8, 9}}, expected: []int{0, 2, 4, 6, 8}},
+		{name: "three lists two empty", lists: [][]int{{0, 1, 2, 3, 4, 5}, {}, {}}, expected: []int{0, 2, 4}},
+		{name: "three identical lists", lists: [][]int{{0, 1, 2}, {0, 1, 2}, {0, 1, 2}}, expected: []int{0, 2}},
+		{name: "three empty lists", lists: [][]int{{}, {}, {}}, expected: []int{}},
 	}
 
-	result6, err6 := UnionByErr(errFunc, []int{0, 1, 2, 3, 4, 5}, []int{0, 2, 10})
-	is.ErrorIs(err6, assert.AnError)
-	is.Nil(result6)
-	is.Equal(3, callCount, "should stop at first error")
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			result, err := UnionByErr(testFunc, tt.lists...)
+			is.NoError(err)
+			is.Equal(tt.expected, result)
+		})
+	}
 
-	callCount = 0
-	result7, err7 := UnionByErr(errFunc, []int{0, 1, 3, 4, 5}, []int{2, 10})
-	is.ErrorIs(err7, assert.AnError)
-	is.Nil(result7)
-	is.Equal(6, callCount, "should stop at first error")
+	// Test error case
+	errorTests := []struct {
+		name          string
+		lists         [][]int
+		wantCallCount int
+	}{
+		{name: "error in first list", lists: [][]int{{0, 1, 2, 3, 4, 5}, {0, 2, 10}}, wantCallCount: 3},
+		{name: "error in second list", lists: [][]int{{0, 1, 3, 4, 5}, {2, 10}}, wantCallCount: 6},
+	}
+
+	for _, tt := range errorTests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			callCount := 0
+			errFunc := func(i int) (int, error) {
+				callCount++
+				if i == 2 {
+					return 0, assert.AnError
+				}
+				return i / 2, nil
+			}
+
+			result, err := UnionByErr(errFunc, tt.lists...)
+			is.ErrorIs(err, assert.AnError)
+			is.Nil(result)
+			is.Equal(tt.wantCallCount, callCount, "should stop at first error")
+		})
+	}
 }
 
 // TestWithout_small exercises the small-scan path (all exclude lists here are
@@ -476,18 +636,36 @@ func TestWithout_small(t *testing.T) {
 
 	is.LessOrEqual(3, withoutSmallExcludeThreshold, "sanity check: exclude must not exceed withoutSmallExcludeThreshold")
 
-	result1 := Without([]int{0, 1, 2}, 0, 1, 2)
-	result2 := Without([]int{})
-	result3 := Without([]int{0, 1, 2, 3}, 1)
-	is.Empty(result1)
-	is.Empty(result2)
-	is.Equal([]int{0, 2, 3}, result3)
+	tests := []struct {
+		name     string
+		input    []int
+		exclude  []int
+		expected []int
+	}{
+		{name: "exclude everything", input: []int{0, 1, 2}, exclude: []int{0, 1, 2}, expected: []int{}},
+		{name: "empty input", input: []int{}, exclude: []int{}, expected: []int{}},
+		{name: "exclude one element", input: []int{0, 1, 2, 3}, exclude: []int{1}, expected: []int{0, 2, 3}},
+	}
 
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := Without(allStrings, "")
-	is.Equal(myStrings{"foo", "bar"}, nonempty)
-	is.IsType(nonempty, allStrings, "type preserved")
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, Without(tt.input, tt.exclude...))
+		})
+	}
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty := Without(allStrings, "")
+		is.Equal(myStrings{"foo", "bar"}, nonempty)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 // TestWithout_large exercises the map-based path (all exclude lists here
@@ -499,18 +677,35 @@ func TestWithout_large(t *testing.T) {
 	exclude := []int{0, 1, 2, 3, 4, 5}
 	is.Greater(len(exclude), withoutSmallExcludeThreshold, "sanity check: exclude must exceed withoutSmallExcludeThreshold")
 
-	result1 := Without([]int{0, 2, 10}, exclude...)
-	result2 := Without([]int{0, 7}, exclude...)
-	result3 := Without([]int{}, exclude...)
-	is.Equal([]int{10}, result1)
-	is.Equal([]int{7}, result2)
-	is.Empty(result3)
+	tests := []struct {
+		name     string
+		input    []int
+		expected []int
+	}{
+		{name: "some elements remain", input: []int{0, 2, 10}, expected: []int{10}},
+		{name: "one element remains", input: []int{0, 7}, expected: []int{7}},
+		{name: "empty input", input: []int{}, expected: []int{}},
+	}
 
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := Without(allStrings, "a", "b", "c", "d", "e")
-	is.Equal(allStrings, nonempty)
-	is.IsType(nonempty, allStrings, "type preserved")
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, Without(tt.input, exclude...))
+		})
+	}
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty := Without(allStrings, "a", "b", "c", "d", "e")
+		is.Equal(allStrings, nonempty)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 // TestWithoutBy_small exercises the small-scan path (all exclude lists
@@ -518,29 +713,50 @@ func TestWithout_large(t *testing.T) {
 // the map-based path.
 func TestWithoutBy_small(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type User struct {
 		Name string
 		Age  int
 	}
 
-	result1 := WithoutBy([]User{{Name: "nick"}, {Name: "peter"}},
-		func(item User) string {
-			return item.Name
-		}, "nick", "lily")
-	result2 := WithoutBy([]User{}, func(item User) int { return item.Age }, 1, 2, 3)
-	result3 := WithoutBy([]User{}, func(item User) string { return item.Name })
-	is.Equal([]User{{Name: "peter"}}, result1)
-	is.Empty(result2)
-	is.Empty(result3)
+	t.Run("exclude by name", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := WithoutBy(allStrings, func(s string) string {
-		return s
+		result := WithoutBy([]User{{Name: "nick"}, {Name: "peter"}},
+			func(item User) string {
+				return item.Name
+			}, "nick", "lily")
+		is.Equal([]User{{Name: "peter"}}, result)
 	})
-	is.IsType(nonempty, allStrings, "type preserved")
+
+	t.Run("empty collection with int key", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := WithoutBy([]User{}, func(item User) int { return item.Age }, 1, 2, 3)
+		is.Empty(result)
+	})
+
+	t.Run("empty collection, no exclude keys", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := WithoutBy([]User{}, func(item User) string { return item.Name })
+		is.Empty(result)
+	})
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty := WithoutBy(allStrings, func(s string) string {
+			return s
+		})
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 // WithoutBy dispatches on len(exclude) <= withoutSmallExcludeThreshold (4): an
@@ -552,19 +768,36 @@ func TestWithoutBy_large(t *testing.T) {
 
 	byKey := func(v int) int { return v }
 	collection := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-	exclude := []int{0, 1, 2, 3, 4}
-	is.Greater(len(exclude), withoutSmallExcludeThreshold, "sanity check: exclude must exceed withoutSmallExcludeThreshold")
-	is.Equal([]int{5, 6, 7, 8, 9}, WithoutBy(collection, byKey, exclude...))
 
-	excludeAll := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-	is.Greater(len(excludeAll), withoutSmallExcludeThreshold, "sanity check: excludeAll must exceed withoutSmallExcludeThreshold")
-	is.Empty(WithoutBy(collection, byKey, excludeAll...))
+	tests := []struct {
+		name     string
+		exclude  []int
+		expected []int
+	}{
+		{name: "excludes some", exclude: []int{0, 1, 2, 3, 4}, expected: []int{5, 6, 7, 8, 9}},
+		{name: "excludes all", exclude: []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, expected: []int{}},
+	}
 
-	type myStrings []string
-	allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
-	nonempty := WithoutBy(allStrings, func(s string) string { return s }, "z", "y", "x", "w", "v")
-	is.Equal(allStrings, nonempty)
-	is.IsType(nonempty, allStrings, "type preserved")
+	for _, tt := range tests {
+		tt := tt
+		is.Greater(len(tt.exclude), withoutSmallExcludeThreshold, "sanity check: exclude must exceed withoutSmallExcludeThreshold")
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, WithoutBy(collection, byKey, tt.exclude...))
+		})
+	}
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
+		nonempty := WithoutBy(allStrings, func(s string) string { return s }, "z", "y", "x", "w", "v")
+		is.Equal(allStrings, nonempty)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestWithoutByErr(t *testing.T) {
@@ -701,63 +934,117 @@ func TestWithoutByErr(t *testing.T) {
 
 func TestWithoutEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := WithoutEmpty([]int{0, 1, 2})
-	result2 := WithoutEmpty([]int{1, 2})
-	result3 := WithoutEmpty([]int{})
-	result4 := WithoutEmpty([]*int{ToPtr(0), ToPtr(1), nil, ToPtr(2)})
-	is.Equal([]int{1, 2}, result1)
-	is.Equal([]int{1, 2}, result2)
-	is.Empty(result3)
-	is.Equal([]*int{ToPtr(0), ToPtr(1), ToPtr(2)}, result4)
+	tests := []struct {
+		name     string
+		input    []int
+		expected []int
+	}{
+		{name: "removes leading zero", input: []int{0, 1, 2}, expected: []int{1, 2}},
+		{name: "no zero to remove", input: []int{1, 2}, expected: []int{1, 2}},
+		{name: "empty input", input: []int{}, expected: []int{}},
+	}
 
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := WithoutEmpty(allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, WithoutEmpty(tt.input))
+		})
+	}
+
+	t.Run("removes nil pointers", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := WithoutEmpty([]*int{ToPtr(0), ToPtr(1), nil, ToPtr(2)})
+		is.Equal([]*int{ToPtr(0), ToPtr(1), ToPtr(2)}, result)
+	})
+
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty := WithoutEmpty(allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 }
 
 func TestWithoutNth(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := WithoutNth([]int{5, 6, 7}, 1, 0)
-	is.Equal([]int{7}, result1)
+	tests := []struct {
+		name     string
+		input    []int
+		nths     []int
+		expected []int
+	}{
+		{name: "removes indices in reverse order", input: []int{5, 6, 7}, nths: []int{1, 0}, expected: []int{7}},
+		{name: "no indices to remove", input: []int{1, 2}, nths: nil, expected: []int{1, 2}},
+		{name: "empty input", input: []int{}, nths: nil, expected: []int{}},
+		{name: "negative and out-of-range indices are ignored", input: []int{0, 1, 2, 3}, nths: []int{-1, 4}, expected: []int{0, 1, 2, 3}},
+	}
 
-	result2 := WithoutNth([]int{1, 2})
-	is.Equal([]int{1, 2}, result2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, WithoutNth(tt.input, tt.nths...))
+		})
+	}
 
-	result3 := WithoutNth([]int{})
-	is.Empty(result3)
+	t.Run("type preserved", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	result4 := WithoutNth([]int{0, 1, 2, 3}, -1, 4)
-	is.Equal([]int{0, 1, 2, 3}, result4)
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty := WithoutNth(allStrings)
+		is.IsType(nonempty, allStrings, "type preserved")
+	})
 
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := WithoutNth(allStrings)
-	is.IsType(nonempty, allStrings, "type preserved")
+	t.Run("supports non-comparable element types", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	// This works for non-comparable as well
-	result5 := WithoutNth([]func() int{func() int { return 1 }, func() int { return 2 }, func() int { return 3 }}, 1)
-	is.Equal([]int{1, 3}, Map(result5, func(f func() int, _ int) int { return f() }))
+		// This works for non-comparable as well
+		result := WithoutNth([]func() int{func() int { return 1 }, func() int { return 2 }, func() int { return 3 }}, 1)
+		is.Equal([]int{1, 3}, Map(result, func(f func() int, _ int) int { return f() }))
+	})
 }
 
 func TestElementsMatch(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.False(ElementsMatch([]int{}, []int{1}))
-	is.False(ElementsMatch([]int{1}, []int{2}))
-	is.False(ElementsMatch([]int{1}, []int{1, 2}))
-	is.False(ElementsMatch([]int{1, 1, 2}, []int{2, 2, 1}))
+	tests := []struct {
+		name     string
+		list1    []int
+		list2    []int
+		expected bool
+	}{
+		{name: "empty vs non-empty", list1: []int{}, list2: []int{1}, expected: false},
+		{name: "different single elements", list1: []int{1}, list2: []int{2}, expected: false},
+		{name: "different lengths", list1: []int{1}, list2: []int{1, 2}, expected: false},
+		{name: "different element counts", list1: []int{1, 1, 2}, list2: []int{2, 2, 1}, expected: false},
+		{name: "empty vs nil", list1: []int{}, list2: nil, expected: true},
+		{name: "single matching element", list1: []int{1}, list2: []int{1}, expected: true},
+		{name: "duplicate matching elements", list1: []int{1, 1}, list2: []int{1, 1}, expected: true},
+		{name: "same elements different order", list1: []int{1, 2}, list2: []int{2, 1}, expected: true},
+		{name: "same multiset different order", list1: []int{1, 1, 2}, list2: []int{1, 2, 1}, expected: true},
+	}
 
-	is.True(ElementsMatch([]int{}, nil))
-	is.True(ElementsMatch([]int{1}, []int{1}))
-	is.True(ElementsMatch([]int{1, 1}, []int{1, 1}))
-	is.True(ElementsMatch([]int{1, 2}, []int{2, 1}))
-	is.True(ElementsMatch([]int{1, 1, 2}, []int{1, 2, 1}))
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, ElementsMatch(tt.list1, tt.list2))
+		})
+	}
 }
 
 func TestElementsMatchBy(t *testing.T) {

@@ -16,15 +16,21 @@ func TestFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Filter([]int{1, 2, 3, 4}, func(x, _ int) bool {
-		return x%2 == 0
+	t.Run("int slice", func(t *testing.T) {
+		t.Parallel()
+		r1 := Filter([]int{1, 2, 3, 4}, func(x, _ int) bool {
+			return x%2 == 0
+		})
+		assert.Equal(t, []int{2, 4}, r1)
 	})
-	is.Equal([]int{2, 4}, r1)
 
-	r2 := Filter([]string{"", "foo", "", "bar", ""}, func(x string, _ int) bool {
-		return len(x) > 0
+	t.Run("string slice", func(t *testing.T) {
+		t.Parallel()
+		r2 := Filter([]string{"", "foo", "", "bar", ""}, func(x string, _ int) bool {
+			return len(x) > 0
+		})
+		assert.Equal(t, []string{"foo", "bar"}, r2)
 	})
-	is.Equal([]string{"foo", "bar"}, r2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -100,6 +106,7 @@ func TestFilterErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			var callbacks int
 			wrappedPredicate := func(item, index int) (bool, error) {
@@ -135,22 +142,26 @@ func TestFilterErr(t *testing.T) {
 
 func TestMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Map([]int{1, 2, 3, 4}, func(x, _ int) string {
-		return "Hello"
-	})
-	result2 := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
-		return strconv.FormatInt(x, 10)
+	t.Run("int to string", func(t *testing.T) {
+		t.Parallel()
+		result1 := Map([]int{1, 2, 3, 4}, func(x, _ int) string {
+			return "Hello"
+		})
+		assert.Equal(t, []string{"Hello", "Hello", "Hello", "Hello"}, result1)
 	})
 
-	is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, result1)
-	is.Equal([]string{"1", "2", "3", "4"}, result2)
+	t.Run("int64 to string", func(t *testing.T) {
+		t.Parallel()
+		result2 := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+			return strconv.FormatInt(x, 10)
+		})
+		assert.Equal(t, []string{"1", "2", "3", "4"}, result2)
+	})
 }
 
 func TestMapErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -230,6 +241,8 @@ func TestMapErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedTransform := func(item, index int) (string, error) {
@@ -275,47 +288,56 @@ func TestUniqMap(t *testing.T) {
 
 func TestFilterMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := FilterMap([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
-		if x%2 == 0 {
-			return strconv.FormatInt(x, 10), true
-		}
-		return "", false
-	})
-	r2 := FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
-		if strings.HasSuffix(x, "pu") {
-			return "xpu", true
-		}
-		return "", false
+	t.Run("int64 slice", func(t *testing.T) {
+		t.Parallel()
+		r1 := FilterMap([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
+			if x%2 == 0 {
+				return strconv.FormatInt(x, 10), true
+			}
+			return "", false
+		})
+		assert.Equal(t, []string{"2", "4"}, r1)
 	})
 
-	is.Equal([]string{"2", "4"}, r1)
-	is.Equal([]string{"xpu", "xpu"}, r2)
+	t.Run("string slice", func(t *testing.T) {
+		t.Parallel()
+		r2 := FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+			if strings.HasSuffix(x, "pu") {
+				return "xpu", true
+			}
+			return "", false
+		})
+		assert.Equal(t, []string{"xpu", "xpu"}, r2)
+	})
 }
 
 func TestFlatMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := FlatMap([]int{0, 1, 2, 3, 4}, func(x, _ int) []string {
-		return []string{"Hello"}
-	})
-	result2 := FlatMap([]int64{0, 1, 2, 3, 4}, func(x int64, _ int) []string {
-		result := make([]string, 0, x)
-		for i := int64(0); i < x; i++ {
-			result = append(result, strconv.FormatInt(x, 10))
-		}
-		return result
+	t.Run("int slice", func(t *testing.T) {
+		t.Parallel()
+		result1 := FlatMap([]int{0, 1, 2, 3, 4}, func(x, _ int) []string {
+			return []string{"Hello"}
+		})
+		assert.Equal(t, []string{"Hello", "Hello", "Hello", "Hello", "Hello"}, result1)
 	})
 
-	is.Equal([]string{"Hello", "Hello", "Hello", "Hello", "Hello"}, result1)
-	is.Equal([]string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"}, result2)
+	t.Run("int64 slice", func(t *testing.T) {
+		t.Parallel()
+		result2 := FlatMap([]int64{0, 1, 2, 3, 4}, func(x int64, _ int) []string {
+			result := make([]string, 0, x)
+			for i := int64(0); i < x; i++ {
+				result = append(result, strconv.FormatInt(x, 10))
+			}
+			return result
+		})
+		assert.Equal(t, []string{"1", "2", "2", "3", "3", "3", "4", "4", "4", "4"}, result2)
+	})
 }
 
 func TestFlatMapErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -418,6 +440,8 @@ func TestFlatMapErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedTransform := func(item int64, index int) ([]string, error) {
@@ -454,22 +478,33 @@ func TestTimes(t *testing.T) {
 
 func TestReduce(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Reduce([]int{1, 2, 3, 4}, func(agg, item, _ int) int {
-		return agg + item
-	}, 0)
-	result2 := Reduce([]int{1, 2, 3, 4}, func(agg, item, _ int) int {
-		return agg + item
-	}, 10)
+	tests := []struct {
+		name     string
+		initial  int
+		expected int
+	}{
+		{name: "initial 0", initial: 0, expected: 10},
+		{name: "initial 10", initial: 10, expected: 20},
+	}
 
-	is.Equal(10, result1)
-	is.Equal(20, result2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Reduce([]int{1, 2, 3, 4}, func(agg, item, _ int) int {
+				return agg + item
+			}, tt.initial)
+
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestReduceErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -566,6 +601,8 @@ func TestReduceErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedAccumulator := func(agg, item, index int) (int, error) {
@@ -591,24 +628,27 @@ func TestReduceErr(t *testing.T) {
 
 func TestReduceRight(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg, item []int, _ int) []int {
-		return append(agg, item...)
-	}, []int{})
+	t.Run("slice of slices", func(t *testing.T) {
+		t.Parallel()
+		result1 := ReduceRight([][]int{{0, 1}, {2, 3}, {4, 5}}, func(agg, item []int, _ int) []int {
+			return append(agg, item...)
+		}, []int{})
+		assert.Equal(t, []int{4, 5, 2, 3, 0, 1}, result1)
+	})
 
-	is.Equal([]int{4, 5, 2, 3, 0, 1}, result1)
-
-	type collection []int
-	result3 := ReduceRight(collection{1, 2, 3, 4}, func(agg, item, _ int) int {
-		return agg + item
-	}, 10)
-	is.Equal(20, result3)
+	t.Run("named collection type", func(t *testing.T) {
+		t.Parallel()
+		type collection []int
+		result3 := ReduceRight(collection{1, 2, 3, 4}, func(agg, item, _ int) int {
+			return agg + item
+		}, 10)
+		assert.Equal(t, 20, result3)
+	})
 }
 
 func TestReduceRightErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -704,6 +744,8 @@ func TestReduceRightErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
+			is := assert.New(t)
 
 			// Track callback count to test early return
 			callbackCount := 0
@@ -845,7 +887,6 @@ func TestUniqBy_large(t *testing.T) {
 
 func TestIsUniq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name  string
@@ -883,6 +924,7 @@ func TestIsUniq(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.want, IsUniq(tt.input))
 		})
@@ -891,7 +933,6 @@ func TestIsUniq(t *testing.T) {
 
 func TestIsUniqBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name  string
@@ -931,6 +972,7 @@ func TestIsUniqBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.want, IsUniqBy(tt.input, iteratee))
 		})
@@ -939,7 +981,6 @@ func TestIsUniqBy(t *testing.T) {
 
 func TestUniqByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -1039,6 +1080,8 @@ func TestUniqByErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedIteratee := func(item int) (int, error) {
@@ -1086,7 +1129,6 @@ func TestGroupBy(t *testing.T) {
 
 func TestGroupByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -1182,6 +1224,8 @@ func TestGroupByErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedIteratee := func(item int) (int, error) {
@@ -1208,52 +1252,59 @@ func TestGroupByErr(t *testing.T) {
 
 func TestGroupByMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := GroupByMap([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, string) {
-		return i % 3, strconv.Itoa(i)
+	t.Run("int slice", func(t *testing.T) {
+		t.Parallel()
+		result1 := GroupByMap([]int{0, 1, 2, 3, 4, 5}, func(i int) (int, string) {
+			return i % 3, strconv.Itoa(i)
+		})
+		assert.Equal(t, map[int][]string{
+			0: {"0", "3"},
+			1: {"1", "4"},
+			2: {"2", "5"},
+		}, result1)
 	})
-	is.Equal(map[int][]string{
-		0: {"0", "3"},
-		1: {"1", "4"},
-		2: {"2", "5"},
-	}, result1)
 
-	type myInt int
-	type myInts []myInt
-	result2 := GroupByMap(myInts{1, 0, 2, 3, 4, 5}, func(i myInt) (int, string) {
-		return int(i % 3), strconv.Itoa(int(i))
+	t.Run("named int slice", func(t *testing.T) {
+		t.Parallel()
+		type myInt int
+		type myInts []myInt
+		result2 := GroupByMap(myInts{1, 0, 2, 3, 4, 5}, func(i myInt) (int, string) {
+			return int(i % 3), strconv.Itoa(int(i))
+		})
+		assert.Equal(t, map[int][]string{
+			0: {"0", "3"},
+			1: {"1", "4"},
+			2: {"2", "5"},
+		}, result2)
 	})
-	is.Equal(map[int][]string{
-		0: {"0", "3"},
-		1: {"1", "4"},
-		2: {"2", "5"},
-	}, result2)
 
-	type product struct {
-		ID         int64
-		CategoryID int64
-	}
-	products := []product{
-		{ID: 1, CategoryID: 1},
-		{ID: 2, CategoryID: 1},
-		{ID: 3, CategoryID: 2},
-		{ID: 4, CategoryID: 3},
-		{ID: 5, CategoryID: 3},
-	}
-	result3 := GroupByMap(products, func(item product) (int64, string) {
-		return item.CategoryID, "Product " + strconv.FormatInt(item.ID, 10)
+	t.Run("struct slice", func(t *testing.T) {
+		t.Parallel()
+		type product struct {
+			ID         int64
+			CategoryID int64
+		}
+		products := []product{
+			{ID: 1, CategoryID: 1},
+			{ID: 2, CategoryID: 1},
+			{ID: 3, CategoryID: 2},
+			{ID: 4, CategoryID: 3},
+			{ID: 5, CategoryID: 3},
+		}
+		result3 := GroupByMap(products, func(item product) (int64, string) {
+			return item.CategoryID, "Product " + strconv.FormatInt(item.ID, 10)
+		})
+		assert.Equal(t, map[int64][]string{
+			1: {"Product 1", "Product 2"},
+			2: {"Product 3"},
+			3: {"Product 4", "Product 5"},
+		}, result3)
 	})
-	is.Equal(map[int64][]string{
-		1: {"Product 1", "Product 2"},
-		2: {"Product 3"},
-		3: {"Product 4", "Product 5"},
-	}, result3)
 }
 
 func TestGroupByMapErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -1349,6 +1400,8 @@ func TestGroupByMapErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedTransform := func(item int) (int, int, error) {
@@ -1377,15 +1430,34 @@ func TestChunk(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Chunk([]int{0, 1, 2, 3, 4, 5}, 2)
-	result2 := Chunk([]int{0, 1, 2, 3, 4, 5, 6}, 2)
-	result3 := Chunk([]int{}, 2)
-	result4 := Chunk([]int{0}, 2)
+	tests := []struct {
+		name     string
+		input    []int
+		size     int
+		expected [][]int
+	}{
+		{name: "even split", input: []int{0, 1, 2, 3, 4, 5}, size: 2, expected: [][]int{{0, 1}, {2, 3}, {4, 5}}},
+		{name: "remainder", input: []int{0, 1, 2, 3, 4, 5, 6}, size: 2, expected: [][]int{{0, 1}, {2, 3}, {4, 5}, {6}}},
+		{name: "empty input", input: []int{}, size: 2, expected: nil},
+		{name: "single element", input: []int{0}, size: 2, expected: [][]int{{0}}},
+	}
 
-	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}}, result1)
-	is.Equal([][]int{{0, 1}, {2, 3}, {4, 5}, {6}}, result2)
-	is.Empty(result3)
-	is.Equal([][]int{{0}}, result4)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Chunk(tt.input, tt.size)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
+
 	is.PanicsWithValue("lo.Chunk: size must be greater than 0", func() {
 		Chunk([]int{0}, 0)
 	})
@@ -1406,17 +1478,34 @@ func TestWindow(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Window([]int{1, 2, 3, 4, 5}, 3)
-	result2 := Window([]int{1, 2, 3, 4, 5, 6}, 3)
-	result3 := Window([]int{1, 2}, 3)
-	result4 := Window([]int{1, 2, 3}, 3)
-	result5 := Window([]int{1, 2, 3, 4}, 1)
+	tests := []struct {
+		name     string
+		input    []int
+		size     int
+		expected [][]int
+	}{
+		{name: "size 3 exact", input: []int{1, 2, 3, 4, 5}, size: 3, expected: [][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}}},
+		{name: "size 3 with remainder", input: []int{1, 2, 3, 4, 5, 6}, size: 3, expected: [][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}},
+		{name: "input smaller than size", input: []int{1, 2}, size: 3, expected: nil},
+		{name: "input equal to size", input: []int{1, 2, 3}, size: 3, expected: [][]int{{1, 2, 3}}},
+		{name: "size 1", input: []int{1, 2, 3, 4}, size: 1, expected: [][]int{{1}, {2}, {3}, {4}}},
+	}
 
-	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}}, result1)
-	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}, result2)
-	is.Empty(result3)
-	is.Equal([][]int{{1, 2, 3}}, result4)
-	is.Equal([][]int{{1}, {2}, {3}, {4}}, result5)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Window(tt.input, tt.size)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	is.PanicsWithValue("lo.Window: size must be greater than 0", func() {
 		Window([]int{1, 2, 3}, 0)
@@ -1443,29 +1532,36 @@ func TestSliding(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	// Overlapping windows (step < size)
-	result1 := Sliding([]int{1, 2, 3, 4, 5, 6}, 3, 1)
-	is.Equal([][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}, result1)
+	tests := []struct {
+		name     string
+		input    []int
+		size     int
+		step     int
+		expected [][]int
+	}{
+		{name: "overlapping windows (step < size)", input: []int{1, 2, 3, 4, 5, 6}, size: 3, step: 1, expected: [][]int{{1, 2, 3}, {2, 3, 4}, {3, 4, 5}, {4, 5, 6}}},
+		{name: "non-overlapping windows (step == size, like Chunk)", input: []int{1, 2, 3, 4, 5, 6}, size: 3, step: 3, expected: [][]int{{1, 2, 3}, {4, 5, 6}}},
+		{name: "step > size (skipping elements)", input: []int{1, 2, 3, 4, 5, 6, 7, 8}, size: 2, step: 3, expected: [][]int{{1, 2}, {4, 5}, {7, 8}}},
+		{name: "single element windows", input: []int{1, 2, 3, 4}, size: 1, step: 1, expected: [][]int{{1}, {2}, {3}, {4}}},
+		{name: "empty result when collection is too small", input: []int{1, 2}, size: 3, step: 1, expected: nil},
+		{name: "step 2, size 2", input: []int{1, 2, 3, 4, 5, 6}, size: 2, step: 2, expected: [][]int{{1, 2}, {3, 4}, {5, 6}}},
+	}
 
-	// Non-overlapping windows (step == size, like Chunk)
-	result2 := Sliding([]int{1, 2, 3, 4, 5, 6}, 3, 3)
-	is.Equal([][]int{{1, 2, 3}, {4, 5, 6}}, result2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	// Step > size (skipping elements)
-	result3 := Sliding([]int{1, 2, 3, 4, 5, 6, 7, 8}, 2, 3)
-	is.Equal([][]int{{1, 2}, {4, 5}, {7, 8}}, result3)
+			result := Sliding(tt.input, tt.size, tt.step)
 
-	// Single element windows
-	result4 := Sliding([]int{1, 2, 3, 4}, 1, 1)
-	is.Equal([][]int{{1}, {2}, {3}, {4}}, result4)
-
-	// Empty result when collection is too small
-	result5 := Sliding([]int{1, 2}, 3, 1)
-	is.Empty(result5)
-
-	// Step 2, size 2
-	result6 := Sliding([]int{1, 2, 3, 4, 5, 6}, 2, 2)
-	is.Equal([][]int{{1, 2}, {3, 4}, {5, 6}}, result6)
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	is.PanicsWithValue("lo.Sliding: size must be greater than 0", func() {
 		Sliding([]int{1, 2, 3}, 0, 1)
@@ -1505,11 +1601,30 @@ func TestPartitionBy(t *testing.T) {
 		return "odd"
 	}
 
-	result1 := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
-	result2 := PartitionBy([]int{}, oddEven)
+	tests := []struct {
+		name     string
+		input    []int
+		expected [][]int
+	}{
+		{name: "mixed values", input: []int{-2, -1, 0, 1, 2, 3, 4, 5}, expected: [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}}},
+		{name: "empty input", input: []int{}, expected: nil},
+	}
 
-	is.Equal([][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}}, result1)
-	is.Empty(result2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := PartitionBy(tt.input, oddEven)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -1521,7 +1636,6 @@ func TestPartitionBy(t *testing.T) {
 
 func TestPartitionByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	oddEven := func(x int) (string, error) {
 		if x < 0 {
@@ -1615,6 +1729,8 @@ func TestPartitionByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
+			is := assert.New(t)
 
 			// Track callback count to test early return
 			callbackCount := 0
@@ -1726,12 +1842,18 @@ func TestShuffle(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Shuffle([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-	result2 := Shuffle([]int{})
+	t.Run("non-empty slice", func(t *testing.T) {
+		t.Parallel()
+		result1 := Shuffle([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+		assert.NotEqual(t, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result1)
+		assert.ElementsMatch(t, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result1)
+	})
 
-	is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result1)
-	is.ElementsMatch([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, result1)
-	is.Empty(result2)
+	t.Run("empty slice", func(t *testing.T) {
+		t.Parallel()
+		result2 := Shuffle([]int{})
+		assert.Empty(t, result2)
+	})
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -1743,13 +1865,31 @@ func TestReverse(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	result1 := Reverse([]int{0, 1, 2, 3, 4, 5})
-	result2 := Reverse([]int{0, 1, 2, 3, 4, 5, 6})
-	result3 := Reverse([]int{})
+	tests := []struct {
+		name     string
+		input    []int
+		expected []int
+	}{
+		{name: "even length", input: []int{0, 1, 2, 3, 4, 5}, expected: []int{5, 4, 3, 2, 1, 0}},
+		{name: "odd length", input: []int{0, 1, 2, 3, 4, 5, 6}, expected: []int{6, 5, 4, 3, 2, 1, 0}},
+		{name: "empty", input: []int{}, expected: nil},
+	}
 
-	is.Equal([]int{5, 4, 3, 2, 1, 0}, result1)
-	is.Equal([]int{6, 5, 4, 3, 2, 1, 0}, result2)
-	is.Empty(result3)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Reverse(tt.input)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -1759,46 +1899,100 @@ func TestReverse(t *testing.T) {
 
 func TestFill(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Fill([]foo{{"a"}, {"a"}}, foo{"b"})
-	result2 := Fill([]foo{}, foo{"a"})
+	tests := []struct {
+		name     string
+		input    []foo
+		value    foo
+		expected []foo
+	}{
+		{name: "non-empty slice", input: []foo{{"a"}, {"a"}}, value: foo{"b"}, expected: []foo{{"b"}, {"b"}}},
+		{name: "empty slice", input: []foo{}, value: foo{"a"}, expected: nil},
+	}
 
-	is.Equal([]foo{{"b"}, {"b"}}, result1)
-	is.Empty(result2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Fill(tt.input, tt.value)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 }
 
 func TestRepeat(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Repeat(2, foo{"a"})
-	result2 := Repeat(0, foo{"a"})
+	tests := []struct {
+		name     string
+		count    int
+		value    foo
+		expected []foo
+	}{
+		{name: "count 2", count: 2, value: foo{"a"}, expected: []foo{{"a"}, {"a"}}},
+		{name: "count 0", count: 0, value: foo{"a"}, expected: nil},
+	}
 
-	is.Equal([]foo{{"a"}, {"a"}}, result1)
-	is.Empty(result2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Repeat(tt.count, tt.value)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 }
 
 func TestRepeatBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	cb := func(i int) int {
 		return int(math.Pow(float64(i), 2))
 	}
 
-	result1 := RepeatBy(0, cb)
-	result2 := RepeatBy(2, cb)
-	result3 := RepeatBy(5, cb)
+	tests := []struct {
+		name     string
+		count    int
+		expected []int
+	}{
+		{name: "count 0", count: 0, expected: nil},
+		{name: "count 2", count: 2, expected: []int{0, 1}},
+		{name: "count 5", count: 5, expected: []int{0, 1, 4, 9, 16}},
+	}
 
-	is.Empty(result1)
-	is.Equal([]int{0, 1}, result2)
-	is.Equal([]int{0, 1, 4, 9, 16}, result3)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := RepeatBy(tt.count, cb)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 }
 
 func TestRepeatByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testErr := errors.New("test error")
 
@@ -1886,6 +2080,8 @@ func TestRepeatByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
+			is := assert.New(t)
 
 			// Track callback count to verify early return
 			callbackCount := 0
@@ -2233,27 +2429,67 @@ func TestFilterSliceToMapI(t *testing.T) {
 
 func TestKeyify(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Keyify([]int{1, 2, 3, 4})
-	result2 := Keyify([]int{1, 1, 1, 2})
-	result3 := Keyify([]int{})
-	is.Equal(map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}}, result1)
-	is.Equal(map[int]struct{}{1: {}, 2: {}}, result2)
-	is.Empty(result3)
+	tests := []struct {
+		name     string
+		input    []int
+		expected map[int]struct{}
+	}{
+		{name: "distinct values", input: []int{1, 2, 3, 4}, expected: map[int]struct{}{1: {}, 2: {}, 3: {}, 4: {}}},
+		{name: "duplicate values", input: []int{1, 1, 1, 2}, expected: map[int]struct{}{1: {}, 2: {}}},
+		{name: "empty", input: []int{}, expected: nil},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Keyify(tt.input)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 }
 
 func TestDrop(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{0, 1, 2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 0))
-	is.Equal([]int{1, 2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 1))
-	is.Equal([]int{2, 3, 4}, Drop([]int{0, 1, 2, 3, 4}, 2))
-	is.Equal([]int{3, 4}, Drop([]int{0, 1, 2, 3, 4}, 3))
-	is.Equal([]int{4}, Drop([]int{0, 1, 2, 3, 4}, 4))
-	is.Empty(Drop([]int{0, 1, 2, 3, 4}, 5))
-	is.Empty(Drop([]int{0, 1, 2, 3, 4}, 6))
+	tests := []struct {
+		name     string
+		n        int
+		expected []int
+	}{
+		{name: "drop 0", n: 0, expected: []int{0, 1, 2, 3, 4}},
+		{name: "drop 1", n: 1, expected: []int{1, 2, 3, 4}},
+		{name: "drop 2", n: 2, expected: []int{2, 3, 4}},
+		{name: "drop 3", n: 3, expected: []int{3, 4}},
+		{name: "drop 4", n: 4, expected: []int{4}},
+		{name: "drop 5", n: 5, expected: nil},
+		{name: "drop 6", n: 6, expected: nil},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Drop([]int{0, 1, 2, 3, 4}, tt.n)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	is.PanicsWithValue("lo.Drop: n must not be negative", func() {
 		Drop([]int{0, 1, 2, 3, 4}, -1)
@@ -2269,13 +2505,35 @@ func TestDropRight(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{0, 1, 2, 3, 4}, DropRight([]int{0, 1, 2, 3, 4}, 0))
-	is.Equal([]int{0, 1, 2, 3}, DropRight([]int{0, 1, 2, 3, 4}, 1))
-	is.Equal([]int{0, 1, 2}, DropRight([]int{0, 1, 2, 3, 4}, 2))
-	is.Equal([]int{0, 1}, DropRight([]int{0, 1, 2, 3, 4}, 3))
-	is.Equal([]int{0}, DropRight([]int{0, 1, 2, 3, 4}, 4))
-	is.Empty(DropRight([]int{0, 1, 2, 3, 4}, 5))
-	is.Empty(DropRight([]int{0, 1, 2, 3, 4}, 6))
+	tests := []struct {
+		name     string
+		n        int
+		expected []int
+	}{
+		{name: "drop 0", n: 0, expected: []int{0, 1, 2, 3, 4}},
+		{name: "drop 1", n: 1, expected: []int{0, 1, 2, 3}},
+		{name: "drop 2", n: 2, expected: []int{0, 1, 2}},
+		{name: "drop 3", n: 3, expected: []int{0, 1}},
+		{name: "drop 4", n: 4, expected: []int{0}},
+		{name: "drop 5", n: 5, expected: nil},
+		{name: "drop 6", n: 6, expected: nil},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := DropRight([]int{0, 1, 2, 3, 4}, tt.n)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	is.PanicsWithValue("lo.DropRight: n must not be negative", func() {
 		DropRight([]int{0, 1, 2, 3, 4}, -1)
@@ -2291,17 +2549,31 @@ func TestDropWhile(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{4, 5, 6}, DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return t != 4
-	}))
+	tests := []struct {
+		name      string
+		predicate func(t int) bool
+		expected  []int
+	}{
+		{name: "drop until 4", predicate: func(t int) bool { return t != 4 }, expected: []int{4, 5, 6}},
+		{name: "drop all", predicate: func(t int) bool { return true }, expected: nil},
+		{name: "drop none", predicate: func(t int) bool { return t == 10 }, expected: []int{0, 1, 2, 3, 4, 5, 6}},
+	}
 
-	is.Empty(DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return true
-	}))
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return t == 10
-	}))
+			result := DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, tt.predicate)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -2315,21 +2587,32 @@ func TestDropRightWhile(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{0, 1, 2, 3}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return t != 3
-	}))
+	tests := []struct {
+		name      string
+		predicate func(t int) bool
+		expected  []int
+	}{
+		{name: "drop right until 3", predicate: func(t int) bool { return t != 3 }, expected: []int{0, 1, 2, 3}},
+		{name: "drop right until 1", predicate: func(t int) bool { return t != 1 }, expected: []int{0, 1}},
+		{name: "drop none", predicate: func(t int) bool { return t == 10 }, expected: []int{0, 1, 2, 3, 4, 5, 6}},
+		{name: "drop all", predicate: func(t int) bool { return t != 10 }, expected: nil},
+	}
 
-	is.Equal([]int{0, 1}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return t != 1
-	}))
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return t == 10
-	}))
+			result := DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, tt.predicate)
 
-	is.Empty(DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return t != 10
-	}))
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -2343,12 +2626,34 @@ func TestTake(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{0, 1, 2}, Take([]int{0, 1, 2, 3, 4}, 3))
-	is.Equal([]int{0, 1}, Take([]int{0, 1, 2, 3, 4}, 2))
-	is.Equal([]int{0}, Take([]int{0, 1, 2, 3, 4}, 1))
-	is.Empty(Take([]int{0, 1, 2, 3, 4}, 0))
-	is.Equal([]int{0, 1, 2, 3, 4}, Take([]int{0, 1, 2, 3, 4}, 5))
-	is.Equal([]int{0, 1, 2, 3, 4}, Take([]int{0, 1, 2, 3, 4}, 10))
+	tests := []struct {
+		name     string
+		n        int
+		expected []int
+	}{
+		{name: "take 3", n: 3, expected: []int{0, 1, 2}},
+		{name: "take 2", n: 2, expected: []int{0, 1}},
+		{name: "take 1", n: 1, expected: []int{0}},
+		{name: "take 0", n: 0, expected: nil},
+		{name: "take exactly len", n: 5, expected: []int{0, 1, 2, 3, 4}},
+		{name: "take more than len", n: 10, expected: []int{0, 1, 2, 3, 4}},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Take([]int{0, 1, 2, 3, 4}, tt.n)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	is.PanicsWithValue("lo.Take: n must not be negative", func() {
 		Take([]int{0, 1, 2, 3, 4}, -1)
@@ -2365,21 +2670,32 @@ func TestTakeWhile(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{0, 1, 2, 3}, TakeWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return t < 4
-	}))
+	tests := []struct {
+		name      string
+		predicate func(t int) bool
+		expected  []int
+	}{
+		{name: "take while < 4", predicate: func(t int) bool { return t < 4 }, expected: []int{0, 1, 2, 3}},
+		{name: "take all", predicate: func(t int) bool { return t < 10 }, expected: []int{0, 1, 2, 3, 4, 5, 6}},
+		{name: "take none", predicate: func(t int) bool { return t < 0 }, expected: nil},
+		{name: "take while != 3", predicate: func(t int) bool { return t != 3 }, expected: []int{0, 1, 2}},
+	}
 
-	is.Equal([]int{0, 1, 2, 3, 4, 5, 6}, TakeWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return t < 10
-	}))
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	is.Empty(TakeWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return t < 0
-	}))
+			result := TakeWhile([]int{0, 1, 2, 3, 4, 5, 6}, tt.predicate)
 
-	is.Equal([]int{0, 1, 2}, TakeWhile([]int{0, 1, 2, 3, 4, 5, 6}, func(t int) bool {
-		return t != 3
-	}))
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	type myStrings []string
 	allStrings := myStrings{"foo", "bar", "baz", "qux"}
@@ -2394,27 +2710,39 @@ func TestTakeFilter(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal(
-		[]int{2, 4}, TakeFilter([]int{1, 2, 3, 4, 5, 6}, 2, func(item, index int) bool {
-			return item%2 == 0
-		}),
-	)
-
-	is.Equal([]int{2, 4, 6}, TakeFilter([]int{1, 2, 3, 4, 5, 6}, 10, func(item, index int) bool {
+	even := func(item, index int) bool {
 		return item%2 == 0
-	}))
+	}
 
-	is.Empty(TakeFilter([]int{1, 2, 3, 4, 5, 6}, 0, func(item, index int) bool {
-		return item%2 == 0
-	}))
+	tests := []struct {
+		name      string
+		input     []int
+		n         int
+		predicate func(item, index int) bool
+		expected  []int
+	}{
+		{name: "take 2 even", input: []int{1, 2, 3, 4, 5, 6}, n: 2, predicate: even, expected: []int{2, 4}},
+		{name: "take more than available", input: []int{1, 2, 3, 4, 5, 6}, n: 10, predicate: even, expected: []int{2, 4, 6}},
+		{name: "take 0", input: []int{1, 2, 3, 4, 5, 6}, n: 0, predicate: even, expected: nil},
+		{name: "no matches", input: []int{1, 3, 5}, n: 2, predicate: even, expected: nil},
+		{name: "take odd", input: []int{1, 2, 3, 4, 5}, n: 1, predicate: func(item, index int) bool { return item%2 != 0 }, expected: []int{1}},
+	}
 
-	is.Empty(TakeFilter([]int{1, 3, 5}, 2, func(item, index int) bool {
-		return item%2 == 0
-	}))
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	is.Equal([]int{1}, TakeFilter([]int{1, 2, 3, 4, 5}, 1, func(item, index int) bool {
-		return item%2 != 0
-	}))
+			result := TakeFilter(tt.input, tt.n, tt.predicate)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	is.PanicsWithValue("lo.TakeFilter: n must not be negative", func() {
 		TakeFilter([]int{1, 2, 3}, -1, func(item, index int) bool { return true })
@@ -2433,25 +2761,48 @@ func TestDropByIndex(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	is.Equal([]int{1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 0))
-	is.Equal([]int{3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 0, 1, 2))
-	is.Equal([]int{0, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, -4, -2, -3))
-	is.Equal([]int{0, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, -4, -4))
-	is.Equal([]int{2, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 3, 1, 0))
-	is.Equal([]int{0, 1, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 2))
-	is.Equal([]int{0, 1, 2, 3}, DropByIndex([]int{0, 1, 2, 3, 4}, 4))
-	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}))
-	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 5))
-	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, 100))
-	is.Equal([]int{0, 1, 2, 3, 4}, DropByIndex([]int{0, 1, 2, 3, 4}, -100))
-	is.Equal([]int{0, 1, 2, 3}, DropByIndex([]int{0, 1, 2, 3, 4}, -1))
-	is.Equal([]int{0, 1, 2, 3}, DropByIndex([]int{0, 1, 2, 3, 4}, -1, 4))
-	is.Equal([]int{0, 1, 2, 3}, DropByIndex([]int{0, 1, 2, 3, 4}, -100, 4))
-	is.Empty(DropByIndex([]int{}, 0, 1))
-	is.Empty(DropByIndex([]int{42}, 0, 1))
-	is.Empty(DropByIndex([]int{42}, 1, 0))
-	is.Empty(DropByIndex([]int{}, 1))
-	is.Empty(DropByIndex([]int{1}, 0))
+	tests := []struct {
+		name     string
+		input    []int
+		indexes  []int
+		expected []int
+	}{
+		{name: "drop index 0", input: []int{0, 1, 2, 3, 4}, indexes: []int{0}, expected: []int{1, 2, 3, 4}},
+		{name: "drop indexes 0,1,2", input: []int{0, 1, 2, 3, 4}, indexes: []int{0, 1, 2}, expected: []int{3, 4}},
+		{name: "drop negative indexes -4,-2,-3", input: []int{0, 1, 2, 3, 4}, indexes: []int{-4, -2, -3}, expected: []int{0, 4}},
+		{name: "drop duplicate negative index -4,-4", input: []int{0, 1, 2, 3, 4}, indexes: []int{-4, -4}, expected: []int{0, 2, 3, 4}},
+		{name: "drop indexes 3,1,0", input: []int{0, 1, 2, 3, 4}, indexes: []int{3, 1, 0}, expected: []int{2, 4}},
+		{name: "drop index 2", input: []int{0, 1, 2, 3, 4}, indexes: []int{2}, expected: []int{0, 1, 3, 4}},
+		{name: "drop index 4", input: []int{0, 1, 2, 3, 4}, indexes: []int{4}, expected: []int{0, 1, 2, 3}},
+		{name: "no indexes", input: []int{0, 1, 2, 3, 4}, indexes: nil, expected: []int{0, 1, 2, 3, 4}},
+		{name: "drop out of range index 5", input: []int{0, 1, 2, 3, 4}, indexes: []int{5}, expected: []int{0, 1, 2, 3, 4}},
+		{name: "drop out of range index 100", input: []int{0, 1, 2, 3, 4}, indexes: []int{100}, expected: []int{0, 1, 2, 3, 4}},
+		{name: "drop out of range index -100", input: []int{0, 1, 2, 3, 4}, indexes: []int{-100}, expected: []int{0, 1, 2, 3, 4}},
+		{name: "drop index -1", input: []int{0, 1, 2, 3, 4}, indexes: []int{-1}, expected: []int{0, 1, 2, 3}},
+		{name: "drop indexes -1,4", input: []int{0, 1, 2, 3, 4}, indexes: []int{-1, 4}, expected: []int{0, 1, 2, 3}},
+		{name: "drop indexes -100,4", input: []int{0, 1, 2, 3, 4}, indexes: []int{-100, 4}, expected: []int{0, 1, 2, 3}},
+		{name: "empty input, drop 0,1", input: []int{}, indexes: []int{0, 1}, expected: nil},
+		{name: "single element, drop 0,1", input: []int{42}, indexes: []int{0, 1}, expected: nil},
+		{name: "single element, drop 1,0", input: []int{42}, indexes: []int{1, 0}, expected: nil},
+		{name: "empty input, drop 1", input: []int{}, indexes: []int{1}, expected: nil},
+		{name: "single element, drop 0", input: []int{1}, indexes: []int{0}, expected: nil},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := DropByIndex(tt.input, tt.indexes...)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -2463,17 +2814,21 @@ func TestReject(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := Reject([]int{1, 2, 3, 4}, func(x, _ int) bool {
-		return x%2 == 0
+	t.Run("int slice", func(t *testing.T) {
+		t.Parallel()
+		r1 := Reject([]int{1, 2, 3, 4}, func(x, _ int) bool {
+			return x%2 == 0
+		})
+		assert.Equal(t, []int{1, 3}, r1)
 	})
 
-	is.Equal([]int{1, 3}, r1)
-
-	r2 := Reject([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
-		return len(x) > 3
+	t.Run("string slice", func(t *testing.T) {
+		t.Parallel()
+		r2 := Reject([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
+			return len(x) > 3
+		})
+		assert.Equal(t, []string{"foo", "bar"}, r2)
 	})
-
-	is.Equal([]string{"foo", "bar"}, r2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -2549,6 +2904,7 @@ func TestRejectErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			var callbacks int
 			wrappedPredicate := func(item, index int) (bool, error) {
@@ -2584,42 +2940,51 @@ func TestRejectErr(t *testing.T) {
 
 func TestRejectMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := RejectMap([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
-		if x%2 == 0 {
-			return strconv.FormatInt(x, 10), false
-		}
-		return "", true
-	})
-	r2 := RejectMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
-		if strings.HasSuffix(x, "pu") {
-			return "xpu", false
-		}
-		return "", true
+	t.Run("int64 slice", func(t *testing.T) {
+		t.Parallel()
+		r1 := RejectMap([]int64{1, 2, 3, 4}, func(x int64, _ int) (string, bool) {
+			if x%2 == 0 {
+				return strconv.FormatInt(x, 10), false
+			}
+			return "", true
+		})
+		assert.Equal(t, []string{"2", "4"}, r1)
 	})
 
-	is.Equal([]string{"2", "4"}, r1)
-	is.Equal([]string{"xpu", "xpu"}, r2)
+	t.Run("string slice", func(t *testing.T) {
+		t.Parallel()
+		r2 := RejectMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x string, _ int) (string, bool) {
+			if strings.HasSuffix(x, "pu") {
+				return "xpu", false
+			}
+			return "", true
+		})
+		assert.Equal(t, []string{"xpu", "xpu"}, r2)
+	})
 }
 
 func TestFilterReject(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	left1, right1 := FilterReject([]int{1, 2, 3, 4}, func(x, _ int) bool {
-		return x%2 == 0
+	t.Run("int slice", func(t *testing.T) {
+		t.Parallel()
+		left1, right1 := FilterReject([]int{1, 2, 3, 4}, func(x, _ int) bool {
+			return x%2 == 0
+		})
+		assert.Equal(t, []int{2, 4}, left1)
+		assert.Equal(t, []int{1, 3}, right1)
 	})
 
-	is.Equal([]int{2, 4}, left1)
-	is.Equal([]int{1, 3}, right1)
-
-	left2, right2 := FilterReject([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
-		return len(x) > 3
+	t.Run("string slice", func(t *testing.T) {
+		t.Parallel()
+		left2, right2 := FilterReject([]string{"Smith", "foo", "Domin", "bar", "Olivia"}, func(x string, _ int) bool {
+			return len(x) > 3
+		})
+		assert.Equal(t, []string{"Smith", "Domin", "Olivia"}, left2)
+		assert.Equal(t, []string{"foo", "bar"}, right2)
 	})
-
-	is.Equal([]string{"Smith", "Domin", "Olivia"}, left2)
-	is.Equal([]string{"foo", "bar"}, right2)
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -2632,36 +2997,56 @@ func TestFilterReject(t *testing.T) {
 
 func TestCount(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	count1 := Count([]int{1, 2, 1}, 1)
-	count2 := Count([]int{1, 2, 1}, 3)
-	count3 := Count([]int{}, 1)
+	tests := []struct {
+		name     string
+		input    []int
+		value    int
+		expected int
+	}{
+		{name: "value present twice", input: []int{1, 2, 1}, value: 1, expected: 2},
+		{name: "value absent", input: []int{1, 2, 1}, value: 3, expected: 0},
+		{name: "empty input", input: []int{}, value: 1, expected: 0},
+	}
 
-	is.Equal(2, count1)
-	is.Zero(count2)
-	is.Zero(count3)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Count(tt.input, tt.value)
+
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestCountBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	count1 := CountBy([]int{1, 2, 1}, func(i int) bool {
-		return i < 2
-	})
+	tests := []struct {
+		name      string
+		input     []int
+		predicate func(i int) bool
+		expected  int
+	}{
+		{name: "less than 2", input: []int{1, 2, 1}, predicate: func(i int) bool { return i < 2 }, expected: 2},
+		{name: "greater than 2", input: []int{1, 2, 1}, predicate: func(i int) bool { return i > 2 }, expected: 0},
+		{name: "empty input", input: []int{}, predicate: func(i int) bool { return i <= 2 }, expected: 0},
+	}
 
-	count2 := CountBy([]int{1, 2, 1}, func(i int) bool {
-		return i > 2
-	})
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	count3 := CountBy([]int{}, func(i int) bool {
-		return i <= 2
-	})
+			result := CountBy(tt.input, tt.predicate)
 
-	is.Equal(2, count1)
-	is.Zero(count2)
-	is.Zero(count3)
+			is.Equal(tt.expected, result)
+		})
+	}
 }
 
 func TestCountByErr(t *testing.T) {
@@ -2772,18 +3157,27 @@ func TestCountByErr(t *testing.T) {
 
 func TestCountValues(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.Empty(CountValues([]int{}))
-	is.Equal(map[int]int{1: 1, 2: 1}, CountValues([]int{1, 2}))
-	is.Equal(map[int]int{1: 1, 2: 2}, CountValues([]int{1, 2, 2}))
-	is.Equal(map[string]int{"": 1, "foo": 1, "bar": 1}, CountValues([]string{"foo", "bar", ""}))
-	is.Equal(map[string]int{"foo": 1, "bar": 2}, CountValues([]string{"foo", "bar", "bar"}))
+	t.Run("int slice", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		is.Empty(CountValues([]int{}))
+		is.Equal(map[int]int{1: 1, 2: 1}, CountValues([]int{1, 2}))
+		is.Equal(map[int]int{1: 1, 2: 2}, CountValues([]int{1, 2, 2}))
+	})
+
+	t.Run("string slice", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		is.Equal(map[string]int{"": 1, "foo": 1, "bar": 1}, CountValues([]string{"foo", "bar", ""}))
+		is.Equal(map[string]int{"foo": 1, "bar": 2}, CountValues([]string{"foo", "bar", "bar"}))
+	})
 }
 
 func TestCountValuesBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	oddEven := func(v int) bool {
 		return v%2 == 0
@@ -2792,17 +3186,22 @@ func TestCountValuesBy(t *testing.T) {
 		return len(v)
 	}
 
-	result1 := CountValuesBy([]int{}, oddEven)
-	result2 := CountValuesBy([]int{1, 2}, oddEven)
-	result3 := CountValuesBy([]int{1, 2, 2}, oddEven)
-	result4 := CountValuesBy([]string{"foo", "bar", ""}, length)
-	result5 := CountValuesBy([]string{"foo", "bar", "bar"}, length)
+	t.Run("int slice", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Empty(result1)
-	is.Equal(map[bool]int{true: 1, false: 1}, result2)
-	is.Equal(map[bool]int{true: 2, false: 1}, result3)
-	is.Equal(map[int]int{0: 1, 3: 2}, result4)
-	is.Equal(map[int]int{3: 3}, result5)
+		is.Empty(CountValuesBy([]int{}, oddEven))
+		is.Equal(map[bool]int{true: 1, false: 1}, CountValuesBy([]int{1, 2}, oddEven))
+		is.Equal(map[bool]int{true: 2, false: 1}, CountValuesBy([]int{1, 2, 2}, oddEven))
+	})
+
+	t.Run("string slice", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		is.Equal(map[int]int{0: 1, 3: 2}, CountValuesBy([]string{"foo", "bar", ""}, length))
+		is.Equal(map[int]int{3: 3}, CountValuesBy([]string{"foo", "bar", "bar"}, length))
+	})
 }
 
 func TestSubset(t *testing.T) {
@@ -2811,31 +3210,41 @@ func TestSubset(t *testing.T) {
 
 	in := []int{0, 1, 2, 3, 4}
 
-	out1 := Subset(in, 0, 0)
-	out2 := Subset(in, 10, 2)
-	out3 := Subset(in, -10, 2)
-	out4 := Subset(in, 0, 10)
-	out5 := Subset(in, 0, 2)
-	out6 := Subset(in, 2, 2)
-	out7 := Subset(in, 2, 5)
-	out8 := Subset(in, 2, 3)
-	out9 := Subset(in, 2, 4)
-	out10 := Subset(in, -2, 4)
-	out11 := Subset(in, -4, 1)
-	out12 := Subset(in, -4, math.MaxUint)
+	tests := []struct {
+		name     string
+		offset   int
+		length   uint
+		expected []int
+	}{
+		{name: "offset 0 length 0", offset: 0, length: 0, expected: nil},
+		{name: "offset 10 length 2", offset: 10, length: 2, expected: nil},
+		{name: "offset -10 length 2", offset: -10, length: 2, expected: []int{0, 1}},
+		{name: "offset 0 length 10", offset: 0, length: 10, expected: []int{0, 1, 2, 3, 4}},
+		{name: "offset 0 length 2", offset: 0, length: 2, expected: []int{0, 1}},
+		{name: "offset 2 length 2", offset: 2, length: 2, expected: []int{2, 3}},
+		{name: "offset 2 length 5", offset: 2, length: 5, expected: []int{2, 3, 4}},
+		{name: "offset 2 length 3", offset: 2, length: 3, expected: []int{2, 3, 4}},
+		{name: "offset 2 length 4", offset: 2, length: 4, expected: []int{2, 3, 4}},
+		{name: "offset -2 length 4", offset: -2, length: 4, expected: []int{3, 4}},
+		{name: "offset -4 length 1", offset: -4, length: 1, expected: []int{1}},
+		{name: "offset -4 length MaxUint", offset: -4, length: math.MaxUint, expected: []int{1, 2, 3, 4}},
+	}
 
-	is.Empty(out1)
-	is.Empty(out2)
-	is.Equal([]int{0, 1}, out3)
-	is.Equal([]int{0, 1, 2, 3, 4}, out4)
-	is.Equal([]int{0, 1}, out5)
-	is.Equal([]int{2, 3}, out6)
-	is.Equal([]int{2, 3, 4}, out7)
-	is.Equal([]int{2, 3, 4}, out8)
-	is.Equal([]int{2, 3, 4}, out9)
-	is.Equal([]int{3, 4}, out10)
-	is.Equal([]int{1}, out11)
-	is.Equal([]int{1, 2, 3, 4}, out12)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Subset(in, tt.offset, tt.length)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -2849,45 +3258,48 @@ func TestSlice(t *testing.T) {
 
 	in := []int{0, 1, 2, 3, 4}
 
-	out1 := Slice(in, 0, 0)
-	out2 := Slice(in, 0, 1)
-	out3 := Slice(in, 0, 5)
-	out4 := Slice(in, 0, 6)
-	out5 := Slice(in, 1, 1)
-	out6 := Slice(in, 1, 5)
-	out7 := Slice(in, 1, 6)
-	out8 := Slice(in, 4, 5)
-	out9 := Slice(in, 5, 5)
-	out10 := Slice(in, 6, 5)
-	out11 := Slice(in, 6, 6)
-	out12 := Slice(in, 1, 0)
-	out13 := Slice(in, 5, 0)
-	out14 := Slice(in, 6, 4)
-	out15 := Slice(in, 6, 7)
-	out16 := Slice(in, -10, 1)
-	out17 := Slice(in, -1, 3)
-	out18 := Slice(in, -10, 7)
-	out19 := Slice(in, -10, -1)
+	tests := []struct {
+		name     string
+		start    int
+		end      int
+		expected []int
+	}{
+		{name: "0,0", start: 0, end: 0, expected: nil},
+		{name: "0,1", start: 0, end: 1, expected: []int{0}},
+		{name: "0,5", start: 0, end: 5, expected: []int{0, 1, 2, 3, 4}},
+		{name: "0,6", start: 0, end: 6, expected: []int{0, 1, 2, 3, 4}},
+		{name: "1,1", start: 1, end: 1, expected: nil},
+		{name: "1,5", start: 1, end: 5, expected: []int{1, 2, 3, 4}},
+		{name: "1,6", start: 1, end: 6, expected: []int{1, 2, 3, 4}},
+		{name: "4,5", start: 4, end: 5, expected: []int{4}},
+		{name: "5,5", start: 5, end: 5, expected: nil},
+		{name: "6,5", start: 6, end: 5, expected: nil},
+		{name: "6,6", start: 6, end: 6, expected: nil},
+		{name: "1,0", start: 1, end: 0, expected: nil},
+		{name: "5,0", start: 5, end: 0, expected: nil},
+		{name: "6,4", start: 6, end: 4, expected: nil},
+		{name: "6,7", start: 6, end: 7, expected: nil},
+		{name: "-10,1", start: -10, end: 1, expected: []int{0}},
+		{name: "-1,3", start: -1, end: 3, expected: []int{0, 1, 2}},
+		{name: "-10,7", start: -10, end: 7, expected: []int{0, 1, 2, 3, 4}},
+		{name: "-10,-1", start: -10, end: -1, expected: nil},
+	}
 
-	is.Empty(out1)
-	is.Equal([]int{0}, out2)
-	is.Equal([]int{0, 1, 2, 3, 4}, out3)
-	is.Equal([]int{0, 1, 2, 3, 4}, out4)
-	is.Empty(out5)
-	is.Equal([]int{1, 2, 3, 4}, out6)
-	is.Equal([]int{1, 2, 3, 4}, out7)
-	is.Equal([]int{4}, out8)
-	is.Empty(out9)
-	is.Empty(out10)
-	is.Empty(out11)
-	is.Empty(out12)
-	is.Empty(out13)
-	is.Empty(out14)
-	is.Empty(out15)
-	is.Equal([]int{0}, out16)
-	is.Equal([]int{0, 1, 2}, out17)
-	is.Equal([]int{0, 1, 2, 3, 4}, out18)
-	is.Empty(out19)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Slice(in, tt.start, tt.end)
+
+			if tt.expected == nil {
+				is.Empty(result)
+			} else {
+				is.Equal(tt.expected, result)
+			}
+		})
+	}
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -2901,27 +3313,36 @@ func TestReplace(t *testing.T) {
 
 	in := []int{0, 1, 0, 1, 2, 3, 0}
 
-	out1 := Replace(in, 0, 42, 2)
-	out2 := Replace(in, 0, 42, 1)
-	out3 := Replace(in, 0, 42, 0)
-	out4 := Replace(in, 0, 42, -1)
-	out5 := Replace(in, 0, 42, -1)
-	out6 := Replace(in, -1, 42, 2)
-	out7 := Replace(in, -1, 42, 1)
-	out8 := Replace(in, -1, 42, 0)
-	out9 := Replace(in, -1, 42, -1)
-	out10 := Replace(in, -1, 42, -1)
+	tests := []struct {
+		name     string
+		old      int
+		new      int
+		n        int
+		expected []int
+	}{
+		{name: "replace 0 with 42, n=2", old: 0, new: 42, n: 2, expected: []int{42, 1, 42, 1, 2, 3, 0}},
+		{name: "replace 0 with 42, n=1", old: 0, new: 42, n: 1, expected: []int{42, 1, 0, 1, 2, 3, 0}},
+		{name: "replace 0 with 42, n=0", old: 0, new: 42, n: 0, expected: []int{0, 1, 0, 1, 2, 3, 0}},
+		{name: "replace 0 with 42, n=-1 (first)", old: 0, new: 42, n: -1, expected: []int{42, 1, 42, 1, 2, 3, 42}},
+		{name: "replace 0 with 42, n=-1 (second)", old: 0, new: 42, n: -1, expected: []int{42, 1, 42, 1, 2, 3, 42}},
+		{name: "replace -1 with 42, n=2", old: -1, new: 42, n: 2, expected: []int{0, 1, 0, 1, 2, 3, 0}},
+		{name: "replace -1 with 42, n=1", old: -1, new: 42, n: 1, expected: []int{0, 1, 0, 1, 2, 3, 0}},
+		{name: "replace -1 with 42, n=0", old: -1, new: 42, n: 0, expected: []int{0, 1, 0, 1, 2, 3, 0}},
+		{name: "replace -1 with 42, n=-1 (first)", old: -1, new: 42, n: -1, expected: []int{0, 1, 0, 1, 2, 3, 0}},
+		{name: "replace -1 with 42, n=-1 (second)", old: -1, new: 42, n: -1, expected: []int{0, 1, 0, 1, 2, 3, 0}},
+	}
 
-	is.Equal([]int{42, 1, 42, 1, 2, 3, 0}, out1)
-	is.Equal([]int{42, 1, 0, 1, 2, 3, 0}, out2)
-	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out3)
-	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out4)
-	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out5)
-	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out6)
-	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out7)
-	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out8)
-	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out9)
-	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out10)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := Replace(in, tt.old, tt.new, tt.n)
+
+			is.Equal(tt.expected, result)
+		})
+	}
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -2935,11 +3356,27 @@ func TestReplaceAll(t *testing.T) {
 
 	in := []int{0, 1, 0, 1, 2, 3, 0}
 
-	out1 := ReplaceAll(in, 0, 42)
-	out2 := ReplaceAll(in, -1, 42)
+	tests := []struct {
+		name     string
+		old      int
+		new      int
+		expected []int
+	}{
+		{name: "replace present value", old: 0, new: 42, expected: []int{42, 1, 42, 1, 2, 3, 42}},
+		{name: "replace absent value", old: -1, new: 42, expected: []int{0, 1, 0, 1, 2, 3, 0}},
+	}
 
-	is.Equal([]int{42, 1, 42, 1, 2, 3, 42}, out1)
-	is.Equal([]int{0, 1, 0, 1, 2, 3, 0}, out2)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := ReplaceAll(in, tt.old, tt.new)
+
+			is.Equal(tt.expected, result)
+		})
+	}
 
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
@@ -2949,90 +3386,127 @@ func TestReplaceAll(t *testing.T) {
 
 func TestClone(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	// Test with int slice
-	original1 := []int{1, 2, 3, 4, 5}
-	result1 := Clone(original1)
-	is.Equal([]int{1, 2, 3, 4, 5}, result1)
+	t.Run("int slice - mutating original does not affect clone", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	// Verify it's a different slice by checking that modifying one doesn't affect the other
-	original1[0] = 99
-	is.Equal([]int{99, 2, 3, 4, 5}, original1)
-	is.Equal([]int{1, 2, 3, 4, 5}, result1)
+		original1 := []int{1, 2, 3, 4, 5}
+		result1 := Clone(original1)
+		is.Equal([]int{1, 2, 3, 4, 5}, result1)
 
-	// Test with string slice
-	original2 := []string{"a", "b", "c"}
-	result2 := Clone(original2)
-	is.Equal([]string{"a", "b", "c"}, result2)
+		// Verify it's a different slice by checking that modifying one doesn't affect the other
+		original1[0] = 99
+		is.Equal([]int{99, 2, 3, 4, 5}, original1)
+		is.Equal([]int{1, 2, 3, 4, 5}, result1)
+	})
 
-	// Test with empty slice
-	original3 := []int{}
-	result3 := Clone(original3)
-	is.Equal([]int{}, result3)
-	is.Empty(result3)
+	t.Run("string slice", func(t *testing.T) {
+		t.Parallel()
+		original2 := []string{"a", "b", "c"}
+		result2 := Clone(original2)
+		assert.Equal(t, []string{"a", "b", "c"}, result2)
+	})
 
-	// Test with nil slice
-	var original4 []int
-	result4 := Clone(original4)
-	is.Nil(result4)
+	t.Run("empty slice", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	// Verify shallow copy behavior - modifying clone doesn't affect original
-	original5 := []int{1, 2, 3}
-	result5 := Clone(original5)
-	result5[0] = 99
-	is.Equal([]int{1, 2, 3}, original5) // Original unchanged
-	is.Equal([]int{99, 2, 3}, result5)  // Clone changed
+		original3 := []int{}
+		result3 := Clone(original3)
+		is.Equal([]int{}, result3)
+		is.Empty(result3)
+	})
 
-	type myStrings []string
-	original6 := myStrings{"", "foo", "bar"}
-	result6 := Clone(original6)
-	result6[0] = "baz"
-	is.Equal(myStrings{"", "foo", "bar"}, original6)  // Original unchanged
-	is.Equal(myStrings{"baz", "foo", "bar"}, result6) // Clone changed
+	t.Run("nil slice", func(t *testing.T) {
+		t.Parallel()
+		var original4 []int
+		result4 := Clone(original4)
+		assert.Nil(t, result4)
+	})
+
+	t.Run("int slice - mutating clone does not affect original", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		original5 := []int{1, 2, 3}
+		result5 := Clone(original5)
+		result5[0] = 99
+		is.Equal([]int{1, 2, 3}, original5) // Original unchanged
+		is.Equal([]int{99, 2, 3}, result5)  // Clone changed
+	})
+
+	t.Run("named type - mutating clone does not affect original", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		original6 := myStrings{"", "foo", "bar"}
+		result6 := Clone(original6)
+		result6[0] = "baz"
+		is.Equal(myStrings{"", "foo", "bar"}, original6)  // Original unchanged
+		is.Equal(myStrings{"baz", "foo", "bar"}, result6) // Clone changed
+	})
 }
 
 func TestCompact(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	r1 := Compact([]int{2, 0, 4, 0})
-
-	is.Equal([]int{2, 4}, r1)
-
-	r2 := Compact([]string{"", "foo", "", "bar", ""})
-
-	is.Equal([]string{"foo", "bar"}, r2)
-
-	r3 := Compact([]bool{true, false, true, false})
-
-	is.Equal([]bool{true, true}, r3)
-
-	type foo struct {
-		bar int
-		baz string
-	}
-
-	// slice of structs
-	// If all fields of an element are zero values, Compact removes it.
-
-	r4 := Compact([]foo{
-		{bar: 1, baz: "a"}, // all fields are non-zero values
-		{bar: 0, baz: ""},  // all fields are zero values
-		{bar: 2, baz: ""},  // bar is non-zero
+	t.Run("int slice", func(t *testing.T) {
+		t.Parallel()
+		r1 := Compact([]int{2, 0, 4, 0})
+		assert.Equal(t, []int{2, 4}, r1)
 	})
 
-	is.Equal([]foo{{bar: 1, baz: "a"}, {bar: 2, baz: ""}}, r4)
+	t.Run("string slice", func(t *testing.T) {
+		t.Parallel()
+		r2 := Compact([]string{"", "foo", "", "bar", ""})
+		assert.Equal(t, []string{"foo", "bar"}, r2)
+	})
 
-	// slice of pointers to structs
-	// If an element is nil, Compact removes it.
+	t.Run("bool slice", func(t *testing.T) {
+		t.Parallel()
+		r3 := Compact([]bool{true, false, true, false})
+		assert.Equal(t, []bool{true, true}, r3)
+	})
 
-	e1, e2, e3 := foo{bar: 1, baz: "a"}, foo{bar: 0, baz: ""}, foo{bar: 2, baz: ""}
-	// NOTE: e2 is a zero value of foo, but its pointer &e2 is not a zero value of *foo.
-	r5 := Compact([]*foo{&e1, &e2, nil, &e3})
+	t.Run("slice of structs", func(t *testing.T) {
+		t.Parallel()
+		type foo struct {
+			bar int
+			baz string
+		}
 
-	is.Equal([]*foo{&e1, &e2, &e3}, r5)
+		// slice of structs
+		// If all fields of an element are zero values, Compact removes it.
 
+		r4 := Compact([]foo{
+			{bar: 1, baz: "a"}, // all fields are non-zero values
+			{bar: 0, baz: ""},  // all fields are zero values
+			{bar: 2, baz: ""},  // bar is non-zero
+		})
+
+		assert.Equal(t, []foo{{bar: 1, baz: "a"}, {bar: 2, baz: ""}}, r4)
+	})
+
+	t.Run("slice of pointers to structs", func(t *testing.T) {
+		t.Parallel()
+		type foo struct {
+			bar int
+			baz string
+		}
+
+		// slice of pointers to structs
+		// If an element is nil, Compact removes it.
+
+		e1, e2, e3 := foo{bar: 1, baz: "a"}, foo{bar: 0, baz: ""}, foo{bar: 2, baz: ""}
+		// NOTE: e2 is a zero value of foo, but its pointer &e2 is not a zero value of *foo.
+		r5 := Compact([]*foo{&e1, &e2, nil, &e3})
+
+		assert.Equal(t, []*foo{&e1, &e2, &e3}, r5)
+	})
+
+	is := assert.New(t)
 	type myStrings []string
 	allStrings := myStrings{"", "foo", "bar"}
 	nonempty := Compact(allStrings)
@@ -3041,31 +3515,54 @@ func TestCompact(t *testing.T) {
 
 func TestIsSorted(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.True(IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}))
-	is.True(IsSorted([]string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"}))
+	t.Run("sorted int slice", func(t *testing.T) {
+		t.Parallel()
+		assert.True(t, IsSorted([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}))
+	})
 
-	is.False(IsSorted([]int{0, 1, 4, 3, 2, 5, 6, 7, 8, 9, 10}))
-	is.False(IsSorted([]string{"a", "b", "d", "c", "e", "f", "g", "h", "i", "j"}))
+	t.Run("sorted string slice", func(t *testing.T) {
+		t.Parallel()
+		assert.True(t, IsSorted([]string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"}))
+	})
+
+	t.Run("unsorted int slice", func(t *testing.T) {
+		t.Parallel()
+		assert.False(t, IsSorted([]int{0, 1, 4, 3, 2, 5, 6, 7, 8, 9, 10}))
+	})
+
+	t.Run("unsorted string slice", func(t *testing.T) {
+		t.Parallel()
+		assert.False(t, IsSorted([]string{"a", "b", "d", "c", "e", "f", "g", "h", "i", "j"}))
+	})
 }
 
 func TestIsSortedBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.True(IsSortedBy([]string{"a", "bb", "ccc"}, func(s string) int {
-		return len(s)
-	}))
+	tests := []struct {
+		name     string
+		input    []string
+		iteratee func(s string) int
+		expected bool
+	}{
+		{name: "sorted by length", input: []string{"a", "bb", "ccc"}, iteratee: func(s string) int { return len(s) }, expected: true},
+		{name: "unsorted by length", input: []string{"aa", "b", "ccc"}, iteratee: func(s string) int { return len(s) }, expected: false},
+		{name: "sorted by numeric value", input: []string{"1", "2", "3", "11"}, iteratee: func(s string) int {
+			ret, _ := strconv.Atoi(s)
+			return ret
+		}, expected: true},
+	}
 
-	is.False(IsSortedBy([]string{"aa", "b", "ccc"}, func(s string) int {
-		return len(s)
-	}))
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	is.True(IsSortedBy([]string{"1", "2", "3", "11"}, func(s string) int {
-		ret, _ := strconv.Atoi(s)
-		return ret
-	}))
+			is.Equal(tt.expected, IsSortedBy(tt.input, tt.iteratee))
+		})
+	}
 }
 
 func TestSplice(t *testing.T) {
@@ -3074,42 +3571,51 @@ func TestSplice(t *testing.T) {
 
 	sample := []string{"a", "b", "c", "d", "e", "f", "g"}
 
-	// normal case
-	results := Splice(sample, 1, "1", "2")
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
-	is.Equal([]string{"a", "1", "2", "b", "c", "d", "e", "f", "g"}, results)
+	tests := []struct {
+		name          string
+		input         []string
+		pos           int
+		values        []string
+		checkOriginal bool
+		expected      []string
+	}{
+		{name: "normal case", input: sample, pos: 1, values: []string{"1", "2"}, checkOriginal: true, expected: []string{"a", "1", "2", "b", "c", "d", "e", "f", "g"}},
+		{name: "positive overflow", input: sample, pos: 42, values: []string{"1", "2"}, checkOriginal: true, expected: []string{"a", "b", "c", "d", "e", "f", "g", "1", "2"}},
+		{name: "negative overflow", input: sample, pos: -42, values: []string{"1", "2"}, checkOriginal: true, expected: []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"}},
+		{name: "backward -2", input: sample, pos: -2, values: []string{"1", "2"}, checkOriginal: true, expected: []string{"a", "b", "c", "d", "e", "1", "2", "f", "g"}},
+		{name: "backward -7", input: sample, pos: -7, values: []string{"1", "2"}, checkOriginal: true, expected: []string{"1", "2", "a", "b", "c", "d", "e", "f", "g"}},
+		{name: "empty input pos 0", input: []string{}, pos: 0, values: []string{"1", "2"}, expected: []string{"1", "2"}},
+		{name: "empty input pos 1", input: []string{}, pos: 1, values: []string{"1", "2"}, expected: []string{"1", "2"}},
+		{name: "empty input pos -1", input: []string{}, pos: -1, values: []string{"1", "2"}, expected: []string{"1", "2"}},
+		{name: "single item pos 0", input: []string{"0"}, pos: 0, values: []string{"1", "2"}, expected: []string{"1", "2", "0"}},
+		{name: "single item pos 1", input: []string{"0"}, pos: 1, values: []string{"1", "2"}, expected: []string{"0", "1", "2"}},
+		{name: "single item pos -1", input: []string{"0"}, pos: -1, values: []string{"1", "2"}, expected: []string{"1", "2", "0"}},
+	}
 
-	// check there is no side effect
-	results = Splice(sample, 1)
-	results[0] = "b"
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	// positive overflow
-	results = Splice(sample, 42, "1", "2")
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g", "1", "2"}, results)
+			result := Splice(tt.input, tt.pos, tt.values...)
 
-	// negative overflow
-	results = Splice(sample, -42, "1", "2")
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
-	is.Equal([]string{"1", "2", "a", "b", "c", "d", "e", "f", "g"}, results)
+			if tt.checkOriginal {
+				is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+			}
+			is.Equal(tt.expected, result)
+		})
+	}
 
-	// backward
-	results = Splice(sample, -2, "1", "2")
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
-	is.Equal([]string{"a", "b", "c", "d", "e", "1", "2", "f", "g"}, results)
+	t.Run("no side effect on returned slice mutation", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	results = Splice(sample, -7, "1", "2")
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
-	is.Equal([]string{"1", "2", "a", "b", "c", "d", "e", "f", "g"}, results)
-
-	// other
-	is.Equal([]string{"1", "2"}, Splice([]string{}, 0, "1", "2"))
-	is.Equal([]string{"1", "2"}, Splice([]string{}, 1, "1", "2"))
-	is.Equal([]string{"1", "2"}, Splice([]string{}, -1, "1", "2"))
-	is.Equal([]string{"1", "2", "0"}, Splice([]string{"0"}, 0, "1", "2"))
-	is.Equal([]string{"0", "1", "2"}, Splice([]string{"0"}, 1, "1", "2"))
-	is.Equal([]string{"1", "2", "0"}, Splice([]string{"0"}, -1, "1", "2"))
+		// check there is no side effect
+		results := Splice(sample, 1)
+		results[0] = "b"
+		is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, sample)
+	})
 
 	// type preserved
 	type myStrings []string
@@ -3120,72 +3626,66 @@ func TestSplice(t *testing.T) {
 
 func TestCut_success(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	// case 1
-	actualLeft, actualRight, result := Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
-	is.True(result)
-	is.Equal([]string{}, actualLeft)
-	is.Equal([]string{"c", "d", "e", "f", "g"}, actualRight)
+	tests := []struct {
+		name      string
+		input     []string
+		values    []string
+		wantLeft  []string
+		wantRight []string
+	}{
+		{name: "case 1", input: []string{"a", "b", "c", "d", "e", "f", "g"}, values: []string{"a", "b"}, wantLeft: []string{}, wantRight: []string{"c", "d", "e", "f", "g"}},
+		{name: "case 2", input: []string{"a", "b", "c", "d", "e", "f", "g"}, values: []string{"f", "g"}, wantLeft: []string{"a", "b", "c", "d", "e"}, wantRight: []string{}},
+		{name: "case 3", input: []string{"g"}, values: []string{"g"}, wantLeft: []string{}, wantRight: []string{}},
+		{name: "case 4", input: []string{"a", "b", "c", "d", "e", "f", "g"}, values: []string{"b", "c"}, wantLeft: []string{"a"}, wantRight: []string{"d", "e", "f", "g"}},
+		{name: "case 5", input: []string{"a", "b", "c", "d", "e", "f", "g"}, values: []string{"e", "f"}, wantLeft: []string{"a", "b", "c", "d"}, wantRight: []string{"g"}},
+		{name: "case 6", input: []string{"a", "b"}, values: []string{"b"}, wantLeft: []string{"a"}, wantRight: []string{}},
+		{name: "case 7", input: []string{"a", "b"}, values: []string{"a"}, wantLeft: []string{}, wantRight: []string{"b"}},
+	}
 
-	// case 2
-	actualLeft, actualRight, result = Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"f", "g"})
-	is.True(result)
-	is.Equal([]string{"a", "b", "c", "d", "e"}, actualLeft)
-	is.Equal([]string{}, actualRight)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	// case 3
-	actualLeft, actualRight, result = Cut([]string{"g"}, []string{"g"})
-	is.True(result)
-	is.Equal([]string{}, actualLeft)
-	is.Equal([]string{}, actualRight)
+			actualLeft, actualRight, result := Cut(tt.input, tt.values)
 
-	// case 4
-	actualLeft, actualRight, result = Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b", "c"})
-	is.True(result)
-	is.Equal([]string{"a"}, actualLeft)
-	is.Equal([]string{"d", "e", "f", "g"}, actualRight)
-
-	// case 5
-	actualLeft, actualRight, result = Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"e", "f"})
-	is.True(result)
-	is.Equal([]string{"a", "b", "c", "d"}, actualLeft)
-	is.Equal([]string{"g"}, actualRight)
-
-	// case 6
-	actualLeft, actualRight, result = Cut([]string{"a", "b"}, []string{"b"})
-	is.True(result)
-	is.Equal([]string{"a"}, actualLeft)
-	is.Equal([]string{}, actualRight)
-
-	// case 7
-	actualLeft, actualRight, result = Cut([]string{"a", "b"}, []string{"a"})
-	is.True(result)
-	is.Equal([]string{}, actualLeft)
-	is.Equal([]string{"b"}, actualRight)
+			is.True(result)
+			is.Equal(tt.wantLeft, actualLeft)
+			is.Equal(tt.wantRight, actualRight)
+		})
+	}
 }
 
 func TestCut_fail(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	// case 1
-	actualLeft, actualRight, result := Cut([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"z"})
-	is.False(result)
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actualLeft)
-	is.Equal([]string{}, actualRight)
+	tests := []struct {
+		name      string
+		input     []string
+		values    []string
+		wantLeft  []string
+		wantRight []string
+	}{
+		{name: "case 1", input: []string{"a", "b", "c", "d", "e", "f", "g"}, values: []string{"z"}, wantLeft: []string{"a", "b", "c", "d", "e", "f", "g"}, wantRight: []string{}},
+		{name: "case 2", input: []string{}, values: []string{"z"}, wantLeft: []string{}, wantRight: []string{}},
+		{name: "case 3", input: []string{"a"}, values: []string{"z"}, wantLeft: []string{"a"}, wantRight: []string{}},
+	}
 
-	// case 2
-	actualLeft, actualRight, result = Cut([]string{}, []string{"z"})
-	is.False(result)
-	is.Equal([]string{}, actualLeft)
-	is.Equal([]string{}, actualRight)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	// case 3
-	actualLeft, actualRight, result = Cut([]string{"a"}, []string{"z"})
-	is.False(result)
-	is.Equal([]string{"a"}, actualLeft)
-	is.Equal([]string{}, actualRight)
+			actualLeft, actualRight, result := Cut(tt.input, tt.values)
+
+			is.False(result)
+			is.Equal(tt.wantLeft, actualLeft)
+			is.Equal(tt.wantRight, actualRight)
+		})
+	}
 }
 
 type TestCutStruct struct {
@@ -3195,104 +3695,159 @@ type TestCutStruct struct {
 
 func TestCutPrefix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	// case 1
-	actualAfter, result := CutPrefix(
-		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
-		[]TestCutStruct{{id: 1, data: "a"}},
-	)
-	is.True(result)
-	is.Equal([]TestCutStruct{{id: 2, data: "a"}, {id: 2, data: "b"}}, actualAfter)
+	tests := []struct {
+		name       string
+		input      []TestCutStruct
+		values     []TestCutStruct
+		wantResult bool
+		wantAfter  []TestCutStruct
+	}{
+		{
+			name:       "case 1",
+			input:      []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+			values:     []TestCutStruct{{id: 1, data: "a"}},
+			wantResult: true,
+			wantAfter:  []TestCutStruct{{id: 2, data: "a"}, {id: 2, data: "b"}},
+		},
+		{
+			name:       "case 2",
+			input:      []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+			values:     []TestCutStruct{},
+			wantResult: true,
+			wantAfter:  []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+		},
+		{
+			name:       "case 3",
+			input:      []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+			values:     []TestCutStruct{{id: 2, data: "b"}},
+			wantResult: false,
+			wantAfter:  []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+		},
+		{
+			name:       "case 4",
+			input:      []TestCutStruct{},
+			values:     []TestCutStruct{{id: 2, data: "b"}},
+			wantResult: false,
+			wantAfter:  []TestCutStruct{},
+		},
+	}
 
-	// case 2
-	actualAfter, result = CutPrefix(
-		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
-		[]TestCutStruct{},
-	)
-	is.True(result)
-	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}}, actualAfter)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	// case 3
-	actualAfter, result = CutPrefix(
-		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
-		[]TestCutStruct{{id: 2, data: "b"}},
-	)
-	is.False(result)
-	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}}, actualAfter)
+			actualAfter, result := CutPrefix(tt.input, tt.values)
 
-	// case 4
-	actualAfter, result = CutPrefix(
-		[]TestCutStruct{},
-		[]TestCutStruct{{id: 2, data: "b"}},
-	)
-	is.False(result)
-	is.Equal([]TestCutStruct{}, actualAfter)
+			is.Equal(tt.wantResult, result)
+			is.Equal(tt.wantAfter, actualAfter)
+		})
+	}
 
-	// case 5
-	actualAfterS, result := CutPrefix([]string{"a", "a", "b"}, []string{})
-	is.True(result)
-	is.Equal([]string{"a", "a", "b"}, actualAfterS)
+	t.Run("case 5 - string slice", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		actualAfterS, result := CutPrefix([]string{"a", "a", "b"}, []string{})
+		is.True(result)
+		is.Equal([]string{"a", "a", "b"}, actualAfterS)
+	})
 }
 
 func TestCutSuffix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	// case 1
-	actualBefore, result := CutSuffix(
-		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
-		[]TestCutStruct{{id: 3, data: "b"}},
-	)
-	is.False(result)
-	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}}, actualBefore)
+	tests := []struct {
+		name       string
+		input      []TestCutStruct
+		values     []TestCutStruct
+		wantResult bool
+		wantBefore []TestCutStruct
+	}{
+		{
+			name:       "case 1",
+			input:      []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+			values:     []TestCutStruct{{id: 3, data: "b"}},
+			wantResult: false,
+			wantBefore: []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+		},
+		{
+			name:       "case 2",
+			input:      []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+			values:     []TestCutStruct{{id: 2, data: "b"}},
+			wantResult: true,
+			wantBefore: []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}},
+		},
+		{
+			name:       "case 3",
+			input:      []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+			values:     []TestCutStruct{},
+			wantResult: true,
+			wantBefore: []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+		},
+		{
+			name:       "case 4",
+			input:      []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+			values:     []TestCutStruct{{id: 2, data: "a"}},
+			wantResult: false,
+			wantBefore: []TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
+		},
+	}
 
-	// case 2
-	actualBefore, result = CutSuffix(
-		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
-		[]TestCutStruct{{id: 2, data: "b"}},
-	)
-	is.True(result)
-	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}}, actualBefore)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	// case 3
-	actualBefore, result = CutSuffix(
-		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
-		[]TestCutStruct{},
-	)
-	is.True(result)
-	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}}, actualBefore)
+			actualBefore, result := CutSuffix(tt.input, tt.values)
 
-	// case 4
-	actualBefore, result = CutSuffix(
-		[]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}},
-		[]TestCutStruct{{id: 2, data: "a"}},
-	)
-	is.False(result)
-	is.Equal([]TestCutStruct{{id: 1, data: "a"}, {id: 2, data: "a"}, {id: 2, data: "b"}}, actualBefore)
+			is.Equal(tt.wantResult, result)
+			is.Equal(tt.wantBefore, actualBefore)
+		})
+	}
 
-	// case 5
-	actualAfterS, result := CutSuffix([]string{"a", "a", "b"}, []string{})
-	is.True(result)
-	is.Equal([]string{"a", "a", "b"}, actualAfterS)
+	t.Run("case 5 - string slice", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		actualAfterS, result := CutSuffix([]string{"a", "a", "b"}, []string{})
+		is.True(result)
+		is.Equal([]string{"a", "a", "b"}, actualAfterS)
+	})
 }
 
 // TestTrim_smallScan exercises the small-scan path (all cutsets here are
 // <= trimSmallCutset). See TestTrim_large for the map-based path.
 func TestTrim_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	actual := Trim([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
-	is.Equal([]string{"c", "d", "e", "f", "g"}, actual)
-	actual = Trim([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"g", "f"})
-	is.Equal([]string{"a", "b", "c", "d", "e"}, actual)
-	actual = Trim([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g"})
-	is.Equal([]string{}, actual)
-	actual = Trim([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g", "h"})
-	is.Equal([]string{}, actual)
-	actual = Trim([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	tests := []struct {
+		name     string
+		input    []string
+		cutset   []string
+		expected []string
+	}{
+		{name: "trim prefix and suffix", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"a", "b"}, expected: []string{"c", "d", "e", "f", "g"}},
+		{name: "trim only suffix present in cutset", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"g", "f"}, expected: []string{"a", "b", "c", "d", "e"}},
+		{name: "trim everything", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"a", "b", "c", "d", "e", "f", "g"}, expected: []string{}},
+		{name: "cutset larger than input", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"a", "b", "c", "d", "e", "f", "g", "h"}, expected: []string{}},
+		{name: "empty cutset", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			is.Equal(tt.expected, Trim(tt.input, tt.cutset))
+		})
+	}
 }
 
 // Trim dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9 unique
@@ -3305,35 +3860,55 @@ func TestTrim_large(t *testing.T) {
 	cutset := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
 	is.Greater(len(cutset), trimSmallCutset, "sanity check: cutset must exceed trimSmallCutset")
 
-	collection := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "X", "Y", "a", "b", "c", "d", "e", "f", "g", "h", "i"}
-	actual := Trim(collection, cutset)
-	is.Equal([]string{"X", "Y"}, actual)
+	tests := []struct {
+		name     string
+		input    []string
+		expected []string
+	}{
+		{name: "cutset repeated around distinct middle", input: []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "X", "Y", "a", "b", "c", "d", "e", "f", "g", "h", "i"}, expected: []string{"X", "Y"}},
+		{name: "input equals cutset", input: cutset, expected: []string{}},
+		{name: "input disjoint from cutset", input: []string{"X", "Y"}, expected: []string{"X", "Y"}},
+	}
 
-	actual = Trim(cutset, cutset)
-	is.Equal([]string{}, actual)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	actual = Trim([]string{"X", "Y"}, cutset)
-	is.Equal([]string{"X", "Y"}, actual)
+			is.Equal(tt.expected, Trim(tt.input, cutset))
+		})
+	}
 }
 
 // TestTrimLeft_smallScan exercises the small-scan path (all cutsets here are
 // <= trimSmallCutset). See TestTrimLeft_large for the map-based path.
 func TestTrimLeft_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	actual := TrimLeft([]string{"a", "a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
-	is.Equal([]string{"c", "d", "e", "f", "g"}, actual)
-	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b", "a"})
-	is.Equal([]string{"c", "d", "e", "f", "g"}, actual)
-	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"g", "f"})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
-	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g"})
-	is.Equal([]string{}, actual)
-	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g", "h"})
-	is.Equal([]string{}, actual)
-	actual = TrimLeft([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	tests := []struct {
+		name     string
+		input    []string
+		cutset   []string
+		expected []string
+	}{
+		{name: "trim repeated prefix", input: []string{"a", "a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"a", "b"}, expected: []string{"c", "d", "e", "f", "g"}},
+		{name: "trim prefix with cutset order reversed", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"b", "a"}, expected: []string{"c", "d", "e", "f", "g"}},
+		{name: "cutset not at prefix", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"g", "f"}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+		{name: "trim everything", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"a", "b", "c", "d", "e", "f", "g"}, expected: []string{}},
+		{name: "cutset larger than input", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"a", "b", "c", "d", "e", "f", "g", "h"}, expected: []string{}},
+		{name: "empty cutset", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			is.Equal(tt.expected, TrimLeft(tt.input, tt.cutset))
+		})
+	}
 }
 
 // TrimLeft dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9
@@ -3346,51 +3921,82 @@ func TestTrimLeft_large(t *testing.T) {
 	cutset := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
 	is.Greater(len(cutset), trimSmallCutset, "sanity check: cutset must exceed trimSmallCutset")
 
-	collection := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "X", "Y"}
-	actual := TrimLeft(collection, cutset)
-	is.Equal([]string{"X", "Y"}, actual)
+	tests := []struct {
+		name     string
+		input    []string
+		expected []string
+	}{
+		{name: "prefix matches cutset", input: []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "X", "Y"}, expected: []string{"X", "Y"}},
+		{name: "input equals cutset", input: cutset, expected: []string{}},
+		{name: "input disjoint from cutset", input: []string{"X", "Y"}, expected: []string{"X", "Y"}},
+	}
 
-	actual = TrimLeft(cutset, cutset)
-	is.Equal([]string{}, actual)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	actual = TrimLeft([]string{"X", "Y"}, cutset)
-	is.Equal([]string{"X", "Y"}, actual)
+			is.Equal(tt.expected, TrimLeft(tt.input, cutset))
+		})
+	}
 }
 
 func TestTrimPrefix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	actual := TrimPrefix([]string{"a", "b", "a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
-	is.Equal([]string{"c", "d", "e", "f", "g"}, actual)
-	actual = TrimPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"b", "a"})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
-	actual = TrimPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"g", "f"})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
-	actual = TrimPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g"})
-	is.Equal([]string{}, actual)
-	actual = TrimPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g", "h"})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
-	actual = TrimPrefix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	tests := []struct {
+		name     string
+		input    []string
+		prefix   []string
+		expected []string
+	}{
+		{name: "trim matching prefix", input: []string{"a", "b", "a", "b", "c", "d", "e", "f", "g"}, prefix: []string{"a", "b"}, expected: []string{"c", "d", "e", "f", "g"}},
+		{name: "prefix order mismatch", input: []string{"a", "b", "c", "d", "e", "f", "g"}, prefix: []string{"b", "a"}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+		{name: "prefix not at start", input: []string{"a", "b", "c", "d", "e", "f", "g"}, prefix: []string{"g", "f"}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+		{name: "prefix equals whole input", input: []string{"a", "b", "c", "d", "e", "f", "g"}, prefix: []string{"a", "b", "c", "d", "e", "f", "g"}, expected: []string{}},
+		{name: "prefix longer than input", input: []string{"a", "b", "c", "d", "e", "f", "g"}, prefix: []string{"a", "b", "c", "d", "e", "f", "g", "h"}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+		{name: "empty prefix", input: []string{"a", "b", "c", "d", "e", "f", "g"}, prefix: []string{}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			is.Equal(tt.expected, TrimPrefix(tt.input, tt.prefix))
+		})
+	}
 }
 
 // TestTrimRight_smallScan exercises the small-scan path (all cutsets here are
 // <= trimSmallCutset). See TestTrimRight_large for the map-based path.
 func TestTrimRight_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	actual := TrimRight([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
-	actual = TrimRight([]string{"a", "b", "c", "d", "e", "f", "g", "g"}, []string{"g", "f"})
-	is.Equal([]string{"a", "b", "c", "d", "e"}, actual)
-	actual = TrimRight([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g"})
-	is.Equal([]string{}, actual)
-	actual = TrimRight([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g", "h"})
-	is.Equal([]string{}, actual)
-	actual = TrimRight([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	tests := []struct {
+		name     string
+		input    []string
+		cutset   []string
+		expected []string
+	}{
+		{name: "cutset not at suffix", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"a", "b"}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+		{name: "trim repeated suffix", input: []string{"a", "b", "c", "d", "e", "f", "g", "g"}, cutset: []string{"g", "f"}, expected: []string{"a", "b", "c", "d", "e"}},
+		{name: "trim everything", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"a", "b", "c", "d", "e", "f", "g"}, expected: []string{}},
+		{name: "cutset larger than input", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{"a", "b", "c", "d", "e", "f", "g", "h"}, expected: []string{}},
+		{name: "empty cutset", input: []string{"a", "b", "c", "d", "e", "f", "g"}, cutset: []string{}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			is.Equal(tt.expected, TrimRight(tt.input, tt.cutset))
+		})
+	}
 }
 
 // TrimRight dispatches on len(cutset) <= trimSmallCutset (8): a cutset of 9
@@ -3403,31 +4009,51 @@ func TestTrimRight_large(t *testing.T) {
 	cutset := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
 	is.Greater(len(cutset), trimSmallCutset, "sanity check: cutset must exceed trimSmallCutset")
 
-	collection := []string{"X", "Y", "a", "b", "c", "d", "e", "f", "g", "h", "i"}
-	actual := TrimRight(collection, cutset)
-	is.Equal([]string{"X", "Y"}, actual)
+	tests := []struct {
+		name     string
+		input    []string
+		expected []string
+	}{
+		{name: "suffix matches cutset", input: []string{"X", "Y", "a", "b", "c", "d", "e", "f", "g", "h", "i"}, expected: []string{"X", "Y"}},
+		{name: "input equals cutset", input: cutset, expected: []string{}},
+		{name: "input disjoint from cutset", input: []string{"X", "Y"}, expected: []string{"X", "Y"}},
+	}
 
-	actual = TrimRight(cutset, cutset)
-	is.Equal([]string{}, actual)
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	actual = TrimRight([]string{"X", "Y"}, cutset)
-	is.Equal([]string{"X", "Y"}, actual)
+			is.Equal(tt.expected, TrimRight(tt.input, cutset))
+		})
+	}
 }
 
 func TestTrimSuffix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	actual := TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b"})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
-	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g", "f", "g"}, []string{"f", "g"})
-	is.Equal([]string{"a", "b", "c", "d", "e"}, actual)
-	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g", "f", "g"}, []string{"g", "f"})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g", "f", "g"}, actual)
-	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g"})
-	is.Equal([]string{}, actual)
-	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{"a", "b", "c", "d", "e", "f", "g", "h"})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
-	actual = TrimSuffix([]string{"a", "b", "c", "d", "e", "f", "g"}, []string{})
-	is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, actual)
+	tests := []struct {
+		name     string
+		input    []string
+		suffix   []string
+		expected []string
+	}{
+		{name: "suffix not at end", input: []string{"a", "b", "c", "d", "e", "f", "g"}, suffix: []string{"a", "b"}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+		{name: "trim matching suffix", input: []string{"a", "b", "c", "d", "e", "f", "g", "f", "g"}, suffix: []string{"f", "g"}, expected: []string{"a", "b", "c", "d", "e"}},
+		{name: "suffix order mismatch", input: []string{"a", "b", "c", "d", "e", "f", "g", "f", "g"}, suffix: []string{"g", "f"}, expected: []string{"a", "b", "c", "d", "e", "f", "g", "f", "g"}},
+		{name: "suffix equals whole input", input: []string{"a", "b", "c", "d", "e", "f", "g"}, suffix: []string{"a", "b", "c", "d", "e", "f", "g"}, expected: []string{}},
+		{name: "suffix longer than input", input: []string{"a", "b", "c", "d", "e", "f", "g"}, suffix: []string{"a", "b", "c", "d", "e", "f", "g", "h"}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+		{name: "empty suffix", input: []string{"a", "b", "c", "d", "e", "f", "g"}, suffix: []string{}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			is.Equal(tt.expected, TrimSuffix(tt.input, tt.suffix))
+		})
+	}
 }
