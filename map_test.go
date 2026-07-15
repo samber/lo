@@ -409,7 +409,7 @@ func TestOmitBy(t *testing.T) {
 
 		type myMap map[string]int
 		before := myMap{"": 0, "foobar": 6, "baz": 3}
-		after := PickBy(before, func(key string, value int) bool { return true })
+		after := OmitBy(before, func(key string, value int) bool { return false })
 		is.IsType(after, before, "type preserved")
 	})
 }
