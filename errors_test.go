@@ -15,7 +15,6 @@ import (
 
 func TestValidate(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -30,6 +29,7 @@ func TestValidate(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Validate(len(tt.slice) == 0, "Slice should be empty but contains %v", tt.slice)
 			if tt.wantError {
@@ -43,10 +43,10 @@ func TestValidate(t *testing.T) {
 
 func TestMust(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 
 	t.Run("string value via error", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		is.Equal("foo", Must("foo", nil))
 		is.PanicsWithValue("something went wrong", func() {
@@ -62,6 +62,7 @@ func TestMust(t *testing.T) { //nolint:paralleltest
 
 	t.Run("int value via bool", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		is.Equal(1, Must(1, true))
 		is.PanicsWithValue("not ok", func() {
@@ -77,6 +78,7 @@ func TestMust(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must0 error-type validation", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		cb := func() error {
 			return assert.AnError
@@ -96,10 +98,10 @@ func TestMust(t *testing.T) { //nolint:paralleltest
 
 func TestMustX(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 
 	t.Run("Must0 with error", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		is.PanicsWithValue("something went wrong", func() {
 			Must0(errors.New("something went wrong"))
@@ -114,6 +116,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must1 with error", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1 := Must1(1, nil)
 		is.Equal(1, val1)
@@ -127,6 +130,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must2 with error", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1, val2 := Must2(1, 2, nil)
 		is.Equal(1, val1)
@@ -141,6 +145,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must3 with error", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1, val2, val3 := Must3(1, 2, 3, nil)
 		is.Equal(1, val1)
@@ -156,6 +161,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must4 with error", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1, val2, val3, val4 := Must4(1, 2, 3, 4, nil)
 		is.Equal(1, val1)
@@ -172,6 +178,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must5 with error", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1, val2, val3, val4, val5 := Must5(1, 2, 3, 4, 5, nil)
 		is.Equal(1, val1)
@@ -189,6 +196,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must6 with error", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1, val2, val3, val4, val5, val6 := Must6(1, 2, 3, 4, 5, 6, nil)
 		is.Equal(1, val1)
@@ -207,6 +215,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must0 with bool", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		is.PanicsWithValue("not ok", func() {
 			Must0(false)
@@ -221,6 +230,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must1 with bool", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1 := Must1(1, true)
 		is.Equal(1, val1)
@@ -234,6 +244,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must2 with bool", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1, val2 := Must2(1, 2, true)
 		is.Equal(1, val1)
@@ -248,6 +259,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must3 with bool", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1, val2, val3 := Must3(1, 2, 3, true)
 		is.Equal(1, val1)
@@ -263,6 +275,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must4 with bool", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1, val2, val3, val4 := Must4(1, 2, 3, 4, true)
 		is.Equal(1, val1)
@@ -279,6 +292,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must5 with bool", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1, val2, val3, val4, val5 := Must5(1, 2, 3, 4, 5, true)
 		is.Equal(1, val1)
@@ -296,6 +310,7 @@ func TestMustX(t *testing.T) { //nolint:paralleltest
 
 	t.Run("Must6 with bool", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		val1, val2, val3, val4, val5, val6 := Must6(1, 2, 3, 4, 5, 6, true)
 		is.Equal(1, val1)
@@ -420,7 +435,6 @@ func TestMust_userCustomHandler(t *testing.T) { //nolint:paralleltest
 
 func TestTry(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -436,6 +450,7 @@ func TestTry(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Try(tt.fn))
 		})
 	}
@@ -443,10 +458,10 @@ func TestTry(t *testing.T) {
 
 func TestTryX(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("Try1", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.True(Try1(func() error { return nil }))
 		is.False(Try1(func() error { panic("error") }))
 		is.False(Try1(func() error { return errors.New("foo") }))
@@ -454,6 +469,7 @@ func TestTryX(t *testing.T) {
 
 	t.Run("Try2", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.True(Try2(func() (string, error) { return "", nil }))
 		is.False(Try2(func() (string, error) { panic("error") }))
 		is.False(Try2(func() (string, error) { return "", errors.New("foo") }))
@@ -461,6 +477,7 @@ func TestTryX(t *testing.T) {
 
 	t.Run("Try3", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.True(Try3(func() (string, string, error) { return "", "", nil }))
 		is.False(Try3(func() (string, string, error) { panic("error") }))
 		is.False(Try3(func() (string, string, error) { return "", "", errors.New("foo") }))
@@ -468,6 +485,7 @@ func TestTryX(t *testing.T) {
 
 	t.Run("Try4", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.True(Try4(func() (string, string, string, error) { return "", "", "", nil }))
 		is.False(Try4(func() (string, string, string, error) { panic("error") }))
 		is.False(Try4(func() (string, string, string, error) { return "", "", "", errors.New("foo") }))
@@ -475,6 +493,7 @@ func TestTryX(t *testing.T) {
 
 	t.Run("Try5", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.True(Try5(func() (string, string, string, string, error) { return "", "", "", "", nil }))
 		is.False(Try5(func() (string, string, string, string, error) { panic("error") }))
 		is.False(Try5(func() (string, string, string, string, error) { return "", "", "", "", errors.New("foo") }))
@@ -482,6 +501,7 @@ func TestTryX(t *testing.T) {
 
 	t.Run("Try6", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.True(Try6(func() (string, string, string, string, string, error) { return "", "", "", "", "", nil }))
 		is.False(Try6(func() (string, string, string, string, string, error) { panic("error") }))
 		is.False(Try6(func() (string, string, string, string, string, error) { return "", "", "", "", "", errors.New("foo") }))
@@ -490,7 +510,6 @@ func TestTryX(t *testing.T) {
 
 func TestTryOr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -508,6 +527,7 @@ func TestTryOr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result, ok := TryOr(tt.fn, tt.fallback)
 			is.Equal(tt.expected, result)
 			is.Equal(tt.expectedOk, ok)
@@ -517,10 +537,10 @@ func TestTryOr(t *testing.T) {
 
 func TestTryOrX(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("TryOr1", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		a1, ok1 := TryOr1(func() (int, error) { panic("error") }, 42)
 		a2, ok2 := TryOr1(func() (int, error) { return 21, assert.AnError }, 42)
@@ -538,6 +558,7 @@ func TestTryOrX(t *testing.T) {
 
 	t.Run("TryOr2", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		a1, b1, ok1 := TryOr2(func() (int, string, error) { panic("error") }, 42, "hello")
 		a2, b2, ok2 := TryOr2(func() (int, string, error) { return 21, "world", assert.AnError }, 42, "hello")
@@ -558,6 +579,7 @@ func TestTryOrX(t *testing.T) {
 
 	t.Run("TryOr3", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		a1, b1, c1, ok1 := TryOr3(func() (int, string, bool, error) { panic("error") }, 42, "hello", false)
 		a2, b2, c2, ok2 := TryOr3(func() (int, string, bool, error) { return 21, "world", true, assert.AnError }, 42, "hello", false)
@@ -581,6 +603,7 @@ func TestTryOrX(t *testing.T) {
 
 	t.Run("TryOr4", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		a1, b1, c1, d1, ok1 := TryOr4(func() (int, string, bool, int, error) { panic("error") }, 42, "hello", false, 42)
 		a2, b2, c2, d2, ok2 := TryOr4(func() (int, string, bool, int, error) { return 21, "world", true, 21, assert.AnError }, 42, "hello", false, 42)
@@ -607,6 +630,7 @@ func TestTryOrX(t *testing.T) {
 
 	t.Run("TryOr5", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		a1, b1, c1, d1, e1, ok1 := TryOr5(func() (int, string, bool, int, int, error) { panic("error") }, 42, "hello", false, 42, 42)
 		a2, b2, c2, d2, e2, ok2 := TryOr5(func() (int, string, bool, int, int, error) { return 21, "world", true, 21, 21, assert.AnError }, 42, "hello", false, 42, 42)
@@ -636,6 +660,7 @@ func TestTryOrX(t *testing.T) {
 
 	t.Run("TryOr6", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		a1, b1, c1, d1, e1, f1, ok1 := TryOr6(func() (int, string, bool, int, int, int, error) { panic("error") }, 42, "hello", false, 42, 42, 42)
 		a2, b2, c2, d2, e2, f2, ok2 := TryOr6(func() (int, string, bool, int, int, int, error) { return 21, "world", true, 21, 21, 21, assert.AnError }, 42, "hello", false, 42, 42, 42)
@@ -669,10 +694,10 @@ func TestTryOrX(t *testing.T) {
 
 func TestTryWithErrorValue(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("panics with string value", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		err, ok := TryWithErrorValue(func() error {
 			// getting error in case of panic, using recover function
@@ -684,6 +709,7 @@ func TestTryWithErrorValue(t *testing.T) {
 
 	t.Run("returns wrapped error", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		err, ok := TryWithErrorValue(func() error {
 			return errors.New("foo")
@@ -696,6 +722,7 @@ func TestTryWithErrorValue(t *testing.T) {
 
 	t.Run("succeeds", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		err, ok := TryWithErrorValue(func() error {
 			return nil
@@ -707,7 +734,6 @@ func TestTryWithErrorValue(t *testing.T) {
 
 func TestTryCatch(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -722,6 +748,7 @@ func TestTryCatch(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			caught := false
 			TryCatch(tt.fn, func() {
@@ -734,10 +761,10 @@ func TestTryCatch(t *testing.T) {
 
 func TestTryCatchWithErrorValue(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("panics with string value", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		caught := false
 		TryCatchWithErrorValue(func() error {
@@ -751,6 +778,7 @@ func TestTryCatchWithErrorValue(t *testing.T) {
 
 	t.Run("no panic, callback not invoked", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		caught := false
 		TryCatchWithErrorValue(func() error {
@@ -773,7 +801,6 @@ func (e *internalError) Error() string {
 
 func TestErrorsAs(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name        string
@@ -790,6 +817,7 @@ func TestErrorsAs(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			err, ok := ErrorsAs[*internalError](tt.input)
 			is.Equal(tt.expectedOk, ok)
 			is.Equal(tt.expectedErr, err)
@@ -799,10 +827,10 @@ func TestErrorsAs(t *testing.T) {
 
 func TestAssert(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 
 	t.Run("does not panic when true", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		is.NotPanics(func() {
 			Assert(true)
@@ -814,6 +842,7 @@ func TestAssert(t *testing.T) { //nolint:paralleltest
 
 	t.Run("panics when false", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		is.PanicsWithValue("assertion failed", func() {
 			Assert(false)
@@ -826,6 +855,7 @@ func TestAssert(t *testing.T) { //nolint:paralleltest
 	// checks that the examples in `README.md` compile
 	t.Run("README example compiles", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		age := 20
 		is.NotPanics(func() {
@@ -839,10 +869,10 @@ func TestAssert(t *testing.T) { //nolint:paralleltest
 
 func TestAssertf(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 
 	t.Run("does not panic when true", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		is.NotPanics(func() {
 			Assertf(true, "user defined message")
@@ -854,6 +884,7 @@ func TestAssertf(t *testing.T) { //nolint:paralleltest
 
 	t.Run("panics when false", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		is.PanicsWithValue("assertion failed: user defined message", func() {
 			Assertf(false, "user defined message")
@@ -866,6 +897,7 @@ func TestAssertf(t *testing.T) { //nolint:paralleltest
 	// checks that the example in `README.md` compiles
 	t.Run("README example compiles", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		age := 7
 		is.PanicsWithValue("assertion failed: user age must be >= 15, got 7", func() {

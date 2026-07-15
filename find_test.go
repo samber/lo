@@ -11,7 +11,6 @@ import (
 
 func TestIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -27,6 +26,7 @@ func TestIndexOf(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, IndexOf(tt.collection, tt.element))
 		})
@@ -35,7 +35,6 @@ func TestIndexOf(t *testing.T) {
 
 func TestLastIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -51,6 +50,7 @@ func TestLastIndexOf(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, LastIndexOf(tt.collection, tt.element))
 		})
@@ -59,7 +59,6 @@ func TestLastIndexOf(t *testing.T) {
 
 func TestHasPrefix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -76,6 +75,7 @@ func TestHasPrefix(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, HasPrefix(tt.collection, tt.prefix))
 		})
@@ -84,7 +84,6 @@ func TestHasPrefix(t *testing.T) {
 
 func TestHasSuffix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -101,6 +100,7 @@ func TestHasSuffix(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, HasSuffix(tt.collection, tt.suffix))
 		})
@@ -109,7 +109,6 @@ func TestHasSuffix(t *testing.T) {
 
 func TestFind(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name         string
@@ -138,6 +137,7 @@ func TestFind(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			index := 0
 			result, ok := Find(tt.collection, func(item string) bool {
@@ -154,7 +154,6 @@ func TestFind(t *testing.T) {
 
 func TestFindErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testErr := assert.AnError
 
@@ -200,6 +199,7 @@ func TestFindErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, err := FindErr(tt.input, func(item string) (bool, error) {
 				return item == "b", nil
@@ -240,6 +240,7 @@ func TestFindErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			callbackCount := 0
 			result, err := FindErr(tt.input, func(item string) (bool, error) {
@@ -258,7 +259,6 @@ func TestFindErr(t *testing.T) {
 
 func TestFindIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name         string
@@ -290,6 +290,7 @@ func TestFindIndexOf(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			index := 0
 			item, itemIndex, ok := FindIndexOf(tt.collection, func(item string) bool {
@@ -307,7 +308,6 @@ func TestFindIndexOf(t *testing.T) {
 
 func TestFindLastIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name         string
@@ -339,6 +339,7 @@ func TestFindLastIndexOf(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			index := 0
 			item, itemIndex, ok := FindLastIndexOf(tt.collection, func(item string) bool {
@@ -356,7 +357,6 @@ func TestFindLastIndexOf(t *testing.T) {
 
 func TestFindOrElse(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name         string
@@ -385,6 +385,7 @@ func TestFindOrElse(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			index := 0
 			result := FindOrElse(tt.collection, tt.fallback, func(item string) bool {
@@ -462,7 +463,6 @@ func TestFindKey(t *testing.T) {
 
 func TestFindKeyBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -488,6 +488,7 @@ func TestFindKeyBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, ok := FindKeyBy(map[string]int{"foo": 1, "bar": 2, "baz": 3}, tt.predicate)
 			is.Equal(tt.wantKey, result)
@@ -501,7 +502,6 @@ func TestFindKeyBy(t *testing.T) {
 // map-based path.
 func TestFindUniques_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -518,6 +518,7 @@ func TestFindUniques_smallScan(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := FindUniques(tt.collection)
 			if tt.expected == nil {
@@ -530,6 +531,7 @@ func TestFindUniques_smallScan(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStrings []string
 		allStrings := myStrings{"", "foo", "bar"}
@@ -543,7 +545,6 @@ func TestFindUniques_smallScan(t *testing.T) {
 // table above never exercises (its collections are all <= 6 elements).
 func TestFindUniques_large(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -566,6 +567,7 @@ func TestFindUniques_large(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Greater(len(tt.collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
 
@@ -580,6 +582,7 @@ func TestFindUniques_large(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myInts []int
 		allUnique := myInts{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
@@ -595,7 +598,6 @@ func TestFindUniques_large(t *testing.T) {
 // map-based path.
 func TestFindUniquesBy_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	mod3 := func(i int) int { return i % 3 }
 
@@ -614,6 +616,7 @@ func TestFindUniquesBy_smallScan(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := FindUniquesBy(tt.collection, mod3)
 			if tt.expected == nil {
@@ -626,6 +629,7 @@ func TestFindUniquesBy_smallScan(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStrings []string
 		allStrings := myStrings{"", "foo", "bar"}
@@ -641,7 +645,6 @@ func TestFindUniquesBy_smallScan(t *testing.T) {
 // table above never exercises (its collections are all <= 6 elements).
 func TestFindUniquesBy_large(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	byTen := func(v int) int { return v / 10 }
 
@@ -666,6 +669,7 @@ func TestFindUniquesBy_large(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Greater(len(tt.collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
 
@@ -680,6 +684,7 @@ func TestFindUniquesBy_large(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStrings []string
 		allStrings := myStrings{"a", "bb", "ccc", "dddd", "eeeee", "ffffff", "ggggggg", "hhhhhhhh", "iiiiiiiii"}
@@ -694,7 +699,6 @@ func TestFindUniquesBy_large(t *testing.T) {
 // TestFindDuplicates_large for the map-based path.
 func TestFindDuplicates_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -710,6 +714,7 @@ func TestFindDuplicates_smallScan(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := FindDuplicates(tt.collection)
 			if tt.expected == nil {
@@ -722,6 +727,7 @@ func TestFindDuplicates_smallScan(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStrings []string
 		allStrings := myStrings{"", "foo", "bar"}
@@ -735,7 +741,6 @@ func TestFindDuplicates_smallScan(t *testing.T) {
 // table above never exercises (its collections are all <= 6 elements).
 func TestFindDuplicates_large(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -758,6 +763,7 @@ func TestFindDuplicates_large(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Greater(len(tt.collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
 
@@ -772,6 +778,7 @@ func TestFindDuplicates_large(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStrings []string
 		allStrings := myStrings{"a", "b", "c", "d", "e", "f", "g", "h", "i"}
@@ -786,7 +793,6 @@ func TestFindDuplicates_large(t *testing.T) {
 // TestFindDuplicatesBy_large for the map-based path.
 func TestFindDuplicatesBy_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -803,6 +809,7 @@ func TestFindDuplicatesBy_smallScan(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := FindDuplicatesBy(tt.collection, tt.by)
 			if tt.expected == nil {
@@ -815,6 +822,7 @@ func TestFindDuplicatesBy_smallScan(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStrings []string
 		allStrings := myStrings{"", "foo", "bar"}
@@ -830,7 +838,6 @@ func TestFindDuplicatesBy_smallScan(t *testing.T) {
 // table above never exercises (its collections are all <= 5 elements).
 func TestFindDuplicatesBy_large(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	byTen := func(v int) int { return v / 10 }
 
@@ -855,6 +862,7 @@ func TestFindDuplicatesBy_large(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Greater(len(tt.collection), findSmallThreshold, "sanity check: collection must exceed findSmallThreshold")
 
@@ -869,6 +877,7 @@ func TestFindDuplicatesBy_large(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStrings []string
 		allStrings := myStrings{"a", "bb", "ccc", "dddd", "eeeee", "ffffff", "ggggggg", "hhhhhhhh", "iiiiiiiii"}
@@ -914,6 +923,7 @@ func TestFindDuplicatesByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, err := FindDuplicatesByErr(tt.input, func(i int) (int, error) {
 				return i % 3, nil
@@ -956,6 +966,7 @@ func TestFindDuplicatesByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			callbackCount := 0
 			result, err := FindDuplicatesByErr(tt.input, func(i int) (int, error) {
@@ -983,7 +994,6 @@ func TestFindDuplicatesByErr(t *testing.T) {
 
 func TestMin(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -999,6 +1009,7 @@ func TestMin(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, Min(tt.collection))
 		})
@@ -1006,6 +1017,7 @@ func TestMin(t *testing.T) {
 
 	t.Run("time.Duration", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		is.Equal(time.Second, Min([]time.Duration{time.Second, time.Minute, time.Hour}))
 	})
@@ -1013,7 +1025,6 @@ func TestMin(t *testing.T) {
 
 func TestMinIndex(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name          string
@@ -1030,6 +1041,7 @@ func TestMinIndex(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, index := MinIndex(tt.collection)
 			is.Equal(tt.expected, result)
@@ -1039,6 +1051,7 @@ func TestMinIndex(t *testing.T) {
 
 	t.Run("time.Duration", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		result, index := MinIndex([]time.Duration{time.Second, time.Minute, time.Hour})
 		is.Equal(time.Second, result)
@@ -1048,7 +1061,6 @@ func TestMinIndex(t *testing.T) {
 
 func TestMinBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	less := func(item, mIn string) bool { return len(item) < len(mIn) }
 
@@ -1066,6 +1078,7 @@ func TestMinBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, MinBy(tt.collection, less))
 		})
@@ -1074,7 +1087,6 @@ func TestMinBy(t *testing.T) {
 
 func TestMinByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testErr := assert.AnError
 
@@ -1115,6 +1127,7 @@ func TestMinByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, err := MinByErr(tt.input, func(item, mIn string) (bool, error) {
 				return len(item) < len(mIn), nil
@@ -1149,6 +1162,7 @@ func TestMinByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			callbackCount := 0
 			result, err := MinByErr(tt.input, func(item, mIn string) (bool, error) {
@@ -1167,7 +1181,6 @@ func TestMinByErr(t *testing.T) {
 
 func TestMinIndexBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	less := func(item, mIn string) bool { return len(item) < len(mIn) }
 
@@ -1186,6 +1199,7 @@ func TestMinIndexBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, index := MinIndexBy(tt.collection, less)
 			is.Equal(tt.expected, result)
@@ -1296,7 +1310,6 @@ func TestMinIndexByErr(t *testing.T) {
 
 func TestEarliest(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	a := time.Now()
 	b := a.Add(time.Hour)
@@ -1314,6 +1327,7 @@ func TestEarliest(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, Earliest(tt.items...))
 		})
@@ -1322,7 +1336,6 @@ func TestEarliest(t *testing.T) {
 
 func TestEarliestBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type foo struct {
 		bar time.Time
@@ -1347,6 +1360,7 @@ func TestEarliestBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, EarliestBy(tt.collection, by))
 		})
@@ -1355,7 +1369,6 @@ func TestEarliestBy(t *testing.T) {
 
 func TestEarliestByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testErr := assert.AnError
 
@@ -1394,6 +1407,7 @@ func TestEarliestByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, err := EarliestByErr(tt.input, func(i foo) (time.Time, error) {
 				return i.bar, nil
@@ -1434,6 +1448,7 @@ func TestEarliestByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			callbackCount := 0
 			_, err := EarliestByErr(tt.input, func(i foo) (time.Time, error) {
@@ -1451,7 +1466,6 @@ func TestEarliestByErr(t *testing.T) {
 
 func TestMax(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -1467,6 +1481,7 @@ func TestMax(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, Max(tt.collection))
 		})
@@ -1474,6 +1489,7 @@ func TestMax(t *testing.T) {
 
 	t.Run("time.Duration", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		is.Equal(time.Hour, Max([]time.Duration{time.Second, time.Minute, time.Hour}))
 	})
@@ -1481,7 +1497,6 @@ func TestMax(t *testing.T) {
 
 func TestMaxIndex(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name          string
@@ -1498,6 +1513,7 @@ func TestMaxIndex(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, index := MaxIndex(tt.collection)
 			is.Equal(tt.expected, result)
@@ -1507,6 +1523,7 @@ func TestMaxIndex(t *testing.T) {
 
 	t.Run("time.Duration", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		result, index := MaxIndex([]time.Duration{time.Second, time.Minute, time.Hour})
 		is.Equal(time.Hour, result)
@@ -1516,7 +1533,6 @@ func TestMaxIndex(t *testing.T) {
 
 func TestMaxBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	greater := func(item, mAx string) bool { return len(item) > len(mAx) }
 
@@ -1534,6 +1550,7 @@ func TestMaxBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, MaxBy(tt.collection, greater))
 		})
@@ -1542,7 +1559,6 @@ func TestMaxBy(t *testing.T) {
 
 func TestMaxByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testErr := assert.AnError
 
@@ -1583,6 +1599,7 @@ func TestMaxByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, err := MaxByErr(tt.input, func(item, mAx string) (bool, error) {
 				return len(item) > len(mAx), nil
@@ -1617,6 +1634,7 @@ func TestMaxByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			callbackCount := 0
 			result, err := MaxByErr(tt.input, func(item, mAx string) (bool, error) {
@@ -1640,7 +1658,6 @@ func TestMaxByErr(t *testing.T) {
 
 func TestMaxIndexBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	greater := func(item, mAx string) bool { return len(item) > len(mAx) }
 
@@ -1659,6 +1676,7 @@ func TestMaxIndexBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, index := MaxIndexBy(tt.collection, greater)
 			is.Equal(tt.expected, result)
@@ -1669,7 +1687,6 @@ func TestMaxIndexBy(t *testing.T) {
 
 func TestMaxIndexByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testErr := assert.AnError
 
@@ -1716,6 +1733,7 @@ func TestMaxIndexByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, index, err := MaxIndexByErr(tt.input, func(item, mAx string) (bool, error) {
 				return len(item) > len(mAx), nil
@@ -1757,6 +1775,7 @@ func TestMaxIndexByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			callbackCount := 0
 			result, index, err := MaxIndexByErr(tt.input, func(item, mAx string) (bool, error) {
@@ -1776,7 +1795,6 @@ func TestMaxIndexByErr(t *testing.T) {
 
 func TestLatest(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	a := time.Now()
 	b := a.Add(time.Hour)
@@ -1794,6 +1812,7 @@ func TestLatest(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, Latest(tt.items...))
 		})
@@ -1802,7 +1821,6 @@ func TestLatest(t *testing.T) {
 
 func TestLatestBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type foo struct {
 		bar time.Time
@@ -1827,6 +1845,7 @@ func TestLatestBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, LatestBy(tt.collection, by))
 		})
@@ -1835,7 +1854,6 @@ func TestLatestBy(t *testing.T) {
 
 func TestLatestByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testErr := assert.AnError
 
@@ -1874,6 +1892,7 @@ func TestLatestByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, err := LatestByErr(tt.input, func(i foo) (time.Time, error) {
 				return i.bar, nil
@@ -1914,6 +1933,7 @@ func TestLatestByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			callbackCount := 0
 			_, err := LatestByErr(tt.input, func(i foo) (time.Time, error) {
@@ -1931,7 +1951,6 @@ func TestLatestByErr(t *testing.T) {
 
 func TestFirst(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -1947,6 +1966,7 @@ func TestFirst(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, ok := First(tt.collection)
 			is.Equal(tt.expected, result)
@@ -1957,7 +1977,6 @@ func TestFirst(t *testing.T) {
 
 func TestFirstOrEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -1972,6 +1991,7 @@ func TestFirstOrEmpty(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, FirstOrEmpty(tt.collection))
 		})
@@ -1979,6 +1999,7 @@ func TestFirstOrEmpty(t *testing.T) {
 
 	t.Run("empty string collection", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		is.Empty(FirstOrEmpty([]string{}))
 	})
@@ -1986,7 +2007,6 @@ func TestFirstOrEmpty(t *testing.T) {
 
 func TestFirstOr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -2002,6 +2022,7 @@ func TestFirstOr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, FirstOr(tt.collection, tt.fallback))
 		})
@@ -2009,6 +2030,7 @@ func TestFirstOr(t *testing.T) {
 
 	t.Run("empty string collection", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		is.Equal("test", FirstOr([]string{}, "test"))
 	})
@@ -2016,7 +2038,6 @@ func TestFirstOr(t *testing.T) {
 
 func TestLast(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -2032,6 +2053,7 @@ func TestLast(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, ok := Last(tt.collection)
 			is.Equal(tt.expected, result)
@@ -2042,7 +2064,6 @@ func TestLast(t *testing.T) {
 
 func TestLastOrEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -2057,6 +2078,7 @@ func TestLastOrEmpty(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, LastOrEmpty(tt.collection))
 		})
@@ -2064,6 +2086,7 @@ func TestLastOrEmpty(t *testing.T) {
 
 	t.Run("empty string collection", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		is.Empty(LastOrEmpty([]string{}))
 	})
@@ -2071,7 +2094,6 @@ func TestLastOrEmpty(t *testing.T) {
 
 func TestLastOr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -2087,6 +2109,7 @@ func TestLastOr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, LastOr(tt.collection, tt.fallback))
 		})
@@ -2094,6 +2117,7 @@ func TestLastOr(t *testing.T) {
 
 	t.Run("empty string collection", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		is.Equal("test", LastOr([]string{}, "test"))
 	})
@@ -2101,7 +2125,6 @@ func TestLastOr(t *testing.T) {
 
 func TestNth(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name        string
@@ -2122,6 +2145,7 @@ func TestNth(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, err := Nth(tt.collection, tt.nth)
 			is.Equal(tt.expected, result)

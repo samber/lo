@@ -10,7 +10,6 @@ import (
 
 func TestContains(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -25,6 +24,7 @@ func TestContains(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Contains([]int{0, 1, 2, 3, 4, 5}, tt.item))
 		})
 	}
@@ -75,7 +75,6 @@ func TestContainsBy(t *testing.T) {
 // <= everySmallSubset). See TestEvery_large for the map-based path.
 func TestEvery_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -92,6 +91,7 @@ func TestEvery_smallScan(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Every([]int{0, 1, 2, 3, 4, 5}, tt.subset))
 		})
 	}
@@ -121,6 +121,7 @@ func TestEvery_large(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Every(collection, tt.subset))
 		})
 	}
@@ -128,7 +129,6 @@ func TestEvery_large(t *testing.T) {
 
 func TestEveryBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -146,6 +146,7 @@ func TestEveryBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, EveryBy(tt.collection, tt.predicate))
 		})
 	}
@@ -153,7 +154,6 @@ func TestEveryBy(t *testing.T) {
 
 func TestSome(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -170,6 +170,7 @@ func TestSome(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Some([]int{0, 1, 2, 3, 4, 5}, tt.subset))
 		})
 	}
@@ -177,7 +178,6 @@ func TestSome(t *testing.T) {
 
 func TestSomeBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -195,6 +195,7 @@ func TestSomeBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, SomeBy(tt.collection, tt.predicate))
 		})
 	}
@@ -202,7 +203,6 @@ func TestSomeBy(t *testing.T) {
 
 func TestNone(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -219,6 +219,7 @@ func TestNone(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, None([]int{0, 1, 2, 3, 4, 5}, tt.subset))
 		})
 	}
@@ -226,7 +227,6 @@ func TestNone(t *testing.T) {
 
 func TestNoneBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -244,6 +244,7 @@ func TestNoneBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, NoneBy(tt.collection, tt.predicate))
 		})
 	}
@@ -251,7 +252,6 @@ func TestNoneBy(t *testing.T) {
 
 func TestIntersect(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -275,6 +275,7 @@ func TestIntersect(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.ElementsMatch(tt.expected, Intersect(tt.lists...))
 		})
 	}
@@ -374,7 +375,6 @@ func TestIntersectBy(t *testing.T) {
 // path.
 func TestDifference_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -392,6 +392,7 @@ func TestDifference_smallScan(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			left, right := Difference(tt.list1, tt.list2)
 			is.Equal(tt.wantLeft, left)
 			is.Equal(tt.wantRight, right)
@@ -440,6 +441,7 @@ func TestDifference_large(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			left, right := Difference(tt.list1, tt.list2)
 			is.Equal(tt.wantLeft, left)
 			is.Equal(tt.wantRight, right)
@@ -463,7 +465,6 @@ func TestDifference_large(t *testing.T) {
 
 func TestUnion(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -487,6 +488,7 @@ func TestUnion(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Union(tt.lists...))
 		})
 	}
@@ -516,7 +518,6 @@ func TestUnion(t *testing.T) {
 
 func TestUnionBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testFunc := func(i int) int {
 		return i / 2
@@ -543,6 +544,7 @@ func TestUnionBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, UnionBy(testFunc, tt.lists...))
 		})
 	}
@@ -560,7 +562,6 @@ func TestUnionBy(t *testing.T) {
 
 func TestUnionByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testFunc := func(i int) (int, error) {
 		return i / 2, nil
@@ -587,6 +588,7 @@ func TestUnionByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result, err := UnionByErr(testFunc, tt.lists...)
 			is.NoError(err)
 			is.Equal(tt.expected, result)
@@ -607,6 +609,7 @@ func TestUnionByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			callCount := 0
 			errFunc := func(i int) (int, error) {
@@ -648,6 +651,7 @@ func TestWithout_small(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Without(tt.input, tt.exclude...))
 		})
 	}
@@ -687,6 +691,7 @@ func TestWithout_large(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Without(tt.input, exclude...))
 		})
 	}
@@ -778,6 +783,7 @@ func TestWithoutBy_large(t *testing.T) {
 		is.Greater(len(tt.exclude), withoutSmallExcludeThreshold, "sanity check: exclude must exceed withoutSmallExcludeThreshold")
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, WithoutBy(collection, byKey, tt.exclude...))
 		})
 	}
@@ -928,7 +934,6 @@ func TestWithoutByErr(t *testing.T) {
 
 func TestWithoutEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -944,6 +949,7 @@ func TestWithoutEmpty(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, WithoutEmpty(tt.input))
 		})
 	}
@@ -969,7 +975,6 @@ func TestWithoutEmpty(t *testing.T) {
 
 func TestWithoutNth(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -987,6 +992,7 @@ func TestWithoutNth(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, WithoutNth(tt.input, tt.nths...))
 		})
 	}
@@ -1013,7 +1019,6 @@ func TestWithoutNth(t *testing.T) {
 
 func TestElementsMatch(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -1036,6 +1041,7 @@ func TestElementsMatch(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, ElementsMatch(tt.list1, tt.list2))
 		})
 	}

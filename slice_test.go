@@ -106,6 +106,7 @@ func TestFilterErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			var callbacks int
 			wrappedPredicate := func(item, index int) (bool, error) {
@@ -161,7 +162,6 @@ func TestMap(t *testing.T) {
 
 func TestMapErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -240,6 +240,8 @@ func TestMapErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
+			is := assert.New(t)
 
 			// Track callback count to test early return
 			callbackCount := 0
@@ -336,7 +338,6 @@ func TestFlatMap(t *testing.T) {
 
 func TestFlatMapErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -439,6 +440,8 @@ func TestFlatMapErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedTransform := func(item int64, index int) ([]string, error) {
@@ -475,7 +478,6 @@ func TestTimes(t *testing.T) {
 
 func TestReduce(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -490,6 +492,7 @@ func TestReduce(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Reduce([]int{1, 2, 3, 4}, func(agg, item, _ int) int {
 				return agg + item
@@ -502,7 +505,6 @@ func TestReduce(t *testing.T) {
 
 func TestReduceErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -599,6 +601,8 @@ func TestReduceErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedAccumulator := func(agg, item, index int) (int, error) {
@@ -645,7 +649,6 @@ func TestReduceRight(t *testing.T) {
 
 func TestReduceRightErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -741,6 +744,8 @@ func TestReduceRightErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
+			is := assert.New(t)
 
 			// Track callback count to test early return
 			callbackCount := 0
@@ -882,7 +887,6 @@ func TestUniqBy_large(t *testing.T) {
 
 func TestIsUniq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name  string
@@ -920,6 +924,7 @@ func TestIsUniq(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.want, IsUniq(tt.input))
 		})
@@ -928,7 +933,6 @@ func TestIsUniq(t *testing.T) {
 
 func TestIsUniqBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name  string
@@ -968,6 +972,7 @@ func TestIsUniqBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.want, IsUniqBy(tt.input, iteratee))
 		})
@@ -976,7 +981,6 @@ func TestIsUniqBy(t *testing.T) {
 
 func TestUniqByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -1076,6 +1080,8 @@ func TestUniqByErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedIteratee := func(item int) (int, error) {
@@ -1123,7 +1129,6 @@ func TestGroupBy(t *testing.T) {
 
 func TestGroupByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -1219,6 +1224,8 @@ func TestGroupByErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedIteratee := func(item int) (int, error) {
@@ -1298,7 +1305,6 @@ func TestGroupByMap(t *testing.T) {
 
 func TestGroupByMapErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name                  string
@@ -1394,6 +1400,8 @@ func TestGroupByMapErr(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
+			is := assert.New(t)
+
 			// Track callback count to test early return
 			callbackCount := 0
 			wrappedTransform := func(item int) (int, int, error) {
@@ -1438,6 +1446,7 @@ func TestChunk(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Chunk(tt.input, tt.size)
 
@@ -1486,6 +1495,7 @@ func TestWindow(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Window(tt.input, tt.size)
 
@@ -1541,6 +1551,7 @@ func TestSliding(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Sliding(tt.input, tt.size, tt.step)
 
@@ -1603,6 +1614,7 @@ func TestPartitionBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := PartitionBy(tt.input, oddEven)
 
@@ -1624,7 +1636,6 @@ func TestPartitionBy(t *testing.T) {
 
 func TestPartitionByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	oddEven := func(x int) (string, error) {
 		if x < 0 {
@@ -1718,6 +1729,8 @@ func TestPartitionByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
+			is := assert.New(t)
 
 			// Track callback count to test early return
 			callbackCount := 0
@@ -1866,6 +1879,7 @@ func TestReverse(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Reverse(tt.input)
 
@@ -1885,7 +1899,6 @@ func TestReverse(t *testing.T) {
 
 func TestFill(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -1901,6 +1914,7 @@ func TestFill(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Fill(tt.input, tt.value)
 
@@ -1915,7 +1929,6 @@ func TestFill(t *testing.T) {
 
 func TestRepeat(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -1931,6 +1944,7 @@ func TestRepeat(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Repeat(tt.count, tt.value)
 
@@ -1945,7 +1959,6 @@ func TestRepeat(t *testing.T) {
 
 func TestRepeatBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	cb := func(i int) int {
 		return int(math.Pow(float64(i), 2))
@@ -1965,6 +1978,7 @@ func TestRepeatBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := RepeatBy(tt.count, cb)
 
@@ -1979,7 +1993,6 @@ func TestRepeatBy(t *testing.T) {
 
 func TestRepeatByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testErr := errors.New("test error")
 
@@ -2067,6 +2080,8 @@ func TestRepeatByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
+			is := assert.New(t)
 
 			// Track callback count to verify early return
 			callbackCount := 0
@@ -2414,7 +2429,6 @@ func TestFilterSliceToMapI(t *testing.T) {
 
 func TestKeyify(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -2430,6 +2444,7 @@ func TestKeyify(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Keyify(tt.input)
 
@@ -2464,6 +2479,7 @@ func TestDrop(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Drop([]int{0, 1, 2, 3, 4}, tt.n)
 
@@ -2507,6 +2523,7 @@ func TestDropRight(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := DropRight([]int{0, 1, 2, 3, 4}, tt.n)
 
@@ -2546,6 +2563,7 @@ func TestDropWhile(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := DropWhile([]int{0, 1, 2, 3, 4, 5, 6}, tt.predicate)
 
@@ -2584,6 +2602,7 @@ func TestDropRightWhile(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := DropRightWhile([]int{0, 1, 2, 3, 4, 5, 6}, tt.predicate)
 
@@ -2624,6 +2643,7 @@ func TestTake(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Take([]int{0, 1, 2, 3, 4}, tt.n)
 
@@ -2665,6 +2685,7 @@ func TestTakeWhile(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := TakeWhile([]int{0, 1, 2, 3, 4, 5, 6}, tt.predicate)
 
@@ -2711,6 +2732,7 @@ func TestTakeFilter(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := TakeFilter(tt.input, tt.n, tt.predicate)
 
@@ -2770,6 +2792,7 @@ func TestDropByIndex(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := DropByIndex(tt.input, tt.indexes...)
 
@@ -2881,6 +2904,7 @@ func TestRejectErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			var callbacks int
 			wrappedPredicate := func(item, index int) (bool, error) {
@@ -2973,7 +2997,6 @@ func TestFilterReject(t *testing.T) {
 
 func TestCount(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -2990,6 +3013,7 @@ func TestCount(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Count(tt.input, tt.value)
 
@@ -3000,7 +3024,6 @@ func TestCount(t *testing.T) {
 
 func TestCountBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -3017,6 +3040,7 @@ func TestCountBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := CountBy(tt.input, tt.predicate)
 
@@ -3210,6 +3234,7 @@ func TestSubset(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Subset(in, tt.offset, tt.length)
 
@@ -3264,6 +3289,7 @@ func TestSlice(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Slice(in, tt.start, tt.end)
 
@@ -3310,6 +3336,7 @@ func TestReplace(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Replace(in, tt.old, tt.new, tt.n)
 
@@ -3343,6 +3370,7 @@ func TestReplaceAll(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := ReplaceAll(in, tt.old, tt.new)
 
@@ -3511,7 +3539,6 @@ func TestIsSorted(t *testing.T) {
 
 func TestIsSortedBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -3531,6 +3558,7 @@ func TestIsSortedBy(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, IsSortedBy(tt.input, tt.iteratee))
 		})
@@ -3568,6 +3596,7 @@ func TestSplice(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Splice(tt.input, tt.pos, tt.values...)
 
@@ -3580,6 +3609,7 @@ func TestSplice(t *testing.T) {
 
 	t.Run("no side effect on returned slice mutation", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		// check there is no side effect
 		results := Splice(sample, 1)
@@ -3596,7 +3626,6 @@ func TestSplice(t *testing.T) {
 
 func TestCut_success(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -3618,6 +3647,7 @@ func TestCut_success(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			actualLeft, actualRight, result := Cut(tt.input, tt.values)
 
@@ -3630,7 +3660,6 @@ func TestCut_success(t *testing.T) {
 
 func TestCut_fail(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -3648,6 +3677,7 @@ func TestCut_fail(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			actualLeft, actualRight, result := Cut(tt.input, tt.values)
 
@@ -3665,7 +3695,6 @@ type TestCutStruct struct {
 
 func TestCutPrefix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	// case 1
 	tests := []struct {
@@ -3709,6 +3738,7 @@ func TestCutPrefix(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			actualAfter, result := CutPrefix(tt.input, tt.values)
 
@@ -3719,6 +3749,7 @@ func TestCutPrefix(t *testing.T) {
 
 	t.Run("case 5 - string slice", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		actualAfterS, result := CutPrefix([]string{"a", "a", "b"}, []string{})
 		is.True(result)
@@ -3728,7 +3759,6 @@ func TestCutPrefix(t *testing.T) {
 
 func TestCutSuffix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	// case 1
 	tests := []struct {
@@ -3772,6 +3802,7 @@ func TestCutSuffix(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			actualBefore, result := CutSuffix(tt.input, tt.values)
 
@@ -3782,6 +3813,7 @@ func TestCutSuffix(t *testing.T) {
 
 	t.Run("case 5 - string slice", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		actualAfterS, result := CutSuffix([]string{"a", "a", "b"}, []string{})
 		is.True(result)
@@ -3793,7 +3825,6 @@ func TestCutSuffix(t *testing.T) {
 // <= trimSmallCutset). See TestTrim_large for the map-based path.
 func TestTrim_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -3812,6 +3843,7 @@ func TestTrim_smallScan(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, Trim(tt.input, tt.cutset))
 		})
@@ -3842,6 +3874,7 @@ func TestTrim_large(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, Trim(tt.input, cutset))
 		})
@@ -3852,7 +3885,6 @@ func TestTrim_large(t *testing.T) {
 // <= trimSmallCutset). See TestTrimLeft_large for the map-based path.
 func TestTrimLeft_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -3872,6 +3904,7 @@ func TestTrimLeft_smallScan(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, TrimLeft(tt.input, tt.cutset))
 		})
@@ -3902,6 +3935,7 @@ func TestTrimLeft_large(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, TrimLeft(tt.input, cutset))
 		})
@@ -3910,7 +3944,6 @@ func TestTrimLeft_large(t *testing.T) {
 
 func TestTrimPrefix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -3930,6 +3963,7 @@ func TestTrimPrefix(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, TrimPrefix(tt.input, tt.prefix))
 		})
@@ -3940,7 +3974,6 @@ func TestTrimPrefix(t *testing.T) {
 // <= trimSmallCutset). See TestTrimRight_large for the map-based path.
 func TestTrimRight_smallScan(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -3959,6 +3992,7 @@ func TestTrimRight_smallScan(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, TrimRight(tt.input, tt.cutset))
 		})
@@ -3989,6 +4023,7 @@ func TestTrimRight_large(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, TrimRight(tt.input, cutset))
 		})
@@ -3997,7 +4032,6 @@ func TestTrimRight_large(t *testing.T) {
 
 func TestTrimSuffix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -4017,6 +4051,7 @@ func TestTrimSuffix(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, TrimSuffix(tt.input, tt.suffix))
 		})
