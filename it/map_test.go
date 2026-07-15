@@ -14,7 +14,6 @@ import (
 
 func TestKeys(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -32,6 +31,7 @@ func TestKeys(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.ElementsMatch(tt.expected, slices.Collect(Keys(tt.maps...)))
 		})
 	}
@@ -39,7 +39,6 @@ func TestKeys(t *testing.T) {
 
 func TestUniqKeys(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -59,6 +58,7 @@ func TestUniqKeys(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := slices.Collect(UniqKeys(tt.maps...))
 			if tt.exact {
 				is.Equal(tt.expected, result)
@@ -71,7 +71,6 @@ func TestUniqKeys(t *testing.T) {
 
 func TestValues(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -89,6 +88,7 @@ func TestValues(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.ElementsMatch(tt.expected, slices.Collect(Values(tt.maps...)))
 		})
 	}
@@ -96,7 +96,6 @@ func TestValues(t *testing.T) {
 
 func TestUniqValues(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -117,6 +116,7 @@ func TestUniqValues(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := slices.Collect(UniqValues(tt.maps...))
 			if tt.exact {
 				is.Equal(tt.expected, result)
@@ -167,16 +167,17 @@ func TestFromPairs(t *testing.T) {
 
 func TestInvert(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("no collisions", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r1 := Invert(maps.All(map[string]int{"a": 1, "b": 2}))
 		is.Equal(map[int]string{1: "a", 2: "b"}, maps.Collect(r1))
 	})
 
 	t.Run("colliding values keep one key", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r2 := Invert(maps.All(map[string]int{"a": 1, "b": 2, "c": 1}))
 		is.Len(maps.Collect(r2), 2)
 	})
@@ -184,16 +185,17 @@ func TestInvert(t *testing.T) {
 
 func TestAssign(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("merges maps with later keys overriding earlier ones", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := Assign(values(map[string]int{"a": 1, "b": 2}, map[string]int{"b": 3, "c": 4}))
 		is.Equal(map[string]int{"a": 1, "b": 3, "c": 4}, result1)
 	})
 
 	t.Run("preserves custom map type", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myMap map[string]int
 		before := myMap{"": 0, "foobar": 6, "baz": 3}
 		after := Assign(values(before, before))
@@ -203,7 +205,6 @@ func TestAssign(t *testing.T) {
 
 func TestChunkEntries(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("chunk counts", func(t *testing.T) {
 		t.Parallel()
@@ -225,6 +226,7 @@ func TestChunkEntries(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				is.Len(slices.Collect(ChunkEntries(tt.input, tt.size)), tt.expectedLen)
 			})
 		}
@@ -245,6 +247,7 @@ func TestChunkEntries(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				is.PanicsWithValue("it.ChunkEntries: size must be greater than 0", func() {
 					ChunkEntries(map[string]int{"a": 1}, tt.size)
 				})
@@ -254,6 +257,7 @@ func TestChunkEntries(t *testing.T) {
 
 	t.Run("chunks a map of struct values", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		type myStruct struct {
 			Name  string
@@ -267,6 +271,7 @@ func TestChunkEntries(t *testing.T) {
 
 	t.Run("mutating a returned chunk does not affect the original map", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		originalMap := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
 		result := slices.Collect(ChunkEntries(originalMap, 2))
@@ -279,7 +284,6 @@ func TestChunkEntries(t *testing.T) {
 
 func TestMapToSeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -305,6 +309,7 @@ func TestMapToSeq(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.ElementsMatch(tt.expected, slices.Collect(MapToSeq(tt.input, tt.transform)))
 		})
 	}
@@ -312,7 +317,6 @@ func TestMapToSeq(t *testing.T) {
 
 func TestFilterMapToSeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -338,6 +342,7 @@ func TestFilterMapToSeq(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.ElementsMatch(tt.expected, slices.Collect(FilterMapToSeq(tt.input, tt.filter)))
 		})
 	}
@@ -345,10 +350,10 @@ func TestFilterMapToSeq(t *testing.T) {
 
 func TestFilterKeys(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("int keys filtered by matching string value", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := FilterKeys(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) bool {
 			return v == "foo"
 		})
@@ -357,6 +362,7 @@ func TestFilterKeys(t *testing.T) {
 
 	t.Run("string keys with predicate always false", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result2 := FilterKeys(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
 			return false
 		})
@@ -366,10 +372,10 @@ func TestFilterKeys(t *testing.T) {
 
 func TestFilterValues(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("string values filtered by matching predicate", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := FilterValues(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) bool {
 			return v == "foo"
 		})
@@ -378,6 +384,7 @@ func TestFilterValues(t *testing.T) {
 
 	t.Run("int values with predicate always false", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result2 := FilterValues(map[string]int{"foo": 1, "bar": 2, "baz": 3}, func(k string, v int) bool {
 			return false
 		})
@@ -387,7 +394,6 @@ func TestFilterValues(t *testing.T) {
 
 func TestSeq2KeyToSeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -402,6 +408,7 @@ func TestSeq2KeyToSeq(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.ElementsMatch(tt.expected, slices.Collect(Seq2KeyToSeq(maps.All(tt.input))))
 		})
 	}
@@ -409,7 +416,6 @@ func TestSeq2KeyToSeq(t *testing.T) {
 
 func TestSeq2ValueToSeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -424,6 +430,7 @@ func TestSeq2ValueToSeq(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.ElementsMatch(tt.expected, slices.Collect(Seq2ValueToSeq(maps.All(tt.input))))
 		})
 	}

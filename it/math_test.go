@@ -11,7 +11,6 @@ import (
 
 func TestRange(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -27,6 +26,7 @@ func TestRange(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := slices.Collect(Range(tt.n))
 			if tt.expected == nil {
@@ -43,7 +43,6 @@ func TestRangeFrom(t *testing.T) {
 
 	t.Run("int", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name       string
@@ -60,6 +59,7 @@ func TestRangeFrom(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				result := slices.Collect(RangeFrom(tt.start, tt.elementNum))
 				if tt.expected == nil {
@@ -73,7 +73,6 @@ func TestRangeFrom(t *testing.T) {
 
 	t.Run("float64", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name       string
@@ -91,6 +90,7 @@ func TestRangeFrom(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				is.Equal(tt.expected, slices.Collect(RangeFrom(tt.start, tt.elementNum)))
 			})
@@ -103,7 +103,6 @@ func TestRangeWithSteps(t *testing.T) {
 
 	t.Run("int", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name             string
@@ -120,6 +119,7 @@ func TestRangeWithSteps(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				result := slices.Collect(RangeWithSteps(tt.start, tt.end, tt.step))
 				if tt.expected == nil {
@@ -133,7 +133,6 @@ func TestRangeWithSteps(t *testing.T) {
 
 	t.Run("float64", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name             string
@@ -150,6 +149,7 @@ func TestRangeWithSteps(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				is.Equal(tt.expected, slices.Collect(RangeWithSteps(tt.start, tt.end, tt.step)))
 			})
@@ -196,7 +196,6 @@ func TestSum(t *testing.T) {
 
 	t.Run("uint32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -211,6 +210,7 @@ func TestSum(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				is.Equal(tt.expected, Sum(values(tt.input...)))
 			})
@@ -247,7 +247,6 @@ func TestSumBy(t *testing.T) {
 
 	t.Run("uint32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -262,6 +261,7 @@ func TestSumBy(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				is.Equal(tt.expected, SumBy(values(tt.input...), func(n uint32) uint32 { return n }))
 			})
@@ -290,7 +290,6 @@ func TestProduct(t *testing.T) {
 
 	t.Run("int32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -306,6 +305,7 @@ func TestProduct(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				is.Equal(tt.expected, Product(values(tt.input...)))
 			})
@@ -314,7 +314,6 @@ func TestProduct(t *testing.T) {
 
 	t.Run("uint32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -329,6 +328,7 @@ func TestProduct(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				is.Equal(tt.expected, Product(values(tt.input...)))
 			})
@@ -357,7 +357,6 @@ func TestProductBy(t *testing.T) {
 
 	t.Run("int32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -373,6 +372,7 @@ func TestProductBy(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				is.Equal(tt.expected, ProductBy(values(tt.input...), func(n int32) int32 { return n }))
 			})
@@ -381,7 +381,6 @@ func TestProductBy(t *testing.T) {
 
 	t.Run("uint32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -396,6 +395,7 @@ func TestProductBy(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				is.Equal(tt.expected, ProductBy(values(tt.input...), func(n uint32) uint32 { return n }))
 			})
@@ -432,7 +432,6 @@ func TestMean(t *testing.T) {
 
 	t.Run("uint32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -447,6 +446,7 @@ func TestMean(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				is.Equal(tt.expected, Mean(values(tt.input...)))
 			})
@@ -475,7 +475,6 @@ func TestMeanBy(t *testing.T) {
 
 	t.Run("uint32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -490,6 +489,7 @@ func TestMeanBy(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				is.Equal(tt.expected, MeanBy(values(tt.input...), func(n uint32) uint32 { return n }))
 			})
@@ -518,7 +518,6 @@ func TestMode(t *testing.T) {
 
 	t.Run("uint32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -533,6 +532,7 @@ func TestMode(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				result := Mode(values(tt.input...))
 				if tt.expected == nil {

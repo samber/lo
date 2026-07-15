@@ -13,10 +13,10 @@ import (
 
 func TestZip(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("2 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := Zip2(
 			values("a", "b"),
@@ -33,6 +33,7 @@ func TestZip(t *testing.T) {
 
 	t.Run("3 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := Zip3(
 			values("a", "b", "c"),
@@ -51,6 +52,7 @@ func TestZip(t *testing.T) {
 
 	t.Run("4 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := Zip4(
 			values("a", "b", "c", "d"),
@@ -71,6 +73,7 @@ func TestZip(t *testing.T) {
 
 	t.Run("5 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := Zip5(
 			values("a", "b", "c", "d", "e"),
@@ -93,6 +96,7 @@ func TestZip(t *testing.T) {
 
 	t.Run("6 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := Zip6(
 			values("a", "b", "c", "d", "e", "f"),
@@ -117,6 +121,7 @@ func TestZip(t *testing.T) {
 
 	t.Run("7 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := Zip7(
 			values("a", "b", "c", "d", "e", "f", "g"),
@@ -143,6 +148,7 @@ func TestZip(t *testing.T) {
 
 	t.Run("8 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := Zip8(
 			values("a", "b", "c", "d", "e", "f", "g", "h"),
@@ -171,6 +177,7 @@ func TestZip(t *testing.T) {
 
 	t.Run("9 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := Zip9(
 			values("a", "b", "c", "d", "e", "f", "g", "h", "i"),
@@ -202,10 +209,10 @@ func TestZip(t *testing.T) {
 
 func TestZipBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("2 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := ZipBy2(
 			values("a", "b"),
@@ -223,6 +230,7 @@ func TestZipBy(t *testing.T) {
 
 	t.Run("3 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := ZipBy3(
 			values("a", "b", "c"),
@@ -242,6 +250,7 @@ func TestZipBy(t *testing.T) {
 
 	t.Run("4 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := ZipBy4(
 			values("a", "b", "c", "d"),
@@ -263,6 +272,7 @@ func TestZipBy(t *testing.T) {
 
 	t.Run("5 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := ZipBy5(
 			values("a", "b", "c", "d", "e"),
@@ -286,6 +296,7 @@ func TestZipBy(t *testing.T) {
 
 	t.Run("6 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := ZipBy6(
 			values("a", "b", "c", "d", "e", "f"),
@@ -311,6 +322,7 @@ func TestZipBy(t *testing.T) {
 
 	t.Run("7 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := ZipBy7(
 			values("a", "b", "c", "d", "e", "f", "g"),
@@ -338,6 +350,7 @@ func TestZipBy(t *testing.T) {
 
 	t.Run("8 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := ZipBy8(
 			values("a", "b", "c", "d", "e", "f", "g", "h"),
@@ -367,6 +380,7 @@ func TestZipBy(t *testing.T) {
 
 	t.Run("9 sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		r := ZipBy9(
 			values("a", "b", "c", "d", "e", "f", "g", "h", "i"),
@@ -399,7 +413,6 @@ func TestZipBy(t *testing.T) {
 
 func TestCrossJoin(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	listOne := values("a", "b", "c")
 	listTwo := values(1, 2, 3)
@@ -408,6 +421,7 @@ func TestCrossJoin(t *testing.T) {
 
 	t.Run("empty first list", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoin2(emptyList, listTwo)
 		is.Empty(slices.Collect(results))
@@ -415,6 +429,7 @@ func TestCrossJoin(t *testing.T) {
 
 	t.Run("empty second list", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoin2(listOne, emptyList)
 		is.Empty(slices.Collect(results))
@@ -422,6 +437,7 @@ func TestCrossJoin(t *testing.T) {
 
 	t.Run("both lists empty", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoin2(emptyList, emptyList)
 		is.Empty(slices.Collect(results))
@@ -429,6 +445,7 @@ func TestCrossJoin(t *testing.T) {
 
 	t.Run("single element first list", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoin2(values("a"), listTwo)
 		is.Equal([]lo.Tuple2[string, int]{lo.T2("a", 1), lo.T2("a", 2), lo.T2("a", 3)}, slices.Collect(results))
@@ -436,6 +453,7 @@ func TestCrossJoin(t *testing.T) {
 
 	t.Run("single element second list", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoin2(listOne, values(1))
 		is.Equal([]lo.Tuple2[string, int]{lo.T2("a", 1), lo.T2("b", 1), lo.T2("c", 1)}, slices.Collect(results))
@@ -443,6 +461,7 @@ func TestCrossJoin(t *testing.T) {
 
 	t.Run("multiple elements both lists", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoin2(listOne, listTwo)
 		is.Equal([]lo.Tuple2[string, int]{lo.T2("a", 1), lo.T2("a", 2), lo.T2("a", 3), lo.T2("b", 1), lo.T2("b", 2), lo.T2("b", 3), lo.T2("c", 1), lo.T2("c", 2), lo.T2("c", 3)}, slices.Collect(results))
@@ -450,6 +469,7 @@ func TestCrossJoin(t *testing.T) {
 
 	t.Run("mixed type second list", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoin2(listOne, mixedList)
 		is.Equal([]lo.Tuple2[string, any]{lo.T2[string, any]("a", 9.6), lo.T2[string, any]("a", 4), lo.T2[string, any]("a", "foobar"), lo.T2[string, any]("b", 9.6), lo.T2[string, any]("b", 4), lo.T2[string, any]("b", "foobar"), lo.T2[string, any]("c", 9.6), lo.T2[string, any]("c", 4), lo.T2[string, any]("c", "foobar")}, slices.Collect(results))
@@ -458,7 +478,6 @@ func TestCrossJoin(t *testing.T) {
 
 func TestCrossJoinBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	listOne := values("a", "b", "c")
 	listTwo := values(1, 2, 3)
@@ -467,6 +486,7 @@ func TestCrossJoinBy(t *testing.T) {
 
 	t.Run("empty first list", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoinBy2(emptyList, listTwo, lo.T2[any, int])
 		is.Empty(slices.Collect(results))
@@ -474,6 +494,7 @@ func TestCrossJoinBy(t *testing.T) {
 
 	t.Run("empty second list", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoinBy2(listOne, emptyList, lo.T2[string, any])
 		is.Empty(slices.Collect(results))
@@ -481,6 +502,7 @@ func TestCrossJoinBy(t *testing.T) {
 
 	t.Run("both lists empty", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoinBy2(emptyList, emptyList, lo.T2[any, any])
 		is.Empty(slices.Collect(results))
@@ -488,6 +510,7 @@ func TestCrossJoinBy(t *testing.T) {
 
 	t.Run("single element first list", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoinBy2(values("a"), listTwo, lo.T2[string, int])
 		is.Equal([]lo.Tuple2[string, int]{lo.T2("a", 1), lo.T2("a", 2), lo.T2("a", 3)}, slices.Collect(results))
@@ -495,6 +518,7 @@ func TestCrossJoinBy(t *testing.T) {
 
 	t.Run("single element second list", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoinBy2(listOne, values(1), lo.T2[string, int])
 		is.Equal([]lo.Tuple2[string, int]{lo.T2("a", 1), lo.T2("b", 1), lo.T2("c", 1)}, slices.Collect(results))
@@ -502,6 +526,7 @@ func TestCrossJoinBy(t *testing.T) {
 
 	t.Run("multiple elements both lists", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoinBy2(listOne, listTwo, lo.T2[string, int])
 		is.Equal([]lo.Tuple2[string, int]{lo.T2("a", 1), lo.T2("a", 2), lo.T2("a", 3), lo.T2("b", 1), lo.T2("b", 2), lo.T2("b", 3), lo.T2("c", 1), lo.T2("c", 2), lo.T2("c", 3)}, slices.Collect(results))
@@ -509,6 +534,7 @@ func TestCrossJoinBy(t *testing.T) {
 
 	t.Run("mixed type second list", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		results := CrossJoinBy2(listOne, mixedList, lo.T2[string, any])
 		is.Equal([]lo.Tuple2[string, any]{lo.T2[string, any]("a", 9.6), lo.T2[string, any]("a", 4), lo.T2[string, any]("a", "foobar"), lo.T2[string, any]("b", 9.6), lo.T2[string, any]("b", 4), lo.T2[string, any]("b", "foobar"), lo.T2[string, any]("c", 9.6), lo.T2[string, any]("c", 4), lo.T2[string, any]("c", "foobar")}, slices.Collect(results))

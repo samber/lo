@@ -11,7 +11,6 @@ import (
 
 func TestChunkString(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -61,6 +60,7 @@ func TestChunkString(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := ChunkString(tt.input, tt.size)
 			is.Equal(tt.expected, slices.Collect(result))
@@ -69,6 +69,7 @@ func TestChunkString(t *testing.T) {
 
 	t.Run("panics on non-positive size", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		is.PanicsWithValue("it.ChunkString: size must be greater than 0", func() {
 			ChunkString("12345", 0)

@@ -15,7 +15,6 @@ import (
 
 func TestIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -31,6 +30,7 @@ func TestIndexOf(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := IndexOf(values(tt.input...), tt.target)
 			is.Equal(tt.expected, result)
 		})
@@ -39,7 +39,6 @@ func TestIndexOf(t *testing.T) {
 
 func TestLastIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -55,6 +54,7 @@ func TestLastIndexOf(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := LastIndexOf(values(tt.input...), tt.target)
 			is.Equal(tt.expected, result)
 		})
@@ -63,7 +63,6 @@ func TestLastIndexOf(t *testing.T) {
 
 func TestHasPrefix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -82,6 +81,7 @@ func TestHasPrefix(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := HasPrefix(values(tt.input...), tt.prefix...)
 			is.Equal(tt.expected, result)
 		})
@@ -90,7 +90,6 @@ func TestHasPrefix(t *testing.T) {
 
 func TestHasSuffix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -111,6 +110,7 @@ func TestHasSuffix(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := HasSuffix(values(tt.input...), tt.suffix...)
 			is.Equal(tt.expected, result)
 		})
@@ -119,7 +119,6 @@ func TestHasSuffix(t *testing.T) {
 
 func TestFind(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name           string
@@ -135,6 +134,7 @@ func TestFind(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			index := 0
 			result, ok := Find(values(tt.input...), func(item string) bool {
@@ -151,7 +151,6 @@ func TestFind(t *testing.T) {
 
 func TestFindIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name          string
@@ -168,6 +167,7 @@ func TestFindIndexOf(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			index := 0
 			item, idx, ok := FindIndexOf(values(tt.input...), func(item string) bool {
@@ -185,7 +185,6 @@ func TestFindIndexOf(t *testing.T) {
 
 func TestFindLastIndexOf(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name          string
@@ -202,6 +201,7 @@ func TestFindLastIndexOf(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			item, idx, ok := FindLastIndexOf(values(tt.input...), func(item string) bool {
 				return item == "b"
@@ -216,7 +216,6 @@ func TestFindLastIndexOf(t *testing.T) {
 
 func TestFindOrElse(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -231,6 +230,7 @@ func TestFindOrElse(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			index := 0
 			result := FindOrElse(values(tt.input...), "x", func(item string) bool {
@@ -246,7 +246,6 @@ func TestFindOrElse(t *testing.T) {
 
 func TestFindUniques(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -263,6 +262,7 @@ func TestFindUniques(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := FindUniques(values(tt.input...))
 			is.Equal(tt.expected, slices.Collect(result))
 		})
@@ -281,7 +281,6 @@ func TestFindUniques(t *testing.T) {
 
 func TestFindUniquesBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	mod3 := func(i int) int { return i % 3 }
 
@@ -300,6 +299,7 @@ func TestFindUniquesBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := FindUniquesBy(values(tt.input...), mod3)
 			is.Equal(tt.expected, slices.Collect(result))
 		})
@@ -320,7 +320,6 @@ func TestFindUniquesBy(t *testing.T) {
 
 func TestFindDuplicates(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -336,6 +335,7 @@ func TestFindDuplicates(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := FindDuplicates(values(tt.input...))
 			is.Equal(tt.expected, slices.Collect(result))
 		})
@@ -354,7 +354,6 @@ func TestFindDuplicates(t *testing.T) {
 
 func TestFindDuplicatesBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -371,6 +370,7 @@ func TestFindDuplicatesBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := FindDuplicatesBy(values(tt.input...), tt.keyFn)
 			is.Equal(tt.expected, slices.Collect(result))
 		})
@@ -466,7 +466,6 @@ func TestMinIndex(t *testing.T) {
 
 func TestMinBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	shorter := func(item, mIn string) bool {
 		return len(item) < len(mIn)
@@ -486,6 +485,7 @@ func TestMinBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := MinBy(values(tt.input...), shorter)
 			is.Equal(tt.expected, result)
 		})
@@ -494,7 +494,6 @@ func TestMinBy(t *testing.T) {
 
 func TestMinIndexBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	shorter := func(item, mIn string) bool {
 		return len(item) < len(mIn)
@@ -515,6 +514,7 @@ func TestMinIndexBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result, index := MinIndexBy(values(tt.input...), shorter)
 			is.Equal(tt.expected, result)
 			is.Equal(tt.expectedIndex, index)
@@ -524,7 +524,6 @@ func TestMinIndexBy(t *testing.T) {
 
 func TestEarliest(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	a := time.Now()
 	b := a.Add(time.Hour)
@@ -542,6 +541,7 @@ func TestEarliest(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := Earliest(values(tt.input...))
 			is.Equal(tt.expected, result)
 		})
@@ -550,7 +550,6 @@ func TestEarliest(t *testing.T) {
 
 func TestEarliestBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type foo struct {
 		bar time.Time
@@ -575,6 +574,7 @@ func TestEarliestBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := EarliestBy(values(tt.input...), extractBar)
 			is.Equal(tt.expected, result)
 		})
@@ -658,7 +658,6 @@ func TestMaxIndex(t *testing.T) {
 
 func TestMaxBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	longer := func(item, mAx string) bool {
 		return len(item) > len(mAx)
@@ -678,6 +677,7 @@ func TestMaxBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := MaxBy(values(tt.input...), longer)
 			is.Equal(tt.expected, result)
 		})
@@ -686,7 +686,6 @@ func TestMaxBy(t *testing.T) {
 
 func TestMaxIndexBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	longer := func(item, mAx string) bool {
 		return len(item) > len(mAx)
@@ -707,6 +706,7 @@ func TestMaxIndexBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result, index := MaxIndexBy(values(tt.input...), longer)
 			is.Equal(tt.expected, result)
 			is.Equal(tt.expectedIndex, index)
@@ -716,7 +716,6 @@ func TestMaxIndexBy(t *testing.T) {
 
 func TestLatest(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	a := time.Now()
 	b := a.Add(time.Hour)
@@ -734,6 +733,7 @@ func TestLatest(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := Latest(values(tt.input...))
 			is.Equal(tt.expected, result)
 		})
@@ -742,7 +742,6 @@ func TestLatest(t *testing.T) {
 
 func TestLatestBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type foo struct {
 		bar time.Time
@@ -767,6 +766,7 @@ func TestLatestBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := LatestBy(values(tt.input...), extractBar)
 			is.Equal(tt.expected, result)
 		})
@@ -775,7 +775,6 @@ func TestLatestBy(t *testing.T) {
 
 func TestFirst(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -791,6 +790,7 @@ func TestFirst(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result, ok := First(values(tt.input...))
 			is.Equal(tt.expected, result)
 			is.Equal(tt.expectedOk, ok)
@@ -871,7 +871,6 @@ func TestFirstOr(t *testing.T) {
 
 func TestLast(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name       string
@@ -887,6 +886,7 @@ func TestLast(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result, ok := Last(values(tt.input...))
 			is.Equal(tt.expected, result)
 			is.Equal(tt.expectedOk, ok)
@@ -967,7 +967,6 @@ func TestLastOr(t *testing.T) {
 
 func TestNth(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name        string
@@ -988,6 +987,7 @@ func TestNth(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result, err := Nth(values(tt.input...), tt.n)
 			is.Equal(tt.expected, result)
 			if tt.expectedErr == "" {
@@ -1094,7 +1094,6 @@ func TestNthOrEmpty(t *testing.T) {
 
 func TestSample(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name        string
@@ -1109,6 +1108,7 @@ func TestSample(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := Sample(values(tt.input...))
 			if tt.expectEmpty {
 				is.Empty(result)
@@ -1121,7 +1121,6 @@ func TestSample(t *testing.T) {
 
 func TestSampleBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name        string
@@ -1136,6 +1135,7 @@ func TestSampleBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := SampleBy(values(tt.input...), xrand.IntN)
 			if tt.expectEmpty {
 				is.Empty(result)
@@ -1148,7 +1148,6 @@ func TestSampleBy(t *testing.T) {
 
 func TestSamples(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name        string
@@ -1163,6 +1162,7 @@ func TestSamples(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := slices.Collect(Samples(values(tt.input...), 3))
 			if tt.expectEmpty {
 				is.Empty(result)
@@ -1185,7 +1185,6 @@ func TestSamples(t *testing.T) {
 
 func TestSamplesBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name  string
@@ -1207,6 +1206,7 @@ func TestSamplesBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := slices.Collect(SamplesBy(values(tt.input...), tt.n, tt.keyFn))
 			switch tt.mode {
 			case "elementsMatch":

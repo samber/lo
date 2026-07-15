@@ -17,8 +17,6 @@ import (
 
 func TestLength(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []int
@@ -32,6 +30,7 @@ func TestLength(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Length(values(tt.input...)))
 		})
 	}
@@ -55,10 +54,9 @@ func TestDrain(t *testing.T) {
 
 func TestFilter(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int evens", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r1 := Filter(values(1, 2, 3, 4), func(x int) bool {
 			return x%2 == 0
 		})
@@ -67,6 +65,7 @@ func TestFilter(t *testing.T) {
 
 	t.Run("non-empty strings", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r2 := Filter(values("", "foo", "", "bar", ""), func(x string) bool {
 			return len(x) > 0
 		})
@@ -75,6 +74,7 @@ func TestFilter(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Filter(allStrings, func(x string) bool {
@@ -86,10 +86,9 @@ func TestFilter(t *testing.T) {
 
 func TestFilterI(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int evens", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r1 := FilterI(values(1, 2, 3, 4), func(x, _ int) bool {
 			return x%2 == 0
 		})
@@ -98,6 +97,7 @@ func TestFilterI(t *testing.T) {
 
 	t.Run("non-empty strings", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r2 := FilterI(values("", "foo", "", "bar", ""), func(x string, _ int) bool {
 			return len(x) > 0
 		})
@@ -106,6 +106,7 @@ func TestFilterI(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := FilterI(allStrings, func(x string, _ int) bool {
@@ -117,10 +118,9 @@ func TestFilterI(t *testing.T) {
 
 func TestMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int to constant string", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := Map(values(1, 2, 3, 4), func(x int) string {
 			return "Hello"
 		})
@@ -129,6 +129,7 @@ func TestMap(t *testing.T) {
 
 	t.Run("int64 to formatted string", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result2 := Map(values[int64](1, 2, 3, 4), func(x int64) string {
 			return strconv.FormatInt(x, 10)
 		})
@@ -138,10 +139,9 @@ func TestMap(t *testing.T) {
 
 func TestMapI(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int to constant string", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := MapI(values(1, 2, 3, 4), func(x, _ int) string {
 			return "Hello"
 		})
@@ -150,6 +150,7 @@ func TestMapI(t *testing.T) {
 
 	t.Run("int64 to formatted string", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result2 := MapI(values[int64](1, 2, 3, 4), func(x int64, _ int) string {
 			return strconv.FormatInt(x, 10)
 		})
@@ -193,10 +194,9 @@ func TestUniqMapI(t *testing.T) {
 
 func TestFilterMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int64 evens formatted", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r1 := FilterMap(values[int64](1, 2, 3, 4), func(x int64) (string, bool) {
 			if x%2 == 0 {
 				return strconv.FormatInt(x, 10), true
@@ -208,6 +208,7 @@ func TestFilterMap(t *testing.T) {
 
 	t.Run("string suffix match", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r2 := FilterMap(values("cpu", "gpu", "mouse", "keyboard"), func(x string) (string, bool) {
 			if strings.HasSuffix(x, "pu") {
 				return "xpu", true
@@ -220,10 +221,9 @@ func TestFilterMap(t *testing.T) {
 
 func TestFilterMapI(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int64 evens formatted", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r1 := FilterMapI(values[int64](1, 2, 3, 4), func(x int64, _ int) (string, bool) {
 			if x%2 == 0 {
 				return strconv.FormatInt(x, 10), true
@@ -235,6 +235,7 @@ func TestFilterMapI(t *testing.T) {
 
 	t.Run("string suffix match", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r2 := FilterMapI(values("cpu", "gpu", "mouse", "keyboard"), func(x string, _ int) (string, bool) {
 			if strings.HasSuffix(x, "pu") {
 				return "xpu", true
@@ -247,10 +248,9 @@ func TestFilterMapI(t *testing.T) {
 
 func TestFlatMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int to constant string", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := FlatMap(values(0, 1, 2, 3, 4), func(x int) iter.Seq[string] {
 			return values("Hello")
 		})
@@ -259,6 +259,7 @@ func TestFlatMap(t *testing.T) {
 
 	t.Run("int64 repeated by value", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result2 := FlatMap(values[int64](0, 1, 2, 3, 4), func(x int64) iter.Seq[string] {
 			return func(yield func(string) bool) {
 				for range x {
@@ -274,10 +275,9 @@ func TestFlatMap(t *testing.T) {
 
 func TestFlatMapI(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int to constant string", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := FlatMapI(values(0, 1, 2, 3, 4), func(x, _ int) iter.Seq[string] {
 			return values("Hello")
 		})
@@ -286,6 +286,7 @@ func TestFlatMapI(t *testing.T) {
 
 	t.Run("int64 repeated by value", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result2 := FlatMapI(values[int64](0, 1, 2, 3, 4), func(x int64, _ int) iter.Seq[string] {
 			return func(yield func(string) bool) {
 				for range x {
@@ -311,8 +312,6 @@ func TestTimes(t *testing.T) {
 
 func TestReduce(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		seed     int
@@ -326,6 +325,7 @@ func TestReduce(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := Reduce(values(1, 2, 3, 4), func(agg, item int) int {
 				return agg + item
 			}, tt.seed)
@@ -336,8 +336,6 @@ func TestReduce(t *testing.T) {
 
 func TestReduceI(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		seed     int
@@ -351,6 +349,7 @@ func TestReduceI(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := ReduceI(values(1, 2, 3, 4), func(agg, item, _ int) int {
 				return agg + item
 			}, tt.seed)
@@ -361,10 +360,9 @@ func TestReduceI(t *testing.T) {
 
 func TestReduceLast(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("slice concatenation", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := ReduceLast(values([]int{0, 1}, []int{2, 3}, []int{4, 5}), func(agg, item []int) []int {
 			return append(agg, item...)
 		}, []int{})
@@ -373,6 +371,7 @@ func TestReduceLast(t *testing.T) {
 
 	t.Run("int sum", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result2 := ReduceLast(values(1, 2, 3, 4), func(agg, item int) int {
 			return agg + item
 		}, 10)
@@ -382,10 +381,9 @@ func TestReduceLast(t *testing.T) {
 
 func TestReduceLastI(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("slice concatenation", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := ReduceLastI(values([]int{0, 1}, []int{2, 3}, []int{4, 5}), func(agg, item []int, _ int) []int {
 			return append(agg, item...)
 		}, []int{})
@@ -394,6 +392,7 @@ func TestReduceLastI(t *testing.T) {
 
 	t.Run("int sum", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result2 := ReduceLastI(values(1, 2, 3, 4), func(agg, item, _ int) int {
 			return agg + item
 		}, 10)
@@ -445,16 +444,16 @@ func TestForEachWhileI(t *testing.T) {
 
 func TestUniq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int dedup", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := Uniq(values(1, 2, 2, 1))
 		is.Equal([]int{1, 2}, slices.Collect(result1))
 	})
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Uniq(allStrings)
@@ -464,10 +463,9 @@ func TestUniq(t *testing.T) {
 
 func TestUniqBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int mod dedup", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := UniqBy(values(0, 1, 2, 3, 4, 5), func(i int) int {
 			return i % 3
 		})
@@ -476,6 +474,7 @@ func TestUniqBy(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := UniqBy(allStrings, func(i string) string {
@@ -501,10 +500,9 @@ func TestGroupBy(t *testing.T) {
 
 func TestGroupByMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int keys", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := GroupByMap(values(0, 1, 2, 3, 4, 5), func(i int) (int, string) {
 			return i % 3, strconv.Itoa(i)
 		})
@@ -517,6 +515,7 @@ func TestGroupByMap(t *testing.T) {
 
 	t.Run("named int type keys", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myInt int
 		result2 := GroupByMap(values[myInt](1, 0, 2, 3, 4, 5), func(i myInt) (int, string) {
 			return int(i % 3), strconv.Itoa(int(i))
@@ -530,6 +529,7 @@ func TestGroupByMap(t *testing.T) {
 
 	t.Run("struct keys", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type product struct {
 			ID         int64
 			CategoryID int64
@@ -554,8 +554,6 @@ func TestGroupByMap(t *testing.T) {
 
 func TestChunk(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []int
@@ -572,12 +570,14 @@ func TestChunk(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Chunk(values(tt.input...), tt.size)))
 		})
 	}
 
 	t.Run("panics on non-positive size", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.Chunk: size must be greater than 0", func() {
 			Chunk(values(0), 0)
 		})
@@ -586,8 +586,6 @@ func TestChunk(t *testing.T) {
 
 func TestWindow(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []int
@@ -605,12 +603,14 @@ func TestWindow(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Window(values(tt.input...), tt.size)))
 		})
 	}
 
 	t.Run("panics on zero size", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.Window: size must be greater than 0", func() {
 			Window(values(1, 2, 3), 0)
 		})
@@ -618,6 +618,7 @@ func TestWindow(t *testing.T) {
 
 	t.Run("panics on negative size", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.Window: size must be greater than 0", func() {
 			Window(values(1, 2, 3), -1)
 		})
@@ -626,8 +627,6 @@ func TestWindow(t *testing.T) {
 
 func TestSliding(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []int
@@ -667,12 +666,14 @@ func TestSliding(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Sliding(values(tt.input...), tt.size, tt.step)))
 		})
 	}
 
 	t.Run("panics on zero size", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.Sliding: size must be greater than 0", func() {
 			Sliding(values(1, 2, 3), 0, 1)
 		})
@@ -680,6 +681,7 @@ func TestSliding(t *testing.T) {
 
 	t.Run("panics on zero step", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.Sliding: step must be greater than 0", func() {
 			Sliding(values(1, 2, 3), 2, 0)
 		})
@@ -687,6 +689,7 @@ func TestSliding(t *testing.T) {
 
 	t.Run("panics on negative step", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.Sliding: step must be greater than 0", func() {
 			Sliding(values(1, 2, 3), 2, -1)
 		})
@@ -694,6 +697,7 @@ func TestSliding(t *testing.T) {
 
 	t.Run("panics on negative size", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.Sliding: size must be greater than 0", func() {
 			Sliding(values(1, 2, 3), -1, 1)
 		})
@@ -701,12 +705,14 @@ func TestSliding(t *testing.T) {
 
 	t.Run("strings", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result17 := Sliding(values("a", "b", "c", "d"), 2, 1)
 		is.Equal([][]string{{"a", "b"}, {"b", "c"}, {"c", "d"}}, slices.Collect(result17))
 	})
 
 	t.Run("structs", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type Person struct {
 			Name string
 			Age  int
@@ -728,18 +734,21 @@ func TestSliding(t *testing.T) {
 
 	t.Run("float64", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result23 := Sliding(values(1.1, 2.2, 3.3, 4.4), 2, 1)
 		is.Equal([][]float64{{1.1, 2.2}, {2.2, 3.3}, {3.3, 4.4}}, slices.Collect(result23))
 	})
 
 	t.Run("bool", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result24 := Sliding(values(true, false, true, false, true), 3, 2)
 		is.Equal([][]bool{{true, false, true}, {true, false, true}}, slices.Collect(result24))
 	})
 
 	t.Run("early termination", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result27 := Sliding(values(1, 2, 3, 4, 5, 6), 2, 1)
 		count := 0
 		for window := range result27 {
@@ -754,6 +763,7 @@ func TestSliding(t *testing.T) {
 
 	t.Run("pointers", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		x, y, z := 1, 2, 3
 		result32 := Sliding(values(&x, &y, &z), 2, 1)
 		collected32 := slices.Collect(result32)
@@ -767,8 +777,6 @@ func TestSliding(t *testing.T) {
 
 func TestPartitionBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	oddEven := func(x int) string {
 		if x < 0 {
 			return "negative"
@@ -791,6 +799,7 @@ func TestPartitionBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, PartitionBy(values(tt.input...), oddEven))
 		})
 	}
@@ -798,16 +807,16 @@ func TestPartitionBy(t *testing.T) {
 
 func TestFlatten(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := Flatten([]iter.Seq[int]{values(0, 1), values(2, 3, 4, 5)})
 		is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result1))
 	})
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Flatten([]myStrings{allStrings})
@@ -817,16 +826,16 @@ func TestFlatten(t *testing.T) {
 
 func TestConcat(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int sequences", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := Concat(values(0, 1), values(2, 3, 4, 5))
 		is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result1))
 	})
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Concat(allStrings, allStrings)
@@ -879,10 +888,9 @@ func TestInterleave(t *testing.T) {
 
 func TestShuffle(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("non-empty shuffle preserves elements", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result1 := Shuffle(values(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
 		slice1 := slices.Collect(result1)
 		is.NotEqual([]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, slice1)
@@ -891,12 +899,14 @@ func TestShuffle(t *testing.T) {
 
 	t.Run("empty input", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		result2 := Shuffle(values[int]())
 		is.Empty(slices.Collect(result2))
 	})
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Shuffle(allStrings)
@@ -906,8 +916,6 @@ func TestShuffle(t *testing.T) {
 
 func TestReverse(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []int
@@ -922,12 +930,14 @@ func TestReverse(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Reverse(values(tt.input...))))
 		})
 	}
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Reverse(allStrings)
@@ -937,8 +947,6 @@ func TestReverse(t *testing.T) {
 
 func TestFill(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []foo
@@ -953,6 +961,7 @@ func TestFill(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Fill(values(tt.input...), tt.fillWith)))
 		})
 	}
@@ -960,8 +969,6 @@ func TestFill(t *testing.T) {
 
 func TestRepeat(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		count    int
@@ -976,6 +983,7 @@ func TestRepeat(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Repeat(tt.count, tt.value)))
 		})
 	}
@@ -983,8 +991,6 @@ func TestRepeat(t *testing.T) {
 
 func TestRepeatBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	cb := func(i int) int {
 		return int(math.Pow(float64(i), 2))
 	}
@@ -1003,6 +1009,7 @@ func TestRepeatBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(RepeatBy(tt.count, cb)))
 		})
 	}
@@ -1225,8 +1232,6 @@ func TestFilterSeqToMapI(t *testing.T) {
 
 func TestKeyify(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []int
@@ -1241,6 +1246,7 @@ func TestKeyify(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Keyify(values(tt.input...)))
 		})
 	}
@@ -1248,8 +1254,6 @@ func TestKeyify(t *testing.T) {
 
 func TestDrop(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		n        int
@@ -1268,12 +1272,14 @@ func TestDrop(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Drop(values(0, 1, 2, 3, 4), tt.n)))
 		})
 	}
 
 	t.Run("panics on negative n", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.Drop: n must not be negative", func() {
 			Drop(values(0, 1, 2, 3, 4), -1)
 		})
@@ -1281,6 +1287,7 @@ func TestDrop(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Drop(allStrings, 2)
@@ -1290,8 +1297,6 @@ func TestDrop(t *testing.T) {
 
 func TestDropLast(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		n        int
@@ -1310,12 +1315,14 @@ func TestDropLast(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(DropLast(values(0, 1, 2, 3, 4), tt.n)))
 		})
 	}
 
 	t.Run("panics on negative n", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.DropLast: n must not be negative", func() {
 			DropLast(values(0, 1, 2, 3, 4), -1)
 		})
@@ -1323,6 +1330,7 @@ func TestDropLast(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := DropLast(allStrings, 2)
@@ -1332,8 +1340,6 @@ func TestDropLast(t *testing.T) {
 
 func TestDropWhile(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name      string
 		predicate func(int) bool
@@ -1348,12 +1354,14 @@ func TestDropWhile(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(DropWhile(values(0, 1, 2, 3, 4, 5, 6), tt.predicate)))
 		})
 	}
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := DropWhile(allStrings, func(t string) bool {
@@ -1365,8 +1373,6 @@ func TestDropWhile(t *testing.T) {
 
 func TestDropLastWhile(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name      string
 		predicate func(int) bool
@@ -1382,12 +1388,14 @@ func TestDropLastWhile(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(DropLastWhile(values(0, 1, 2, 3, 4, 5, 6), tt.predicate)))
 		})
 	}
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := DropLastWhile(allStrings, func(t string) bool {
@@ -1399,8 +1407,6 @@ func TestDropLastWhile(t *testing.T) {
 
 func TestTake(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		n        int
@@ -1418,12 +1424,14 @@ func TestTake(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Take(values(0, 1, 2, 3, 4), tt.n)))
 		})
 	}
 
 	t.Run("panics on negative n", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.Take: n must not be negative", func() {
 			Take(values(0, 1, 2, 3, 4), -1)
 		})
@@ -1431,6 +1439,7 @@ func TestTake(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Take(allStrings, 2)
@@ -1440,8 +1449,6 @@ func TestTake(t *testing.T) {
 
 func TestTakeWhile(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name      string
 		predicate func(int) bool
@@ -1457,12 +1464,14 @@ func TestTakeWhile(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(TakeWhile(values(0, 1, 2, 3, 4, 5, 6), tt.predicate)))
 		})
 	}
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := TakeWhile(allStrings, func(t string) bool {
@@ -1474,8 +1483,6 @@ func TestTakeWhile(t *testing.T) {
 
 func TestTakeFilter(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	isEven := func(item int) bool {
 		return item%2 == 0
 	}
@@ -1495,12 +1502,14 @@ func TestTakeFilter(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(TakeFilter(values(tt.input...), tt.n, isEven)))
 		})
 	}
 
 	t.Run("panics on negative n", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.TakeFilterI: n must not be negative", func() {
 			TakeFilter(values(1, 2, 3), -1, func(item int) bool { return true })
 		})
@@ -1508,6 +1517,7 @@ func TestTakeFilter(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar", "baz"))
 		nonempty := TakeFilter(allStrings, 2, func(item string) bool {
@@ -1519,8 +1529,6 @@ func TestTakeFilter(t *testing.T) {
 
 func TestTakeFilterI(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name      string
 		input     []int
@@ -1569,12 +1577,14 @@ func TestTakeFilterI(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(TakeFilterI(values(tt.input...), tt.n, tt.predicate)))
 		})
 	}
 
 	t.Run("panics on negative n", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.PanicsWithValue("it.TakeFilterI: n must not be negative", func() {
 			TakeFilterI(values(1, 2, 3), -1, func(item, _ int) bool { return true })
 		})
@@ -1583,8 +1593,6 @@ func TestTakeFilterI(t *testing.T) {
 
 func TestDropByIndex(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []int
@@ -1609,12 +1617,14 @@ func TestDropByIndex(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(DropByIndex(values(tt.input...), tt.indices...)))
 		})
 	}
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := DropByIndex(allStrings)
@@ -1624,10 +1634,9 @@ func TestDropByIndex(t *testing.T) {
 
 func TestReject(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int evens rejected", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r1 := Reject(values(1, 2, 3, 4), func(x int) bool {
 			return x%2 == 0
 		})
@@ -1636,6 +1645,7 @@ func TestReject(t *testing.T) {
 
 	t.Run("long names rejected", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r2 := Reject(values("Smith", "foo", "Domin", "bar", "Olivia"), func(x string) bool {
 			return len(x) > 3
 		})
@@ -1644,6 +1654,7 @@ func TestReject(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Reject(allStrings, func(x string) bool {
@@ -1655,10 +1666,9 @@ func TestReject(t *testing.T) {
 
 func TestRejectI(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int evens rejected", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r1 := RejectI(values(1, 2, 3, 4), func(x, _ int) bool {
 			return x%2 == 0
 		})
@@ -1667,6 +1677,7 @@ func TestRejectI(t *testing.T) {
 
 	t.Run("long names rejected", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r2 := RejectI(values("Smith", "foo", "Domin", "bar", "Olivia"), func(x string, _ int) bool {
 			return len(x) > 3
 		})
@@ -1675,6 +1686,7 @@ func TestRejectI(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := RejectI(allStrings, func(x string, _ int) bool {
@@ -1686,10 +1698,9 @@ func TestRejectI(t *testing.T) {
 
 func TestRejectMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int64 evens kept", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r1 := RejectMap(values[int64](1, 2, 3, 4), func(x int64) (string, bool) {
 			if x%2 == 0 {
 				return strconv.FormatInt(x, 10), false
@@ -1701,6 +1712,7 @@ func TestRejectMap(t *testing.T) {
 
 	t.Run("string suffix kept", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r2 := RejectMap(values("cpu", "gpu", "mouse", "keyboard"), func(x string) (string, bool) {
 			if strings.HasSuffix(x, "pu") {
 				return "xpu", false
@@ -1713,10 +1725,9 @@ func TestRejectMap(t *testing.T) {
 
 func TestRejectMapI(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("int64 evens kept", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r1 := RejectMapI(values[int64](1, 2, 3, 4), func(x int64, _ int) (string, bool) {
 			if x%2 == 0 {
 				return strconv.FormatInt(x, 10), false
@@ -1728,6 +1739,7 @@ func TestRejectMapI(t *testing.T) {
 
 	t.Run("string suffix kept", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r2 := RejectMapI(values("cpu", "gpu", "mouse", "keyboard"), func(x string, _ int) (string, bool) {
 			if strings.HasSuffix(x, "pu") {
 				return "xpu", false
@@ -1740,8 +1752,6 @@ func TestRejectMapI(t *testing.T) {
 
 func TestCount(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []int
@@ -1757,6 +1767,7 @@ func TestCount(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Count(values(tt.input...), tt.needle))
 		})
 	}
@@ -1764,8 +1775,6 @@ func TestCount(t *testing.T) {
 
 func TestCountBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name      string
 		input     []int
@@ -1781,6 +1790,7 @@ func TestCountBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, CountBy(values(tt.input...), tt.predicate))
 		})
 	}
@@ -1788,10 +1798,9 @@ func TestCountBy(t *testing.T) {
 
 func TestCountValues(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("ints", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.Empty(CountValues(values[int]()))
 		is.Equal(map[int]int{1: 1, 2: 1}, CountValues(values(1, 2)))
 		is.Equal(map[int]int{1: 1, 2: 2}, CountValues(values(1, 2, 2)))
@@ -1799,6 +1808,7 @@ func TestCountValues(t *testing.T) {
 
 	t.Run("strings", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.Equal(map[string]int{"": 1, "foo": 1, "bar": 1}, CountValues(values("foo", "bar", "")))
 		is.Equal(map[string]int{"foo": 1, "bar": 2}, CountValues(values("foo", "bar", "bar")))
 	})
@@ -1806,8 +1816,6 @@ func TestCountValues(t *testing.T) {
 
 func TestCountValuesBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	oddEven := func(v int) bool {
 		return v%2 == 0
 	}
@@ -1817,6 +1825,7 @@ func TestCountValuesBy(t *testing.T) {
 
 	t.Run("ints by oddEven", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.Empty(CountValuesBy(values[int](), oddEven))
 		is.Equal(map[bool]int{true: 1, false: 1}, CountValuesBy(values(1, 2), oddEven))
 		is.Equal(map[bool]int{true: 2, false: 1}, CountValuesBy(values(1, 2, 2), oddEven))
@@ -1824,6 +1833,7 @@ func TestCountValuesBy(t *testing.T) {
 
 	t.Run("strings by length", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.Equal(map[int]int{0: 1, 3: 2}, CountValuesBy(values("foo", "bar", ""), length))
 		is.Equal(map[int]int{3: 3}, CountValuesBy(values("foo", "bar", "bar"), length))
 	})
@@ -1831,8 +1841,6 @@ func TestCountValuesBy(t *testing.T) {
 
 func TestSubset(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		offset   int
@@ -1853,12 +1861,14 @@ func TestSubset(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Subset(values(0, 1, 2, 3, 4), tt.offset, tt.length)))
 		})
 	}
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Subset(allStrings, 0, 2)
@@ -1868,8 +1878,6 @@ func TestSubset(t *testing.T) {
 
 func TestSlice(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		start    int
@@ -1897,12 +1905,14 @@ func TestSlice(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Slice(values(0, 1, 2, 3, 4), tt.start, tt.end)))
 		})
 	}
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Slice(allStrings, 0, 2)
@@ -1912,8 +1922,6 @@ func TestSlice(t *testing.T) {
 
 func TestReplace(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		old      int
@@ -1937,6 +1945,7 @@ func TestReplace(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			in := values(0, 1, 0, 1, 2, 3, 0)
 			is.Equal(tt.expected, slices.Collect(Replace(in, tt.old, tt.new, tt.n)))
 		})
@@ -1944,6 +1953,7 @@ func TestReplace(t *testing.T) {
 
 	t.Run("repeated iteration yields consistent results", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		in := values(0, 1, 0, 1, 2, 3, 0)
 		out1 := Replace(in, 0, 42, 2)
 		is.Equal([]int{42, 1, 42, 1, 2, 3, 0}, slices.Collect(out1))
@@ -1952,6 +1962,7 @@ func TestReplace(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Replace(allStrings, "0", "2", 1)
@@ -1961,8 +1972,6 @@ func TestReplace(t *testing.T) {
 
 func TestReplaceAll(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		old      int
@@ -1977,6 +1986,7 @@ func TestReplaceAll(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			in := values(0, 1, 0, 1, 2, 3, 0)
 			is.Equal(tt.expected, slices.Collect(ReplaceAll(in, tt.old, tt.new)))
 		})
@@ -1984,6 +1994,7 @@ func TestReplaceAll(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := ReplaceAll(allStrings, "0", "2")
@@ -1993,28 +2004,30 @@ func TestReplaceAll(t *testing.T) {
 
 func TestCompact(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("ints", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r1 := Compact(values(2, 0, 4, 0))
 		is.Equal([]int{2, 4}, slices.Collect(r1))
 	})
 
 	t.Run("strings", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r2 := Compact(values("", "foo", "", "bar", ""))
 		is.Equal([]string{"foo", "bar"}, slices.Collect(r2))
 	})
 
 	t.Run("bools", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		r3 := Compact(values(true, false, true, false))
 		is.Equal([]bool{true, true}, slices.Collect(r3))
 	})
 
 	t.Run("structs", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type foo struct {
 			bar int
 			baz string
@@ -2034,6 +2047,7 @@ func TestCompact(t *testing.T) {
 
 	t.Run("pointers to structs", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type foo struct {
 			bar int
 			baz string
@@ -2051,6 +2065,7 @@ func TestCompact(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Compact(allStrings)
@@ -2060,16 +2075,16 @@ func TestCompact(t *testing.T) {
 
 func TestIsSorted(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("ints", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.True(IsSorted(values(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)))
 		is.False(IsSorted(values(0, 1, 4, 3, 2, 5, 6, 7, 8, 9, 10)))
 	})
 
 	t.Run("strings", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.True(IsSorted(values("a", "b", "c", "d", "e", "f", "g", "h", "i", "j")))
 		is.False(IsSorted(values("a", "b", "d", "c", "e", "f", "g", "h", "i", "j")))
 	})
@@ -2077,8 +2092,6 @@ func TestIsSorted(t *testing.T) {
 
 func TestIsSortedBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name      string
 		input     []string
@@ -2097,6 +2110,7 @@ func TestIsSortedBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, IsSortedBy(values(tt.input...), tt.transform))
 		})
 	}
@@ -2104,10 +2118,9 @@ func TestIsSortedBy(t *testing.T) {
 
 func TestSplice(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	t.Run("normal case", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		sample := values("a", "b", "c", "d", "e", "f", "g")
 		results := slices.Collect(Splice(sample, 1, "1", "2"))
 		is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(sample))
@@ -2116,6 +2129,7 @@ func TestSplice(t *testing.T) {
 
 	t.Run("positive overflow", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		sample := values("a", "b", "c", "d", "e", "f", "g")
 		results := slices.Collect(Splice(sample, 42, "1", "2"))
 		is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(sample))
@@ -2124,6 +2138,7 @@ func TestSplice(t *testing.T) {
 
 	t.Run("other cases", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		is.Equal([]string{"1", "2"}, slices.Collect(Splice(values[string](), 0, "1", "2")))
 		is.Equal([]string{"1", "2"}, slices.Collect(Splice(values[string](), 1, "1", "2")))
 		is.Equal([]string{"1", "2", "0"}, slices.Collect(Splice(values("0"), 0, "1", "2")))
@@ -2132,6 +2147,7 @@ func TestSplice(t *testing.T) {
 
 	t.Run("type preserved", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		type myStrings iter.Seq[string]
 		allStrings := myStrings(values("", "foo", "bar"))
 		nonempty := Splice(allStrings, 1, "1", "2")
@@ -2141,8 +2157,6 @@ func TestSplice(t *testing.T) {
 
 func TestCutPrefix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name          string
 		input         []string
@@ -2163,6 +2177,7 @@ func TestCutPrefix(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			actual, result := CutPrefix(values(tt.input...), tt.prefix)
 			is.Equal(tt.expectedFound, result)
 			is.Equal(tt.expectedAfter, slices.Collect(actual))
@@ -2172,8 +2187,6 @@ func TestCutPrefix(t *testing.T) {
 
 func TestCutSuffix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name          string
 		suffix        []string
@@ -2191,6 +2204,7 @@ func TestCutSuffix(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			actual, result := CutSuffix(values("a", "a", "b"), tt.suffix)
 			is.Equal(tt.expectedFound, result)
 			is.Equal(tt.expectedAfter, slices.Collect(actual))
@@ -2200,8 +2214,6 @@ func TestCutSuffix(t *testing.T) {
 
 func TestTrim(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		cutset   []string
@@ -2218,6 +2230,7 @@ func TestTrim(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Trim(values("a", "b", "c", "d", "e", "f", "g"), tt.cutset...)))
 		})
 	}
@@ -2225,8 +2238,6 @@ func TestTrim(t *testing.T) {
 
 func TestTrimFirst(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []string
@@ -2245,6 +2256,7 @@ func TestTrimFirst(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(TrimFirst(values(tt.input...), tt.cutset...)))
 		})
 	}
@@ -2252,8 +2264,6 @@ func TestTrimFirst(t *testing.T) {
 
 func TestTrimPrefix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []string
@@ -2272,6 +2282,7 @@ func TestTrimPrefix(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(TrimPrefix(values(tt.input...), tt.prefix)))
 		})
 	}
@@ -2279,8 +2290,6 @@ func TestTrimPrefix(t *testing.T) {
 
 func TestTrimLast(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []string
@@ -2298,6 +2307,7 @@ func TestTrimLast(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(TrimLast(values(tt.input...), tt.cutset...)))
 		})
 	}
@@ -2305,8 +2315,6 @@ func TestTrimLast(t *testing.T) {
 
 func TestTrimSuffix(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []string
@@ -2326,6 +2334,7 @@ func TestTrimSuffix(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(TrimSuffix(values(tt.input...), tt.suffix)))
 		})
 	}
@@ -2333,8 +2342,6 @@ func TestTrimSuffix(t *testing.T) {
 
 func TestBuffer(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		from     int
@@ -2351,12 +2358,14 @@ func TestBuffer(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(Buffer(RangeFrom(tt.from, tt.to), tt.size)))
 		})
 	}
 
 	t.Run("early termination", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 		batches4 := slices.Collect(Take(Buffer(RangeFrom(1, 6), 2), 1))
 		is.Equal([][]int{{1, 2}}, batches4)
 	})
@@ -2364,8 +2373,6 @@ func TestBuffer(t *testing.T) {
 
 func TestSeqToSeq2(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		input    []string
@@ -2379,6 +2386,7 @@ func TestSeqToSeq2(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, maps.Collect(SeqToSeq2(values(tt.input...))))
 		})
 	}

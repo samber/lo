@@ -45,7 +45,6 @@ func TestFromSeqPtrOr(t *testing.T) {
 
 func TestToAnySeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -60,6 +59,7 @@ func TestToAnySeq(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, slices.Collect(ToAnySeq(tt.input)))
 		})
 	}
@@ -67,7 +67,6 @@ func TestToAnySeq(t *testing.T) {
 
 func TestFromAnySeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name        string
@@ -83,6 +82,7 @@ func TestFromAnySeq(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			out := FromAnySeq[string](tt.input)
 
@@ -104,7 +104,6 @@ func TestEmpty(t *testing.T) {
 
 func TestIsEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -119,6 +118,7 @@ func TestIsEmpty(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, IsEmpty(tt.input))
 		})
 	}
@@ -126,7 +126,6 @@ func TestIsEmpty(t *testing.T) {
 
 func TestIsNotEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -141,6 +140,7 @@ func TestIsNotEmpty(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, IsNotEmpty(tt.input))
 		})
 	}
@@ -148,7 +148,6 @@ func TestIsNotEmpty(t *testing.T) {
 
 func TestCoalesceSeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	seq0 := values[int]()
 	seq1 := values(1)
@@ -173,6 +172,7 @@ func TestCoalesceSeq(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result, ok := CoalesceSeq(tt.args...)
 
@@ -190,7 +190,6 @@ func TestCoalesceSeq(t *testing.T) {
 
 func TestCoalesceSeqOrEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	seq0 := values[int]()
 	seq1 := values(1)
@@ -215,6 +214,7 @@ func TestCoalesceSeqOrEmpty(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := CoalesceSeqOrEmpty(tt.args...)
 

@@ -13,7 +13,6 @@ import (
 
 func TestContains(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -29,6 +28,7 @@ func TestContains(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Contains(tt.seq, tt.target))
 		})
 	}
@@ -36,7 +36,6 @@ func TestContains(t *testing.T) {
 
 func TestContainsBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type a struct {
 		A int
@@ -61,6 +60,7 @@ func TestContainsBy(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				is.Equal(tt.expected, ContainsBy(a1, tt.predicate))
 			})
 		}
@@ -84,6 +84,7 @@ func TestContainsBy(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				is.Equal(tt.expected, ContainsBy(a2, tt.predicate))
 			})
 		}
@@ -92,7 +93,6 @@ func TestContainsBy(t *testing.T) {
 
 func TestEvery(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -109,6 +109,7 @@ func TestEvery(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Every(values(0, 1, 2, 3, 4, 5), tt.args...))
 		})
 	}
@@ -116,7 +117,6 @@ func TestEvery(t *testing.T) {
 
 func TestEveryBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -134,6 +134,7 @@ func TestEveryBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, EveryBy(tt.seq, tt.predicate))
 		})
 	}
@@ -141,7 +142,6 @@ func TestEveryBy(t *testing.T) {
 
 func TestSome(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -158,6 +158,7 @@ func TestSome(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, Some(values(0, 1, 2, 3, 4, 5), tt.args...))
 		})
 	}
@@ -165,7 +166,6 @@ func TestSome(t *testing.T) {
 
 func TestSomeBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -183,6 +183,7 @@ func TestSomeBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, SomeBy(tt.seq, tt.predicate))
 		})
 	}
@@ -190,7 +191,6 @@ func TestSomeBy(t *testing.T) {
 
 func TestNone(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -207,6 +207,7 @@ func TestNone(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, None(values(0, 1, 2, 3, 4, 5), tt.args...))
 		})
 	}
@@ -214,7 +215,6 @@ func TestNone(t *testing.T) {
 
 func TestNoneBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -232,6 +232,7 @@ func TestNoneBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, NoneBy(tt.seq, tt.predicate))
 		})
 	}
@@ -239,7 +240,6 @@ func TestNoneBy(t *testing.T) {
 
 func TestIntersect(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -262,6 +262,7 @@ func TestIntersect(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := slices.Collect(Intersect(tt.inputs...))
 			if tt.expected == nil {
 				is.Empty(result)
@@ -284,7 +285,6 @@ func TestIntersect(t *testing.T) {
 
 func TestIntersectBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	transform := strconv.Itoa
 
@@ -309,6 +309,7 @@ func TestIntersectBy(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := slices.Collect(IntersectBy(transform, tt.inputs...))
 			if tt.expected == nil {
 				is.Empty(result)
@@ -331,7 +332,6 @@ func TestIntersectBy(t *testing.T) {
 
 func TestUnion(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -355,6 +355,7 @@ func TestUnion(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := slices.Collect(Union(tt.inputs...))
 			if tt.expected == nil {
 				is.Empty(result)
@@ -377,7 +378,6 @@ func TestUnion(t *testing.T) {
 
 func TestWithout(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -396,6 +396,7 @@ func TestWithout(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := slices.Collect(Without(tt.seq, tt.exclude...))
 			if tt.expected == nil {
 				is.Empty(result)
@@ -418,7 +419,6 @@ func TestWithout(t *testing.T) {
 
 func TestWithoutBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	type User struct {
 		Name string
@@ -447,6 +447,7 @@ func TestWithoutBy(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				result := slices.Collect(WithoutBy(tt.seq, byName, tt.exclude...))
 				if tt.expected == nil {
 					is.Empty(result)
@@ -459,6 +460,7 @@ func TestWithoutBy(t *testing.T) {
 
 	t.Run("int key", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		result := WithoutBy(values[User](), func(item User) int { return item.Age }, 1, 2, 3)
 		is.Empty(slices.Collect(result))
@@ -477,7 +479,6 @@ func TestWithoutBy(t *testing.T) {
 
 func TestWithoutNth(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -495,6 +496,7 @@ func TestWithoutNth(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			result := slices.Collect(WithoutNth(tt.seq, tt.nths...))
 			if tt.expected == nil {
 				is.Empty(result)
@@ -517,7 +519,6 @@ func TestWithoutNth(t *testing.T) {
 
 func TestElementsMatch(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -539,6 +540,7 @@ func TestElementsMatch(t *testing.T) {
 		tt := tt //nolint:modernize
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, ElementsMatch(tt.a, tt.b))
 		})
 	}
