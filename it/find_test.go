@@ -410,6 +410,7 @@ func TestMin(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				result := Min(values(tt.input...))
 				is.Equal(tt.expected, result)
 			})
@@ -447,6 +448,7 @@ func TestMinIndex(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				result, index := MinIndex(values(tt.input...))
 				is.Equal(tt.expected, result)
 				is.Equal(tt.expectedIndex, index)
@@ -602,6 +604,7 @@ func TestMax(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				result := Max(values(tt.input...))
 				is.Equal(tt.expected, result)
 			})
@@ -639,6 +642,7 @@ func TestMaxIndex(t *testing.T) {
 			tt := tt //nolint:modernize
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				result, index := MaxIndex(values(tt.input...))
 				is.Equal(tt.expected, result)
 				is.Equal(tt.expectedIndex, index)
