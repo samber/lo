@@ -16,7 +16,6 @@ func TestRandomString(t *testing.T) {
 
 	t.Run("length and charset", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name    string
@@ -32,6 +31,7 @@ func TestRandomString(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				str := RandomString(tt.size, tt.charset)
 				is.Equal(tt.size, RuneLength(str))

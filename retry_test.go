@@ -11,7 +11,6 @@ import (
 
 func TestAttempt(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	err := errors.New("failed")
 
@@ -76,6 +75,7 @@ func TestAttempt(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			iter, gotErr := Attempt(tt.maxIteration, tt.fn)
 			is.Equal(tt.expectedIter, iter)
@@ -90,7 +90,6 @@ func TestAttempt(t *testing.T) {
 
 func TestAttemptWithDelay(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 
 	err := errors.New("failed")
 
@@ -165,6 +164,7 @@ func TestAttemptWithDelay(t *testing.T) { //nolint:paralleltest
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			// t.Parallel()
+			is := assert.New(t)
 
 			iter, dur, gotErr := AttemptWithDelay(tt.maxIteration, 10*time.Millisecond, tt.fn)
 			is.Equal(tt.expectedIter, iter)
@@ -180,7 +180,6 @@ func TestAttemptWithDelay(t *testing.T) { //nolint:paralleltest
 
 func TestAttemptWhile(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	err := errors.New("failed")
 
@@ -283,6 +282,7 @@ func TestAttemptWhile(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			iter, gotErr := AttemptWhile(tt.maxIteration, tt.fn)
 			is.Equal(tt.expectedIter, iter)
@@ -297,7 +297,6 @@ func TestAttemptWhile(t *testing.T) {
 
 func TestAttemptWhileWithDelay(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 
 	err := errors.New("failed")
 
@@ -416,6 +415,7 @@ func TestAttemptWhileWithDelay(t *testing.T) { //nolint:paralleltest
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			// t.Parallel()
+			is := assert.New(t)
 
 			iter, dur, gotErr := AttemptWhileWithDelay(tt.maxIteration, 10*time.Millisecond, tt.fn)
 			is.Equal(tt.expectedIter, iter)
@@ -493,7 +493,6 @@ func TestDebounce(t *testing.T) { //nolint:paralleltest
 
 func TestDebounceBy(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 
 	mu := sync.Mutex{}
 	output := map[int]int{0: 0, 1: 0, 2: 0}
@@ -504,6 +503,7 @@ func TestDebounceBy(t *testing.T) { //nolint:paralleltest
 
 	t.Run("repeated bursts each trigger a call", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		f1 := func(key, count int) {
 			mu.Lock()
@@ -536,6 +536,7 @@ func TestDebounceBy(t *testing.T) { //nolint:paralleltest
 
 	t.Run("only last invoke within the window is worked", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		f2 := func(key, count int) {
 			mu.Lock()
@@ -568,6 +569,7 @@ func TestDebounceBy(t *testing.T) { //nolint:paralleltest
 
 	t.Run("canceled debounce stops invoking", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		f3 := func(key, count int) {
 			mu.Lock()
@@ -606,10 +608,10 @@ func TestDebounceBy(t *testing.T) { //nolint:paralleltest
 
 func TestTransaction(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	t.Run("no error", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		transaction := NewTransaction[int]().
 			Then(
@@ -636,6 +638,7 @@ func TestTransaction(t *testing.T) {
 
 	t.Run("with error", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		transaction := NewTransaction[int]().
 			Then(
@@ -670,6 +673,7 @@ func TestTransaction(t *testing.T) {
 
 	t.Run("with error and update value", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		transaction := NewTransaction[int]().
 			Then(
@@ -705,7 +709,6 @@ func TestTransaction(t *testing.T) {
 
 func TestNewThrottle(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 	callCount := 0
 	f1 := func() {
 		callCount++
@@ -718,6 +721,7 @@ func TestNewThrottle(t *testing.T) { //nolint:paralleltest
 
 	t.Run("only the first call within the window is worked", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		is.Zero(callCount)
 		for j := 0; j < 100; j++ {
@@ -728,6 +732,7 @@ func TestNewThrottle(t *testing.T) { //nolint:paralleltest
 
 	t.Run("a new window allows another call", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		time.Sleep(150 * time.Millisecond)
 
@@ -740,6 +745,7 @@ func TestNewThrottle(t *testing.T) { //nolint:paralleltest
 
 	t.Run("reset allows an immediate call", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		reset()
 		th()
@@ -749,7 +755,6 @@ func TestNewThrottle(t *testing.T) { //nolint:paralleltest
 
 func TestNewThrottleWithCount(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 	callCount := 0
 	f1 := func() {
 		callCount++
@@ -762,6 +767,7 @@ func TestNewThrottleWithCount(t *testing.T) { //nolint:paralleltest
 
 	t.Run("does not throttle for initial count number", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		for i := 0; i < 20; i++ {
 			th()
@@ -771,6 +777,7 @@ func TestNewThrottleWithCount(t *testing.T) { //nolint:paralleltest
 
 	t.Run("a new window allows another burst up to count", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		time.Sleep(150 * time.Millisecond)
 
@@ -783,6 +790,7 @@ func TestNewThrottleWithCount(t *testing.T) { //nolint:paralleltest
 
 	t.Run("reset allows an immediate burst up to count", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		reset()
 		for i := 0; i < 20; i++ {
@@ -795,7 +803,6 @@ func TestNewThrottleWithCount(t *testing.T) { //nolint:paralleltest
 
 func TestNewThrottleBy(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 	callCountA := 0
 	callCountB := 0
 	f1 := func(key string) {
@@ -814,6 +821,7 @@ func TestNewThrottleBy(t *testing.T) { //nolint:paralleltest
 
 	t.Run("only the first call per key within the window is worked", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		is.Zero(callCountA)
 		is.Zero(callCountB)
@@ -827,6 +835,7 @@ func TestNewThrottleBy(t *testing.T) { //nolint:paralleltest
 
 	t.Run("a new window allows another call per key", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		time.Sleep(150 * time.Millisecond)
 
@@ -841,6 +850,7 @@ func TestNewThrottleBy(t *testing.T) { //nolint:paralleltest
 
 	t.Run("reset allows an immediate call for the invoked key only", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		reset()
 		th("a")
@@ -851,7 +861,6 @@ func TestNewThrottleBy(t *testing.T) { //nolint:paralleltest
 
 func TestNewThrottleByWithCount(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
-	is := assert.New(t)
 
 	callCountA := 0
 	callCountB := 0
@@ -871,6 +880,7 @@ func TestNewThrottleByWithCount(t *testing.T) { //nolint:paralleltest
 
 	t.Run("does not throttle for initial count number per key", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		for i := 0; i < 20; i++ {
 			th("a")
@@ -882,6 +892,7 @@ func TestNewThrottleByWithCount(t *testing.T) { //nolint:paralleltest
 
 	t.Run("a new window allows another burst up to count per key", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		time.Sleep(150 * time.Millisecond)
 
@@ -896,6 +907,7 @@ func TestNewThrottleByWithCount(t *testing.T) { //nolint:paralleltest
 
 	t.Run("reset allows an immediate burst up to count for the invoked key only", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		reset()
 		for i := 0; i < 20; i++ {

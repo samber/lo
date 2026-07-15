@@ -8,8 +8,6 @@ import (
 
 func TestTernary(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		cond     bool
@@ -23,6 +21,7 @@ func TestTernary(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Ternary(tt.cond, "a", "b")
 			is.Equal(tt.expected, result)
@@ -32,8 +31,6 @@ func TestTernary(t *testing.T) {
 
 func TestTernaryF(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		cond     bool
@@ -47,6 +44,7 @@ func TestTernaryF(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := TernaryF(tt.cond, func() string { return "a" }, func() string { return "b" })
 			is.Equal(tt.expected, result)
@@ -56,8 +54,6 @@ func TestTernaryF(t *testing.T) {
 
 func TestIfElse(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		cond1    bool
@@ -74,6 +70,7 @@ func TestIfElse(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := If(tt.cond1, 1).ElseIf(tt.cond2, 2).Else(3)
 			is.Equal(tt.expected, result)
@@ -83,8 +80,6 @@ func TestIfElse(t *testing.T) {
 
 func TestIfFElseF(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		cond1    bool
@@ -101,6 +96,7 @@ func TestIfFElseF(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := IfF(tt.cond1, func() int { return 1 }).ElseIfF(tt.cond2, func() int { return 2 }).ElseF(func() int { return 3 })
 			is.Equal(tt.expected, result)
@@ -110,8 +106,6 @@ func TestIfFElseF(t *testing.T) {
 
 func TestSwitchCase(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		case1    int
@@ -128,6 +122,7 @@ func TestSwitchCase(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Switch[int, int](42).Case(tt.case1, 1).Case(tt.case2, 2).Default(3)
 			is.Equal(tt.expected, result)
@@ -137,8 +132,6 @@ func TestSwitchCase(t *testing.T) {
 
 func TestSwitchCaseF(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	tests := []struct {
 		name     string
 		case1    int
@@ -155,6 +148,7 @@ func TestSwitchCaseF(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			result := Switch[int, int](42).CaseF(tt.case1, func() int { return 1 }).CaseF(tt.case2, func() int { return 2 }).DefaultF(func() int { return 3 })
 			is.Equal(tt.expected, result)

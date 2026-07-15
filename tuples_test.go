@@ -665,7 +665,6 @@ func TestUnzipBy(t *testing.T) {
 
 func TestZipByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	// Test ZipByErr2
 	t.Run("ZipByErr2", func(t *testing.T) {
@@ -751,6 +750,7 @@ func TestZipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(a string, b int) (string, error) {
@@ -848,6 +848,7 @@ func TestZipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(a string, b int, c bool) (string, error) {
@@ -874,7 +875,6 @@ func TestZipByErr(t *testing.T) {
 	// Test ZipByErr4
 	t.Run("ZipByErr4", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name                  string
@@ -922,6 +922,7 @@ func TestZipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(a string, b int, c bool, d float32) (string, error) {
@@ -1200,7 +1201,6 @@ func TestCrossJoinBy(t *testing.T) {
 
 func TestCrossJoinByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	// Test CrossJoinByErr2
 	t.Run("CrossJoinByErr2", func(t *testing.T) {
@@ -1257,6 +1257,7 @@ func TestCrossJoinByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				transform := func(a string, b int) (string, error) {
@@ -1327,6 +1328,7 @@ func TestCrossJoinByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				transform := func(a string, b int, c bool) (string, error) {
@@ -1497,7 +1499,6 @@ func TestCrossJoinByErr(t *testing.T) {
 
 func TestUnzipByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	// Test UnzipByErr2
 	t.Run("UnzipByErr2", func(t *testing.T) {
@@ -1568,6 +1569,7 @@ func TestUnzipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(str string) (string, int, error) {
@@ -1666,6 +1668,7 @@ func TestUnzipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(str string) (string, int, bool, error) {
@@ -1738,6 +1741,7 @@ func TestUnzipByErr(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				callbackCount := 0
 				iteratee := func(str string) (string, int, bool, float32, error) {
@@ -1760,6 +1764,7 @@ func TestUnzipByErr(t *testing.T) {
 	// Test UnzipByErr5
 	t.Run("UnzipByErr5", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		callbackCount := 0
 		_, _, _, _, _, err := UnzipByErr5([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, error) {
@@ -1774,6 +1779,7 @@ func TestUnzipByErr(t *testing.T) {
 	// Test UnzipByErr6
 	t.Run("UnzipByErr6", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		callbackCount := 0
 		_, _, _, _, _, _, err := UnzipByErr6([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, error) {
@@ -1788,6 +1794,7 @@ func TestUnzipByErr(t *testing.T) {
 	// Test UnzipByErr7
 	t.Run("UnzipByErr7", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		callbackCount := 0
 		_, _, _, _, _, _, _, err := UnzipByErr7([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, error) {
@@ -1802,6 +1809,7 @@ func TestUnzipByErr(t *testing.T) {
 	// Test UnzipByErr8
 	t.Run("UnzipByErr8", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		callbackCount := 0
 		_, _, _, _, _, _, _, _, err := UnzipByErr8([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, error) {
@@ -1816,6 +1824,7 @@ func TestUnzipByErr(t *testing.T) {
 	// Test UnzipByErr9
 	t.Run("UnzipByErr9", func(t *testing.T) {
 		t.Parallel()
+		is := assert.New(t)
 
 		callbackCount := 0
 		_, _, _, _, _, _, _, _, _, err := UnzipByErr9([]string{"hello", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, int64, error) {

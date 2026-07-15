@@ -40,7 +40,6 @@ func TestRangeFrom(t *testing.T) {
 
 	t.Run("int", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name      string
@@ -57,6 +56,7 @@ func TestRangeFrom(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				result := RangeFrom(tt.start, tt.elemCount)
 				if tt.expected == nil {
@@ -70,7 +70,6 @@ func TestRangeFrom(t *testing.T) {
 
 	t.Run("float64", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name      string
@@ -88,6 +87,7 @@ func TestRangeFrom(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				is.Equal(tt.expected, RangeFrom(tt.start, tt.elemCount))
 			})
 		}
@@ -99,7 +99,6 @@ func TestRangeWithSteps(t *testing.T) {
 
 	t.Run("int", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -118,6 +117,7 @@ func TestRangeWithSteps(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 
 				result := RangeWithSteps(tt.start, tt.end, tt.step)
 				if tt.expected == nil {
@@ -131,7 +131,6 @@ func TestRangeWithSteps(t *testing.T) {
 
 	t.Run("float64", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -150,6 +149,7 @@ func TestRangeWithSteps(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				is.Equal(tt.expected, RangeWithSteps(tt.start, tt.end, tt.step))
 			})
 		}
@@ -367,7 +367,6 @@ func TestProduct(t *testing.T) {
 
 	t.Run("int32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -383,6 +382,7 @@ func TestProduct(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				is.Equal(tt.expected, Product(tt.input))
 			})
 		}
@@ -390,7 +390,6 @@ func TestProduct(t *testing.T) {
 
 	t.Run("uint32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -406,6 +405,7 @@ func TestProduct(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				is.Equal(tt.expected, Product(tt.input))
 			})
 		}
@@ -428,7 +428,6 @@ func TestProductBy(t *testing.T) {
 
 	t.Run("int32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -444,6 +443,7 @@ func TestProductBy(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				result := ProductBy(tt.input, func(n int32) int32 { return n })
 				is.Equal(tt.expected, result)
 			})
@@ -452,7 +452,6 @@ func TestProductBy(t *testing.T) {
 
 	t.Run("uint32", func(t *testing.T) {
 		t.Parallel()
-		is := assert.New(t)
 
 		tests := []struct {
 			name     string
@@ -468,6 +467,7 @@ func TestProductBy(t *testing.T) {
 			tt := tt
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
+				is := assert.New(t)
 				result := ProductBy(tt.input, func(n uint32) uint32 { return n })
 				is.Equal(tt.expected, result)
 			})
@@ -484,7 +484,6 @@ func TestProductBy(t *testing.T) {
 //nolint:errcheck,forcetypeassert
 func TestProductByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testErr := assert.AnError
 
@@ -540,6 +539,7 @@ func TestProductByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			switch input := tt.input.(type) {
 			case []float32:
@@ -597,6 +597,7 @@ func TestProductByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			callbackCount := 0
 			result, err := ProductByErr(tt.input, func(n int32) (int32, error) {
@@ -668,7 +669,6 @@ func TestMeanBy(t *testing.T) {
 //nolint:errcheck,forcetypeassert
 func TestMeanByErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	testErr := assert.AnError
 
@@ -709,6 +709,7 @@ func TestMeanByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			switch input := tt.input.(type) {
 			case []float32:
@@ -758,6 +759,7 @@ func TestMeanByErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			callbackCount := 0
 			_, err := MeanByErr(tt.input, func(n int32) (int32, error) {

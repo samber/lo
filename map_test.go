@@ -1436,7 +1436,6 @@ func TestFilterMapToSlice(t *testing.T) {
 
 func TestFilterMapToSliceErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name     string
@@ -1502,6 +1501,7 @@ func TestFilterMapToSliceErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			got, err := FilterMapToSliceErr(tt.input, tt.iteratee)
 
@@ -1567,7 +1567,6 @@ func TestFilterValues(t *testing.T) {
 
 func TestFilterKeysErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -1625,6 +1624,7 @@ func TestFilterKeysErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			got, err := FilterKeysErr(tt.input, tt.predicate)
 
@@ -1642,7 +1642,6 @@ func TestFilterKeysErr(t *testing.T) {
 
 func TestFilterValuesErr(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	tests := []struct {
 		name      string
@@ -1700,6 +1699,7 @@ func TestFilterValuesErr(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			got, err := FilterValuesErr(tt.input, tt.predicate)
 

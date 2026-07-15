@@ -9,8 +9,6 @@ import (
 
 func TestPartial(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	add := func(x float64, y int) string {
 		return strconv.Itoa(int(x) + y)
 	}
@@ -29,6 +27,7 @@ func TestPartial(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, f(tt.y))
 		})
@@ -37,8 +36,6 @@ func TestPartial(t *testing.T) {
 
 func TestPartial1(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	add := func(x float64, y int) string {
 		return strconv.Itoa(int(x) + y)
 	}
@@ -57,6 +54,7 @@ func TestPartial1(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, f(tt.y))
 		})
@@ -65,8 +63,6 @@ func TestPartial1(t *testing.T) {
 
 func TestPartial2(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	add := func(x float64, y, z int) string {
 		return strconv.Itoa(int(x) + y + z)
 	}
@@ -86,6 +82,7 @@ func TestPartial2(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, f(tt.y, tt.z))
 		})
@@ -94,8 +91,6 @@ func TestPartial2(t *testing.T) {
 
 func TestPartial3(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	add := func(x float64, y, z int, a float32) string {
 		return strconv.Itoa(int(x) + y + z + int(a))
 	}
@@ -116,6 +111,7 @@ func TestPartial3(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, f(tt.y, tt.z, tt.a))
 		})
@@ -124,8 +120,6 @@ func TestPartial3(t *testing.T) {
 
 func TestPartial4(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	add := func(x float64, y, z int, a float32, b int32) string {
 		return strconv.Itoa(int(x) + y + z + int(a) + int(b))
 	}
@@ -147,6 +141,7 @@ func TestPartial4(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, f(tt.y, tt.z, tt.a, tt.b))
 		})
@@ -155,8 +150,6 @@ func TestPartial4(t *testing.T) {
 
 func TestPartial5(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
-
 	add := func(x float64, y, z int, a float32, b int32, c int) string {
 		return strconv.Itoa(int(x) + y + z + int(a) + int(b) + c)
 	}
@@ -179,6 +172,7 @@ func TestPartial5(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 
 			is.Equal(tt.expected, f(tt.y, tt.z, tt.a, tt.b, tt.c))
 		})

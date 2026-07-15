@@ -99,7 +99,6 @@ func TestChannelDispatcher(t *testing.T) {
 func TestDispatchingStrategyRoundRobin(t *testing.T) {
 	t.Parallel()
 	testWithTimeout(t, 100*time.Millisecond)
-	is := assert.New(t)
 
 	children := createChannels[int](3, 2)
 	rochildren := channelsToReadOnly(children)
@@ -120,6 +119,7 @@ func TestDispatchingStrategyRoundRobin(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+			is := assert.New(t)
 			is.Equal(tt.expected, DispatchingStrategyRoundRobin(42, tt.index, rochildren))
 		})
 	}
@@ -294,10 +294,10 @@ func TestBuffer(t *testing.T) {
 func TestBufferWithContext(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
 	testWithTimeout(t, 200*time.Millisecond)
-	is := assert.New(t)
 
 	t.Run("context cancelled mid-buffer", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		ch1 := make(chan int, 10)
 		ctx, cancel := context.WithCancel(context.Background())
@@ -320,6 +320,7 @@ func TestBufferWithContext(t *testing.T) { //nolint:paralleltest
 
 	t.Run("buffer fills before context cancellation", func(t *testing.T) { //nolint:paralleltest
 		// t.Parallel()
+		is := assert.New(t)
 
 		ch2 := make(chan int, 10)
 		ctx, cancel := context.WithCancel(context.Background())
