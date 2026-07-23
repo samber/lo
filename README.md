@@ -378,15 +378,15 @@ Constraints:
 Iterates over a collection and returns a slice of all the elements the predicate function returns `true` for.
 
 ```go
-even := lo.Filter([]int{1, 2, 3, 4}, func(x int, index int) bool {
+result := lo.Filter([]int{1, 2, 3, 4}, func(x int, index int) bool {
     return x%2 == 0
 })
 // []int{2, 4}
 ```
-
+[[play](https://go.dev/play/p/Apjg3WeSi7K)]
 ```go
 // Use FilterErr when the predicate can return an error
-even, err := lo.FilterErr([]int{1, 2, 3, 4}, func(x int, _ int) (bool, error) {
+result, err := lo.FilterErr([]int{1, 2, 3, 4}, func(x int, _ int) (bool, error) {
     if x == 3 {
         return false, fmt.Errorf("number 3 is not allowed")
     }
@@ -413,6 +413,7 @@ list
 newList
 // []int{2, 4}
 ```
+[[play](https://go.dev/play/p/i-ZbmM2exxi)]
 
 ### Map
 
@@ -421,7 +422,7 @@ Manipulates a slice of one type and transforms it into a slice of another type:
 ```go
 import "github.com/samber/lo"
 
-lo.Map([]int64{1, 2, 3, 4}, func(x int64, index int) string {
+result1:= lo.Map([]int64{1, 2, 3, 4}, func(x int64, index int) string {
     return strconv.FormatInt(x, 10)
 })
 // []string{"1", "2", "3", "4"}
@@ -429,7 +430,7 @@ lo.Map([]int64{1, 2, 3, 4}, func(x int64, index int) string {
 
 ```go
 // Use MapErr when the transform function can return an error
-result, err := lo.MapErr([]int{1, 2, 3, 4}, func(x int, _ int) (string, error) {
+result2, err := lo.MapErr([]int{1, 2, 3, 4}, func(x int, _ int) (string, error) {
     if x == 3 {
         return "", fmt.Errorf("number 3 is not allowed")
     }
@@ -438,20 +439,20 @@ result, err := lo.MapErr([]int{1, 2, 3, 4}, func(x int, _ int) (string, error) {
 // []string(nil), error("number 3 is not allowed")
 ```
 
-[[play](https://go.dev/play/p/OkPcYAhBo0D)]
+[[play](https://go.dev/play/p/zQOU_WkotqD)]
 
 Parallel processing: like `lo.Map()`, but the transform function is called in a goroutine. Results are returned in the same order.
 
 ```go
 import lop "github.com/samber/lo/parallel"
 
-lop.Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+partitionedByParity := lop.Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
     return strconv.FormatInt(x, 10)
 })
 // []string{"1", "2", "3", "4"}
 ```
 
-[[play](https://go.dev/play/p/sCJaB3quRMC)]
+[[play](https://go.dev/play/p/2t3G5xrx9_G)]
 
 Mutable: like `lo.Map()`, but the slice is updated in place.
 
@@ -465,7 +466,7 @@ lom.Map(list, func(x int) int {
 // []int{2, 4, 6, 8}
 ```
 
-[[play](https://go.dev/play/p/0jY3Z0B7O_5)]
+[[play](https://go.dev/play/p/_OFK7SPV8Qd)]
 
 ### UniqMap
 
@@ -484,7 +485,7 @@ names := lo.UniqMap(users, func(u User, index int) string {
 // []string{"Alex", "Bob", "Alice"}
 ```
 
-[[play](https://go.dev/play/p/fygzLBhvUdB)]
+[[play](https://go.dev/play/p/WDHGpgbXQr2)]
 
 ### FilterMap
 
@@ -502,7 +503,7 @@ matching := lo.FilterMap([]string{"cpu", "gpu", "mouse", "keyboard"}, func(x str
 // []string{"xpu", "xpu"}
 ```
 
-[[play](https://go.dev/play/p/-AuYXfy7opz)]
+[[play](https://go.dev/play/p/dF88-9oUOq4)]
 
 ### FlatMap
 
@@ -529,7 +530,7 @@ result, err := lo.FlatMapErr([]int64{0, 1, 2, 3}, func(x int64, _ int) ([]string
 // []string(nil), error("number 2 is not allowed")
 ```
 
-[[play](https://go.dev/play/p/YSoYmQTA8-U)]
+[[play](https://go.dev/play/p/RNUIfIbrVvN)]
 
 ### Reduce
 
@@ -553,7 +554,7 @@ result, err := lo.ReduceErr([]int{1, 2, 3, 4}, func(agg int, item int, _ int) (i
 // 0, error("number 3 is not allowed")
 ```
 
-[[play](https://go.dev/play/p/R4UHXZNaaUG)]
+[[play](https://go.dev/play/p/-3iKnq-zgaL)]
 
 ### ReduceRight
 
@@ -577,7 +578,7 @@ result, err := lo.ReduceRightErr([]int{1, 2, 3, 4}, func(agg int, item int, _ in
 // 0, error("number 2 is not allowed")
 ```
 
-[[play](https://go.dev/play/p/Fq3W70l7wXF)]
+[[play](https://go.dev/play/p/-RZKja4RvQa)]
 
 ### ForEach
 
