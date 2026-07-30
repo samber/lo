@@ -813,6 +813,8 @@ lo.Window([]float64{20, 22, 21, 23, 24}, 3)
 // [][]float64{{20, 22, 21}, {22, 21, 23}, {21, 23, 24}}
 ```
 
+[[play](https://go.dev/play/p/3uL6wqfUTKH)]
+
 ### Sliding
 
 Creates a slice of sliding windows of a given size with a given step. If step is equal to size, windows have no common elements (similar to Chunk). If step is less than size, windows share common elements.
@@ -830,6 +832,8 @@ lo.Sliding([]int{1, 2, 3, 4, 5, 6}, 3, 3)
 lo.Sliding([]int{1, 2, 3, 4, 5, 6, 7, 8}, 2, 3)
 // [][]int{{1, 2}, {4, 5}, {7, 8}}
 ```
+
+[[play](https://go.dev/play/p/nPTp6gC72Pp)]
 
 ### PartitionBy
 
@@ -1124,6 +1128,8 @@ l := lo.Take([]int{0, 1, 2}, 5)
 // []int{0, 1, 2}
 ```
 
+[[play](https://go.dev/play/p/JNtaZJDBZ3Q)]
+
 ### TakeWhile
 
 Takes elements from the beginning while the predicate returns true.
@@ -1140,6 +1146,8 @@ l := lo.TakeWhile([]string{"a", "aa", "aaa", "aa"}, func(val string) bool {
 // []string{"a", "aa"}
 ```
 
+[[play](https://go.dev/play/p/WJBuqOqTFFg)]
+
 ### TakeFilter
 
 Filters elements and takes the first n elements that match the predicate. Equivalent to calling Take(Filter(...)), but more efficient as it stops after finding n matches.
@@ -1155,6 +1163,8 @@ l := lo.TakeFilter([]string{"a", "aa", "aaa", "aaaa"}, 2, func(val string, index
 })
 // []string{"aa", "aaa"}
 ```
+
+[[play](https://go.dev/play/p/-eBWHtt0JE2)]
 
 ### Drop
 
@@ -1255,6 +1265,8 @@ items := lo.RejectMap([]int{1, 2, 3, 4}, func(x int, _ int) (int, bool) {
 // []int{10, 30}
 ```
 
+[[play](https://go.dev/play/p/SJ0wmojnIfd)]
+
 ### FilterReject
 
 Mixes Filter and Reject, this method returns two slices, one for the elements of collection that predicate returns true for and one for the elements that predicate does not return true for.
@@ -1266,6 +1278,8 @@ kept, rejected := lo.FilterReject([]int{1, 2, 3, 4}, func(x int, _ int) bool {
 // []int{2, 4}
 // []int{1, 3}
 ```
+
+[[play](https://go.dev/play/p/quPkIF_iAbf)]
 
 ### Count
 
@@ -2036,6 +2050,7 @@ result := lo.FilterMapToSlice(kv, func(k int, v int64) (string, bool) {
 })
 // []{"2_2", "4_4"}
 ```
+[[play](https://go.dev/play/p/O2MHU0F0Dc8)]
 
 ```go
 kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
@@ -2049,6 +2064,8 @@ result, err := lo.FilterMapToSliceErr(kv, func(k int, v int64) (string, bool, er
 // []string(nil), error("key 3 not allowed")
 ```
 
+[[play](https://go.dev/play/p/TU9UBDd_HfL)]
+
 ### FilterKeys
 
 Transforms a map into a slice based on predicate returns true for specific elements. It is a mix of `lo.Filter()` and `lo.Keys()`.
@@ -2061,6 +2078,7 @@ result := FilterKeys(kv, func(k int, v string) bool {
 })
 // [1]
 ```
+[[play](https://go.dev/play/p/OFlKXlPrBAe)]
 
 ```go
 // Use FilterKeysErr when the predicate can return an error
@@ -2073,7 +2091,7 @@ result, err := lo.FilterKeysErr(map[int]string{1: "foo", 2: "bar", 3: "baz"}, fu
 // []int(nil), error("key 3 not allowed")
 ```
 
-[[play](https://go.dev/play/p/OFlKXlPrBAe)]
+[[play](https://go.dev/play/p/OWJozC3PSgM)]
 
 ### FilterValues
 
@@ -2087,6 +2105,7 @@ result := FilterValues(kv, func(k int, v string) bool {
 })
 // ["foo"]
 ```
+[[play](https://go.dev/play/p/YVD5r_h-LX-)]
 
 ```go
 // Use FilterValuesErr when the predicate can return an error
@@ -2099,7 +2118,7 @@ result, err := lo.FilterValuesErr(map[int]string{1: "foo", 2: "bar", 3: "baz"}, 
 // []string(nil), error("key 3 not allowed")
 ```
 
-[[play](https://go.dev/play/p/YVD5r_h-LX-)]
+[[play](https://go.dev/play/p/XaCnXGC3Y-6)]
 
 ### Range / RangeFrom / RangeWithSteps
 
@@ -2177,6 +2196,7 @@ sum := lo.SumBy(strings, func(item string) int {
 })
 // 6
 ```
+[[play](https://go.dev/play/p/bZjThh_UMo5)]
 
 With error handling:
 
@@ -2190,6 +2210,8 @@ sum, err := lo.SumByErr(strings, func(item string) (int, error) {
 })
 // sum: 3, err: invalid item: bar
 ```
+
+[[play](https://go.dev/play/p/6mkDBMv_n2-)]
 
 ### Product
 
@@ -2250,6 +2272,8 @@ mean := lo.Mean([]float64{})
 // 0
 ```
 
+[[play](https://go.dev/play/p/SObZbhapd0s)]
+
 ### MeanBy
 
 Calculates the mean of a collection of numbers using the given return value from the iteration function.
@@ -2265,9 +2289,10 @@ mapper := func(item string) float64 {
 mean := lo.MeanBy(list, mapper)
 // 3.5
 
-mean := lo.MeanBy([]float64{}, mapper)
+mean := lo.MeanBy([]string{}, mapper)
 // 0
 ```
+[[play](https://go.dev/play/p/jr0XOBOZXO2)]
 
 ```go
 // Use MeanByErr when the transform function can return an error
@@ -2281,7 +2306,7 @@ mean, err := lo.MeanByErr(list, func(item string) (float64, error) {
 // 0, error("cccc is not allowed")
 ```
 
-[[play](https://go.dev/play/p/j7TsVwBOZ7P)]
+[[play](https://go.dev/play/p/umIFFnHVWDX)]
 
 ### Mode
 
@@ -2304,6 +2329,8 @@ mode := lo.Mode([]float64{})
 mode := lo.Mode([]int{1, 2, 3, 4, 5, 6, 7, 8, 9})
 // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
+
+[[play](https://go.dev/play/p/409rfAqwjo0)]
 
 ### RandomString
 
@@ -2503,7 +2530,7 @@ tuples := lo.Zip2([]string{"a", "b"}, []int{1, 2})
 // []Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}}
 ```
 
-[[play](https://go.dev/play/p/jujaA6GaJTp)]
+[[play](https://go.dev/play/p/bKYhy8n3Dt-)]
 
 ### ZipBy2 -> ZipBy9
 
@@ -2517,6 +2544,7 @@ items := lo.ZipBy2([]string{"a", "b"}, []int{1, 2}, func(a string, b int) string
 })
 // []string{"a-1", "b-2"}
 ```
+[[play](https://go.dev/play/p/-8vJnkM5kGa)]
 
 With error handling:
 
@@ -2530,17 +2558,19 @@ items, err := lo.ZipByErr2([]string{"a", "b"}, []int{1, 2}, func(a string, b int
 // []string(nil), error("number 2 is not allowed")
 ```
 
+[[play](https://go.dev/play/p/J8MWTTMSo4g)]
+
 ### Unzip2 -> Unzip9
 
 Unzip accepts a slice of grouped elements and creates a slice regrouping the elements to their pre-zip configuration.
 
 ```go
-a, b := lo.Unzip2([]Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
+a, b := lo.Unzip2([]lo.Tuple2[string, int]{{A: "a", B: 1}, {A: "b", B: 2}})
 // []string{"a", "b"}
 // []int{1, 2}
 ```
 
-[[play](https://go.dev/play/p/ciHugugvaAW)]
+[[play](https://go.dev/play/p/wjU9uaYvKx_I)]
 
 ### UnzipBy2 -> UnzipBy9
 
@@ -2553,6 +2583,7 @@ a, b := lo.UnzipBy2([]string{"hello", "john", "doe"}, func(str string) (string, 
 // []string{"hello", "john", "doe"}
 // []int{5, 4, 3}
 ```
+[[play](https://go.dev/play/p/WF3jnNcxhDJ)]
 
 ```go
 a, b, err := lo.UnzipByErr2([]string{"hello", "error", "world"}, func(str string) (string, int, error) {
@@ -2565,6 +2596,8 @@ a, b, err := lo.UnzipByErr2([]string{"hello", "error", "world"}, func(str string
 // []int{}
 // error string not allowed
 ```
+
+[[play](https://go.dev/play/p/MfphXiAca1u)]
 
 ### CrossJoin2 -> CrossJoin9
 
@@ -2580,12 +2613,14 @@ result := lo.CrossJoin2([]string{"hello", "john", "doe"}, []int{1, 2})
 // lo.Tuple2{"doe", 2}
 ```
 
+[[play](https://go.dev/play/p/1ANd-UepQ7k)]
+
 ### CrossJoinBy2 -> CrossJoinBy9
 
 Combines every item from one list with every item from others. It is the cartesian product of lists received as arguments. The transform function is used to create the output values. Returns an empty list if a list is empty.
 
 ```go
-result := lo.CrossJoinBy2([]string{"hello", "john", "doe"}, []int{1, 2}, func(a A, b B) string {
+result := lo.CrossJoinBy2([]string{"hello", "john", "doe"}, []int{1, 2}, func(a string, b int) string {
     return fmt.Sprintf("%s - %d", a, b)
 })
 // "hello - 1"
@@ -2595,6 +2630,7 @@ result := lo.CrossJoinBy2([]string{"hello", "john", "doe"}, []int{1, 2}, func(a 
 // "doe - 1"
 // "doe - 2"
 ```
+[[play](https://go.dev/play/p/2unAo0eGoc0)]
 
 With error handling:
 
@@ -2607,6 +2643,7 @@ result, err := lo.CrossJoinByErr2([]string{"hello", "john"}, []int{1, 2}, func(a
 })
 // []string(nil), error("john not allowed")
 ```
+[[play](https://go.dev/play/p/4aM7RgF-Qo0)]
 
 ### Duration
 
@@ -2647,6 +2684,8 @@ str, nbr, err, duration := lo.Duration3(func() (string, int, error) {
 // nil
 // 3s
 ```
+
+[[play](https://go.dev/play/p/fcfna7XEcUf)]
 
 ### ChannelDispatcher
 
@@ -2738,12 +2777,16 @@ Returns a read-only channel of collection elements. Channel is closed after last
 list := []int{1, 2, 3, 4, 5}
 
 for v := range lo.SliceToChannel(2, list) {
-    println(v)
+    fmt.Println(v)
 }
-// prints 1, then 2, then 3, then 4, then 5
+// 1
+// 2
+// 3
+// 4
+// 5
 ```
 
-[[play](https://go.dev/play/p/lIbSY3QmiEg)]
+[[play](https://go.dev/play/p/0dLo47wUjSN)]
 
 ### ChannelToSlice
 
@@ -2786,6 +2829,8 @@ items1, length1, duration1, ok1 := lo.Buffer(ch, 3)
 items2, length2, duration2, ok2 := lo.Buffer(ch, 3)
 // []int{4, 5}, 2, 0s, false
 ```
+
+[[play](https://go.dev/play/p/dvbiwPAANBz)]
 
 Example: RabbitMQ consumer 👇
 
@@ -2845,12 +2890,14 @@ generator := func(yield func(int)) {
 ch := lo.Generator(0, generator)
 
 items1, length1, duration1, ok1 := lo.BufferWithTimeout(ch, 3, 100*time.Millisecond)
-// []int{1, 2}, 2, 100ms, true
+// []int{0, 1, 2}, 3, 70ms, true
 items2, length2, duration2, ok2 := lo.BufferWithTimeout(ch, 3, 100*time.Millisecond)
-// []int{3, 4, 5}, 3, 75ms, true
+// []int{3, 4}, 2, 100ms, true
 items3, length3, duration2, ok3 := lo.BufferWithTimeout(ch, 3, 100*time.Millisecond)
-// []int{}, 0, 10ms, false
+// []int{}, 0, 5ms, false
 ```
+
+[[play](https://go.dev/play/p/QzHgzQHtwth)]
 
 Example: RabbitMQ consumer 👇
 
@@ -2907,9 +2954,27 @@ stream1 := make(chan int, 42)
 stream2 := make(chan int, 42)
 stream3 := make(chan int, 42)
 
+stream1 <- 1
+stream1 <- 2
+
+stream2 <- 3
+
+stream3 <- 4
+stream3 <- 5
+stream3 <- 6
+
 all := lo.FanIn(100, stream1, stream2, stream3)
-// <-chan int
+
+close(stream1)
+close(stream2)
+close(stream3)
+
+for value := range all {
+    fmt.Println(value)
+}
+// prints 1, 2, 3, 4, 5 and 6, in no particular order
 ```
+[[play](https://go.dev/play/p/NCjxI5ZPYH4)]
 
 ### FanOut
 
@@ -2931,7 +2996,7 @@ present := lo.Contains([]int{0, 1, 2, 3, 4, 5}, 5)
 // true
 ```
 
-[[play](https://go.dev/play/p/W1EvyqY6t9j)]
+[[play](https://go.dev/play/p/elujzDvm-GB)]
 
 ### ContainsBy
 
@@ -2944,6 +3009,8 @@ present := lo.ContainsBy([]int{0, 1, 2, 3, 4, 5}, func(x int) bool {
 // true
 ```
 
+[[play](https://go.dev/play/p/uYXfMvSsuvD)]
+
 ### Every
 
 Returns true if all elements of a subset are contained in a collection or if the subset is empty.
@@ -2955,6 +3022,7 @@ ok := lo.Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 2})
 ok := lo.Every([]int{0, 1, 2, 3, 4, 5}, []int{0, 6})
 // false
 ```
+[[play](https://go.dev/play/p/RxKF9_fMwsQ)]
 
 ### EveryBy
 
