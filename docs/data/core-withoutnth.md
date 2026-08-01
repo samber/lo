@@ -13,7 +13,7 @@ similarHelpers:
   - core#slice#dropbyindex
 position: 140
 signatures:
-  - "func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice"
+  - "func WithoutNth[T any, Slice ~[]T](collection Slice, nths ...int) Slice"
 ---
 
 Returns a slice excluding the elements at the given indexes.

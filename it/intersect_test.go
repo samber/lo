@@ -517,6 +517,17 @@ func TestWithoutNth(t *testing.T) {
 	})
 }
 
+func TestWithoutNthNonComparable(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// Slices are not comparable; WithoutNth should accept T any (not T comparable)
+	// since it only operates on indices.
+	input := slices.Values([][]int{{1, 2}, {3, 4}, {5, 6}})
+	result := slices.Collect(WithoutNth(input, 1))
+	is.Equal([][]int{{1, 2}, {5, 6}}, result)
+}
+
 func TestElementsMatch(t *testing.T) {
 	t.Parallel()
 
