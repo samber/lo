@@ -663,6 +663,125 @@ func TestUnzipBy(t *testing.T) {
 	is.Equal([]int{2, 4}, r2)
 }
 
+func TestUnzipBy3(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	items := []Tuple3[string, int, bool]{{A: "a", B: 1, C: true}, {A: "b", B: 2, C: false}}
+	r1, r2, r3 := UnzipBy3(items, func(i Tuple3[string, int, bool]) (string, int, bool) {
+		return i.A + i.A, i.B + i.B, !i.C
+	})
+
+	is.Equal([]string{"aa", "bb"}, r1)
+	is.Equal([]int{2, 4}, r2)
+	is.Equal([]bool{false, true}, r3)
+}
+
+func TestUnzipBy4(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	items := []Tuple4[string, int, bool, float64]{{A: "a", B: 1, C: true, D: 1.1}, {A: "b", B: 2, C: false, D: 2.2}}
+	r1, r2, r3, r4 := UnzipBy4(items, func(i Tuple4[string, int, bool, float64]) (string, int, bool, float64) {
+		return i.A + i.A, i.B + i.B, !i.C, i.D + i.D
+	})
+
+	is.Equal([]string{"aa", "bb"}, r1)
+	is.Equal([]int{2, 4}, r2)
+	is.Equal([]bool{false, true}, r3)
+	is.Equal([]float64{2.2, 4.4}, r4)
+}
+
+func TestUnzipBy5(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	items := []Tuple5[string, int, bool, float64, int64]{{A: "a", B: 1, C: true, D: 1.1, E: 10}, {A: "b", B: 2, C: false, D: 2.2, E: 20}}
+	r1, r2, r3, r4, r5 := UnzipBy5(items, func(i Tuple5[string, int, bool, float64, int64]) (string, int, bool, float64, int64) {
+		return i.A + i.A, i.B + i.B, !i.C, i.D + i.D, i.E + i.E
+	})
+
+	is.Equal([]string{"aa", "bb"}, r1)
+	is.Equal([]int{2, 4}, r2)
+	is.Equal([]bool{false, true}, r3)
+	is.Equal([]float64{2.2, 4.4}, r4)
+	is.Equal([]int64{20, 40}, r5)
+}
+
+func TestUnzipBy6(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	items := []Tuple6[string, int, bool, float64, int64, int32]{{A: "a", B: 1, C: true, D: 1.1, E: 10, F: 100}, {A: "b", B: 2, C: false, D: 2.2, E: 20, F: 200}}
+	r1, r2, r3, r4, r5, r6 := UnzipBy6(items, func(i Tuple6[string, int, bool, float64, int64, int32]) (string, int, bool, float64, int64, int32) {
+		return i.A + i.A, i.B + i.B, !i.C, i.D + i.D, i.E + i.E, i.F + i.F
+	})
+
+	is.Equal([]string{"aa", "bb"}, r1)
+	is.Equal([]int{2, 4}, r2)
+	is.Equal([]bool{false, true}, r3)
+	is.Equal([]float64{2.2, 4.4}, r4)
+	is.Equal([]int64{20, 40}, r5)
+	is.Equal([]int32{200, 400}, r6)
+}
+
+func TestUnzipBy7(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	items := []Tuple7[string, int, bool, float64, int64, int32, int16]{{A: "a", B: 1, C: true, D: 1.1, E: 10, F: 100, G: 1000}, {A: "b", B: 2, C: false, D: 2.2, E: 20, F: 200, G: 2000}}
+	r1, r2, r3, r4, r5, r6, r7 := UnzipBy7(items, func(i Tuple7[string, int, bool, float64, int64, int32, int16]) (string, int, bool, float64, int64, int32, int16) {
+		return i.A + i.A, i.B + i.B, !i.C, i.D + i.D, i.E + i.E, i.F + i.F, i.G + i.G
+	})
+
+	is.Equal([]string{"aa", "bb"}, r1)
+	is.Equal([]int{2, 4}, r2)
+	is.Equal([]bool{false, true}, r3)
+	is.Equal([]float64{2.2, 4.4}, r4)
+	is.Equal([]int64{20, 40}, r5)
+	is.Equal([]int32{200, 400}, r6)
+	is.Equal([]int16{2000, 4000}, r7)
+}
+
+func TestUnzipBy8(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	items := []Tuple8[string, int, bool, float64, int64, int32, int16, int8]{{A: "a", B: 1, C: true, D: 1.1, E: 10, F: 100, G: 1000, H: 30}, {A: "b", B: 2, C: false, D: 2.2, E: 20, F: 200, G: 2000, H: 40}}
+	r1, r2, r3, r4, r5, r6, r7, r8 := UnzipBy8(items, func(i Tuple8[string, int, bool, float64, int64, int32, int16, int8]) (string, int, bool, float64, int64, int32, int16, int8) {
+		return i.A + i.A, i.B + i.B, !i.C, i.D + i.D, i.E + i.E, i.F + i.F, i.G + i.G, i.H + i.H
+	})
+
+	is.Equal([]string{"aa", "bb"}, r1)
+	is.Equal([]int{2, 4}, r2)
+	is.Equal([]bool{false, true}, r3)
+	is.Equal([]float64{2.2, 4.4}, r4)
+	is.Equal([]int64{20, 40}, r5)
+	is.Equal([]int32{200, 400}, r6)
+	is.Equal([]int16{2000, 4000}, r7)
+	is.Equal([]int8{60, 80}, r8)
+}
+
+func TestUnzipBy9(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	items := []Tuple9[string, int, bool, float64, int64, int32, int16, int8, uint]{{A: "a", B: 1, C: true, D: 1.1, E: 10, F: 100, G: 1000, H: 30, I: 5}, {A: "b", B: 2, C: false, D: 2.2, E: 20, F: 200, G: 2000, H: 40, I: 6}}
+	r1, r2, r3, r4, r5, r6, r7, r8, r9 := UnzipBy9(items, func(i Tuple9[string, int, bool, float64, int64, int32, int16, int8, uint]) (string, int, bool, float64, int64, int32, int16, int8, uint) {
+		return i.A + i.A, i.B + i.B, !i.C, i.D + i.D, i.E + i.E, i.F + i.F, i.G + i.G, i.H + i.H, i.I + i.I
+	})
+
+	is.Equal([]string{"aa", "bb"}, r1)
+	is.Equal([]int{2, 4}, r2)
+	is.Equal([]bool{false, true}, r3)
+	is.Equal([]float64{2.2, 4.4}, r4)
+	is.Equal([]int64{20, 40}, r5)
+	is.Equal([]int32{200, 400}, r6)
+	is.Equal([]int16{2000, 4000}, r7)
+	is.Equal([]int8{60, 80}, r8)
+	is.Equal([]uint{10, 12}, r9)
+}
+
 func TestZipByErr(t *testing.T) {
 	t.Parallel()
 
