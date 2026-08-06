@@ -5152,7 +5152,7 @@ lo.Assertf(age >= 15, "user age must be >= 15, got %d", age)
 
 We executed a simple benchmark with a dead-simple `lo.Map` loop:
 
-See the full implementation [here](./map_benchmark_test.go).
+See the full implementation [here](./benchmark/core_map_bench_test.go).
 
 ```go
 _ = lo.Map[int64](arr, func(x int64, i int) string {
