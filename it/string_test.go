@@ -63,6 +63,7 @@ func TestChunkString(t *testing.T) {
 			is := assert.New(t)
 
 			result := ChunkString(tt.input, tt.size)
+			assertSeqSupportBreak(t, result)
 			is.Equal(tt.expected, slices.Collect(result))
 		})
 	}

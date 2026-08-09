@@ -32,7 +32,9 @@ func TestKeys(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.ElementsMatch(tt.expected, slices.Collect(Keys(tt.maps...)))
+			seq := Keys(tt.maps...)
+			assertSeqSupportBreak(t, seq)
+			is.ElementsMatch(tt.expected, slices.Collect(seq))
 		})
 	}
 }
@@ -59,7 +61,9 @@ func TestUniqKeys(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			result := slices.Collect(UniqKeys(tt.maps...))
+			seq := UniqKeys(tt.maps...)
+			assertSeqSupportBreak(t, seq)
+			result := slices.Collect(seq)
 			if tt.exact {
 				is.Equal(tt.expected, result)
 			} else {
@@ -89,7 +93,9 @@ func TestValues(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.ElementsMatch(tt.expected, slices.Collect(Values(tt.maps...)))
+			seq := Values(tt.maps...)
+			assertSeqSupportBreak(t, seq)
+			is.ElementsMatch(tt.expected, slices.Collect(seq))
 		})
 	}
 }
@@ -117,7 +123,9 @@ func TestUniqValues(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			result := slices.Collect(UniqValues(tt.maps...))
+			seq := UniqValues(tt.maps...)
+			assertSeqSupportBreak(t, seq)
+			result := slices.Collect(seq)
 			if tt.exact {
 				is.Equal(tt.expected, result)
 			} else {
@@ -131,7 +139,9 @@ func TestEntries(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
-	r1 := maps.Collect(Entries(map[string]int{"foo": 1, "bar": 2}))
+	seq := Entries(map[string]int{"foo": 1, "bar": 2})
+	assertSeq2SupportBreak(t, seq)
+	r1 := maps.Collect(seq)
 	is.Equal(map[string]int{"foo": 1, "bar": 2}, r1)
 }
 
@@ -172,6 +182,7 @@ func TestInvert(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
 		r1 := Invert(maps.All(map[string]int{"a": 1, "b": 2}))
+		assertSeq2SupportBreak(t, r1)
 		is.Equal(map[int]string{1: "a", 2: "b"}, maps.Collect(r1))
 	})
 
@@ -179,6 +190,7 @@ func TestInvert(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
 		r2 := Invert(maps.All(map[string]int{"a": 1, "b": 2, "c": 1}))
+		assertSeq2SupportBreak(t, r2)
 		is.Len(maps.Collect(r2), 2)
 	})
 }
@@ -227,7 +239,9 @@ func TestChunkEntries(t *testing.T) {
 			t.Run(tt.name, func(t *testing.T) {
 				t.Parallel()
 				is := assert.New(t)
-				is.Len(slices.Collect(ChunkEntries(tt.input, tt.size)), tt.expectedLen)
+				seq := ChunkEntries(tt.input, tt.size)
+				assertSeqSupportBreak(t, seq)
+				is.Len(slices.Collect(seq), tt.expectedLen)
 			})
 		}
 	})
@@ -310,7 +324,9 @@ func TestMapToSeq(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.ElementsMatch(tt.expected, slices.Collect(MapToSeq(tt.input, tt.transform)))
+			seq := MapToSeq(tt.input, tt.transform)
+			assertSeqSupportBreak(t, seq)
+			is.ElementsMatch(tt.expected, slices.Collect(seq))
 		})
 	}
 }
@@ -343,7 +359,9 @@ func TestFilterMapToSeq(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.ElementsMatch(tt.expected, slices.Collect(FilterMapToSeq(tt.input, tt.filter)))
+			seq := FilterMapToSeq(tt.input, tt.filter)
+			assertSeqSupportBreak(t, seq)
+			is.ElementsMatch(tt.expected, slices.Collect(seq))
 		})
 	}
 }
@@ -357,6 +375,7 @@ func TestFilterKeys(t *testing.T) {
 		result1 := FilterKeys(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) bool {
 			return v == "foo"
 		})
+		assertSeqSupportBreak(t, result1)
 		is.Equal([]int{1}, slices.Collect(result1))
 	})
 
@@ -379,6 +398,7 @@ func TestFilterValues(t *testing.T) {
 		result1 := FilterValues(map[int]string{1: "foo", 2: "bar", 3: "baz"}, func(k int, v string) bool {
 			return v == "foo"
 		})
+		assertSeqSupportBreak(t, result1)
 		is.Equal([]string{"foo"}, slices.Collect(result1))
 	})
 
@@ -409,7 +429,9 @@ func TestSeq2KeyToSeq(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.ElementsMatch(tt.expected, slices.Collect(Seq2KeyToSeq(maps.All(tt.input))))
+			seq := Seq2KeyToSeq(maps.All(tt.input))
+			assertSeqSupportBreak(t, seq)
+			is.ElementsMatch(tt.expected, slices.Collect(seq))
 		})
 	}
 }
@@ -431,7 +453,9 @@ func TestSeq2ValueToSeq(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.ElementsMatch(tt.expected, slices.Collect(Seq2ValueToSeq(maps.All(tt.input))))
+			seq := Seq2ValueToSeq(maps.All(tt.input))
+			assertSeqSupportBreak(t, seq)
+			is.ElementsMatch(tt.expected, slices.Collect(seq))
 		})
 	}
 }

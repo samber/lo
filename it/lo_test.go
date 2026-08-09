@@ -26,6 +26,22 @@ func assertSeqSupportBreak[T any](t *testing.T, seq iter.Seq[T]) iter.Seq[T] {
 	return seq
 }
 
+// assertSeq2SupportBreak checks whether it is possible to break iteration over a [iter.Seq2].
+func assertSeq2SupportBreak[K, V any](t *testing.T, seq iter.Seq2[K, V]) iter.Seq2[K, V] {
+	t.Helper()
+	assert.NotPanics(t, func() {
+		for range seq {
+			break
+		}
+
+		for range seq {
+			return
+		}
+	})
+
+	return seq
+}
+
 func values[T any](v ...T) iter.Seq[T] { return slices.Values(v) }
 
 type foo struct {

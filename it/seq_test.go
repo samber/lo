@@ -92,6 +92,7 @@ func TestFilterI(t *testing.T) {
 		r1 := FilterI(values(1, 2, 3, 4), func(x, _ int) bool {
 			return x%2 == 0
 		})
+		assertSeqSupportBreak(t, r1)
 		is.Equal([]int{2, 4}, slices.Collect(r1))
 	})
 
@@ -230,6 +231,7 @@ func TestFilterMapI(t *testing.T) {
 			}
 			return "", false
 		})
+		assertSeqSupportBreak(t, r1)
 		is.Equal([]string{"2", "4"}, slices.Collect(r1))
 	})
 
@@ -281,6 +283,7 @@ func TestFlatMapI(t *testing.T) {
 		result1 := FlatMapI(values(0, 1, 2, 3, 4), func(x, _ int) iter.Seq[string] {
 			return values("Hello")
 		})
+		assertSeqSupportBreak(t, result1)
 		is.Equal([]string{"Hello", "Hello", "Hello", "Hello", "Hello"}, slices.Collect(result1))
 	})
 
@@ -307,6 +310,7 @@ func TestTimes(t *testing.T) {
 	result1 := Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)
 	})
+	assertSeqSupportBreak(t, result1)
 	is.Equal([]string{"0", "1", "2"}, slices.Collect(result1))
 }
 
@@ -469,6 +473,7 @@ func TestUniqBy(t *testing.T) {
 		result1 := UniqBy(values(0, 1, 2, 3, 4, 5), func(i int) int {
 			return i % 3
 		})
+		assertSeqSupportBreak(t, result1)
 		is.Equal([]int{0, 1, 2}, slices.Collect(result1))
 	})
 
@@ -571,7 +576,9 @@ func TestChunk(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, slices.Collect(Chunk(values(tt.input...), tt.size)))
+			seq := Chunk(values(tt.input...), tt.size)
+			assertSeqSupportBreak(t, seq)
+			is.Equal(tt.expected, slices.Collect(seq))
 		})
 	}
 
@@ -667,7 +674,9 @@ func TestSliding(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, slices.Collect(Sliding(values(tt.input...), tt.size, tt.step)))
+			seq := Sliding(values(tt.input...), tt.size, tt.step)
+			assertSeqSupportBreak(t, seq)
+			is.Equal(tt.expected, slices.Collect(seq))
 		})
 	}
 
@@ -811,6 +820,7 @@ func TestFlatten(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
 		result1 := Flatten([]iter.Seq[int]{values(0, 1), values(2, 3, 4, 5)})
+		assertSeqSupportBreak(t, result1)
 		is.Equal([]int{0, 1, 2, 3, 4, 5}, slices.Collect(result1))
 	})
 
@@ -881,7 +891,9 @@ func TestInterleave(t *testing.T) {
 		tc := tc //nolint:modernize
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			assert.Equal(t, tc.want, slices.Collect(Interleave(tc.in...)))
+			seq := Interleave(tc.in...)
+			assertSeqSupportBreak(t, seq)
+			assert.Equal(t, tc.want, slices.Collect(seq))
 		})
 	}
 }
@@ -931,7 +943,9 @@ func TestReverse(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, slices.Collect(Reverse(values(tt.input...))))
+			seq := Reverse(values(tt.input...))
+			assertSeqSupportBreak(t, seq)
+			is.Equal(tt.expected, slices.Collect(seq))
 		})
 	}
 
@@ -962,7 +976,9 @@ func TestFill(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, slices.Collect(Fill(values(tt.input...), tt.fillWith)))
+			seq := Fill(values(tt.input...), tt.fillWith)
+			assertSeqSupportBreak(t, seq)
+			is.Equal(tt.expected, slices.Collect(seq))
 		})
 	}
 }
@@ -1010,7 +1026,9 @@ func TestRepeatBy(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, slices.Collect(RepeatBy(tt.count, cb)))
+			seq := RepeatBy(tt.count, cb)
+			assertSeqSupportBreak(t, seq)
+			is.Equal(tt.expected, slices.Collect(seq))
 		})
 	}
 }
@@ -1316,7 +1334,9 @@ func TestDropLast(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, slices.Collect(DropLast(values(0, 1, 2, 3, 4), tt.n)))
+			seq := DropLast(values(0, 1, 2, 3, 4), tt.n)
+			assertSeqSupportBreak(t, seq)
+			is.Equal(tt.expected, slices.Collect(seq))
 		})
 	}
 
@@ -1355,7 +1375,9 @@ func TestDropWhile(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, slices.Collect(DropWhile(values(0, 1, 2, 3, 4, 5, 6), tt.predicate)))
+			seq := DropWhile(values(0, 1, 2, 3, 4, 5, 6), tt.predicate)
+			assertSeqSupportBreak(t, seq)
+			is.Equal(tt.expected, slices.Collect(seq))
 		})
 	}
 
@@ -1389,7 +1411,9 @@ func TestDropLastWhile(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, slices.Collect(DropLastWhile(values(0, 1, 2, 3, 4, 5, 6), tt.predicate)))
+			seq := DropLastWhile(values(0, 1, 2, 3, 4, 5, 6), tt.predicate)
+			assertSeqSupportBreak(t, seq)
+			is.Equal(tt.expected, slices.Collect(seq))
 		})
 	}
 
@@ -1672,6 +1696,7 @@ func TestRejectI(t *testing.T) {
 		r1 := RejectI(values(1, 2, 3, 4), func(x, _ int) bool {
 			return x%2 == 0
 		})
+		assertSeqSupportBreak(t, r1)
 		is.Equal([]int{1, 3}, slices.Collect(r1))
 	})
 
@@ -1734,6 +1759,7 @@ func TestRejectMapI(t *testing.T) {
 			}
 			return "", true
 		})
+		assertSeqSupportBreak(t, r1)
 		is.Equal([]string{"2", "4"}, slices.Collect(r1))
 	})
 
@@ -1874,6 +1900,22 @@ func TestSubset(t *testing.T) {
 		nonempty := Subset(allStrings, 0, 2)
 		is.IsType(nonempty, allStrings, "type preserved")
 	})
+
+	t.Run("panics on negative offset", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		is.PanicsWithValue("it.Subset: offset must not be negative", func() {
+			Subset(values(0, 1, 2), -1, 2)
+		})
+	})
+
+	t.Run("panics on negative length", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		is.PanicsWithValue("it.Subset: length must not be negative", func() {
+			Subset(values(0, 1, 2), 0, -1)
+		})
+	})
 }
 
 func TestSlice(t *testing.T) {
@@ -1899,6 +1941,8 @@ func TestSlice(t *testing.T) {
 		{name: "start after end both large", start: 5, end: 0, expected: nil},
 		{name: "start beyond collection end within", start: 6, end: 4, expected: nil},
 		{name: "start and end both beyond collection", start: 6, end: 7, expected: nil},
+		{name: "negative start clamped to zero", start: -10, end: 2, expected: []int{0, 1}},
+		{name: "negative end clamped to zero", start: -10, end: -1, expected: nil},
 	}
 
 	for _, tt := range tests {
@@ -2122,7 +2166,9 @@ func TestSplice(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
 		sample := values("a", "b", "c", "d", "e", "f", "g")
-		results := slices.Collect(Splice(sample, 1, "1", "2"))
+		seq := Splice(sample, 1, "1", "2")
+		assertSeqSupportBreak(t, seq) // first yield is the original item ("a"), before any inserted element
+		results := slices.Collect(seq)
 		is.Equal([]string{"a", "b", "c", "d", "e", "f", "g"}, slices.Collect(sample))
 		is.Equal([]string{"a", "1", "2", "b", "c", "d", "e", "f", "g"}, results)
 	})
@@ -2136,13 +2182,46 @@ func TestSplice(t *testing.T) {
 		is.Equal([]string{"a", "b", "c", "d", "e", "f", "g", "1", "2"}, results)
 	})
 
+	t.Run("breaks during trailing insert when index beyond collection", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		seq := Splice(values("a", "b", "c"), 42, "1", "2")
+		var collected []string
+		count := 0
+		for item := range seq {
+			collected = append(collected, item)
+			count++
+			if count == 4 { // stop mid-way through the trailing appended elements
+				break
+			}
+		}
+		is.Equal([]string{"a", "b", "c", "1"}, collected)
+	})
+
 	t.Run("other cases", func(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
 		is.Equal([]string{"1", "2"}, slices.Collect(Splice(values[string](), 0, "1", "2")))
 		is.Equal([]string{"1", "2"}, slices.Collect(Splice(values[string](), 1, "1", "2")))
-		is.Equal([]string{"1", "2", "0"}, slices.Collect(Splice(values("0"), 0, "1", "2")))
+		seq := Splice(values("0"), 0, "1", "2")
+		assertSeqSupportBreak(t, seq) // first yield is an inserted element ("1"), since index == 0
+		is.Equal([]string{"1", "2", "0"}, slices.Collect(seq))
 		is.Equal([]string{"0", "1", "2"}, slices.Collect(Splice(values("0"), 1, "1", "2")))
+	})
+
+	t.Run("panics on negative index", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		is.PanicsWithValue("it.Splice: index must not be negative", func() {
+			Splice(values("a", "b"), -1, "1")
+		})
+	})
+
+	t.Run("no elements returns collection unchanged", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		seq := Splice(values("a", "b", "c"), 1)
+		is.Equal([]string{"a", "b", "c"}, slices.Collect(seq))
 	})
 
 	t.Run("type preserved", func(t *testing.T) {
@@ -2178,11 +2257,34 @@ func TestCutPrefix(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
+			// CutPrefix's returned sequence shares state (via iter.Pull) with the call that
+			// produced it, so a break-support check must use its own fresh call rather than
+			// re-consume `actual` below.
+			breakSeq, _ := CutPrefix(values(tt.input...), tt.prefix)
+			assertSeqSupportBreak(t, breakSeq)
+
 			actual, result := CutPrefix(values(tt.input...), tt.prefix)
 			is.Equal(tt.expectedFound, result)
 			is.Equal(tt.expectedAfter, slices.Collect(actual))
 		})
 	}
+
+	t.Run("breaks on the mismatched item itself, after the replayed prefix", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		actual, found := CutPrefix(values("a", "a", "b"), []string{"a", "b"})
+		is.False(found)
+		var collected []string
+		count := 0
+		for item := range actual {
+			collected = append(collected, item)
+			count++
+			if count == 2 { // stop right as the mismatched item itself is yielded
+				break
+			}
+		}
+		is.Equal([]string{"a", "a"}, collected)
+	})
 }
 
 func TestCutSuffix(t *testing.T) {
@@ -2276,6 +2378,7 @@ func TestTrimPrefix(t *testing.T) {
 		{name: "prefix equals entire collection", input: []string{"a", "b", "c", "d", "e", "f", "g"}, prefix: []string{"a", "b", "c", "d", "e", "f", "g"}, expected: nil},
 		{name: "prefix longer than collection", input: []string{"a", "b", "c", "d", "e", "f", "g"}, prefix: []string{"a", "b", "c", "d", "e", "f", "g", "h"}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
 		{name: "empty prefix", input: []string{"a", "b", "c", "d", "e", "f", "g"}, prefix: []string{}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+		{name: "prefix partially matches then diverges", input: []string{"a", "b", "x", "y"}, prefix: []string{"a", "b", "c"}, expected: []string{"a", "b", "x", "y"}},
 	}
 
 	for _, tt := range tests {
@@ -2283,7 +2386,9 @@ func TestTrimPrefix(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, slices.Collect(TrimPrefix(values(tt.input...), tt.prefix)))
+			seq := TrimPrefix(values(tt.input...), tt.prefix)
+			assertSeqSupportBreak(t, seq)
+			is.Equal(tt.expected, slices.Collect(seq))
 		})
 	}
 }
@@ -2328,6 +2433,7 @@ func TestTrimSuffix(t *testing.T) {
 		{name: "suffix equals entire collection", input: []string{"a", "b", "c", "d", "e", "f", "g"}, suffix: []string{"a", "b", "c", "d", "e", "f", "g"}, expected: nil},
 		{name: "suffix longer than collection", input: []string{"a", "b", "c", "d", "e", "f", "g"}, suffix: []string{"a", "b", "c", "d", "e", "f", "g", "h"}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
 		{name: "empty suffix", input: []string{"a", "b", "c", "d", "e", "f", "g"}, suffix: []string{}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
+		{name: "suffix candidate then diverges immediately", input: []string{"f", "x", "y"}, suffix: []string{"f", "g"}, expected: []string{"f", "x", "y"}},
 	}
 
 	for _, tt := range tests {
@@ -2335,7 +2441,9 @@ func TestTrimSuffix(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, slices.Collect(TrimSuffix(values(tt.input...), tt.suffix)))
+			seq := TrimSuffix(values(tt.input...), tt.suffix)
+			assertSeqSupportBreak(t, seq)
+			is.Equal(tt.expected, slices.Collect(seq))
 		})
 	}
 }
@@ -2387,7 +2495,9 @@ func TestSeqToSeq2(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			is.Equal(tt.expected, maps.Collect(SeqToSeq2(values(tt.input...))))
+			seq := SeqToSeq2(values(tt.input...))
+			assertSeq2SupportBreak(t, seq)
+			is.Equal(tt.expected, maps.Collect(seq))
 		})
 	}
 }

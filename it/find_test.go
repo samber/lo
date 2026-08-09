@@ -301,6 +301,7 @@ func TestFindUniquesBy(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
 			result := FindUniquesBy(values(tt.input...), mod3)
+			assertSeqSupportBreak(t, result)
 			is.Equal(tt.expected, slices.Collect(result))
 		})
 	}
@@ -372,6 +373,7 @@ func TestFindDuplicatesBy(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
 			result := FindDuplicatesBy(values(tt.input...), tt.keyFn)
+			assertSeqSupportBreak(t, result)
 			is.Equal(tt.expected, slices.Collect(result))
 		})
 	}

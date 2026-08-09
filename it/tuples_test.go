@@ -529,6 +529,7 @@ func TestCrossJoinBy(t *testing.T) {
 		is := assert.New(t)
 
 		results := CrossJoinBy2(listOne, listTwo, lo.T2[string, int])
+		assertSeqSupportBreak(t, results)
 		is.Equal([]lo.Tuple2[string, int]{lo.T2("a", 1), lo.T2("a", 2), lo.T2("a", 3), lo.T2("b", 1), lo.T2("b", 2), lo.T2("b", 3), lo.T2("c", 1), lo.T2("c", 2), lo.T2("c", 3)}, slices.Collect(results))
 	})
 
@@ -538,5 +539,89 @@ func TestCrossJoinBy(t *testing.T) {
 
 		results := CrossJoinBy2(listOne, mixedList, lo.T2[string, any])
 		is.Equal([]lo.Tuple2[string, any]{lo.T2[string, any]("a", 9.6), lo.T2[string, any]("a", 4), lo.T2[string, any]("a", "foobar"), lo.T2[string, any]("b", 9.6), lo.T2[string, any]("b", 4), lo.T2[string, any]("b", "foobar"), lo.T2[string, any]("c", 9.6), lo.T2[string, any]("c", 4), lo.T2[string, any]("c", "foobar")}, slices.Collect(results))
+	})
+
+	t.Run("3 lists", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := CrossJoinBy3(values("a"), values(1), values(10, 20), lo.T3[string, int, int])
+		assertSeqSupportBreak(t, r)
+		is.Equal([]lo.Tuple3[string, int, int]{
+			lo.T3("a", 1, 10),
+			lo.T3("a", 1, 20),
+		}, slices.Collect(r))
+	})
+
+	t.Run("4 lists", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := CrossJoinBy4(values("a"), values(1), values(true), values(10, 20), lo.T4[string, int, bool, int])
+		assertSeqSupportBreak(t, r)
+		is.Equal([]lo.Tuple4[string, int, bool, int]{
+			lo.T4("a", 1, true, 10),
+			lo.T4("a", 1, true, 20),
+		}, slices.Collect(r))
+	})
+
+	t.Run("5 lists", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := CrossJoinBy5(values("a"), values(1), values(true), values[float32](0.5), values(10, 20), lo.T5[string, int, bool, float32, int])
+		assertSeqSupportBreak(t, r)
+		is.Equal([]lo.Tuple5[string, int, bool, float32, int]{
+			lo.T5[string, int, bool, float32, int]("a", 1, true, 0.5, 10),
+			lo.T5[string, int, bool, float32, int]("a", 1, true, 0.5, 20),
+		}, slices.Collect(r))
+	})
+
+	t.Run("6 lists", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := CrossJoinBy6(values("a"), values(1), values(true), values[float32](0.5), values(0.05), values(10, 20), lo.T6[string, int, bool, float32, float64, int])
+		assertSeqSupportBreak(t, r)
+		is.Equal([]lo.Tuple6[string, int, bool, float32, float64, int]{
+			lo.T6[string, int, bool, float32, float64, int]("a", 1, true, 0.5, 0.05, 10),
+			lo.T6[string, int, bool, float32, float64, int]("a", 1, true, 0.5, 0.05, 20),
+		}, slices.Collect(r))
+	})
+
+	t.Run("7 lists", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := CrossJoinBy7(values("a"), values(1), values(true), values[float32](0.5), values(0.05), values[int8](7), values(10, 20), lo.T7[string, int, bool, float32, float64, int8, int])
+		assertSeqSupportBreak(t, r)
+		is.Equal([]lo.Tuple7[string, int, bool, float32, float64, int8, int]{
+			lo.T7[string, int, bool, float32, float64, int8, int]("a", 1, true, 0.5, 0.05, 7, 10),
+			lo.T7[string, int, bool, float32, float64, int8, int]("a", 1, true, 0.5, 0.05, 7, 20),
+		}, slices.Collect(r))
+	})
+
+	t.Run("8 lists", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := CrossJoinBy8(values("a"), values(1), values(true), values[float32](0.5), values(0.05), values[int8](7), values[int16](8), values(10, 20), lo.T8[string, int, bool, float32, float64, int8, int16, int])
+		assertSeqSupportBreak(t, r)
+		is.Equal([]lo.Tuple8[string, int, bool, float32, float64, int8, int16, int]{
+			lo.T8[string, int, bool, float32, float64, int8, int16, int]("a", 1, true, 0.5, 0.05, 7, 8, 10),
+			lo.T8[string, int, bool, float32, float64, int8, int16, int]("a", 1, true, 0.5, 0.05, 7, 8, 20),
+		}, slices.Collect(r))
+	})
+
+	t.Run("9 lists", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := CrossJoinBy9(values("a"), values(1), values(true), values[float32](0.5), values(0.05), values[int8](7), values[int16](8), values[int32](9), values(10, 20), lo.T9[string, int, bool, float32, float64, int8, int16, int32, int])
+		assertSeqSupportBreak(t, r)
+		is.Equal([]lo.Tuple9[string, int, bool, float32, float64, int8, int16, int32, int]{
+			lo.T9[string, int, bool, float32, float64, int8, int16, int32, int]("a", 1, true, 0.5, 0.05, 7, 8, 9, 10),
+			lo.T9[string, int, bool, float32, float64, int8, int16, int32, int]("a", 1, true, 0.5, 0.05, 7, 8, 9, 20),
+		}, slices.Collect(r))
 	})
 }

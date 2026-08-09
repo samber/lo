@@ -263,7 +263,9 @@ func TestIntersect(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			result := slices.Collect(Intersect(tt.inputs...))
+			seq := Intersect(tt.inputs...)
+			assertSeqSupportBreak(t, seq)
+			result := slices.Collect(seq)
 			if tt.expected == nil {
 				is.Empty(result)
 			} else {
@@ -310,7 +312,9 @@ func TestIntersectBy(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			result := slices.Collect(IntersectBy(transform, tt.inputs...))
+			seq := IntersectBy(transform, tt.inputs...)
+			assertSeqSupportBreak(t, seq)
+			result := slices.Collect(seq)
 			if tt.expected == nil {
 				is.Empty(result)
 			} else {
@@ -356,7 +360,9 @@ func TestUnion(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
-			result := slices.Collect(Union(tt.inputs...))
+			seq := Union(tt.inputs...)
+			assertSeqSupportBreak(t, seq)
+			result := slices.Collect(seq)
 			if tt.expected == nil {
 				is.Empty(result)
 			} else {

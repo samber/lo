@@ -28,7 +28,9 @@ func TestRange(t *testing.T) {
 			t.Parallel()
 			is := assert.New(t)
 
-			result := slices.Collect(Range(tt.n))
+			seq := Range(tt.n)
+			assertSeqSupportBreak(t, seq)
+			result := slices.Collect(seq)
 			if tt.expected == nil {
 				is.Empty(result)
 			} else {
@@ -121,7 +123,9 @@ func TestRangeWithSteps(t *testing.T) {
 				t.Parallel()
 				is := assert.New(t)
 
-				result := slices.Collect(RangeWithSteps(tt.start, tt.end, tt.step))
+				seq := RangeWithSteps(tt.start, tt.end, tt.step)
+				assertSeqSupportBreak(t, seq)
+				result := slices.Collect(seq)
 				if tt.expected == nil {
 					is.Empty(result)
 				} else {
@@ -161,6 +165,7 @@ func TestRangeWithSteps(t *testing.T) {
 		is := assert.New(t)
 
 		result := RangeWithSteps[float32](-1.0, -4.0, -1.0)
+		assertSeqSupportBreak(t, result)
 		is.Equal([]float32{-1.0, -2.0, -3.0}, slices.Collect(result))
 	})
 
