@@ -747,3 +747,23 @@ func TestCoalesceMapOrEmpty(t *testing.T) {
 		})
 	}
 }
+
+func TestIsNilOrEmpty(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	var nilStr *string
+	is.True(IsNilOrEmpty(nilStr))
+	is.False(IsNotNilOrEmpty(nilStr))
+
+	empty := ""
+	is.True(IsNilOrEmpty(&empty))
+	nonEmpty := "x"
+	is.False(IsNilOrEmpty(&nonEmpty))
+	is.True(IsNotNilOrEmpty(&nonEmpty))
+
+	zero := 0
+	is.True(IsNilOrEmpty(&zero))
+	one := 1
+	is.False(IsNilOrEmpty(&one))
+}
