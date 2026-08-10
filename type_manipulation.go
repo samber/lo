@@ -156,21 +156,20 @@ func IsNotEmpty[T comparable](v T) bool {
 	return zero != v
 }
 
-// IsEmptyFromPtr reports whether the pointed-to value is empty (or the pointer is nil).
+// IsNilOrEmpty reports whether the pointer is nil or points to an empty value.
 // A nil pointer is treated as empty. For a non-nil pointer, the result is IsEmpty(*x).
 // Play: https://go.dev/play/p/P2sD0PMXw4F
-func IsEmptyFromPtr[T comparable](x *T) bool {
+func IsNilOrEmpty[T comparable](x *T) bool {
 	if x == nil {
 		return true
 	}
 	return IsEmpty(*x)
 }
 
-// IsNotEmptyFromPtr reports whether the pointed-to value is not empty.
-// A nil pointer is treated as empty (returns false).
+// IsNotNilOrEmpty reports whether the pointer is non-nil and points to a non-empty value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
-func IsNotEmptyFromPtr[T comparable](x *T) bool {
-	return !IsEmptyFromPtr(x)
+func IsNotNilOrEmpty[T comparable](x *T) bool {
+	return !IsNilOrEmpty(x)
 }
 
 // Coalesce returns the first non-empty arguments. Arguments must be comparable.

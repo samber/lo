@@ -748,22 +748,22 @@ func TestCoalesceMapOrEmpty(t *testing.T) {
 	}
 }
 
-func TestIsEmptyFromPtr(t *testing.T) {
+func TestIsNilOrEmpty(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
 
 	var nilStr *string
-	is.True(IsEmptyFromPtr(nilStr))
-	is.False(IsNotEmptyFromPtr(nilStr))
+	is.True(IsNilOrEmpty(nilStr))
+	is.False(IsNotNilOrEmpty(nilStr))
 
 	empty := ""
-	is.True(IsEmptyFromPtr(&empty))
+	is.True(IsNilOrEmpty(&empty))
 	nonEmpty := "x"
-	is.False(IsEmptyFromPtr(&nonEmpty))
-	is.True(IsNotEmptyFromPtr(&nonEmpty))
+	is.False(IsNilOrEmpty(&nonEmpty))
+	is.True(IsNotNilOrEmpty(&nonEmpty))
 
 	zero := 0
-	is.True(IsEmptyFromPtr(&zero))
+	is.True(IsNilOrEmpty(&zero))
 	one := 1
-	is.False(IsEmptyFromPtr(&one))
+	is.False(IsNilOrEmpty(&one))
 }
