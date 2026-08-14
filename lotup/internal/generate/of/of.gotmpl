@@ -1,0 +1,14 @@
+{{- define "decls-types" -}}
+[{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }} any]
+{{- end }}
+{{- define "decls-args" -}}
+({{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}v{{ add $i 1 }} T{{ add $i 1 }}{{ end }})
+{{- end }}
+{{- define "decls-tuple" -}}
+Tuple{{ .N }}[{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }}]
+{{- end }}
+func Of{{ .N }}{{ template "decls-types" . }}{{ template "decls-args" . }} {{ template "decls-tuple" . }} {
+	return {{ template "decls-tuple" . }}{
+		{{ range $i := .N }}{{if ne $i 0}} {{end}}V{{ add $i 1 }}: v{{ add $i 1 }},{{ end }}
+	}
+}

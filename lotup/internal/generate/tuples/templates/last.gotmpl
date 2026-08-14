@@ -1,0 +1,6 @@
+{{- define "tuple-type" -}}
+Tuple{{ .N }}[{{ range $i := .N }}{{ if ne $i 0 }}, {{ end }}T{{ add $i 1 }}{{ end }}]
+{{- end }}
+func (t {{ template "tuple-type" . }}) Last() T{{ .N }} {
+	return t.V{{ .N }}
+}
