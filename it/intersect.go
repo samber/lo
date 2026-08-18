@@ -250,7 +250,7 @@ func WithoutBy[T any, K comparable, I ~func(func(T) bool)](collection I, transfo
 // WithoutNth returns a sequence excluding the nth value.
 // Will allocate a map large enough to hold all distinct nths.
 // Play: https://go.dev/play/p/KGE7Lpsk18P
-func WithoutNth[T comparable, I ~func(func(T) bool)](collection I, nths ...int) I {
+func WithoutNth[T any, I ~func(func(T) bool)](collection I, nths ...int) I {
 	set := lo.Keyify(nths)
 	return RejectI(collection, func(_ T, index int) bool { return lo.HasKey(set, index) })
 }

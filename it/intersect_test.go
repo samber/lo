@@ -521,6 +521,15 @@ func TestWithoutNth(t *testing.T) {
 		nonempty := WithoutNth(allStrings)
 		is.IsType(nonempty, allStrings, "type preserved")
 	})
+
+	t.Run("non-comparable element type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		seq := values([]int{1, 2}, []int{3, 4}, []int{5, 6})
+		result := slices.Collect(WithoutNth(seq, 1))
+		is.Equal([][]int{{1, 2}, {5, 6}}, result)
+	})
 }
 
 func TestElementsMatch(t *testing.T) {
