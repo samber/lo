@@ -1,19 +1,13 @@
 ---
-title: "String"
-description: Perform transformations on strings
+title: "Go String Helpers"
+description: "11 helpers for Go string manipulation: camelCase, snake_case, truncation, trimming — type-safe generics."
 sidebar_position: 35
 hide_table_of_contents: true
 ---
 
 # String - Core helpers
 
-This page lists all string operations available in the core package of lo.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+11 helpers for Go string manipulation: camelCase, snake_case, truncation, trimming — type-safe generics.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="core"
   subCategory="string"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

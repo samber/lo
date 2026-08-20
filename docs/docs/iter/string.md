@@ -1,19 +1,13 @@
 ---
-title: String
-description: Perform transformations on strings
+title: "Go Iterator String Helpers"
+description: "8 helpers for Go 1.23+ string iteration: trim, split, and rune-based sequence helpers."
 sidebar_position: 40
 hide_table_of_contents: true
 ---
 
 # String - Iterator helpers
 
-This page lists all operations on strings, available in the `it` lo sub-package.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+8 helpers for Go 1.23+ string iteration: trim, split, and rune-based sequence helpers.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="iter"
   subCategory="string"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

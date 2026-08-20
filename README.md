@@ -14,6 +14,8 @@
 
 A utility library based on Go 1.18+ generics that makes it easier to work with slices, maps, strings, channels, and functions. It provides dozens of handy methods to simplify common coding tasks and improve code readability. It may look like [Lodash](https://github.com/lodash/lodash) in some aspects.
 
+📚 **Full documentation, runnable examples and the API reference: [lo.samber.dev](https://lo.samber.dev/docs/getting-started)** — 449 documented helpers with copy-paste Go Playground examples.
+
 5 to 10 helpers may overlap with those from the Go standard library, in packages `slices` and `maps`. I feel this library is legitimate and offers many more valuable abstractions.
 
 **See also:**

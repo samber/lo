@@ -1,19 +1,13 @@
 ---
-title: "Tuple"
-description: Manipulate multiple items in a single variable
+title: "Go Tuple Helpers"
+description: "11 helpers to pack and unpack multiple values into a single Go variable: Tuple2 to Tuple9, Zip and Unzip."
 sidebar_position: 90
 hide_table_of_contents: true
 ---
 
 # Tuple - Core helpers
 
-This page lists all tuple operations available in the core package of lo.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+11 helpers to pack and unpack multiple values into a single Go variable: Tuple2 to Tuple9, Zip and Unzip.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="core"
   subCategory="tuple"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

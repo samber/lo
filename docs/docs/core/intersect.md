@@ -1,19 +1,13 @@
 ---
-title: "Intersect"
-description: Loop over a collection and find similar items
+title: "Go Set Operations on Slices"
+description: "21 helpers for set operations on Go slices: union, intersection, difference, contains — type-safe generics."
 sidebar_position: 50
 hide_table_of_contents: true
 ---
 
 # Intersection - Core helpers
 
-This page lists all intersection helpers, available in the core package of lo.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+21 helpers for set operations on Go slices: union, intersection, difference, contains — type-safe generics.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="core"
   subCategory="intersect"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

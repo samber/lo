@@ -12,7 +12,7 @@ sidebar_position: 0
 
 **Why `lo` Exists**
 
-Go's standard library is excellent for many use cases, but it lacks the higher-level abstractions that developers coming from JavaScript, Python, or other languages often miss. While Go 1.18 introduced generics, the standard library's `slices` and `maps` packages only cover about 5-10 basic helpers. `lo` provides hundreds of additional utilities that make everyday programming tasks more enjoyable and less error-prone.
+Go's standard library is excellent for many use cases, but it lacks the higher-level abstractions that developers coming from JavaScript, Python, or other languages often miss. While Go 1.18 introduced generics, the standard library's `slices` and `maps` packages only cover about 5-10 basic helpers. `lo` provides 449 documented utilities that make everyday programming tasks more enjoyable and less error-prone.
 
 **The name "lo"**
 

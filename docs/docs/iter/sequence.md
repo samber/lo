@@ -1,19 +1,13 @@
 ---
-title: Sequence
-description: Iterate over sequences and perform transformations
+title: "Go Iterator Sequence Helpers (iter.Seq)"
+description: "43 general-purpose helpers for Go 1.23+ iterators: map, filter, reduce, group, take, drop — lazy evaluation."
 sidebar_position: 20
 hide_table_of_contents: true
 ---
 
 # Sequence - Iterator helpers
 
-This page lists all operations on sequences, available in the `it` lo sub-package.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+43 general-purpose helpers for Go 1.23+ iterators: map, filter, reduce, group, take, drop — lazy evaluation.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="iter"
   subCategory="sequence"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

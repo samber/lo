@@ -1,19 +1,13 @@
 ---
-title: Find
-description: Iterate over a collection and find element(s)
+title: "Go Iterator Search Helpers (iter.Seq)"
+description: "38 helpers to find and aggregate elements in a Go 1.23+ iterator (iter.Seq) — lazy, allocation-free."
 sidebar_position: 50
 hide_table_of_contents: true
 ---
 
 # Find - Iterator helpers
 
-This page lists all search helpers, available in the `it` lo sub-package.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+38 helpers to find and aggregate elements in a Go 1.23+ iterator (iter.Seq) — lazy, allocation-free.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="iter"
   subCategory="find"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

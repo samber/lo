@@ -93,17 +93,33 @@ function HomepageHeader() {
             Getting started - 5min ⏱️
           </Link>
         </div>
+        <div className={clsx('row', styles.stats)}>
+          <div className="col text--center">
+            <strong>449</strong> documented helpers
+          </div>
+          <div className="col text--center">
+            <strong>21k+</strong> GitHub stars
+          </div>
+          <div className="col text--center">
+            <strong>12,500+</strong> packages import it
+          </div>
+          <div className="col text--center">
+            No breaking changes before v2, <strong>MIT</strong> licensed
+          </div>
+        </div>
+        <p style={{marginTop: '1rem', fontSize: '0.9rem'}}>
+          <Link to="/production-ready">Evaluating lo for production? See the full breakdown →</Link>
+        </p>
       </div>
     </header>
   );
 }
 
 export default function Home(): JSX.Element {
-  const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`🏎️ ${siteConfig.title}: ${siteConfig.tagline}`}
-      description="Reusable utility library for Go">
+      title="Go Generics Utility Library — 449 Type-safe Helpers"
+      description="A Lodash-style utility library for Go 1.18+ generics: 449 type-safe helpers for slices, maps, strings, channels and iterators. Zero dependencies.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

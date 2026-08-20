@@ -1,19 +1,13 @@
 ---
-title: "Condition"
-description: Perform transformations on types
+title: "Ternary Operator in Go"
+description: "Go has no built-in ternary operator: Ternary, If/Else and Switch bring conditional expressions to Go."
 sidebar_position: 45
 hide_table_of_contents: true
 ---
 
 # Conditional - Core helpers
 
-This page lists all conditional operations available in the core package of lo.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+Go has no built-in ternary operator: Ternary, If/Else and Switch bring conditional expressions to Go.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="core"
   subCategory="condition"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

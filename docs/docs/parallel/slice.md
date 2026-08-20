@@ -1,19 +1,13 @@
 ---
-title: Slice
-description: Loop over slices and perform transformations in parallel
+title: "Parallel Slice Processing in Go"
+description: "5 goroutine-per-item variants of core slice helpers for Go: Map, ForEach, GroupBy, PartitionBy, Times."
 sidebar_position: 0
 hide_table_of_contents: true
 ---
 
 # Slice - Parallel helpers
 
-This page lists all operations on slices, available in the `parallel` lo sub-package.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+5 goroutine-per-item variants of core slice helpers for Go: Map, ForEach, GroupBy, PartitionBy, Times.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="parallel"
   subCategory="slice"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

@@ -1,19 +1,13 @@
 ---
-title: "Math"
-description: Perform math operations on collections
+title: "Go Math Helpers for Collections"
+description: "14 helpers for numeric aggregation over Go collections: sum, mean, min/max, range generation — type-safe generics."
 sidebar_position: 60
 hide_table_of_contents: true
 ---
 
 # Math - Core helpers
 
-This page lists all math operations available in the core package of lo.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+14 helpers for numeric aggregation over Go collections: sum, mean, min/max, range generation — type-safe generics.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="core"
   subCategory="math"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

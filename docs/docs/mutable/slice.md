@@ -1,18 +1,12 @@
 ---
-title: Slice
-description: Update slices in place
+title: "In-Place Slice Mutation in Go"
+description: "5 zero-allocation, in-place variants of core slice helpers for performance-critical Go code: Filter, Map, Reverse, Shuffle, Fill."
 sidebar_position: 0
 ---
 
 # Slice - Mutable helpers
 
-This page lists all operations on slices, available in the `mutable` lo sub-package.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+5 zero-allocation, in-place variants of core slice helpers for performance-critical Go code: Filter, Map, Reverse, Shuffle, Fill.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -20,3 +14,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="mutable"
   subCategory="slice"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

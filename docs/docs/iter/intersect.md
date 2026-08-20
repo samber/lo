@@ -1,19 +1,13 @@
 ---
-title: Intersect
-description: Iterate over a collection and find similar items
+title: "Go Iterator Set Operations (iter.Seq)"
+description: "16 set-operation helpers for Go 1.23+ iterators: union, intersection, difference — lazy evaluation."
 sidebar_position: 60
 hide_table_of_contents: true
 ---
 
 # Intersection - Iterator helpers
 
-This page lists all intersection helpers, available in the `it` lo sub-package.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+16 set-operation helpers for Go 1.23+ iterators: union, intersection, difference — lazy evaluation.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="iter"
   subCategory="intersect"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

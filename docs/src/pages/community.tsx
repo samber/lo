@@ -20,11 +20,32 @@ function Community() {
             <br/>
             "If you want to go fast, go alone. If you want to go far, go together."
           </div>
-          <img className={styles.headerImg} src="/img/go-community.png" />
+          <img
+            className={styles.headerImg}
+            src="/img/go-community.webp"
+            alt="Illustration of the Go gopher community around samber/lo"
+            width={1200}
+            height={430}
+            fetchPriority="high"
+          />
         </div>
       </header>
       <main>
         <div className="container">
+          <div className="row margin-vert--lg text--center">
+            <div className="col">
+              <strong>449</strong> documented helpers
+            </div>
+            <div className="col">
+              <strong>21k+</strong> GitHub stars
+            </div>
+            <div className="col">
+              <strong>161</strong> contributors
+            </div>
+            <div className="col">
+              <strong>12,500+</strong> packages depend on it
+            </div>
+          </div>
           <div className="row margin-vert--lg">
             <div className="col text--center padding-vert--md">
               <div className="card">
@@ -49,7 +70,7 @@ function Community() {
                   <p>You like this project?</p>
                 </div>
                 <div className="card__footer">
-                  <Link to="https://github.com/samber/lo?tab=readme-ov-file#-contributing" className="button button--outline button--primary button--block">Start contributing!</Link>
+                  <Link to="/docs/contributing" className="button button--outline button--primary button--block">Start contributing!</Link>
                 </div>
               </div>
             </div>
@@ -63,7 +84,7 @@ function Community() {
                   <p>Follow &#64;samuelberthe on Twitter</p>
                 </div>
                 <div className="card__footer">
-                  <Link to="https://twitter.com/samuelberthe" className="button button--outline button--primary button--block">Follow &#64;SamuelBerthe</Link>
+                  <Link to="https://twitter.com/samuelberthe" className="button button--outline button--primary button--block">Follow &#64;samuelberthe</Link>
                 </div>
               </div>
             </div>

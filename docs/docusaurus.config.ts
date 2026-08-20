@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'samber/lo — Go Generics Utility Library',
+  title: 'samber/lo - Go Generics Utility Library',
   tagline: 'Type-safe utility library for Go using generics: slices, maps, and more',
   favicon: 'img/favicon.ico',
 
@@ -83,6 +83,15 @@ const config: Config = {
         content: '4576E3F85783A82149A0DB35A150F7EB',
       },
     },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'alternate',
+        type: 'text/plain',
+        href: '/llms.txt',
+        title: 'llms.txt',
+      },
+    },
         {
         tagName: 'script',
         attributes: {
@@ -114,27 +123,10 @@ const config: Config = {
         content: 'go, golang, lo, slices, maps, strings, channels, functions, helpers, concurrency, error handling, reusable, utility, framework, library, samber',
       },
     },
-    {
-      tagName: 'meta',
-      attributes: {
-        property: 'og:image',
-        content: 'https://lo.samber.dev/img/cover.png',
-      },
-    },
-    {
-      tagName: 'meta',
-      attributes: {
-        name: 'twitter:card',
-        content: 'summary_large_image',
-      },
-    },
-    {
-      tagName: 'meta',
-      attributes: {
-        name: 'twitter:image',
-        content: 'https://lo.samber.dev/img/cover.png',
-      },
-    },
+    // NOTE: og:image, twitter:card and twitter:image are NOT declared here.
+    // Docusaurus already emits them automatically from `themeConfig.image`
+    // (see below). Declaring them a second time here produced duplicate
+    // meta tags with identical values on every page.
     {
       tagName: 'meta',
       attributes: {
@@ -150,14 +142,9 @@ const config: Config = {
         content: '@samuelberthe',
       },
     },
-    // og:locale signals language/region to crawlers and social platforms
-    {
-      tagName: 'meta',
-      attributes: {
-        property: 'og:locale',
-        content: 'en_US',
-      },
-    },
+    // og:locale is NOT declared here: Docusaurus already emits it from
+    // `i18n.defaultLocale` ("en"). A second, hardcoded "en_US" value here
+    // produced two conflicting og:locale tags on every page.
     // og:site_name provides branding context in social share cards
     {
       tagName: 'meta',
@@ -165,6 +152,59 @@ const config: Config = {
         property: 'og:site_name',
         content: 'samber/lo',
       },
+    },
+    // Global entity graph: ties the site, the software project and its
+    // author together for search engines and AI answer engines. Injected
+    // once in <head>, present on every page (Docusaurus renders headTags
+    // statically at build time, so this is in the SSG HTML, not client-only).
+    {
+      tagName: 'script',
+      attributes: {
+        type: 'application/ld+json',
+      },
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Person',
+            '@id': 'https://lo.samber.dev/#author',
+            name: 'Samuel Berthe',
+            url: 'https://samuel-berthe.fr',
+            sameAs: [
+              'https://github.com/samber',
+              'https://twitter.com/samuelberthe',
+              'https://samuelberthe.substack.com',
+            ],
+          },
+          {
+            '@type': 'WebSite',
+            '@id': 'https://lo.samber.dev/#website',
+            url: 'https://lo.samber.dev/',
+            name: 'samber/lo',
+            description: 'Documentation for samber/lo, a Lodash-style generic utility library for Go.',
+            inLanguage: 'en',
+            publisher: {'@id': 'https://lo.samber.dev/#author'},
+          },
+          {
+            '@type': 'SoftwareSourceCode',
+            '@id': 'https://lo.samber.dev/#software',
+            name: 'samber/lo',
+            alternateName: 'lo',
+            description: 'A Lodash-style utility library for Go based on generics. 449 documented, type-safe helpers for slices, maps, strings, channels and iterators.',
+            url: 'https://lo.samber.dev/',
+            codeRepository: 'https://github.com/samber/lo',
+            programmingLanguage: {
+              '@type': 'ComputerLanguage',
+              name: 'Go',
+              alternateName: 'Golang',
+            },
+            runtimePlatform: 'Go 1.18+',
+            license: 'https://github.com/samber/lo/blob/master/LICENSE',
+            author: {'@id': 'https://lo.samber.dev/#author'},
+            keywords: 'go, golang, generics, lodash, slice, map, functional programming, utility library',
+          },
+        ],
+      }),
     },
     // NOTE: do NOT add a global <link rel="canonical"> here.
     // Docusaurus injects a correct per-page canonical automatically
@@ -210,6 +250,11 @@ const config: Config = {
           remarkPlugins: [],
           rehypePlugins: [],
         },
+        // No blog content exists yet. The classic preset enables a blog by
+        // default, which was shipping an empty, indexable /blog page (200,
+        // in the sitemap, zero content) — disable it until there is a first
+        // real post.
+        blog: false,
           sitemap: {
           lastmod: 'date',
           changefreq: 'weekly',
@@ -264,7 +309,9 @@ const config: Config = {
     // og:type defaults to "website"; individual doc pages that need
     // "article" should override via their page's <Layout> or frontmatter.
     metadata: [
-      {name: 'og:type', content: 'website'},
+      // Open Graph tags use the `property` attribute, not `name` -- `name`
+      // is ignored by strict OG parsers (Facebook, LinkedIn...).
+      {property: 'og:type', content: 'website'},
       // Fallback description for pages that don't set their own
       {name: 'description', content: 'A Lodash-style utility library for Go. Slices, maps, channels, and more — type-safe, using generics.'},
     ],
@@ -365,6 +412,31 @@ const config: Config = {
             {
               label: 'Substack',
               to: 'https://samuelberthe.substack.com',
+            },
+          ],
+        },
+        {
+          title: 'Ecosystem',
+          items: [
+            {
+              label: 'ro — reactive streams for Go',
+              to: 'https://ro.samber.dev',
+            },
+            {
+              label: 'do — dependency injection',
+              to: 'https://github.com/samber/do',
+            },
+            {
+              label: 'mo — monads (Option, Result...)',
+              to: 'https://github.com/samber/mo',
+            },
+            {
+              label: 'oops — errors with context',
+              to: 'https://github.com/samber/oops',
+            },
+            {
+              label: 'hot — in-memory caching',
+              to: 'https://github.com/samber/hot',
             },
           ],
         },

@@ -1,19 +1,13 @@
 ---
-title: "Channel"
-description: Loop over channel and perform transformations
+title: "Go Channel Helpers"
+description: "9 helpers to buffer, dispatch and transform Go channels: fan-out, batching, and sequence conversion."
 sidebar_position: 20
 hide_table_of_contents: true
 ---
 
 # Channel - Core helpers
 
-This page lists all operations on channels, available in the core package of lo.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+9 helpers to buffer, dispatch and transform Go channels: fan-out, batching, and sequence conversion.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="core"
   subCategory="channel"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.
