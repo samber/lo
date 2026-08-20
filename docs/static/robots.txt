@@ -67,3 +67,5 @@ Disallow: /search
 Disallow: /tags/
 
 Sitemap: https://lo.samber.dev/sitemap.xml
+
+# llms.txt: https://lo.samber.dev/llms.txt
