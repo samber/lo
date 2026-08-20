@@ -1,0 +1,158 @@
+---
+title: samber/lo vs go-funk — migrating from reflection to generics
+description: A function-mapping table and migration guide from thoas/go-funk (reflection-based, unmaintained since 2022) to samber/lo (generics, actively maintained).
+---
+
+<script type="application/ld+json">
+{`{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is go-funk deprecated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not formally archived, but there has been no tagged release since December 2022 (v0.9.3) and no commit since July 2024."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will my code break if I keep using go-funk?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not immediately. The risk accumulates over time: no security patches, no compatibility updates for newer Go versions, and any bug is unlikely to be fixed upstream."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use both go-funk and samber/lo in the same codebase during migration?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. There is no conflict between the two libraries. Convert call sites incrementally, file by file, then remove the go-funk import once a file no longer needs it."
+      }
+    }
+  ]
+}`}
+</script>
+
+<div className="container margin-vert--lg">
+
+# samber/lo vs go-funk: migrating from reflection to generics
+
+**The constraint changed, not the quality of go-funk's original design.** `go-funk`
+was built before Go had generics — reflection (`interface{}` plus `reflect`) was the
+only way to write a generic-feeling collections library in 2016. Go 1.18 (March 2022)
+made compile-time generics possible, and `lo` was built on top of them from the start.
+This page is a migration guide, not a takedown.
+
+## The core difference: reflection vs generics
+
+```go
+// go-funk: type errors surface at RUNTIME, inside the function
+result := funk.Map(users, func(u User) string { return u.Name }) // arr is interface{}
+names, ok := result.([]string) // you must type-assert the result yourself
+
+// lo: type errors surface at COMPILE TIME
+names := lo.Map(users, func(u User, i int) string { return u.Name }) // []string, no assertion
+```
+
+If you pass a mismatched callback signature to `funk.Map`, it panics at runtime — Go's
+type checker cannot see through `interface{}`. The same mistake with `lo.Map` is a
+compile error, caught before the code ships.
+
+## Maintenance status
+
+Facts, not opinion — verify at the linked repos:
+
+| | go-funk | samber/lo |
+|---|---|---|
+| Stars | 4,932 | 21,408 |
+| Last push | 2024-07-24 | 2026-08-17 |
+| Last release | v0.9.3 (2022-12-26) | v1.53.0 |
+| Not archived | ✅ | ✅ |
+
+`go-funk` is not archived and the repository still exists, but there has been no
+release since December 2022 and no commit since mid-2024.
+
+## Performance
+
+See the [verified benchmark](/compare/performance): `funk.Map` allocates roughly 4x
+more memory than `lo.Map` on the same workload (167.9 MiB vs 38.15 MiB for a
+1,000,000-element transform), because reflection requires boxing every element into
+and out of `interface{}`. `lo.Map` allocates identically to a hand-written loop.
+
+## Function mapping table
+
+Verified against `go doc github.com/thoas/go-funk` (v0.9.3). go-funk additionally
+ships type-specific variants for each primitive (`FilterInt`, `FilterString`...) to
+work around the lack of generics — those collapse into the single generic `lo`
+function on the right.
+
+| go-funk | samber/lo | Notes |
+|---|---|---|
+| `funk.Map(arr, fn)` | `lo.Map(arr, fn)` | `lo`'s callback also receives the index |
+| `funk.Filter(arr, fn)` | `lo.Filter(arr, fn)` | |
+| `funk.Reduce(arr, fn, acc)` | `lo.Reduce(arr, fn, acc)` | |
+| `funk.FlatMap(arr, fn)` | `lo.FlatMap(arr, fn)` | |
+| `funk.ForEach(arr, fn)` | `lo.ForEach(arr, fn)` | |
+| `funk.Find(arr, fn)` | `lo.Find(arr, fn)` | `lo` returns `(T, bool)` instead of `interface{}` |
+| `funk.Contains(in, elem)` | `lo.Contains(in, elem)` or `slices.Contains` | |
+| `funk.IndexOf(in, elem)` | `lo.IndexOf(in, elem)` or `slices.Index` | |
+| `funk.LastIndexOf(in, elem)` | `lo.LastIndexOf(in, elem)` | |
+| `funk.Uniq(in)` | `lo.Uniq(in)` | |
+| `funk.UniqBy(in, fn)` | `lo.UniqBy(in, fn)` | |
+| `funk.Without(in, values...)` | `lo.Without(in, values...)` | |
+| `funk.Difference(x, y)` | `lo.Difference(x, y)` | |
+| `funk.Intersect(x, y)` | `lo.Intersect(x, y)` | |
+| `funk.Union(collections...)` | `lo.Union(collections...)` | |
+| `funk.Chunk(arr, size)` | `lo.Chunk(arr, size)` or `slices.Chunk` | |
+| `funk.Flatten(out)` | `lo.Flatten(out)` | |
+| `funk.Reverse(in)` | `lo.Reverse(in)` or `slices.Reverse` | see the [semantics note](/compare/samber-lo-vs-go-stdlib) — `lo.Reverse` returns a new slice, `slices.Reverse` mutates in place |
+| `funk.Shuffle(in)` | `lo.Shuffle(in)` | |
+| `funk.Head(arr)` / `funk.Tail(arr)` | `lo.First(arr)` / `lo.Last(arr)` | `lo` returns `(T, bool)` |
+| `funk.Keys(out)` / `funk.Values(out)` | `lo.Keys(out)` / `lo.Values(out)` | for maps |
+| `funk.ToMap(in, pivot)` | `lo.KeyBy(in, fn)` or `lo.Associate(in, fn)` | different call shape — see the helper docs |
+| `funk.Get(out, path)` / `funk.Set(...)` | *(no direct equivalent)* | go-funk's path-based reflection accessors have no `lo` counterpart — `lo` doesn't do dynamic field access by string path |
+| `funk.InnerJoin`/`LeftJoin`/`RightJoin`/`OuterJoin` | `lo.CrossJoinX` family (partial) | not a drop-in replacement — different join semantics, check both docs |
+
+## Migration guide, step by step
+
+1. **Add `lo`, keep `go-funk` for now.** `go get github.com/samber/lo@v1`. You don't
+   need to migrate everything in one PR — both libraries can coexist while you convert
+   call sites incrementally.
+2. **Start with the highest-traffic call sites**, not the easiest ones — that's where
+   the compile-time safety and performance gain actually matter.
+3. **Convert one file at a time**, using the table above. Most conversions are a
+   mechanical rename plus removing a type assertion, since `lo` returns the concrete
+   type directly instead of `interface{}`.
+4. **Let the compiler find the rest.** Once a file no longer imports `go-funk`, remove
+   the import — the compiler will tell you if you missed a call site.
+5. **Remove `go-funk` from `go.mod`** once no file imports it:
+   `go mod tidy`.
+
+## When to stay on go-funk
+
+- Your codebase is still on Go < 1.18 (no generics available).
+- You depend on `funk.Get`/`funk.Set`/`funk.Prune` — dynamic, path-based field access
+  by reflection. `lo` intentionally doesn't do this; it isn't a drop-in replacement for
+  that specific capability.
+- Your codebase is large, stable, and the migration itself would introduce more risk
+  than the status quo — a working, unmaintained dependency is sometimes the correct
+  engineering trade-off over a migration with no functional benefit to your users.
+
+## FAQ
+
+**Is go-funk deprecated?**
+Not formally — the repository is not archived. But there has been no tagged release
+since December 2022 and no commit since July 2024 (verified via the GitHub API on
+2026-08-20 — check the repo directly for current status).
+
+**Will my code break if I keep using go-funk?**
+Not immediately. The risk is accumulating: no security patches, no compatibility
+updates for newer Go versions, and any bug you hit is unlikely to be fixed upstream.
+
+**Can I use both libraries in the same codebase during migration?**
+Yes — there's no conflict. Convert incrementally, file by file.
+
+</div>

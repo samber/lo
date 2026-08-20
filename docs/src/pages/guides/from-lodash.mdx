@@ -1,0 +1,149 @@
+---
+title: Lodash to Go — function equivalence table
+description: A function-by-function mapping from Lodash (JavaScript) to samber/lo (Go generics), for developers moving from Node.js/TypeScript to Go.
+---
+
+<div className="container margin-vert--lg">
+
+# Lodash to Go: the equivalence table
+
+If you're coming from JavaScript or TypeScript, `samber/lo` is the closest equivalent
+to [Lodash](https://lodash.com) in Go: type-safe, generic helpers for the same class
+of everyday collection operations. This table maps the Lodash functions developers
+reach for most often to their `lo` equivalent — verified against `lo`'s current API,
+not guessed.
+
+Cases with no equivalent are listed too, with why — Go's type system and standard
+library make some Lodash patterns unnecessary or impossible to replicate directly.
+
+## Array
+
+| Lodash | samber/lo | Notes |
+|---|---|---|
+| `_.map(arr, fn)` | `lo.Map(arr, fn)` | `lo`'s callback receives `(item, index)` |
+| `_.filter(arr, fn)` | `lo.Filter(arr, fn)` | |
+| `_.reduce(arr, fn, acc)` | `lo.Reduce(arr, fn, acc)` | |
+| `_.find(arr, fn)` | `lo.Find(arr, fn)` | returns `(T, bool)`, not `undefined` |
+| `_.forEach(arr, fn)` | `lo.ForEach(arr, fn)` | |
+| `_.flatMap(arr, fn)` | `lo.FlatMap(arr, fn)` | |
+| `_.flatten(arr)` | `lo.Flatten(arr)` | one level deep, like Lodash |
+| `_.compact(arr)` | `lo.Compact(arr)` | drops zero values, not just falsy — Go has no universal "falsy" |
+| `_.chunk(arr, size)` | `lo.Chunk(arr, size)` or `slices.Chunk` (Go 1.23+) | |
+| `_.uniq(arr)` | `lo.Uniq(arr)` | |
+| `_.uniqBy(arr, fn)` | `lo.UniqBy(arr, fn)` | |
+| `_.groupBy(arr, fn)` | `lo.GroupBy(arr, fn)` | Go has no built-in groupBy — this is one of `lo`'s most-used helpers |
+| `_.partition(arr, fn)` | `lo.PartitionBy(arr, fn)` | |
+| `_.difference(a, b)` | `lo.Difference(a, b)` | |
+| `_.intersection(a, b)` | `lo.Intersect(a, b)` | |
+| `_.union(...arrs)` | `lo.Union(...arrs)` | |
+| `_.without(arr, ...vals)` | `lo.Without(arr, ...vals)` | |
+| `_.shuffle(arr)` | `lo.Shuffle(arr)` | |
+| `_.sample(arr)` | `lo.Sample(arr)` | |
+| `_.sampleSize(arr, n)` | `lo.Samples(arr, n)` | |
+| `_.first(arr)` / `_.head(arr)` | `lo.First(arr)` | returns `(T, bool)`, not `undefined` on empty |
+| `_.last(arr)` | `lo.Last(arr)` | |
+| `_.take(arr, n)` | `lo.Slice(arr, 0, n)` or `it.Take` (lazy) | no direct `Take` in core `lo`; slice it or use `lo/it` |
+| `_.drop(arr, n)` | `lo.Slice(arr, n, len(arr))` | |
+| `_.reverse(arr)` | `lo.Reverse(arr)` | returns a new slice; `slices.Reverse` mutates in place |
+| `_.zip(a, b)` | `lo.Zip2(a, b)` | Go can't infer arity, so `lo` names each arity explicitly: `Zip2`..`Zip9` |
+| `_.unzip(pairs)` | `lo.Unzip2(pairs)` | same arity-naming convention |
+| `_.indexOf(arr, v)` | `lo.IndexOf(arr, v)` or `slices.Index` | |
+| `_.includes(arr, v)` | `lo.Contains(arr, v)` or `slices.Contains` | |
+| `_.every(arr, fn)` | `lo.Every(arr, fn)` | |
+| `_.some(arr, fn)` | `lo.Some(arr, fn)` | |
+| `_.countBy(arr, fn)` | `lo.CountBy(arr, fn)` | |
+| `_.sum(arr)` | `lo.Sum(arr)` | |
+| `_.sumBy(arr, fn)` | `lo.SumBy(arr, fn)` | |
+| `_.mean(arr)` | `lo.Mean(arr)` | |
+| `_.maxBy(arr, fn)` / `_.minBy(arr, fn)` | `lo.MaxBy(arr, fn)` / `lo.MinBy(arr, fn)` | |
+| `_.times(n, fn)` | `lo.Times(n, fn)` | |
+| `_.range(start, end)` | `lo.Range(...)` / `lo.RangeFrom(...)` | see the [math helpers](/docs/core/math) for the exact variants |
+
+## Object / Map
+
+| Lodash | samber/lo | Notes |
+|---|---|---|
+| `_.keys(obj)` | `lo.Keys(m)` or `maps.Keys` (Go 1.23+, lazy) | |
+| `_.values(obj)` | `lo.Values(m)` or `maps.Values` (Go 1.23+, lazy) | |
+| `_.pick(obj, keys)` | `lo.PickByKeys(m, keys)` | |
+| `_.omit(obj, keys)` | `lo.OmitByKeys(m, keys)` | |
+| `_.pickBy(obj, fn)` | `lo.PickBy(m, fn)` | |
+| `_.omitBy(obj, fn)` | `lo.OmitBy(m, fn)` | |
+| `_.mapValues(obj, fn)` | `lo.MapValues(m, fn)` | |
+| `_.mapKeys(obj, fn)` | `lo.MapKeys(m, fn)` | |
+| `_.invert(obj)` | `lo.Invert(m)` | |
+| `_.assign(...objs)` / spread merge | `lo.Assign(...maps)` | |
+| `_.keyBy(arr, fn)` | `lo.KeyBy(arr, fn)` | |
+| `_.toPairs(obj)` | `lo.ToPairs(m)` or `lo.Entries(m)` | |
+| `_.fromPairs(pairs)` | `lo.FromPairs(pairs)` or `lo.FromEntries(pairs)` | |
+| `_.has(obj, key)` | `lo.HasKey(m, key)` | |
+| `_.get(obj, path)` | *(no equivalent)* | Lodash's dot-path dynamic access relies on JS's dynamic typing; Go's static types don't support an arbitrary-depth path accessor the same way |
+
+## String
+
+| Lodash | samber/lo | Notes |
+|---|---|---|
+| `_.camelCase(s)` | `lo.CamelCase(s)` | |
+| `_.snakeCase(s)` | `lo.SnakeCase(s)` | |
+| `_.kebabCase(s)` | `lo.KebabCase(s)` | |
+| `_.upperFirst(s)` / `_.capitalize(s)` | `lo.Capitalize(s)` | |
+| `_.words(s)` | `lo.Words(s)` | |
+| `_.trim(s)` | `lo.Trim(s)` or Go's stdlib `strings.TrimSpace` | prefer stdlib for plain whitespace trimming |
+| `_.truncate(s, opts)` | `lo.Ellipsis(s, ...)` | |
+| `_.startsWith(s, prefix)` | `lo.HasPrefix(s, prefix)` or stdlib `strings.HasPrefix` | prefer stdlib — no generic benefit here |
+| `_.endsWith(s, suffix)` | `lo.HasSuffix(s, suffix)` or stdlib `strings.HasSuffix` | prefer stdlib |
+| `_.repeat(s, n)` | Go stdlib `strings.Repeat` | no `lo` equivalent needed — stdlib already covers it |
+
+## Lang (type checks / coalescing)
+
+| Lodash | samber/lo | Notes |
+|---|---|---|
+| `_.isNil(v)` | `lo.IsNil(v)` | |
+| `_.isEmpty(v)` | `lo.IsEmpty(v)` | Go's zero-value semantics differ from JS's notion of "empty" — check both docs for edge cases |
+| `x ?? y` (JS nullish coalescing) | `lo.Coalesce(x, y)` or `lo.FromPtrOr(ptr, default)` | Go has no `null`; `lo` operates on zero values or pointers instead |
+| `_.cloneDeep(v)` | `lo.Clone(v)` | shallow in `lo` — Go doesn't have a universal deep-clone the way JS structural cloning does; deep clone needs type-specific code |
+| `_.isEqual(a, b)` | Go stdlib `reflect.DeepEqual` or `cmp.Equal` (`google/go-cmp`) | not a `lo` concern — this is a comparison primitive, not a collection helper |
+
+## Function
+
+| Lodash | samber/lo | Notes |
+|---|---|---|
+| `_.debounce(fn, wait)` | `lo.NewDebounce(wait, fn)` | |
+| `_.throttle(fn, wait)` | `lo.NewThrottle(wait, fn)` | |
+| `_.partial(fn, ...args)` | `lo.PartialX(fn, ...)` | arity-suffixed like `Zip`/`Unzip`, since Go can't infer variadic generic arity |
+| `_.attempt(fn)` | `lo.Attempt(fn)` | |
+| `_.once(fn)` | *(no direct equivalent)* | trivial to write with a `sync.Once` in idiomatic Go |
+
+## What has no equivalent, and why
+
+- **Dynamic path access** (`_.get`, `_.set`, `_.has` with dot-paths) — relies on JS's
+  dynamic property access. Go's static typing makes an arbitrary-depth,
+  string-path-based accessor either unsafe (reflection-based, like `go-funk`'s `Get`)
+  or simply not idiomatic. `lo` doesn't provide one.
+- **Deep equality / deep clone** — Lodash's `_.isEqual`/`_.cloneDeep` work generically
+  across any JS value because JS objects are structurally simple. Go's richer type
+  system (interfaces, pointers, unexported fields) means a universal deep operation
+  either needs reflection (with its own caveats) or type-specific code. Use
+  `reflect.DeepEqual`/`google/go-cmp` for comparison; write clone methods on your own
+  types for cloning.
+- **Currying / point-free composition** (`_.curry`, `_.flow`) — technically possible
+  in Go with generics but rarely idiomatic; most Go codebases prefer explicit function
+  calls over building composed pipelines of curried functions.
+
+## Getting started
+
+```bash
+go get github.com/samber/lo@v1
+```
+
+```go
+import "github.com/samber/lo"
+
+// _.groupBy(users, u => u.country)  →
+grouped := lo.GroupBy(users, func(u User) string { return u.Country })
+```
+
+See [Getting started](/docs/getting-started) for the full package overview
+(`lo`, `lo/it`, `lo/mutable`, `lo/parallel`).
+
+</div>
