@@ -10,7 +10,7 @@ playUrl: "https://go.dev/play/p/c_cmMMA5EhH"
 variantHelpers:
   - iter#math#mode
 similarHelpers:
-  - core#slice#mode
+  - core#math#mode
 position: 40
 ---
 

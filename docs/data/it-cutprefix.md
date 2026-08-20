@@ -9,7 +9,7 @@ signatures:
 playUrl: https://go.dev/play/p/bPnV39zVnAV
 variantHelpers: []
 similarHelpers:
-  - core#string#cutprefix
+  - core#slice#cutprefix
 position: 260
 ---
 

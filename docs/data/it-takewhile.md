@@ -2,6 +2,7 @@
 name: TakeWhile
 slug: takewhile
 sourceRef: it/seq.go#L732
+playUrl: "https://go.dev/play/p/gs5wsl2R3h6"
 category: iter
 subCategory: sequence
 signatures:
@@ -17,10 +18,11 @@ Takes elements from the beginning of a sequence while the predicate returns true
 
 ```go
 seq := func(yield func(int) bool) {
-    yield(1)
-    yield(2)
-    yield(3)
-    yield(4)
+    for _, v := range []int{1, 2, 3, 4} {
+        if !yield(v) {
+            return
+        }
+    }
 }
 result := it.TakeWhile(seq, func(x int) bool {
     return x < 3

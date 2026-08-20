@@ -2,6 +2,7 @@
 name: MapToSliceErr
 slug: maptosliceerr
 sourceRef: map.go#L411
+playUrl: "https://go.dev/play/p/4f5hbHyMf5h"
 category: core
 subCategory: map
 signatures:

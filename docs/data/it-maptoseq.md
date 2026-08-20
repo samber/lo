@@ -2,6 +2,7 @@
 name: MapToSeq
 slug: maptoseq
 sourceRef: it/map.go#L184
+playUrl: "https://go.dev/play/p/SEV4Vz5XFac"
 category: iter
 subCategory: map
 signatures:

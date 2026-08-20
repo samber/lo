@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/eGZV-sSmn_Q
 variantHelpers:
   - iter#find#last
 similarHelpers:
-  - core#slice#last
+  - core#find#last
   - iter#find#first
   - iter#find#lastor
 position: 130

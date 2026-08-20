@@ -2,6 +2,7 @@
 name: CoalesceSeqOrEmpty
 slug: coalesceseqorempty
 sourceRef: it/type_manipulation.go#L86
+playUrl: "https://go.dev/play/p/wep4z2KJLCO"
 category: iter
 subCategory: type
 signatures:

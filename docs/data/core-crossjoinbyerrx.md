@@ -2,6 +2,7 @@
 name: CrossJoinByErrX
 slug: crossjoinbyerrx
 sourceRef: tuples.go#L1615
+playUrl: "https://go.dev/play/p/XUGt3-6Ci8O"
 category: core
 subCategory: tuple
 signatures:

@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/TiwGIzeDuML
 variantHelpers:
   - iter#find#finduniquesby
 similarHelpers:
-  - core#slice#finduniquesby
+  - core#find#finduniquesby
 position: 630
 ---
 

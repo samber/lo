@@ -12,8 +12,8 @@ variantHelpers:
   - iter#math#mean
   - iter#math#meanby
 similarHelpers:
-  - core#slice#mean
-  - core#slice#meanby
+  - core#math#mean
+  - core#math#meanby
 position: 30
 ---
 

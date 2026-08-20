@@ -11,7 +11,6 @@ similarHelpers:
   - core#slice#slice
   - core#slice#drop
   - core#slice#dropright
-  - core#slice#insert
 position: 0
 signatures:
   - "func Splice[T any, Slice ~[]T](collection Slice, i int, elements ...T) Slice"

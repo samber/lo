@@ -19,17 +19,17 @@ signatures:
   - "func Duration10[T, U, V, W, X, Y, Z, A, B, C any](callback func() (T, U, V, W, X, Y, Z, A, B, C)) (T, U, V, W, X, Y, Z, A, B, C, time.Duration)"
 playUrl: https://go.dev/play/p/LFhKq2vY9Ty
 variantHelpers:
-  - core#time#duration
+  - core#time#durationx
   - core#time#durationx
 similarHelpers:
   - core#concurrency#waitfor
   - core#retry#attemptwithdelay
   - core#retry#attemptwhilewithdelay
-  - core#retry#newdebounce
-  - core#retry#newdebounceby
-  - core#retry#newthrottle
-  - core#retry#newthrottleby
-  - core#retry#newthrottlebywithcount
+  - core#concurrency#newdebounce
+  - core#concurrency#newdebounceby
+  - core#concurrency#newthrottle
+  - core#concurrency#newthrottleby
+  - core#concurrency#newthrottlebywithcount
 position: 0
 ---
 

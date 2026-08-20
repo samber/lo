@@ -2,6 +2,7 @@
 name: SliceToChannel
 slug: slicetochannel
 sourceRef: channel.go#L161
+playUrl: "https://go.dev/play/p/erHHone7rF9"
 category: core
 subCategory: channel
 signatures:

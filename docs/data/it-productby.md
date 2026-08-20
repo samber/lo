@@ -10,8 +10,8 @@ playUrl: "https://go.dev/play/p/dgFCRJrlPHY"
 variantHelpers:
   - iter#math#product
 similarHelpers:
-  - core#slice#productby
-  - core#slice#product
+  - core#math#productby
+  - core#math#product
 position: 67
 ---
 

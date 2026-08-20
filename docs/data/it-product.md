@@ -12,8 +12,8 @@ variantHelpers:
   - iter#math#product
   - iter#math#productby
 similarHelpers:
-  - core#slice#product
-  - core#slice#productby
+  - core#math#product
+  - core#math#productby
 position: 20
 ---
 

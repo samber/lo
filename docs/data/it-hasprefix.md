@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/Fyj6uq-G5IH
 variantHelpers:
   - iter#find#hasprefix
 similarHelpers:
-  - core#slice#hasprefix
+  - core#find#hasprefix
   - iter#find#hassuffix
 position: 20
 ---

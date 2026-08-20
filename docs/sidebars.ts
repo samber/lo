@@ -20,6 +20,12 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: '🧢 Core',
+      link: {
+        type: 'generated-index',
+        slug: '/docs/core',
+        title: 'Go core helpers — samber/lo',
+        description: 'Type-safe generic helpers for Go slices, maps, strings, math, channels, tuples, retries and error handling. 274 documented functions with zero dependencies outside the standard library.',
+      },
       collapsible: true,
       collapsed: true,
       items: [
@@ -29,6 +35,12 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: '🔄 Iterator',
+      link: {
+        type: 'generated-index',
+        slug: '/docs/iter',
+        title: 'Go iterator helpers (iter.Seq) — samber/lo',
+        description: 'Lazy, allocation-free helpers over Go 1.23+ iterators (iter.Seq): map, filter, reduce, find, intersect, sequence and math operations.',
+      },
       collapsible: true,
       collapsed: true,
       items: [
@@ -38,6 +50,12 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: '👣 Mutable',
+      link: {
+        type: 'generated-index',
+        slug: '/docs/mutable',
+        title: 'In-place slice mutation helpers — samber/lo',
+        description: 'Zero-allocation, in-place variants of core slice helpers for performance-critical Go code.',
+      },
       collapsible: true,
       collapsed: true,
       items: [
@@ -47,6 +65,12 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: '🏎️ Parallel',
+      link: {
+        type: 'generated-index',
+        slug: '/docs/parallel',
+        title: 'Parallel slice processing helpers — samber/lo',
+        description: 'Concurrent, goroutine-per-item variants of core slice helpers for Go, with ordered results.',
+      },
       collapsible: true,
       collapsed: true,
       items: [
@@ -56,6 +80,12 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: '🧪 Experimental',
+      link: {
+        type: 'generated-index',
+        slug: '/docs/experimental',
+        title: 'Experimental helpers (SIMD) — samber/lo',
+        description: 'Unstable, high-performance slice operations using SIMD instructions (AVX/AVX2/AVX512), gated behind Go build tags.',
+      },
       collapsible: true,
       collapsed: true,
       items: [

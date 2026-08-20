@@ -2,6 +2,7 @@
 name: IsNil
 slug: isnil
 sourceRef: type_manipulation.go#L7
+playUrl: "https://go.dev/play/p/P2sD0PMXw4F"
 category: core
 subCategory: type
 signatures:

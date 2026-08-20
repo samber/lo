@@ -2,6 +2,7 @@
 name: FromPtrOr
 slug: fromptror
 sourceRef: type_manipulation.go#L63
+playUrl: "https://go.dev/play/p/mhD9CwO3X0m"
 category: core
 subCategory: type
 signatures:
@@ -14,7 +15,7 @@ similarHelpers:
   - core#type#emptyabletoptr
   - core#type#tosliceptr
   - core#type#fromsliceptr
-  - core#type#valueor
+  - core#map#valueor
 position: 100
 ---
 

@@ -2,6 +2,7 @@
 name: SumByErr
 slug: sumbyerr
 sourceRef: math.go#L103
+playUrl: "https://go.dev/play/p/Dz_a_7jN_ca"
 category: core
 subCategory: math
 variantHelpers:

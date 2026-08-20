@@ -2,6 +2,7 @@
 name: DropWhile
 slug: dropwhile
 sourceRef: it/seq.go#L671
+playUrl: "https://go.dev/play/p/zSM8x08a9QD"
 category: iter
 subCategory: sequence
 signatures:

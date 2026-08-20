@@ -2,6 +2,7 @@
 name: FilterValues
 slug: filtervalues
 sourceRef: it/map.go#L225
+playUrl: "https://go.dev/play/p/ODxc6_IiWtO"
 category: iter
 subCategory: map
 signatures:

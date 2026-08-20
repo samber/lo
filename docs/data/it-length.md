@@ -10,9 +10,8 @@ playUrl: "https://go.dev/play/p/3dnbOjTbL-o"
 variantHelpers:
   - iter#sequence#length
 similarHelpers:
-  - core#slice#length
-  - iter#sequence#isempty
-  - iter#sequence#isnotempty
+  - iter#type#isempty
+  - iter#condition#isnotempty
 position: 0
 ---
 

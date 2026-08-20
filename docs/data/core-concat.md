@@ -10,7 +10,7 @@ variantHelpers:
 similarHelpers:
   - iter#sequence#concat
   - core#slice#flatten
-  - core#intersection#union
+  - core#intersect#union
 position: 160
 signatures:
   - "func Concat[T any, Slice ~[]T](collections ...Slice) Slice"

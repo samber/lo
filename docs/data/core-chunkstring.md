@@ -12,7 +12,6 @@ similarHelpers:
   - core#string#substring
   - core#string#words
   - core#string#runelength
-  - core#string#split
 position: 20
 signatures:
   - "func ChunkString[T ~string](str T, size int) []T"

@@ -9,10 +9,10 @@ variantHelpers:
   - core#slice#countby
 similarHelpers:
   - core#slice#count
-  - core#slice#every
-  - core#slice#some
+  - core#intersect#every
+  - core#intersect#some
   - core#slice#filter
-  - core#slice#find
+  - core#find#find
   - core#slice#countbyerr
 position: 0
 signatures:

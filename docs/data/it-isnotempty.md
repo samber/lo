@@ -8,10 +8,10 @@ signatures:
   - "func IsNotEmpty[T any](collection iter.Seq[T]) bool"
 playUrl: "https://go.dev/play/p/G7hH3jJ0De5" 
 variantHelpers:
-  - iter#condition#isempty
+  - iter#type#isempty
 similarHelpers:
-  - core#slice#isnotempty
-  - core#slice#isempty
+  - core#type#isnotempty
+  - core#type#isempty
 position: 10
 ---
 

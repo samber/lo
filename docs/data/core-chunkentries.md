@@ -10,8 +10,8 @@ variantHelpers:
 similarHelpers:
   - core#slice#chunk
   - core#map#mapentries
-  - core#map#keyby
-  - core#map#groupby
+  - core#slice#keyby
+  - core#slice#groupby
   - core#map#values
 position: 170
 signatures:

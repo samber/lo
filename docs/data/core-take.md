@@ -2,6 +2,7 @@
 name: Take
 slug: take
 sourceRef: slice.go#L813
+playUrl: "https://go.dev/play/p/eurMiQEqey2"
 category: core
 subCategory: slice
 variantHelpers:
@@ -11,7 +12,7 @@ similarHelpers:
   - core#slice#drop
   - core#slice#dropright
   - core#slice#dropwhile
-  - core#slice#first
+  - core#find#first
   - core#slice#filtermap
   - core#slice#takefilter
   - iter#sequence#take

@@ -12,8 +12,8 @@ variantHelpers:
 similarHelpers:
   - core#slice#foreach
   - core#slice#filter
-  - core#slice#some
-  - core#slice#every
+  - core#intersect#some
+  - core#intersect#every
   - core#slice#droprightwhile
   - core#slice#dropwhile
   - parallel#slice#foreach

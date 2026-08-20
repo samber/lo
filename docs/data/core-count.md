@@ -10,8 +10,8 @@ variantHelpers:
 similarHelpers:
   - core#slice#countby
   - core#slice#countvalues
-  - core#slice#every
-  - core#slice#some
+  - core#intersect#every
+  - core#intersect#some
 position: 0
 signatures:
   - "func Count[T comparable](collection []T, value T) int"

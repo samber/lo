@@ -2,6 +2,7 @@
 name: Associate
 slug: associate
 sourceRef: it/seq.go#L539
+playUrl: "https://go.dev/play/p/MMaHpzTqY0a"
 category: iter
 subCategory: map
 signatures:
@@ -12,16 +13,11 @@ signatures:
   - "func FilterSeqToMap[T any, K comparable, V any](collection iter.Seq[T], transform func(item T) (K, V, bool)) map[K]V"
   - "func FilterSeqToMapI[T any, K comparable, V any](collection iter.Seq[T], transform func(item T, index int) (K, V, bool)) map[K]V"
 variantHelpers:
-  - iter#sequence#associate
-  - iter#sequence#associatei
-  - iter#sequence#seqtomap
-  - iter#sequence#seqtomapi
-  - iter#sequence#filterseqtomap
-  - iter#sequence#filterseqtomapi
+  - iter#map#associate
 similarHelpers:
   - core#slice#associate
-  - core#map#keyby
-  - iter#map#keyby
+  - core#slice#keyby
+  - iter#sequence#keyby
 position: 140
 ---
 

@@ -8,8 +8,8 @@ playUrl: https://go.dev/play/p/XfPzmf9gql6
 variantHelpers:
   - core#slice#replace
 similarHelpers:
-  - core#string#replace
-  - core#string#replaceall
+  - core#slice#replace
+  - core#slice#replaceall
   - core#slice#fill
   - core#slice#splice
   - core#slice#slice

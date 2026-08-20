@@ -2,6 +2,7 @@
 name: FilterMap
 slug: filtermap
 sourceRef: it/seq.go#L94
+playUrl: "https://go.dev/play/p/7hrfnSxfL-s"
 category: iter
 subCategory: sequence
 signatures:
@@ -9,11 +10,10 @@ signatures:
   - "func FilterMapI[T, R any](collection iter.Seq[T], callback func(item T, index int) (R, bool)) iter.Seq[R]"
 variantHelpers:
   - iter#sequence#filtermap
-  - iter#sequence#filtermapi
+  - iter#sequence#filtermap
 similarHelpers:
   - iter#sequence#map
   - iter#sequence#filter
-  - iter#sequence#filtermaptoslice
   - iter#sequence#rejectmap
 position: 40
 ---

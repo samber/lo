@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/ihchBAEkhXO
 variantHelpers:
   - iter#find#findindexof
 similarHelpers:
-  - core#slice#findindexof
+  - core#find#findindexof
   - iter#find#find
   - iter#find#findlastindexof
 position: 50

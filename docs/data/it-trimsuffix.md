@@ -9,7 +9,7 @@ signatures:
 playUrl: https://go.dev/play/p/s9nwy9helEi
 variantHelpers: []
 similarHelpers:
-  - core#string#trimsuffix
+  - core#slice#trimsuffix
 position: 266
 ---
 

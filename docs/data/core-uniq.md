@@ -12,8 +12,8 @@ similarHelpers:
   - core#slice#isuniq
   - core#slice#isuniqby
   - core#slice#uniqmap
-  - core#slice#uniqkeys
-  - core#slice#uniqvalues
+  - core#map#uniqkeys
+  - core#map#uniqvalues
 position: 100
 signatures:
   - "func Uniq[T comparable, Slice ~[]T](collection Slice) Slice"

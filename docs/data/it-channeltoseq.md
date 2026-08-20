@@ -10,10 +10,9 @@ signatures:
 playUrl: "https://go.dev/play/p/IXqSs2Ooqpm"
 variantHelpers:
   - iter#channel#seqtochannel
-  - iter#channel#seqtochannel2
   - iter#channel#channeltoseq
-similarHelpers:
-  - core#channel#channelseq
+  - iter#channel#channeltoseq
+similarHelpers: []
 position: 10
 ---
 

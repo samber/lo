@@ -6,12 +6,12 @@ category: core
 subCategory: condition
 playUrl: https://go.dev/play/p/WSw3ApMxhyW
 variantHelpers:
-  - core#condition#if
-  - core#condition#iff
+  - core#condition#if-else
+  - core#condition#if-else
 similarHelpers:
   - core#condition#switch
   - core#condition#ternary
-  - core#condition#validate
+  - core#error-handling#validate
 position: 10
 signatures:
   - "func If[T any](condition bool, result T) *ifElse[T]"

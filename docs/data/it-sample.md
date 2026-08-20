@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/YDJVX0UXYDi
 variantHelpers:
   - iter#find#sample
 similarHelpers:
-  - core#slice#sample
+  - core#find#sample
   - iter#find#samples
   - iter#find#sampleby
   - iter#find#samplesby

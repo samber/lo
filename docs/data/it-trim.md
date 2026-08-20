@@ -11,7 +11,7 @@ variantHelpers:
   - iter#string#trimfirst
   - iter#string#trimlast
 similarHelpers:
-  - core#string#trim
+  - core#slice#trim
 position: 262
 ---
 

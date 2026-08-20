@@ -2,6 +2,7 @@
 name: Splice
 slug: splice
 sourceRef: it/seq.go#L964
+playUrl: "https://go.dev/play/p/AfYOiGWa78T"
 category: iter
 subCategory: sequence
 signatures:
@@ -10,8 +11,8 @@ variantHelpers:
   - iter#sequence#splice
 similarHelpers:
   - iter#sequence#slice
-  - iter#sequence#replace
-  - iter#sequence#replaceall
+  - iter#slice#replace
+  - iter#slice#replaceall
   - core#slice#splice
 position: 122
 ---

@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/r5Yq6ATSHoH
 variantHelpers:
   - iter#find#latest
 similarHelpers:
-  - core#slice#latest
+  - core#find#latest
 position: 520
 ---
 

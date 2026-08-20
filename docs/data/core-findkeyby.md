@@ -9,7 +9,6 @@ variantHelpers:
   - core#find#findkeyby
 similarHelpers:
   - core#find#findkey
-  - core#find#findby
   - core#find#findorelse
 position: 90
 signatures:

@@ -22,8 +22,8 @@ similarHelpers:
   - core#tuple#unzipx
   - core#tuple#zipbyx
   - core#tuple#unzipbyx
-  - core#slice#product
-  - core#slice#productby
+  - core#math#product
+  - core#math#productby
 position: 62
 ---
 

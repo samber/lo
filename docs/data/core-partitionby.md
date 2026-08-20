@@ -13,7 +13,7 @@ similarHelpers:
   - core#slice#groupbyerr
   - core#slice#groupbymap
   - core#slice#chunk
-  - core#map#keyby
+  - core#slice#keyby
 position: 150
 signatures:
   - "func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K) []Slice"

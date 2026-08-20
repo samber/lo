@@ -2,6 +2,7 @@
 name: UniqByErr
 slug: uniqbyerr
 sourceRef: slice.go#L267
+playUrl: "https://go.dev/play/p/GzyDmRRQ_0J"
 category: core
 subCategory: slice
 signatures:

@@ -9,7 +9,7 @@ variantHelpers:
   - core#find#findindexof
 similarHelpers:
   - core#find#find
-  - core#slice#indexof
+  - core#find#indexof
   - core#find#findlastindexof
 position: 50
 signatures:

@@ -2,6 +2,7 @@
 name: FilterKeys
 slug: filterkeys
 sourceRef: it/map.go#L212
+playUrl: "https://go.dev/play/p/HQgi01x8A4o"
 category: iter
 subCategory: map
 signatures:

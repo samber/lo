@@ -12,10 +12,10 @@ variantHelpers:
   - iter#math#sum
   - iter#math#sumby
 similarHelpers:
-  - core#slice#sum
-  - core#slice#sumby
-  - core#slice#product
-  - core#slice#productby
+  - core#math#sum
+  - core#math#sumby
+  - core#math#product
+  - core#math#productby
 position: 10
 ---
 

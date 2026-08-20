@@ -9,8 +9,7 @@ signatures:
 variantHelpers:
   - iter#type#fromanyseq
 playUrl: "https://go.dev/play/p/ktE4IMXDMxv"
-similarHelpers:
-  - core#type#toany
+similarHelpers: []
 position: 243
 ---
 

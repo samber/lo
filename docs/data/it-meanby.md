@@ -10,8 +10,8 @@ playUrl: https://go.dev/play/p/Ked4rpztH5Y
 variantHelpers:
   - iter#math#mean
 similarHelpers:
-  - core#slice#meanby
-  - core#slice#mean
+  - core#math#meanby
+  - core#math#mean
 position: 70
 ---
 

@@ -10,7 +10,7 @@ playUrl: "https://go.dev/play/p/Fu7h-eW18QM"
 variantHelpers:
   - iter#map#keys
 similarHelpers:
-  - core#slice#keys
+  - core#map#keys
   - iter#map#values
   - iter#map#uniqkeys
 position: 0

@@ -2,6 +2,7 @@
 name: GroupByMapErr
 slug: groupbymaperr
 sourceRef: slice.go#L370
+playUrl: "https://go.dev/play/p/xmrgjsskTrz"
 category: core
 subCategory: slice
 signatures:
@@ -14,7 +15,7 @@ similarHelpers:
   - core#slice#groupbyerr
   - core#slice#partitionby
   - core#slice#keyby
-  - core#map#associate
+  - core#slice#associate
   - parallel#slice#groupby
 position: 131
 ---

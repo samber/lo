@@ -13,13 +13,16 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "sync-function-signatures": "node ./scripts/sync-function-signatures.js",
-    "check-function-signatures": "node ./scripts/sync-function-signatures.js --check",
+    "sync-function-signatures": "node ./scripts/check-function-signatures.js",
+    "check-function-signatures": "node ./scripts/check-function-signatures.js --check",
     "check-cross-references": "node ./scripts/check-cross-references.js",
     "check-duplicates-in-category": "node ./scripts/check-duplicates-in-category.js",
     "check-filename-matches-frontmatter": "node ./scripts/check-filename-matches-frontmatter.js",
     "check-similar-exists": "node ./scripts/check-similar-exists.js",
-    "check-similar-keys-exist-in-directory": "node ./scripts/check-similar-keys-exist-in-directory.js"
+    "check-similar-keys-exist-in-directory": "node ./scripts/check-similar-keys-exist-in-directory.js",
+    "check-helpers-visible-in-pages": "node ./scripts/check-helpers-visible-in-pages.js",
+    "check-duplicate-slugs": "node ./scripts/check-duplicate-slugs.js",
+    "check-docs": "npm run check-function-signatures && npm run check-cross-references && npm run check-duplicates-in-category && npm run check-filename-matches-frontmatter && npm run check-similar-exists && npm run check-similar-keys-exist-in-directory && npm run check-helpers-visible-in-pages && npm run check-duplicate-slugs"
   },
   "dependencies": {
       "@docusaurus/core": "3.10.0",
@@ -45,6 +48,7 @@
       "@docusaurus/module-type-aliases": "3.10.0",
       "@docusaurus/tsconfig": "3.10.0",
       "@docusaurus/types": "3.10.0",
+      "gray-matter": "^4.0.3",
       "typescript": "~6.0.2"
   },
   "browserslist": {

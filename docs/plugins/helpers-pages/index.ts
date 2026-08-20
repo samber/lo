@@ -7,7 +7,13 @@ type HelperFrontMatter = {
   name: string;
   slug: string;
   sourceRef: string;
-  category: 'core' | 'mutable' | 'parallel';
+  // NOTE: this used to be missing 'iter' and 'experimental' entirely
+  // (category), and 'sequence'/'simd' (subCategory) -- 165 of the 449
+  // documented helpers (iter + experimental) never matched this type, which
+  // meant `tsc` could not actually type-check code branching on these
+  // values. That went unnoticed because `npm run typecheck` was itself
+  // broken by an unrelated tsconfig error (see tsconfig.json).
+  category: 'core' | 'mutable' | 'parallel' | 'iter' | 'experimental';
   subCategory: 'slice'
     | 'map'
     | 'channel'
@@ -22,7 +28,9 @@ type HelperFrontMatter = {
     | 'retry'
     | 'error-handling'
     | 'concurrency'
-    | 'time';
+    | 'time'
+    | 'sequence'
+    | 'simd';
   signatures: string[];
   playUrl?: string;
   variantHelpers: string[];

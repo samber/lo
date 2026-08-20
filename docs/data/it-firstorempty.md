@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/NTUTgPCfevx
 variantHelpers:
   - iter#find#firstorempty
 similarHelpers:
-  - core#slice#firstorempty
+  - core#find#firstorempty
 position: 540
 ---
 

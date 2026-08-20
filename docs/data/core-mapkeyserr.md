@@ -2,6 +2,7 @@
 name: MapKeysErr
 slug: mapkeyserr
 sourceRef: map.go#L326
+playUrl: "https://go.dev/play/p/9_4WPIqOetJ"
 category: core
 subCategory: map
 signatures:

@@ -10,7 +10,7 @@ variantHelpers:
 similarHelpers:
   - core#find#findduplicatesby
   - core#slice#uniq
-  - core#slice#finduniques
+  - core#find#finduniques
 position: 120
 signatures:
   - "func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice"

@@ -2,6 +2,7 @@
 name: SumBy
 slug: sumby
 sourceRef: exp/simd/math.go#L848
+playUrl: "https://go.dev/play/p/TBD"
 category: experimental
 subCategory: simd
 similarHelpers:

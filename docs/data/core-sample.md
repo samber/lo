@@ -10,7 +10,7 @@ variantHelpers:
 similarHelpers:
   - core#find#samples
   - core#find#samplesby
-  - core#find#shuffle
+  - core#slice#shuffle
 position: 350
 signatures:
   - "func Sample[T any](collection []T) T"

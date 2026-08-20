@@ -11,7 +11,6 @@ similarHelpers:
   - core#find#findindexof
   - core#find#find
   - core#find#lastindexof
-  - core#find#findby
 position: 60
 signatures:
   - "func FindLastIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bool)"

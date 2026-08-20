@@ -13,7 +13,6 @@ similarHelpers:
   - core#map#filtermaptoslice
   - core#map#maptosliceerr
   - core#slice#filtermap
-  - core#slice#filtermaperr
 position: 225
 ---
 

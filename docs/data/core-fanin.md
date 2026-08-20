@@ -2,6 +2,7 @@
 name: FanIn
 slug: fanin
 sourceRef: channel.go#L260
+playUrl: "https://go.dev/play/p/sxyEM3koo4n"
 category: core
 subCategory: channel
 signatures:

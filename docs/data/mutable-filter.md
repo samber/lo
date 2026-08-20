@@ -9,11 +9,9 @@ similarHelpers:
   - core#slice#filter
   - core#slice#filterreject
   - core#slice#filtermap
-  - parallel#slice#filter
-  - iter#chunkstring
 variantHelpers:
   - "mutable#slice#filter"
-  - "mutable#slice#filteri"
+  - "mutable#slice#filter"
 position: 0
 signatures:
   - "func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice"

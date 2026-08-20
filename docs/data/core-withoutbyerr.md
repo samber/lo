@@ -2,6 +2,7 @@
 name: WithoutByErr
 slug: withoutbyerr
 sourceRef: intersect.go#L342
+playUrl: "https://go.dev/play/p/vgefStqzDtk"
 category: core
 subCategory: intersect
 signatures:
@@ -11,7 +12,6 @@ variantHelpers:
 similarHelpers:
   - core#intersect#withoutby
   - core#intersect#without
-  - core#slice#rejectbyerr
 position: 125
 ---
 

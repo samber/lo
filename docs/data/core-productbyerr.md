@@ -2,6 +2,7 @@
 name: ProductByErr
 slug: productbyerr
 sourceRef: math.go#L138
+playUrl: "https://go.dev/play/p/wadzrWr9Aer"
 category: core
 subCategory: math
 variantHelpers:

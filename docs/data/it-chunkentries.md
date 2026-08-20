@@ -2,6 +2,7 @@
 name: ChunkEntries
 slug: chunkentries
 sourceRef: it/map.go#L157
+playUrl: "https://go.dev/play/p/lwngaIFkFAg"
 category: iter
 subCategory: map
 signatures:

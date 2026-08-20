@@ -7,11 +7,11 @@ subCategory: slice
 playUrl: https://go.dev/play/p/0jY3Z0B7O_5
 variantHelpers:
   - "mutable#slice#map"
-  - "mutable#slice#mapi"
+  - "mutable#slice#map"
 similarHelpers:
   - core#slice#map
-  - core#slice#mapkeys
-  - core#slice#mapvalues
+  - core#map#mapkeys
+  - core#map#mapvalues
   - parallel#slice#map
 position: 10
 signatures:

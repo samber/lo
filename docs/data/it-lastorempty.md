@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/teODFK4YqM4
 variantHelpers:
   - iter#find#lastorempty
 similarHelpers:
-  - core#slice#lastorempty
+  - core#find#lastorempty
 position: 560
 ---
 

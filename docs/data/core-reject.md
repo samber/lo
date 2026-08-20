@@ -13,7 +13,6 @@ similarHelpers:
   - core#slice#filterreject
   - core#slice#rejectmap
   - core#slice#filterreject
-  - mutable#slice#reject
 position: 260
 signatures:
   - "func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice"

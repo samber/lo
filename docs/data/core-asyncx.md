@@ -15,13 +15,12 @@ signatures:
   - "func Async6[A, B, C, D, E, F any](f func() (A, B, C, D, E, F)) <-chan Tuple6[A, B, C, D, E, F]"
 playUrl: https://go.dev/play/p/uo35gosuTLw
 variantHelpers:
-  - core#concurrency#async
+  - core#concurrency#asyncx
   - core#concurrency#asyncx
 similarHelpers:
   - core#concurrency#synchronize
   - core#concurrency#waitfor
-  - core#retry#newtransaction
-  - core#channel#channelseq
+  - core#concurrency#newtransaction
 position: 10
 ---
 

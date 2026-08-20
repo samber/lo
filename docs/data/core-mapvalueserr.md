@@ -2,6 +2,7 @@
 name: MapValuesErr
 slug: mapvalueserr
 sourceRef: map.go#L354
+playUrl: "https://go.dev/play/p/T_8xAfvcf0W"
 category: core
 subCategory: map
 signatures:

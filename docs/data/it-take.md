@@ -2,6 +2,7 @@
 name: Take
 slug: take
 sourceRef: it/seq.go#L711
+playUrl: "https://go.dev/play/p/VTmRfEQQjij"
 category: iter
 subCategory: sequence
 signatures:
@@ -17,10 +18,11 @@ Takes the first n elements from a sequence.
 
 ```go
 seq := func(yield func(int) bool) {
-    yield(1)
-    yield(2)
-    yield(3)
-    yield(4)
+    for _, v := range []int{1, 2, 3, 4} {
+        if !yield(v) {
+            return
+        }
+    }
 }
 result := it.Take(seq, 2)
 var out []int

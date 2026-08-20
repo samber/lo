@@ -11,11 +11,11 @@ similarHelpers:
   - core#slice#flatmap
   - core#slice#uniqmap
   - core#slice#rejectmap
-  - core#slice#mapkeys
-  - core#slice#mapvalues
-  - core#slice#mapentries
-  - core#slice#maptoslice
-  - core#slice#filtermaptoslice
+  - core#map#mapkeys
+  - core#map#mapvalues
+  - core#map#mapentries
+  - core#map#maptoslice
+  - core#map#filtermaptoslice
   - parallel#slice#map
   - mutable#slice#map
 variantHelpers:

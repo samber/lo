@@ -2,6 +2,7 @@
 name: FilterMapToSeq
 slug: filtermaptoseq
 sourceRef: it/map.go#L199
+playUrl: "https://go.dev/play/p/SEV4Vz5XFac"
 category: iter
 subCategory: map
 signatures:

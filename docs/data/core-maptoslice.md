@@ -11,7 +11,7 @@ similarHelpers:
   - core#map#mapentries
   - core#map#entries
   - core#slice#map
-  - core#slice#mapentries
+  - core#map#mapentries
   - core#map#maptosliceerr
 position: 210
 signatures:

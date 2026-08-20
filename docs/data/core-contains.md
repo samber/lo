@@ -12,7 +12,7 @@ similarHelpers:
   - core#intersect#every
   - core#intersect#some
   - core#intersect#none
-  - core#slice#find
+  - core#find#find
 position: 0
 signatures:
   - "func Contains[T comparable](collection []T, element T) bool"

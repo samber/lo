@@ -2,6 +2,7 @@
 name: ReplaceAll
 slug: replaceall
 sourceRef: it/seq.go#L927
+playUrl: "https://go.dev/play/p/aFXjeyf0KqV"
 category: iter
 subCategory: slice
 signatures:

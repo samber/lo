@@ -1,6 +1,6 @@
 ---
 name: ChannelToSeq
-slug: channeltoseq
+slug: channelseq
 sourceRef: it/channel.go#L45
 category: iter
 subCategory: channel

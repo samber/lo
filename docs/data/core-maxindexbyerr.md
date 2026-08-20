@@ -2,6 +2,7 @@
 name: MaxIndexByErr
 slug: maxindexbyerr
 sourceRef: find.go#L746
+playUrl: "https://go.dev/play/p/wYvG8gRRFw-"
 category: core
 subCategory: find
 variantHelpers:

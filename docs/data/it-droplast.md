@@ -2,6 +2,7 @@
 name: DropLast
 slug: droplast
 sourceRef: it/seq.go#L643
+playUrl: "https://go.dev/play/p/O1J1-uWc3z9"
 category: iter
 subCategory: sequence
 signatures:
@@ -12,8 +13,8 @@ similarHelpers:
   - iter#sequence#drop
   - iter#sequence#dropwhile
   - iter#sequence#droplastwhile
-  - iter#sequence#trim
-  - iter#sequence#trimsuffix
+  - iter#string#trim
+  - iter#string#trimsuffix
 position: 78
 ---
 

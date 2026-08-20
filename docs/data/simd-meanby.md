@@ -2,6 +2,7 @@
 name: MeanBy
 slug: meanby
 sourceRef: exp/simd/math.go#L1023
+playUrl: "https://go.dev/play/p/TBD"
 category: experimental
 subCategory: simd
 similarHelpers:

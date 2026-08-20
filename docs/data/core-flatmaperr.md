@@ -2,6 +2,7 @@
 name: FlatMapErr
 slug: flatmaperr
 sourceRef: slice.go#L124
+playUrl: "https://go.dev/play/p/pFCF5WVB225"
 category: core
 subCategory: slice
 signatures:

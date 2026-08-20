@@ -2,6 +2,7 @@
 name: RejectMap
 slug: rejectmap
 sourceRef: it/seq.go#L809
+playUrl: "https://go.dev/play/p/7YsLP1-zx"
 category: iter
 subCategory: sequence
 signatures:

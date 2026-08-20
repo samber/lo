@@ -10,7 +10,7 @@ variantHelpers:
 similarHelpers:
   - core#slice#isuniq
   - core#slice#uniqby
-  - core#slice#finduniques
+  - core#find#finduniques
   - core#find#findduplicates
 position: 113
 signatures:

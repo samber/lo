@@ -14,7 +14,7 @@ signatures:
   - "func TryOr6[A, B, C, D, E, F any](callback func() (A, B, C, D, E, F, error), fallbackA A, fallbackB B, fallbackC C, fallbackD D, fallbackE E, fallbackF F) (A, B, C, D, E, F, bool)"
 playUrl: https://go.dev/play/p/B4F7Wg2Zh9X
 variantHelpers:
-  - core#error-handling#tryor
+  - core#error-handling#tryorx
   - core#error-handling#tryorx
 similarHelpers:
   - core#error-handling#validate

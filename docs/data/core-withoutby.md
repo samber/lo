@@ -10,7 +10,6 @@ variantHelpers:
 similarHelpers:
   - core#intersect#without
   - core#intersect#difference
-  - core#slice#rejectby
   - core#intersect#withoutbyerr
 position: 120
 signatures:

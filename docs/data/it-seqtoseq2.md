@@ -9,9 +9,7 @@ signatures:
 playUrl: https://go.dev/play/p/V5wL9xY8nQr
 variantHelpers:
   - iter#sequence#seqtoseq2
-similarHelpers:
-  - iter#map#seq2keytoseq
-  - iter#map#seq2valuetoseq
+similarHelpers: []
 position: 185
 ---
 

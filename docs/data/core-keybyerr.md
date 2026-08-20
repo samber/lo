@@ -2,6 +2,7 @@
 name: KeyByErr
 slug: keybyerr
 sourceRef: slice.go#L655
+playUrl: "https://go.dev/play/p/ZTGG7OUCdnp"
 category: core
 subCategory: slice
 signatures:
@@ -13,7 +14,7 @@ similarHelpers:
   - core#slice#groupby
   - core#slice#groupbyerr
   - core#slice#partitionby
-  - core#map#associate
+  - core#slice#associate
   - core#slice#keyify
 position: 231
 ---

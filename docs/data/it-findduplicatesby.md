@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/tm1tZdC93OH
 variantHelpers:
   - iter#find#findduplicatesby
 similarHelpers:
-  - core#slice#findduplicatesby
+  - core#find#findduplicatesby
 position: 640
 ---
 

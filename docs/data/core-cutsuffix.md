@@ -14,7 +14,7 @@ similarHelpers:
   - core#slice#trimright
   - core#slice#slice
   - core#slice#dropright
-  - core#slice#hassuffix
+  - core#find#hassuffix
 position: 0
 signatures:
   - "func CutSuffix[T comparable, Slice ~[]T](collection Slice, separator Slice) (before Slice, found bool)"

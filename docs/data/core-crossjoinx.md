@@ -18,8 +18,8 @@ variantHelpers:
   - core#tuple#crossjoinx
 similarHelpers:
   - core#tuple#tuplex
-  - core#intersect#product
-  - core#intersect#productby
+  - core#math#product
+  - core#math#productby
   - core#map#entries
 position: 50
 ---

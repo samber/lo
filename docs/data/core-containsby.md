@@ -12,9 +12,8 @@ similarHelpers:
   - core#intersect#some
   - core#intersect#every
   - core#intersect#none
-  - core#slice#some
-  - core#slice#every
-  - core#slice#findby
+  - core#intersect#some
+  - core#intersect#every
   - core#slice#filter
 position: 10
 signatures:

@@ -2,6 +2,7 @@
 name: ReduceRightErr
 slug: reducerighterr
 sourceRef: slice.go#L177
+playUrl: "https://go.dev/play/p/Fq3W70l7wXF"
 category: core
 subCategory: slice
 signatures:

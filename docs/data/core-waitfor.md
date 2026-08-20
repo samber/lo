@@ -7,7 +7,7 @@ subCategory: concurrency
 playUrl: https://go.dev/play/p/t_wTDmubbK3
 variantHelpers:
   - core#concurrency#waitfor
-  - core#concurrency#waitforwithcontext
+  - core#concurrency#waitfor
 similarHelpers:
   - core#retry#attemptwithdelay
   - core#retry#attemptwhilewithdelay

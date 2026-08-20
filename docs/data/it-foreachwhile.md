@@ -2,6 +2,7 @@
 name: ForEachWhile
 slug: foreachwhile
 sourceRef: it/seq.go#L202
+playUrl: "https://go.dev/play/p/6NhAE0-zm"
 category: iter
 subCategory: sequence
 signatures:
@@ -9,7 +10,7 @@ signatures:
   - "func ForEachWhileI[T any](collection iter.Seq[T], predicate func(item T, index int) bool)"
 variantHelpers:
   - iter#sequence#foreachwhile
-  - iter#sequence#foreachwhilei
+  - iter#sequence#foreachwhile
 similarHelpers:
   - iter#sequence#foreach
 position: 160

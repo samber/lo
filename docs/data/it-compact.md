@@ -2,6 +2,7 @@
 name: Compact
 slug: compact
 sourceRef: it/seq.go#L933
+playUrl: "https://go.dev/play/p/sOckhMvvwjc"
 category: iter
 subCategory: slice
 signatures:

@@ -12,7 +12,7 @@ similarHelpers:
   - core#slice#groupby
   - core#slice#groupbyerr
   - core#slice#partitionby
-  - core#map#associate
+  - core#slice#associate
   - core#slice#keyify
 position: 230
 signatures:

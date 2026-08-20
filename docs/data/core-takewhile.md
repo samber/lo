@@ -13,7 +13,7 @@ similarHelpers:
   - core#slice#droprightwhile
   - core#slice#filter
   - core#slice#takefilter
-  - core#slice#first
+  - core#find#first
   - iter#sequence#takewhile
 position: 195
 signatures:

@@ -11,7 +11,7 @@ variantHelpers:
   - iter#sequence#drop
 similarHelpers:
   - core#slice#dropbyindex
-  - core#slice#withoutnth
+  - core#intersect#withoutnth
 position: 55
 ---
 
