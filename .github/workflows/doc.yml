@@ -41,6 +41,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
 
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: '../go.mod'
+
+      - name: Install goimports
+        run: go install golang.org/x/tools/cmd/goimports@latest
+
       - name: Install dependencies
         run: npm i
 

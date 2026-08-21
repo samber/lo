@@ -22,7 +22,8 @@
     "check-similar-keys-exist-in-directory": "node ./scripts/check-similar-keys-exist-in-directory.js",
     "check-helpers-visible-in-pages": "node ./scripts/check-helpers-visible-in-pages.js",
     "check-duplicate-slugs": "node ./scripts/check-duplicate-slugs.js",
-    "check-docs": "npm run check-function-signatures && npm run check-cross-references && npm run check-duplicates-in-category && npm run check-filename-matches-frontmatter && npm run check-similar-exists && npm run check-similar-keys-exist-in-directory && npm run check-helpers-visible-in-pages && npm run check-duplicate-slugs"
+    "validate-go-code-blocks": "node ./scripts/validate-go-code-blocks.js",
+    "check-docs": "npm run check-function-signatures && npm run check-cross-references && npm run check-duplicates-in-category && npm run check-filename-matches-frontmatter && npm run check-similar-exists && npm run check-similar-keys-exist-in-directory && npm run check-helpers-visible-in-pages && npm run check-duplicate-slugs && npm run validate-go-code-blocks"
   },
   "dependencies": {
       "@docusaurus/core": "3.10.0",
