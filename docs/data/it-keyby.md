@@ -18,7 +18,7 @@ position: 15
 Transforms a sequence into a map using a transform function to generate keys.
 
 ```go
-result := it.KeyBy(it.RangeFrom(1, 5), func(item int) string {
+result := it.KeyBy(it.Range(1, 5), func(item int) string {
     return fmt.Sprintf("key-%d", item)
 })
 // map[string]int{"key-1": 1, "key-2": 2, "key-3": 3, "key-4": 4}

@@ -21,18 +21,18 @@ position: 120
 Returns the zero value for the specified type. This is useful when you need an empty value of a specific type.
 
 ```go
-strResult := lo.Empty[string]()
+result := lo.Empty[string]()
 // "" (zero value for string)
 
-intResult := lo.Empty[int]()
+result = lo.Empty[int]()
 // 0 (zero value for int)
 
-sliceResult := lo.Empty[[]int]()
-// []int(nil) (zero value for slice)
+result = lo.Empty[[]int]()
+// []int{} (zero value for slice)
 
-mapResult := lo.Empty[map[string]int]()
-// map[string]int(nil) (zero value for map)
+result = lo.Empty[map[string]int]()
+// map[string]int{} (zero value for map)
 
-ptrResult := lo.Empty[*int]()
+result = lo.Empty[*int]()
 // nil (zero value for pointer)
 ```

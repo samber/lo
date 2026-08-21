@@ -39,14 +39,14 @@ type Person struct {
     Name string
     Age  int
 }
-adults := it.FilterMapToSeq(personMap, func(name string, age int) (Person, bool) {
+result = it.FilterMapToSeq(personMap, func(name string, age int) (Person, bool) {
     person := Person{Name: name, Age: age}
     return person, age >= 18
 })
 // iter.Seq[Person] yielding {Name: "alice", Age: 25}, {Name: "bob", Age: 30} (only adults)
 
 dataMap := map[string]float64{"a": 1.5, "b": -2.0, "c": 3.14}
-scaled := it.FilterMapToSeq(dataMap, func(key string, value float64) (int, bool) {
+result = it.FilterMapToSeq(dataMap, func(key string, value float64) (int, bool) {
     if value > 0 {
         return int(value * 100), true
     }

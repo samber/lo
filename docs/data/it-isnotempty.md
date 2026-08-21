@@ -18,7 +18,7 @@ position: 10
 Returns true if the collection is not empty, false otherwise.
 
 ```go
-result1 := it.IsNotEmpty(it.RangeFrom(1, 5))
+result1 := it.IsNotEmpty(it.Range(1, 5))
 // true
 
 result2 := it.IsNotEmpty(it.Empty[int]())

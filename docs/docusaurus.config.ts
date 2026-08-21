@@ -123,10 +123,6 @@ const config: Config = {
         content: 'go, golang, lo, slices, maps, strings, channels, functions, helpers, concurrency, error handling, reusable, utility, framework, library, samber',
       },
     },
-    // NOTE: og:image, twitter:card and twitter:image are NOT declared here.
-    // Docusaurus already emits them automatically from `themeConfig.image`
-    // (see below). Declaring them a second time here produced duplicate
-    // meta tags with identical values on every page.
     {
       tagName: 'meta',
       attributes: {
@@ -142,10 +138,6 @@ const config: Config = {
         content: '@samuelberthe',
       },
     },
-    // og:locale is NOT declared here: Docusaurus already emits it from
-    // `i18n.defaultLocale` ("en"). A second, hardcoded "en_US" value here
-    // produced two conflicting og:locale tags on every page.
-    // og:site_name provides branding context in social share cards
     {
       tagName: 'meta',
       attributes: {
@@ -365,6 +357,39 @@ const config: Config = {
     footer: {
       style: 'dark',
       links: [
+        {
+          title: 'Compare',
+          items: [
+            {
+              label: 'vs Go standard library',
+              to: '/compare/samber-lo-vs-go-stdlib',
+            },
+            {
+              label: 'Alternatives',
+              to: '/compare/samber-lo-alternatives',
+            },
+            {
+              label: 'vs go-funk',
+              to: '/compare/samber-lo-vs-go-funk',
+            },
+            {
+              label: 'Performance benchmarks',
+              to: '/compare/performance',
+            },
+            {
+              label: 'lo or ro?',
+              to: '/guides/lo-and-ro',
+            },
+            {
+              label: 'Lodash to Go',
+              to: '/guides/from-lodash',
+            },
+            {
+              label: 'Production-ready?',
+              to: '/production-ready',
+            },
+          ],
+        },
         {
           title: 'Project',
           items: [

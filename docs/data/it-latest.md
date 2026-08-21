@@ -25,7 +25,7 @@ Examples:
 import "time"
 
 // Find the latest time from a collection
-times := slices.Values([]time.Time{
+times := it.Slice([]time.Time{
     time.Date(2023, 5, 15, 10, 0, 0, 0, time.UTC),
     time.Date(2023, 3, 20, 14, 30, 0, 0, time.UTC),
     time.Date(2023, 8, 1, 9, 15, 0, 0, time.UTC),
@@ -34,24 +34,25 @@ latest := it.Latest(times)
 // latest: 2023-08-01 09:15:00 +0000 UTC
 
 // With empty collection
-empty := slices.Values([]time.Time{})
-latest = it.Latest(empty)
+empty := it.Slice([]time.Time{})
+latest := it.Latest(empty)
 // latest: 0001-01-01 00:00:00 +0000 UTC (zero value)
 
 // Find latest from parsed times
-t1, _ := time.Parse(time.RFC3339, "2023-01-01T12:00:00Z")
-t2, _ := time.Parse(time.RFC3339, "2023-01-01T10:00:00Z")
-t3, _ := time.Parse(time.RFC3339, "2023-01-01T14:00:00Z")
-times = slices.Values([]time.Time{t1, t2, t3})
-latest = it.Latest(times)
+times := it.Slice([]time.Time{
+    time.Parse(time.RFC3339, "2023-01-01T12:00:00Z"),
+    time.Parse(time.RFC3339, "2023-01-01T10:00:00Z"),
+    time.Parse(time.RFC3339, "2023-01-01T14:00:00Z"),
+})
+latest := it.Latest(times)
 // latest: 2023-01-01 14:00:00 +0000 UTC
 
 // Find latest log entry timestamp
-logs := slices.Values([]time.Time{
+logs := it.Slice([]time.Time{
     time.Now().Add(-2 * time.Hour),
     time.Now().Add(-1 * time.Hour),
     time.Now(),
 })
-latest = it.Latest(logs)
+latest := it.Latest(logs)
 // latest: current time
 ```

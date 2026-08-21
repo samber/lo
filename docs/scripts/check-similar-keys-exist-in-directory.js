@@ -15,15 +15,8 @@ helpers.forEach((h) => {
       console.error(`Reference not found in directory for ${h.fileName} -> ${key}`);
     }
   });
-  (h.variantHelpers || []).forEach((ref) => {
-    const key = toFullKey(ref);
-    if (!byFullKey.has(key)) {
-      hasError = true;
-      console.error(`Reference not found in directory for ${h.fileName} -> ${key}`);
-    }
-  });
 });
 
 if (hasError) process.exit(1);
-console.log('OK: every similarHelpers/variantHelpers reference exists in the directory.');
+console.log('OK: every similarHelpers reference exists in the directory.');
 

@@ -25,27 +25,28 @@ Returns the first non-zero value from the provided comparable arguments, with a 
 
 ```go
 // With strings - returns first non-empty string
-strResult, ok := lo.Coalesce("", "foo", "bar")
-// strResult: "foo", ok: true
+result, ok := lo.Coalesce("", "foo", "bar")
+// result: "foo", ok: true
 
 // All zero values - returns zero value with false
-strResult, ok = lo.Coalesce("", "")
-// strResult: "", ok: false
+result, ok = lo.Coalesce("", "")
+// result: "", ok: false
 
 // With integers - zero is considered zero value
-intResult, ok := lo.Coalesce(0, 42, 100)
-// intResult: 42, ok: true
+result, ok = lo.Coalesce(0, 42, 100)
+// result: 42, ok: true
 
 // With floats - zero is considered zero value
-floatResult, ok := lo.Coalesce(0.0, 3.14, 2.71)
-// floatResult: 3.14, ok: true
+result, ok = lo.Coalesce(0.0, 3.14, 2.71)
+// result: 3.14, ok: true
 
 // With pointers - nil is zero value for pointer types
+var s *string
 str := "hello"
-ptrResult, ok := lo.Coalesce[*string](nil, &str)
-// ptrResult: &str, ok: true
+result, ok = lo.Coalesce(nil, &str)
+// result: &str, ok: true
 
 // All nil pointers
-ptrResult, ok = lo.Coalesce[*string](nil, nil, nil)
-// ptrResult: nil, ok: false
+result, ok = lo.Coalesce[*string](nil, nil, nil)
+// result: nil, ok: false
 ```

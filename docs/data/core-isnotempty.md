@@ -32,14 +32,14 @@ result = lo.IsNotEmpty(0)
 result = lo.IsNotEmpty(42)
 // true
 
-result = lo.IsNotEmpty([3]int{})
-// false (empty/zero-value array)
+result = lo.IsNotEmpty([]int{})
+// false (empty slice)
 
-result = lo.IsNotEmpty([3]int{1, 2, 3})
+result = lo.IsNotEmpty([]int{1, 2, 3})
 // true
 
-result = lo.IsNotEmpty(0.0)
-// false (zero value for float64)
+result = lo.IsNotEmpty(map[string]int{})
+// false (empty map)
 
 var ptr *int
 result = lo.IsNotEmpty(ptr)

@@ -15,19 +15,11 @@ signatures:
   - "func Repeat[T any](count int, initial T) []T"
 ---
 
-Builds a slice with N copies of initial value. The value type must implement `Clone() T`.
+Builds a slice with N copies of initial value.
 
 ```go
-type Point struct {
-    X, Y int
-}
-
-func (p Point) Clone() Point {
-    return p
-}
-
-result := lo.Repeat(3, Point{X: 1, Y: 2})
-// []Point{{1, 2}, {1, 2}, {1, 2}}
+lo.Repeat(5, "42")
+// []string{"42", "42", "42", "42", "42"}
 ```
 
 

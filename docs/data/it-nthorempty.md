@@ -22,7 +22,7 @@ Examples:
 
 ```go
 // Get element at specific index
-numbers := slices.Values([]int{5, 2, 8, 1, 9})
+numbers := it.Slice([]int{5, 2, 8, 1, 9})
 element := it.NthOrEmpty(numbers, 2)
 // element: 8
 
@@ -35,49 +35,49 @@ last := it.NthOrEmpty(numbers, 4)
 // last: 9
 
 // Out of bounds - negative, returns zero value
-element = it.NthOrEmpty(numbers, -1)
+element := it.NthOrEmpty(numbers, -1)
 // element: 0 (zero value for int)
 
 // Out of bounds - too large, returns zero value
-element = it.NthOrEmpty(numbers, 10)
+element := it.NthOrEmpty(numbers, 10)
 // element: 0 (zero value for int)
 
 // With strings
-words := slices.Values([]string{"hello", "world", "go", "lang"})
-elementStr := it.NthOrEmpty(words, 1)
-// elementStr: "world"
+words := it.Slice([]string{"hello", "world", "go", "lang"})
+element := it.NthOrEmpty(words, 1)
+// element: "world"
 
 // Out of bounds with string - returns empty string
-elementStr = it.NthOrEmpty(words, 10)
-// elementStr: "" (zero value for string)
+element := it.NthOrEmpty(words, 10)
+// element: "" (zero value for string)
 
 // With structs
 type Person struct {
     Name string
     Age  int
 }
-people := slices.Values([]Person{
+people := it.Slice([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 25},
 })
-elementPerson := it.NthOrEmpty(people, 1)
-// elementPerson: {Name: "Bob", Age: 25}
+element := it.NthOrEmpty(people, 1)
+// element: {Name: "Bob", Age: 25}
 
 // Out of bounds with struct - returns zero value
-elementPerson = it.NthOrEmpty(people, 5)
-// elementPerson: {Name: "", Age: 0} (zero value for Person)
+element := it.NthOrEmpty(people, 5)
+// element: {Name: "", Age: 0} (zero value for Person)
 
 // With pointers - returns nil when out of bounds
-values := slices.Values([]*string{lo.ToPtr("hello"), lo.ToPtr("world")})
-elementPtr := it.NthOrEmpty(values, 1)
-// elementPtr: pointer to "world"
+values := it.Slice([]*string{ptr("hello"), ptr("world")})
+element := it.NthOrEmpty(values, 1)
+// element: pointer to "world"
 
 // Out of bounds with pointer - returns nil
-elementPtr = it.NthOrEmpty(values, 5)
-// elementPtr: nil (zero value for *string)
+element := it.NthOrEmpty(values, 5)
+// element: nil (zero value for *string)
 
 // With different integer types
-numbers = slices.Values([]int{1, 2, 3, 4, 5})
-element = it.NthOrEmpty(numbers, int8(3))
+numbers := it.Slice([]int{1, 2, 3, 4, 5})
+element := it.NthOrEmpty(numbers, int8(3))
 // element: 4
 ```

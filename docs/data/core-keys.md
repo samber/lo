@@ -27,9 +27,9 @@ Use the UniqKeys variant to deduplicate common keys.
 keys := lo.Keys(map[string]int{"foo": 1, "bar": 2})
 // []string{"foo", "bar"}
 
-keys = lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
+keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"baz": 3})
 // []string{"foo", "bar", "baz"}
 
-keys = lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
+keys := lo.Keys(map[string]int{"foo": 1, "bar": 2}, map[string]int{"bar": 3})
 // []string{"foo", "bar", "bar"}
 ```

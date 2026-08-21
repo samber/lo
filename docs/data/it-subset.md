@@ -38,12 +38,12 @@ result = it.Subset(seq, 3, 10)
 result = it.Subset(seq, 10, 5)
 // iter.Seq[int] yielding nothing (offset beyond sequence)
 
-strSeq := func(yield func(string) bool) {
+seq = func(yield func(string) bool) {
     yield("a")
     yield("b")
     yield("c")
     yield("d")
 }
-strResult := it.Subset(strSeq, 1, 2)
+result = it.Subset(seq, 1, 2)
 // iter.Seq[string] yielding "b", "c"
 ```

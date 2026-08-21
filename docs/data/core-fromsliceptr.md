@@ -26,9 +26,9 @@ ptrs := []*int{&a, &b, &c}
 slice := lo.FromSlicePtr(ptrs)
 // []int{1, 2, 3}
 
-sa, sb := "hello", "world"
-strPtrs := []*string{&sa, nil, &sb}
-strSlice := lo.FromSlicePtr(strPtrs)
+a, b = "hello", "world"
+ptrs = []*string{&a, nil, &b}
+slice = lo.FromSlicePtr(ptrs)
 // []string{"hello", "", "world"} (nil pointer becomes zero value)
 
 ptrs = []*int{}

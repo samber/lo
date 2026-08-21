@@ -28,6 +28,6 @@ result, ok := lo.CoalesceSlice([]int{}, []int{1, 2, 3}, []int{4, 5})
 result, ok = lo.CoalesceSlice([]int{}, []int{})
 // []int{}, false
 
-strResult, strOk := lo.CoalesceSlice([]string{}, []string{"a", "b"}, []string{"c"})
+result, ok = lo.CoalesceSlice([]string{}, []string{"a", "b"}, []string{"c"})
 // []string{"a", "b"}, true
 ```

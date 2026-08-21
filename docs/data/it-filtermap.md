@@ -35,13 +35,13 @@ result := it.FilterMap(seq, func(x int) (string, bool) {
 })
 // iter.Seq[string] yielding "even-2", "even-4"
 
-strSeq := func(yield func(string) bool) {
+seq = func(yield func(string) bool) {
     yield("a")
     yield("")
     yield("c")
     yield("d")
 }
-strResult := it.FilterMap(strSeq, func(s string) (int, bool) {
+result = it.FilterMap(seq, func(s string) (int, bool) {
     if s != "" {
         return len(s), true
     }

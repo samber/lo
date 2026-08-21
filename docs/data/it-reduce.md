@@ -50,7 +50,7 @@ concat := it.Reduce(seq, func(acc string, item string) string {
 Reduces a collection to a single value by iterating through elements and applying an accumulator function that includes the index.
 
 ```go
-result := it.ReduceI(it.RangeFrom(1, 5), func(agg int, item int, index int) int {
+result := it.ReduceI(it.Range(1, 5), func(agg int, item int, index int) int {
     return agg + item*index
 }, 0)
 // 20 (0*0 + 1*1 + 2*2 + 3*3)

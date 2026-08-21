@@ -28,6 +28,6 @@ result, ok := lo.CoalesceMap(map[string]int{}, map[string]int{"a": 1}, map[strin
 result, ok = lo.CoalesceMap(map[string]int{}, map[string]int{})
 // map[string]int{}, false
 
-intResult, intOk := lo.CoalesceMap(map[int]string{}, map[int]string{1: "one"}, map[int]string{2: "two"})
+result, ok = lo.CoalesceMap(map[int]string{}, map[int]string{1: "one"}, map[int]string{2: "two"})
 // map[int]string{1: "one"}, true
 ```

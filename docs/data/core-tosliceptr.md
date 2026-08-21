@@ -25,8 +25,8 @@ slice := []int{1, 2, 3}
 ptrs := lo.ToSlicePtr(slice)
 // []*int{&1, &2, &3}
 
-strSlice := []string{"a", "b", "c"}
-strPtrs := lo.ToSlicePtr(strSlice)
+slice = []string{"a", "b", "c"}
+ptrs = lo.ToSlicePtr(slice)
 // []*string{&"a", &"b", &"c"}
 
 slice = []int{}

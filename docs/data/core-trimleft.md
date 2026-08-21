@@ -23,7 +23,7 @@ Removes all leading elements found in the cutset from the collection.
 result := lo.TrimLeft([]int{0, 1, 2, 0, 3, 0}, []int{1, 0})
 // []int{2, 0, 3, 0}
 
-strResult := lo.TrimLeft([]string{"hello", "world", " "}, []string{" ", ""})
+result = lo.TrimLeft([]string{"hello", "world", " "}, []string{" ", ""})
 // []string{"hello", "world", " "}
 ```
 

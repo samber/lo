@@ -23,7 +23,7 @@ type Person struct {
     Age  int
 }
 
-people := slices.Values([]Person{
+people := it.Slice([]Person{
     {"Alice", 25},
     {"Bob", 30},
     {"Charlie", 35},

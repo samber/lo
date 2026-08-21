@@ -18,7 +18,7 @@ position: 67
 Returns the product of values in the collection using the given transform function.
 
 ```go
-result := it.ProductBy(it.RangeFrom(1, 5), func(item int) int {
+result := it.ProductBy(it.Range(1, 5), func(item int) int {
     return item * 2
 })
 // 384 (2 * 4 * 6 * 8)

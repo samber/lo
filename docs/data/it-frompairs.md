@@ -18,7 +18,7 @@ position: 20
 Transforms a sequence of key/value pairs into a map. Alias of FromEntries().
 
 ```go
-pairs := iter.Seq2[string, int](func(yield func(string, int) bool) {
+pairs := it.Seq2(func(yield func(string, int) bool) {
     yield("a", 1)
     yield("b", 2)
     yield("c", 3)

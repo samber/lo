@@ -25,7 +25,7 @@ slice := []string{"a"}
 err := lo.Validate(len(slice) == 0, "Slice should be empty")
 // error("Slice should be empty")
 
-err = lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", slice)
+err := lo.Validate(len(slice) == 0, "Slice should be empty but contains %v", slice)
 // error("Slice should be empty but contains [a]")
 ```
 

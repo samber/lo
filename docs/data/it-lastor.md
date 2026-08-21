@@ -22,51 +22,51 @@ Examples:
 
 ```go
 // Get the last element or fallback value
-numbers := slices.Values([]int{5, 2, 8, 1, 9})
+numbers := it.Slice([]int{5, 2, 8, 1, 9})
 last := it.LastOr(numbers, 42)
 // last: 9
 
 // With empty collection
-empty := slices.Values([]int{})
-last = it.LastOr(empty, 42)
+empty := it.Slice([]int{})
+last := it.LastOr(empty, 42)
 // last: 42 (fallback value)
 
 // With strings
-words := slices.Values([]string{"hello", "world", "go"})
-lastStr := it.LastOr(words, "fallback")
-// lastStr: "go"
+words := it.Slice([]string{"hello", "world", "go"})
+last := it.LastOr(words, "fallback")
+// last: "go"
 
-emptyWords := slices.Values([]string{})
-lastStr = it.LastOr(emptyWords, "fallback")
-// lastStr: "fallback"
+emptyWords := it.Slice([]string{})
+last := it.LastOr(emptyWords, "fallback")
+// last: "fallback"
 
 // With structs
 type Person struct {
     Name string
     Age  int
 }
-people := slices.Values([]Person{
+people := it.Slice([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 25},
 })
-lastPerson := it.LastOr(people, Person{Name: "Default", Age: 0})
-// lastPerson: {Name: "Bob", Age: 25}
+last := it.LastOr(people, Person{Name: "Default", Age: 0})
+// last: {Name: "Bob", Age: 25}
 
-emptyPeople := slices.Values([]Person{})
-lastPerson = it.LastOr(emptyPeople, Person{Name: "Default", Age: 0})
-// lastPerson: {Name: "Default", Age: 0} (fallback value)
+emptyPeople := it.Slice([]Person{})
+last := it.LastOr(emptyPeople, Person{Name: "Default", Age: 0})
+// last: {Name: "Default", Age: 0} (fallback value)
 
 // With single element
-single := slices.Values([]int{42})
-last = it.LastOr(single, 99)
+single := it.Slice([]int{42})
+last := it.LastOr(single, 99)
 // last: 42
 
 // Using with nil pointer fallback
-values := slices.Values([]*string{lo.ToPtr("hello"), lo.ToPtr("world")})
-lastPtr := it.LastOr(values, nil)
-// lastPtr: pointer to "world"
+values := it.Slice([]*string{ptr("hello"), ptr("world")})
+last := it.LastOr(values, nil)
+// last: pointer to "world"
 
-emptyValues := slices.Values([]*string{})
-lastPtr = it.LastOr(emptyValues, nil)
-// lastPtr: nil (fallback value)
+emptyValues := it.Slice([]*string{})
+last := it.LastOr(emptyValues, nil)
+// last: nil (fallback value)
 ```

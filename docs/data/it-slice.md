@@ -18,6 +18,6 @@ position: 80
 Returns a sub-sequence from start index to end index (exclusive).
 
 ```go
-result := it.Slice(it.RangeFrom(1, 10), 2, 5)
+result := it.Slice(it.Range(1, 10), 2, 5)
 // [3, 4, 5]
 ```

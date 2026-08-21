@@ -35,12 +35,12 @@ mode := it.Mode(seq)
 
 ```go
 // Multiple modes
-seq := func(yield func(int) bool) {
-    _ = yield(1)
-    _ = yield(2)
-    _ = yield(1)
-    _ = yield(2)
+seq := func(yield func(string) bool) {
+    _ = yield("a")
+    _ = yield("b")
+    _ = yield("a")
+    _ = yield("b")
 }
 mode := it.Mode(seq)
-// mode contains both 1 and 2 (order may vary)
+// mode contains both "a" and "b" (order may vary)
 ```

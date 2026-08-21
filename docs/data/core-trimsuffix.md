@@ -23,7 +23,7 @@ Removes all trailing occurrences of the given suffix from the collection.
 result := lo.TrimSuffix([]int{1, 2, 3, 1, 2, 4, 2, 4, 2, 4}, []int{2, 4})
 // []int{1, 2, 3, 1}
 
-strResult := lo.TrimSuffix([]string{"hello", "world", "hello", "test"}, []string{"test"})
+result = lo.TrimSuffix([]string{"hello", "world", "hello", "test"}, []string{"test"})
 // []string{"hello", "world", "hello"}
 ```
 

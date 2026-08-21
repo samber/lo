@@ -24,7 +24,7 @@ result, ok := lo.FromAnySlice[int](data)
 // []int{1, 2, 3}, true
 
 data = []any{"a", "b", "c"}
-strResult, strOk := lo.FromAnySlice[string](data)
+result, ok = lo.FromAnySlice[string](data)
 // []string{"a", "b", "c"}, true
 
 data = []any{1, "b", 3} // mixed types

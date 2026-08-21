@@ -17,7 +17,7 @@ similarHelpers:
 position: 122
 ---
 
-Returns true if the value is empty (zero value) for comparable types. This works with strings, numbers, pointers, structs, etc. Slices and maps are not comparable in Go, so they cannot be used with `IsEmpty`.
+Returns true if the value is empty (zero value) for comparable types. This works with strings, numbers, slices, maps, pointers, etc.
 
 ```go
 result := lo.IsEmpty("")
@@ -31,6 +31,15 @@ result = lo.IsEmpty(0)
 
 result = lo.IsEmpty(42)
 // false
+
+result = lo.IsEmpty([]int{})
+// true (empty slice)
+
+result = lo.IsEmpty([]int{1, 2, 3})
+// false
+
+result = lo.IsEmpty(map[string]int{})
+// true (empty map)
 
 var ptr *int
 result = lo.IsEmpty(ptr)

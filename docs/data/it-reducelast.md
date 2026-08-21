@@ -23,7 +23,7 @@ Reduces a collection from right to left, returning a single value.
 ### ReduceLast
 
 ```go
-result := it.ReduceLast(it.RangeFrom(1, 5), func(agg int, item int) int {
+result := it.ReduceLast(it.Range(1, 5), func(agg int, item int) int {
     return agg - item
 }, 0)
 // -10 (0 - 4 - 3 - 2 - 1)
@@ -34,7 +34,7 @@ result := it.ReduceLast(it.RangeFrom(1, 5), func(agg int, item int) int {
 Reduces a collection from right to left, returning a single value. The accumulator function includes the index.
 
 ```go
-result := it.ReduceLastI(it.RangeFrom(1, 5), func(agg int, item int, index int) int {
+result := it.ReduceLastI(it.Range(1, 5), func(agg int, item int, index int) int {
     return agg - item*index
 }, 0)
 // -20 (0 - 4*3 - 3*2 - 2*1 - 1*0)

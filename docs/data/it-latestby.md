@@ -30,7 +30,7 @@ type Event struct {
 }
 
 // Find the latest event by time
-events := slices.Values([]Event{
+events := it.Slice([]Event{
     {"Meeting", time.Date(2023, 5, 15, 10, 0, 0, 0, time.UTC)},
     {"Lunch", time.Date(2023, 5, 15, 12, 0, 0, 0, time.UTC)},
     {"Breakfast", time.Date(2023, 5, 15, 8, 0, 0, 0, time.UTC)},
@@ -45,15 +45,15 @@ type Task struct {
     ID       int
     Deadline time.Time
 }
-tasks := slices.Values([]Task{
+tasks := it.Slice([]Task{
     {1, time.Date(2023, 6, 1, 0, 0, 0, 0, time.UTC)},
     {2, time.Date(2023, 5, 15, 0, 0, 0, 0, time.UTC)},
     {3, time.Date(2023, 7, 1, 0, 0, 0, 0, time.UTC)},
 })
-latestTask := it.LatestBy(tasks, func(t Task) time.Time {
+latest := it.LatestBy(tasks, func(t Task) time.Time {
     return t.Deadline
 })
-// latestTask: {ID: 3, Deadline: 2023-07-01 00:00:00 +0000 UTC}
+// latest: {ID: 3, Deadline: 2023-07-01 00:00:00 +0000 UTC}
 
 // Find the most recent activity
 type Activity struct {
@@ -61,13 +61,13 @@ type Activity struct {
     Action  string
     Time    time.Time
 }
-activities := slices.Values([]Activity{
+activities := it.Slice([]Activity{
     {"alice", "login", time.Now().Add(-24 * time.Hour)},
     {"bob", "logout", time.Now().Add(-12 * time.Hour)},
     {"alice", "post", time.Now().Add(-1 * time.Hour)},
 })
-latestActivity := it.LatestBy(activities, func(a Activity) time.Time {
+latest := it.LatestBy(activities, func(a Activity) time.Time {
     return a.Time
 })
-// latestActivity: {User: "alice", Action: "post", Time: 1 hour ago}
+// latest: {User: "alice", Action: "post", Time: 1 hour ago}
 ```

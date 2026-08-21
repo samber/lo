@@ -29,7 +29,7 @@ type Person struct {
     Name string
     Age  int
 }
-people := slices.Values([]Person{
+people := it.Slice([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 25},
     {Name: "Charlie", Age: 30},  // Same age as Alice - Alice is returned
@@ -40,74 +40,74 @@ duplicates := it.FindDuplicatesBy(people, func(p Person) int { return p.Age })
 // duplicates: sequence with Alice (age 30) and Bob (age 25)
 
 // Find duplicate strings by length
-words := slices.Values([]string{"hello", "world", "hi", "go", "bye", "yes"})
-duplicatesByLength := it.FindDuplicatesBy(words, func(s string) int { return len(s) })
-// duplicatesByLength: sequence with "hello" (length 5, also "world" has length 5)
+words := it.Slice([]string{"hello", "world", "hi", "go", "bye", "yes"})
+duplicates := it.FindDuplicatesBy(words, func(s string) int { return len(s) })
+// duplicates: sequence with "hello" (length 5, also "world" has length 5)
 // and "hi" (length 2, also "go", "yes" have length 2)
 
 // Find duplicate items by first letter
-items := slices.Values([]string{"apple", "apricot", "banana", "blueberry", "cherry", "cranberry"})
-duplicatesByLetter := it.FindDuplicatesBy(items, func(s string) byte { return s[0] })
-// duplicatesByLetter: sequence with "apple" (starts with 'a', also "apricot"),
+items := it.Slice([]string{"apple", "apricot", "banana", "blueberry", "cherry", "cranberry"})
+duplicates := it.FindDuplicatesBy(items, func(s string) byte { return s[0] })
+// duplicates: sequence with "apple" (starts with 'a', also "apricot"),
 // "banana" (starts with 'b', also "blueberry"),
 // "cherry" (starts with 'c', also "cranberry")
 
 // Find duplicate numbers by modulo
-numbers := slices.Values([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})
-duplicatesByModulo := it.FindDuplicatesBy(numbers, func(n int) int { return n % 3 })
-// duplicatesByModulo: sequence with 1, 2, 3 (remainders 1, 2, 0 appear multiple times)
+numbers := it.Slice([]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})
+duplicates := it.FindDuplicatesBy(numbers, func(n int) int { return n % 3 })
+// duplicates: sequence with 1, 2, 3 (remainders 1, 2, 0 appear multiple times)
 
 // Find duplicate structs by composite key
 type Order struct {
     CustomerID string
     ProductID  string
 }
-orders := slices.Values([]Order{
+orders := it.Slice([]Order{
     {CustomerID: "A", ProductID: "1"},
     {CustomerID: "A", ProductID: "2"},
     {CustomerID: "B", ProductID: "1"},  // Same customer as first
     {CustomerID: "C", ProductID: "3"},
     {CustomerID: "A", ProductID: "3"},  // Same customer as first two
 })
-duplicatesByCustomer := it.FindDuplicatesBy(orders, func(o Order) string { return o.CustomerID })
-// duplicatesByCustomer: sequence with first order {CustomerID: "A", ProductID: "1"}
+duplicates := it.FindDuplicatesBy(orders, func(o Order) string { return o.CustomerID })
+// duplicates: sequence with first order {CustomerID: "A", ProductID: "1"}
 
 // Find duplicate items by case-insensitive comparison
-lowerWords := slices.Values([]string{"Hello", "hello", "WORLD", "world", "Go", "GO", "go"})
-duplicatesByCase := it.FindDuplicatesBy(lowerWords, func(s string) string { return strings.ToLower(s) })
-// duplicatesByCase: sequence with "Hello", "WORLD", "Go" (first occurrences of each case-insensitive duplicate)
+words := it.Slice([]string{"Hello", "hello", "WORLD", "world", "Go", "GO", "go"})
+duplicates := it.FindDuplicatesBy(words, func(s string) string { return strings.ToLower(s) })
+// duplicates: sequence with "Hello", "WORLD", "Go" (first occurrences of each case-insensitive duplicate)
 
 // Find duplicate dates by year-month
 import "time"
-dates := slices.Values([]time.Time{
+dates := it.Slice([]time.Time{
     time.Date(2023, 1, 15, 0, 0, 0, 0, time.UTC),
     time.Date(2023, 1, 20, 0, 0, 0, 0, time.UTC),  // Same month as first
     time.Date(2023, 2, 10, 0, 0, 0, 0, time.UTC),
     time.Date(2022, 1, 5, 0, 0, 0, 0, time.UTC),   // Different year
     time.Date(2023, 2, 25, 0, 0, 0, 0, time.UTC),  // Same month as third
 })
-duplicatesByYearMonth := it.FindDuplicatesBy(dates, func(t time.Time) string {
+duplicates := it.FindDuplicatesBy(dates, func(t time.Time) string {
     return fmt.Sprintf("%d-%02d", t.Year(), t.Month())
 })
-// duplicatesByYearMonth: sequence with first January date and first February date
+// duplicates: sequence with first January date and first February date
 
 // Find duplicate emails by domain
 type Email struct {
     Address string
 }
-emails := slices.Values([]Email{
+emails := it.Slice([]Email{
     {Address: "user1@example.com"},
     {Address: "user2@example.com"},  // Same domain as first
     {Address: "user3@gmail.com"},
     {Address: "user4@example.com"},  // Same domain as first two
     {Address: "user5@yahoo.com"},
 })
-duplicatesByDomain := it.FindDuplicatesBy(emails, func(e Email) string {
+duplicates := it.FindDuplicatesBy(emails, func(e Email) string {
     parts := strings.Split(e.Address, "@")
     if len(parts) > 1 {
         return parts[1]
     }
     return ""
 })
-// duplicatesByDomain: sequence with first email {Address: "user1@example.com"}
+// duplicates: sequence with first email {Address: "user1@example.com"}
 ```

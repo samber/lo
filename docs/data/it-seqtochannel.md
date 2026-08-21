@@ -36,11 +36,9 @@ for v := range ch {
 m := map[string]int{"a": 1, "b": 2}
 kv := it.Entries(m)
 ch := it.SeqToChannel2(1, kv)
-var got []lo.Tuple2[string, int]
 for pair := range ch {
-    got = append(got, pair)
+    // pair.A is key, pair.B is value
 }
-// got contains {"a", 1} and {"b", 2}, in some order
 ```
 
 

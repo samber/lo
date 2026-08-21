@@ -25,7 +25,7 @@ Examples:
 import "time"
 
 // Find the earliest time from a collection
-times := slices.Values([]time.Time{
+times := it.Slice([]time.Time{
     time.Date(2023, 5, 15, 10, 0, 0, 0, time.UTC),
     time.Date(2023, 3, 20, 14, 30, 0, 0, time.UTC),
     time.Date(2023, 8, 1, 9, 15, 0, 0, time.UTC),
@@ -34,15 +34,16 @@ earliest := it.Earliest(times)
 // earliest: 2023-03-20 14:30:00 +0000 UTC
 
 // With empty collection
-empty := slices.Values([]time.Time{})
-earliest = it.Earliest(empty)
+empty := it.Slice([]time.Time{})
+earliest := it.Earliest(empty)
 // earliest: 0001-01-01 00:00:00 +0000 UTC (zero value)
 
 // Find earliest from parsed times
-t1, _ := time.Parse(time.RFC3339, "2023-01-01T12:00:00Z")
-t2, _ := time.Parse(time.RFC3339, "2023-01-01T10:00:00Z")
-t3, _ := time.Parse(time.RFC3339, "2023-01-01T14:00:00Z")
-times = slices.Values([]time.Time{t1, t2, t3})
-earliest = it.Earliest(times)
+times := it.Slice([]time.Time{
+    time.Parse(time.RFC3339, "2023-01-01T12:00:00Z"),
+    time.Parse(time.RFC3339, "2023-01-01T10:00:00Z"),
+    time.Parse(time.RFC3339, "2023-01-01T14:00:00Z"),
+})
+earliest := it.Earliest(times)
 // earliest: 2023-01-01 10:00:00 +0000 UTC
 ```

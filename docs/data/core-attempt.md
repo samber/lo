@@ -31,7 +31,7 @@ iter, err := lo.Attempt(5, func(i int) error {
 
 ```go
 // All attempts fail - returns last error
-iter, err := lo.Attempt(3, func(i int) error {
+iter, err = lo.Attempt(3, func(i int) error {
     return fmt.Errorf("attempt %d failed", i)
 })
 // iter: 3, err: "attempt 2 failed" (last error from index 2)
@@ -39,7 +39,7 @@ iter, err := lo.Attempt(3, func(i int) error {
 
 ```go
 // Immediate success on first attempt
-iter, err := lo.Attempt(5, func(i int) error {
+iter, err = lo.Attempt(5, func(i int) error {
     return nil // succeeds immediately
 })
 // iter: 1, err: nil
@@ -47,7 +47,7 @@ iter, err := lo.Attempt(5, func(i int) error {
 
 ```go
 // Zero attempts - returns error without calling function
-iter, err := lo.Attempt(0, func(i int) error {
+iter, err = lo.Attempt(0, func(i int) error {
     return errors.New("should not be called")
 })
 // iter: 0, err: "maxIteration must be greater than 0"

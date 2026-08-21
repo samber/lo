@@ -27,7 +27,7 @@ signatures:
 Starts a functional switch/case/default chain using a predicate value.
 
 ```go
-result := lo.Switch[int, string](2).Case(1, "1").Case(2, "2").Default("3")
+result := lo.Switch(2).Case(1, "1").Case(2, "2").Default("3")
 // "2"
 ```
 
@@ -36,7 +36,7 @@ result := lo.Switch[int, string](2).Case(1, "1").Case(2, "2").Default("3")
 Adds a Case branch to a Switch chain returning a constant result.
 
 ```go
-result := lo.Switch[int, string](1).Case(1, "1").Default("?")
+result := lo.Switch(1).Case(1, "1").Default("?")
 // "1"
 ```
 
@@ -45,7 +45,7 @@ result := lo.Switch[int, string](1).Case(1, "1").Default("?")
 Adds a Case branch that lazily computes its result.
 
 ```go
-result := lo.Switch[int, string](2).CaseF(2, func() string {
+result := lo.Switch(2).CaseF(2, func() string {
     return "2"
 }).Default("?")
 // "2"
@@ -56,7 +56,7 @@ result := lo.Switch[int, string](2).CaseF(2, func() string {
 Completes the Switch chain by providing a default result when no Case matched.
 
 ```go
-result := lo.Switch[int, string](42).Default("none")
+result := lo.Switch(42).Default("none")
 // "none"
 ```
 
@@ -65,7 +65,7 @@ result := lo.Switch[int, string](42).Default("none")
 Function form of Default. Lazily computes the default result when no Case matched.
 
 ```go
-result := lo.Switch[int, string](0).Case(1, "1").DefaultF(func() string {
+result := lo.Switch(0).Case(1, "1").DefaultF(func() string {
     return "3"
 })
 // "3"

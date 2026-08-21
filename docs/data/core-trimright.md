@@ -23,7 +23,7 @@ Removes all trailing elements found in the cutset from the collection.
 result := lo.TrimRight([]int{0, 1, 2, 0, 3, 0}, []int{0, 3})
 // []int{0, 1, 2}
 
-strResult := lo.TrimRight([]string{"hello", "world", "  "}, []string{" ", ""})
+result = lo.TrimRight([]string{"hello", "world", "  "}, []string{" ", ""})
 // []string{"hello", "world", ""}
 ```
 

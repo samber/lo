@@ -22,42 +22,42 @@ Examples:
 
 ```go
 // Get the last element or zero value
-numbers := slices.Values([]int{5, 2, 8, 1, 9})
+numbers := it.Slice([]int{5, 2, 8, 1, 9})
 last := it.LastOrEmpty(numbers)
 // last: 9
 
 // With empty collection
-empty := slices.Values([]int{})
-last = it.LastOrEmpty(empty)
+empty := it.Slice([]int{})
+last := it.LastOrEmpty(empty)
 // last: 0 (zero value for int)
 
 // With strings
-words := slices.Values([]string{"hello", "world", "go"})
-lastWord := it.LastOrEmpty(words)
-// lastWord: "go"
+words := it.Slice([]string{"hello", "world", "go"})
+last := it.LastOrEmpty(words)
+// last: "go"
 
-emptyWords := slices.Values([]string{})
-lastWord = it.LastOrEmpty(emptyWords)
-// lastWord: "" (zero value for string)
+emptyWords := it.Slice([]string{})
+last := it.LastOrEmpty(emptyWords)
+// last: "" (zero value for string)
 
 // With structs
 type Person struct {
     Name string
     Age  int
 }
-people := slices.Values([]Person{
+people := it.Slice([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 25},
 })
-lastPerson := it.LastOrEmpty(people)
-// lastPerson: {Name: "Bob", Age: 25}
+last := it.LastOrEmpty(people)
+// last: {Name: "Bob", Age: 25}
 
-emptyPeople := slices.Values([]Person{})
-lastPerson = it.LastOrEmpty(emptyPeople)
-// lastPerson: {Name: "", Age: 0} (zero value for Person)
+emptyPeople := it.Slice([]Person{})
+last := it.LastOrEmpty(emptyPeople)
+// last: {Name: "", Age: 0} (zero value for Person)
 
 // With single element
-single := slices.Values([]int{42})
-last = it.LastOrEmpty(single)
+single := it.Slice([]int{42})
+last := it.LastOrEmpty(single)
 // last: 42
 ```
