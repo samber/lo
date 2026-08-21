@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/y_Pf3Jmw-B4
 variantHelpers:
   - iter#find#earliestby
 similarHelpers:
-  - core#find#earliestby
+  - core#slice#earliestby
 position: 510
 ---
 

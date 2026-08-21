@@ -10,8 +10,8 @@ variantHelpers:
 similarHelpers:
   - core#find#finduniques
   - core#find#findduplicatesby
-  - core#slice#uniq
-  - core#slice#uniqby
+  - core#find#uniq
+  - core#find#uniqby
 position: 110
 signatures:
   - "func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice"

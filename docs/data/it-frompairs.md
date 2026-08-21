@@ -10,8 +10,8 @@ playUrl: "https://go.dev/play/p/K3wL9j7TmXs"
 variantHelpers:
   - iter#map#fromentries
 similarHelpers:
-  - core#map#frompairs
-  - core#map#fromentries
+  - core#slice#frompairs
+  - core#slice#fromentries
 position: 20
 ---
 

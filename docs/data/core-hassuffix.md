@@ -9,7 +9,7 @@ variantHelpers:
   - core#find#hassuffix
 similarHelpers:
   - core#find#hasprefix
-  - core#intersect#contains
+  - core#find#contains
   - core#slice#trimright
   - core#slice#trimsuffix
 position: 30

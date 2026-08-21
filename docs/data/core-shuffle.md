@@ -9,10 +9,10 @@ variantHelpers:
   - core#slice#shuffle
 similarHelpers:
   - mutable#slice#shuffle
-  - core#find#sample
-  - core#find#samples
-  - core#find#sampleby
-  - core#find#samplesby
+  - core#slice#sample
+  - core#slice#samples
+  - core#slice#sampleby
+  - core#slice#samplesby
 position: 180
 signatures:
   - "func Shuffle[T any, Slice ~[]T](collection Slice) Slice"

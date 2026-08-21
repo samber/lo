@@ -10,7 +10,7 @@ signatures:
 playUrl: "https://go.dev/play/p/rWZiPB-RZOo"
 variantHelpers:
   - iter#sequence#map
-  - iter#sequence#map
+  - iter#sequence#mapi
 similarHelpers:
   - core#slice#map
   - iter#sequence#filtermap

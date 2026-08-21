@@ -2,7 +2,6 @@
 name: IsNotEmpty
 slug: isnotempty
 sourceRef: type_manipulation.go#L154
-playUrl: "https://go.dev/play/p/P2sD0PMXw4F"
 category: core
 subCategory: type
 signatures:

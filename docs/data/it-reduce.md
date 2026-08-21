@@ -10,9 +10,10 @@ signatures:
 playUrl: "https://go.dev/play/p/FmkVUf39ZP_Y"
 variantHelpers:
   - iter#sequence#reduce
-  - iter#sequence#reduce
+  - iter#sequence#reducei
 similarHelpers:
   - core#slice#reduce
+  - core#slice#reducei
   - core#slice#reduceright
 position: 30
 ---

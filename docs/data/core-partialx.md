@@ -13,10 +13,10 @@ signatures:
   - "func Partial5[T1, T2, T3, T4, T5, T6, R any](f func(T1, T2, T3, T4, T5, T6) R, arg1 T1) func(T2, T3, T4, T5, T6) R"
 playUrl: https://go.dev/play/p/Sy1gAQiQZ3v
 variantHelpers:
-  - core#function#partialx
+  - core#function#partial
   - core#function#partialx
 similarHelpers:
-  - core#condition#if-else
+  - core#condition#if
   - core#condition#ternary
   - core#condition#switch
   - core#retry#attempt

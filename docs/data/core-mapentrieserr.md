@@ -2,7 +2,6 @@
 name: MapEntriesErr
 slug: mapentrieserr
 sourceRef: map.go#L383
-playUrl: "https://go.dev/play/p/VuvNQzxKimT"
 category: core
 subCategory: map
 signatures:

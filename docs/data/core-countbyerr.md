@@ -12,6 +12,8 @@ playUrl: https://go.dev/play/p/7BnyPhpG6lW
 similarHelpers:
   - core#slice#countby
   - core#slice#count
+  - core#slice#everybyerr
+  - core#slice#somebyerr
 position: 5
 ---
 

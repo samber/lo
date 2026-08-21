@@ -10,8 +10,9 @@ playUrl: https://go.dev/play/p/ckLxqTE9KCz
 variantHelpers:
   - iter#map#entries
 similarHelpers:
-  - core#map#entries
+  - core#slice#entries
   - iter#map#fromentries
+  - iter#map#topairs
 position: 20
 ---
 

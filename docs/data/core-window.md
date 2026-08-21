@@ -2,7 +2,6 @@
 name: Window
 slug: window
 sourceRef: slice.go#L495
-playUrl: "https://go.dev/play/p/NfQ_nGjkgXW"
 category: core
 subCategory: slice
 variantHelpers:

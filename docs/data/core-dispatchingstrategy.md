@@ -2,7 +2,6 @@
 name: DispatchingStrategy
 slug: dispatchingstrategy
 sourceRef: channel.go#L12
-playUrl: "https://go.dev/play/p/UZGu2wVg3J2"
 category: core
 subCategory: channel
 signatures:
@@ -13,12 +12,12 @@ signatures:
   - "func DispatchingStrategyLeast[T any](msg T, index uint64, channels []<-chan T) int"
   - "func DispatchingStrategyMost[T any](msg T, index uint64, channels []<-chan T) int"
 variantHelpers:
-  - core#channel#dispatchingstrategy
-  - core#channel#dispatchingstrategy
-  - core#channel#dispatchingstrategy
-  - core#channel#dispatchingstrategy
-  - core#channel#dispatchingstrategy
-  - core#channel#dispatchingstrategy
+  - core#channel#dispatchingstrategyroundrobin
+  - core#channel#dispatchingstrategyrandom
+  - core#channel#dispatchingstrategyweightedrandom
+  - core#channel#dispatchingstrategyfirst
+  - core#channel#dispatchingstrategyleast
+  - core#channel#dispatchingstrategymost
 similarHelpers:
   - core#channel#channeldispatcher
 position: 270

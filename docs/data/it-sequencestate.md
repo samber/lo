@@ -2,7 +2,6 @@
 name: Empty
 slug: sequencestate
 sourceRef: it/type_manipulation.go#L50
-playUrl: "https://go.dev/play/p/ktE4IMXDMxv"
 category: iter
 subCategory: type
 signatures:
@@ -14,13 +13,13 @@ signatures:
 variantHelpers:
   - iter#type#empty
   - iter#type#isempty
-  - iter#condition#isnotempty
+  - iter#type#isnotempty
   - iter#type#coalesceseq
   - iter#type#coalesceseqorempty
 similarHelpers:
   - core#type#isempty
   - core#type#isnotempty
-  - core#type#coalesce
+  - core#condition#coalesce
 position: 250
 ---
 

@@ -13,7 +13,7 @@ similarHelpers:
   - core#slice#dropwhile
   - core#slice#droprightwhile
   - core#slice#slice
-  - core#intersect#withoutnth
+  - core#slice#withoutnth
   - core#slice#splice
 position: 210
 signatures:

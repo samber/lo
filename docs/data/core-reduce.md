@@ -10,13 +10,13 @@ variantHelpers:
 similarHelpers:
   - core#slice#reduceerr
   - core#slice#reduceright
-  - core#math#sum
-  - core#math#sumby
-  - core#math#sumbyerr
-  - core#math#product
-  - core#math#productby
-  - core#math#mean
-  - core#math#meanby
+  - core#slice#sum
+  - core#slice#sumby
+  - core#slice#sumbyerr
+  - core#slice#product
+  - core#slice#productby
+  - core#slice#mean
+  - core#slice#meanby
 position: 50
 signatures:
   - "func Reduce[T any, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R"

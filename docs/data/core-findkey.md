@@ -10,6 +10,7 @@ variantHelpers:
 similarHelpers:
   - core#find#findkeyby
   - core#find#find
+  - core#find#findby
 position: 80
 signatures:
   - "func FindKey[K comparable, V comparable](object map[K]V, value V) (K, bool)"

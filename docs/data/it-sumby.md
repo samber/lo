@@ -10,8 +10,8 @@ playUrl: https://go.dev/play/p/ZNiqXNMu5QP
 variantHelpers:
   - iter#math#sumby
 similarHelpers:
-  - core#math#sumby
-  - core#math#sum
+  - core#slice#sumby
+  - core#slice#sum
 position: 65
 ---
 

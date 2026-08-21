@@ -1,8 +1,7 @@
 ---
 name: IsNotNil
-slug: isnotnil
+slug: isnil
 sourceRef: type_manipulation.go#L22
-playUrl: "https://go.dev/play/p/P2sD0PMXw4F"
 category: core
 subCategory: type
 signatures:

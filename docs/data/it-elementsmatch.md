@@ -10,7 +10,7 @@ playUrl: "https://go.dev/play/p/24SGQm1yMRe"
 variantHelpers:
   - iter#intersect#elementsmatch
 similarHelpers:
-  - core#intersect#elementsmatch
+  - core#slice#elementsmatch
 position: 720
 ---
 

@@ -10,10 +10,10 @@ signatures:
 playUrl: https://go.dev/play/p/UcJ-6cANwfY
 variantHelpers:
   - iter#sequence#count
-  - iter#find#countby
+  - iter#sequence#countby
 similarHelpers:
   - core#slice#count
-  - iter#slice#countvalues
+  - iter#sequence#countvalues
 position: 110
 ---
 

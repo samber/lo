@@ -2,7 +2,6 @@
 name: ToAnySlice
 slug: toanyslice
 sourceRef: type_manipulation.go#L115
-playUrl: "https://go.dev/play/p/lbunFvzlUDX"
 category: core
 subCategory: type
 signatures:

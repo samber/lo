@@ -11,7 +11,7 @@ similarHelpers:
   - core#find#sample
   - core#find#samples
   - core#find#samplesby
-  - core#slice#shuffle
+  - core#find#shuffle
 position: 360
 signatures:
   - "func SampleBy[T any](collection []T, randomIntGenerator randomIntGenerator) T"

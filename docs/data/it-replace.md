@@ -2,7 +2,6 @@
 name: Replace
 slug: replace
 sourceRef: it/seq.go#L912
-playUrl: "https://go.dev/play/p/aFXjeyf0KqV"
 category: iter
 subCategory: slice
 signatures:

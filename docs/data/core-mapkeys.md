@@ -10,7 +10,7 @@ variantHelpers:
 similarHelpers:
   - core#map#mapvalues
   - core#map#mapentries
-  - core#slice#keyby
+  - core#map#keyby
   - core#slice#map
   - core#map#mapkeyserr
 position: 180

@@ -12,8 +12,9 @@ similarHelpers:
   - core#slice#filter
   - core#slice#uniqmap
   - core#slice#rejectmap
-  - core#map#filtermaptoslice
+  - core#slice#filtermaptoslice
   - core#slice#takefilter
+  - parallel#slice#filtermap
 position: 30
 signatures:
   - "func FilterMap[T any, R any](collection []T, callback func(item T, index int) (R, bool)) []R"

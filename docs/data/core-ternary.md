@@ -7,11 +7,11 @@ subCategory: condition
 playUrl: https://go.dev/play/p/t-D7WBL44h2
 variantHelpers:
   - core#condition#ternary
-  - core#condition#ternary
+  - core#condition#ternaryf
 similarHelpers:
-  - core#condition#if-else
+  - core#condition#if
   - core#condition#switch
-  - core#error-handling#validate
+  - core#condition#validate
   - core#function#partialx
 position: 0
 signatures:

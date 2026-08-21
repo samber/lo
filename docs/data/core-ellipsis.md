@@ -10,7 +10,7 @@ variantHelpers:
 similarHelpers:
   - core#string#substring
   - core#string#runelength
-  - core#slice#trim
+  - core#string#trim
   - core#string#capitalize
 position: 100
 signatures:

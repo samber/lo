@@ -15,7 +15,7 @@ signatures:
   - "func Must6[T1, T2, T3, T4, T5, T6 any](val1 T1, val2 T2, val3 T3, val4 T4, val5 T5, val6 T6, err any, messageArgs ...any) (T1, T2, T3, T4, T5, T6)"
 playUrl: https://go.dev/play/p/TMoWrRp3DyC
 variantHelpers:
-  - core#error-handling#mustx
+  - core#error-handling#must
   - core#error-handling#mustx
 similarHelpers:
   - core#error-handling#validate

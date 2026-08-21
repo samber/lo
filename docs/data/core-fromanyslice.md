@@ -2,7 +2,6 @@
 name: FromAnySlice
 slug: fromanyslice
 sourceRef: type_manipulation.go#L126
-playUrl: "https://go.dev/play/p/P2sD0PMXw4F"
 category: core
 subCategory: type
 signatures:

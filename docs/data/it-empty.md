@@ -11,7 +11,7 @@ variantHelpers:
   - iter#type#empty
 similarHelpers:
   - iter#type#isempty
-  - iter#condition#isnotempty
+  - iter#type#isnotempty
 position: 0
 ---
 

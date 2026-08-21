@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/Iph19Lgcsx-
 variantHelpers:
   - iter#map#invert
 similarHelpers:
-  - core#map#invert
+  - core#slice#invert
   - iter#map#entries
 position: 40
 ---

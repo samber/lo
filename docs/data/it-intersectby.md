@@ -11,8 +11,8 @@ variantHelpers:
   - iter#intersect#intersectby
 similarHelpers:
   - iter#intersect#intersect
-  - core#intersect#intersect
-  - core#intersect#intersectby
+  - core#slice#intersect
+  - core#slice#intersectby
   - iter#intersect#union
 position: 10
 ---

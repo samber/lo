@@ -2,7 +2,6 @@
 name: Subset
 slug: subset
 sourceRef: it/seq.go#L877
-playUrl: "https://go.dev/play/p/gnr_MPhYCHX"
 category: iter
 subCategory: sequence
 signatures:
@@ -12,6 +11,7 @@ variantHelpers:
 similarHelpers:
   - iter#sequence#slice
   - iter#sequence#drop
+  - iter#sequence#dropright
   - core#slice#slice
 position: 120
 ---

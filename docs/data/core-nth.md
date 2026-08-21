@@ -12,7 +12,7 @@ similarHelpers:
   - core#find#last
   - core#find#nthor
   - core#find#nthorempty
-  - core#find#indexof
+  - core#slice#indexof
   - core#slice#drop
 position: 320
 signatures:

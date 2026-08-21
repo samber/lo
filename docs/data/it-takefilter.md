@@ -10,7 +10,7 @@ signatures:
 playUrl: https://go.dev/play/p/Db68Bhu4MCA
 variantHelpers:
   - iter#sequence#takefilter
-  - iter#sequence#takefilter
+  - iter#sequence#takefilteri
 similarHelpers:
   - core#slice#takefilter
 position: 130

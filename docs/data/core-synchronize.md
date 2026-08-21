@@ -8,7 +8,7 @@ playUrl: https://go.dev/play/p/X3cqROSpQmu
 variantHelpers:
   - core#concurrency#synchronize
 similarHelpers:
-  - core#concurrency#newtransaction
+  - core#retry#newtransaction
   - core#concurrency#asyncx
   - core#concurrency#waitfor
 position: 0

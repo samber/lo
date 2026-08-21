@@ -2,13 +2,13 @@
 name: DropLastWhile
 slug: droplastwhile
 sourceRef: it/seq.go#L687
-playUrl: "https://go.dev/play/p/zSM8x08a9QD"
 category: iter
 subCategory: sequence
 signatures:
   - "func DropLastWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I"
 variantHelpers: []
-similarHelpers: []
+similarHelpers:
+  - core#slice#droplastwhile
 position: 163
 ---
 

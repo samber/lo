@@ -9,9 +9,9 @@ variantHelpers:
   - core#find#findorelse
 similarHelpers:
   - core#find#find
-  - core#find#firstor
-  - core#find#lastor
-  - core#find#nthor
+  - core#slice#firstor
+  - core#slice#lastor
+  - core#slice#nthor
 position: 70
 signatures:
   - "func FindOrElse[T any](collection []T, fallback T, predicate func(item T) bool) T"

@@ -11,7 +11,7 @@ variantHelpers:
   - iter#map#fromentries
   - iter#map#frompairs
 similarHelpers:
-  - core#map#fromentries
+  - core#slice#fromentries
   - iter#map#entries
 position: 30
 ---

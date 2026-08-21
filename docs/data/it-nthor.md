@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/MNweuhpy4Ym
 variantHelpers:
   - iter#find#nthor
 similarHelpers:
-  - core#find#nthor
+  - core#slice#nthor
 position: 590
 ---
 

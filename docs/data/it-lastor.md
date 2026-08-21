@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/HNubjW2Mrxs
 variantHelpers:
   - iter#find#lastor
 similarHelpers:
-  - core#find#lastor
+  - core#slice#lastor
 position: 570
 ---
 

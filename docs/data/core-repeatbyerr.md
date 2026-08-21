@@ -2,7 +2,6 @@
 name: RepeatByErr
 slug: repeatbyerr
 sourceRef: slice.go#L625
-playUrl: "https://go.dev/play/p/KOVtGUt-tdI"
 category: core
 subCategory: slice
 signatures:

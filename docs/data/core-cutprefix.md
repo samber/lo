@@ -14,7 +14,7 @@ similarHelpers:
   - core#slice#trimleft
   - core#slice#slice
   - core#slice#drop
-  - core#find#hasprefix
+  - core#slice#hasprefix
 position: 0
 signatures:
   - "func CutPrefix[T comparable, Slice ~[]T](collection Slice, separator Slice) (after Slice, found bool)"

@@ -2,7 +2,6 @@
 name: OmitByErr
 slug: omitbyerr
 sourceRef: map.go#L171
-playUrl: "https://go.dev/play/p/-_PPkSbO1Kc"
 category: core
 subCategory: map
 signatures:

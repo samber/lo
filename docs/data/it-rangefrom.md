@@ -10,7 +10,7 @@ playUrl: "https://go.dev/play/p/WHP_NI5scj9"
 variantHelpers:
   - iter#math#rangefrom
 similarHelpers:
-  - core#math#rangefrom
+  - core#slice#rangefrom
   - iter#math#range
   - iter#math#rangewithsteps
 position: 10

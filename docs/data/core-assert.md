@@ -7,7 +7,7 @@ subCategory: error-handling
 playUrl: https://go.dev/play/p/Xv8LLKBMNwI
 variantHelpers:
   - core#error-handling#assert
-  - core#error-handling#assert
+  - core#error-handling#assertf
 similarHelpers:
   - core#error-handling#validate
   - core#error-handling#mustx

@@ -6,7 +6,7 @@ category: core
 subCategory: error-handling
 playUrl: https://go.dev/play/p/8wk5rH8UfrE
 variantHelpers:
-  - core#error-handling#errorsas
+  - core#error-handling#erroras
 similarHelpers:
   - core#error-handling#validate
   - core#error-handling#mustx

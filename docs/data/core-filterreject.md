@@ -11,6 +11,7 @@ similarHelpers:
   - core#slice#filter
   - core#slice#reject
   - core#slice#partitionby
+  - mutable#slice#filterreject
 position: 280
 signatures:
   - "func FilterReject[T any, Slice ~[]T](collection Slice, predicate func(T, int) bool) (kept Slice, rejected Slice)"

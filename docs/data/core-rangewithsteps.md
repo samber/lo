@@ -10,7 +10,7 @@ variantHelpers:
 similarHelpers:
   - core#math#range
   - core#math#rangefrom
-  - core#slice#times
+  - core#math#times
   - core#slice#repeat
   - core#slice#repeatby
 position: 20

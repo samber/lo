@@ -2,7 +2,6 @@
 name: CoalesceSeq
 slug: coalesceseq
 sourceRef: it/type_manipulation.go#L74
-playUrl: "https://go.dev/play/p/krZ-laaVi2C"
 category: iter
 subCategory: type
 signatures:

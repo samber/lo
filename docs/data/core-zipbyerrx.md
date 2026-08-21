@@ -2,7 +2,6 @@
 name: ZipByErrX
 slug: zipbyerrx
 sourceRef: tuples.go#L521
-playUrl: "https://go.dev/play/p/m4z34_hGoSK"
 category: core
 subCategory: tuple
 signatures:

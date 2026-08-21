@@ -10,8 +10,8 @@ variantHelpers:
 similarHelpers:
   - core#slice#filter
   - core#slice#reject
-  - core#intersect#without
-  - core#intersect#withoutempty
+  - core#slice#without
+  - core#slice#withoutempty
 position: 270
 signatures:
   - "func Compact[T comparable, Slice ~[]T](collection Slice) Slice"

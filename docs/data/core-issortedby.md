@@ -9,8 +9,8 @@ variantHelpers:
   - core#slice#issortedby
 similarHelpers:
   - core#slice#issorted
-  - core#find#minby
-  - core#find#maxby
+  - core#slice#minby
+  - core#slice#maxby
   - core#slice#reverse
 position: 0
 signatures:

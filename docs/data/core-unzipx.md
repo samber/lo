@@ -22,8 +22,8 @@ similarHelpers:
   - core#tuple#zipx
   - core#tuple#zipbyx
   - core#tuple#unzipbyx
-  - core#map#mapkeys
-  - core#map#mapvalues
+  - core#slice#mapkeys
+  - core#slice#mapvalues
 position: 30
 ---
 

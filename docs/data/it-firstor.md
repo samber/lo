@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/wGFXI5NHkE2
 variantHelpers:
   - iter#find#firstor
 similarHelpers:
-  - core#find#firstor
+  - core#slice#firstor
 position: 550
 ---
 

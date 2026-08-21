@@ -7,7 +7,7 @@ subCategory: slice
 playUrl: https://go.dev/play/p/WHa2CfMO3Lr
 variantHelpers:
   - core#slice#associate
-  - core#slice#associate
+  - core#slice#associatei
   - core#slice#slicetomap
 similarHelpers:
   - core#slice#keyby

@@ -8,7 +8,7 @@ playUrl: https://go.dev/play/p/WHa2CfMO3Lr
 variantHelpers:
   - core#slice#slicetomap
   - core#slice#associate
-  - core#slice#associate
+  - core#slice#associatei
 similarHelpers:
   - core#slice#filterslicetomap
   - core#slice#keyby

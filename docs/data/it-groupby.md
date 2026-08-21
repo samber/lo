@@ -12,6 +12,7 @@ variantHelpers:
 similarHelpers:
   - core#slice#groupby
   - iter#sequence#partitionby
+  - iter#sequence#groupbymap
 position: 80
 ---
 

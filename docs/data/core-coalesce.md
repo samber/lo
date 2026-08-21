@@ -15,7 +15,7 @@ similarHelpers:
   - core#type#coalescesliceorempty
   - core#type#coalescemap
   - core#type#coalescemaporempty
-  - core#map#valueor
+  - core#type#valueor
   - core#type#empty
   - core#type#fromptror
 position: 130

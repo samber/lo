@@ -7,7 +7,7 @@ subCategory: string
 playUrl: https://go.dev/play/p/4JNDzaMwXkm
 variantHelpers:
   - core#string#camelcase
-  - core#string#camelcase
+  - core#string#camelcasewithlanguage
 similarHelpers:
   - core#string#pascalcase
   - core#string#snakecase

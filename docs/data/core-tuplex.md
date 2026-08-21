@@ -15,7 +15,7 @@ signatures:
   - "func T9[A, B, C, D, E, F, G, H, I any](a A, b B, c C, d D, e E, f F, g G, h H, i I) lo.Tuple9[A, B, C, D, E, F, G, H, I]"
 playUrl: https://go.dev/play/p/IllL3ZO4BQm
 variantHelpers:
-  - core#tuple#tuplex
+  - core#tuple#tx
   - core#tuple#tuplex
 similarHelpers:
   - core#tuple#unpackx

@@ -2,7 +2,6 @@
 name: ToSlicePtr
 slug: tosliceptr
 sourceRef: type_manipulation.go#L73
-playUrl: "https://go.dev/play/p/mhD9CwO3X0m"
 category: core
 subCategory: type
 signatures:

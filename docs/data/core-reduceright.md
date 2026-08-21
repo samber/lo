@@ -11,11 +11,11 @@ similarHelpers:
   - core#slice#reducerighterr
   - core#slice#reduce
   - core#slice#reduceerr
-  - core#math#sum
-  - core#math#product
-  - core#math#mean
-  - core#find#max
-  - core#find#min
+  - core#slice#sum
+  - core#slice#product
+  - core#slice#mean
+  - core#slice#max
+  - core#slice#min
 position: 60
 signatures:
   - "func ReduceRight[T any, R any](collection []T, accumulator func(agg R, item T, index int) R, initial R) R"

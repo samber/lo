@@ -2,7 +2,6 @@
 name: Buffer
 slug: buffer
 sourceRef: channel.go#L209
-playUrl: "https://go.dev/play/p/gPQ-6xmcKQI"
 category: core
 subCategory: channel
 signatures:
@@ -10,7 +9,7 @@ signatures:
   - "func BufferWithContext[T any](ctx context.Context, ch <-chan T, size int) (collection []T, length int, readTime time.Duration, ok bool)"
 variantHelpers:
   - core#channel#buffer
-  - core#channel#buffer
+  - core#channel#bufferwithcontext
 similarHelpers:
   - core#channel#slicetochannel
   - core#channel#channeltoslice

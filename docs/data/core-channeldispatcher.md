@@ -2,7 +2,6 @@
 name: ChannelDispatcher
 slug: channeldispatcher
 sourceRef: channel.go#L18
-playUrl: "https://go.dev/play/p/UZGu2wVg3J2"
 category: core
 subCategory: channel
 signatures:

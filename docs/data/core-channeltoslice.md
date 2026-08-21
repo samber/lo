@@ -2,7 +2,6 @@
 name: ChannelToSlice
 slug: channeltoslice
 sourceRef: channel.go#L177
-playUrl: "https://go.dev/play/p/lIbSY3QmiEg"
 category: core
 subCategory: channel
 signatures:

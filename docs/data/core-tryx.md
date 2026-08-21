@@ -15,7 +15,7 @@ signatures:
   - "func Try6[T, R, S, Q, U any](callback func() (T, R, S, Q, U, error)) bool"
 playUrl: https://go.dev/play/p/mTyyWUvn9u4
 variantHelpers:
-  - core#error-handling#tryx
+  - core#error-handling#try
   - core#error-handling#tryx
 similarHelpers:
   - core#error-handling#validate

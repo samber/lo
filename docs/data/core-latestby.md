@@ -17,6 +17,7 @@ similarHelpers:
   - core#find#minby
   - core#find#maxindexby
   - core#find#minindexby
+  - core#find#findby
   - core#find#findkeyby
   - core#find#findduplicatesby
   - core#find#finduniquesby

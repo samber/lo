@@ -2,7 +2,6 @@
 name: Generator
 slug: generator
 sourceRef: channel.go#L191
-playUrl: "https://go.dev/play/p/lIbSY3QmiEg"
 category: core
 subCategory: channel
 signatures:

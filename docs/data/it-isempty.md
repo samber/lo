@@ -10,7 +10,7 @@ playUrl: https://go.dev/play/p/krZ-laaVi2C
 variantHelpers:
   - iter#type#isempty
 similarHelpers:
-  - iter#condition#isnotempty
+  - iter#type#isnotempty
   - iter#type#empty
   - iter#sequence#length
 position: 10

@@ -2,7 +2,6 @@
 name: MapErr
 slug: maperr
 sourceRef: slice.go#L57
-playUrl: "https://go.dev/play/p/OkPcYAhBo0D"
 category: core
 subCategory: slice
 signatures:

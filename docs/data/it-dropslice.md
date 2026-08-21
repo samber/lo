@@ -2,7 +2,6 @@
 name: DropLast
 slug: dropslice
 sourceRef: it/seq.go#L643
-playUrl: "https://go.dev/play/p/O1J1-uWc3z9"
 category: iter
 subCategory: slice
 signatures:
@@ -11,12 +10,13 @@ signatures:
   - "func Subset[T any, I ~func(func(T) bool)](collection I, offset, length int) I"
   - "func Slice[T any, I ~func(func(T) bool)](collection I, start, end int) I"
 variantHelpers:
-  - iter#sequence#droplast
-  - iter#sequence#dropbyindex
-  - iter#sequence#subset
-  - iter#sequence#slice
+  - iter#slice#droplast
+  - iter#slice#dropbyindex
+  - iter#slice#subset
+  - iter#slice#slice
 similarHelpers:
   - core#slice#drop
+  - core#slice#droplast
   - core#slice#dropbyindex
   - core#slice#subset
   - core#slice#slice

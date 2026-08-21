@@ -10,7 +10,7 @@ variantHelpers:
 similarHelpers:
   - core#map#mapkeys
   - core#map#mapentries
-  - core#slice#groupby
+  - core#map#groupby
   - core#slice#map
   - core#map#mapvalueserr
 position: 190

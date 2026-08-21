@@ -18,8 +18,8 @@ similarHelpers:
   - core#find#max
   - core#find#minby
   - core#find#maxby
-  - core#slice#countvalues
-  - core#slice#countvaluesby
+  - core#math#countvalues
+  - core#math#countvaluesby
 position: 100
 signatures:
   - "func Mode[T constraints.Integer | constraints.Float](collection []T) []T"

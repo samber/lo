@@ -10,7 +10,7 @@ playUrl: "https://go.dev/play/p/KmX-fXictQl"
 variantHelpers:
   - iter#intersect#some
 similarHelpers:
-  - core#intersect#some
+  - core#slice#some
   - iter#intersect#every
   - iter#intersect#none
 position: 40

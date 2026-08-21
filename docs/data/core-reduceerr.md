@@ -2,7 +2,6 @@
 name: ReduceErr
 slug: reduceerr
 sourceRef: slice.go#L152
-playUrl: "https://go.dev/play/p/CgHYNUpOd1I"
 category: core
 subCategory: slice
 signatures:
@@ -12,9 +11,9 @@ variantHelpers:
 similarHelpers:
   - core#slice#reduce
   - core#slice#reduceright
-  - core#math#sum
-  - core#math#sumby
-  - core#math#sumbyerr
+  - core#slice#sum
+  - core#slice#sumby
+  - core#slice#sumbyerr
 position: 51
 ---
 

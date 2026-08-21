@@ -7,14 +7,14 @@ subCategory: condition
 playUrl: https://go.dev/play/p/TGbKUMAeRUd
 variantHelpers:
   - core#condition#switch
-  - core#condition#switch
-  - core#condition#switch
-  - core#condition#switch
-  - core#condition#switch
+  - core#condition#case
+  - core#condition#casef
+  - core#condition#default
+  - core#condition#defaultf
 similarHelpers:
-  - core#condition#if-else
+  - core#condition#if
   - core#condition#ternary
-  - core#error-handling#validate
+  - core#condition#validate
 position: 20
 signatures:
   - "func Switch[T comparable, R any](predicate T) *switchCase[T, R]"

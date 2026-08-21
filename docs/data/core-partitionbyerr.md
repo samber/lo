@@ -2,7 +2,6 @@
 name: PartitionByErr
 slug: partitionbyerr
 sourceRef: slice.go#L446
-playUrl: "https://go.dev/play/p/iMeruQ3_W80"
 category: core
 subCategory: slice
 signatures:
@@ -15,7 +14,7 @@ similarHelpers:
   - core#slice#groupbyerr
   - core#slice#groupbymap
   - core#slice#chunk
-  - core#slice#keyby
+  - core#map#keyby
 position: 151
 ---
 

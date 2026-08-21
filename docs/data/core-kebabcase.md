@@ -7,7 +7,7 @@ subCategory: string
 playUrl: https://go.dev/play/p/ZBeMB4-pq45
 variantHelpers:
   - core#string#kebabcase
-  - core#string#kebabcase
+  - core#string#kebabcasewithlanguage
 similarHelpers:
   - core#string#pascalcase
   - core#string#camelcase

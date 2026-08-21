@@ -2,7 +2,6 @@
 name: FanOut
 slug: fanout
 sourceRef: channel.go#L287
-playUrl: "https://go.dev/play/p/2LHxcjKX23L"
 category: core
 subCategory: channel
 signatures:

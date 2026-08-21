@@ -2,7 +2,6 @@
 name: MeanByErr
 slug: meanbyerr
 sourceRef: math.go#L175
-playUrl: "https://go.dev/play/p/j7TsVwBOZ7P"
 category: core
 subCategory: math
 variantHelpers:

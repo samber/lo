@@ -2,7 +2,6 @@
 name: PickByErr
 slug: pickbyerr
 sourceRef: map.go#L117
-playUrl: "https://go.dev/play/p/bAq9mHErB4V"
 category: core
 subCategory: map
 signatures:

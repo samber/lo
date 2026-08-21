@@ -2,7 +2,6 @@
 name: Assign
 slug: assign
 sourceRef: it/map.go#L140
-playUrl: "https://go.dev/play/p/GqPl6isVR9W"
 category: iter
 subCategory: map
 signatures:

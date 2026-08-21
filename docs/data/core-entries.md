@@ -11,6 +11,7 @@ similarHelpers:
   - core#map#fromentries
   - core#map#keys
   - core#map#values
+  - core#map#toentries
 position: 120
 signatures:
   - "func Entries[K comparable, V any](in map[K]V) []Entry[K, V]"

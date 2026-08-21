@@ -11,7 +11,7 @@ similarHelpers:
   - core#slice#countvalues
   - core#slice#groupby
   - core#slice#map
-  - core#map#mapvalues
+  - core#slice#mapvalues
 position: 0
 signatures:
   - "func CountValuesBy[T any, U comparable](collection []T, transform func(item T) U) map[U]int"

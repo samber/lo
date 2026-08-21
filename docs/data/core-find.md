@@ -13,8 +13,8 @@ similarHelpers:
   - core#find#findindexof
   - core#find#finderr
   - core#slice#filter
-  - core#find#first
-  - core#find#last
+  - core#slice#first
+  - core#slice#last
 position: 40
 signatures:
   - "func Find[T any](collection []T, predicate func(item T) bool) (T, bool)"

@@ -2,7 +2,6 @@
 name: BufferWithTimeout
 slug: bufferwithtimeout
 sourceRef: channel.go#L251
-playUrl: "https://go.dev/play/p/sxyEM3koo4n"
 category: core
 subCategory: channel
 signatures:
@@ -11,7 +10,7 @@ variantHelpers:
   - core#channel#bufferwithtimeout
 similarHelpers:
   - core#channel#buffer
-  - core#channel#buffer
+  - core#channel#bufferwithcontext
   - core#channel#slicetochannel
   - core#channel#channeltoslice
 position: 263

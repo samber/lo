@@ -9,7 +9,7 @@ signatures:
 playUrl: "https://go.dev/play/p/agIsKpG-S-P"
 variantHelpers:
   - iter#sequence#foreach
-  - iter#sequence#foreach
+  - iter#sequence#foreachi
 similarHelpers:
   - core#slice#foreach
   - iter#sequence#map

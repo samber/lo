@@ -12,11 +12,11 @@ similarHelpers:
   - core#slice#slice
   - core#slice#flatten
   - core#slice#chunk
-  - core#map#chunkentries
+  - core#slice#chunkentries
   - core#slice#interleave
   - core#slice#reverse
   - core#slice#shuffle
-  - core#find#sample
+  - core#slice#sample
   - core#slice#drop
   - core#slice#dropwhile
   - core#slice#dropright
