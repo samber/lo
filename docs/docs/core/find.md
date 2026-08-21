@@ -1,14 +1,15 @@
 ---
 title: "Go Search & Aggregate Helpers"
-description: "47 helpers to find, min/max, sample and aggregate elements in a Go slice — type-safe generics with runnable examples."
+description: "Helpers to find, min/max, sample and aggregate elements in a Go slice — type-safe generics with runnable examples."
 sidebar_position: 40
 hide_table_of_contents: true
 ---
 
 # Find - Core helpers
 
-47 helpers to find, min/max, sample and aggregate elements in a Go slice — type-safe generics with runnable examples.
+<HelperCount category="core" subCategory="find" /> helpers to find, min/max, sample and aggregate elements in a Go slice — type-safe generics with runnable examples.
 
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList

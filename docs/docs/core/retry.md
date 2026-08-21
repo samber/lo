@@ -1,14 +1,15 @@
 ---
 title: "Go Retry Helpers"
-description: "4 helpers to retry a function on error in Go, with delay and backoff — no external dependency required."
+description: "Helpers to retry a function on error in Go, with delay and backoff — no external dependency required."
 sidebar_position: 70
 hide_table_of_contents: true
 ---
 
 # Retry - Core helpers
 
-4 helpers to retry a function on error in Go, with delay and backoff — no external dependency required.
+<HelperCount category="core" subCategory="retry" /> helpers to retry a function on error in Go, with delay and backoff — no external dependency required.
 
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList

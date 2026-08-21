@@ -1,14 +1,15 @@
 ---
 title: "Go Set Operations on Slices"
-description: "21 helpers for set operations on Go slices: union, intersection, difference, contains — type-safe generics."
+description: "Helpers for set operations on Go slices: union, intersection, difference, contains — type-safe generics."
 sidebar_position: 50
 hide_table_of_contents: true
 ---
 
 # Intersection - Core helpers
 
-21 helpers for set operations on Go slices: union, intersection, difference, contains — type-safe generics.
+<HelperCount category="core" subCategory="intersect" /> helpers for set operations on Go slices: union, intersection, difference, contains — type-safe generics.
 
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList

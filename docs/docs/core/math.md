@@ -1,14 +1,15 @@
 ---
 title: "Go Math Helpers for Collections"
-description: "14 helpers for numeric aggregation over Go collections: sum, mean, min/max, range generation — type-safe generics."
+description: "Helpers for numeric aggregation over Go collections: sum, mean, min/max, range generation — type-safe generics."
 sidebar_position: 60
 hide_table_of_contents: true
 ---
 
 # Math - Core helpers
 
-14 helpers for numeric aggregation over Go collections: sum, mean, min/max, range generation — type-safe generics.
+<HelperCount category="core" subCategory="math" /> helpers for numeric aggregation over Go collections: sum, mean, min/max, range generation — type-safe generics.
 
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList

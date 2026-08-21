@@ -1,14 +1,15 @@
 ---
 title: "Go Iterator Search Helpers (iter.Seq)"
-description: "38 helpers to find and aggregate elements in a Go 1.23+ iterator (iter.Seq) — lazy, allocation-free."
+description: "Helpers to find and aggregate elements in a Go 1.23+ iterator (iter.Seq) — lazy, allocation-free."
 sidebar_position: 50
 hide_table_of_contents: true
 ---
 
 # Find - Iterator helpers
 
-38 helpers to find and aggregate elements in a Go 1.23+ iterator (iter.Seq) — lazy, allocation-free.
+<HelperCount category="iter" subCategory="find" /> helpers to find and aggregate elements in a Go 1.23+ iterator (iter.Seq) — lazy, allocation-free.
 
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList

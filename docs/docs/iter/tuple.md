@@ -1,14 +1,15 @@
 ---
 title: "Go Iterator Tuple Helpers"
-description: "4 helpers to pack and unpack tuples from Go 1.23+ iterators: Zip and Unzip variants."
+description: "Helpers to pack and unpack tuples from Go 1.23+ iterators: Zip and Unzip variants."
 sidebar_position: 70
 hide_table_of_contents: true
 ---
 
 # Tuple - Iterator helpers
 
-4 helpers to pack and unpack tuples from Go 1.23+ iterators: Zip and Unzip variants.
+<HelperCount category="iter" subCategory="tuple" /> helpers to pack and unpack tuples from Go 1.23+ iterators: Zip and Unzip variants.
 
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList

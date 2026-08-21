@@ -1,14 +1,15 @@
 ---
 title: "Go Iterator Type Helpers"
-description: "10 helpers for pointers, zero values and type coercion on Go 1.23+ iterators — lazy evaluation."
+description: "Helpers for pointers, zero values and type coercion on Go 1.23+ iterators — lazy evaluation."
 sidebar_position: 80
 hide_table_of_contents: true
 ---
 
 # Type manipulation - Iterator helpers
 
-10 helpers for pointers, zero values and type coercion on Go 1.23+ iterators — lazy evaluation.
+<HelperCount category="iter" subCategory="type" /> helpers for pointers, zero values and type coercion on Go 1.23+ iterators — lazy evaluation.
 
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList

@@ -1,14 +1,15 @@
 ---
 title: "Go Map Helpers"
-description: "35 helpers to transform, filter and invert Go maps (map[K]V): keys, values, entries, merge — type-safe generics."
+description: "Helpers to transform, filter and invert Go maps (map[K]V): keys, values, entries, merge — type-safe generics."
 sidebar_position: 10
 hide_table_of_contents: true
 ---
 
 # Map - Core helpers
 
-35 helpers to transform, filter and invert Go maps (map[K]V): keys, values, entries, merge — type-safe generics.
+<HelperCount category="core" subCategory="map" /> helpers to transform, filter and invert Go maps (map[K]V): keys, values, entries, merge — type-safe generics.
 
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList
