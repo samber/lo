@@ -63,7 +63,6 @@ A function returning a boolean, used to test or filter elements — the `fn` in
 ## Iteratee
 A general term (borrowed from Lodash) for the callback function passed to a
 collection helper — a predicate, transformer, or reducer, depending on the operation.
-See [Lodash to Go](/guides/from-lodash) for the full vocabulary mapping.
 
 ## Transformer Function
 A function that maps one value to another. The `fn` in `lo.Map(collection, fn)` and

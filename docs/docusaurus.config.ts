@@ -378,11 +378,7 @@ const config: Config = {
             },
             {
               label: 'lo or ro?',
-              to: '/guides/lo-and-ro',
-            },
-            {
-              label: 'Lodash to Go',
-              to: '/guides/from-lodash',
+              to: '/compare/lo-and-ro',
             },
             {
               label: 'Production-ready?',
