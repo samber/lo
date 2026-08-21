@@ -79,7 +79,7 @@ import (
     . "github.com/samber/lo"
 )
 
-names := Uniq([]string{"Samuel", "John", "Samuel"})
+names := lo.Uniq([]string{"Samuel", "John", "Samuel"})
 // []string{"Samuel", "John"}
 ```
 
