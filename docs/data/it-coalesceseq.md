@@ -19,24 +19,23 @@ position: 100
 Returns the first non-empty sequence from the provided arguments, with a boolean indicating if a non-empty sequence was found.
 
 ```go
-emptySeq := func(yield func(int) bool) bool {
-    return false // empty sequence
+emptySeq := func(yield func(int) bool) {
+    // empty sequence
 }
 nonEmptySeq := it.Range(3)
 result, ok := it.CoalesceSeq(emptySeq, nonEmptySeq, emptySeq)
 // iter.Seq[int] yielding 0, 1, 2, true
 
-emptyStrSeq := func(yield func(string) bool) bool {
-    return false // empty sequence
+emptyStrSeq := func(yield func(string) bool) {
+    // empty sequence
 }
-strSeq := func(yield func(string) bool) bool {
+strSeq := func(yield func(string) bool) {
     yield("a")
     yield("b")
-    return true
 }
-result, ok = it.CoalesceSeq(emptyStrSeq, strSeq)
+strResult, ok := it.CoalesceSeq(emptyStrSeq, strSeq)
 // iter.Seq[string] yielding "a", "b", true
 
-result, ok = it.CoalesceSeq(emptySeq, emptyStrSeq)
+noResult, ok := it.CoalesceSeq(emptySeq, emptySeq)
 // nil sequence, false
 ```

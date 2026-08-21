@@ -20,7 +20,7 @@ I wanted a short and memorable name, similar to "Lodash". It's easy to type and 
 
 ## 🚀 Install
 
-```go
+```bash
 go get -u github.com/samber/lo@v1
 
 # AI Agent Skill
@@ -44,6 +44,23 @@ import (
     lom "github.com/samber/lo/mutable"
     loi "github.com/samber/lo/it"
 )
+
+contains := lo.Contains([]int{1, 2, 3}, 2)
+// true
+
+doubled := lop.Map([]int{1, 2, 3}, func(item int, _ int) int {
+    return item * 2
+})
+// []int{2, 4, 6}
+
+numbers := []int{1, 2, 3}
+lom.Reverse(numbers)
+// numbers: []int{3, 2, 1}
+
+evens := slices.Collect(loi.Filter(slices.Values([]int{1, 2, 3, 4}), func(item int) bool {
+    return item%2 == 0
+}))
+// []int{2, 4}
 ```
 
 Then use one of the helpers below:
@@ -61,6 +78,9 @@ I cannot recommend it, but in case you are too lazy for repeating `lo.` everywhe
 import (
     . "github.com/samber/lo"
 )
+
+names := Uniq([]string{"Samuel", "John", "Samuel"})
+// []string{"Samuel", "John"}
 ```
 
 I take no responsibility for this junk. 😁 💩

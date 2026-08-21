@@ -18,7 +18,7 @@ position: 35
 Counts the number of elements in the collection that satisfy the predicate.
 
 ```go
-result := it.CountBy(it.Range(1, 11), func(item int) bool {
+result := it.CountBy(it.RangeFrom(1, 11), func(item int) bool {
     return item%2 == 0
 })
 // 5

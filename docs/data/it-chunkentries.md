@@ -30,7 +30,7 @@ result := it.ChunkEntries(originalMap, 2)
 // map[string]int{"e": 5}
 
 smallMap := map[int]string{1: "one", 2: "two"}
-result = it.ChunkEntries(smallMap, 5)
+smallChunks := it.ChunkEntries(smallMap, 5)
 // iter.Seq[map[int]string] yielding:
 // map[int]string{1: "one", 2: "two"}
 
@@ -38,6 +38,6 @@ largeMap := make(map[int]bool)
 for i := 0; i < 10; i++ {
     largeMap[i] = true
 }
-result = it.ChunkEntries(largeMap, 3)
+largeChunks := it.ChunkEntries(largeMap, 3)
 // iter.Seq[map[int]bool] yielding 4 maps with 3, 3, 3, and 1 entries respectively
 ```

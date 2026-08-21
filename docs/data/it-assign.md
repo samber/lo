@@ -35,7 +35,7 @@ result := it.Assign(map1, map2, map3)
 singleMap := func(yield func(map[int]string) bool) {
     yield(map[int]string{1: "one", 2: "two"})
 }
-result = it.Assign(singleMap)
+singleResult := it.Assign(singleMap)
 // map[int]string{1: "one", 2: "two"}
 
 emptyMap1 := func(yield func(map[string]bool) bool) {
@@ -44,6 +44,6 @@ emptyMap1 := func(yield func(map[string]bool) bool) {
 emptyMap2 := func(yield func(map[string]bool) bool) {
     yield(map[string]bool{"active": true})
 }
-result = it.Assign(emptyMap1, emptyMap2)
+emptyResult := it.Assign(emptyMap1, emptyMap2)
 // map[string]bool{"active": true}
 ```

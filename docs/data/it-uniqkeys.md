@@ -32,7 +32,7 @@ uniqueKeys := it.UniqKeys(m1)
 // uniqueKeys: sequence with "apple", "banana", "cherry"
 
 // Multiple maps with duplicate keys
-m1 := map[string]int{
+m1 = map[string]int{
     "apple":  1,
     "banana": 2,
 }
@@ -55,8 +55,8 @@ scores2 := map[int]string{
     4: "Eve",
     1: "Frank",
 }
-uniqueKeys = it.UniqKeys(scores1, scores2)
-// uniqueKeys: sequence with 1, 2, 3, 4
+intKeys := it.UniqKeys(scores1, scores2)
+// intKeys: sequence with 1, 2, 3, 4
 
 // Maps with struct keys
 type Person struct {
@@ -71,8 +71,8 @@ people2 := map[Person]bool{
     {Name: "Bob", Age: 25}:     false,  // Same struct
     {Name: "Charlie", Age: 35}: true,
 }
-uniqueKeys = it.UniqKeys(people1, people2)
-// uniqueKeys: sequence with {Alice 30}, {Bob 25}, {Charlie 35}
+personKeys := it.UniqKeys(people1, people2)
+// personKeys: sequence with {Alice 30}, {Bob 25}, {Charlie 35}
 
 // Empty maps
 empty1 := map[string]int{}
@@ -81,18 +81,18 @@ uniqueKeys = it.UniqKeys(empty1, empty2)
 // uniqueKeys: empty sequence
 
 // Mix of empty and non-empty maps
-m1 := map[string]int{"a": 1}
+m1 = map[string]int{"a": 1}
 empty := map[string]int{}
-m2 := map[string]int{"b": 2}
+m2 = map[string]int{"b": 2}
 uniqueKeys = it.UniqKeys(m1, empty, m2)
 // uniqueKeys: sequence with "a", "b"
 
 // Maps with same keys but different values
-m1 := map[string]int{
+m1 = map[string]int{
     "key1": 10,
     "key2": 20,
 }
-m2 := map[string]int{
+m2 = map[string]int{
     "key1": 100,  // Same key, different value
     "key3": 30,
 }
@@ -104,6 +104,6 @@ maps := make([]map[int]string, 100)
 for i := range maps {
     maps[i] = map[int]string{i: fmt.Sprintf("value%d", i)}
 }
-uniqueKeys = it.UniqKeys(maps...)
-// uniqueKeys: sequence with keys 0, 1, 2, ..., 99
+bigIntKeys := it.UniqKeys(maps...)
+// bigIntKeys: sequence with keys 0, 1, 2, ..., 99
 ```

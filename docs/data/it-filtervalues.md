@@ -32,25 +32,25 @@ result := it.FilterValues(m, func(key string, value int) bool {
 // []int{3, 5} (values > 2, corresponds to "apple" and "banana")
 
 numberMap := map[int]string{1: "one", 2: "two", 3: "three", 4: "four"}
-result = it.FilterValues(numberMap, func(key int, value string) bool {
+names := it.FilterValues(numberMap, func(key int, value string) bool {
     return len(value) == 3
 })
 // []string{"one", "two", "three"} (values with length 3)
 
 personMap := map[string]int{"alice": 25, "bob": 30, "charlie": 17}
-result = it.FilterValues(personMap, func(key string, age int) bool {
+ages := it.FilterValues(personMap, func(key string, age int) bool {
     return strings.HasPrefix(key, "a") && age >= 20
 })
 // []int{25} (value for "alice" only)
 
 emptyMap := map[string]int{}
-result = it.FilterValues(emptyMap, func(key string, value int) bool {
+empty := it.FilterValues(emptyMap, func(key string, value int) bool {
     return true
 })
 // []int{} (empty map)
 
 dataMap := map[string]float64{"a": 1.5, "b": -2.0, "c": 0.0, "d": 3.14}
-result = it.FilterValues(dataMap, func(key string, value float64) bool {
+positives := it.FilterValues(dataMap, func(key string, value float64) bool {
     return value > 0
 })
 // []float64{1.5, 3.14} (positive values only)

@@ -42,6 +42,14 @@ for v := range result {
 ### TakeFilterI
 
 ```go
+seq := func(yield func(int) bool) {
+    yield(1)
+    yield(2)
+    yield(3)
+    yield(4)
+    yield(5)
+    yield(6)
+}
 result := it.TakeFilterI(seq, 2, func(x, index int) bool {
     return x%2 == 0 && index < 4
 })

@@ -35,26 +35,23 @@ Searches the minimum value using a comparison function and returns the value and
 
 ```go
 type Point struct{ X int }
+
 value, idx, err := lo.MinIndexByErr([]Point{{1}, {5}, {3}}, func(a, b Point) (bool, error) {
     return a.X < b.X, nil
 })
 // value == {1}, idx == 0, err == nil
-```
 
-```go
 // Error case - stops on first error
-_, _, err := lo.MinIndexByErr([]Point{{1}, {5}, {0}}, func(a, b Point) (bool, error) {
+_, _, err = lo.MinIndexByErr([]Point{{1}, {5}, {0}}, func(a, b Point) (bool, error) {
     if a.X == 0 || b.X == 0 {
         return false, fmt.Errorf("zero value not allowed")
     }
     return a.X < b.X, nil
 })
 // error("zero value not allowed")
-```
 
-```go
 // Error case on first comparison
-_, _, err := lo.MinIndexByErr([]Point{{1}, {5}}, func(a, b Point) (bool, error) {
+_, _, err = lo.MinIndexByErr([]Point{{1}, {5}}, func(a, b Point) (bool, error) {
     return false, fmt.Errorf("comparison error")
 })
 // error("comparison error")

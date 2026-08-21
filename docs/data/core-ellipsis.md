@@ -20,7 +20,7 @@ signatures:
 Trims and truncates a string to the specified length in runes (Unicode code points) and appends an ellipsis if truncated. Multi-byte characters such as emoji or CJK ideographs are never split in the middle.
 
 ```go
-lo.Ellipsis("  Lorem Ipsum  ", 5)
+str := lo.Ellipsis("  Lorem Ipsum  ", 5)
 // "Lo..."
 
 str = lo.Ellipsis("Lorem Ipsum", 100)

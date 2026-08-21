@@ -23,16 +23,16 @@ Examples:
 
 ```go
 // Check if any number is even
-numbers := it.Slice([]int{1, 3, 5, 7, 9})
+numbers := slices.Values([]int{1, 3, 5, 7, 9})
 hasEven := it.SomeBy(numbers, func(n int) bool { return n%2 == 0 })
 // hasEven: false
 
-numbers = it.Slice([]int{1, 3, 5, 8, 9})
+numbers = slices.Values([]int{1, 3, 5, 8, 9})
 hasEven = it.SomeBy(numbers, func(n int) bool { return n%2 == 0 })
 // hasEven: true
 
 // Check if any string starts with specific prefix
-words := it.Slice([]string{"hello", "world", "go", "lang"})
+words := slices.Values([]string{"hello", "world", "go", "lang"})
 hasGoPrefix := it.SomeBy(words, func(s string) bool { return strings.HasPrefix(s, "go") })
 // hasGoPrefix: true
 
@@ -44,7 +44,7 @@ type Person struct {
     Name string
     Age  int
 }
-people := it.Slice([]Person{
+people := slices.Values([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 25},
     {Name: "Charlie", Age: 35},
@@ -52,7 +52,7 @@ people := it.Slice([]Person{
 hasTeenager := it.SomeBy(people, func(p Person) bool { return p.Age >= 13 && p.Age <= 19 })
 // hasTeenager: false
 
-teenagers := it.Slice([]Person{
+teenagers := slices.Values([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 16},  // Teenager
     {Name: "Charlie", Age: 35},
@@ -61,29 +61,29 @@ hasTeenager = it.SomeBy(teenagers, func(p Person) bool { return p.Age >= 13 && p
 // hasTeenager: true
 
 // Check if any number is greater than 100
-numbers = it.Slice([]int{1, 3, 5, 7, 9})
+numbers = slices.Values([]int{1, 3, 5, 7, 9})
 hasLargeNumber := it.SomeBy(numbers, func(n int) bool { return n > 100 })
 // hasLargeNumber: false
 
-numbers = it.Slice([]int{1, 3, 5, 150, 9})
+numbers = slices.Values([]int{1, 3, 5, 150, 9})
 hasLargeNumber = it.SomeBy(numbers, func(n int) bool { return n > 100 })
 // hasLargeNumber: true
 
 // Check if any string contains a substring
-strings := it.Slice([]string{"hello", "world", "go", "lang"})
-hasWorld := it.SomeBy(strings, func(s string) bool { return strings.Contains(s, "world") })
+strs := slices.Values([]string{"hello", "world", "go", "lang"})
+hasWorld := it.SomeBy(strs, func(s string) bool { return strings.Contains(s, "world") })
 // hasWorld: true
 
-hasPython := it.SomeBy(strings, func(s string) bool { return strings.Contains(s, "python") })
+hasPython := it.SomeBy(strs, func(s string) bool { return strings.Contains(s, "python") })
 // hasPython: false
 
 // Empty collection returns false
-empty := it.Slice([]int{})
+empty := slices.Values([]int{})
 hasAny := it.SomeBy(empty, func(n int) bool { return n > 0 })
 // hasAny: false
 
 // Check if any email is from specific domain
-emails := it.Slice([]string{"user@example.com", "test@gmail.com", "admin@site.net"})
+emails := slices.Values([]string{"user@example.com", "test@gmail.com", "admin@site.net"})
 hasGmail := it.SomeBy(emails, func(email string) bool { return strings.HasSuffix(email, "@gmail.com") })
 // hasGmail: true
 
@@ -91,7 +91,14 @@ hasYahoo := it.SomeBy(emails, func(email string) bool { return strings.HasSuffix
 // hasYahoo: false
 
 // Check if any string is palindrome
-words := it.Slice([]string{"level", "hello", "world", "radar"})
+reverseString := func(s string) string {
+    runes := []rune(s)
+    for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+        runes[i], runes[j] = runes[j], runes[i]
+    }
+    return string(runes)
+}
+words = slices.Values([]string{"level", "hello", "world", "radar"})
 hasPalindrome := it.SomeBy(words, func(s string) bool {
     return s == reverseString(s)
 })

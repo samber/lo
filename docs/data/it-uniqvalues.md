@@ -32,7 +32,7 @@ uniqueValues := it.UniqValues(m1)
 // uniqueValues: sequence with 1, 2, 3
 
 // Multiple maps with duplicate values
-m1 := map[string]int{
+m1 = map[string]int{
     "apple":  1,
     "banana": 2,
 }
@@ -54,8 +54,8 @@ scores2 := map[int]string{
     5: "David",
     6: "Bob",     // Same value
 }
-uniqueValues = it.UniqValues(scores1, scores2)
-// uniqueValues: sequence with "Alice", "Bob", "Charlie", "David"
+uniqueStrValues := it.UniqValues(scores1, scores2)
+// uniqueStrValues: sequence with "Alice", "Bob", "Charlie", "David"
 
 // Maps with boolean values
 boolMaps := []map[string]bool{
@@ -63,8 +63,8 @@ boolMaps := []map[string]bool{
     {"test": true, "prod": false},  // Same values
     {"dev": true, "staging": false}, // Same values
 }
-uniqueValues = it.UniqValues(boolMaps...)
-// uniqueValues: sequence with true, false
+uniqueBoolValues := it.UniqValues(boolMaps...)
+// uniqueBoolValues: sequence with true, false
 
 // Maps with float values
 prices1 := map[string]float64{
@@ -75,8 +75,8 @@ prices2 := map[string]float64{
     "orange": 1.99,  // Same price as apple
     "grape":  3.99,
 }
-uniqueValues = it.UniqValues(prices1, prices2)
-// uniqueValues: sequence with 1.99, 2.99, 3.99
+uniqueFloatValues := it.UniqValues(prices1, prices2)
+// uniqueFloatValues: sequence with 1.99, 2.99, 3.99
 
 // Maps with struct values
 type Product struct {
@@ -91,8 +91,8 @@ products2 := map[int]Product{
     3: {Name: "Notebook", Price: 19.99},  // Same price as book
     4: {Name: "Book", Price: 19.99},      // Same struct as products1[1]
 }
-uniqueValues = it.UniqValues(products1, products2)
-// uniqueValues: sequence with {Book 19.99}, {Pen 1.99}, {Notebook 19.99}
+uniqueProductValues := it.UniqValues(products1, products2)
+// uniqueProductValues: sequence with {Book 19.99}, {Pen 1.99}, {Notebook 19.99}
 
 // Maps with pointer values
 type Person struct {
@@ -108,8 +108,8 @@ people2 := map[string]*Person{
     "user3": alice,  // Same pointer
     "user4": &Person{Name: "Charlie"},
 }
-uniqueValues = it.UniqValues(people1, people2)
-// uniqueValues: sequence with pointers to Alice, Bob, Charlie
+uniquePtrValues := it.UniqValues(people1, people2)
+// uniquePtrValues: sequence with pointers to Alice, Bob, Charlie
 
 // Empty maps
 empty1 := map[string]int{}
@@ -118,18 +118,18 @@ uniqueValues = it.UniqValues(empty1, empty2)
 // uniqueValues: empty sequence
 
 // Mix of empty and non-empty maps
-m1 := map[string]int{"a": 10}
+m1 = map[string]int{"a": 10}
 empty := map[string]int{}
-m2 := map[string]int{"b": 20, "c": 10}  // 10 is duplicate
+m2 = map[string]int{"b": 20, "c": 10}  // 10 is duplicate
 uniqueValues = it.UniqValues(m1, empty, m2)
 // uniqueValues: sequence with 10, 20
 
 // Maps with same values from different keys
-m1 := map[string]int{
+m1 = map[string]int{
     "key1": 100,
     "key2": 200,
 }
-m2 := map[string]int{
+m2 = map[string]int{
     "key3": 100,  // Same value as key1
     "key4": 200,  // Same value as key2
     "key5": 300,
@@ -145,6 +145,6 @@ for i := range maps {
         i + 100: fmt.Sprintf("unique_%d", i),
     }
 }
-uniqueValues = it.UniqValues(maps...)
-// uniqueValues: sequence with "common" and 10 unique values
+uniqueDuplicateValues := it.UniqValues(maps...)
+// uniqueDuplicateValues: sequence with "common" and 10 unique values
 ```

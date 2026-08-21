@@ -30,7 +30,7 @@ type Event struct {
 }
 
 // Find the earliest event by time
-events := it.Slice([]Event{
+events := slices.Values([]Event{
     {"Meeting", time.Date(2023, 5, 15, 10, 0, 0, 0, time.UTC)},
     {"Lunch", time.Date(2023, 5, 15, 12, 0, 0, 0, time.UTC)},
     {"Breakfast", time.Date(2023, 5, 15, 8, 0, 0, 0, time.UTC)},
@@ -45,13 +45,13 @@ type Task struct {
     ID       int
     Deadline time.Time
 }
-tasks := it.Slice([]Task{
+tasks := slices.Values([]Task{
     {1, time.Date(2023, 6, 1, 0, 0, 0, 0, time.UTC)},
     {2, time.Date(2023, 5, 15, 0, 0, 0, 0, time.UTC)},
     {3, time.Date(2023, 7, 1, 0, 0, 0, 0, time.UTC)},
 })
-earliest := it.EarliestBy(tasks, func(t Task) time.Time {
+earliestTask := it.EarliestBy(tasks, func(t Task) time.Time {
     return t.Deadline
 })
-// earliest: {ID: 2, Deadline: 2023-05-15 00:00:00 +0000 UTC}
+// earliestTask: {ID: 2, Deadline: 2023-05-15 00:00:00 +0000 UTC}
 ```

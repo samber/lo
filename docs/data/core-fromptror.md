@@ -26,7 +26,7 @@ ptr := lo.ToPtr(42)
 value := lo.FromPtrOr(ptr, 0)
 // 42
 
-value = lo.FromPtrOr[string](nil, "default")
+strValue := lo.FromPtrOr[string](nil, "default")
 // "default"
 
 value = lo.FromPtrOr[int](nil, -1)

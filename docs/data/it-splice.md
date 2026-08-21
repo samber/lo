@@ -34,13 +34,13 @@ result = it.Splice(seq, 0, 0)
 result = it.Splice(seq, 3, 6, 7)
 // iter.Seq[int] yielding 1, 2, 5, 6, 7 (insert at end)
 
-seq = func(yield func(string) bool) {
+strSeq := func(yield func(string) bool) {
     yield("a")
     yield("c")
 }
-result = it.Splice(seq, 1, "b")
+strResult := it.Splice(strSeq, 1, "b")
 // iter.Seq[string] yielding "a", "b", "c"
 
-result = it.Splice(seq, 1, "x", "y")
+strResult = it.Splice(strSeq, 1, "x", "y")
 // iter.Seq[string] yielding "a", "x", "y", "c"
 ```

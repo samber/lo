@@ -23,12 +23,12 @@ Examples:
 
 ```go
 // Find the minimum value and its index
-numbers := it.Slice([]int{5, 2, 8, 1, 9})
+numbers := slices.Values([]int{5, 2, 8, 1, 9})
 value, index := it.MinIndex(numbers)
 // value: 1, index: 3
 
 // With empty collection
-empty := it.Slice([]int{})
-value, index := it.MinIndex(empty)
+empty := slices.Values([]int{})
+value, index = it.MinIndex(empty)
 // value: 0, index: -1
 ```

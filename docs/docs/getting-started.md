@@ -78,10 +78,12 @@ The parallel package enables concurrent processing of collections, transforming 
 ```go
 import lop "github.com/samber/lo/parallel"
 
+numbers := []int{1, 2, 3, 4, 5}
+
 // Process items concurrently, one goroutine per item
 results := lop.Map(numbers, func(x int, index int) int {
     // Some expensive operation
-    return expensiveOperation(x)
+    return x * x
 })
 ```
 

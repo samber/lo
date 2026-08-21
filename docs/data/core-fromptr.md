@@ -25,8 +25,8 @@ ptr := lo.ToPtr(42)
 value := lo.FromPtr(ptr)
 // value: 42
 
-value = lo.FromPtr[string](nil)
-// value: "" (zero value for string)
+strValue := lo.FromPtr[string](nil)
+// strValue: "" (zero value for string)
 
 value = lo.FromPtr[int](nil)
 // value: 0 (zero value for int)

@@ -29,9 +29,9 @@ result := lo.CoalesceOrEmpty("", "foo", "bar")
 result = lo.CoalesceOrEmpty("", "")
 // ""
 
-result = lo.CoalesceOrEmpty(0, 42, 100)
+intResult := lo.CoalesceOrEmpty(0, 42, 100)
 // 42
 
-result = lo.CoalesceOrEmpty(0.0, 0.0, 0.0)
+floatResult := lo.CoalesceOrEmpty(0.0, 0.0, 0.0)
 // 0.0
 ```

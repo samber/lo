@@ -31,17 +31,17 @@ result = lo.Splice([]string{"a", "b"}, -1, "1", "2")
 result = lo.Splice([]string{"a", "b"}, 42, "1", "2")
 // result: []string{"a", "b", "1", "2"}
 
-// Insert at beginning (index 0)
-result = lo.Splice([]int{3, 4, 5}, 0, 1, 2)
-// result: []int{1, 2, 3, 4, 5}
-
-// Insert before last element with negative index
-result = lo.Splice([]int{1, 2, 3}, -2, 99)
-// result: []int{1, 99, 2, 3}
-
 // No elements to insert returns original slice
 result = lo.Splice([]string{"a", "b"}, 1)
 // result: []string{"a", "b"}
+
+// Insert at beginning (index 0)
+resultInts := lo.Splice([]int{3, 4, 5}, 0, 1, 2)
+// resultInts: []int{1, 2, 3, 4, 5}
+
+// Insert before last element with negative index
+resultInts = lo.Splice([]int{1, 2, 3}, -2, 99)
+// resultInts: []int{1, 99, 2, 3}
 ```
 
 

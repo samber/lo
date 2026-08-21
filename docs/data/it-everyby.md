@@ -22,16 +22,16 @@ Examples:
 
 ```go
 // Check if all numbers are positive
-numbers := it.Slice([]int{1, 3, 5, 7, 9})
+numbers := slices.Values([]int{1, 3, 5, 7, 9})
 allPositive := it.EveryBy(numbers, func(n int) bool { return n > 0 })
 // allPositive: true
 
-numbers = it.Slice([]int{1, -3, 5, 7, 9})
+numbers = slices.Values([]int{1, -3, 5, 7, 9})
 allPositive = it.EveryBy(numbers, func(n int) bool { return n > 0 })
 // allPositive: false
 
 // Check if all strings have minimum length
-words := it.Slice([]string{"hello", "world", "go", "lang"})
+words := slices.Values([]string{"hello", "world", "go", "lang"})
 allLongEnough := it.EveryBy(words, func(s string) bool { return len(s) >= 2 })
 // allLongEnough: true
 
@@ -43,7 +43,7 @@ type Person struct {
     Name string
     Age  int
 }
-people := it.Slice([]Person{
+people := slices.Values([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 25},
     {Name: "Charlie", Age: 35},
@@ -51,7 +51,7 @@ people := it.Slice([]Person{
 allAdults := it.EveryBy(people, func(p Person) bool { return p.Age >= 18 })
 // allAdults: true
 
-minors := it.Slice([]Person{
+minors := slices.Values([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 15},  // Not adult
     {Name: "Charlie", Age: 35},
@@ -60,36 +60,36 @@ allAdults = it.EveryBy(minors, func(p Person) bool { return p.Age >= 18 })
 // allAdults: false
 
 // Check if all numbers are even
-numbers = it.Slice([]int{2, 4, 6, 8, 10})
+numbers = slices.Values([]int{2, 4, 6, 8, 10})
 allEven := it.EveryBy(numbers, func(n int) bool { return n%2 == 0 })
 // allEven: true
 
-numbers = it.Slice([]int{2, 4, 6, 7, 10})  // 7 is odd
+numbers = slices.Values([]int{2, 4, 6, 7, 10})  // 7 is odd
 allEven = it.EveryBy(numbers, func(n int) bool { return n%2 == 0 })
 // allEven: false
 
 // Check if all strings are lowercase
-strings := it.Slice([]string{"hello", "world", "go", "lang"})
-allLowercase := it.EveryBy(strings, func(s string) bool { return s == strings.ToLower(s) })
+strs := slices.Values([]string{"hello", "world", "go", "lang"})
+allLowercase := it.EveryBy(strs, func(s string) bool { return s == strings.ToLower(s) })
 // allLowercase: true
 
-strings = it.Slice([]string{"hello", "World", "go", "lang"})  // "World" has uppercase
-allLowercase = it.EveryBy(strings, func(s string) bool { return s == strings.ToLower(s) })
+strs = slices.Values([]string{"hello", "World", "go", "lang"})  // "World" has uppercase
+allLowercase = it.EveryBy(strs, func(s string) bool { return s == strings.ToLower(s) })
 // allLowercase: false
 
 // Empty collection returns true
-empty := it.Slice([]int{})
-allPositive := it.EveryBy(empty, func(n int) bool { return n > 0 })
+empty := slices.Values([]int{})
+allPositive = it.EveryBy(empty, func(n int) bool { return n > 0 })
 // allPositive: true
 
 // Check if all emails are valid
-emails := it.Slice([]string{"user@example.com", "test@domain.org", "admin@site.net"})
+emails := slices.Values([]string{"user@example.com", "test@domain.org", "admin@site.net"})
 allValid := it.EveryBy(emails, func(email string) bool {
     return strings.Contains(email, "@") && strings.Contains(email, ".")
 })
 // allValid: true
 
-emails = it.Slice([]string{"user@example.com", "invalid-email", "test@domain.org"})
+emails = slices.Values([]string{"user@example.com", "invalid-email", "test@domain.org"})
 allValid = it.EveryBy(emails, func(email string) bool {
     return strings.Contains(email, "@") && strings.Contains(email, ".")
 })

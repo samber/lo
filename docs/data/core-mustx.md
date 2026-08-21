@@ -32,13 +32,20 @@ Panics if err is an error or false, returning successful values otherwise. Varia
 
 
 ```go
+import (
+    "errors"
+    "strconv"
+)
+
 // returns 10, panics if err is not nil
 v := lo.Must(strconv.Atoi("10"))
 
 // panics with custom message
-lo.Must0(fmt.Errorf("boom"), "failed to parse")
+lo.Must0(errors.New("boom"), "failed to parse")
 
 // panics if myFunc returns an error
-func myFunc() (int, string, float64, bool, error) { ... }
+myFunc := func() (int, string, float64, bool, error) {
+    return 1, "two", 3.0, true, nil
+}
 a, b, c, d := lo.Must4(myFunc())
 ```

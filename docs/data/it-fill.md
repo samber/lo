@@ -16,16 +16,22 @@ position: 174
 Fill replaces elements of a sequence with `initial` value.
 
 ```go
-collection := func(yield func(int) bool) {
-    yield(1)
-    yield(2)
-    yield(3)
+type item struct{ value int }
+
+func (i item) Clone() item {
+    return item{i.value}
 }
 
-filled := it.Fill(collection, 99)
-var result []int
-for item := range filled {
-    result = append(result, item)
+collection := func(yield func(item) bool) {
+    yield(item{1})
+    yield(item{2})
+    yield(item{3})
 }
-// result contains [99, 99, 99]
+
+filled := it.Fill(collection, item{99})
+var result []item
+for v := range filled {
+    result = append(result, v)
+}
+// result contains [{99} {99} {99}]
 ```

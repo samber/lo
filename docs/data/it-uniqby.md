@@ -18,7 +18,7 @@ position: 45
 Returns a sequence with duplicate elements removed based on a transform function.
 
 ```go
-result := it.UniqBy(it.Range(1, 7), func(item int) int {
+result := it.UniqBy(it.RangeFrom(1, 7), func(item int) int {
     return item % 3
 })
 // [1, 2, 3]

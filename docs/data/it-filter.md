@@ -44,7 +44,7 @@ for v := range filtered {
 FilterI iterates over elements of collection, returning a sequence of all elements predicate returns true for. The predicate function includes the index.
 
 ```go
-result := it.FilterI(it.Range(1, 6), func(item int, index int) bool {
+result := it.FilterI(it.RangeFrom(1, 6), func(item int, index int) bool {
     return item%2 == 0 && index > 1
 })
 var filtered []int

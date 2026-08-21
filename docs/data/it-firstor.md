@@ -22,46 +22,46 @@ Examples:
 
 ```go
 // Get the first element or fallback value
-numbers := it.Slice([]int{5, 2, 8, 1, 9})
+numbers := slices.Values([]int{5, 2, 8, 1, 9})
 first := it.FirstOr(numbers, 42)
 // first: 5
 
 // With empty collection
-empty := it.Slice([]int{})
-first := it.FirstOr(empty, 42)
+empty := slices.Values([]int{})
+first = it.FirstOr(empty, 42)
 // first: 42 (fallback value)
 
 // With strings
-words := it.Slice([]string{"hello", "world", "go"})
-first := it.FirstOr(words, "fallback")
-// first: "hello"
+words := slices.Values([]string{"hello", "world", "go"})
+firstStr := it.FirstOr(words, "fallback")
+// firstStr: "hello"
 
-emptyWords := it.Slice([]string{})
-first := it.FirstOr(emptyWords, "fallback")
-// first: "fallback"
+emptyWords := slices.Values([]string{})
+firstStr = it.FirstOr(emptyWords, "fallback")
+// firstStr: "fallback"
 
 // With structs
 type Person struct {
     Name string
     Age  int
 }
-people := it.Slice([]Person{
+people := slices.Values([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 25},
 })
-first := it.FirstOr(people, Person{Name: "Default", Age: 0})
-// first: {Name: "Alice", Age: 30}
+firstPerson := it.FirstOr(people, Person{Name: "Default", Age: 0})
+// firstPerson: {Name: "Alice", Age: 30}
 
-emptyPeople := it.Slice([]Person{})
-first := it.FirstOr(emptyPeople, Person{Name: "Default", Age: 0})
-// first: {Name: "Default", Age: 0} (fallback value)
+emptyPeople := slices.Values([]Person{})
+firstPerson = it.FirstOr(emptyPeople, Person{Name: "Default", Age: 0})
+// firstPerson: {Name: "Default", Age: 0} (fallback value)
 
 // Using with pointers
-pointers := it.Slice([]*int{ptr(5), ptr(10), ptr(15)})
-first := it.FirstOr(pointers, nil)
-// first: pointer to 5
+pointers := slices.Values([]*int{lo.ToPtr(5), lo.ToPtr(10), lo.ToPtr(15)})
+firstPtr := it.FirstOr(pointers, nil)
+// firstPtr: pointer to 5
 
-emptyPointers := it.Slice([]*int{})
-first := it.FirstOr(emptyPointers, nil)
-// first: nil (fallback value)
+emptyPointers := slices.Values([]*int{})
+firstPtr = it.FirstOr(emptyPointers, nil)
+// firstPtr: nil (fallback value)
 ```

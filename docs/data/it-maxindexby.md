@@ -24,27 +24,37 @@ Examples:
 
 ```go
 // Find the maximum string by length and its index
-words := it.Slice([]string{"apple", "hi", "banana", "xylophone"})
+words := slices.Values([]string{"apple", "hi", "banana", "xylophone"})
 value, index := it.MaxIndexBy(words, func(a, b string) bool {
     return len(a) > len(b)
 })
 // value: "xylophone", index: 3
 
 // Find the maximum person by age and its index
-people := it.Slice([]Person{
+type Person struct {
+    Name string
+    Age  int
+}
+people := slices.Values([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 25},
     {Name: "Charlie", Age: 35},
 })
-value, index := it.MaxIndexBy(people, func(a, b Person) bool {
+personValue, personIndex := it.MaxIndexBy(people, func(a, b Person) bool {
     return a.Age > b.Age
 })
-// value: {Name: "Charlie", Age: 35}, index: 2
+// personValue: {Name: "Charlie", Age: 35}, personIndex: 2
 
 // Find the maximum number by absolute value and its index
-numbers := it.Slice([]int{-5, 2, -8, 1})
-value, index := it.MaxIndexBy(numbers, func(a, b int) bool {
-    return abs(a) > abs(b)
+numbers := slices.Values([]int{-5, 2, -8, 1})
+absValue, absIndex := it.MaxIndexBy(numbers, func(a, b int) bool {
+    if a < 0 {
+        a = -a
+    }
+    if b < 0 {
+        b = -b
+    }
+    return a > b
 })
-// value: -8, index: 2
+// absValue: -8, absIndex: 2
 ```

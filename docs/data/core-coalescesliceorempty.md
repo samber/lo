@@ -28,6 +28,6 @@ result := lo.CoalesceSliceOrEmpty([]int{}, []int{1, 2, 3}, []int{4, 5})
 result = lo.CoalesceSliceOrEmpty([]int{}, []int{})
 // []int{}
 
-result = lo.CoalesceSliceOrEmpty([]string{}, []string{"a", "b"}, []string{"c"})
+strResult := lo.CoalesceSliceOrEmpty([]string{}, []string{"a", "b"}, []string{"c"})
 // []string{"a", "b"}
 ```

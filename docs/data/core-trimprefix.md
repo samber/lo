@@ -23,7 +23,7 @@ Removes all leading occurrences of the given prefix from the collection.
 result := lo.TrimPrefix([]int{1, 2, 1, 2, 3, 1, 2, 4}, []int{1, 2})
 // []int{3, 1, 2, 4}
 
-result = lo.TrimPrefix([]string{"hello", "world", "hello", "test"}, []string{"hello"})
+strResult := lo.TrimPrefix([]string{"hello", "world", "hello", "test"}, []string{"hello"})
 // []string{"world", "hello", "test"}
 ```
 

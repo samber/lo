@@ -18,6 +18,6 @@ position: 55
 Removes elements from a collection at the specified indexes.
 
 ```go
-result := it.DropByIndex(it.Range(1, 6), 1, 3)
+result := it.DropByIndex(it.RangeFrom(1, 6), 1, 3)
 // [1, 3, 5]
 ```

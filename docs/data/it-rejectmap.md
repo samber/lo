@@ -34,13 +34,13 @@ result := it.RejectMap(seq, func(x int) (string, bool) {
 })
 // iter.Seq[string] yielding "odd-1", "odd-3"
 
-seq = func(yield func(string) bool) {
+strSeq := func(yield func(string) bool) {
     yield("a")
     yield("")
     yield("c")
     yield("d")
 }
-result = it.RejectMap(seq, func(s string) (int, bool) {
+strResult := it.RejectMap(strSeq, func(s string) (int, bool) {
     if s == "" {
         return 0, true // reject empty strings
     }

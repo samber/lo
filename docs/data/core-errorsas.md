@@ -24,8 +24,19 @@ signatures:
 A generic wrapper around `errors.As` that returns the typed error and a boolean indicating success.
 
 ```go
+type RateLimitError struct {
+    RetryAfter time.Duration
+}
+
+func (e *RateLimitError) Error() string {
+    return fmt.Sprintf("rate limited, retry after %s", e.RetryAfter)
+}
+
+err := fmt.Errorf("request failed: %w", &RateLimitError{RetryAfter: 5 * time.Second})
+
 if rateLimitErr, ok := lo.ErrorsAs[*RateLimitError](err); ok {
-    // handle
+    fmt.Println(rateLimitErr.RetryAfter)
+    // 5s
 }
 ```
 

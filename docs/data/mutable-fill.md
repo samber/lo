@@ -16,22 +16,20 @@ similarHelpers:
 position: 60
 ---
 
-Fills all elements of a slice with the specified initial value. The operation modifies the slice in place.
+Fills a slice with clones of the specified initial value, returning a new slice.
 
 ```go
-slice := make([]int, 5)
-lo.Fill(slice, 42)
-// []int{42, 42, 42, 42, 42}
+type foo struct{ bar string }
+func (f foo) Clone() foo {
+    return foo{f.bar}
+}
 
-slice = make([]string, 3)
-lo.Fill(slice, "default")
-// []string{"default", "default", "default"}
+slice := lo.Fill(make([]foo, 5), foo{"a"})
+// []foo{{"a"}, {"a"}, {"a"}, {"a"}, {"a"}}
 
-slice = make([]bool, 4)
-lo.Fill(slice, true)
-// []bool{true, true, true, true}
+slice = lo.Fill(make([]foo, 3), foo{"b"})
+// []foo{{"b"}, {"b"}, {"b"}}
 
-slice = []int{1, 2, 3, 4, 5}
-lo.Fill(slice, 0)
-// []int{0, 0, 0, 0, 0}
+slice = lo.Fill([]foo{{"x"}, {"y"}, {"z"}}, foo{"c"})
+// []foo{{"c"}, {"c"}, {"c"}}
 ```

@@ -27,9 +27,9 @@ ptr := lo.EmptyableToPtr("")
 ptr = lo.EmptyableToPtr("hello")
 // *string pointing to "hello"
 
-ptr = lo.EmptyableToPtr(0)
+intPtr := lo.EmptyableToPtr(0)
 // nil (because 0 is zero value for int)
 
-ptr = lo.EmptyableToPtr(42)
+intPtr = lo.EmptyableToPtr(42)
 // *int pointing to 42
 ```

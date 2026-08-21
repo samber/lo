@@ -21,12 +21,12 @@ position: 90
 Returns a pointer to the provided value.
 
 ```go
-ptr := lo.ToPtr(42)
+intPtr := lo.ToPtr(42)
 // *int pointing to 42
 
-ptr = lo.ToPtr("hello")
+strPtr := lo.ToPtr("hello")
 // *string pointing to "hello"
 
-ptr = lo.ToPtr([]int{1, 2, 3})
+slicePtr := lo.ToPtr([]int{1, 2, 3})
 // *[]int pointing to []int{1, 2, 3}
 ```

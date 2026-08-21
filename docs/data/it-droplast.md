@@ -37,11 +37,11 @@ result = it.DropLast(seq, 0)
 result = it.DropLast(seq, 10)
 // iter.Seq[int] yielding nothing (all elements dropped)
 
-seq = func(yield func(string) bool) {
+strSeq := func(yield func(string) bool) {
     yield("a")
     yield("b")
     yield("c")
 }
-result = it.DropLast(seq, 1)
+strResult := it.DropLast(strSeq, 1)
 // iter.Seq[string] yielding "a", "b"
 ```

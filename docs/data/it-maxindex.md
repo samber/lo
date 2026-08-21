@@ -23,17 +23,17 @@ Examples:
 
 ```go
 // Find the maximum value and its index
-numbers := it.Slice([]int{5, 2, 8, 1, 9})
+numbers := slices.Values([]int{5, 2, 8, 1, 9})
 value, index := it.MaxIndex(numbers)
 // value: 9, index: 4
 
 // With empty collection
-empty := it.Slice([]int{})
-value, index := it.MaxIndex(empty)
+empty := slices.Values([]int{})
+value, index = it.MaxIndex(empty)
 // value: 0, index: -1
 
 // Find the maximum string alphabetically and its index
-words := it.Slice([]string{"apple", "zebra", "banana", "xylophone"})
-value, index := it.MaxIndex(words)
-// value: "zebra", index: 1
+words := slices.Values([]string{"apple", "zebra", "banana", "xylophone"})
+wordValue, wordIndex := it.MaxIndex(words)
+// wordValue: "zebra", wordIndex: 1
 ```

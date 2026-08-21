@@ -28,6 +28,6 @@ result := lo.CoalesceMapOrEmpty(map[string]int{}, map[string]int{"a": 1}, map[st
 result = lo.CoalesceMapOrEmpty(map[string]int{}, map[string]int{})
 // map[string]int{}
 
-result = lo.CoalesceMapOrEmpty(map[int]string{}, map[int]string{1: "one"}, map[int]string{2: "two"})
+intResult := lo.CoalesceMapOrEmpty(map[int]string{}, map[int]string{1: "one"}, map[int]string{2: "two"})
 // map[int]string{1: "one"}
 ```

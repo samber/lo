@@ -24,20 +24,24 @@ Examples:
 
 ```go
 // Find the minimum string by length and its index
-words := it.Slice([]string{"apple", "hi", "banana", "ok"})
+words := slices.Values([]string{"apple", "hi", "banana", "ok"})
 value, index := it.MinIndexBy(words, func(a, b string) bool {
     return len(a) < len(b)
 })
 // value: "hi", index: 1
 
 // Find the minimum person by age and its index
-people := it.Slice([]Person{
+type Person struct {
+    Name string
+    Age  int
+}
+people := slices.Values([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 25},
     {Name: "Charlie", Age: 35},
 })
-value, index := it.MinIndexBy(people, func(a, b Person) bool {
+youngest, youngestIndex := it.MinIndexBy(people, func(a, b Person) bool {
     return a.Age < b.Age
 })
-// value: {Name: "Bob", Age: 25}, index: 1
+// youngest: {Name: "Bob", Age: 25}, youngestIndex: 1
 ```

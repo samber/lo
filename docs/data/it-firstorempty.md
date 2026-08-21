@@ -22,37 +22,37 @@ Examples:
 
 ```go
 // Get the first element or zero value
-numbers := it.Slice([]int{5, 2, 8, 1, 9})
+numbers := slices.Values([]int{5, 2, 8, 1, 9})
 first := it.FirstOrEmpty(numbers)
 // first: 5
 
 // With empty collection
-empty := it.Slice([]int{})
-first := it.FirstOrEmpty(empty)
+empty := slices.Values([]int{})
+first = it.FirstOrEmpty(empty)
 // first: 0 (zero value for int)
 
 // With strings
-words := it.Slice([]string{"hello", "world", "go"})
-first := it.FirstOrEmpty(words)
-// first: "hello"
+words := slices.Values([]string{"hello", "world", "go"})
+firstWord := it.FirstOrEmpty(words)
+// firstWord: "hello"
 
-emptyWords := it.Slice([]string{})
-first := it.FirstOrEmpty(emptyWords)
-// first: "" (zero value for string)
+emptyWords := slices.Values([]string{})
+firstWord = it.FirstOrEmpty(emptyWords)
+// firstWord: "" (zero value for string)
 
 // With structs
 type Person struct {
     Name string
     Age  int
 }
-people := it.Slice([]Person{
+people := slices.Values([]Person{
     {Name: "Alice", Age: 30},
     {Name: "Bob", Age: 25},
 })
-first := it.FirstOrEmpty(people)
-// first: {Name: "Alice", Age: 30}
+firstPerson := it.FirstOrEmpty(people)
+// firstPerson: {Name: "Alice", Age: 30}
 
-emptyPeople := it.Slice([]Person{})
-first := it.FirstOrEmpty(emptyPeople)
-// first: {Name: "", Age: 0} (zero value for Person)
+emptyPeople := slices.Values([]Person{})
+firstPerson = it.FirstOrEmpty(emptyPeople)
+// firstPerson: {Name: "", Age: 0} (zero value for Person)
 ```
