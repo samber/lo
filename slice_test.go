@@ -3565,6 +3565,30 @@ func TestIsSortedBy(t *testing.T) {
 	}
 }
 
+func TestIsSortedByKey(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []string
+		iteratee func(s string) int
+		expected bool
+	}{
+		{name: "sorted by length", input: []string{"a", "bb", "ccc"}, iteratee: func(s string) int { return len(s) }, expected: true},
+		{name: "unsorted by length", input: []string{"aa", "b", "ccc"}, iteratee: func(s string) int { return len(s) }, expected: false},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			is.Equal(tt.expected, IsSortedByKey(tt.input, tt.iteratee))
+		})
+	}
+}
+
 func TestSplice(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
