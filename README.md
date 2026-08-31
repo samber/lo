@@ -2453,11 +2453,14 @@ str := lo.Words("helloWorld")
 
 ### Capitalize
 
-Converts the first character of string to upper case and the remaining to lower case.
+Converts the first character of string to upper case and the remaining to lower case. Only the first character is affected — this is not per-word title casing, so letters after spaces, digits or punctuation stay lower-cased (matching lodash's `capitalize`).
 
 ```go
 str := lo.Capitalize("heLLO")
 // Hello
+
+str := lo.Capitalize("hello world")
+// Hello world
 ```
 
 [[play](https://go.dev/play/p/uLTZZQXqnsa)]

@@ -499,6 +499,11 @@ func fieldsAlnum(s string) []string {
 }
 
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
+//
+// Only the very first character is upper-cased. This is not per-word title casing: letters that
+// follow spaces, digits or punctuation stay lower-cased (e.g. "hello world" -> "Hello world",
+// "123abc" -> "123abc"), matching lodash's capitalize. Earlier releases title-cased every word
+// segment, so multi-word inputs are affected by this change.
 // Play: https://go.dev/play/p/uLTZZQXqnsa
 func Capitalize(str string) string {
 	if str == "" {
@@ -514,7 +519,8 @@ func Capitalize(str string) string {
 
 // CapitalizeWithLanguage converts the first character of string to upper case and the remaining to
 // lower case, using language-aware casing.
-// This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
+// As with [Capitalize], only the first character is upper-cased (not each word). Language awareness
+// matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
 func CapitalizeWithLanguage(str string, tag language.Tag) string {
 	if str == "" {
 		return str
