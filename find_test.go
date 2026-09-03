@@ -2,6 +2,7 @@ package lo
 
 import (
 	"errors"
+	"math"
 	"math/rand"
 	"testing"
 	"time"
@@ -2156,6 +2157,49 @@ func TestNth(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestNth_indexTypeBounds(t *testing.T) {
+	t.Parallel()
+
+	collection := []int{10, 20, 30}
+
+	t.Run("unsigned index wider than the slice", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		_, err := Nth(collection, uint64(math.MaxUint64))
+		is.EqualError(err, "nth: 18446744073709551615 out of slice bounds")
+		is.Equal(-1, NthOr(collection, uint64(math.MaxUint64), -1))
+		is.Zero(NthOrEmpty(collection, uint64(math.MaxUint64)))
+
+		_, err = Nth(collection, uint64(1)<<63)
+		is.EqualError(err, "nth: 9223372036854775808 out of slice bounds")
+	})
+
+	t.Run("most negative index of its type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		_, err := Nth(collection, math.MinInt)
+		is.Error(err)
+		_, err = Nth(collection, int64(math.MinInt64))
+		is.EqualError(err, "nth: -9223372036854775808 out of slice bounds")
+		is.Equal(-1, NthOr(collection, int8(math.MinInt8), -1))
+	})
+
+	t.Run("in-range indexes of other integer types", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		v, err := Nth(collection, uint8(1))
+		is.NoError(err)
+		is.Equal(20, v)
+
+		v, err = Nth(collection, int16(-1))
+		is.NoError(err)
+		is.Equal(30, v)
+	})
 }
 
 func TestNthOr(t *testing.T) {
