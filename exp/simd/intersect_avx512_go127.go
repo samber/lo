@@ -1,4 +1,4 @@
-//go:build go1.26 && goexperiment.simd && amd64
+//go:build go1.27 && goexperiment.simd && amd64
 
 package simd
 
@@ -21,7 +21,7 @@ func ContainsInt8x16[T ~int8](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt8x16(s)
+		v := archsimd.LoadInt8x16((*[16]int8)(s))
 
 		// Compare for equality; Equal returns a mask, ToBits() its bitmask.
 		cmp := v.Equal(targetVec)
@@ -55,7 +55,7 @@ func ContainsInt16x8[T ~int16](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt16x8(s)
+		v := archsimd.LoadInt16x8((*[8]int16)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -87,7 +87,7 @@ func ContainsInt32x4[T ~int32](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt32x4(s)
+		v := archsimd.LoadInt32x4((*[4]int32)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -119,7 +119,7 @@ func ContainsInt64x2[T ~int64](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt64x2(s)
+		v := archsimd.LoadInt64x2((*[2]int64)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -151,7 +151,7 @@ func ContainsUint8x16[T ~uint8](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint8x16(s)
+		v := archsimd.LoadUint8x16((*[16]uint8)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -183,7 +183,7 @@ func ContainsUint16x8[T ~uint16](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint16x8(s)
+		v := archsimd.LoadUint16x8((*[8]uint16)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -215,7 +215,7 @@ func ContainsUint32x4[T ~uint32](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint32x4(s)
+		v := archsimd.LoadUint32x4((*[4]uint32)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -247,7 +247,7 @@ func ContainsUint64x2[T ~uint64](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint64x2(s)
+		v := archsimd.LoadUint64x2((*[2]uint64)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -279,7 +279,7 @@ func ContainsFloat32x4[T ~float32](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadFloat32x4(s)
+		v := archsimd.LoadFloat32x4((*[4]float32)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -311,7 +311,7 @@ func ContainsFloat64x2[T ~float64](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadFloat64x2(s)
+		v := archsimd.LoadFloat64x2((*[2]float64)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -343,7 +343,7 @@ func ContainsInt8x32[T ~int8](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt8x32(s)
+		v := archsimd.LoadInt8x32((*[32]int8)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -375,7 +375,7 @@ func ContainsInt16x16[T ~int16](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt16x16(s)
+		v := archsimd.LoadInt16x16((*[16]int16)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -407,7 +407,7 @@ func ContainsInt32x8[T ~int32](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt32x8(s)
+		v := archsimd.LoadInt32x8((*[8]int32)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -439,7 +439,7 @@ func ContainsInt64x4[T ~int64](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt64x4(s)
+		v := archsimd.LoadInt64x4((*[4]int64)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -471,7 +471,7 @@ func ContainsUint8x32[T ~uint8](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint8x32(s)
+		v := archsimd.LoadUint8x32((*[32]uint8)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -503,7 +503,7 @@ func ContainsUint16x16[T ~uint16](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint16x16(s)
+		v := archsimd.LoadUint16x16((*[16]uint16)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -535,7 +535,7 @@ func ContainsUint32x8[T ~uint32](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint32x8(s)
+		v := archsimd.LoadUint32x8((*[8]uint32)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -567,7 +567,7 @@ func ContainsUint64x4[T ~uint64](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint64x4(s)
+		v := archsimd.LoadUint64x4((*[4]uint64)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -599,7 +599,7 @@ func ContainsFloat32x8[T ~float32](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadFloat32x8(s)
+		v := archsimd.LoadFloat32x8((*[8]float32)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -631,7 +631,7 @@ func ContainsFloat64x4[T ~float64](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadFloat64x4(s)
+		v := archsimd.LoadFloat64x4((*[4]float64)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -663,7 +663,7 @@ func ContainsInt8x64[T ~int8](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt8x64(s)
+		v := archsimd.LoadInt8x64((*[64]int8)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -695,7 +695,7 @@ func ContainsInt16x32[T ~int16](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt16x32(s)
+		v := archsimd.LoadInt16x32((*[32]int16)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -727,7 +727,7 @@ func ContainsInt32x16[T ~int32](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt32x16(s)
+		v := archsimd.LoadInt32x16((*[16]int32)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -759,7 +759,7 @@ func ContainsInt64x8[T ~int64](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadInt64x8(s)
+		v := archsimd.LoadInt64x8((*[8]int64)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -791,7 +791,7 @@ func ContainsUint8x64[T ~uint8](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint8x64(s)
+		v := archsimd.LoadUint8x64((*[64]uint8)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -823,7 +823,7 @@ func ContainsUint16x32[T ~uint16](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint16x32(s)
+		v := archsimd.LoadUint16x32((*[32]uint16)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -855,7 +855,7 @@ func ContainsUint32x16[T ~uint32](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint32x16(s)
+		v := archsimd.LoadUint32x16((*[16]uint32)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -887,7 +887,7 @@ func ContainsUint64x8[T ~uint64](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadUint64x8(s)
+		v := archsimd.LoadUint64x8((*[8]uint64)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -919,7 +919,7 @@ func ContainsFloat32x16[T ~float32](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadFloat32x16(s)
+		v := archsimd.LoadFloat32x16((*[16]float32)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {
@@ -951,7 +951,7 @@ func ContainsFloat64x8[T ~float64](collection []T, target T) bool {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		s := base[i : i+lanes]
-		v := archsimd.LoadFloat64x8(s)
+		v := archsimd.LoadFloat64x8((*[8]float64)(s))
 
 		cmp := v.Equal(targetVec)
 		if cmp.ToBits() != 0 {

@@ -1,4 +1,4 @@
-//go:build go1.26 && goexperiment.simd && amd64
+//go:build go1.27 && goexperiment.simd && amd64
 
 package simd
 
@@ -27,12 +27,12 @@ func SumInt8x64[T ~int8](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt8x64Slice(base[i : i+lanes])
+		v := archsimd.LoadInt8x64((*[64]int8)(base[i : i+lanes]))
 		acc = acc.Add(v)
 	}
 
 	var buf [lanes]int8
-	acc.Store(&buf)
+	acc.Store(buf[:])
 	var sum T
 	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
@@ -61,12 +61,12 @@ func SumInt16x32[T ~int16](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt16x32Slice(base[i : i+lanes])
+		v := archsimd.LoadInt16x32((*[32]int16)(base[i : i+lanes]))
 		acc = acc.Add(v)
 	}
 
 	var buf [lanes]int16
-	acc.Store(&buf)
+	acc.Store(buf[:])
 	var sum T
 	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
@@ -95,12 +95,12 @@ func SumInt32x16[T ~int32](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt32x16Slice(base[i : i+lanes])
+		v := archsimd.LoadInt32x16((*[16]int32)(base[i : i+lanes]))
 		acc = acc.Add(v)
 	}
 
 	var buf [lanes]int32
-	acc.Store(&buf)
+	acc.Store(buf[:])
 	var sum T
 	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
@@ -129,12 +129,12 @@ func SumInt64x8[T ~int64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt64x8Slice(base[i : i+lanes])
+		v := archsimd.LoadInt64x8((*[8]int64)(base[i : i+lanes]))
 		acc = acc.Add(v)
 	}
 
 	var buf [lanes]int64
-	acc.Store(&buf)
+	acc.Store(buf[:])
 	var sum T
 	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
@@ -163,12 +163,12 @@ func SumUint8x64[T ~uint8](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint8x64Slice(base[i : i+lanes])
+		v := archsimd.LoadUint8x64((*[64]uint8)(base[i : i+lanes]))
 		acc = acc.Add(v)
 	}
 
 	var buf [lanes]uint8
-	acc.Store(&buf)
+	acc.Store(buf[:])
 	var sum T
 	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
@@ -197,12 +197,12 @@ func SumUint16x32[T ~uint16](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint16x32Slice(base[i : i+lanes])
+		v := archsimd.LoadUint16x32((*[32]uint16)(base[i : i+lanes]))
 		acc = acc.Add(v)
 	}
 
 	var buf [lanes]uint16
-	acc.Store(&buf)
+	acc.Store(buf[:])
 	var sum T
 	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
@@ -231,12 +231,12 @@ func SumUint32x16[T ~uint32](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint32x16Slice(base[i : i+lanes])
+		v := archsimd.LoadUint32x16((*[16]uint32)(base[i : i+lanes]))
 		acc = acc.Add(v)
 	}
 
 	var buf [lanes]uint32
-	acc.Store(&buf)
+	acc.Store(buf[:])
 	var sum T
 	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
@@ -265,12 +265,12 @@ func SumUint64x8[T ~uint64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint64x8Slice(base[i : i+lanes])
+		v := archsimd.LoadUint64x8((*[8]uint64)(base[i : i+lanes]))
 		acc = acc.Add(v)
 	}
 
 	var buf [lanes]uint64
-	acc.Store(&buf)
+	acc.Store(buf[:])
 	var sum T
 	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
@@ -298,12 +298,12 @@ func SumFloat32x16[T ~float32](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadFloat32x16Slice(base[i : i+lanes])
+		v := archsimd.LoadFloat32x16((*[16]float32)(base[i : i+lanes]))
 		acc = acc.Add(v)
 	}
 
 	var buf [lanes]float32
-	acc.Store(&buf)
+	acc.Store(buf[:])
 	var sum T
 	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
@@ -331,12 +331,12 @@ func SumFloat64x8[T ~float64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadFloat64x8Slice(base[i : i+lanes])
+		v := archsimd.LoadFloat64x8((*[8]float64)(base[i : i+lanes]))
 		acc = acc.Add(v)
 	}
 
 	var buf [lanes]float64
-	acc.Store(&buf)
+	acc.Store(buf[:])
 	var sum T
 	for k := uint(0); k < lanes; k++ {
 		sum += T(buf[k])
@@ -467,12 +467,12 @@ func ClampInt8x64[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		c := base[i : i+lanes]
-		v := archsimd.LoadInt8x64Slice(c)
+		v := archsimd.LoadInt8x64((*[64]int8)(c))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]int8)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -506,12 +506,12 @@ func ClampInt16x32[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		c := base[i : i+lanes]
-		v := archsimd.LoadInt16x32Slice(c)
+		v := archsimd.LoadInt16x32((*[32]int16)(c))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]int16)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -545,12 +545,12 @@ func ClampInt32x16[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		c := base[i : i+lanes]
-		v := archsimd.LoadInt32x16Slice(c)
+		v := archsimd.LoadInt32x16((*[16]int32)(c))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]int32)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -584,12 +584,12 @@ func ClampInt64x2[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
+		v := archsimd.LoadInt64x2((*[2]int64)(base[i : i+lanes]))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]int64)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -623,12 +623,12 @@ func ClampUint64x2[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
+		v := archsimd.LoadUint64x2((*[2]uint64)(base[i : i+lanes]))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]uint64)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -662,12 +662,12 @@ func ClampInt64x8[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		c := base[i : i+lanes]
-		v := archsimd.LoadInt64x8Slice(c)
+		v := archsimd.LoadInt64x8((*[8]int64)(c))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]int64)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -701,12 +701,12 @@ func ClampUint8x64[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		c := base[i : i+lanes]
-		v := archsimd.LoadUint8x64Slice(c)
+		v := archsimd.LoadUint8x64((*[64]uint8)(c))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]uint8)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -740,12 +740,12 @@ func ClampUint16x32[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		c := base[i : i+lanes]
-		v := archsimd.LoadUint16x32Slice(c)
+		v := archsimd.LoadUint16x32((*[32]uint16)(c))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]uint16)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -779,12 +779,12 @@ func ClampUint32x16[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		c := base[i : i+lanes]
-		v := archsimd.LoadUint32x16Slice(c)
+		v := archsimd.LoadUint32x16((*[16]uint32)(c))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]uint32)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -818,12 +818,12 @@ func ClampUint64x8[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		c := base[i : i+lanes]
-		v := archsimd.LoadUint64x8Slice(c)
+		v := archsimd.LoadUint64x8((*[8]uint64)(c))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]uint64)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -857,12 +857,12 @@ func ClampFloat32x16[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		c := base[i : i+lanes]
-		v := archsimd.LoadFloat32x16Slice(c)
+		v := archsimd.LoadFloat32x16((*[16]float32)(c))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]float32)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -896,12 +896,12 @@ func ClampFloat64x8[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
 		c := base[i : i+lanes]
-		v := archsimd.LoadFloat64x8Slice(c)
+		v := archsimd.LoadFloat64x8((*[8]float64)(c))
 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store((*[lanes]float64)(unsafe.Pointer(&result[i])))
+		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -933,7 +933,7 @@ func MinInt8x64[T ~int8](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt8x64Slice(base[i : i+lanes])
+		v := archsimd.LoadInt8x64((*[64]int8)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -947,7 +947,7 @@ func MinInt8x64[T ~int8](collection []T) T {
 	var minVal int8
 	if firstInitialized {
 		var buf [lanes]int8
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -987,7 +987,7 @@ func MinInt16x32[T ~int16](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt16x32Slice(base[i : i+lanes])
+		v := archsimd.LoadInt16x32((*[32]int16)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1001,7 +1001,7 @@ func MinInt16x32[T ~int16](collection []T) T {
 	var minVal int16
 	if firstInitialized {
 		var buf [lanes]int16
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1037,7 +1037,7 @@ func MinInt32x16[T ~int32](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt32x16Slice(base[i : i+lanes])
+		v := archsimd.LoadInt32x16((*[16]int32)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1051,7 +1051,7 @@ func MinInt32x16[T ~int32](collection []T) T {
 	var minVal int32
 	if firstInitialized {
 		var buf [lanes]int32
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1085,7 +1085,7 @@ func MinInt64x2[T ~int64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
+		v := archsimd.LoadInt64x2((*[2]int64)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1099,7 +1099,7 @@ func MinInt64x2[T ~int64](collection []T) T {
 	var minVal int64
 	if firstInitialized {
 		var buf [lanes]int64
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(buf[0], buf[1])
 	}
 
@@ -1130,7 +1130,7 @@ func MinUint64x2[T ~uint64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
+		v := archsimd.LoadUint64x2((*[2]uint64)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1144,7 +1144,7 @@ func MinUint64x2[T ~uint64](collection []T) T {
 	var minVal uint64
 	if firstInitialized {
 		var buf [lanes]uint64
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(buf[0], buf[1])
 	}
 
@@ -1175,7 +1175,7 @@ func MinInt64x8[T ~int64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt64x8Slice(base[i : i+lanes])
+		v := archsimd.LoadInt64x8((*[8]int64)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1189,7 +1189,7 @@ func MinInt64x8[T ~int64](collection []T) T {
 	var minVal int64
 	if firstInitialized {
 		var buf [lanes]int64
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
 
@@ -1220,7 +1220,7 @@ func MinUint8x64[T ~uint8](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint8x64Slice(base[i : i+lanes])
+		v := archsimd.LoadUint8x64((*[64]uint8)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1234,7 +1234,7 @@ func MinUint8x64[T ~uint8](collection []T) T {
 	var minVal uint8
 	if firstInitialized {
 		var buf [lanes]uint8
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1274,7 +1274,7 @@ func MinUint16x32[T ~uint16](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint16x32Slice(base[i : i+lanes])
+		v := archsimd.LoadUint16x32((*[32]uint16)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1288,7 +1288,7 @@ func MinUint16x32[T ~uint16](collection []T) T {
 	var minVal uint16
 	if firstInitialized {
 		var buf [lanes]uint16
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1324,7 +1324,7 @@ func MinUint32x16[T ~uint32](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint32x16Slice(base[i : i+lanes])
+		v := archsimd.LoadUint32x16((*[16]uint32)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1338,7 +1338,7 @@ func MinUint32x16[T ~uint32](collection []T) T {
 	var minVal uint32
 	if firstInitialized {
 		var buf [lanes]uint32
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1372,7 +1372,7 @@ func MinUint64x8[T ~uint64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint64x8Slice(base[i : i+lanes])
+		v := archsimd.LoadUint64x8((*[8]uint64)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1386,7 +1386,7 @@ func MinUint64x8[T ~uint64](collection []T) T {
 	var minVal uint64
 	if firstInitialized {
 		var buf [lanes]uint64
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
 
@@ -1417,7 +1417,7 @@ func MinFloat32x16[T ~float32](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadFloat32x16Slice(base[i : i+lanes])
+		v := archsimd.LoadFloat32x16((*[16]float32)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1431,7 +1431,7 @@ func MinFloat32x16[T ~float32](collection []T) T {
 	var minVal float32
 	if firstInitialized {
 		var buf [lanes]float32
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1465,7 +1465,7 @@ func MinFloat64x8[T ~float64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadFloat64x8Slice(base[i : i+lanes])
+		v := archsimd.LoadFloat64x8((*[8]float64)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			minVec = v
@@ -1479,7 +1479,7 @@ func MinFloat64x8[T ~float64](collection []T) T {
 	var minVal float64
 	if firstInitialized {
 		var buf [lanes]float64
-		minVec.Store(&buf)
+		minVec.Store(buf[:])
 		minVal = min(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
 
@@ -1510,7 +1510,7 @@ func MaxInt8x64[T ~int8](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt8x64Slice(base[i : i+lanes])
+		v := archsimd.LoadInt8x64((*[64]int8)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -1524,7 +1524,7 @@ func MaxInt8x64[T ~int8](collection []T) T {
 	var maxVal int8
 	if firstInitialized {
 		var buf [lanes]int8
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1564,7 +1564,7 @@ func MaxInt16x32[T ~int16](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt16x32Slice(base[i : i+lanes])
+		v := archsimd.LoadInt16x32((*[32]int16)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -1578,7 +1578,7 @@ func MaxInt16x32[T ~int16](collection []T) T {
 	var maxVal int16
 	if firstInitialized {
 		var buf [lanes]int16
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1614,7 +1614,7 @@ func MaxInt32x16[T ~int32](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt32x16Slice(base[i : i+lanes])
+		v := archsimd.LoadInt32x16((*[16]int32)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -1628,7 +1628,7 @@ func MaxInt32x16[T ~int32](collection []T) T {
 	var maxVal int32
 	if firstInitialized {
 		var buf [lanes]int32
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1662,7 +1662,7 @@ func MaxInt64x2[T ~int64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt64x2Slice(base[i : i+lanes])
+		v := archsimd.LoadInt64x2((*[2]int64)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -1676,7 +1676,7 @@ func MaxInt64x2[T ~int64](collection []T) T {
 	var maxVal int64
 	if firstInitialized {
 		var buf [lanes]int64
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(buf[0], buf[1])
 	}
 
@@ -1707,7 +1707,7 @@ func MaxUint64x2[T ~uint64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint64x2Slice(base[i : i+lanes])
+		v := archsimd.LoadUint64x2((*[2]uint64)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -1721,7 +1721,7 @@ func MaxUint64x2[T ~uint64](collection []T) T {
 	var maxVal uint64
 	if firstInitialized {
 		var buf [lanes]uint64
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(buf[0], buf[1])
 	}
 
@@ -1752,7 +1752,7 @@ func MaxInt64x8[T ~int64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadInt64x8Slice(base[i : i+lanes])
+		v := archsimd.LoadInt64x8((*[8]int64)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -1766,7 +1766,7 @@ func MaxInt64x8[T ~int64](collection []T) T {
 	var maxVal int64
 	if firstInitialized {
 		var buf [lanes]int64
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
 
@@ -1797,7 +1797,7 @@ func MaxUint8x64[T ~uint8](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint8x64Slice(base[i : i+lanes])
+		v := archsimd.LoadUint8x64((*[64]uint8)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -1811,7 +1811,7 @@ func MaxUint8x64[T ~uint8](collection []T) T {
 	var maxVal uint8
 	if firstInitialized {
 		var buf [lanes]uint8
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1851,7 +1851,7 @@ func MaxUint16x32[T ~uint16](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint16x32Slice(base[i : i+lanes])
+		v := archsimd.LoadUint16x32((*[32]uint16)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -1865,7 +1865,7 @@ func MaxUint16x32[T ~uint16](collection []T) T {
 	var maxVal uint16
 	if firstInitialized {
 		var buf [lanes]uint16
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1901,7 +1901,7 @@ func MaxUint32x16[T ~uint32](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint32x16Slice(base[i : i+lanes])
+		v := archsimd.LoadUint32x16((*[16]uint32)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -1915,7 +1915,7 @@ func MaxUint32x16[T ~uint32](collection []T) T {
 	var maxVal uint32
 	if firstInitialized {
 		var buf [lanes]uint32
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -1949,7 +1949,7 @@ func MaxUint64x8[T ~uint64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadUint64x8Slice(base[i : i+lanes])
+		v := archsimd.LoadUint64x8((*[8]uint64)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -1963,7 +1963,7 @@ func MaxUint64x8[T ~uint64](collection []T) T {
 	var maxVal uint64
 	if firstInitialized {
 		var buf [lanes]uint64
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
 
@@ -1994,7 +1994,7 @@ func MaxFloat32x16[T ~float32](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadFloat32x16Slice(base[i : i+lanes])
+		v := archsimd.LoadFloat32x16((*[16]float32)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -2008,7 +2008,7 @@ func MaxFloat32x16[T ~float32](collection []T) T {
 	var maxVal float32
 	if firstInitialized {
 		var buf [lanes]float32
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(
 			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7],
 			buf[8], buf[9], buf[10], buf[11], buf[12], buf[13], buf[14], buf[15],
@@ -2042,7 +2042,7 @@ func MaxFloat64x8[T ~float64](collection []T) T {
 
 	i := uint(0)
 	for ; i+lanes <= length; i += lanes {
-		v := archsimd.LoadFloat64x8Slice(base[i : i+lanes])
+		v := archsimd.LoadFloat64x8((*[8]float64)(base[i : i+lanes]))
 
 		if !firstInitialized {
 			maxVec = v
@@ -2056,7 +2056,7 @@ func MaxFloat64x8[T ~float64](collection []T) T {
 	var maxVal float64
 	if firstInitialized {
 		var buf [lanes]float64
-		maxVec.Store(&buf)
+		maxVec.Store(buf[:])
 		maxVal = max(buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7])
 	}
 
