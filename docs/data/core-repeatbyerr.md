@@ -1,7 +1,7 @@
 ---
 name: RepeatByErr
 slug: repeatbyerr
-sourceRef: slice.go#L625
+sourceRef: slice.go#L714
 category: core
 subCategory: slice
 signatures:

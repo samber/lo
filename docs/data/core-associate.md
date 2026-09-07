@@ -1,7 +1,7 @@
 ---
 name: Associate
 slug: associate
-sourceRef: slice.go#L673
+sourceRef: slice.go#L762
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/WHa2CfMO3Lr

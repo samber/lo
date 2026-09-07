@@ -1,7 +1,7 @@
 ---
 name: TakeFilter
 slug: takefilter
-sourceRef: slice.go#L896
+sourceRef: slice.go#L985
 category: core
 subCategory: slice
 variantHelpers:

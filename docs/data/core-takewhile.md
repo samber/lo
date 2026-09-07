@@ -1,7 +1,7 @@
 ---
 name: TakeWhile
 slug: takewhile
-sourceRef: slice.go#L840
+sourceRef: slice.go#L929
 category: core
 subCategory: slice
 variantHelpers:

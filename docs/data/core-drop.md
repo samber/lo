@@ -1,7 +1,7 @@
 ---
 name: Drop
 slug: drop
-sourceRef: slice.go#L755
+sourceRef: slice.go#L844
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/JswS7vXRJP2

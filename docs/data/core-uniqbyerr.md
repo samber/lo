@@ -1,7 +1,7 @@
 ---
 name: UniqByErr
 slug: uniqbyerr
-sourceRef: slice.go#L267
+sourceRef: slice.go#L356
 category: core
 subCategory: slice
 signatures:

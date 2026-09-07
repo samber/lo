@@ -1,7 +1,7 @@
 ---
 name: Flatten
 slug: flatten
-sourceRef: slice.go#L471
+sourceRef: slice.go#L560
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/rbp9ORaMpjw

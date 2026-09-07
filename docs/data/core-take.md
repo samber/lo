@@ -1,7 +1,7 @@
 ---
 name: Take
 slug: take
-sourceRef: slice.go#L813
+sourceRef: slice.go#L902
 category: core
 subCategory: slice
 variantHelpers:

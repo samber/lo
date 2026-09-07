@@ -1,7 +1,7 @@
 ---
 name: GroupByMapErr
 slug: groupbymaperr
-sourceRef: slice.go#L370
+sourceRef: slice.go#L459
 category: core
 subCategory: slice
 signatures:

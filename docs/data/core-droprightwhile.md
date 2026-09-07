@@ -1,7 +1,7 @@
 ---
 name: DropRightWhile
 slug: droprightwhile
-sourceRef: slice.go#L800
+sourceRef: slice.go#L889
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/HBh8pHl-ZZz

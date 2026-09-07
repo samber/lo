@@ -1,7 +1,7 @@
 ---
 name: Sliding
 slug: sliding
-sourceRef: slice.go#L506
+sourceRef: slice.go#L595
 category: core
 subCategory: slice
 variantHelpers:

@@ -1,7 +1,7 @@
 ---
 name: IsSortedBy
 slug: issortedby
-sourceRef: slice.go#L1174
+sourceRef: slice.go#L1271
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/wiG6XyBBu49

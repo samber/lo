@@ -1,7 +1,7 @@
 ---
 name: Subset
 slug: subset
-sourceRef: slice.go#L1064
+sourceRef: slice.go#L1153
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/tOQu1GhFcog

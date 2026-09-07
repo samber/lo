@@ -1,7 +1,7 @@
 ---
 name: IsUniq
 slug: isuniq
-sourceRef: slice.go#L290
+sourceRef: slice.go#L379
 category: core
 subCategory: slice
 playUrl:
