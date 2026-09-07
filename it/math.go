@@ -4,6 +4,7 @@ package it
 
 import (
 	"iter"
+	"slices"
 
 	"github.com/samber/lo"
 	"github.com/samber/lo/internal/constraints"
@@ -148,5 +149,5 @@ func Mode[T constraints.Integer | constraints.Float](collection iter.Seq[T]) []T
 		}
 	}
 
-	return mode[:len(mode):len(mode)]
+	return slices.Clip(mode)
 }
