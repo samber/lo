@@ -1067,16 +1067,23 @@ func Nth[T any, N constraints.Integer](collection []T, nth N) (T, error) {
 }
 
 func sliceNth[T any, N constraints.Integer](collection []T, nth N) (T, bool) {
-	n := int(nth)
 	l := len(collection)
-	if n >= l || -n > l {
-		return Empty[T](), false
+
+	if nth >= 0 {
+		// Compared in an unsigned domain: int(nth) would wrap negative for a
+		// large unsigned N and then take the count-from-the-end branch below.
+		if uint64(nth) >= uint64(l) {
+			return Empty[T](), false
+		}
+		return collection[int(nth)], true
 	}
 
-	if n >= 0 {
-		return collection[n], true
+	// Compared in a signed domain: -nth overflows back to nth when nth is the
+	// minimum value of its type, so the bound must be tested without negating.
+	if int64(nth) < int64(-l) {
+		return Empty[T](), false
 	}
-	return collection[l+n], true
+	return collection[l+int(nth)], true
 }
 
 // NthOr returns the element at index `nth` of collection.
