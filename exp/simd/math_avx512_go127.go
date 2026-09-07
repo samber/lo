@@ -472,7 +472,7 @@ func ClampInt8x64[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*int8)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -511,7 +511,7 @@ func ClampInt16x32[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*int16)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -550,7 +550,7 @@ func ClampInt32x16[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*int32)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -589,7 +589,7 @@ func ClampInt64x2[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*int64)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -628,7 +628,7 @@ func ClampUint64x2[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*uint64)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -667,7 +667,7 @@ func ClampInt64x8[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*int64)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -706,7 +706,7 @@ func ClampUint8x64[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*uint8)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -745,7 +745,7 @@ func ClampUint16x32[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*uint16)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -784,7 +784,7 @@ func ClampUint32x16[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*uint32)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -823,7 +823,7 @@ func ClampUint64x8[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*uint64)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -862,7 +862,7 @@ func ClampFloat32x16[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*float32)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
@@ -901,7 +901,7 @@ func ClampFloat64x8[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice 
 		clamped := v.Max(minVec).Min(maxVec)
 
 		// bearer:disable go_gosec_unsafe_unsafe
-		clamped.Store(unsafe.Slice(unsafe.Pointer(&result[i]), lanes))
+		clamped.Store(unsafe.Slice((*float64)(unsafe.Pointer(&result[i])), lanes))
 	}
 
 	for ; i < length; i++ {
