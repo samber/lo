@@ -1,7 +1,7 @@
 ---
 name: IsUniqBy
 slug: isuniqby
-sourceRef: slice.go#L307
+sourceRef: slice.go#L396
 category: core
 subCategory: slice
 playUrl:

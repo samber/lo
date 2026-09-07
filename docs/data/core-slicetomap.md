@@ -1,7 +1,7 @@
 ---
 name: SliceToMap
 slug: slicetomap
-sourceRef: slice.go#L699
+sourceRef: slice.go#L788
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/WHa2CfMO3Lr

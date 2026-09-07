@@ -1,7 +1,7 @@
 ---
 name: CutSuffix
 slug: cutsuffix
-sourceRef: slice.go#L1259
+sourceRef: slice.go#L1356
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/7FKfBFvPTaT

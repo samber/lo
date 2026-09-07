@@ -1,7 +1,7 @@
 ---
 name: RejectErr
 slug: rejecterr
-sourceRef: slice.go#L938
+sourceRef: slice.go#L1027
 category: core
 subCategory: slice
 signatures:

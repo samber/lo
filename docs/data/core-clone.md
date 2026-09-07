@@ -1,7 +1,7 @@
 ---
 name: Clone
 slug: clone
-sourceRef: slice.go#L1132
+sourceRef: slice.go#L1229
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/66LJ2wAF0rN

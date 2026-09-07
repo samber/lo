@@ -1,7 +1,7 @@
 ---
 name: Compact
 slug: compact
-sourceRef: slice.go#L1147
+sourceRef: slice.go#L1244
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/tXiy-iK6PAc

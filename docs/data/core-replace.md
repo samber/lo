@@ -1,7 +1,7 @@
 ---
 name: Replace
 slug: replace
-sourceRef: slice.go#L1110
+sourceRef: slice.go#L1199
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/XfPzmf9gql6

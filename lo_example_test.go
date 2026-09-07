@@ -2587,6 +2587,24 @@ func ExampleForEachWhile() {
 	// 2
 }
 
+func ExampleForEachErr() {
+	list := []int64{1, 2, -42, 4}
+
+	err := ForEachErr(list, func(x int64, _ int) error {
+		if x < 0 {
+			return fmt.Errorf("%d is not allowed", x)
+		}
+		fmt.Println(x)
+		return nil
+	})
+
+	fmt.Printf("%v\n", err)
+	// Output:
+	// 1
+	// 2
+	// -42 is not allowed
+}
+
 func ExampleTimes() {
 	result := Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)

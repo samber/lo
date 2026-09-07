@@ -1,7 +1,7 @@
 ---
 name: Cut
 slug: cut
-sourceRef: slice.go#L1222
+sourceRef: slice.go#L1319
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/GiL3qhpIP3f

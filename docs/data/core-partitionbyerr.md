@@ -1,7 +1,7 @@
 ---
 name: PartitionByErr
 slug: partitionbyerr
-sourceRef: slice.go#L446
+sourceRef: slice.go#L535
 category: core
 subCategory: slice
 signatures:
