@@ -22,7 +22,9 @@ jobs:
       fail-fast: false
       matrix:
         go:
-          - "stable"
+          - "1.26"
+          - "1.27"
+          - "stable" # for future versions
 
     steps:
       - uses: actions/checkout@v7
