@@ -1,23 +1,22 @@
 ---
-title: Type manipulation
-description: Perform transformations on types
+title: "Go Iterator Type Helpers"
+description: "Helpers for pointers, zero values and type coercion on Go 1.23+ iterators — lazy evaluation."
 sidebar_position: 80
 hide_table_of_contents: true
 ---
 
 # Type manipulation - Iterator helpers
 
-This page lists all type operations available in the `it` lo sub-package.
+<HelperCount category="iter" subCategory="type" /> helpers for pointers, zero values and type coercion on Go 1.23+ iterators — lazy evaluation.
 
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
-
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList
   category="iter"
   subCategory="type"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

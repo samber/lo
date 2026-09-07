@@ -1,23 +1,22 @@
 ---
-title: "Retry"
-description: Retry processing on error
+title: "Go Retry Helpers"
+description: "Helpers to retry a function on error in Go, with delay and backoff — no external dependency required."
 sidebar_position: 70
 hide_table_of_contents: true
 ---
 
 # Retry - Core helpers
 
-This page lists all retry operations available in the core package of lo.
+<HelperCount category="core" subCategory="retry" /> helpers to retry a function on error in Go, with delay and backoff — no external dependency required.
 
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
-
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList
   category="core"
   subCategory="retry"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

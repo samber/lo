@@ -1,23 +1,22 @@
 ---
-title: "Map"
-description: Loop over maps and perform transformations
+title: "Go Map Helpers"
+description: "Helpers to transform, filter and invert Go maps (map[K]V): keys, values, entries, merge — type-safe generics."
 sidebar_position: 10
 hide_table_of_contents: true
 ---
 
 # Map - Core helpers
 
-This page lists all operations on maps, available in the core package of lo.
+<HelperCount category="core" subCategory="map" /> helpers to transform, filter and invert Go maps (map[K]V): keys, values, entries, merge — type-safe generics.
 
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
-
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList
   category="core"
   subCategory="map"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

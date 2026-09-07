@@ -1,23 +1,22 @@
 ---
-title: "Error handling"
-description: Error handling
+title: "Go Error Handling Helpers"
+description: "Helpers for Go error handling: Must, Try, Attempt, Validate — panic-safe and typed error wrapping."
 sidebar_position: 110
 hide_table_of_contents: true
 ---
 
 # Error handling - Core helpers
 
-This page lists all error handling operations available in the core package of lo.
+<HelperCount category="core" subCategory="error-handling" /> helpers for Go error handling: Must, Try, Attempt, Validate — panic-safe and typed error wrapping.
 
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
-
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList
   category="core"
   subCategory="error-handling"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

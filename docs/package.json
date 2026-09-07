@@ -19,7 +19,8 @@
     "check-duplicates-in-category": "node ./scripts/check-duplicates-in-category.js",
     "check-filename-matches-frontmatter": "node ./scripts/check-filename-matches-frontmatter.js",
     "check-similar-exists": "node ./scripts/check-similar-exists.js",
-    "check-similar-keys-exist-in-directory": "node ./scripts/check-similar-keys-exist-in-directory.js"
+    "check-similar-keys-exist-in-directory": "node ./scripts/check-similar-keys-exist-in-directory.js",
+    "validate-go-code-blocks": "node ./scripts/validate-go-code-blocks.js"
   },
   "dependencies": {
       "@docusaurus/core": "3.10.0",
@@ -45,6 +46,7 @@
       "@docusaurus/module-type-aliases": "3.10.0",
       "@docusaurus/tsconfig": "3.10.0",
       "@docusaurus/types": "3.10.0",
+      "gray-matter": "^4.0.3",
       "typescript": "~6.0.2"
   },
   "browserslist": {

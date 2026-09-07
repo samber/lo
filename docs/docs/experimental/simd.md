@@ -1,19 +1,13 @@
 ---
-title: SIMD
-description: High-performance slice operations using AVX, AVX2 and AVX512 SIMD when built with Go 1.26+ and GOEXPERIMENT=simd on amd64.
+title: "Go SIMD Slice Helpers (experimental)"
+description: "8 experimental, high-performance slice operations using AVX/AVX2/AVX512 in Go 1.26+ (GOEXPERIMENT=simd, amd64 only)."
 sidebar_position: 0
 hide_table_of_contents: true
 ---
 
 # SIMD - Experimental helpers
 
-This page lists all operations on slices, available in the `exp/simd` sub-package. These helpers use **AVX** (128-bit), **AVX2** (256-bit) or **AVX512** (512-bit) SIMD when built with Go 1.26+, the `GOEXPERIMENT=simd` flag, and on amd64.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+8 experimental, high-performance slice operations using AVX/AVX2/AVX512 in Go 1.26+ (GOEXPERIMENT=simd, amd64 only).
 
 :::warning Unstable API
 SIMD helpers are experimental. The API may break in the future.
@@ -45,3 +39,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="experimental"
   subCategory="simd"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

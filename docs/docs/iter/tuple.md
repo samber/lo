@@ -1,23 +1,22 @@
 ---
-title: Tuple
-description: Manipulate multiple items in a single variable
+title: "Go Iterator Tuple Helpers"
+description: "Helpers to pack and unpack tuples from Go 1.23+ iterators: Zip and Unzip variants."
 sidebar_position: 70
 hide_table_of_contents: true
 ---
 
 # Tuple - Iterator helpers
 
-This page lists all tuple operations, available in the `it` lo sub-package.
+<HelperCount category="iter" subCategory="tuple" /> helpers to pack and unpack tuples from Go 1.23+ iterators: Zip and Unzip variants.
 
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
-
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList
   category="iter"
   subCategory="tuple"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

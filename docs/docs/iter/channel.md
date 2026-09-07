@@ -1,23 +1,22 @@
 ---
-title: Channel
-description: Iterate over channel and perform transformations
+title: "Go Channel ↔ Iterator Helpers"
+description: "Helpers to convert between Go channels and iter.Seq: ChannelToSeq, SeqToChannel."
 sidebar_position: 30
 hide_table_of_contents: true
 ---
 
 # Channel - Iterator helpers
 
-This page lists all operations on channels, available in the `it` lo sub-package.
+<HelperCount category="iter" subCategory="channel" /> helpers to convert between Go channels and iter.Seq: ChannelToSeq, SeqToChannel.
 
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
-
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList
   category="iter"
   subCategory="channel"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

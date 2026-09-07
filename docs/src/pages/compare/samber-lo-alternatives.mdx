@@ -1,0 +1,113 @@
+---
+title: samber/lo alternatives
+description: An honest, criteria-first comparison of samber/lo against the Go standard library, duke-git/lancet, thoas/go-funk, ahmetb/go-linq and elliotchance/pie.
+---
+
+<div className="container margin-vert--lg">
+
+# samber/lo alternatives
+
+For most Go projects, the real alternative to `lo` is the standard library — see
+[samber/lo vs the Go standard library](/compare/samber-lo-vs-go-stdlib) for the
+function-by-function breakdown. Among third-party libraries, `duke-git/lancet` is the
+only one with comparable scope and active maintenance. Here's how to choose, with
+verified numbers rather than vibes.
+
+## How to choose: 5 criteria
+
+1. **Type safety** — generics (compile-time checked) vs. reflection (runtime panics on
+   type mismatch).
+2. **Maintenance** — last commit and last tagged release, not just star count.
+3. **Scope** — a focused collections library, or a broad utility belt (crypto, files,
+   network, datetime)?
+4. **Dependency cost** — does adding it pull in transitive dependencies?
+5. **API stability** — is it pre-1.0 with breaking changes expected, or SemVer-locked?
+
+## Comparison table
+
+Verified via the GitHub API on 2026-08-20 — check the linked repos for current numbers,
+since stars and commit dates change.
+
+| Library | Stars | Last push | Last release | Type safety | Scope | Dependencies |
+|---|---|---|---|---|---|---|
+| **samber/lo** | 21,408 | 2026-08-17 | v1.53.0 | Generics | Collections (slices, maps, strings, channels) | Zero (stdlib only) |
+| **Go standard library** (`slices`, `maps`) | — | — | ships with Go | Generics | ~30 basic functions | None |
+| **duke-git/lancet** | 5,299 | 2026-03-07 | v2.3.9 | Generics | Broad — collections + crypto + files + network + datetime | Several (crypto libs, etc.) |
+| **thoas/go-funk** | 4,932 | 2024-07-24 | v0.9.3 (2022-12-26) | Reflection | Collections | Zero |
+| **ahmetb/go-linq** | 3,662 | 2026-08-19 | v4.0.0 (2025-10-20) | Generics (v4+) | Collections, LINQ-style chained API | Zero |
+| **elliotchance/pie** | 2,037 | 2025-12-22 | v2.9.1 (2024-11-26) | Generics | Collections, slice-focused | Zero |
+
+## The alternatives, one by one
+
+### 1. Go standard library
+Zero dependency, ships with the compiler, and covers `Contains`, `Index`, `Max`/`Min`,
+`Sort`, and — since Go 1.23 — a lazy `Chunk`. If that's all you need, stop here. See
+the [full breakdown](/compare/samber-lo-vs-go-stdlib).
+
+### 2. duke-git/lancet
+The only third-party library in this list with comparable scope and momentum. Its
+ambition is different from `lo`'s: lancet is a general-purpose Go utility belt covering
+crypto, file I/O, network helpers and datetime formatting in addition to collections —
+closer to a "one dependency for everything" toolkit. If you want a single library that
+covers collections *and* those other domains, lancet is a reasonable choice. If you
+specifically want the deepest, most focused collections API, `lo`'s 449 helpers in that
+single domain go further than lancet's collections subset.
+
+### 3. thoas/go-funk
+Predates Go generics (1.18, March 2022). Built on `reflect`, which means type errors
+surface at runtime instead of compile time, and every operation pays reflection
+overhead (see the [verified 4x allocation benchmark](/compare/performance)). No release
+since December 2022. See the dedicated
+[migration guide](/compare/samber-lo-vs-go-funk) if you're moving off it.
+
+### 4. ahmetb/go-linq
+Offers a LINQ-style chained query API (`From(x).Where(...).Select(...)`), familiar to
+developers coming from .NET. Actively maintained — v4.0.0 (2025-10-20) rewrote it on
+generics, and it received a push as recently as 2026-08-19. If the chained-query style
+is what you want, `go-linq` is a legitimate, current option; `lo` favors free functions
+(`lo.Filter(x, ...)`) over method chaining.
+
+### 5. elliotchance/pie
+Generic, slice-focused, with a fluent/chainable API on top of the slice type itself
+(`pie.Ints{1,2,3}.Filter(...)`). Narrower scope than `lo` (no map helpers, no channel
+helpers, no parallel package), but a clean choice if chaining directly off the slice
+value is what you want and your needs stay within slices.
+
+### 6. Write it yourself
+For one or two operations used in a handful of places, a 5-line hand-written loop has
+zero dependency cost and is arguably more idiomatic Go. The case for a library appears
+when you're writing the same grouping/filtering/error-handling pattern in enough places
+that duplicating it becomes the actual maintenance cost.
+
+### 7. samber/lo
+274 core helpers plus `lo/it` (Go 1.23+ lazy iterators), `lo/mutable` (in-place
+variants) and `lo/parallel` (goroutine-per-item execution) — 449 helpers total, the
+broadest collections-only scope in this list, generics-based, zero dependencies,
+SemVer-locked since v1.0 with no breaking changes planned before v2.
+
+## Recommendations by use case
+
+| Scenario | Recommendation |
+|---|---|
+| Only need `Contains`/`Sort`/`Max`/basic `Chunk` | Standard library |
+| Want one dependency covering collections + crypto + files + network | `lancet` |
+| Migrating off `go-funk` (reflection-based, unmaintained since 2022) | `lo` — see the [migration guide](/compare/samber-lo-vs-go-funk) |
+| Coming from .NET, want a LINQ-style chained API | `go-linq` |
+| Want fluent chaining directly on slice values, slices only | `pie` |
+| Want the broadest collections-only API surface, generics, zero deps | `lo` |
+| Need asynchronous/infinite event streams, not finite collections | [`ro`](/compare/lo-and-ro) — a different problem than any library on this list |
+
+## FAQ
+
+**Is `samber/lo` the best choice for every project?**
+No. If your needs are covered by the standard library, use that — see the criteria
+above. This page exists so you can make that call yourself.
+
+**Why isn't `go-funk` recommended anymore?**
+Not because it did anything wrong — it predates generics, so reflection was the only
+option available at the time. Go 1.18 made compile-time-checked generics possible for
+this class of library, which is a strictly better trade-off going forward. See the
+[migration guide](/compare/samber-lo-vs-go-funk) for the technical detail and a
+function-mapping table.
+
+</div>

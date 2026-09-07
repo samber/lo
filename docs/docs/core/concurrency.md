@@ -1,23 +1,22 @@
 ---
-title: "Concurrency"
-description: Operate on multiple gorountines
+title: "Go Concurrency Helpers"
+description: "Helpers for goroutines, async execution and synchronization in Go: Async, WaitFor, NewTransaction."
 sidebar_position: 80
 hide_table_of_contents: true
 ---
 
 # Concurrency - Core helpers
 
-This page lists all concurrency operations available in the core package of lo.
+<HelperCount category="core" subCategory="concurrency" /> helpers for goroutines, async execution and synchronization in Go: Async, WaitFor, NewTransaction.
 
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
-
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList
   category="core"
   subCategory="concurrency"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

@@ -1,0 +1,88 @@
+---
+title: Is samber/lo production-ready?
+description: Verified adoption, test coverage, versioning policy, dependency footprint and licensing for samber/lo — the facts a tech lead needs to approve a new dependency.
+---
+
+<script type="application/ld+json">
+{`{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "samber/lo",
+  "codeRepository": "https://github.com/samber/lo",
+  "license": "https://github.com/samber/lo/blob/master/LICENSE",
+  "programmingLanguage": "Go"
+}`}
+</script>
+
+<div className="container margin-vert--lg">
+
+# Is `samber/lo` production-ready?
+
+This page exists to answer the question a tech lead or architect asks before approving
+a new dependency — with numbers, not adjectives. Every figure below is independently
+verifiable at the linked source; none of it is a marketing claim.
+
+## Adoption
+
+| Metric | Value | Source |
+|---|---|---|
+| GitHub stars | 21,408 | [github.com/samber/lo](https://github.com/samber/lo) |
+| Packages that import it | 12,533 | [pkg.go.dev/github.com/samber/lo?tab=importedby](https://pkg.go.dev/github.com/samber/lo?tab=importedby) |
+| Contributors | 161 | [github.com/samber/lo/graphs/contributors](https://github.com/samber/lo/graphs/contributors) |
+
+12,533 packages depending on `lo` means it's already a transitive dependency of a large
+number of Go projects, most of which never had to think about it — which is itself a
+signal of a stable, non-breaking API.
+
+## Test coverage
+
+| Metric | Value | Source |
+|---|---|---|
+| Line coverage | 96.1% (5,305 / 5,520 lines) | [codecov.io/gh/samber/lo](https://codecov.io/gh/samber/lo) |
+
+## Versioning policy
+
+`lo` is v1.x and follows [SemVer](https://semver.org) strictly: **no breaking changes
+to exported APIs before v2.0.0**, with one explicit exception — packages under `exp/`
+(currently `exp/simd`) are experimental and not covered by this guarantee, since they
+depend on unstable Go build tags (`GOEXPERIMENT=simd`).
+
+## Dependencies
+
+The core `lo` package has zero dependencies outside the Go standard library. Check
+[go.mod](https://github.com/samber/lo/blob/master/go.mod) yourself — the `require`
+block there lists test-only dependencies (`testify`, `goleak`) plus
+`golang.org/x/text`, used specifically for locale-aware case conversion in the string
+helpers (`CamelCase`, `SnakeCase`... with the `WithLanguage` variants). `golang.org/x/text`
+is maintained by the Go team as an extended standard library package, not a
+third-party dependency in the usual sense.
+
+## Security and licensing
+
+- **License**: MIT — see [LICENSE](https://github.com/samber/lo/blob/master/LICENSE).
+- **Vulnerability reporting**: sensitive or security-related issues can be reported
+  privately — see the [Community](/community) page.
+- **Supply chain**: zero runtime dependencies outside the standard library means zero
+  transitive dependency risk from `lo` itself.
+
+## Maintenance
+
+- Actively maintained: commits land regularly (check
+  [recent activity](https://github.com/samber/lo/commits/master)).
+- 161 contributors, with a concentration on the primary maintainer — typical of a
+  focused open-source library, and worth knowing if your organization weighs bus
+  factor in dependency approval.
+- Packaged for Debian and Ubuntu
+  (`golang-github-samber-lo-dev`), which implies independent third-party review and
+  packaging by those distributions' maintainers.
+
+## Related pages
+
+- [samber/lo vs the Go standard library](/compare/samber-lo-vs-go-stdlib) — what you'd
+  need to write yourself without it.
+- [Is samber/lo slow? Verified benchmarks](/compare/performance) — allocation-profile
+  data, not marketing claims.
+- [samber/lo alternatives](/compare/samber-lo-alternatives) — an honest comparison,
+  including when `lo` isn't the right choice.
+
+</div>

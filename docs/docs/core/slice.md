@@ -1,19 +1,13 @@
 ---
-title: Slice
-description: Loop over slices and perform transformations
+title: "Go Slice Helpers"
+description: "78 type-safe generic helpers to filter, map, group, chunk, flatten and deduplicate Go slices, with runnable examples."
 sidebar_position: 0
 hide_table_of_contents: true
 ---
 
 # Slice - Core helpers
 
-This page lists all operations on slices, available in the core package of lo.
-
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
+78 type-safe generic helpers to filter, map, group, chunk, flatten and deduplicate Go slices, with runnable examples.
 
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
@@ -21,3 +15,7 @@ import HelperList from '@site/plugins/helpers-pages/components/HelperList';
   category="core"
   subCategory="slice"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.

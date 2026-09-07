@@ -743,3 +743,18 @@ Lo stands on the shoulders of giants:
 - Built upon Go's excellent generics implementation
 - Community-driven with contributions from hundreds of developers
 - Production-tested across diverse use cases and industries
+
+## Comparisons and guides
+- [samber/lo vs the Go standard library](https://lo.samber.dev/compare/samber-lo-vs-go-stdlib): what `slices`/`maps` cover, and what lo adds.
+- [samber/lo alternatives](https://lo.samber.dev/compare/samber-lo-alternatives): honest comparison with lancet, go-funk, go-linq, pie.
+- [samber/lo vs go-funk](https://lo.samber.dev/compare/samber-lo-vs-go-funk): migration guide from reflection to generics.
+- [Is samber/lo slow? Verified benchmarks](https://lo.samber.dev/compare/performance): real go test -benchmem allocation data.
+- [Is samber/lo production-ready?](https://lo.samber.dev/production-ready): verified adoption, coverage, versioning policy.
+- [Lodash to Go](https://lo.samber.dev/guides/from-lodash): function equivalence table for JS/TS developers.
+- [lo or ro: choosing the right samber library](https://lo.samber.dev/guides/lo-and-ro): finite in-memory collections (lo) vs infinite event streams (ro).
+
+## Optional
+- [Full documentation as a single file](https://lo.samber.dev/llms-full.txt): every helper's signature, description and example, concatenated.
+- [Go package reference](https://pkg.go.dev/github.com/samber/lo)
+- [Source repository](https://github.com/samber/lo)
+- [AI agent skill](https://github.com/samber/cc-skills-golang): `npx skills add https://github.com/samber/cc-skills-golang --skill golang-samber-lo`

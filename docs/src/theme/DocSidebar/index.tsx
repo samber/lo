@@ -30,7 +30,7 @@ export default function DocSidebarWrapper(props: DocSidebarProps) {
                 key={sponsor.name}
                 href={sponsor.url}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="sponsored noopener noreferrer"
                 className="sidebar-spnsors__logo-link"
                 title={sponsor.title}
               >

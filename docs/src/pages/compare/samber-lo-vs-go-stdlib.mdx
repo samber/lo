@@ -1,0 +1,155 @@
+---
+title: samber/lo vs the Go standard library (slices, maps)
+description: A function-by-function comparison of what Go's slices and maps packages cover versus samber/lo, and when to prefer one over the other.
+---
+
+<script type="application/ld+json">
+{`{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does samber/lo add dependencies?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The core lo package has zero dependencies outside the Go standard library."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will lo be deprecated as the Go standard library grows?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Unlikely to disappear, but its relative value shifts toward helpers the standard library doesn't cover, such as GroupBy, PartitionBy, error-aware variants, and parallel execution, as basic slice and map utilities keep landing in the slices and maps packages."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is samber/lo slower than a for loop?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For allocation-bound operations like Map and Filter, no. Verified go test -benchmem results show lo.Map allocates exactly as much memory as a hand-written, pre-sized loop."
+      }
+    }
+  ]
+}`}
+</script>
+
+<div className="container margin-vert--lg">
+
+# samber/lo vs the Go standard library (`slices`, `maps`)
+
+The Go standard library covers a real but limited subset of `lo`'s 449 helpers — mostly
+single-slice utilities like `Contains`, `Index`, `Max`/`Min`, and, since Go 1.23,
+a lazy `Chunk`. If you only need those, you don't need `lo`. If you need `GroupBy`,
+`PartitionBy`, error-aware `...Err` variants, or parallel execution, the standard
+library has no equivalent — that's the gap `lo` fills.
+
+## The overlap, function by function
+
+Verified against the `slices` and `maps` packages as shipped in current Go releases.
+"Verdict" reflects a plain default choice, not a rule — see the sections below for when
+the opposite makes sense.
+
+| `lo` helper | stdlib equivalent | Signature difference | Verdict |
+|---|---|---|---|
+| `lo.Contains` | `slices.Contains` | Identical shape | Use stdlib |
+| `lo.ContainsBy` | `slices.ContainsFunc` | Identical shape | Use stdlib |
+| `lo.IndexOf` | `slices.Index` | Identical shape | Use stdlib |
+| `lo.Max` / `lo.Min` | `slices.Max` / `slices.Min` | Identical shape | Use stdlib |
+| `lo.MaxBy` | `slices.MaxFunc` | stdlib's `cmp` returns `int` (three-way), `lo`'s `greater` returns `bool` | Either — pick by taste |
+| `lo.Reverse` (core, immutable) | `slices.Reverse` | stdlib mutates in place and returns nothing; `lo.Reverse` returns a new slice | **Different semantics** — not interchangeable |
+| `lo.Clone` | `slices.Clone` | Identical shape | Use stdlib |
+| `lo.Chunk` | `slices.Chunk` (Go 1.23+) | `lo.Chunk` returns `[]Slice` (materialized); `slices.Chunk` returns `iter.Seq[Slice]` (lazy) | Use stdlib if you can consume it lazily; use `lo.Chunk` if you need a concrete `[][]T` |
+| `lo.Compact` | `slices.Compact` | **False friend** — `lo.Compact` drops zero-value elements; `slices.Compact` drops *consecutive duplicates* in an already-sorted slice. They solve different problems despite the name. | Read both docs before choosing |
+| `lo.Keys` / `lo.Values` | `maps.Keys` / `maps.Values` | stdlib returns `iter.Seq[K]` (Go 1.23+, lazy); `lo` returns `[]K` (materialized) | Use stdlib if you're about to range over it once; use `lo` if you need a concrete slice (to sort it, pass it to a function expecting `[]K`, etc.) |
+| `lo.SliceToMap` / `lo.Associate` | `maps.Collect` (Go 1.23+) | `maps.Collect` consumes an `iter.Seq2[K, V]`; `lo`'s variants consume a `[]T` plus a key/value function | Different starting point — pick based on what you already have |
+
+## What the standard library does not have
+
+- **Grouping and partitioning** — `GroupBy`, `GroupByMap`, `PartitionBy`. No stdlib
+  equivalent exists; you'd hand-write a `map[K][]T` accumulation loop every time.
+- **Error-aware transforms** — the `...Err` family (`MapErr`, `FilterErr`, `UniqByErr`,
+  `GroupByMapErr`...) stop on the first error and propagate it, instead of forcing you
+  to choose between panicking or silently swallowing failures inside a closure.
+- **Parallel execution** — `lo/parallel` runs a transform in one goroutine per item and
+  collects results in order. The standard library has no slice-level parallel primitive
+  (you'd reach for `errgroup` or hand-roll a worker pool).
+- **Set operations** — `Difference`, `Union`, `Intersect`, `WithoutBy`. `slices` has
+  none of these; you'd build a `map[T]struct{}` by hand each time.
+- **Tuple and zip helpers** — `Zip2`..`Zip9`, `CrossJoinX`. No stdlib equivalent.
+- **Retry, debounce, throttle** — `Attempt`, `NewDebounce`, `NewThrottle`. The standard
+  library expects you to compose `time.Timer`/`context` primitives yourself.
+
+## Since Go 1.23: how `iter.Seq` changes the picture
+
+Go 1.23 added `range-over-func` and the `iter.Seq`/`iter.Seq2` types, which the
+`slices`/`maps` packages now use for lazy views (`slices.Values`, `maps.Keys`...).
+`lo/it` builds on the same primitives to offer the *rest* of `lo`'s vocabulary
+(`GroupBy`, `Reduce`, `Filter`...) as lazy, allocation-free iterator helpers over
+`iter.Seq`/`iter.Seq2` — the stdlib gives you the *primitives* to build iterators,
+`lo/it` gives you the *operators* to compose them, the same way `lo` complements
+`slices`/`maps` for in-memory slices.
+
+## Performance: is `lo` slower than a hand-written loop?
+
+See the dedicated [performance page](/compare/performance) for the full methodology
+and reproducible benchmarks. Short answer: `lo.Map`/`lo.Filter` allocate exactly as
+much memory as a hand-written, pre-sized loop — verified via `go test -benchmem`, not
+asserted.
+
+## When to use the standard library instead
+
+- Your team has a zero-third-party-dependency policy, or you're writing a library
+  whose consumers shouldn't inherit a transitive dependency.
+- You only need 3-4 functions from the table above — a `go get` for `Contains` and
+  `Max` isn't worth it.
+- You're targeting Go < 1.18 (no generics) — `lo` requires 1.18+, and `lo/it` requires
+  1.23+.
+- You want the absolute minimum surface area for a public API and are comfortable
+  hand-writing the occasional `GroupBy` loop.
+
+## When `lo` earns its place
+
+- You write the same `map[K][]T` grouping loop, the same "sum a field across a slice"
+  reduction, or the same set-difference logic in more than one or two places — `lo`
+  turns that into one import instead of copy-pasted helpers.
+- You want error-aware variants (`...Err`) that stop cleanly on the first failure,
+  instead of a closure that has to decide whether to panic or swallow the error.
+- You're processing a slice where the transform is slow or I/O-bound and want it
+  parallelized without hand-rolling a worker pool (`lo/parallel`).
+
+## Using both together
+
+They're not mutually exclusive. A common pattern combines a stdlib primitive with a
+`lo` helper:
+
+```go
+import (
+    "maps"
+    "slices"
+    "github.com/samber/lo"
+)
+
+// stdlib for the primitive, lo for the aggregation stdlib doesn't have
+sortedKeys := slices.Sorted(maps.Keys(counts))
+grouped := lo.GroupBy(users, func(u User) string { return u.Country })
+```
+
+## FAQ
+
+**Does `samber/lo` add dependencies?**
+No — the core `lo` package has zero dependencies outside the Go standard library
+(verify in [go.mod](https://github.com/samber/lo/blob/master/go.mod)).
+
+**Will `lo` be deprecated as the standard library grows?**
+Unlikely to disappear, but expect its *relative* value to shift toward the helpers the
+stdlib doesn't cover (grouping, error-aware variants, parallelism) as basic slice/map
+utilities keep landing in `slices`/`maps`.
+
+**Is `lo` slower than a `for` loop?**
+For allocation-bound operations like `Map`/`Filter`, no — see the
+[performance page](/compare/performance) for verified benchmark data.
+
+</div>

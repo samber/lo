@@ -22,6 +22,12 @@
   justify-content: center;
 }
 
+.stats {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
 .features {
   display: flex;
   align-items: center;

@@ -41,9 +41,12 @@ export default function HelperCard({
       case 'parallel':
         baseUrl = 'https://pkg.go.dev/github.com/samber/lo/parallel';
         break;
-      // case 'it':
-      //   baseUrl = 'https://pkg.go.dev/github.com/samber/lo/it';
-      //   break;
+      case 'iter':
+        baseUrl = 'https://pkg.go.dev/github.com/samber/lo/it';
+        break;
+      case 'experimental':
+        baseUrl = 'https://pkg.go.dev/github.com/samber/lo/exp/simd';
+        break;
     }
 
     if (!functionName) return '';
@@ -112,7 +115,12 @@ export default function HelperCard({
   }, [helper.signatures]);
 
   return (
-    <div className="helper-card">
+    <div
+      className="helper-card"
+      data-helper-slug={helper.slug}
+      data-helper-category={helper.category}
+      data-helper-subcategory={helper.subCategory}
+    >
       <div className="helper-card__header">
         {/* Heading registered in MDX ToC */}
         <Heading as="h3" id={helper.slug} className="helper-card__title anchor">

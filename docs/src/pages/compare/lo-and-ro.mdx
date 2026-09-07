@@ -1,0 +1,95 @@
+---
+title: lo or ro — choosing the right samber library
+description: A decision guide between samber/lo (finite, in-memory collections) and samber/ro (infinite, event-driven streams) — with code showing how to use both together.
+---
+
+<div className="container margin-vert--lg">
+
+# lo or ro: choosing the right samber library for your Go data flow
+
+**Use `lo` when your data is finite and already in memory: slices, maps, batches. Use
+[`ro`](https://github.com/samber/ro) when your data arrives over time: events,
+channels, HTTP streams, cron ticks, subscriptions. Many programs use both.**
+
+This is a routing guide, not a comparison — `lo` and `ro` answer different questions,
+and there's no scenario where using the "wrong" one is a quality problem rather than a
+mismatch between the tool and the shape of the data.
+
+## The one question that decides it
+
+**Does your data have a known end at the moment you start processing it?**
+
+- **Yes** → `lo` (or `lo/it` if you want lazy evaluation over the same finite data).
+- **No, or you're not sure** → `ro`.
+
+A second question, if the first didn't settle it: **does the processing need to react
+to events over time** — backpressure, debouncing, retry-on-stream, time-windowed
+aggregation? If yes, that's `ro`'s domain regardless of whether the underlying source
+is technically finite.
+
+## Use case table
+
+| Scenario | Library | Helper / operator |
+|---|---|---|
+| Transform a slice already loaded in memory | `lo` | `lo.Map` |
+| Deduplicate a slice | `lo` | `lo.Uniq` |
+| Lazily transform a Go 1.23+ iterator | `lo/it` | `it.Map` |
+| Parallelize a transform over a bounded slice | `lo/parallel` | `lop.Map` |
+| Consume a Kafka topic with backpressure | `ro` | a `ro.Pipe` reading from the topic |
+| Debounce a stream of UI events | `ro` | `ro` debounce operator |
+| Fan out a stream of events to multiple consumers | `ro` | `ro` multicast subject |
+| Retry a flaky one-off function call | `lo` | `lo.Attempt` |
+| Retry a subscription to a live stream | `ro` | `ro`'s retry-on-stream operator |
+
+## Using them together
+
+This is the part a comparison table can't show, and it's the most common real pattern:
+**`ro` ingests and windows a stream, `lo` transforms each finite batch it produces.**
+
+```go
+import (
+    "github.com/samber/lo"
+    "github.com/samber/ro"
+)
+
+// ro windows an event stream into 100-item batches (bounded, in-memory)
+ro.FromChannel(events).
+    Buffer(100).
+    Subscribe(func(batch []Event) {
+        // Each batch is a finite slice: hand it to lo.
+        names := lo.Map(batch, func(e Event, _ int) string { return e.Name })
+        grouped := lo.GroupBy(batch, func(e Event) string { return e.Type })
+        process(names, grouped)
+    })
+```
+
+`ro` owns the "when" (windowing, backpressure, retry); `lo` owns the "what" (grouping,
+mapping, filtering the finite batch `ro` handed it). Neither library tries to do the
+other's job.
+
+## What about `lo/it`?
+
+Easy to confuse with `ro` — both involve "iterating" — but they solve different
+problems. `lo/it` wraps Go 1.23+ `iter.Seq`/`iter.Seq2`: **finite or unbounded-but-pull**
+sequences, evaluated lazily, one item pulled at a time by the consumer. `ro` is
+**push-based**: the source decides when the next event arrives (a network socket, a
+timer, a channel), and the consumer reacts. If you're calling `range` over something,
+you're in `lo/it` territory. If something is calling *you* when an event happens,
+you're in `ro` territory.
+
+## FAQ
+
+**Can I use `ro` for the finite collection I already have in memory?**
+You can, but there's no benefit — `ro`'s machinery (backpressure, subscriptions,
+subjects) solves problems that don't exist for a slice you already hold. Use `lo`.
+
+**Can I use `lo` to process a live event stream?**
+Not directly — `lo`'s helpers all assume the input is already a complete slice or map.
+You'd need to buffer the stream into batches first (which is exactly what `ro`'s
+windowing operators do), then hand each batch to `lo`.
+
+**Do I need both in a Go 1.23+ codebase?**
+Only if you have both shapes of data. Many services do: an HTTP handler with a finite
+request body (`lo`) alongside a background worker consuming a message queue (`ro`).
+
+</div>

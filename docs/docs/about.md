@@ -12,7 +12,7 @@ sidebar_position: 0
 
 **Why `lo` Exists**
 
-Go's standard library is excellent for many use cases, but it lacks the higher-level abstractions that developers coming from JavaScript, Python, or other languages often miss. While Go 1.18 introduced generics, the standard library's `slices` and `maps` packages only cover about 5-10 basic helpers. `lo` provides hundreds of additional utilities that make everyday programming tasks more enjoyable and less error-prone.
+Go's standard library is excellent for many use cases, but it lacks the higher-level abstractions that developers coming from JavaScript, Python, or other languages often miss. While Go 1.18 introduced generics, the standard library's `slices` and `maps` packages only cover about 5-10 basic helpers. `lo` provides 449 documented utilities that make everyday programming tasks more enjoyable and less error-prone.
 
 **The name "lo"**
 
@@ -20,7 +20,7 @@ I wanted a short and memorable name, similar to "Lodash". It's easy to type and 
 
 ## 🚀 Install
 
-```go
+```bash
 go get -u github.com/samber/lo@v1
 
 # AI Agent Skill
@@ -44,6 +44,23 @@ import (
     lom "github.com/samber/lo/mutable"
     loi "github.com/samber/lo/it"
 )
+
+contains := lo.Contains([]int{1, 2, 3}, 2)
+// true
+
+doubled := lop.Map([]int{1, 2, 3}, func(item int, _ int) int {
+    return item * 2
+})
+// []int{2, 4, 6}
+
+numbers := []int{1, 2, 3}
+lom.Reverse(numbers)
+// numbers: []int{3, 2, 1}
+
+evens := slices.Collect(loi.Filter(slices.Values([]int{1, 2, 3, 4}), func(item int) bool {
+    return item%2 == 0
+}))
+// []int{2, 4}
 ```
 
 Then use one of the helpers below:
@@ -61,6 +78,9 @@ I cannot recommend it, but in case you are too lazy for repeating `lo.` everywhe
 import (
     . "github.com/samber/lo"
 )
+
+names := lo.Uniq([]string{"Samuel", "John", "Samuel"})
+// []string{"Samuel", "John"}
 ```
 
 I take no responsibility for this junk. 😁 💩

@@ -1,23 +1,22 @@
 ---
-title: "Find"
-description: Loop over a collection and find element(s)
+title: "Go Search & Aggregate Helpers"
+description: "Helpers to find, min/max, sample and aggregate elements in a Go slice — type-safe generics with runnable examples."
 sidebar_position: 40
 hide_table_of_contents: true
 ---
 
 # Find - Core helpers
 
-This page lists all search helpers, available in the core package of lo.
+<HelperCount category="core" subCategory="find" /> helpers to find, min/max, sample and aggregate elements in a Go slice — type-safe generics with runnable examples.
 
-:::warning Help improve this documentation
-This documentation is still new and evolving. If you spot any mistakes, unclear explanations, or missing details, please [open an issue](https://github.com/samber/lo/issues).
-
-Your feedback helps us improve!
-:::
-
+import HelperCount from '@site/plugins/helpers-pages/components/HelperCount';
 import HelperList from '@site/plugins/helpers-pages/components/HelperList';
 
 <HelperList
   category="core"
   subCategory="find"
 />
+
+---
+
+Found a mistake or a missing detail? [Open an issue](https://github.com/samber/lo/issues) — feedback helps us improve this page.
