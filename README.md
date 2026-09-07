@@ -97,6 +97,7 @@ Supported helpers for slices:
 - [ReduceRight](#reduceright)
 - [ForEach](#foreach)
 - [ForEachWhile](#foreachwhile)
+- [ForEachErr](#foreacherr)
 - [Times](#times)
 - [Uniq](#uniq)
 - [UniqBy](#uniqby)
@@ -625,6 +626,27 @@ lo.ForEachWhile(list, func(x int64, _ int) bool {
 ```
 
 [[play](https://go.dev/play/p/QnLGt35tnow)]
+
+### ForEachErr
+
+Iterates over elements of a collection, invokes the iteratee for each element, and returns the first error returned by the iteratee. Iteration stops on the first error.
+
+```go
+import "github.com/samber/lo"
+
+list := []int64{1, 2, -42, 4}
+
+err := lo.ForEachErr(list, func(x int64, _ int) error {
+	if x < 0 {
+		return fmt.Errorf("%d is not allowed", x)
+	}
+	fmt.Println(x)
+	return nil
+})
+// 1
+// 2
+// err: "-42 is not allowed"
+```
 
 ### Times
 
