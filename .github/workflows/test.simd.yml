@@ -16,15 +16,19 @@ env:
 jobs:
   test-simd:
     # GitHub hosted runners run on several architectures.
-    # Using Ubicloud ensures we run on AVX512.
-    runs-on: ubicloud-standard-2
+    # Using Ubicloud ensures we run on AVX512. Run on both x86 and arm
+    # to cover the full Ubicloud fleet.
     strategy:
       fail-fast: false
       matrix:
+        runs-on:
+          - ubicloud-standard-2
+          - ubicloud-standard-2-arm
         go:
           - "1.26"
           - "1.27"
           - "stable" # for future versions
+    runs-on: ${{ matrix.runs-on }}
 
     steps:
       - uses: actions/checkout@v7
