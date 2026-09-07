@@ -195,6 +195,17 @@ func ForEach[T any](collection []T, callback func(item T, index int)) {
 	}
 }
 
+// ForEachErr iterates over elements of collection and invokes callback for each element.
+// It returns the first error returned by the iteratee function.
+func ForEachErr[T any](collection []T, callback func(item T, index int) error) error {
+	for i := range collection {
+		if err := callback(collection[i], i); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // ForEachWhile iterates over elements of collection and invokes predicate for each element
 // collection return value decide to continue or break, like do while().
 // Play: https://go.dev/play/p/QnLGt35tnow

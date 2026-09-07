@@ -789,6 +789,31 @@ func TestForEach(t *testing.T) {
 	is.IsIncreasing(callParams2)
 }
 
+func TestForEachErr(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	// check of callback is called for every element and in proper order
+
+	var callParams1 []string
+	var callParams2 []int
+
+	err := ForEachErr([]string{"a", "b", "c"}, func(item string, i int) error {
+		if item == "c" {
+			return errors.New("'c' is not allowed")
+		}
+		callParams1 = append(callParams1, item)
+		callParams2 = append(callParams2, i)
+		return nil
+	})
+
+	is.Equal([]string{"a", "b"}, callParams1)
+	is.Equal([]int{0, 1}, callParams2)
+	is.IsIncreasing(callParams2)
+	is.Error(err)
+	is.Equal("'c' is not allowed", err.Error())
+}
+
 func TestForEachWhile(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
