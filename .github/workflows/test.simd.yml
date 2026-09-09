@@ -15,14 +15,20 @@ env:
 
 jobs:
   test-simd:
-    # GitHub hosted runners run on several architectures.
-    # Using Ubicloud ensures we run on AVX512.
-    runs-on: ubicloud-standard-2
     strategy:
       fail-fast: false
       matrix:
+        # The simd package is portable (amd64 AVX/AVX2/AVX512, arm64 NEON, pure-Go emulation
+        # elsewhere), so it is tested on both amd64 and arm64 hardware, not just one.
+        runs-on:
+          - ubicloud-standard-2
+          - ubicloud-standard-2-arm
         go:
-          - "stable"
+          - "1.27"
+          - "stable" # for future versions
+
+    name: ${{ matrix.runs-on }} / go ${{ matrix.go }}
+    runs-on: ${{ matrix.runs-on }}
 
     steps:
       - uses: actions/checkout@v7
@@ -36,6 +42,7 @@ jobs:
         run: make test
 
       - name: Benchmark
+        if: matrix.go == 'stable'
         run: |
           cd exp/simd/
           GOEXPERIMENT=simd go test -run=^Benchmark -benchmem -bench ./...
