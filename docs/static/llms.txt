@@ -29,6 +29,7 @@ The main package is complemented by several specialized sub-packages:
 - **lo/parallel**: Parallel processing helpers for concurrent operations
 - **lo/mutable**: In-place mutation helpers for memory-efficient operations
 - **lo/it**: Iterator helpers for lazy evaluation and streaming
+- **exp/simd**: Experimental SIMD-accelerated helpers (Sum, Mean, Min, Max, Clamp, Contains) for numeric slices; separate Go module requiring Go 1.27+ and `GOEXPERIMENT=simd`, portable across amd64, arm64, and wasm with automatic fallback to `lo.*` elsewhere
 
 AI Agent Skill:
 
@@ -560,6 +561,7 @@ The lo/it package provides iterator helpers for lazy evaluation and streaming op
 ## Additional Resources
 
 - **Documentation**: https://lo.samber.dev
+- **SIMD helpers**: https://lo.samber.dev/docs/experimental/simd
 - **GoDoc**: https://pkg.go.dev/github.com/samber/lo
 - **GitHub**: https://github.com/samber/lo
 - **Playground**: Every helper includes a Go Playground example for quick testing
