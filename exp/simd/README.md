@@ -1,43 +1,38 @@
-# SIMD experiment (Go 1.26+)
+# SIMD experiment (Go 1.27+)
 
-This package requires **Go 1.26** with `GOEXPERIMENT=simd` and **amd64**.
+This package requires **Go 1.27** with `GOEXPERIMENT=simd`. Unlike `simd/archsimd`, the
+stdlib `simd` package it is built on is portable: no architecture build tag is required.
 
 See [benchmarks](./BENCHMARK.md).
 
-## CPU compatibility (avoiding SIGILL)
+## Platform support
 
-If you see **SIGILL: illegal instruction** when running tests, the CPU or VM does not support the SIMD instructions used by that code.
+| Architecture     | Backing hardware                       |
+| ---------------- | --------------------------------------- |
+| amd64            | AVX / AVX2 / AVX-512, picked at runtime |
+| arm64            | NEON                                    |
+| wasm             | SIMD128                                 |
+| everything else  | pure-Go emulation                       |
 
-### Check support on Linux
+On the emulated tier, this package transparently falls back to the equivalent scalar
+`github.com/samber/lo` function instead of paying the emulation overhead.
+
+## Controlling the vector width
+
+`GODEBUG=simd=<0|128|256|512>` forces a specific behaviour for the current process:
 
 ```bash
-# List SIMD-related flags
-grep -E 'avx' /proc/cpuinfo
-
-# Or with lscpu
-lscpu | grep -i avx
+GODEBUG=simd=0   go test ./...  # force the scalar/lo.* fallback everywhere
+GODEBUG=simd=128 go test ./...  # force 128-bit vectors
+GODEBUG=simd=256 go test ./...  # force 256-bit vectors (panics if unsupported by the CPU)
 ```
 
-**Rough mapping:**
+Without `GODEBUG=simd`, the widest vector the CPU supports (with the required feature set)
+is used automatically. Building without `GOEXPERIMENT=simd` at all compiles this package to
+an empty stub with no exported symbols, same as before this package existed.
 
-| Tests / code      | Required flag(s)           | Typical CPUs                                                            |
-| ----------------- | -------------------------- | ----------------------------------------------------------------------- |
-| AVX (128-bit)     | `avx` (baseline on amd64)  | All amd64                                                               |
-| AVX2 (256-bit)    | `avx2`                     | Intel Haswell+, AMD Excavator+                                          |
-| AVX-512 (512-bit) | `avx512f`                  | Intel Skylake-X+, some Xeons; many AMD/consumer CPUs do **not** have it |
-
-### What the tests do
-
-- **AVX tests** (128-bit) call `requireAVX(t)` and are **skipped** if the CPU does not support AVX.
-- **AVX2 tests** call `requireAVX2(t)` and are **skipped** if the CPU does not support AVX2 (no SIGILL).
-- **AVX-512 tests** (when enabled) should call `requireAVX512(t)` and skip when AVX-512 is not available.
-
-So on a machine without AVX2, AVX2 tests will show as skipped instead of crashing.
-
-### Run only AVX tests
-
-If your environment does not support AVX2/AVX-512, you can still run the AVX (128-bit) tests:
+## Running the tests
 
 ```bash
-GOEXPERIMENT=simd go test -run AVX ./...
+GOEXPERIMENT=simd go test ./...
 ```
