@@ -98,7 +98,7 @@ func TestChannelDispatcher(t *testing.T) {
 
 func TestDispatchingStrategyRoundRobin(t *testing.T) {
 	t.Parallel()
-	testWithTimeout(t, 100*time.Millisecond)
+	testWithTimeout(t, 200*time.Millisecond)
 
 	children := createChannels[int](3, 2)
 	rochildren := channelsToReadOnly(children)

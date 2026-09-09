@@ -1,6 +1,6 @@
 module github.com/samber/lo/exp/simd
 
-go 1.26.0
+go 1.27
 
 require github.com/samber/lo v0.0.0
 

@@ -294,7 +294,7 @@ playUrl: https://go.dev/play/p/refNB9ZTIGo
 
 **New helpers not yet released**: If documentation is created at the same time as the helper source code, the Go Playground cannot compile it because the module version hasn't been published yet. In that case, skip the playground example and leave `playUrl` empty. Create the example after the next release.
 
-**SIMD helpers**: Helpers in `exp/simd/` require `go1.26+goexperiment.simd+amd64` build tags, which the Go Playground does not support. These helpers cannot have playground examples.
+**SIMD helpers**: Helpers in `exp/simd/` require the `goexperiment.simd` build tag (Go 1.27+), which the Go Playground does not support. These helpers cannot have playground examples.
 
 ### Bulk Verification
 

@@ -1,6 +1,6 @@
-# Only build/test/lint exp/simd when Go version is >= 1.26 (requires goexperiment.simd)
+# Only build/test/lint exp/simd when Go version is >= 1.27 (requires goexperiment.simd)
 GO_VERSION := $(shell go version 2>/dev/null | sed -n 's/.*go\([0-9]*\)\.\([0-9]*\).*/\1.\2/p')
-GO_SIMD_SUPPORT := $(shell ver="$(GO_VERSION)"; [ -n "$$ver" ] && [ "$$(printf '%s\n1.26\n' "$$ver" | sort -V | tail -1)" = "$$ver" ] && echo yes)
+GO_SIMD_SUPPORT := $(shell ver="$(GO_VERSION)"; [ -n "$$ver" ] && [ "$$(printf '%s\n1.27\n' "$$ver" | sort -V | tail -1)" = "$$ver" ] && echo yes)
 
 build:
 	go build -v ./...

@@ -1,86 +1,67 @@
-//go:build go1.26 && goexperiment.simd && amd64
+//go:build goexperiment.simd
 
 package simd
 
 import "unsafe"
 
-// unsafeSliceInt8 converts a []T (where T ~int8) to []int8 via unsafe operations.
-// This helper reduces code duplication and the risk of copy-paste errors.
-//
-//go:nosplit
-func unsafeSliceInt8[T ~int8](collection []T, length uint) []int8 {
+// asInt8 reinterprets a []T (T ~int8) as []int8. The two have identical size, alignment
+// and representation. unsafe.SliceData is used instead of &s[0] because it is defined for
+// empty and nil slices too.
+func asInt8[T ~int8](s []T) []int8 {
 	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*int8)(unsafe.Pointer(&collection[0])), length)
+	return unsafe.Slice((*int8)(unsafe.Pointer(unsafe.SliceData(s))), len(s))
 }
 
-// unsafeSliceInt16 converts a []T (where T ~int16) to []int16 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceInt16[T ~int16](collection []T, length uint) []int16 {
+// asInt16 is asInt8 for int16.
+func asInt16[T ~int16](s []T) []int16 {
 	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*int16)(unsafe.Pointer(&collection[0])), length)
+	return unsafe.Slice((*int16)(unsafe.Pointer(unsafe.SliceData(s))), len(s))
 }
 
-// unsafeSliceInt32 converts a []T (where T ~int32) to []int32 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceInt32[T ~int32](collection []T, length uint) []int32 {
+// asInt32 is asInt8 for int32.
+func asInt32[T ~int32](s []T) []int32 {
 	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*int32)(unsafe.Pointer(&collection[0])), length)
+	return unsafe.Slice((*int32)(unsafe.Pointer(unsafe.SliceData(s))), len(s))
 }
 
-// unsafeSliceInt64 converts a []T (where T ~int64) to []int64 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceInt64[T ~int64](collection []T, length uint) []int64 {
+// asInt64 is asInt8 for int64.
+func asInt64[T ~int64](s []T) []int64 {
 	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*int64)(unsafe.Pointer(&collection[0])), length)
+	return unsafe.Slice((*int64)(unsafe.Pointer(unsafe.SliceData(s))), len(s))
 }
 
-// unsafeSliceUint8 converts a []T (where T ~uint8) to []uint8 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceUint8[T ~uint8](collection []T, length uint) []uint8 {
+// asUint8 is asInt8 for uint8.
+func asUint8[T ~uint8](s []T) []uint8 {
 	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*uint8)(unsafe.Pointer(&collection[0])), length)
+	return unsafe.Slice((*uint8)(unsafe.Pointer(unsafe.SliceData(s))), len(s))
 }
 
-// unsafeSliceUint16 converts a []T (where T ~uint16) to []uint16 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceUint16[T ~uint16](collection []T, length uint) []uint16 {
+// asUint16 is asInt8 for uint16.
+func asUint16[T ~uint16](s []T) []uint16 {
 	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*uint16)(unsafe.Pointer(&collection[0])), length)
+	return unsafe.Slice((*uint16)(unsafe.Pointer(unsafe.SliceData(s))), len(s))
 }
 
-// unsafeSliceUint32 converts a []T (where T ~uint32) to []uint32 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceUint32[T ~uint32](collection []T, length uint) []uint32 {
+// asUint32 is asInt8 for uint32.
+func asUint32[T ~uint32](s []T) []uint32 {
 	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*uint32)(unsafe.Pointer(&collection[0])), length)
+	return unsafe.Slice((*uint32)(unsafe.Pointer(unsafe.SliceData(s))), len(s))
 }
 
-// unsafeSliceUint64 converts a []T (where T ~uint64) to []uint64 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceUint64[T ~uint64](collection []T, length uint) []uint64 {
+// asUint64 is asInt8 for uint64.
+func asUint64[T ~uint64](s []T) []uint64 {
 	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*uint64)(unsafe.Pointer(&collection[0])), length)
+	return unsafe.Slice((*uint64)(unsafe.Pointer(unsafe.SliceData(s))), len(s))
 }
 
-// unsafeSliceFloat32 converts a []T (where T ~float32) to []float32 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceFloat32[T ~float32](collection []T, length uint) []float32 {
+// asFloat32 is asInt8 for float32.
+func asFloat32[T ~float32](s []T) []float32 {
 	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*float32)(unsafe.Pointer(&collection[0])), length)
+	return unsafe.Slice((*float32)(unsafe.Pointer(unsafe.SliceData(s))), len(s))
 }
 
-// unsafeSliceFloat64 converts a []T (where T ~float64) to []float64 via unsafe operations.
-//
-//go:nosplit
-func unsafeSliceFloat64[T ~float64](collection []T, length uint) []float64 {
+// asFloat64 is asInt8 for float64.
+func asFloat64[T ~float64](s []T) []float64 {
 	// bearer:disable go_gosec_unsafe_unsafe
-	return unsafe.Slice((*float64)(unsafe.Pointer(&collection[0])), length)
+	return unsafe.Slice((*float64)(unsafe.Pointer(unsafe.SliceData(s))), len(s))
 }

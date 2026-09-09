@@ -1,1169 +1,586 @@
-//go:build go1.26 && goexperiment.simd && amd64
+//go:build goexperiment.simd
 
 package simd
 
-import (
-	"github.com/samber/lo"
-)
+import "github.com/samber/lo"
 
-// SumInt8 sums a slice of int8 using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using int8, which can overflow for large collections.
-// If the sum exceeds the int8 range (-128 to 127), the result will wrap around silently.
-// For collections that may overflow, consider using a wider type or handle overflow detection externally.
+// SumInt8 sums a slice of int8 using SIMD instructions when available.
+// Overflow: the accumulation is performed using int8, which can overflow for large
+// collections. If the sum exceeds the int8 range (-128 to 127), the result wraps around
+// silently, matching lo.Sum. For collections that may overflow, use a wider type.
 func SumInt8[T ~int8](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumInt8x64(collection)
-	case simdFeatureAVX2:
-		return SumInt8x32(collection)
-	case simdFeatureAVX:
-		return SumInt8x16(collection)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.Sum(collection)
 	}
+	return T(sumInt8(asInt8(collection)))
 }
 
-// SumInt16 sums a slice of int16 using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using int16, which can overflow for large collections.
-// If the sum exceeds the int16 range (-32768 to 32767), the result will wrap around silently.
-// For collections that may overflow, consider using a wider type or handle overflow detection externally.
+// SumInt16 is SumInt8 for int16.
 func SumInt16[T ~int16](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumInt16x32(collection)
-	case simdFeatureAVX2:
-		return SumInt16x16(collection)
-	case simdFeatureAVX:
-		return SumInt16x8(collection)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.Sum(collection)
 	}
+	return T(sumInt16(asInt16(collection)))
 }
 
-// SumInt32 sums a slice of int32 using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using int32, which can overflow for very large collections.
-// If the sum exceeds the int32 range (-2147483648 to 2147483647), the result will wrap around silently.
-// For collections that may overflow, consider using SumInt64 or handle overflow detection externally.
+// SumInt32 is SumInt8 for int32.
 func SumInt32[T ~int32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumInt32x16(collection)
-	case simdFeatureAVX2:
-		return SumInt32x8(collection)
-	case simdFeatureAVX:
-		return SumInt32x4(collection)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.Sum(collection)
 	}
+	return T(sumInt32(asInt32(collection)))
 }
 
-// SumInt64 sums a slice of int64 using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using int64, which can overflow for extremely large collections.
-// If the sum exceeds the int64 range, the result will wrap around silently.
-// For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
+// SumInt64 is SumInt8 for int64.
 func SumInt64[T ~int64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumInt64x8(collection)
-	case simdFeatureAVX2:
-		return SumInt64x4(collection)
-	case simdFeatureAVX:
-		return SumInt64x2(collection)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.Sum(collection)
 	}
+	return T(sumInt64(asInt64(collection)))
 }
 
-// SumUint8 sums a slice of uint8 using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using uint8, which can overflow for large collections.
-// If the sum exceeds the uint8 range (0 to 255), the result will wrap around silently.
-// For collections that may overflow, consider using a wider type or handle overflow detection externally.
+// SumUint8 is SumInt8 for uint8.
 func SumUint8[T ~uint8](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumUint8x64(collection)
-	case simdFeatureAVX2:
-		return SumUint8x32(collection)
-	case simdFeatureAVX:
-		return SumUint8x16(collection)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.Sum(collection)
 	}
+	return T(sumUint8(asUint8(collection)))
 }
 
-// SumUint16 sums a slice of uint16 using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using uint16, which can overflow for large collections.
-// If the sum exceeds the uint16 range (0 to 65535), the result will wrap around silently.
-// For collections that may overflow, consider using a wider type or handle overflow detection externally.
+// SumUint16 is SumInt8 for uint16.
 func SumUint16[T ~uint16](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumUint16x32(collection)
-	case simdFeatureAVX2:
-		return SumUint16x16(collection)
-	case simdFeatureAVX:
-		return SumUint16x8(collection)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.Sum(collection)
 	}
+	return T(sumUint16(asUint16(collection)))
 }
 
-// SumUint32 sums a slice of uint32 using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using uint32, which can overflow for very large collections.
-// If the sum exceeds the uint32 range (0 to 4294967295), the result will wrap around silently.
-// For collections that may overflow, consider using SumUint64 or handle overflow detection externally.
+// SumUint32 is SumInt8 for uint32.
 func SumUint32[T ~uint32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumUint32x16(collection)
-	case simdFeatureAVX2:
-		return SumUint32x8(collection)
-	case simdFeatureAVX:
-		return SumUint32x4(collection)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.Sum(collection)
 	}
+	return T(sumUint32(asUint32(collection)))
 }
 
-// SumUint64 sums a slice of uint64 using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using uint64, which can overflow for extremely large collections.
-// If the sum exceeds the uint64 range, the result will wrap around silently.
-// For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
+// SumUint64 is SumInt8 for uint64.
 func SumUint64[T ~uint64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumUint64x8(collection)
-	case simdFeatureAVX2:
-		return SumUint64x4(collection)
-	case simdFeatureAVX:
-		return SumUint64x2(collection)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.Sum(collection)
 	}
+	return T(sumUint64(asUint64(collection)))
 }
 
-// SumFloat32 sums a slice of float32 using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using float32. Overflow will result in +/-Inf rather than wrapping.
-// For collections requiring high precision or large sums, consider using SumFloat64.
+// SumFloat32 sums a slice of float32 using SIMD instructions when available.
+// Precision: floating-point addition is not associative, and the SIMD path accumulates
+// several independent lane totals before combining them, instead of lo.Sum's strictly
+// sequential left-to-right addition. The result is numerically equivalent (within normal
+// floating-point rounding error) but not always bit-identical to lo.Sum's — the same
+// trade-off every vectorized numeric library makes.
 func SumFloat32[T ~float32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumFloat32x16(collection)
-	case simdFeatureAVX2:
-		return SumFloat32x8(collection)
-	case simdFeatureAVX:
-		return SumFloat32x4(collection)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.Sum(collection)
 	}
+	return T(sumFloat32(asFloat32(collection)))
 }
 
-// SumFloat64 sums a slice of float64 using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using float64. Overflow will result in +/-Inf rather than wrapping.
-// For collections that may overflow, handle overflow detection externally (e.g., using big.Float).
+// SumFloat64 is SumFloat32 for float64.
 func SumFloat64[T ~float64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumFloat64x8(collection)
-	case simdFeatureAVX2:
-		return SumFloat64x4(collection)
-	case simdFeatureAVX:
-		return SumFloat64x2(collection)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.Sum(collection)
 	}
+	return T(sumFloat64(asFloat64(collection)))
 }
 
-// MeanInt8 calculates the mean of a slice of int8 using the best available SIMD instruction set.
+// MeanInt8 calculates the mean of a slice of int8 using SIMD instructions when available.
 func MeanInt8[T ~int8](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanInt8x64(collection)
-	case simdFeatureAVX2:
-		return MeanInt8x32(collection)
-	case simdFeatureAVX:
-		return MeanInt8x16(collection)
-	default:
-		return lo.Mean(collection)
+	length := T(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumInt8(collection) / length
 }
 
-// MeanInt16 calculates the mean of a slice of int16 using the best available SIMD instruction set.
+// MeanInt16 is MeanInt8 for int16.
 func MeanInt16[T ~int16](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanInt16x32(collection)
-	case simdFeatureAVX2:
-		return MeanInt16x16(collection)
-	case simdFeatureAVX:
-		return MeanInt16x8(collection)
-	default:
-		return lo.Mean(collection)
+	length := T(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumInt16(collection) / length
 }
 
-// MeanInt32 calculates the mean of a slice of int32 using the best available SIMD instruction set.
+// MeanInt32 is MeanInt8 for int32.
 func MeanInt32[T ~int32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanInt32x16(collection)
-	case simdFeatureAVX2:
-		return MeanInt32x8(collection)
-	case simdFeatureAVX:
-		return MeanInt32x4(collection)
-	default:
-		return lo.Mean(collection)
+	length := T(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumInt32(collection) / length
 }
 
-// MeanInt64 calculates the mean of a slice of int64 using the best available SIMD instruction set.
+// MeanInt64 is MeanInt8 for int64.
 func MeanInt64[T ~int64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanInt64x8(collection)
-	case simdFeatureAVX2:
-		return MeanInt64x4(collection)
-	case simdFeatureAVX:
-		return MeanInt64x2(collection)
-	default:
-		return lo.Mean(collection)
+	length := T(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumInt64(collection) / length
 }
 
-// MeanUint8 calculates the mean of a slice of uint8 using the best available SIMD instruction set.
+// MeanUint8 is MeanInt8 for uint8.
 func MeanUint8[T ~uint8](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanUint8x64(collection)
-	case simdFeatureAVX2:
-		return MeanUint8x32(collection)
-	case simdFeatureAVX:
-		return MeanUint8x16(collection)
-	default:
-		return lo.Mean(collection)
+	length := T(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumUint8(collection) / length
 }
 
-// MeanUint16 calculates the mean of a slice of uint16 using the best available SIMD instruction set.
+// MeanUint16 is MeanInt8 for uint16.
 func MeanUint16[T ~uint16](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanUint16x32(collection)
-	case simdFeatureAVX2:
-		return MeanUint16x16(collection)
-	case simdFeatureAVX:
-		return MeanUint16x8(collection)
-	default:
-		return lo.Mean(collection)
+	length := T(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumUint16(collection) / length
 }
 
-// MeanUint32 calculates the mean of a slice of uint32 using the best available SIMD instruction set.
+// MeanUint32 is MeanInt8 for uint32.
 func MeanUint32[T ~uint32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanUint32x16(collection)
-	case simdFeatureAVX2:
-		return MeanUint32x8(collection)
-	case simdFeatureAVX:
-		return MeanUint32x4(collection)
-	default:
-		return lo.Mean(collection)
+	length := T(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumUint32(collection) / length
 }
 
-// MeanUint64 calculates the mean of a slice of uint64 using the best available SIMD instruction set.
+// MeanUint64 is MeanInt8 for uint64.
 func MeanUint64[T ~uint64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanUint64x8(collection)
-	case simdFeatureAVX2:
-		return MeanUint64x4(collection)
-	case simdFeatureAVX:
-		return MeanUint64x2(collection)
-	default:
-		return lo.Mean(collection)
+	length := T(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumUint64(collection) / length
 }
 
-// MeanFloat32 calculates the mean of a slice of float32 using the best available SIMD instruction set.
+// MeanFloat32 is MeanInt8 for float32. See SumFloat32 for the floating-point
+// non-associativity caveat: the division is exact, but the numerator it divides may differ
+// from lo.Sum's in the last bit or two.
 func MeanFloat32[T ~float32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanFloat32x16(collection)
-	case simdFeatureAVX2:
-		return MeanFloat32x8(collection)
-	case simdFeatureAVX:
-		return MeanFloat32x4(collection)
-	default:
-		return lo.Mean(collection)
+	length := T(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumFloat32(collection) / length
 }
 
-// MeanFloat64 calculates the mean of a slice of float64 using the best available SIMD instruction set.
+// MeanFloat64 is MeanInt8 for float64.
 func MeanFloat64[T ~float64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanFloat64x8(collection)
-	case simdFeatureAVX2:
-		return MeanFloat64x4(collection)
-	case simdFeatureAVX:
-		return MeanFloat64x2(collection)
-	default:
-		return lo.Mean(collection)
+	length := T(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumFloat64(collection) / length
 }
 
-// MinInt8 finds the minimum value in a collection of int8 using the best available SIMD instruction set.
-func MinInt8[T ~int8](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MinInt8x64(collection)
-	case simdFeatureAVX2:
-		return MinInt8x32(collection)
-	case simdFeatureAVX:
-		return MinInt8x16(collection)
-	default:
-		return lo.Min(collection)
-	}
-}
-
-// MinInt16 finds the minimum value in a collection of int16 using the best available SIMD instruction set.
-func MinInt16[T ~int16](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MinInt16x32(collection)
-	case simdFeatureAVX2:
-		return MinInt16x16(collection)
-	case simdFeatureAVX:
-		return MinInt16x8(collection)
-	default:
-		return lo.Min(collection)
-	}
-}
-
-// MinInt32 finds the minimum value in a collection of int32 using the best available SIMD instruction set.
-func MinInt32[T ~int32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MinInt32x16(collection)
-	case simdFeatureAVX2:
-		return MinInt32x8(collection)
-	case simdFeatureAVX:
-		return MinInt32x4(collection)
-	default:
-		return lo.Min(collection)
-	}
-}
-
-// MinInt64 finds the minimum value in a collection of int64 using the best available SIMD instruction set.
-func MinInt64[T ~int64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MinInt64x8(collection)
-	case simdFeatureAVX2:
-		return MinInt64x4(collection)
-	case simdFeatureAVX:
-		// MinInt64x2 requires AVX-512 (archsimd Int64x2.Min); use scalar fallback
-		fallthrough
-	default:
-		return lo.Min(collection)
-	}
-}
-
-// MinUint8 finds the minimum value in a collection of uint8 using the best available SIMD instruction set.
-func MinUint8[T ~uint8](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MinUint8x64(collection)
-	case simdFeatureAVX2:
-		return MinUint8x32(collection)
-	case simdFeatureAVX:
-		return MinUint8x16(collection)
-	default:
-		return lo.Min(collection)
-	}
-}
-
-// MinUint16 finds the minimum value in a collection of uint16 using the best available SIMD instruction set.
-func MinUint16[T ~uint16](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MinUint16x32(collection)
-	case simdFeatureAVX2:
-		return MinUint16x16(collection)
-	case simdFeatureAVX:
-		return MinUint16x8(collection)
-	default:
-		return lo.Min(collection)
-	}
-}
-
-// MinUint32 finds the minimum value in a collection of uint32 using the best available SIMD instruction set.
-func MinUint32[T ~uint32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MinUint32x16(collection)
-	case simdFeatureAVX2:
-		return MinUint32x8(collection)
-	case simdFeatureAVX:
-		return MinUint32x4(collection)
-	default:
-		return lo.Min(collection)
-	}
-}
-
-// MinUint64 finds the minimum value in a collection of uint64 using the best available SIMD instruction set.
-func MinUint64[T ~uint64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MinUint64x8(collection)
-	case simdFeatureAVX2:
-		return MinUint64x4(collection)
-	case simdFeatureAVX:
-		// MinUint64x2 requires AVX-512; use scalar fallback
-		fallthrough
-	default:
-		return lo.Min(collection)
-	}
-}
-
-// MinFloat32 finds the minimum value in a collection of float32 using the best available SIMD instruction set.
-func MinFloat32[T ~float32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MinFloat32x16(collection)
-	case simdFeatureAVX2:
-		return MinFloat32x8(collection)
-	case simdFeatureAVX:
-		return MinFloat32x4(collection)
-	default:
-		return lo.Min(collection)
-	}
-}
-
-// MinFloat64 finds the minimum value in a collection of float64 using the best available SIMD instruction set.
-func MinFloat64[T ~float64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MinFloat64x8(collection)
-	case simdFeatureAVX2:
-		return MinFloat64x4(collection)
-	case simdFeatureAVX:
-		return MinFloat64x2(collection)
-	default:
-		return lo.Min(collection)
-	}
-}
-
-// MaxInt8 finds the maximum value in a collection of int8 using the best available SIMD instruction set.
-func MaxInt8[T ~int8](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MaxInt8x64(collection)
-	case simdFeatureAVX2:
-		return MaxInt8x32(collection)
-	case simdFeatureAVX:
-		return MaxInt8x16(collection)
-	default:
-		return lo.Max(collection)
-	}
-}
-
-// MaxInt16 finds the maximum value in a collection of int16 using the best available SIMD instruction set.
-func MaxInt16[T ~int16](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MaxInt16x32(collection)
-	case simdFeatureAVX2:
-		return MaxInt16x16(collection)
-	case simdFeatureAVX:
-		return MaxInt16x8(collection)
-	default:
-		return lo.Max(collection)
-	}
-}
-
-// MaxInt32 finds the maximum value in a collection of int32 using the best available SIMD instruction set.
-func MaxInt32[T ~int32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MaxInt32x16(collection)
-	case simdFeatureAVX2:
-		return MaxInt32x8(collection)
-	case simdFeatureAVX:
-		return MaxInt32x4(collection)
-	default:
-		return lo.Max(collection)
-	}
-}
-
-// MaxInt64 finds the maximum value in a collection of int64 using the best available SIMD instruction set.
-func MaxInt64[T ~int64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MaxInt64x8(collection)
-	case simdFeatureAVX2:
-		return MaxInt64x4(collection)
-	case simdFeatureAVX:
-		// MaxInt64x2 requires AVX-512; use scalar fallback
-		fallthrough
-	default:
-		return lo.Max(collection)
-	}
-}
-
-// MaxUint8 finds the maximum value in a collection of uint8 using the best available SIMD instruction set.
-func MaxUint8[T ~uint8](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MaxUint8x64(collection)
-	case simdFeatureAVX2:
-		return MaxUint8x32(collection)
-	case simdFeatureAVX:
-		return MaxUint8x16(collection)
-	default:
-		return lo.Max(collection)
-	}
-}
-
-// MaxUint16 finds the maximum value in a collection of uint16 using the best available SIMD instruction set.
-func MaxUint16[T ~uint16](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MaxUint16x32(collection)
-	case simdFeatureAVX2:
-		return MaxUint16x16(collection)
-	case simdFeatureAVX:
-		return MaxUint16x8(collection)
-	default:
-		return lo.Max(collection)
-	}
-}
-
-// MaxUint32 finds the maximum value in a collection of uint32 using the best available SIMD instruction set.
-func MaxUint32[T ~uint32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MaxUint32x16(collection)
-	case simdFeatureAVX2:
-		return MaxUint32x8(collection)
-	case simdFeatureAVX:
-		return MaxUint32x4(collection)
-	default:
-		return lo.Max(collection)
-	}
-}
-
-// MaxUint64 finds the maximum value in a collection of uint64 using the best available SIMD instruction set.
-func MaxUint64[T ~uint64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MaxUint64x8(collection)
-	case simdFeatureAVX2:
-		return MaxUint64x4(collection)
-	case simdFeatureAVX:
-		// MaxUint64x2 requires AVX-512; use scalar fallback
-		fallthrough
-	default:
-		return lo.Max(collection)
-	}
-}
-
-// MaxFloat32 finds the maximum value in a collection of float32 using the best available SIMD instruction set.
-func MaxFloat32[T ~float32](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MaxFloat32x16(collection)
-	case simdFeatureAVX2:
-		return MaxFloat32x8(collection)
-	case simdFeatureAVX:
-		return MaxFloat32x4(collection)
-	default:
-		return lo.Max(collection)
-	}
-}
-
-// MaxFloat64 finds the maximum value in a collection of float64 using the best available SIMD instruction set.
-func MaxFloat64[T ~float64](collection []T) T {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MaxFloat64x8(collection)
-	case simdFeatureAVX2:
-		return MaxFloat64x4(collection)
-	case simdFeatureAVX:
-		return MaxFloat64x2(collection)
-	default:
-		return lo.Max(collection)
-	}
-}
-
-// ClampInt8 clamps each element in collection between min and max values using the best available SIMD instruction set.
-func ClampInt8[T ~int8, Slice ~[]T](collection Slice, min, max T) Slice {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return ClampInt8x64(collection, min, max)
-	case simdFeatureAVX2:
-		return ClampInt8x32(collection, min, max)
-	case simdFeatureAVX:
-		return ClampInt8x16(collection, min, max)
-	default:
-		result := make(Slice, len(collection))
-		for i, v := range collection {
-			if v < min {
-				result[i] = min
-			} else if v > max {
-				result[i] = max
-			} else {
-				result[i] = v
-			}
-		}
-		return result
-	}
-}
-
-// ClampInt16 clamps each element in collection between min and max values using the best available SIMD instruction set.
-func ClampInt16[T ~int16, Slice ~[]T](collection Slice, min, max T) Slice {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return ClampInt16x32(collection, min, max)
-	case simdFeatureAVX2:
-		return ClampInt16x16(collection, min, max)
-	case simdFeatureAVX:
-		return ClampInt16x8(collection, min, max)
-	default:
-		result := make(Slice, len(collection))
-		for i, v := range collection {
-			if v < min {
-				result[i] = min
-			} else if v > max {
-				result[i] = max
-			} else {
-				result[i] = v
-			}
-		}
-		return result
-	}
-}
-
-// ClampInt32 clamps each element in collection between min and max values using the best available SIMD instruction set.
-func ClampInt32[T ~int32, Slice ~[]T](collection Slice, min, max T) Slice {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return ClampInt32x16(collection, min, max)
-	case simdFeatureAVX2:
-		return ClampInt32x8(collection, min, max)
-	case simdFeatureAVX:
-		return ClampInt32x4(collection, min, max)
-	default:
-		result := make(Slice, len(collection))
-		for i, v := range collection {
-			if v < min {
-				result[i] = min
-			} else if v > max {
-				result[i] = max
-			} else {
-				result[i] = v
-			}
-		}
-		return result
-	}
-}
-
-// ClampInt64 clamps each element in collection between min and max values using the best available SIMD instruction set.
-func ClampInt64[T ~int64, Slice ~[]T](collection Slice, min, max T) Slice {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return ClampInt64x8(collection, min, max)
-	case simdFeatureAVX2:
-		return ClampInt64x4(collection, min, max)
-	case simdFeatureAVX:
-		// ClampInt64x2 requires AVX-512; use scalar fallback
-		fallthrough
-	default:
-		result := make(Slice, len(collection))
-		for i, v := range collection {
-			if v < min {
-				result[i] = min
-			} else if v > max {
-				result[i] = max
-			} else {
-				result[i] = v
-			}
-		}
-		return result
-	}
-}
-
-// ClampUint8 clamps each element in collection between min and max values using the best available SIMD instruction set.
-func ClampUint8[T ~uint8, Slice ~[]T](collection Slice, min, max T) Slice {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return ClampUint8x64(collection, min, max)
-	case simdFeatureAVX2:
-		return ClampUint8x32(collection, min, max)
-	case simdFeatureAVX:
-		return ClampUint8x16(collection, min, max)
-	default:
-		result := make(Slice, len(collection))
-		for i, v := range collection {
-			if v < min {
-				result[i] = min
-			} else if v > max {
-				result[i] = max
-			} else {
-				result[i] = v
-			}
-		}
-		return result
-	}
-}
-
-// ClampUint16 clamps each element in collection between min and max values using the best available SIMD instruction set.
-func ClampUint16[T ~uint16, Slice ~[]T](collection Slice, min, max T) Slice {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return ClampUint16x32(collection, min, max)
-	case simdFeatureAVX2:
-		return ClampUint16x16(collection, min, max)
-	case simdFeatureAVX:
-		return ClampUint16x8(collection, min, max)
-	default:
-		result := make(Slice, len(collection))
-		for i, v := range collection {
-			if v < min {
-				result[i] = min
-			} else if v > max {
-				result[i] = max
-			} else {
-				result[i] = v
-			}
-		}
-		return result
-	}
-}
-
-// ClampUint32 clamps each element in collection between min and max values using the best available SIMD instruction set.
-func ClampUint32[T ~uint32, Slice ~[]T](collection Slice, min, max T) Slice {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return ClampUint32x16(collection, min, max)
-	case simdFeatureAVX2:
-		return ClampUint32x8(collection, min, max)
-	case simdFeatureAVX:
-		return ClampUint32x4(collection, min, max)
-	default:
-		result := make(Slice, len(collection))
-		for i, v := range collection {
-			if v < min {
-				result[i] = min
-			} else if v > max {
-				result[i] = max
-			} else {
-				result[i] = v
-			}
-		}
-		return result
-	}
-}
-
-// ClampUint64 clamps each element in collection between min and max values using the best available SIMD instruction set.
-func ClampUint64[T ~uint64, Slice ~[]T](collection Slice, min, max T) Slice {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return ClampUint64x8(collection, min, max)
-	case simdFeatureAVX2:
-		return ClampUint64x4(collection, min, max)
-	case simdFeatureAVX:
-		// ClampUint64x2 requires AVX-512; use scalar fallback
-		fallthrough
-	default:
-		result := make(Slice, len(collection))
-		for i, v := range collection {
-			if v < min {
-				result[i] = min
-			} else if v > max {
-				result[i] = max
-			} else {
-				result[i] = v
-			}
-		}
-		return result
-	}
-}
-
-// ClampFloat32 clamps each element in collection between min and max values using the best available SIMD instruction set.
-func ClampFloat32[T ~float32, Slice ~[]T](collection Slice, min, max T) Slice {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return ClampFloat32x16(collection, min, max)
-	case simdFeatureAVX2:
-		return ClampFloat32x8(collection, min, max)
-	case simdFeatureAVX:
-		return ClampFloat32x4(collection, min, max)
-	default:
-		result := make(Slice, len(collection))
-		for i, v := range collection {
-			if v < min {
-				result[i] = min
-			} else if v > max {
-				result[i] = max
-			} else {
-				result[i] = v
-			}
-		}
-		return result
-	}
-}
-
-// ClampFloat64 clamps each element in collection between min and max values using the best available SIMD instruction set.
-func ClampFloat64[T ~float64, Slice ~[]T](collection Slice, min, max T) Slice {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return ClampFloat64x8(collection, min, max)
-	case simdFeatureAVX2:
-		return ClampFloat64x4(collection, min, max)
-	case simdFeatureAVX:
-		return ClampFloat64x2(collection, min, max)
-	default:
-		result := make(Slice, len(collection))
-		for i, v := range collection {
-			if v < min {
-				result[i] = min
-			} else if v > max {
-				result[i] = max
-			} else {
-				result[i] = v
-			}
-		}
-		return result
-	}
-}
-
-// SumByInt8 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using int8, which can overflow for large collections.
-// If the sum exceeds the int8 range (-128 to 127), the result will wrap around silently.
-// For collections that may overflow, consider using a wider type or handle overflow detection externally.
-// Play: https://go.dev/play/p/TBD
+// SumByInt8 summarizes a collection into an int8 using the given iteratee, using SIMD
+// instructions when available. See SumInt8 for overflow behaviour.
 func SumByInt8[T any, R ~int8](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumByInt8x64(collection, iteratee)
-	case simdFeatureAVX2:
-		return SumByInt8x32(collection, iteratee)
-	case simdFeatureAVX:
-		return SumByInt8x16(collection, iteratee)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.SumBy(collection, iteratee)
 	}
+	return SumInt8(lo.Map(collection, func(item T, _ int) R { return iteratee(item) }))
 }
 
-// SumByInt16 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using int16, which can overflow for large collections.
-// If the sum exceeds the int16 range (-32768 to 32767), the result will wrap around silently.
-// For collections that may overflow, consider using a wider type or handle overflow detection externally.
-// Play: https://go.dev/play/p/TBD
+// SumByInt16 is SumByInt8 for int16.
 func SumByInt16[T any, R ~int16](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumByInt16x32(collection, iteratee)
-	case simdFeatureAVX2:
-		return SumByInt16x16(collection, iteratee)
-	case simdFeatureAVX:
-		return SumByInt16x8(collection, iteratee)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.SumBy(collection, iteratee)
 	}
+	return SumInt16(lo.Map(collection, func(item T, _ int) R { return iteratee(item) }))
 }
 
-// SumByInt32 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using int32, which can overflow for very large collections.
-// If the sum exceeds the int32 range (-2147483648 to 2147483647), the result will wrap around silently.
-// For collections that may overflow, consider using SumByInt64 or handle overflow detection externally.
-// Play: https://go.dev/play/p/TBD
+// SumByInt32 is SumByInt8 for int32.
 func SumByInt32[T any, R ~int32](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumByInt32x16(collection, iteratee)
-	case simdFeatureAVX2:
-		return SumByInt32x8(collection, iteratee)
-	case simdFeatureAVX:
-		return SumByInt32x4(collection, iteratee)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.SumBy(collection, iteratee)
 	}
+	return SumInt32(lo.Map(collection, func(item T, _ int) R { return iteratee(item) }))
 }
 
-// SumByInt64 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using int64, which can overflow for extremely large collections.
-// If the sum exceeds the int64 range, the result will wrap around silently.
-// For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
-// Play: https://go.dev/play/p/TBD
+// SumByInt64 is SumByInt8 for int64.
 func SumByInt64[T any, R ~int64](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumByInt64x8(collection, iteratee)
-	case simdFeatureAVX2:
-		return SumByInt64x4(collection, iteratee)
-	case simdFeatureAVX:
-		return SumByInt64x2(collection, iteratee)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.SumBy(collection, iteratee)
 	}
+	return SumInt64(lo.Map(collection, func(item T, _ int) R { return iteratee(item) }))
 }
 
-// SumByUint8 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using uint8, which can overflow for large collections.
-// If the sum exceeds the uint8 range (0 to 255), the result will wrap around silently.
-// For collections that may overflow, consider using a wider type or handle overflow detection externally.
-// Play: https://go.dev/play/p/TBD
+// SumByUint8 is SumByInt8 for uint8.
 func SumByUint8[T any, R ~uint8](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumByUint8x64(collection, iteratee)
-	case simdFeatureAVX2:
-		return SumByUint8x32(collection, iteratee)
-	case simdFeatureAVX:
-		return SumByUint8x16(collection, iteratee)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.SumBy(collection, iteratee)
 	}
+	return SumUint8(lo.Map(collection, func(item T, _ int) R { return iteratee(item) }))
 }
 
-// SumByUint16 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using uint16, which can overflow for large collections.
-// If the sum exceeds the uint16 range (0 to 65535), the result will wrap around silently.
-// For collections that may overflow, consider using a wider type or handle overflow detection externally.
-// Play: https://go.dev/play/p/TBD
+// SumByUint16 is SumByInt8 for uint16.
 func SumByUint16[T any, R ~uint16](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumByUint16x32(collection, iteratee)
-	case simdFeatureAVX2:
-		return SumByUint16x16(collection, iteratee)
-	case simdFeatureAVX:
-		return SumByUint16x8(collection, iteratee)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.SumBy(collection, iteratee)
 	}
+	return SumUint16(lo.Map(collection, func(item T, _ int) R { return iteratee(item) }))
 }
 
-// SumByUint32 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using uint32, which can overflow for very large collections.
-// If the sum exceeds the uint32 range (0 to 4294967295), the result will wrap around silently.
-// For collections that may overflow, consider using SumByUint64 or handle overflow detection externally.
-// Play: https://go.dev/play/p/TBD
+// SumByUint32 is SumByInt8 for uint32.
 func SumByUint32[T any, R ~uint32](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumByUint32x16(collection, iteratee)
-	case simdFeatureAVX2:
-		return SumByUint32x8(collection, iteratee)
-	case simdFeatureAVX:
-		return SumByUint32x4(collection, iteratee)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.SumBy(collection, iteratee)
 	}
+	return SumUint32(lo.Map(collection, func(item T, _ int) R { return iteratee(item) }))
 }
 
-// SumByUint64 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using uint64, which can overflow for extremely large collections.
-// If the sum exceeds the uint64 range, the result will wrap around silently.
-// For collections that may overflow, handle overflow detection externally (e.g., using big.Int).
-// Play: https://go.dev/play/p/TBD
+// SumByUint64 is SumByInt8 for uint64.
 func SumByUint64[T any, R ~uint64](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumByUint64x8(collection, iteratee)
-	case simdFeatureAVX2:
-		return SumByUint64x4(collection, iteratee)
-	case simdFeatureAVX:
-		return SumByUint64x2(collection, iteratee)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.SumBy(collection, iteratee)
 	}
+	return SumUint64(lo.Map(collection, func(item T, _ int) R { return iteratee(item) }))
 }
 
-// SumByFloat32 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using float32. Overflow will result in +/-Inf rather than wrapping.
-// For collections requiring high precision or large sums, consider using SumByFloat64.
-// Play: https://go.dev/play/p/TBD
+// SumByFloat32 is SumByInt8 for float32. See SumFloat32 for the floating-point
+// non-associativity caveat that applies to the sum of the mapped values.
 func SumByFloat32[T any, R ~float32](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumByFloat32x16(collection, iteratee)
-	case simdFeatureAVX2:
-		return SumByFloat32x8(collection, iteratee)
-	case simdFeatureAVX:
-		return SumByFloat32x4(collection, iteratee)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.SumBy(collection, iteratee)
 	}
+	return SumFloat32(lo.Map(collection, func(item T, _ int) R { return iteratee(item) }))
 }
 
-// SumByFloat64 sums the values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Overflow: The accumulation is performed using float64. Overflow will result in +/-Inf rather than wrapping.
-// For collections that may overflow, handle overflow detection externally (e.g., using big.Float).
-// Play: https://go.dev/play/p/TBD
+// SumByFloat64 is SumByInt8 for float64.
 func SumByFloat64[T any, R ~float64](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return SumByFloat64x8(collection, iteratee)
-	case simdFeatureAVX2:
-		return SumByFloat64x4(collection, iteratee)
-	case simdFeatureAVX:
-		return SumByFloat64x2(collection, iteratee)
-	default:
+	if len(collection) == 0 {
+		return 0
+	}
+	if !useSIMD {
 		return lo.SumBy(collection, iteratee)
 	}
+	return SumFloat64(lo.Map(collection, func(item T, _ int) R { return iteratee(item) }))
 }
 
-// MeanByInt8 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Play: https://go.dev/play/p/TBD
+// MeanByInt8 calculates the mean of a collection of int8 using the given iteratee, using
+// SIMD instructions when available.
 func MeanByInt8[T any, R ~int8](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanByInt8x64(collection, iteratee)
-	case simdFeatureAVX2:
-		return MeanByInt8x32(collection, iteratee)
-	case simdFeatureAVX:
-		return MeanByInt8x16(collection, iteratee)
-	default:
-		return lo.MeanBy(collection, iteratee)
+	length := R(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumByInt8(collection, iteratee) / length
 }
 
-// MeanByInt16 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Play: https://go.dev/play/p/TBD
+// MeanByInt16 is MeanByInt8 for int16.
 func MeanByInt16[T any, R ~int16](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanByInt16x32(collection, iteratee)
-	case simdFeatureAVX2:
-		return MeanByInt16x16(collection, iteratee)
-	case simdFeatureAVX:
-		return MeanByInt16x8(collection, iteratee)
-	default:
-		return lo.MeanBy(collection, iteratee)
+	length := R(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumByInt16(collection, iteratee) / length
 }
 
-// MeanByInt32 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Play: https://go.dev/play/p/TBD
+// MeanByInt32 is MeanByInt8 for int32.
 func MeanByInt32[T any, R ~int32](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanByInt32x16(collection, iteratee)
-	case simdFeatureAVX2:
-		return MeanByInt32x8(collection, iteratee)
-	case simdFeatureAVX:
-		return MeanByInt32x4(collection, iteratee)
-	default:
-		return lo.MeanBy(collection, iteratee)
+	length := R(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumByInt32(collection, iteratee) / length
 }
 
-// MeanByInt64 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Play: https://go.dev/play/p/TBD
+// MeanByInt64 is MeanByInt8 for int64.
 func MeanByInt64[T any, R ~int64](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanByInt64x8(collection, iteratee)
-	case simdFeatureAVX2:
-		return MeanByInt64x4(collection, iteratee)
-	case simdFeatureAVX:
-		return MeanByInt64x2(collection, iteratee)
-	default:
-		return lo.MeanBy(collection, iteratee)
+	length := R(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumByInt64(collection, iteratee) / length
 }
 
-// MeanByUint8 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Play: https://go.dev/play/p/TBD
+// MeanByUint8 is MeanByInt8 for uint8.
 func MeanByUint8[T any, R ~uint8](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanByUint8x64(collection, iteratee)
-	case simdFeatureAVX2:
-		return MeanByUint8x32(collection, iteratee)
-	case simdFeatureAVX:
-		return MeanByUint8x16(collection, iteratee)
-	default:
-		return lo.MeanBy(collection, iteratee)
+	length := R(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumByUint8(collection, iteratee) / length
 }
 
-// MeanByUint16 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Play: https://go.dev/play/p/TBD
+// MeanByUint16 is MeanByInt8 for uint16.
 func MeanByUint16[T any, R ~uint16](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanByUint16x32(collection, iteratee)
-	case simdFeatureAVX2:
-		return MeanByUint16x16(collection, iteratee)
-	case simdFeatureAVX:
-		return MeanByUint16x8(collection, iteratee)
-	default:
-		return lo.MeanBy(collection, iteratee)
+	length := R(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumByUint16(collection, iteratee) / length
 }
 
-// MeanByUint32 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Play: https://go.dev/play/p/TBD
+// MeanByUint32 is MeanByInt8 for uint32.
 func MeanByUint32[T any, R ~uint32](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanByUint32x16(collection, iteratee)
-	case simdFeatureAVX2:
-		return MeanByUint32x8(collection, iteratee)
-	case simdFeatureAVX:
-		return MeanByUint32x4(collection, iteratee)
-	default:
-		return lo.MeanBy(collection, iteratee)
+	length := R(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumByUint32(collection, iteratee) / length
 }
 
-// MeanByUint64 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Play: https://go.dev/play/p/TBD
+// MeanByUint64 is MeanByInt8 for uint64.
 func MeanByUint64[T any, R ~uint64](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanByUint64x8(collection, iteratee)
-	case simdFeatureAVX2:
-		return MeanByUint64x4(collection, iteratee)
-	case simdFeatureAVX:
-		return MeanByUint64x2(collection, iteratee)
-	default:
-		return lo.MeanBy(collection, iteratee)
+	length := R(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumByUint64(collection, iteratee) / length
 }
 
-// MeanByFloat32 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Play: https://go.dev/play/p/TBD
+// MeanByFloat32 is MeanByInt8 for float32. See SumFloat32 for the floating-point
+// non-associativity caveat that applies to the underlying sum.
 func MeanByFloat32[T any, R ~float32](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanByFloat32x16(collection, iteratee)
-	case simdFeatureAVX2:
-		return MeanByFloat32x8(collection, iteratee)
-	case simdFeatureAVX:
-		return MeanByFloat32x4(collection, iteratee)
-	default:
-		return lo.MeanBy(collection, iteratee)
+	length := R(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumByFloat32(collection, iteratee) / length
 }
 
-// MeanByFloat64 calculates the mean of values extracted by iteratee from a slice using the best available SIMD instruction set.
-// Play: https://go.dev/play/p/TBD
+// MeanByFloat64 is MeanByInt8 for float64.
 func MeanByFloat64[T any, R ~float64](collection []T, iteratee func(item T) R) R {
-	switch currentSimdFeature {
-	case simdFeatureAVX512:
-		return MeanByFloat64x8(collection, iteratee)
-	case simdFeatureAVX2:
-		return MeanByFloat64x4(collection, iteratee)
-	case simdFeatureAVX:
-		return MeanByFloat64x2(collection, iteratee)
-	default:
-		return lo.MeanBy(collection, iteratee)
+	length := R(len(collection))
+	if length == 0 {
+		return 0
 	}
+	return SumByFloat64(collection, iteratee) / length
+}
+
+// ClampInt8 clamps each element in collection between mn and mx using SIMD instructions
+// when available. If mn > mx, every element is clamped to mn: a well-defined convention
+// chosen so the SIMD and scalar-fallback code paths always agree, since lo.Clamp itself is
+// value-dependent (not consistently mn) when its bounds are swapped.
+func ClampInt8[T ~int8, Slice ~[]T](collection Slice, mn, mx T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+	result := make(Slice, len(collection))
+	if !useSIMD {
+		for i, v := range collection {
+			result[i] = clampScalar(v, mn, mx)
+		}
+		return result
+	}
+	clampInt8(asInt8(result), asInt8(collection), int8(mn), int8(mx))
+	return result
+}
+
+// ClampInt16 is ClampInt8 for int16.
+func ClampInt16[T ~int16, Slice ~[]T](collection Slice, mn, mx T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+	result := make(Slice, len(collection))
+	if !useSIMD {
+		for i, v := range collection {
+			result[i] = clampScalar(v, mn, mx)
+		}
+		return result
+	}
+	clampInt16(asInt16(result), asInt16(collection), int16(mn), int16(mx))
+	return result
+}
+
+// ClampInt32 is ClampInt8 for int32.
+func ClampInt32[T ~int32, Slice ~[]T](collection Slice, mn, mx T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+	result := make(Slice, len(collection))
+	if !useSIMD {
+		for i, v := range collection {
+			result[i] = clampScalar(v, mn, mx)
+		}
+		return result
+	}
+	clampInt32(asInt32(result), asInt32(collection), int32(mn), int32(mx))
+	return result
+}
+
+// ClampInt64 is ClampInt8 for int64.
+func ClampInt64[T ~int64, Slice ~[]T](collection Slice, mn, mx T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+	result := make(Slice, len(collection))
+	if !useSIMD {
+		for i, v := range collection {
+			result[i] = clampScalar(v, mn, mx)
+		}
+		return result
+	}
+	clampInt64(asInt64(result), asInt64(collection), int64(mn), int64(mx))
+	return result
+}
+
+// ClampUint8 is ClampInt8 for uint8.
+func ClampUint8[T ~uint8, Slice ~[]T](collection Slice, mn, mx T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+	result := make(Slice, len(collection))
+	if !useSIMD {
+		for i, v := range collection {
+			result[i] = clampScalar(v, mn, mx)
+		}
+		return result
+	}
+	clampUint8(asUint8(result), asUint8(collection), uint8(mn), uint8(mx))
+	return result
+}
+
+// ClampUint16 is ClampInt8 for uint16.
+func ClampUint16[T ~uint16, Slice ~[]T](collection Slice, mn, mx T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+	result := make(Slice, len(collection))
+	if !useSIMD {
+		for i, v := range collection {
+			result[i] = clampScalar(v, mn, mx)
+		}
+		return result
+	}
+	clampUint16(asUint16(result), asUint16(collection), uint16(mn), uint16(mx))
+	return result
+}
+
+// ClampUint32 is ClampInt8 for uint32.
+func ClampUint32[T ~uint32, Slice ~[]T](collection Slice, mn, mx T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+	result := make(Slice, len(collection))
+	if !useSIMD {
+		for i, v := range collection {
+			result[i] = clampScalar(v, mn, mx)
+		}
+		return result
+	}
+	clampUint32(asUint32(result), asUint32(collection), uint32(mn), uint32(mx))
+	return result
+}
+
+// ClampUint64 is ClampInt8 for uint64.
+func ClampUint64[T ~uint64, Slice ~[]T](collection Slice, mn, mx T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+	result := make(Slice, len(collection))
+	if !useSIMD {
+		for i, v := range collection {
+			result[i] = clampScalar(v, mn, mx)
+		}
+		return result
+	}
+	clampUint64(asUint64(result), asUint64(collection), uint64(mn), uint64(mx))
+	return result
+}
+
+// ClampFloat32 clamps each element in collection between mn and mx using SIMD instructions
+// when available. If mn > mx, every element is clamped to mn: a well-defined convention
+// chosen so the SIMD and scalar-fallback code paths always agree, since lo.Clamp itself is
+// value-dependent (not consistently mn) when its bounds are swapped. A NaN element is
+// returned unchanged, matching lo.Clamp exactly on every architecture.
+func ClampFloat32[T ~float32, Slice ~[]T](collection Slice, mn, mx T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+	result := make(Slice, len(collection))
+	if !useSIMD {
+		for i, v := range collection {
+			result[i] = clampScalar(v, mn, mx)
+		}
+		return result
+	}
+	clampFloat32(asFloat32(result), asFloat32(collection), float32(mn), float32(mx))
+	return result
+}
+
+// ClampFloat64 is ClampFloat32 for float64.
+func ClampFloat64[T ~float64, Slice ~[]T](collection Slice, mn, mx T) Slice {
+	if len(collection) == 0 {
+		return collection
+	}
+	result := make(Slice, len(collection))
+	if !useSIMD {
+		for i, v := range collection {
+			result[i] = clampScalar(v, mn, mx)
+		}
+		return result
+	}
+	clampFloat64(asFloat64(result), asFloat64(collection), float64(mn), float64(mx))
+	return result
 }
