@@ -663,6 +663,17 @@ func BenchmarkFilterReject(b *testing.B) {
 	}
 }
 
+func BenchmarkFilterRejectUnstable(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(fmt.Sprintf("ints_%d", n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_, _ = lo.FilterRejectUnstable(ints, func(v, _ int) bool { return v%2 == 0 })
+			}
+		})
+	}
+}
+
 func BenchmarkCount(b *testing.B) {
 	for _, n := range lengths {
 		ints := genSliceInt(n)
