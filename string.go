@@ -172,9 +172,10 @@ func substring[T ~string](str T, offset int, length uint) T {
 	// Positive offset - count from the beginning
 	case offset > 0:
 		// Skip offset runes from the start
-		for i, r := range str {
+		for i := range str {
 			if offset--; offset == 0 {
-				str = str[i+utf8.RuneLen(r):]
+				_, size := utf8.DecodeRuneInString(string(str[i:]))
+				str = str[i+size:]
 				break
 			}
 		}
