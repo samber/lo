@@ -37,6 +37,41 @@ func FilterI[T any, Slice ~[]T](collection Slice, predicate func(item T, index i
 	return collection[:j]
 }
 
+// Reject overwrites collection's underlying array with the elements that don't satisfy
+// predicate, in their original order, and returns a slice header whose length is the
+// number kept. Use RejectI if you need the element's index.
+//
+// The caller's original slice variable still has its original length: only the returned
+// slice has the new shorter length. Anything past that point in the original array is
+// leftover from before the call (often duplicates of the last kept element). Either
+// assign the result back, or re-slice with the returned length, if you want to discard
+// the leftover.
+func Reject[T any, Slice ~[]T](collection Slice, predicate func(T) bool) Slice {
+	j := 0
+	for i := range collection {
+		if !predicate(collection[i]) {
+			collection[j] = collection[i]
+			j++
+		}
+	}
+	return collection[:j]
+}
+
+// RejectI is like Reject but passes the element's index to predicate as well.
+// See Reject for the in-place semantics (the caller's original slice keeps its length;
+// only the returned slice has the new shorter length).
+func RejectI[T any, Slice ~[]T](collection Slice, predicate func(T, int) bool) Slice {
+	j := 0
+	for i := range collection {
+		if !predicate(collection[i], i) {
+			collection[j] = collection[i]
+			j++
+		}
+	}
+	return collection[:j]
+
+}
+
 // Map applies transform to each element of collection in place. Use MapI if you need
 // the element's index.
 // Play: https://go.dev/play/p/0jY3Z0B7O_5
