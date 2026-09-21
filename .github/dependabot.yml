@@ -4,16 +4,24 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: gomod
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
 
   - package-ecosystem: npm
     directory: /docs
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
     ignore:
       - dependency-name: '*'
         update-types: ["version-update:semver-patch"]
