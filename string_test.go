@@ -542,6 +542,19 @@ func TestCapitalize(t *testing.T) {
 	}{
 		{"lower case", "hello", "Hello"},
 		{"mixed case", "heLLO", "Hello"},
+		// Only the first character is upper-cased; every other character is lower-cased,
+		// regardless of word boundaries (spaces, digits or punctuation).
+		{"empty", "", ""},
+		{"single letter", "a", "A"},
+		{"multiple words", "hello world", "Hello world"},
+		{"all upper words", "HELLO WORLD", "Hello world"},
+		{"leading digits", "123abc", "123abc"},
+		{"leading punctuation", "(abc", "(abc"},
+		{"dash separated", "foo-bar baz", "Foo-bar baz"},
+		// Regression for #974: characters following "%" (and other word separators) must not
+		// be upper-cased.
+		{"format verbs", `strf("%d%m")`, `Strf("%d%m")`},
+		{"multibyte", "über GRüße", "Über grüße"},
 	}
 	for _, tc := range testCases {
 		tc := tc
@@ -563,6 +576,9 @@ func TestCapitalizeWithLanguage(t *testing.T) {
 	}{
 		{name: "english plain I", in: "istanbul", lang: language.English, want: "Istanbul"},
 		{name: "english mixed case", in: "heLLO", lang: language.English, want: "Hello"},
+		// Regression for #974: only the first character is upper-cased, the rest is lower-cased.
+		{name: "english format verbs", in: `strf("%d%m")`, lang: language.English, want: `Strf("%d%m")`},
+		{name: "english multiple words", in: "hello world", lang: language.English, want: "Hello world"},
 		// Turkish: lowercase i → title İ (dotted capital I, U+0130)
 		{name: "turkish lowercase i", in: "istanbul", lang: language.Turkish, want: "İstanbul"},
 		// Turkish: ISTANBUL starts with capital I (the uppercase form of ı); title case
