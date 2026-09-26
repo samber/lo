@@ -170,6 +170,44 @@ func TestRangeWithSteps(t *testing.T) {
 	})
 }
 
+func TestRangeWithSteps_integerBounds(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		start    int8
+		end      int8
+		step     int8
+		expected []int8
+	}{
+		{name: "ascending step overflows", start: 120, end: 127, step: 3, expected: []int8{120, 123, 126}},
+		{name: "descending step overflows", start: -120, end: -127, step: -3, expected: []int8{-120, -123, -126}},
+		{name: "ascending distance overflows", start: -100, end: 100, step: 50, expected: []int8{-100, -50, 0, 50}},
+		{name: "descending distance overflows", start: 100, end: -100, step: -50, expected: []int8{100, 50, 0, -50}},
+		{name: "minimum step", start: 64, end: -64, step: -128, expected: []int8{64}},
+		{name: "reaches upper bound", start: 121, end: 127, step: 3, expected: []int8{121, 124}},
+		{name: "reaches lower bound", start: -121, end: -127, step: -3, expected: []int8{-121, -124}},
+	}
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tt.expected, RangeWithSteps(tt.start, tt.end, tt.step))
+		})
+	}
+
+	t.Run("unsigned step overflows", func(t *testing.T) {
+		t.Parallel()
+		assert.Equal(t, []uint8{250, 253}, RangeWithSteps[uint8](250, 255, 3))
+	})
+
+	t.Run("named integer type", func(t *testing.T) {
+		t.Parallel()
+		type smallInt int8
+		assert.Equal(t, []smallInt{-120, -20, 80}, RangeWithSteps[smallInt](-120, 120, 100))
+	})
+}
+
 func TestClamp(t *testing.T) {
 	t.Parallel()
 
