@@ -207,6 +207,74 @@ func TestZip(t *testing.T) {
 	})
 }
 
+func TestZipShortest(t *testing.T) {
+	t.Parallel()
+
+	t.Run("equal length", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := ZipShortest2(
+			values("a", "b"),
+			values(1, 2),
+		)
+
+		assertSeqSupportBreak(t, r)
+
+		is.Equal([]lo.Tuple2[string, int]{
+			{A: "a", B: 1},
+			{A: "b", B: 2},
+		}, slices.Collect(r))
+	})
+
+	t.Run("first shorter", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := ZipShortest2(
+			values("a"),
+			values(1, 2, 3),
+		)
+
+		is.Equal([]lo.Tuple2[string, int]{
+			{A: "a", B: 1},
+		}, slices.Collect(r))
+	})
+
+	t.Run("second shorter", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := ZipShortest2(
+			values("a", "b", "c"),
+			values(1),
+		)
+
+		is.Equal([]lo.Tuple2[string, int]{
+			{A: "a", B: 1},
+		}, slices.Collect(r))
+	})
+}
+
+func TestZipShortestBy(t *testing.T) {
+	t.Parallel()
+
+	t.Run("stops at shortest", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		r := ZipShortestBy2(
+			values("a", "b", "c"),
+			values(1, 2),
+			func(a string, b int) string {
+				return a + string(rune('0'+b))
+			},
+		)
+
+		is.Equal([]string{"a1", "b2"}, slices.Collect(r))
+	})
+}
+
 func TestZipBy(t *testing.T) {
 	t.Parallel()
 
