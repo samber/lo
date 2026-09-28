@@ -3,7 +3,7 @@ name: Security scan
 on:
   push:
     branches:
-      - maser
+      - master
   pull_request:
   schedule:
     - cron: '0 3 * * 1'
