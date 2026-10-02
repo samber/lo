@@ -492,6 +492,18 @@ func TestAllCase(t *testing.T) {
 			KebabCase:  "first-last",
 			SnakeCase:  "first_last",
 		}},
+		{in: "IPv6Address", want: output{
+			PascalCase: "IPv6Address",
+			CamelCase:  "iPv6Address",
+			KebabCase:  "i-pv-6-address",
+			SnakeCase:  "i_pv_6_address",
+		}},
+		{in: "HTMLv5Doc", want: output{
+			PascalCase: "HtmLv5Doc",
+			CamelCase:  "htmLv5Doc",
+			KebabCase:  "htm-lv-5-doc",
+			SnakeCase:  "htm_lv_5_doc",
+		}},
 	}
 
 	for _, tc := range testCases {
@@ -522,6 +534,9 @@ func TestWords(t *testing.T) {
 		{"UPPERCASE", []string{"UPPERCASE"}},
 		{"HTTPCode", []string{"HTTP", "Code"}},
 		{"Int8Value", []string{"Int", "8", "Value"}},
+		{"IPv6Address", []string{"I", "Pv", "6", "Address"}},
+		{"ABc1", []string{"A", "Bc", "1"}},
+		{"ABCdEf", []string{"AB", "Cd", "Ef"}},
 	}
 	for _, tc := range testCases {
 		tc := tc
