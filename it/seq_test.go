@@ -1918,6 +1918,37 @@ func TestSubset(t *testing.T) {
 	})
 }
 
+func TestSliceConsumption(t *testing.T) {
+	t.Parallel()
+	for _, tc := range []struct {
+		name                 string
+		start, end, consumed int
+		want                 []int
+	}{
+		{"bounded", 1, 3, 3, []int{1, 2}},
+		{"zero end", 0, 0, 0, nil},
+		{"empty range", 2, 2, 0, nil},
+		{"reversed range", 3, 1, 0, nil},
+		{"negative bounds", -2, -1, 0, nil},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			consumed := 0
+			input := func(yield func(int) bool) {
+				for i := 0; i < 5; i++ {
+					consumed++
+					if !yield(i) {
+						return
+					}
+				}
+			}
+			seq := Slice(input, tc.start, tc.end)
+			assert.Zero(t, consumed)
+			assert.Equal(t, tc.want, slices.Collect(iter.Seq[int](seq)))
+			assert.Equal(t, tc.consumed, consumed)
+		})
+	}
+}
+
 func TestSlice(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
