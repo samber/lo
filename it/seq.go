@@ -1131,22 +1131,37 @@ func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I
 	}
 
 	return func(yield func(T) bool) {
-		var i int
+		// pending holds the trailing items that may still turn out to be copies
+		// of suffix. It always reads as a prefix of suffix repeated, so pending[i]
+		// is suffix[i%n].
+		var pending []T
+
 		for item := range collection {
-			if item == suffix[i%n] {
-				i++
+			if item == suffix[len(pending)%n] {
+				pending = append(pending, item)
 				continue
 			}
 
-			for j := range i {
-				if !yield(suffix[j%n]) {
-					return
+			// Drop the fewest leading items from pending so that the rest, followed
+			// by item, is still a prefix of suffix repeated. Overlapping suffixes such
+			// as [1, 1] or [1, 2, 1] can match again from inside pending.
+			shift := len(pending)
+			for d := 1; d < len(pending); d++ {
+				if trimSuffixCanShift(pending, suffix, d, item) {
+					shift = d
+					break
 				}
 			}
 
-			i = 0
-			if item == suffix[0] {
-				i++
+			for _, v := range pending[:shift] {
+				if !yield(v) {
+					return
+				}
+			}
+			pending = append(pending[:0], pending[shift:]...)
+
+			if item == suffix[len(pending)%n] {
+				pending = append(pending, item)
 				continue
 			}
 
@@ -1154,14 +1169,33 @@ func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I
 				return
 			}
 		}
-		if i%n != 0 {
-			for j := range i {
-				if !yield(suffix[j%n]) {
-					return
-				}
+
+		// Remove every whole copy of suffix at the end, like lo.TrimSuffix does.
+		end := len(pending)
+		for end >= n && slices.Equal(pending[end-n:end], suffix) {
+			end -= n
+		}
+
+		for _, v := range pending[:end] {
+			if !yield(v) {
+				return
 			}
 		}
 	}
+}
+
+// trimSuffixCanShift reports whether pending[d:] followed by item is a prefix of
+// suffix repeated. pending is itself such a prefix, so it repeats every len(suffix)
+// items and only the first len(suffix) shifted items need to be compared.
+func trimSuffixCanShift[T comparable](pending, suffix []T, d int, item T) bool {
+	n := len(suffix)
+	rest := pending[d:]
+	for i := 0; i < n && i < len(rest); i++ {
+		if rest[i] != suffix[i] {
+			return false
+		}
+	}
+	return item == suffix[len(rest)%n]
 }
 
 // SeqToSeq2 converts a sequence into a sequence of key-value pairs, where the first
