@@ -369,7 +369,7 @@ The lo/it package provides iterator helpers for lazy evaluation and streaming op
 
 ### Channel Operations
 - SeqToChannel: Convert sequence to buffered channel
-- SeqToChannel2: Convert key-value sequence to buffered channel
+- Seq2ToChannel: Convert key-value sequence to buffered channel
 - ChannelToSeq: Convert channel to sequence
 
 ### Find Operations
