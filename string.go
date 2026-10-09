@@ -369,7 +369,7 @@ func KebabCaseWithLanguage(str string, tag language.Tag) string {
 // SnakeCase converts string to snake case.
 // Play: https://go.dev/play/p/ziB0V89IeVH
 func SnakeCase(str string) string {
-	items := Words(str)
+	items := wordsSnakeCase(str)
 	if len(items) == 0 {
 		return ""
 	}
@@ -384,7 +384,7 @@ func SnakeCase(str string) string {
 // SnakeCaseWithLanguage converts string to snake case using language-aware lowercasing.
 // This matters for languages such as Turkish where "I" lowercases to "ı" (dotless i), not "i".
 func SnakeCaseWithLanguage(str string, tag language.Tag) string {
-	items := Words(str)
+	items := wordsSnakeCase(str)
 	if len(items) == 0 {
 		return ""
 	}
@@ -394,6 +394,42 @@ func SnakeCaseWithLanguage(str string, tag language.Tag) string {
 		items[i] = c.String(items[i])
 	}
 	return strings.Join(items, "_")
+}
+
+// wordsSnakeCase splits string into a slice of its words for snake case conversion.
+func wordsSnakeCase(str string) []string {
+	buf := splitWordBoundariesSnakeCase(str)
+	buf = splitNumberLetter(buf)
+	return fieldsAlnum(string(buf))
+}
+
+// splitWordBoundariesSnakeCase inserts a space at case and digit/letter boundaries,
+// keeping letter-digit sequences together to prevent superfluous underscores before digits.
+func splitWordBoundariesSnakeCase(s string) []byte {
+	out := make([]byte, 0, len(s)+8)
+	i := 0
+	for i < len(s) {
+		c := s[i]
+		if i+1 < len(s) {
+			d := s[i+1]
+			if (isASCIILower(c) && isASCIIUpper(d)) ||
+				(isASCIIDigit(c) && isASCIILetter(d)) {
+				out = append(out, c, ' ', d)
+				i += 2
+				continue
+			}
+			if i+2 < len(s) {
+				if e := s[i+2]; isASCIIUpper(c) && isASCIIUpper(d) && isASCIILower(e) {
+					out = append(out, c, ' ', d, e)
+					i += 3
+					continue
+				}
+			}
+		}
+		out = append(out, c)
+		i++
+	}
+	return out
 }
 
 // Words splits string into a slice of its words.
