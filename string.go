@@ -501,18 +501,36 @@ func fieldsAlnum(s string) []string {
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
 // Play: https://go.dev/play/p/uLTZZQXqnsa
 func Capitalize(str string) string {
-	c, _ := englishTitleCaserPool.Get().(*cases.Caser)
-	defer englishTitleCaserPool.Put(c)
-	return c.String(str)
+	if len(str) == 0 {
+		return ""
+	}
+	_, size := utf8.DecodeRuneInString(str)
+	tc, _ := englishTitleCaserPool.Get().(*cases.Caser)
+	defer englishTitleCaserPool.Put(tc)
+	if len(str) == size {
+		return tc.String(str)
+	}
+	lc, _ := englishLowerCaserPool.Get().(*cases.Caser)
+	defer englishLowerCaserPool.Put(lc)
+	return tc.String(str[:size]) + lc.String(str[size:])
 }
 
 // CapitalizeWithLanguage converts the first character of string to upper case and the remaining to
 // lower case, using language-aware title casing.
 // This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
 func CapitalizeWithLanguage(str string, tag language.Tag) string {
-	pool, c := acquireTitleCaser(tag)
-	defer pool.Put(c)
-	return c.String(str)
+	if len(str) == 0 {
+		return ""
+	}
+	_, size := utf8.DecodeRuneInString(str)
+	tPool, tc := acquireTitleCaser(tag)
+	defer tPool.Put(tc)
+	if len(str) == size {
+		return tc.String(str)
+	}
+	lPool, lc := acquireLowerCaser(tag)
+	defer lPool.Put(lc)
+	return tc.String(str[:size]) + lc.String(str[size:])
 }
 
 // Ellipsis trims and truncates a string to a specified length in runes and appends an ellipsis
