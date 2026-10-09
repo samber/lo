@@ -540,8 +540,27 @@ func TestCapitalize(t *testing.T) {
 		in   string
 		want string
 	}{
+		{"empty string", "", ""},
+		{"single lowercase", "a", "A"},
+		{"single uppercase", "A", "A"},
+		{"single non-letter", "%", "%"},
 		{"lower case", "hello", "Hello"},
 		{"mixed case", "heLLO", "Hello"},
+		{"upper case", "HELLO", "Hello"},
+		{"format characters in string", `strf("%d%m")`, `Strf("%d%m")`},
+		{"format directives only", "%s %d", "%s %d"},
+		{"uppercase format directives", "%S %D", "%s %d"},
+		{"multiple format tokens with symbols", `prefix_%s_%d_suffix`, `Prefix_%s_%d_suffix`},
+		{"sentence with spaces", "hello world", "Hello world"},
+		{"uppercase sentence with spaces", "HELLO WORLD", "Hello world"},
+		{"punctuation and symbols", "foo-bar_baz.qux", "Foo-bar_baz.qux"},
+		{"uppercase punctuation and symbols", "FOO-BAR_BAZ.QUX", "Foo-bar_baz.qux"},
+		{"leading number", "123abc", "123abc"},
+		{"leading number uppercase", "123ABC", "123abc"},
+		{"leading symbol", "_hello_world_", "_hello_world_"},
+		{"leading symbol uppercase", "_HELLO_WORLD_", "_hello_world_"},
+		{"unicode character", "über", "Über"},
+		{"unicode uppercase", "ÜBER", "Über"},
 	}
 	for _, tc := range testCases {
 		tc := tc
@@ -561,13 +580,19 @@ func TestCapitalizeWithLanguage(t *testing.T) {
 		lang language.Tag
 		want string
 	}{
+		{name: "empty string", in: "", lang: language.English, want: ""},
+		{name: "single char", in: "a", lang: language.English, want: "A"},
 		{name: "english plain I", in: "istanbul", lang: language.English, want: "Istanbul"},
 		{name: "english mixed case", in: "heLLO", lang: language.English, want: "Hello"},
+		{name: "english format characters", in: `strf("%d%m")`, lang: language.English, want: `Strf("%d%m")`},
 		// Turkish: lowercase i → title İ (dotted capital I, U+0130)
 		{name: "turkish lowercase i", in: "istanbul", lang: language.Turkish, want: "İstanbul"},
 		// Turkish: ISTANBUL starts with capital I (the uppercase form of ı); title case
 		// keeps it as I and lowercases the rest → "Istanbul" (not "İstanbul").
 		{name: "turkish uppercase ISTANBUL", in: "ISTANBUL", lang: language.Turkish, want: "Istanbul"},
+		{name: "turkish format characters", in: `strf("%d%m")`, lang: language.Turkish, want: `Strf("%d%m")`},
+		{name: "turkish dotless i", in: "ırak", lang: language.Turkish, want: "Irak"},
+		{name: "turkish sentence", in: "istanbul boğazı", lang: language.Turkish, want: "İstanbul boğazı"},
 	}
 
 	for _, tt := range tests {
