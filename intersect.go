@@ -146,20 +146,22 @@ func NoneBy[T any](collection []T, predicate func(item T) bool) bool {
 // an O(n*m) scan (deduping against the already-built result) is cheaper. Above
 // the bound the quadratic scan grows faster than the map's O(n+m), so we fall
 // back to the map-based implementation.
-const intersectSmallProduct = 64
+const intersectSmallProduct = 256
 
 // Intersect returns the intersection between collections.
 // Play: https://go.dev/play/p/uuElL9X9e58
 func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
-	if len(lists) == 0 {
+	switch len(lists) {
+	case 0:
 		return Slice{}
+	case 1:
+		return Uniq(lists[0])
+	default:
+		if len(lists) == 2 && len(lists[0])*len(lists[1]) <= intersectSmallProduct {
+			return intersectSmall[T, Slice](lists[0], lists[1])
+		}
+		return intersectLarge[T, Slice](lists...)
 	}
-
-	if len(lists) == 2 && len(lists[0])*len(lists[1]) <= intersectSmallProduct {
-		return intersectSmall[T, Slice](lists[0], lists[1])
-	}
-
-	return intersectLarge[T, Slice](lists...)
 }
 
 // intersectSmall computes the two-list intersection without a map: it emits
@@ -167,6 +169,10 @@ func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 // already built. Equality uses == to match the map-based path (including NaN,
 // which never compares equal and is therefore never emitted by either path).
 func intersectSmall[T comparable, Slice ~[]T](a, b Slice) Slice {
+	capacity := len(a)
+	if len(b) < capacity {
+		capacity = len(b)
+	}
 	result := make(Slice, 0)
 
 	for _, item := range a {
@@ -189,6 +195,9 @@ func intersectSmall[T comparable, Slice ~[]T](a, b Slice) Slice {
 			}
 		}
 		if !dup {
+			if cap(result) == 0 {
+				result = make(Slice, 0, capacity)
+			}
 			result = append(result, item)
 		}
 	}
@@ -197,15 +206,27 @@ func intersectSmall[T comparable, Slice ~[]T](a, b Slice) Slice {
 }
 
 func intersectLarge[T comparable, Slice ~[]T](lists ...Slice) Slice {
-	last := lists[len(lists)-1]
+	seedIndex := len(lists) - 1
+	for i := 1; i < len(lists)-1; i++ {
+		if len(lists[i]) < len(lists[seedIndex]) {
+			seedIndex = i
+		}
+	}
+	if len(lists[0]) < len(lists[seedIndex]) {
+		seedIndex = 0
+	}
 
-	seen := make(map[T]bool, len(last))
+	seen := make(map[T]bool, len(lists[seedIndex]))
 
-	for _, item := range last {
+	for _, item := range lists[seedIndex] {
 		seen[item] = false
 	}
 
-	for i := len(lists) - 2; i > 0 && len(seen) != 0; i-- {
+	for i := len(lists) - 1; i > 0 && len(seen) != 0; i-- {
+		if i == seedIndex {
+			continue
+		}
+
 		for _, item := range lists[i] {
 			if _, ok := seen[item]; ok {
 				seen[item] = true

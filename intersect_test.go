@@ -300,6 +300,42 @@ func TestIntersect(t *testing.T) {
 		nonemptyLarge := Intersect(allStrings)
 		is.IsType(nonemptyLarge, allStrings, "type preserved (map path)")
 	})
+
+	t.Run("single list preserves order while removing duplicates", func(t *testing.T) {
+		t.Parallel()
+
+		assert.Equal(t, []int{3, 1, 2}, Intersect([]int{3, 1, 3, 2, 1}))
+	})
+
+	t.Run("smallest first list preserves order and uniqueness", func(t *testing.T) {
+		t.Parallel()
+
+		first := []int{5, 3, 5, 1, 4}
+		other := make([]int, 100)
+		for i := range other {
+			other[i] = i
+		}
+
+		assert.Equal(t, []int{5, 3, 1, 4}, Intersect(first, other))
+	})
+
+	t.Run("smallest middle list preserves order and uniqueness", func(t *testing.T) {
+		t.Parallel()
+
+		first := []int{5, 3, 5, 1, 4}
+		other := make([]int, 100)
+		for i := range other {
+			other[i] = i
+		}
+
+		assert.Equal(t, []int{5, 3, 1, 4}, Intersect(first, []int{1, 3, 4, 5}, other))
+	})
+
+	t.Run("small intersection with no matches returns non-nil empty slice", func(t *testing.T) {
+		t.Parallel()
+
+		assert.NotNil(t, Intersect([]int{1, 2}, []int{3, 4}))
+	})
 }
 
 func TestIntersectBy(t *testing.T) {
