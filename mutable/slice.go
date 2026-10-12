@@ -37,6 +37,47 @@ func FilterI[T any, Slice ~[]T](collection Slice, predicate func(item T, index i
 	return collection[:j]
 }
 
+// FilterRejectUnstable partitions collection's underlying array by the elements that satisfy
+// predicate, and with the elements that don't, in unstable order, and returns two slices whose length is the
+// number of kept and rejected elements. Use FilterRejectUnstableI if you need the element's index.
+//
+// The caller's original slice variable still has its original content, but rejected elements are moved to the back
+// and accepted elements are moved to the head of the slice in unstable order.
+func FilterRejectUnstable[T any, Slice ~[]T](collection Slice, predicate func(T) bool) (kept, rejected Slice) {
+	rejectPos := len(collection)
+
+	for i := 0; i < rejectPos; {
+		if !predicate(collection[i]) {
+			rejectPos--
+			collection[i], collection[rejectPos] = collection[rejectPos], collection[i]
+
+			continue
+		}
+
+		i++
+	}
+	return collection[:rejectPos], collection[rejectPos:]
+}
+
+// FilterRejectUnstableI is like FilterRejectUnstable but passes the element's index to predicate as well.
+// See FilterRejectUnstable for the in-place semantics (the caller's original slice keeps its contents;
+// returned slices are sub-slices of the original slice).
+func FilterRejectUnstableI[T any, Slice ~[]T](collection Slice, predicate func(T, int) bool) (kept, rejected Slice) {
+	rejectPos := len(collection)
+
+	for i := 0; i < rejectPos; {
+		if !predicate(collection[i], i) {
+			rejectPos--
+			collection[i], collection[rejectPos] = collection[rejectPos], collection[i]
+
+			continue
+		}
+
+		i++
+	}
+	return collection[:rejectPos], collection[rejectPos:]
+}
+
 // Map applies transform to each element of collection in place. Use MapI if you need
 // the element's index.
 // Play: https://go.dev/play/p/0jY3Z0B7O_5
