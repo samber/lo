@@ -18,7 +18,7 @@ Returns a sequence with all the elements that appear in the collection only once
 
 The order of result values is determined by the order they occur in the collection. A transform function is
 invoked for each element in the sequence to generate the criterion by which uniqueness is computed.
-Will iterate through the entire sequence before yielding and allocate a map large enough to hold all distinct transformed elements.
+Will iterate through the entire sequence once before yielding, using a map and an ordered buffer of first occurrences for distinct transformed values. Single-use inputs, such as `ChannelToSeq`, are supported.
 Long heterogeneous input sequences can cause excessive memory usage.
 
 Examples:
