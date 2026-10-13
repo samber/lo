@@ -31,6 +31,27 @@ func Zip2[A, B any](a iter.Seq[A], b iter.Seq[B]) iter.Seq[lo.Tuple2[A, B]] {
 	}
 }
 
+// ZipShortest2 is like Zip2 but stops when either sequence ends, instead of
+// padding the shorter side with zero values.
+func ZipShortest2[A, B any](a iter.Seq[A], b iter.Seq[B]) iter.Seq[lo.Tuple2[A, B]] {
+	return func(yield func(lo.Tuple2[A, B]) bool) {
+		nextA, stopA := iter.Pull(a)
+		defer stopA()
+		nextB, stopB := iter.Pull(b)
+		defer stopB()
+
+		for {
+			var item lo.Tuple2[A, B]
+			var okA, okB bool
+			item.A, okA = nextA()
+			item.B, okB = nextB()
+			if !okA || !okB || !yield(item) {
+				return
+			}
+		}
+	}
+}
+
 // Zip3 creates a sequence of grouped elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
@@ -282,6 +303,13 @@ func Zip9[A, B, C, D, E, F, G, H, I any](a iter.Seq[A], b iter.Seq[B], c iter.Se
 // Play: https://go.dev/play/p/y03uqMEAi1E
 func ZipBy2[A, B, Out any](a iter.Seq[A], b iter.Seq[B], transform func(a A, b B) Out) iter.Seq[Out] {
 	return Map(Zip2(a, b), func(item lo.Tuple2[A, B]) Out {
+		return transform(item.A, item.B)
+	})
+}
+
+// ZipShortestBy2 is like ZipBy2 but stops when either sequence ends.
+func ZipShortestBy2[A, B, Out any](a iter.Seq[A], b iter.Seq[B], transform func(a A, b B) Out) iter.Seq[Out] {
+	return Map(ZipShortest2(a, b), func(item lo.Tuple2[A, B]) Out {
 		return transform(item.A, item.B)
 	})
 }

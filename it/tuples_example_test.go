@@ -13,6 +13,20 @@ func ExampleZip2() {
 	// Output: [{hello 2}]
 }
 
+func ExampleZipShortest2() {
+	result := ZipShortest2(values("a", "b", "c"), values(1, 2))
+	fmt.Printf("%v", slices.Collect(result))
+	// Output: [{a 1} {b 2}]
+}
+
+func ExampleZipShortestBy2() {
+	result := ZipShortestBy2(values("a", "b", "c"), values(1, 2), func(a string, b int) string {
+		return a
+	})
+	fmt.Printf("%v", slices.Collect(result))
+	// Output: [a b]
+}
+
 func ExampleZip3() {
 	result := Zip3(values("hello"), values(2), values(true))
 	fmt.Printf("%v", slices.Collect(result))
