@@ -124,6 +124,9 @@ func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I {
 	if len(lists) == 0 {
 		return I(Empty[T]())
 	}
+	if len(lists) == 1 {
+		return Uniq(lists[0])
+	}
 
 	return func(yield func(T) bool) {
 		last := lists[len(lists)-1]
@@ -169,6 +172,9 @@ func Intersect[T comparable, I ~func(func(T) bool)](lists ...I) I {
 func IntersectBy[T any, K comparable, I ~func(func(T) bool)](transform func(T) K, lists ...I) I {
 	if len(lists) == 0 {
 		return I(Empty[T]())
+	}
+	if len(lists) == 1 {
+		return UniqBy(lists[0], transform)
 	}
 
 	return func(yield func(T) bool) {
