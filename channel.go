@@ -150,7 +150,7 @@ func DispatchingStrategyLeast[T any](msg T, index uint64, channels []<-chan T) i
 // Play: https://go.dev/play/p/erHHone7rF9
 func DispatchingStrategyMost[T any](msg T, index uint64, channels []<-chan T) int {
 	_, i := MaxIndexBy(channels, func(a, b <-chan T) bool {
-		return len(a) > len(b) && channelIsNotFull(a)
+		return channelIsNotFull(a) && (!channelIsNotFull(b) || len(a) > len(b))
 	})
 
 	return i
