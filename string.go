@@ -266,13 +266,13 @@ func ChunkString[T ~string](str T, size int) []T {
 
 // RuneLength is an alias to utf8.RuneCountInString which returns the number of runes in string.
 // Play: https://go.dev/play/p/BXT52mBk0zO
-func RuneLength(str string) int {
-	return utf8.RuneCountInString(str)
+func RuneLength[T ~string](str T) int {
+	return utf8.RuneCountInString(string(str))
 }
 
 // PascalCase converts string to pascal case.
 // Play: https://go.dev/play/p/uxER7XpRHLB
-func PascalCase(str string) string {
+func PascalCase[T ~string](str T) T {
 	items := Words(str)
 	if len(items) == 0 {
 		return ""
@@ -282,12 +282,12 @@ func PascalCase(str string) string {
 	for i := range items {
 		items[i] = c.String(items[i])
 	}
-	return strings.Join(items, "")
+	return T(strings.Join(items, ""))
 }
 
 // PascalCaseWithLanguage converts string to pascal case using language-aware title casing.
 // This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
-func PascalCaseWithLanguage(str string, tag language.Tag) string {
+func PascalCaseWithLanguage[T ~string](str T, tag language.Tag) T {
 	items := Words(str)
 	if len(items) == 0 {
 		return ""
@@ -297,12 +297,12 @@ func PascalCaseWithLanguage(str string, tag language.Tag) string {
 	for i := range items {
 		items[i] = c.String(items[i])
 	}
-	return strings.Join(items, "")
+	return T(strings.Join(items, ""))
 }
 
 // CamelCase converts string to camel case.
 // Play: https://go.dev/play/p/4JNDzaMwXkm
-func CamelCase(str string) string {
+func CamelCase[T ~string](str T) T {
 	items := Words(str)
 	if len(items) == 0 {
 		return ""
@@ -315,12 +315,12 @@ func CamelCase(str string) string {
 	for i := 1; i < len(items); i++ {
 		items[i] = tc.String(items[i])
 	}
-	return strings.Join(items, "")
+	return T(strings.Join(items, ""))
 }
 
 // CamelCaseWithLanguage converts string to camel case using language-aware casing.
 // This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
-func CamelCaseWithLanguage(str string, tag language.Tag) string {
+func CamelCaseWithLanguage[T ~string](str T, tag language.Tag) T {
 	items := Words(str)
 	if len(items) == 0 {
 		return ""
@@ -333,12 +333,12 @@ func CamelCaseWithLanguage(str string, tag language.Tag) string {
 	for i := 1; i < len(items); i++ {
 		items[i] = tc.String(items[i])
 	}
-	return strings.Join(items, "")
+	return T(strings.Join(items, ""))
 }
 
 // KebabCase converts string to kebab case.
 // Play: https://go.dev/play/p/ZBeMB4-pq45
-func KebabCase(str string) string {
+func KebabCase[T ~string](str T) T {
 	items := Words(str)
 	if len(items) == 0 {
 		return ""
@@ -348,12 +348,12 @@ func KebabCase(str string) string {
 	for i := range items {
 		items[i] = c.String(items[i])
 	}
-	return strings.Join(items, "-")
+	return T(strings.Join(items, "-"))
 }
 
 // KebabCaseWithLanguage converts string to kebab case using language-aware lowercasing.
 // This matters for languages such as Turkish where "I" lowercases to "ı" (dotless i), not "i".
-func KebabCaseWithLanguage(str string, tag language.Tag) string {
+func KebabCaseWithLanguage[T ~string](str T, tag language.Tag) T {
 	items := Words(str)
 	if len(items) == 0 {
 		return ""
@@ -363,12 +363,12 @@ func KebabCaseWithLanguage(str string, tag language.Tag) string {
 	for i := range items {
 		items[i] = c.String(items[i])
 	}
-	return strings.Join(items, "-")
+	return T(strings.Join(items, "-"))
 }
 
 // SnakeCase converts string to snake case.
 // Play: https://go.dev/play/p/ziB0V89IeVH
-func SnakeCase(str string) string {
+func SnakeCase[T ~string](str T) T {
 	items := Words(str)
 	if len(items) == 0 {
 		return ""
@@ -378,12 +378,12 @@ func SnakeCase(str string) string {
 	for i := range items {
 		items[i] = c.String(items[i])
 	}
-	return strings.Join(items, "_")
+	return T(strings.Join(items, "_"))
 }
 
 // SnakeCaseWithLanguage converts string to snake case using language-aware lowercasing.
 // This matters for languages such as Turkish where "I" lowercases to "ı" (dotless i), not "i".
-func SnakeCaseWithLanguage(str string, tag language.Tag) string {
+func SnakeCaseWithLanguage[T ~string](str T, tag language.Tag) T {
 	items := Words(str)
 	if len(items) == 0 {
 		return ""
@@ -393,12 +393,12 @@ func SnakeCaseWithLanguage(str string, tag language.Tag) string {
 	for i := range items {
 		items[i] = c.String(items[i])
 	}
-	return strings.Join(items, "_")
+	return T(strings.Join(items, "_"))
 }
 
 // Words splits string into a slice of its words.
 // Play: https://go.dev/play/p/-f3VIQqiaVw
-func Words(str string) []string {
+func Words[T ~string](str T) []string {
 	buf := splitWordBoundaries(str)
 	// example: Int8Value => Int 8Value => Int 8 Value
 	buf = splitNumberLetter(buf)
@@ -415,7 +415,7 @@ func isASCIILetter(c byte) bool { return isASCIILower(c) || isASCIIUpper(c) }
 // `([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`
 // with `$1$3$5$7 $2$4$6$8$9`, preserving the regexp's non-overlapping
 // leftmost-match consumption.
-func splitWordBoundaries(s string) []byte {
+func splitWordBoundaries[T ~string](s T) []byte {
 	out := make([]byte, 0, len(s)+8)
 	i := 0
 	for i < len(s) {
