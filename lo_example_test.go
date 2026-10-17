@@ -10,6 +10,20 @@ import (
 	"time"
 )
 
+func ExampleSomeBy_matchingSlices() {
+	search := []string{"alpha", "beta", "theta"}
+	substrings := []string{"ph", "he"}
+
+	ok := SomeBy(search, func(value string) bool {
+		return ContainsBy(substrings, func(substring string) bool {
+			return strings.Contains(value, substring)
+		})
+	})
+
+	fmt.Println(ok)
+	// Output: true
+}
+
 func ExampleTernary() {
 	result := Ternary(true, "a", "b")
 
