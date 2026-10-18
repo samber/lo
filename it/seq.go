@@ -638,7 +638,7 @@ func Drop[T any, I ~func(func(T) bool)](collection I, n int) I {
 }
 
 // DropLast drops n elements from the end of a sequence.
-// Will allocate a slice of length n.
+// Will allocate a slice holding up to n elements, as the input is consumed.
 // Play: https://go.dev/play/p/-NzU5Px5Tp4
 func DropLast[T any, I ~func(func(T) bool)](collection I, n int) I {
 	if n < 0 {
@@ -650,18 +650,21 @@ func DropLast[T any, I ~func(func(T) bool)](collection I, n int) I {
 	}
 
 	return func(yield func(T) bool) {
-		buf := make([]T, n)
-		var count int
+		var buf []T
+		var idx int
 
 		for item := range collection {
-			idx := count % n
-			count++
+			if len(buf) < n {
+				buf = append(buf, item)
+				continue
+			}
 
-			if count > n && !yield(buf[idx]) {
+			if !yield(buf[idx]) {
 				return
 			}
 
 			buf[idx] = item
+			idx = (idx + 1) % n
 		}
 	}
 }

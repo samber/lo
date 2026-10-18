@@ -1340,6 +1340,16 @@ func TestDropLast(t *testing.T) {
 		})
 	}
 
+	t.Run("large n", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		for _, input := range [][]int{nil, {1, 2, 3}} {
+			is.NotPanics(func() {
+				is.Empty(slices.Collect(DropLast(values(input...), math.MaxInt)))
+			})
+		}
+	})
+
 	t.Run("panics on negative n", func(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
