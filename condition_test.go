@@ -52,6 +52,38 @@ func TestTernaryF(t *testing.T) {
 	}
 }
 
+func TestTernaryFOnlyCallsSelectedFunction(t *testing.T) {
+	t.Parallel()
+
+	for _, condition := range []bool{true, false} {
+		condition := condition
+		t.Run(Ternary(condition, "true", "false"), func(t *testing.T) {
+			t.Parallel()
+			ifCalls, elseCalls := 0, 0
+			result := TernaryF(condition,
+				func() string {
+					ifCalls++
+					return "if"
+				},
+				func() string {
+					elseCalls++
+					return "else"
+				},
+			)
+
+			if condition {
+				assert.Equal(t, "if", result)
+				assert.Equal(t, 1, ifCalls)
+				assert.Zero(t, elseCalls)
+			} else {
+				assert.Equal(t, "else", result)
+				assert.Zero(t, ifCalls)
+				assert.Equal(t, 1, elseCalls)
+			}
+		})
+	}
+}
+
 func TestIfElse(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
