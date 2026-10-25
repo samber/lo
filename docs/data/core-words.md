@@ -24,7 +24,7 @@ Splits a string into a slice of its words, separating letters and digits and rem
 
 ```go
 lo.Words("helloWorld")
-// []string{"hello", "world"}
+// []string{"hello", "World"}
 ```
 
 

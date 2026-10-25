@@ -46,11 +46,14 @@ iter, err = lo.Attempt(5, func(i int) error {
 ```
 
 ```go
-// Zero attempts - returns error without calling function
+// Zero (or negative) attempts - retries until the function succeeds
 iter, err = lo.Attempt(0, func(i int) error {
-    return errors.New("should not be called")
+    if i < 42 {
+        return errors.New("failed")
+    }
+    return nil
 })
-// iter: 0, err: "maxIteration must be greater than 0"
+// iter: 43, err: nil
 ```
 
 

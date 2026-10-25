@@ -44,7 +44,7 @@ result = lo.Substring("hello", 10, 3)
 
 // With Unicode strings (rune-aware)
 result = lo.Substring("héllo", 1, 3)
-// result: "él"
+// result: "éll"
 
 // Negative offset with negative values clamped
 result = lo.Substring("hello", -10, 3)

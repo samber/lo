@@ -28,7 +28,7 @@ lo.UnionByErr(func(i int) (int, error) { return i / 2, nil }, []int{0, 1, 2, 3, 
 
 ```go
 lo.UnionByErr(func(s string) (string, error) { return s[:1], nil }, []string{"foo", "bar"}, []string{"baz"})
-// []string{"foo", "baz"}, nil
+// []string{"foo", "bar"}, nil
 ```
 
 ```go
@@ -38,5 +38,5 @@ lo.UnionByErr(func(i int) (int, error) {
     }
     return i / 2, nil
 }, []int{0, 1, 2}, []int{42})
-// []int{0, 1}, error("invalid value")
+// []int(nil), error("invalid value")
 ```
