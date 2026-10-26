@@ -31,7 +31,7 @@ var result2 []int
 for item := range seq2 {
     result2 = append(result2, item)
 }
-// result2 contains [10, 7, 4, 1]
+// result2 contains [10, 7, 4]
 
 seq3 := it.RangeWithSteps(0, 5, 1.5)
 var result3 []float64

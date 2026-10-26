@@ -27,10 +27,10 @@ result = lo.Empty[int]()
 // 0 (zero value for int)
 
 result = lo.Empty[[]int]()
-// []int{} (zero value for slice)
+// []int(nil) (zero value for slice)
 
 result = lo.Empty[map[string]int]()
-// map[string]int{} (zero value for map)
+// map[string]int(nil) (zero value for map)
 
 result = lo.Empty[*int]()
 // nil (zero value for pointer)

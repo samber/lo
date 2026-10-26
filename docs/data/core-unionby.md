@@ -28,5 +28,5 @@ lo.UnionBy(func(i int) int { return i / 2 }, []int{0, 1, 2, 3, 4, 5}, []int{0, 2
 
 ```go
 lo.UnionBy(func(s string) string { return s[:1] }, []string{"foo", "bar"}, []string{"baz"})
-// []string{"foo", "baz"}
+// []string{"foo", "bar"}
 ```

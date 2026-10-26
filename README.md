@@ -2468,7 +2468,7 @@ Splits string into a slice of its words.
 
 ```go
 str := lo.Words("helloWorld")
-// []string{"hello", "world"}
+// []string{"hello", "World"}
 ```
 
 [[play](https://go.dev/play/p/-f3VIQqiaVw)]
@@ -3439,7 +3439,7 @@ FindLastIndexOf searches for the last element in a slice based on a predicate an
 str, index, ok := lo.FindLastIndexOf([]string{"a", "b", "a", "b"}, func(i string) bool {
     return i == "b"
 })
-// "b", 4, true
+// "b", 3, true
 
 str, index, ok := lo.FindLastIndexOf([]string{"foobar"}, func(i string) bool {
     return i == "b"
@@ -3615,7 +3615,7 @@ min, err := lo.MinByErr([]string{"s1", "string2", "s3"}, func(item string, min s
     }
     return len(item) < len(min), nil
 })
-// "s1", error("string2 is not allowed")
+// "", error("string2 is not allowed")
 ```
 
 ### MinIndexBy
@@ -3640,12 +3640,12 @@ min, index := lo.MinIndexBy([]string{}, func(item string, min string) bool {
 
 ```go
 min, index, err := lo.MinIndexByErr([]string{"s1", "string2", "s3"}, func(item string, min string) (bool, error) {
-    if item == "s2" {
-        return false, fmt.Errorf("s2 is not allowed")
+    if item == "string2" {
+        return false, fmt.Errorf("string2 is not allowed")
     }
     return len(item) < len(min), nil
 })
-// "s1", 0, error("s2 is not allowed")
+// "", -1, error("string2 is not allowed")
 ```
 
 ### Earliest
@@ -3673,7 +3673,7 @@ type foo struct {
 earliest := lo.EarliestBy([]foo{{time.Now()}, {}}, func(i foo) time.Time {
     return i.bar
 })
-// {bar:{2023-04-01 01:02:03 +0000 UTC}}
+// {bar:{0001-01-01 00:00:00 +0000 UTC}}
 ```
 
 ```go
@@ -3782,7 +3782,7 @@ max, index, err := lo.MaxIndexByErr([]string{"string1", "s2", "string3"}, func(i
     }
     return len(item) > len(max), nil
 })
-// "string1", 0, error("s2 is not allowed")
+// "", -1, error("s2 is not allowed")
 ```
 
 [[play](https://go.dev/play/p/uaUszc-c9QK)]
@@ -4413,7 +4413,7 @@ result, ok := lo.CoalesceSlice([]int{1, 2, 3}, []int{4, 5, 6})
 
 result, ok := lo.CoalesceSlice(nil, []int{})
 // []
-// true
+// false
 
 result, ok := lo.CoalesceSlice([]int(nil))
 // []
@@ -4443,7 +4443,7 @@ result, ok := lo.CoalesceMap(map[string]int{"1": 1, "2": 2, "3": 3}, map[string]
 
 result, ok := lo.CoalesceMap(nil, map[string]int{})
 // {}
-// true
+// false
 
 result, ok := lo.CoalesceMap(map[string]int(nil))
 // {}
