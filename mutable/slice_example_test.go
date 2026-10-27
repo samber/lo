@@ -67,10 +67,11 @@ func ExampleReverse() {
 	// Output: [5 4 3 2 1 0]
 }
 
-// Fill fills elements of a slice with `initial` value.
-// Play: https://go.dev/play/p/VwR34GzqEub
-func Fill[T any, Slice ~[]T](collection Slice, initial T) {
-	for i := range collection {
-		collection[i] = initial
-	}
+func ExampleFill() {
+	list := []int{0, 1, 2, 3, 4}
+
+	Fill(list, 42)
+
+	fmt.Printf("%v", list)
+	// Output: [42 42 42 42 42]
 }
