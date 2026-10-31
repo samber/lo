@@ -4,6 +4,7 @@ package it
 
 import (
 	"iter"
+	"math"
 	"slices"
 
 	"github.com/samber/lo"
@@ -880,6 +881,9 @@ func Subset[T any, I ~func(func(T) bool)](collection I, offset, length int) I {
 	}
 	if length < 0 {
 		panic("it.Subset: length must not be negative")
+	}
+	if length > math.MaxInt-offset {
+		length = math.MaxInt - offset
 	}
 
 	return Slice(collection, offset, offset+length)
