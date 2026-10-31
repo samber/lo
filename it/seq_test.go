@@ -1880,6 +1880,10 @@ func TestSubset(t *testing.T) {
 		{name: "middle slice exact length", offset: 2, length: 2, expected: []int{2, 3}},
 		{name: "middle to end length exceeds", offset: 2, length: 5, expected: []int{2, 3, 4}},
 		{name: "middle to end exact remaining", offset: 2, length: 3, expected: []int{2, 3, 4}},
+		{name: "maximum length at beginning", offset: 0, length: math.MaxInt, expected: []int{0, 1, 2, 3, 4}},
+		{name: "maximum length from middle", offset: 2, length: math.MaxInt, expected: []int{2, 3, 4}},
+		{name: "overflow by one", offset: 2, length: math.MaxInt - 1, expected: []int{2, 3, 4}},
+		{name: "maximum offset and length", offset: math.MaxInt, length: math.MaxInt, expected: nil},
 		{name: "middle to end length larger than remaining", offset: 2, length: 4, expected: []int{2, 3, 4}},
 	}
 
