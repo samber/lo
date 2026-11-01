@@ -499,20 +499,38 @@ func fieldsAlnum(s string) []string {
 }
 
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
+//
+// Only the very first character is upper-cased. This is not per-word title casing: letters that
+// follow spaces, digits or punctuation stay lower-cased (e.g. "hello world" -> "Hello world",
+// "123abc" -> "123abc"), matching lodash's capitalize. Earlier releases title-cased every word
+// segment, so multi-word inputs are affected by this change.
 // Play: https://go.dev/play/p/uLTZZQXqnsa
 func Capitalize(str string) string {
-	c, _ := englishTitleCaserPool.Get().(*cases.Caser)
-	defer englishTitleCaserPool.Put(c)
-	return c.String(str)
+	if str == "" {
+		return str
+	}
+	tc, _ := englishTitleCaserPool.Get().(*cases.Caser)
+	defer englishTitleCaserPool.Put(tc)
+	lc, _ := englishLowerCaserPool.Get().(*cases.Caser)
+	defer englishLowerCaserPool.Put(lc)
+	_, size := utf8.DecodeRuneInString(str)
+	return tc.String(str[:size]) + lc.String(str[size:])
 }
 
 // CapitalizeWithLanguage converts the first character of string to upper case and the remaining to
-// lower case, using language-aware title casing.
-// This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
+// lower case, using language-aware casing.
+// As with [Capitalize], only the first character is upper-cased (not each word). Language awareness
+// matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
 func CapitalizeWithLanguage(str string, tag language.Tag) string {
-	pool, c := acquireTitleCaser(tag)
-	defer pool.Put(c)
-	return c.String(str)
+	if str == "" {
+		return str
+	}
+	tPool, tc := acquireTitleCaser(tag)
+	defer tPool.Put(tc)
+	lPool, lc := acquireLowerCaser(tag)
+	defer lPool.Put(lc)
+	_, size := utf8.DecodeRuneInString(str)
+	return tc.String(str[:size]) + lc.String(str[size:])
 }
 
 // Ellipsis trims and truncates a string to a specified length in runes and appends an ellipsis
