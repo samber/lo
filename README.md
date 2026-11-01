@@ -3086,6 +3086,24 @@ b := SomeBy([]int{1, 2, 3, 4}, func(x int) bool {
 // true
 ```
 
+To check for a match between two slices using a custom predicate, combine `SomeBy` with `ContainsBy`.
+For example, check whether any string contains any of the given substrings:
+
+```go
+search := []string{"alpha", "beta", "theta"}
+substrings := []string{"ph", "he"}
+
+ok := lo.SomeBy(search, func(value string) bool {
+    return lo.ContainsBy(substrings, func(substring string) bool {
+        return strings.Contains(value, substring)
+    })
+})
+// true
+```
+
+Both helpers stop at the first match, without building an intermediate slice.
+Use `Some` instead when you only need equality between the slice elements.
+
 ### None
 
 Returns true if no element of a subset is contained in a collection or if the subset is empty.
