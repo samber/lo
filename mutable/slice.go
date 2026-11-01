@@ -72,3 +72,11 @@ func Reverse[T any, Slice ~[]T](collection Slice) {
 		collection[i], collection[j] = collection[j], collection[i]
 	}
 }
+
+// Fill fills elements of a slice with `initial` value.
+// Play: https://go.dev/play/p/VwR34GzqEub
+func Fill[T any, Slice ~[]T](collection Slice, initial T) {
+	for i := range collection {
+		collection[i] = initial
+	}
+}
