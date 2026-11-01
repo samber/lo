@@ -436,13 +436,13 @@ func TestAllCase(t *testing.T) {
 			PascalCase: "Http200",
 			CamelCase:  "http200",
 			KebabCase:  "http-200",
-			SnakeCase:  "http_200",
+			SnakeCase:  "http200",
 		}},
 		{in: "NumberSplittingVersion1.0r3", want: output{
 			PascalCase: "NumberSplittingVersion10R3",
 			CamelCase:  "numberSplittingVersion10R3",
 			KebabCase:  "number-splitting-version-1-0-r3",
-			SnakeCase:  "number_splitting_version_1_0_r3",
+			SnakeCase:  "number_splitting_version1_0_r3",
 		}},
 		{in: "When you have a comma, odd results", want: output{
 			PascalCase: "WhenYouHaveACommaOddResults",
@@ -460,13 +460,13 @@ func TestAllCase(t *testing.T) {
 			PascalCase: "BadUtf8",
 			CamelCase:  "badUtf8",
 			KebabCase:  "bad-utf-8",
-			SnakeCase:  "bad_utf_8",
+			SnakeCase:  "bad_utf8",
 		}},
 		{in: "IDENT3", want: output{
 			PascalCase: "Ident3",
 			CamelCase:  "ident3",
 			KebabCase:  "ident-3",
-			SnakeCase:  "ident_3",
+			SnakeCase:  "ident3",
 		}},
 		{in: "LogRouterS3BucketName", want: output{
 			PascalCase: "LogRouterS3BucketName",
@@ -484,7 +484,7 @@ func TestAllCase(t *testing.T) {
 			PascalCase: "Int8Value",
 			CamelCase:  "int8Value",
 			KebabCase:  "int-8-value",
-			SnakeCase:  "int_8_value",
+			SnakeCase:  "int8_value",
 		}},
 		{in: "first.last", want: output{
 			PascalCase: "FirstLast",
@@ -661,6 +661,8 @@ func TestSnakeCaseWithLanguage(t *testing.T) {
 		{name: "english", in: "ISTANBUL CITY", lang: language.English, want: "istanbul_city"},
 		// Turkish: I lowercases to ı (dotless i, U+0131)
 		{name: "turkish", in: "ISTANBUL CITY", lang: language.Turkish, want: "ıstanbul_cıty"},
+		{name: "turkish with trailing digit", in: "ISTANBUL1", lang: language.Turkish, want: "ıstanbul1"},
+		{name: "turkish uppercase with digit", in: "ISTANBUL1 CITY", lang: language.Turkish, want: "ıstanbul1_cıty"},
 	}
 
 	for _, tt := range tests {
@@ -668,6 +670,39 @@ func TestSnakeCaseWithLanguage(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			assert.Equal(t, tt.want, SnakeCaseWithLanguage(tt.in, tt.lang))
+		})
+	}
+}
+
+func TestSnakeCase_Digits(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name string
+		in   string
+		want string
+	}{
+		{name: "issue 948 example", in: "Text1", want: "text1"},
+		{name: "lowercase identifier with trailing digit", in: "item1", want: "item1"},
+		{name: "camelCase with trailing digit", in: "item1Foo", want: "item1_foo"},
+		{name: "PascalCase with trailing digit", in: "Item1Foo", want: "item1_foo"},
+		{name: "camelCase with multiple digits across words", in: "foo1Bar2Baz3", want: "foo1_bar2_baz3"},
+		{name: "PascalCase with multiple digits across words", in: "Foo1Bar2Baz3", want: "foo1_bar2_baz3"},
+		{name: "camelCase with internal digit", in: "user2Id", want: "user2_id"},
+		{name: "PascalCase with internal digit", in: "User2Id", want: "user2_id"},
+		{name: "uppercase acronym with trailing digit", in: "S3Bucket", want: "s3_bucket"},
+		{name: "digit followed by letter suffix", in: "1stPlace", want: "1_st_place"},
+		{name: "explicit underscore preserved before digit", in: "item_1", want: "item_1"},
+		{name: "explicit hyphen converted to underscore", in: "item-1", want: "item_1"},
+		{name: "multiple consecutive digits preserved", in: "version123Release", want: "version123_release"},
+		{name: "only digits", in: "12345", want: "12345"},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			assert.Equal(t, tc.want, SnakeCase(tc.in))
 		})
 	}
 }
