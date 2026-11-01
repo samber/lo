@@ -18,6 +18,8 @@ position: 80
 
 Returns a sequence with elements that appear only once in the original collection (duplicates are removed).
 
+Consumes the entire input once before yielding, so single-use inputs such as `ChannelToSeq` are supported. Distinct values are tracked in a map and an ordered buffer; long heterogeneous inputs can require significant memory.
+
 Examples:
 
 ```go
