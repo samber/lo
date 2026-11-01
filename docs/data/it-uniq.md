@@ -15,7 +15,7 @@ similarHelpers:
 position: 50
 ---
 
-Returns a duplicate-free version of a sequence, removing consecutive duplicates.
+Returns a duplicate-free version of a sequence, in which only the first occurrence of each element is kept.
 
 Examples:
 
@@ -33,5 +33,5 @@ var result []int
 for v := range uniqueSeq {
     result = append(result, v)
 }
-// result contains 1, 2, 3, 2 (consecutive duplicates removed)
+// result contains 1, 2, 3
 ```

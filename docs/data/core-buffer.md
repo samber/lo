@@ -52,5 +52,5 @@ items, length, readTime, ok := lo.BufferWithContext(ctx, ch, 5)
 // items: []int{1} (only first item received before timeout)
 // length: 1
 // readTime: ~100ms (context timeout)
-// ok: false (context cancelled)
+// ok: true (channel still open, context timed out)
 ```

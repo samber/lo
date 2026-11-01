@@ -42,7 +42,7 @@ value, idx, err := lo.MaxIndexByErr([]Point{{1}, {5}, {3}}, func(a, b Point) (bo
     }
     return a.X > b.X, nil
 })
-// value == {1}, idx == 0, error("cannot compare with 5")
+// value == {0}, idx == -1, error("cannot compare with 5")
 ```
 
 Note: the comparison function is inconsistent with most languages, since we use the opposite of the usual convention.

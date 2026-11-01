@@ -34,7 +34,7 @@ numberMap := map[int]string{1: "one", 2: "two", 3: "three", 4: "four"}
 result = it.FilterValues(numberMap, func(key int, value string) bool {
     return len(value) == 3
 })
-// []string{"one", "two", "three"} (values with length 3)
+// []string{"one", "two"} (values with length 3)
 
 personMap := map[string]int{"alice": 25, "bob": 30, "charlie": 17}
 result = it.FilterValues(personMap, func(key string, age int) bool {

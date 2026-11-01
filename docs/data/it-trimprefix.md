@@ -29,5 +29,5 @@ var result []int
 for item := range trimmed {
     result = append(result, item)
 }
-// result contains [1, 2, 3]
+// result contains [3]
 ```
