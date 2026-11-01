@@ -16,16 +16,16 @@ func ExampleFilter() {
 }
 
 func ExampleFilterI() {
-	list := []int{1, 2, 3, 4}
+	list := []int{10, 20, 30, 40}
 
-	newList := Filter(list, func(nbr int) bool {
-		return nbr%2 == 0
+	newList := FilterI(list, func(_ int, index int) bool {
+		return index%2 == 0
 	})
 
 	fmt.Printf("%v\n%v", list, newList)
 	// Output:
-	// [2 4 3 4]
-	// [2 4]
+	// [10 30 30 40]
+	// [10 30]
 }
 
 func ExampleMap() {
