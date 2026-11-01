@@ -24,9 +24,9 @@ func SeqToChannel[T any](bufferSize int, collection iter.Seq[T]) <-chan T {
 	return ch
 }
 
-// SeqToChannel2 returns a read-only channel of collection elements.
+// Seq2ToChannel returns a read-only channel of collection elements.
 // Play: https://go.dev/play/p/rpJdVnXUaG-
-func SeqToChannel2[K, V any](bufferSize int, collection iter.Seq2[K, V]) <-chan lo.Tuple2[K, V] {
+func Seq2ToChannel[K, V any](bufferSize int, collection iter.Seq2[K, V]) <-chan lo.Tuple2[K, V] {
 	ch := make(chan lo.Tuple2[K, V], bufferSize)
 
 	go func() {
@@ -38,6 +38,12 @@ func SeqToChannel2[K, V any](bufferSize int, collection iter.Seq2[K, V]) <-chan 
 	}()
 
 	return ch
+}
+
+// SeqToChannel2 returns a read-only channel of collection elements.
+// Deprecated: Use Seq2ToChannel instead.
+func SeqToChannel2[K, V any](bufferSize int, collection iter.Seq2[K, V]) <-chan lo.Tuple2[K, V] {
+	return Seq2ToChannel(bufferSize, collection)
 }
 
 // ChannelToSeq returns a sequence built from channels items. Blocks until channel closes.

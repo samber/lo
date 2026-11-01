@@ -6,10 +6,12 @@ category: iter
 subCategory: channel
 signatures:
   - "func SeqToChannel[T any](bufferSize int, collection iter.Seq[T]) <-chan T"
+  - "func Seq2ToChannel[K, V any](bufferSize int, collection iter.Seq2[K, V]) <-chan Tuple2[K, V]"
   - "func SeqToChannel2[K, V any](bufferSize int, collection iter.Seq2[K, V]) <-chan Tuple2[K, V]"
 playUrl: "https://go.dev/play/p/id3jqJPffT6"
 variantHelpers:
   - iter#channel#seqtochannel
+  - iter#channel#seq2tochannel
   - iter#channel#seqtochannel2
 similarHelpers:
   - iter#channel#channeltoseq
@@ -32,10 +34,10 @@ for v := range ch {
 ```
 
 ```go
-// SeqToChannel2: stream key/value pairs as Tuple2
+// Seq2ToChannel: stream key/value pairs as Tuple2
 m := map[string]int{"a": 1, "b": 2}
 kv := it.Entries(m)
-ch := it.SeqToChannel2(1, kv)
+ch := it.Seq2ToChannel(1, kv)
 for pair := range ch {
     // pair.A is key, pair.B is value
 }
