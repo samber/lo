@@ -313,19 +313,21 @@ type throttleBy[T comparable] struct {
 
 func (th *throttleBy[T]) throttledFunc(key T) {
 	th.mu.Lock()
-	defer th.mu.Unlock()
-
-	if th.count[key] < th.countLimit {
+	invoke := th.count[key] < th.countLimit
+	if invoke {
 		th.count[key]++
-
-		for _, f := range th.callbacks {
-			f(key)
-		}
 	}
 	if th.timer == nil {
 		th.timer = time.AfterFunc(th.interval, func() {
 			th.reset()
 		})
+	}
+	th.mu.Unlock()
+
+	if invoke {
+		for _, f := range th.callbacks {
+			f(key)
+		}
 	}
 }
 
@@ -371,6 +373,9 @@ func NewThrottleBy[T comparable](interval time.Duration, f ...func(key T)) (thro
 }
 
 // NewThrottleByWithCount is NewThrottleBy with count limit, throttled function will be invoked count times in every interval.
+// A new interval starts before its first accepted call runs its callbacks.
+// Callbacks run synchronously outside the state lock and may overlap when the
+// throttle is called concurrently.
 // Play: https://go.dev/play/p/vQk3ECH7_EW
 func NewThrottleByWithCount[T comparable](interval time.Duration, count int, f ...func(key T)) (throttle func(key T), reset func()) {
 	if count <= 0 {
