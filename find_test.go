@@ -888,6 +888,49 @@ func TestFindDuplicatesBy_large(t *testing.T) {
 	})
 }
 
+// The map-based paths used to invoke the iteratee twice per element (once to
+// classify keys, once to emit results) while the small-scan paths invoked it
+// once. That made the callback count depend on whether the collection crossed
+// findSmallThreshold. These tests pin the documented single-invocation contract
+// on both sides of the boundary.
+func TestFindUniquesBy_singleInvocation(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	for _, n := range []int{findSmallThreshold, findSmallThreshold + 1, findSmallThreshold + 42} {
+		collection := make([]int, n)
+		for i := range collection {
+			collection[i] = i
+		}
+
+		calls := 0
+		FindUniquesBy(collection, func(i int) int {
+			calls++
+			return i % 3
+		})
+		is.Equal(n, calls, "iteratee must be invoked exactly once per element (n=%d)", n)
+	}
+}
+
+func TestFindDuplicatesBy_singleInvocation(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	for _, n := range []int{findSmallThreshold, findSmallThreshold + 1, findSmallThreshold + 42} {
+		collection := make([]int, n)
+		for i := range collection {
+			collection[i] = i
+		}
+
+		calls := 0
+		FindDuplicatesBy(collection, func(i int) int {
+			calls++
+			return i % 3
+		})
+		is.Equal(n, calls, "iteratee must be invoked exactly once per element (n=%d)", n)
+	}
+}
+
 func TestFindDuplicatesByErr(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)

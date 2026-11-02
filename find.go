@@ -243,13 +243,20 @@ func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee f
 }
 
 // findUniquesByLarge builds a map[U]bool tracking seen/duplicated key state, best for a large collection.
+// The iteratee is invoked exactly once per element (keys are precomputed), matching
+// findUniquesBySmall so that the invocation count does not depend on the collection size.
 func findUniquesByLarge[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	keys := make([]U, len(collection))
+	for i := range collection {
+		keys[i] = iteratee(collection[i])
+	}
+
 	isDupl := make(map[U]bool, len(collection))
 
 	duplicates := 0
 
 	for i := range collection {
-		key := iteratee(collection[i])
+		key := keys[i]
 
 		duplicated, seen := isDupl[key]
 		if !duplicated {
@@ -264,9 +271,7 @@ func findUniquesByLarge[T any, U comparable, Slice ~[]T](collection Slice, itera
 	result := make(Slice, 0, len(isDupl)-duplicates)
 
 	for i := range collection {
-		key := iteratee(collection[i])
-
-		if duplicated := isDupl[key]; !duplicated {
+		if duplicated := isDupl[keys[i]]; !duplicated {
 			result = append(result, collection[i])
 		}
 	}
@@ -377,13 +382,20 @@ func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iterate
 }
 
 // findDuplicatesByLarge builds a map[U]bool tracking seen/duplicated key state, best for a large collection.
+// The iteratee is invoked exactly once per element (keys are precomputed), matching
+// findDuplicatesBySmall so that the invocation count does not depend on the collection size.
 func findDuplicatesByLarge[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	keys := make([]U, len(collection))
+	for i := range collection {
+		keys[i] = iteratee(collection[i])
+	}
+
 	isDupl := make(map[U]bool, len(collection))
 
 	duplicates := 0
 
 	for i := range collection {
-		key := iteratee(collection[i])
+		key := keys[i]
 
 		duplicated, seen := isDupl[key]
 		if !duplicated {
@@ -398,11 +410,9 @@ func findDuplicatesByLarge[T any, U comparable, Slice ~[]T](collection Slice, it
 	result := make(Slice, 0, duplicates)
 
 	for i := range collection {
-		key := iteratee(collection[i])
-
-		if duplicated := isDupl[key]; duplicated {
+		if duplicated := isDupl[keys[i]]; duplicated {
 			result = append(result, collection[i])
-			isDupl[key] = false
+			isDupl[keys[i]] = false
 		}
 	}
 
