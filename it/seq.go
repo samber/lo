@@ -129,9 +129,11 @@ func FlatMapI[T, R any](collection iter.Seq[T], transform func(item T, index int
 	return func(yield func(R) bool) {
 		var i int
 		for item := range collection {
-			for r := range transform(item, i) {
-				if !yield(r) {
-					return
+			if seq := transform(item, i); seq != nil {
+				for r := range seq {
+					if !yield(r) {
+						return
+					}
 				}
 			}
 			i++

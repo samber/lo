@@ -250,6 +250,38 @@ func TestFilterMapI(t *testing.T) {
 
 func TestFlatMap(t *testing.T) {
 	t.Parallel()
+	t.Run("skips nil sequences", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		result := FlatMap(values(0, 1, 2, 3, 4), func(x int) iter.Seq[int] {
+			if x%2 == 0 {
+				return nil
+			}
+			return values(x, x*10)
+		})
+		is.Equal([]int{1, 10, 3, 30}, slices.Collect(result))
+	})
+
+	t.Run("all nil sequences", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		result := FlatMap(values(0, 1, 2), func(x int) iter.Seq[int] {
+			return nil
+		})
+		is.Empty(slices.Collect(result))
+	})
+
+	t.Run("nil input panics", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		result := FlatMap(nil, func(x int) iter.Seq[int] {
+			return nil
+		})
+		is.Panics(func() {
+			_ = slices.Collect(result)
+		})
+	})
+
 	t.Run("int to constant string", func(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
@@ -277,6 +309,83 @@ func TestFlatMap(t *testing.T) {
 
 func TestFlatMapI(t *testing.T) {
 	t.Parallel()
+	t.Run("skips nil sequences and preserves input indexes", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		var indexes []int
+		result := FlatMapI(values(0, 1, 2, 3, 4), func(x, i int) iter.Seq[int] {
+			indexes = append(indexes, i)
+			if x%2 == 0 {
+				return nil
+			}
+			return values(i, i*10)
+		})
+		is.Equal([]int{1, 10, 3, 30}, slices.Collect(result))
+		is.Equal([]int{0, 1, 2, 3, 4}, indexes)
+	})
+
+	t.Run("all nil sequences", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		var indexes []int
+		result := FlatMapI(values(0, 1, 2), func(x, i int) iter.Seq[int] {
+			indexes = append(indexes, i)
+			return nil
+		})
+		is.Empty(slices.Collect(result))
+		is.Equal([]int{0, 1, 2}, indexes)
+	})
+
+	t.Run("lazy and stops after break", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		var outerCalls, innerCalls int
+		var indexes []int
+		input := func(yield func(int) bool) {
+			for x := range 4 {
+				outerCalls++
+				if !yield(x) {
+					return
+				}
+			}
+		}
+		result := FlatMapI(input, func(x, i int) iter.Seq[int] {
+			indexes = append(indexes, i)
+			if x == 0 {
+				return nil
+			}
+			return func(yield func(int) bool) {
+				for r := range 3 {
+					innerCalls++
+					if !yield(x*10 + r) {
+						return
+					}
+				}
+			}
+		})
+		is.Zero(outerCalls)
+		is.Zero(innerCalls)
+		is.Empty(indexes)
+		for r := range result {
+			is.Equal(10, r)
+			break
+		}
+		is.Equal(2, outerCalls)
+		is.Equal(1, innerCalls)
+		is.Equal([]int{0, 1}, indexes)
+	})
+
+	t.Run("nil input panics", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+		result := FlatMapI(nil, func(x, i int) iter.Seq[int] {
+			return nil
+		})
+		is.Panics(func() {
+			_ = slices.Collect(result)
+		})
+	})
+
 	t.Run("int to constant string", func(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)
