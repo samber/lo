@@ -223,7 +223,9 @@ func findUniquesSmall[T comparable, Slice ~[]T](collection Slice) Slice {
 				count++
 			}
 		}
-		if count == 1 {
+		// Non-reflexive values such as NaN have zero matches, including themselves.
+		// Keep them just as the map-based path does.
+		if count <= 1 {
 			result = append(result, collection[i])
 		}
 	}
@@ -292,7 +294,9 @@ func findUniquesBySmall[T any, U comparable, Slice ~[]T](collection Slice, itera
 				count++
 			}
 		}
-		if count == 1 {
+		// Non-reflexive values such as NaN have zero matches, including themselves.
+		// Keep them just as the map-based path does.
+		if count <= 1 {
 			result = append(result, collection[i])
 		}
 	}
