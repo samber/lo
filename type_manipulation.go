@@ -1,6 +1,8 @@
 package lo
 
-import "reflect"
+import (
+	"reflect"
+)
 
 // IsNil checks if a value is nil or if it's a reference type with a nil underlying value.
 // Play: https://go.dev/play/p/P2sD0PMXw4F
@@ -66,6 +68,18 @@ func FromPtrOr[T any](x *T, fallback T) T {
 	}
 
 	return *x
+}
+
+// MapPtr transforms pointer value if it's non-nil. Otherwise returns nil.
+// Play: https://go.dev/play/p/dL7gZnzB8fX
+func MapPtr[T, R any](x *T, transform func(value T) R) *R {
+	if x == nil {
+		return nil
+	}
+
+	result := transform(*x)
+
+	return &result
 }
 
 // ToSlicePtr returns a slice of pointers to each value.
