@@ -40,6 +40,7 @@ func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum in
 
 // RangeWithSteps creates a sequence of numbers (positive and/or negative) progressing from start up to, but not including end.
 // step set to zero will return an empty sequence.
+// Iteration stops if adding step wraps around or cannot advance the value.
 // Play: https://go.dev/play/p/qxm2YNLG0vT
 func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step T) iter.Seq[T] {
 	return func(yield func(T) bool) {
@@ -50,19 +51,29 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 			if step < 0 {
 				return
 			}
-			for i := start; i < end; i += step {
+			for i := start; i < end; {
 				if !yield(i) {
 					return
 				}
+				next := i + step
+				if next <= i {
+					return
+				}
+				i = next
 			}
 		}
 		if step > 0 {
 			return
 		}
-		for i := start; i > end; i += step {
+		for i := start; i > end; {
 			if !yield(i) {
 				return
 			}
+			next := i + step
+			if next >= i {
+				return
+			}
+			i = next
 		}
 	}
 }
