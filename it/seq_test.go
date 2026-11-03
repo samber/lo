@@ -2434,6 +2434,9 @@ func TestTrimSuffix(t *testing.T) {
 		{name: "suffix longer than collection", input: []string{"a", "b", "c", "d", "e", "f", "g"}, suffix: []string{"a", "b", "c", "d", "e", "f", "g", "h"}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
 		{name: "empty suffix", input: []string{"a", "b", "c", "d", "e", "f", "g"}, suffix: []string{}, expected: []string{"a", "b", "c", "d", "e", "f", "g"}},
 		{name: "suffix candidate then diverges immediately", input: []string{"f", "x", "y"}, suffix: []string{"f", "g"}, expected: []string{"f", "x", "y"}},
+		{name: "overlapping suffix with an odd run", input: []string{"a", "b", "b", "b"}, suffix: []string{"b", "b"}, expected: []string{"a", "b"}},
+		{name: "suffix restarts inside a partial match", input: []string{"x", "a", "a", "a", "b"}, suffix: []string{"a", "a", "b"}, expected: []string{"x", "a"}},
+		{name: "suffix overlapping itself", input: []string{"a", "b", "b", "b", "a", "a", "b", "a", "a", "b"}, suffix: []string{"b", "a", "a", "b"}, expected: []string{"a", "b", "b", "b", "a", "a"}},
 	}
 
 	for _, tt := range tests {
