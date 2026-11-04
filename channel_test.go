@@ -210,7 +210,7 @@ func TestDispatchingStrategyMost(t *testing.T) {
 	children[1] <- 0
 	is.Zero(DispatchingStrategyMost(42, 0, rochildren))
 	children[0] <- 1
-	is.Zero(DispatchingStrategyMost(42, 0, rochildren))
+	is.Equal(1, DispatchingStrategyMost(42, 0, rochildren))
 	children[1] <- 1
 	is.Zero(DispatchingStrategyMost(42, 0, rochildren))
 }
