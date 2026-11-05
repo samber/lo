@@ -48,6 +48,39 @@ func TestFilterI(t *testing.T) {
 	is.Equal([]int{2, 4}, r1)
 }
 
+func TestReject(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	input1 := []int{1, 2, 3, 4}
+	r1 := Reject(input1, func(x int) bool {
+		return x%2 == 0
+	})
+
+	is.Equal([]int{1, 3, 3, 4}, input1)
+	is.Equal([]int{1, 3}, r1)
+
+	input2 := []string{"", "foo", "", "bar", ""}
+	r2 := Reject(input2, func(x string) bool {
+		return len(x) > 0
+	})
+
+	is.Equal([]string{"", "", "", "bar", ""}, input2)
+	is.Equal([]string{"", "", ""}, r2)
+}
+
+func TestRejectI(t *testing.T) {
+	t.Parallel()
+	is := assert.New(t)
+
+	r1 := RejectI([]int{1, 2, 3, 4}, func(x, i int) bool {
+		is.Equal(i, x-1)
+		return x%2 == 0
+	})
+
+	is.Equal([]int{1, 3}, r1)
+}
+
 func TestMap(t *testing.T) {
 	t.Parallel()
 
