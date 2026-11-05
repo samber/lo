@@ -38,10 +38,11 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 		return []T{}
 	}
 
-	capacity := func(count, delta T) int {
+	capacity := func(start, end, step T) int {
 		// Use math.Ceil instead of (count-1)/delta+1 because integer division
 		// fails for floats (e.g., 5.5/2.5=2.2 → ceil=3, not 2).
-		return int(math.Ceil(float64(count) / float64(delta)))
+		// Convert before subtracting to avoid overflowing narrow integer types.
+		return int(math.Ceil((float64(end) - float64(start)) / float64(step)))
 	}
 
 	if start < end {
@@ -49,9 +50,15 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 			return []T{}
 		}
 
-		result := make([]T, 0, capacity(end-start, step))
-		for i := start; i < end; i += step {
+		result := make([]T, 0, capacity(start, end, step))
+		for i := start; i < end; {
 			result = append(result, i)
+			// A wrapped step no longer progresses toward the end.
+			next := i + step
+			if next <= i {
+				break
+			}
+			i = next
 		}
 		return result
 	}
@@ -59,9 +66,15 @@ func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step 
 		return []T{}
 	}
 
-	result := make([]T, 0, capacity(start-end, -step))
-	for i := start; i > end; i += step {
+	result := make([]T, 0, capacity(start, end, step))
+	for i := start; i > end; {
 		result = append(result, i)
+		// A wrapped step no longer progresses toward the end.
+		next := i + step
+		if next >= i {
+			break
+		}
+		i = next
 	}
 	return result
 }
