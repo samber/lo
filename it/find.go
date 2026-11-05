@@ -161,7 +161,7 @@ func FindOrElse[T any](collection iter.Seq[T], fallback T, predicate func(item T
 
 // FindUniques returns a sequence with all the elements that appear in the collection only once.
 // The order of result values is determined by the order they occur in the collection.
-// Will iterate through the entire sequence before yielding and allocate a map large enough to hold all distinct elements.
+// Will iterate through the entire sequence once before yielding and allocate a map and slice large enough to hold all distinct elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/O8dwXEbT56F
 func FindUniques[T comparable, I ~func(func(T) bool)](collection I) I {
@@ -171,26 +171,28 @@ func FindUniques[T comparable, I ~func(func(T) bool)](collection I) I {
 // FindUniquesBy returns a sequence with all the elements that appear in the collection only once.
 // The order of result values is determined by the order they occur in the sequence. A transform function is
 // invoked for each element in the sequence to generate the criterion by which uniqueness is computed.
-// Will iterate through the entire sequence before yielding and allocate a map large enough to hold all distinct transformed elements.
+// Will iterate through the entire sequence once before yielding and allocate a map and slice large enough to hold all distinct transformed elements.
 // Long heterogeneous input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/TiwGIzeDuML
 func FindUniquesBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I {
 	return func(yield func(T) bool) {
 		isDupl := make(map[U]bool)
+		var candidates []lo.Tuple2[T, U]
 
 		for item := range collection {
 			key := transform(item)
 
 			duplicated, seen := isDupl[key]
+			if !seen {
+				candidates = append(candidates, lo.Tuple2[T, U]{A: item, B: key})
+			}
 			if !duplicated {
 				isDupl[key] = seen
 			}
 		}
 
-		for item := range collection {
-			key := transform(item)
-
-			if duplicated := isDupl[key]; !duplicated && !yield(item) {
+		for _, candidate := range candidates {
+			if duplicated := isDupl[candidate.B]; !duplicated && !yield(candidate.A) {
 				return
 			}
 		}

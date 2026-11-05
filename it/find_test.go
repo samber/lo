@@ -319,6 +319,44 @@ func TestFindUniquesBy(t *testing.T) {
 	})
 }
 
+func TestFindUniques_channel(t *testing.T) {
+	t.Parallel()
+
+	ch := make(chan int, 6)
+	for _, item := range []int{3, 1, 2, 1, 4, 2} {
+		ch <- item
+	}
+	close(ch)
+
+	assert.Equal(t, []int{3, 4}, slices.Collect(FindUniques(ChannelToSeq(ch))))
+}
+
+func TestFindUniquesBy_channel(t *testing.T) {
+	t.Parallel()
+
+	ch := make(chan int, 5)
+	for _, item := range []int{0, 1, 2, 3, 4} {
+		ch <- item
+	}
+	close(ch)
+
+	result := FindUniquesBy(ChannelToSeq(ch), func(item int) int { return item % 3 })
+	assert.Equal(t, []int{2}, slices.Collect(result))
+}
+
+func TestFindUniquesBy_transform_once(t *testing.T) {
+	t.Parallel()
+
+	var calls []int
+	result := FindUniquesBy(values(0, 1, 2, 3, 4), func(item int) int {
+		calls = append(calls, item)
+		return item % 3
+	})
+
+	assert.Equal(t, []int{2}, slices.Collect(result))
+	assert.Equal(t, []int{0, 1, 2, 3, 4}, calls)
+}
+
 func TestFindDuplicates(t *testing.T) {
 	t.Parallel()
 
