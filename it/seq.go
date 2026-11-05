@@ -897,12 +897,18 @@ func Slice[T any, I ~func(func(T) bool)](collection I, start, end int) I {
 	}
 
 	return func(yield func(T) bool) {
+		if start >= end {
+			return
+		}
 		var i int
 		for item := range collection {
-			if i >= start && (i >= end || !yield(item)) {
+			if i >= start && !yield(item) {
 				return
 			}
 			i++
+			if i >= end {
+				return
+			}
 		}
 	}
 }
