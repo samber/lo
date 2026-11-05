@@ -431,8 +431,14 @@ func splitWordBoundaries(s string) []byte {
 			}
 			if i+2 < len(s) {
 				if e := s[i+2]; isASCIIUpper(c) && isASCIIUpper(d) && isASCIILower(e) {
-					out = append(out, c, ' ', d, e)
-					i += 3
+					// The lowercase letter only marks where the acronym ends: it
+					// opens the next word, so leave it for the following iteration.
+					// Consuming it here skips the boundary check on the pair it
+					// forms with the byte after it, which kept "Pv6" glued together
+					// in "IPv6Address" while "Int8Value" split the same
+					// letter/digit boundary.
+					out = append(out, c, ' ', d)
+					i += 2
 					continue
 				}
 			}
