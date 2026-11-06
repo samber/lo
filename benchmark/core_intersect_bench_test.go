@@ -128,7 +128,20 @@ func BenchmarkIntersect(b *testing.B) {
 		})
 	}
 
-	// small two-list sub-cases (product <= 64) exercise the linear-scan fast path
+	large := genSliceInt(1000)
+	small := large[:4]
+	b.Run("small_first", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.Intersect(small, large)
+		}
+	})
+	b.Run("small_last", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.Intersect(large, small)
+		}
+	})
+
+	// Small two-list sub-cases (product <= intersectSmallProduct) exercise the linear-scan fast path.
 	for _, n := range []int{2, 4, 8} {
 		a := genSliceInt(n)
 		c := genSliceInt(n)
@@ -138,6 +151,19 @@ func BenchmarkIntersect(b *testing.B) {
 			}
 		})
 	}
+
+	a := []int{0, 1, 2, 3, 4, 5, 6, 7}
+	b.Run("small_full_overlap", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.Intersect(a, a)
+		}
+	})
+	duplicates := []int{1, 1, 1, 2, 2, 3, 3, 3}
+	b.Run("small_duplicates", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.Intersect(duplicates, duplicates)
+		}
+	})
 }
 
 func BenchmarkIntersectBy(b *testing.B) {
