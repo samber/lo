@@ -155,7 +155,7 @@ func Intersect[T comparable, Slice ~[]T](lists ...Slice) Slice {
 	case 0:
 		return Slice{}
 	case 1:
-		return Uniq(lists[0])
+		return intersectLarge[T, Slice](lists...)
 	default:
 		if len(lists) == 2 && len(lists[0])*len(lists[1]) <= intersectSmallProduct {
 			return intersectSmall[T, Slice](lists[0], lists[1])

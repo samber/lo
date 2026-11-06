@@ -2,6 +2,7 @@ package lo
 
 import (
 	"errors"
+	"math"
 	"strconv"
 	"testing"
 
@@ -305,6 +306,12 @@ func TestIntersect(t *testing.T) {
 		t.Parallel()
 
 		assert.Equal(t, []int{3, 1, 2}, Intersect([]int{3, 1, 3, 2, 1}))
+	})
+
+	t.Run("single list omits NaN", func(t *testing.T) {
+		t.Parallel()
+
+		assert.Equal(t, []float64{1}, Intersect([]float64{math.NaN(), 1}))
 	})
 
 	t.Run("smallest first list preserves order and uniqueness", func(t *testing.T) {
