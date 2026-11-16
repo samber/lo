@@ -1,12 +1,13 @@
 ---
 name: FindDuplicatesBy
 slug: findduplicatesby
-sourceRef: find.go#L234
+sourceRef: find.go#L270
 category: core
 subCategory: find
-playUrl: 
+playUrl: https://go.dev/play/p/LKdYdNHuGJG
 variantHelpers:
   - core#find#findduplicatesby
+  - core#find#findduplicatesbyerr
 similarHelpers:
   - core#find#findduplicates
   - core#find#finduniques

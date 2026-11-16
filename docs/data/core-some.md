@@ -1,7 +1,7 @@
 ---
 name: Some
 slug: some
-sourceRef: intersect.go#L54
+sourceRef: intersect.go#L60
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/Lj4ceFkeT9V

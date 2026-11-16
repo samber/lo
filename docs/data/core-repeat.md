@@ -1,7 +1,7 @@
 ---
 name: Repeat
 slug: repeat
-sourceRef: slice.go#L362
+sourceRef: slice.go#L690
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/g3uHXbmc3b6

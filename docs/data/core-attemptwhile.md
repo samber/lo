@@ -1,7 +1,7 @@
 ---
 name: AttemptWhile
 slug: attemptwhile
-sourceRef: retry.go#L198
+sourceRef: retry.go#L200
 category: core
 subCategory: retry
 playUrl: https://go.dev/play/p/1VS7HxlYMOG

@@ -1,7 +1,7 @@
 ---
 name: Reverse
 slug: reverse
-sourceRef: mutable/slice.go#L65
+sourceRef: mutable/slice.go#L66
 category: mutable
 subCategory: slice
 playUrl: https://go.dev/play/p/O-M5pmCRgzV

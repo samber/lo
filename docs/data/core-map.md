@@ -1,11 +1,12 @@
 ---
 name: Map
 slug: map
-sourceRef: slice.go#L26
+sourceRef: slice.go#L45
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/OkPcYAhBo0D
 similarHelpers:
+  - core#slice#maperr
   - core#slice#filtermap
   - core#slice#flatmap
   - core#slice#uniqmap

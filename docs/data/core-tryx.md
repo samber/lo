@@ -13,7 +13,7 @@ signatures:
   - "func Try4[T, R, S any](callback func() (T, R, S, error)) bool"
   - "func Try5[T, R, S, Q any](callback func() (T, R, S, Q, error)) bool"
   - "func Try6[T, R, S, Q, U any](callback func() (T, R, S, Q, U, error)) bool"
-playUrl:
+playUrl: https://go.dev/play/p/mTyyWUvn9u4
 variantHelpers:
   - core#error-handling#try
   - core#error-handling#tryx

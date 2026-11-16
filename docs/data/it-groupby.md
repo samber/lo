@@ -1,18 +1,18 @@
 ---
 name: GroupBy
 slug: groupby
-sourceRef: it/seq.go#L244
-category: it
+sourceRef: it/seq.go#L268
+category: iter
 subCategory: sequence
 signatures:
   - "func GroupBy[T any, U comparable](collection iter.Seq[T], transform func(item T) U) map[U][]T"
-playUrl: "https://go.dev/play/p/2TnGK6-zs"
+playUrl: https://go.dev/play/p/oRIakS89OYy
 variantHelpers:
-  - it#sequence#groupby
+  - iter#sequence#groupby
 similarHelpers:
   - core#slice#groupby
-  - it#sequence#partitionby
-  - it#sequence#groupbymap
+  - iter#sequence#partitionby
+  - iter#sequence#groupbymap
 position: 80
 ---
 

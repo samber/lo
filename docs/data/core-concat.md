@@ -1,14 +1,14 @@
 ---
 name: Concat
 slug: concat
-sourceRef: slice.go#L282
+sourceRef: slice.go#L577
 category: core
 subCategory: slice
-playUrl:
+playUrl: https://go.dev/play/p/Ux2UuR2xpRK
 variantHelpers:
   - core#slice#concat
 similarHelpers:
-  - it#sequence#concat
+  - iter#sequence#concat
   - core#slice#flatten
   - core#intersection#union
 position: 160
@@ -21,6 +21,6 @@ Returns a new slice containing all the elements in collections. Concat conserves
 ```go
 list1 := []int{0, 1}
 list2 := []int{2, 3, 4, 5}
-flat := lo.Flatten(list1, list2)
+combined := lo.Concat(list1, list2)
 // []int{0, 1, 2, 3, 4, 5}
 ```

@@ -1,11 +1,12 @@
 ---
 name: ToSeqPtr
 slug: toseqptr
-sourceRef: it/type_manipulation.go#L11
-category: it
+sourceRef: it/type_manipulation.go#L13
+category: iter
 subCategory: type
 signatures:
   - "func ToSeqPtr[T any](collection iter.Seq[T]) iter.Seq[*T]"
+playUrl: "https://go.dev/play/p/70BcKpDcOKm"
 variantHelpers: []
 similarHelpers:
   - core#type#toptr

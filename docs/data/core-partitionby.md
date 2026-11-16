@@ -1,14 +1,16 @@
 ---
 name: PartitionBy
 slug: partitionby
-sourceRef: slice.go#L240
+sourceRef: slice.go#L508
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/NfQ_nGjkgXW
 variantHelpers:
   - core#slice#partitionby
 similarHelpers:
+  - core#slice#partitionbyerr
   - core#slice#groupby
+  - core#slice#groupbyerr
   - core#slice#groupbymap
   - core#slice#chunk
   - core#map#keyby

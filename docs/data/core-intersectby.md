@@ -1,16 +1,16 @@
 ---
 name: IntersectBy
 slug: intersectby
-sourceRef: intersect.go#L174
+sourceRef: intersect.go#L162
 category: core
 subCategory: intersect
-playUrl:
+playUrl: https://go.dev/play/p/uWF8y2-zmtf
 variantHelpers:
   - core#intersect#intersectby
 similarHelpers:
   - core#intersect#intersect
-  - it#intersect#intersect
-  - it#intersect#intersectby
+  - iter#intersect#intersect
+  - iter#intersect#intersectby
   - core#intersect#difference
   - core#intersect#union
   - core#intersect#without

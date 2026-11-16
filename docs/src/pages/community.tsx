@@ -17,6 +17,8 @@ function Community() {
           <h1>Community</h1>
           <div className="hero--subtitle">
             These are places where you can ask questions and find your soulmate (no promises).
+            <br/>
+            "If you want to go fast, go alone. If you want to go far, go together."
           </div>
           <img className={styles.headerImg} src="/img/go-community.png" />
         </div>

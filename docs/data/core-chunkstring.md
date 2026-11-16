@@ -1,7 +1,7 @@
 ---
 name: ChunkString
 slug: chunkstring
-sourceRef: string.go#L130
+sourceRef: string.go#L248
 category: core
 subCategory: string
 playUrl: https://go.dev/play/p/__FLTuJVz54

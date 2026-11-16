@@ -1,7 +1,7 @@
 ---
 name: NewThrottle
 slug: newthrottle
-sourceRef: retry.go#L349
+sourceRef: retry.go#L347
 category: core
 subCategory: concurrency
 playUrl: https://go.dev/play/p/qQn3fm8Z7jS

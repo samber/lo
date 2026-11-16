@@ -1,7 +1,7 @@
 ---
 name: RangeFrom
 slug: rangefrom
-sourceRef: math.go#L21
+sourceRef: math.go#L23
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/0r6VimXAi9H

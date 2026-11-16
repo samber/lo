@@ -1,12 +1,12 @@
 ---
 name: ChunkString
 slug: chunkstring
-sourceRef: it/string.go#L130
-category: it
+sourceRef: it/string.go#L13
+category: iter
 subCategory: string
-playUrl: "https://go.dev/play/p/Y4mN8bB2cXw"
+playUrl: "https://go.dev/play/p/Bcc5ixTQQoQ"
 variantHelpers:
-  - it#string#chunkstring
+  - iter#string#chunkstring
 similarHelpers:
   - core#string#chunkstring
 position: 0

@@ -1,7 +1,7 @@
 ---
 name: LastOrEmpty
 slug: lastorempty
-sourceRef: find.go#L598
+sourceRef: find.go#L901
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/ul45Z0y2EFO

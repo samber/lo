@@ -1,7 +1,7 @@
 ---
 name: Sample
 slug: sample
-sourceRef: find.go#L662
+sourceRef: find.go#L966
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/vCcSJbh5s6l

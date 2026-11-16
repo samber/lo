@@ -1,10 +1,10 @@
 ---
 name: Times
 slug: times
-sourceRef: parallel/slice.go#L49
+sourceRef: parallel/slice.go#L50
 category: parallel
 subCategory: slice
-playUrl: ""
+playUrl: https://go.dev/play/p/ZNnWNcJ4Au-
 similarHelpers:
   - core#slice#times
 position: 20

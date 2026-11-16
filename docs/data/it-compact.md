@@ -1,13 +1,13 @@
 ---
 name: Compact
 slug: compact
-sourceRef: it/seq.go#L699
-category: it
+sourceRef: it/seq.go#L933
+category: iter
 subCategory: slice
 signatures:
   - "func Compact[T comparable, I ~func(func(T) bool)](collection I) I"
 variantHelpers:
-  - it#slice#compact
+  - iter#slice#compact
 similarHelpers:
   - core#slice#compact
 position: 192

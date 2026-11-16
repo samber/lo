@@ -1,18 +1,18 @@
 ---
 name: Keys
 slug: keys
-sourceRef: it/map.go#L11
-category: it
+sourceRef: it/map.go#L12
+category: iter
 subCategory: map
 signatures:
   - "func Keys[K comparable, V any](in ...map[K]V) iter.Seq[K]"
 playUrl: "https://go.dev/play/p/Fu7h-eW18QM"
 variantHelpers:
-  - it#map#keys
+  - iter#map#keys
 similarHelpers:
   - core#slice#keys
-  - it#map#values
-  - it#map#uniqkeys
+  - iter#map#values
+  - iter#map#uniqkeys
 position: 0
 ---
 

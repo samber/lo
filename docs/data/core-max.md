@@ -1,10 +1,10 @@
 ---
 name: Max
 slug: max
-sourceRef: find.go#L410
+sourceRef: find.go#L599
 category: core
 subCategory: find
-playUrl: https://go.dev/play/p/r6e-Z8JozS8
+playUrl: https://go.dev/play/p/wYvG8gRRFw-
 variantHelpers:
   - core#find#max
 similarHelpers:

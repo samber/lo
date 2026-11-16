@@ -1,18 +1,18 @@
 ---
 name: RangeFrom
 slug: rangefrom
-sourceRef: it/math.go#L25
-category: it
+sourceRef: it/math.go#L28
+category: iter
 subCategory: math
 signatures:
   - "func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum int) iter.Seq[T]"
 playUrl: "https://go.dev/play/p/WHP_NI5scj9"
 variantHelpers:
-  - it#math#rangefrom
+  - iter#math#rangefrom
 similarHelpers:
   - core#slice#rangefrom
-  - it#math#range
-  - it#math#rangewithsteps
+  - iter#math#range
+  - iter#math#rangewithsteps
 position: 10
 ---
 

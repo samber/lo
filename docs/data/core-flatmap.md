@@ -1,14 +1,16 @@
 ---
 name: FlatMap
 slug: flatmap
-sourceRef: slice.go#L74
+sourceRef: slice.go#L110
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/pFCF5WVB225
 variantHelpers:
   - core#slice#flatmap
 similarHelpers:
+  - core#slice#flatmaperr
   - core#slice#map
+  - core#slice#maperr
   - parallel#slice#map
   - mutable#slice#map
   - core#slice#filtermap

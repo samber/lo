@@ -1,7 +1,7 @@
 ---
 name: FromPairs
 slug: frompairs
-sourceRef: map.go#L214
+sourceRef: map.go#L250
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/oIr5KHFGCEN

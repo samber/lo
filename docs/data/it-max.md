@@ -1,18 +1,18 @@
 ---
 name: Max
 slug: max
-sourceRef: it/find.go#L295
-category: it
+sourceRef: it/find.go#L312
+category: iter
 subCategory: find
 signatures:
   - "func Max[T constraints.Ordered](collection iter.Seq[T]) T"
-playUrl: "https://go.dev/play/p/9GaTX3-zf"
+playUrl: https://go.dev/play/p/C2ZtW2bsBZ6
 variantHelpers:
-  - it#find#max
+  - iter#find#max
 similarHelpers:
   - core#slice#max
-  - it#find#min
-  - it#find#maxby
+  - iter#find#min
+  - iter#find#maxby
 position: 110
 ---
 

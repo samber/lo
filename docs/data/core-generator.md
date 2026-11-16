@@ -1,7 +1,7 @@
 ---
 name: Generator
 slug: generator
-sourceRef: channel.go#L18
+sourceRef: channel.go#L191
 category: core
 subCategory: channel
 signatures:
@@ -9,7 +9,7 @@ signatures:
 similarHelpers:
   - core#channel#slicetochannel
   - core#channel#fanin
-  - it#channel#seqtochannel
+  - iter#channel#seqtochannel
 position: 253
 ---
 

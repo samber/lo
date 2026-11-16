@@ -1,14 +1,14 @@
 ---
 name: Repeat
 slug: repeat
-sourceRef: it/seq.go#L384
-category: it
+sourceRef: it/seq.go#L504
+category: iter
 subCategory: sequence
 signatures:
   - "func Repeat[T lo.Clonable[T]](count int, initial T) iter.Seq[T]"
-playUrl:
+playUrl: https://go.dev/play/p/xs-aq0p_uDP
 variantHelpers:
-  - it#slice#repeatby
+  - iter#sequence#repeatby
 similarHelpers:
   - core#slice#repeat
   - core#slice#repeatby

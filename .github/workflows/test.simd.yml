@@ -1,0 +1,48 @@
+name: Tests (SIMD)
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'exp/simd/**'
+  pull_request:
+    paths:
+      - 'exp/simd/**'
+
+env:
+  GOEXPERIMENT: simd
+
+jobs:
+  test-simd:
+    strategy:
+      fail-fast: false
+      matrix:
+        # The simd package is portable (amd64 AVX/AVX2/AVX512, arm64 NEON, pure-Go emulation
+        # elsewhere), so it is tested on both amd64 and arm64 hardware, not just one.
+        runs-on:
+          - ubicloud-standard-2
+          - ubicloud-standard-2-arm
+        go:
+          - "1.27"
+          - "stable" # for future versions
+
+    name: ${{ matrix.runs-on }} / go ${{ matrix.go }}
+    runs-on: ${{ matrix.runs-on }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Test
+        run: make test
+
+      - name: Benchmark
+        if: matrix.go == 'stable'
+        run: |
+          cd exp/simd/
+          GOEXPERIMENT=simd go test -run=^Benchmark -benchmem -bench ./...

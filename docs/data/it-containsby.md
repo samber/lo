@@ -1,14 +1,14 @@
 ---
 name: ContainsBy
 slug: containsby
-sourceRef: it/intersect.go#L17
-category: it
+sourceRef: it/intersect.go#L20
+category: iter
 subCategory: intersect
 signatures:
   - "func ContainsBy[T any](collection iter.Seq[T], predicate func(item T) bool) bool"
-playUrl: "https://go.dev/play/p/2edj7hH3TS2"
+playUrl: https://go.dev/play/p/m86Cpsoyv8k
 variantHelpers:
-  - it#intersect#containsby
+  - iter#intersect#containsby
 similarHelpers:
   - core#slice#containsby
 position: 650

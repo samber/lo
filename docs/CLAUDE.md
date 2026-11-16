@@ -60,6 +60,16 @@ position: 0
   - Cross-references to helpers that users might want to consider as alternatives
 - **position**: Position in the list (0, 10, 20, 30...). Order must follow the order in source code. Helpers are grouped by category+sub-category and displayed on a page. Position number is reset for each page.
 
+## Keeping sourceRef in Sync
+
+The `sourceRef` field (format `file.go#L123`) points to a specific line number in the Go source. Any change to a `.go` file (adding, removing, or reordering functions) shifts line numbers for everything below the change in that file, which can make existing `sourceRef` values stale — not just for the function being edited, but for every other documented helper in the same file.
+
+Whenever Go source code is modified:
+
+1. Run `gopls symbols <file>` for every changed `.go` file to list all symbols (functions/methods/types) with their current line numbers.
+2. Cross-reference each symbol against the `sourceRef` fields in `docs/data/*.md` files that document helpers from that file.
+3. Update any `sourceRef` whose line number no longer matches.
+
 ## Content Structure
 
 After the frontmatter, include:
@@ -88,6 +98,7 @@ Use `variantHelpers` for different versions of the **same helper function**:
 ```yaml
 variantHelpers:
   - core#slice#map        # func Map[T, R]([]T, func(T, int) R) []R
+  - core#slice#maperr     # func MapErr[T, R]([]T, func(T, int) (R, error)) ([]R, error)
   - core#slice#mapi       # func MapI[T, R]([]T, func(T, int) R) []R (with index)
   - core#slice#mapwithcontext  # func MapWithContext[T, R]([]T, func(T, int, context.Context) R, context.Context) []R
 ```
@@ -194,43 +205,100 @@ Use these established subCategories:
 - For function variants, use consistent suffixes:
   - `F` suffix for function-based versions (lazy evaluation)
   - `I` suffix for variants having `index int` argument in predicate callback
+  - `Err` suffix for variants returning an error in predicate callback
   - `WithContext` suffix when context.Context is provided
   - `X` suffix for helpers with varying arguments (eg: MustX: Must2, Must3, Must4...)
 
 ## Go Playground Examples
 
-Every helper must have a working Go Playground example:
-1. Create a minimal, self-contained example
-2. Use realistic but simple data
-3. Include the expected result as a comment
-4. Test the example to ensure it works
+Every helper must have a working Go Playground example linked in two places:
 
-When creating the go playground examples, please run it to be sure it compiles and returns the expected output. If invalid, loop until it works.
+1. **Source code**: `// Play: <url>` comment on the last line of the doc block, right before the `func` keyword
+2. **Doc file**: `playUrl: <url>` field in the YAML frontmatter of `docs/data/<category>-<slug>.md`
 
-Add these examples in the source code comments, on top of helpers, with a syntax like `// Play: <url>`.
+### Creating a New Playground Example
 
-If the documentation is created at the same time of the helper source code, then the Go playground execution might fail, since we need to merge+release the source code first to make this new helper available to Go playground compiler. In that case, skip the creation of the example and set no URL.
+#### Step 1: Write the Example Code
 
-## Validation Scripts
+Write a minimal, self-contained `main.go` that demonstrates the helper. Guidelines:
 
-Run these scripts to validate your documentation:
+- Use realistic but simple data
+- Print the result with `fmt.Println` so the output is visible
+- Include edge cases when useful (e.g., empty input, error case)
+- For `Err` variants, show both a success and an error case
+- For time-based helpers, use `time.Date()` for deterministic output
+- For random helpers (`SampleBy`, `SamplesBy`), use `rand.New(rand.NewSource(42))` for reproducible output
 
-```bash
-# Check cross-references
-node scripts/check-cross-references.js
+#### Step 2: Import Conventions
 
-# Check for duplicates in categories
-node scripts/check-duplicates-in-category.js
+Use the correct import path depending on the package:
 
-# Check filename matches frontmatter
-node scripts/check-filename-matches-frontmatter.js
+```go
+// Core helpers
+import "github.com/samber/lo"
+// Usage: lo.Map(...)
 
-# Check for similar existing helpers
-node scripts/check-similar-exists.js
+// Iterator helpers (it/ package, requires Go 1.23+)
+import (
+    "slices"
+    "github.com/samber/lo/it"
+)
+// Usage: slices.Collect(it.Map(...))
+// Convert slices to iterators: slices.Values([]int{1, 2, 3})
 
-# Check for similar keys in directory
-node scripts/check-similar-keys-exist-in-directory.js
+// Parallel helpers
+import lop "github.com/samber/lo/parallel"
+// Usage: lop.Map(...)
 ```
+
+#### Step 3: Run and Share via Go Playground
+
+Use the `go-playground` MCP tool to execute the example and get a shareable URL:
+
+```
+mcp__go-playground__run_and_share_go_code(code: "<your code>")
+```
+
+This compiles the code on go.dev/play, runs it, and returns:
+- The program output (to verify correctness)
+- A shareable URL like `https://go.dev/play/p/XXXXXXX`
+
+If the output doesn't match expectations, fix the code and re-run until it produces the correct result.
+
+#### Step 4: Add the URL to Source Code
+
+Add a `// Play:` comment as the **last line** of the function's doc comment block:
+
+```go
+// Map manipulates a slice and transforms it to a slice of another type.
+// Play: https://go.dev/play/p/refNB9ZTIGo
+func Map[T any, R any](collection []T, iteratee func(item T, index int) R) []R {
+```
+
+#### Step 5: Add the URL to Documentation
+
+Set the `playUrl` field in the corresponding `docs/data/*.md` file:
+
+```yaml
+---
+name: Map
+slug: map
+playUrl: https://go.dev/play/p/refNB9ZTIGo
+...
+---
+```
+
+### Troubleshooting
+
+**First-run timeouts**: The Go Playground may timeout on the first execution if `github.com/samber/lo` hasn't been cached yet. Simply retry — subsequent runs succeed because the module is cached.
+
+**New helpers not yet released**: If documentation is created at the same time as the helper source code, the Go Playground cannot compile it because the module version hasn't been published yet. In that case, skip the playground example and leave `playUrl` empty. Create the example after the next release.
+
+**SIMD helpers**: Helpers in `exp/simd/` require the `goexperiment.simd` build tag (Go 1.27+), which the Go Playground does not support. These helpers cannot have playground examples.
+
+### Bulk Verification
+
+To verify all playground URLs compile, you can use `mcp__go-playground__execute_go_playground_url` to re-run an existing URL and check the output. To read the source code of an existing playground, use `mcp__go-playground__read_go_playground_url`.
 
 ## Example: Complete File
 

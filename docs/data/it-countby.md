@@ -1,14 +1,14 @@
 ---
 name: CountBy
 slug: countby
-sourceRef: it/seq.go#L325
-category: it
+sourceRef: it/seq.go#L841
+category: iter
 subCategory: find
 signatures:
   - "func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int"
-playUrl:
+playUrl: https://go.dev/play/p/m6G0o3huCOG
 variantHelpers:
-  - it#find#count
+  - iter#sequence#count
 similarHelpers:
   - core#slice#countby
   - core#slice#count

@@ -1,7 +1,7 @@
 ---
 name: HasSuffix
 slug: hassuffix
-sourceRef: find.go#L57
+sourceRef: find.go#L56
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/bJeLetQNAON

@@ -1,14 +1,15 @@
 ---
 name: TrimLast
 slug: trimlast
-sourceRef: it/seq.go#L778
-category: it
+sourceRef: it/seq.go#L1121
+category: iter
 subCategory: string
 signatures:
   - "func TrimLast[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I"
+playUrl: https://go.dev/play/p/GQLhnaeW0gd
 variantHelpers:
-  - it#string#trim
-  - it#string#trimfirst
+  - iter#string#trim
+  - iter#string#trimfirst
 similarHelpers: []
 position: 264
 ---

@@ -1,7 +1,7 @@
 ---
 name: UnzipByX
 slug: unzipbyx
-sourceRef: tuples.go#L698
+sourceRef: tuples.go#L908
 category: core
 subCategory: tuple
 signatures:
@@ -22,6 +22,7 @@ similarHelpers:
   - core#tuple#zipx
   - core#tuple#zipbyx
   - core#tuple#unzipx
+  - core#tuple#unzipbyerrx
   - core#slice#map
   - core#slice#filtermap
 position: 40

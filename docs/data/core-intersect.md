@@ -1,7 +1,7 @@
 ---
 name: Intersect
 slug: intersect
-sourceRef: intersect.go#L103
+sourceRef: intersect.go#L119
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/uuElL9X9e58
@@ -9,8 +9,8 @@ variantHelpers:
   - core#intersect#intersect
 similarHelpers:
   - core#intersect#intersectby
-  - it#intersect#intersect
-  - it#intersect#intersectby
+  - iter#intersect#intersect
+  - iter#intersect#intersectby
   - core#intersect#difference
   - core#intersect#union
   - core#intersect#without

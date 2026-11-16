@@ -1,8 +1,8 @@
 ---
 name: DropLastWhile
 slug: droplastwhile
-sourceRef: it/seq.go#L180
-category: it
+sourceRef: it/seq.go#L687
+category: iter
 subCategory: sequence
 signatures:
   - "func DropLastWhile[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I"

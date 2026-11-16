@@ -1,8 +1,8 @@
 ---
 name: CrossJoinX
 slug: crossjoinx
-sourceRef: it/tuples.go#L370
-category: it
+sourceRef: it/tuples.go#L363
+category: iter
 subCategory: tuple
 signatures:
   - "func CrossJoin2[T1, T2 any](list1 iter.Seq[T1], list2 iter.Seq[T2]) iter.Seq[lo.Tuple2[T1, T2]]"
@@ -13,13 +13,13 @@ signatures:
   - "func CrossJoin7[T1, T2, T3, T4, T5, T6, T7 any](list1 iter.Seq[T1], list2 iter.Seq[T2], list3 iter.Seq[T3], list4 iter.Seq[T4], list5 iter.Seq[T5], list6 iter.Seq[T6], list7 iter.Seq[T7]) iter.Seq[lo.Tuple7[T1, T2, T3, T4, T5, T6, T7]]"
   - "func CrossJoin8[T1, T2, T3, T4, T5, T6, T7, T8 any](list1 iter.Seq[T1], list2 iter.Seq[T2], list3 iter.Seq[T3], list4 iter.Seq[T4], list5 iter.Seq[T5], list6 iter.Seq[T6], list7 iter.Seq[T7], list8 iter.Seq[T8]) iter.Seq[lo.Tuple8[T1, T2, T3, T4, T5, T6, T7, T8]]"
   - "func CrossJoin9[T1, T2, T3, T4, T5, T6, T7, T8, T9 any](list1 iter.Seq[T1], list2 iter.Seq[T2], list3 iter.Seq[T3], list4 iter.Seq[T4], list5 iter.Seq[T5], list6 iter.Seq[T6], list7 iter.Seq[T7], list8 iter.Seq[T8], list9 iter.Seq[T9]) iter.Seq[lo.Tuple9[T1, T2, T3, T4, T5, T6, T7, T8, T9]]"
-playUrl: "https://go.dev/play/p/4XrQKOk-vw"
+playUrl: https://go.dev/play/p/OFe8xjZFjWU
 variantHelpers:
-  - it#tuple#crossjoinx
+  - iter#tuple#crossjoinx
 similarHelpers:
   - core#tuple#crossjoinx
-  - it#tuple#zipx
-  - it#tuple#crossjoinbyx
+  - iter#tuple#zipx
+  - iter#tuple#crossjoinbyx
 position: 10
 ---
 

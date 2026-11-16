@@ -1,11 +1,12 @@
 ---
 name: TrimPrefix
 slug: trimprefix
-sourceRef: it/seq.go#L778
-category: it
+sourceRef: it/seq.go#L1082
+category: iter
 subCategory: string
 signatures:
   - "func TrimPrefix[T comparable, I ~func(func(T) bool)](collection I, prefix []T) I"
+playUrl: https://go.dev/play/p/Pce4zSPnThY
 variantHelpers: []
 similarHelpers:
   - core#string#trimprefix

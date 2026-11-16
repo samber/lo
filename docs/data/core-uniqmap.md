@@ -1,7 +1,7 @@
 ---
 name: UniqMap
 slug: uniqmap
-sourceRef: slice.go#L38
+sourceRef: slice.go#L73
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/fygzLBhvUdB
@@ -10,6 +10,8 @@ variantHelpers:
 similarHelpers:
   - core#slice#uniq
   - core#slice#uniqby
+  - core#slice#isuniq
+  - core#slice#isuniqby
   - core#slice#map
   - core#slice#filtermap
 position: 20

@@ -1,11 +1,12 @@
 ---
 name: CountValuesBy
 slug: countvaluesby
-sourceRef: it/seq.go#L720
-category: it
+sourceRef: it/seq.go#L864
+category: iter
 subCategory: slice
 signatures:
   - "func CountValuesBy[T any, U comparable](collection iter.Seq[T], transform func(item T) U) map[U]int"
+playUrl: https://go.dev/play/p/gnr_MPhYCHX
 variantHelpers: []
 similarHelpers:
   - core#slice#countvaluesby

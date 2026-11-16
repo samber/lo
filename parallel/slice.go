@@ -46,6 +46,7 @@ func ForEach[T any](collection []T, callback func(item T, index int)) {
 // Times invokes the iteratee n times, returning a slice of the results of each invocation.
 // The iteratee is invoked with index as argument.
 // `iteratee` is called in parallel.
+// Play: https://go.dev/play/p/ZNnWNcJ4Au-
 func Times[T any](count int, iteratee func(index int) T) []T {
 	result := make([]T, count)
 
@@ -70,6 +71,7 @@ func Times[T any](count int, iteratee func(index int) T) []T {
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // The order of grouped values is determined by the order they occur in the collection.
 // `iteratee` is called in parallel.
+// Play: https://go.dev/play/p/EkyvA0gw4dj
 func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) map[U]Slice {
 	result := map[U]Slice{}
 
@@ -89,6 +91,7 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 // of running each element of collection through iteratee.
 // The order of groups is determined by their first appearance in the collection.
 // `iteratee` is called in parallel.
+// Play: https://go.dev/play/p/GwBQdMgx2nC
 func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) K) []Slice {
 	result := []Slice{}
 	seen := map[K]int{}

@@ -1,0 +1,247 @@
+package benchmark
+
+import (
+	"strconv"
+	"testing"
+
+	"github.com/samber/lo"
+)
+
+func BenchmarkContains(b *testing.B) {
+	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
+		ints := genSliceInt(n)
+		target := ints[n-1]
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Contains(ints, target)
+			}
+		})
+	}
+}
+
+func BenchmarkContainsBy(b *testing.B) {
+	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
+		ints := genSliceInt(n)
+		target := ints[n-1]
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.ContainsBy(ints, func(v int) bool { return v == target })
+			}
+		})
+	}
+}
+
+func BenchmarkEvery(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		subset := ints[:n/2]
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Every(ints, subset)
+			}
+		})
+		// small_k1: tiny subset against a large collection, the asymmetric regime
+		// where building a map of the whole collection wastes an O(n) allocation.
+		smallSubset := ints[:1]
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Every(ints, smallSubset)
+			}
+		})
+	}
+}
+
+func BenchmarkEveryBy(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.EveryBy(ints, func(v int) bool { return v >= 0 })
+			}
+		})
+	}
+}
+
+func BenchmarkSome(b *testing.B) {
+	for _, n := range lengths {
+		if n == 0 {
+			continue
+		}
+		ints := genSliceInt(n)
+		subset := []int{ints[n-1]}
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Some(ints, subset)
+			}
+		})
+	}
+}
+
+func BenchmarkSomeBy(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.SomeBy(ints, func(v int) bool { return v < 0 })
+			}
+		})
+	}
+}
+
+func BenchmarkNone(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		subset := []int{-1, -2, -3}
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.None(ints, subset)
+			}
+		})
+	}
+}
+
+func BenchmarkNoneBy(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.NoneBy(ints, func(v int) bool { return v < 0 })
+			}
+		})
+	}
+}
+
+func BenchmarkIntersect(b *testing.B) {
+	for _, n := range lengths {
+		a := genSliceInt(n)
+		c := genSliceInt(n)
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Intersect(a, c)
+			}
+		})
+	}
+
+	// small two-list sub-cases (product <= 64) exercise the linear-scan fast path
+	for _, n := range []int{2, 4, 8} {
+		a := genSliceInt(n)
+		c := genSliceInt(n)
+		b.Run("small_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Intersect(a, c)
+			}
+		})
+	}
+}
+
+func BenchmarkIntersectBy(b *testing.B) {
+	for _, n := range lengths {
+		a := genSliceInt(n)
+		c := genSliceInt(n)
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.IntersectBy(func(v int) int { return v }, a, c)
+			}
+		})
+	}
+}
+
+func BenchmarkUnion(b *testing.B) {
+	for _, n := range lengths {
+		a := genSliceInt(n)
+		c := genSliceInt(n)
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Union(a, c)
+			}
+		})
+	}
+
+	// small: total element count within the small-scan threshold (two 4-element lists).
+	smallA := []int{1, 2, 3, 4}
+	smallC := []int{3, 4, 5, 6}
+	b.Run("small", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = lo.Union(smallA, smallC)
+		}
+	})
+}
+
+func BenchmarkWithout(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Without(ints, 1, 2, 3, 4, 5)
+			}
+		})
+		// small_k1: single exclude value, the dominant real-world variadic call shape.
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.Without(ints, 1)
+			}
+		})
+	}
+}
+
+func BenchmarkWithoutBy(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.WithoutBy(ints, func(v int) int { return v % 100 }, 1, 2, 3, 4, 5)
+			}
+		})
+		// small_k1: single exclude value, the dominant real-world variadic call shape.
+		b.Run("small_k1_"+strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.WithoutBy(ints, func(v int) int { return v % 100 }, 1)
+			}
+		})
+	}
+}
+
+func BenchmarkWithoutEmpty(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		// sprinkle some zeroes
+		for j := 0; j < n/10; j++ {
+			ints[j*10] = 0
+		}
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.WithoutEmpty(ints) //nolint:staticcheck
+			}
+		})
+	}
+}
+
+func BenchmarkWithoutNth(b *testing.B) {
+	for _, n := range lengths {
+		ints := genSliceInt(n)
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.WithoutNth(ints, 0, n/2, n-1)
+			}
+		})
+	}
+}
+
+func BenchmarkElementsMatch(b *testing.B) {
+	for _, n := range lengths {
+		a := genSliceInt(n)
+		c := make([]int, n)
+		copy(c, a)
+		b.Run(strconv.Itoa(n), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				_ = lo.ElementsMatch(a, c)
+			}
+		})
+	}
+}

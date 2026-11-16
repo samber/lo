@@ -1,18 +1,18 @@
 ---
 name: FromEntries
 slug: fromentries
-sourceRef: it/map.go#L96
-category: it
+sourceRef: it/map.go#L111
+category: iter
 subCategory: map
 signatures:
   - "func FromEntries[K comparable, V any](entries ...iter.Seq2[K, V]) map[K]V"
-playUrl: "https://go.dev/play/p/K3wL9j7TmXs"
+playUrl: https://go.dev/play/p/MgEF1J5-tuK
 variantHelpers:
-  - it#map#fromentries
-  - it#map#frompairs
+  - iter#map#fromentries
+  - iter#map#frompairs
 similarHelpers:
   - core#slice#fromentries
-  - it#map#entries
+  - iter#map#entries
 position: 30
 ---
 

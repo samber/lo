@@ -1,7 +1,7 @@
 ---
 name: Window
 slug: window
-sourceRef: slice.go#L289
+sourceRef: slice.go#L584
 category: core
 subCategory: slice
 variantHelpers:
@@ -11,6 +11,7 @@ similarHelpers:
   - core#slice#chunk
   - core#slice#partitionby
   - core#slice#flatten
+  - iter#sequence#window
 position: 145
 signatures:
   - "func Window[T any, Slice ~[]T](collection Slice, size int) []Slice"

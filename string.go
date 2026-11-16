@@ -2,15 +2,15 @@ package lo
 
 import (
 	"math"
-	"regexp"
 	"strings"
+	"sync"
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/samber/lo/internal/xrand"
-
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+
+	"github.com/samber/lo/internal/xrand"
 )
 
 var (
@@ -23,12 +23,56 @@ var (
 	SpecialCharset          = []rune("!@#$%^&*()_+-=[]{}|;':\",./<>?")
 	AllCharset              = append(AlphanumericCharset, SpecialCharset...)
 
-	// bearer:disable go_lang_permissive_regex_validation
-	splitWordReg = regexp.MustCompile(`([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`)
-	// bearer:disable go_lang_permissive_regex_validation
-	splitNumberLetterReg = regexp.MustCompile(`([0-9])([a-zA-Z])`)
-	maximumCapacity      = math.MaxInt>>1 + 1
+	maximumCapacity = math.MaxInt>>1 + 1
 )
+
+// Constructing a Caser is far more expensive than using one, and a Caser is not safe for
+// concurrent use, so they cannot be plain package-level singletons.
+//
+// English gets dedicated pools so the default (non-WithLanguage) functions pay zero sync.Map
+// overhead. Other languages share pools lazily created in titleCaserPools / lowerCaserPools.
+var (
+	englishTitleCaserPool = sync.Pool{New: func() any { c := cases.Title(language.English); return &c }}
+	englishLowerCaserPool = sync.Pool{New: func() any { c := cases.Lower(language.English); return &c }}
+
+	titleCaserPools sync.Map // map[string]*sync.Pool  (BCP 47 tag → pool of *cases.Caser)
+	lowerCaserPools sync.Map // map[string]*sync.Pool  (BCP 47 tag → pool of *cases.Caser)
+)
+
+// acquireTitleCaser returns a pool and a ready-to-use title Caser for the given language tag.
+// Caller must return the Caser: defer pool.Put(c).
+// Load-before-LoadOrStore avoids allocating a throwaway *sync.Pool on every call once the
+// entry is warm (LoadOrStore evaluates its value argument unconditionally).
+func acquireTitleCaser(tag language.Tag) (*sync.Pool, *cases.Caser) {
+	key := tag.String()
+	if v, ok := titleCaserPools.Load(key); ok {
+		pool, _ := v.(*sync.Pool)         // always *sync.Pool: we only ever store that type
+		c, _ := pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+		return pool, c
+	}
+	p := &sync.Pool{New: func() any { c := cases.Title(tag); return &c }}
+	actual, _ := titleCaserPools.LoadOrStore(key, p)
+	pool, _ := actual.(*sync.Pool)    // always *sync.Pool: we only ever store that type
+	c, _ := pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+	return pool, c
+}
+
+// acquireLowerCaser returns a pool and a ready-to-use lower Caser for the given language tag.
+// Caller must return the Caser: defer pool.Put(c).
+// Same Load-before-LoadOrStore pattern as acquireTitleCaser.
+func acquireLowerCaser(tag language.Tag) (*sync.Pool, *cases.Caser) {
+	key := tag.String()
+	if v, ok := lowerCaserPools.Load(key); ok {
+		pool, _ := v.(*sync.Pool)         // always *sync.Pool: we only ever store that type
+		c, _ := pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+		return pool, c
+	}
+	p := &sync.Pool{New: func() any { c := cases.Lower(tag); return &c }}
+	actual, _ := lowerCaserPools.LoadOrStore(key, p)
+	pool, _ := actual.(*sync.Pool)    // always *sync.Pool: we only ever store that type
+	c, _ := pool.Get().(*cases.Caser) // Pool.New always returns *cases.Caser
+	return pool, c
+}
 
 // RandomString return a random string.
 // Play: https://go.dev/play/p/rRseOQVVum4
@@ -100,33 +144,102 @@ func nearestPowerOfTwo(capacity int) int {
 	return n + 1
 }
 
-// Substring return part of a string.
-// Play: https://go.dev/play/p/TQlxQi82Lu1
+// Substring extracts a substring from a string with Unicode character (rune) awareness.
+// offset - starting position of the substring (can be positive, negative, or zero)
+// length - number of characters to extract
+// With positive offset, counting starts from the beginning of the string
+// With negative offset, counting starts from the end of the string
+// Play: https://go.dev/play/p/emzCC9zBjHu
 func Substring[T ~string](str T, offset int, length uint) T {
-	rs := []rune(str)
-	size := len(rs)
+	str = substring(str, offset, length)
 
-	if offset < 0 {
-		offset = size + offset
-		if offset < 0 {
-			offset = 0
+	// Validate UTF-8 and fix invalid sequences
+	if !utf8.ValidString(string(str)) {
+		// Convert to []rune to replicate behavior with duplicated �
+		str = T([]rune(str))
+	}
+
+	// Remove null bytes from result
+	return T(strings.ReplaceAll(string(str), "\x00", ""))
+}
+
+func substring[T ~string](str T, offset int, length uint) T {
+	switch {
+	// Empty length or offset beyond string bounds - return empty string
+	case length == 0, offset >= len(str):
+		return ""
+
+	// Positive offset - count from the beginning
+	case offset > 0:
+		// Skip offset runes from the start
+		for i, r := range str {
+			if offset--; offset == 0 {
+				str = str[i+utf8.RuneLen(r):]
+				break
+			}
 		}
-	}
 
-	if offset >= size {
-		return Empty[T]()
-	}
+		// If couldn't skip enough runes - string is shorter than offset
+		if offset != 0 {
+			return ""
+		}
 
-	if length > uint(size)-uint(offset) {
-		length = uint(size - offset)
-	}
+		// If remaining string is shorter than or equal to length - return it entirely
+		if uint(len(str)) <= length {
+			return str
+		}
 
-	return T(strings.ReplaceAll(string(rs[offset:offset+int(length)]), "\x00", ""))
+		// Otherwise proceed to trimming by length
+		fallthrough
+
+	// Zero offset or offset less than minus string length - start from beginning
+	case offset < -len(str), offset == 0:
+		// Count length runes from the start
+		for i := range str {
+			if length == 0 {
+				return str[:i]
+			}
+			length--
+		}
+
+		return str
+
+	// Negative offset - count from the end of string
+	default: // -len(str) < offset < 0
+		// Helper function to move backward through runes
+		backwardPos := func(end int, count uint) (start int) {
+			for {
+				_, i := utf8.DecodeLastRuneInString(string(str[:end]))
+				end -= i
+
+				if count--; count == 0 || end == 0 {
+					return end
+				}
+			}
+		}
+
+		offset := uint(-offset)
+
+		// If offset is less than or equal to length - take from position to end
+		if offset <= length {
+			start := backwardPos(len(str), offset)
+			return str[start:]
+		}
+
+		// Otherwise calculate start and end positions
+		end := backwardPos(len(str), offset-length)
+		start := backwardPos(end, length)
+
+		return str[start:end]
+	}
 }
 
 // ChunkString returns a slice of strings split into groups of length size. If the string can't be split evenly,
 // the final chunk will be the remaining characters.
 // Play: https://go.dev/play/p/__FLTuJVz54
+//
+// Note: lo.ChunkString and lo.Chunk functions behave inconsistently for empty input: lo.ChunkString("", n) returns [""] instead of [].
+// See https://github.com/samber/lo/issues/788
 func ChunkString[T ~string](str T, size int) []T {
 	if size <= 0 {
 		panic("lo.ChunkString: size must be greater than 0")
@@ -152,41 +265,103 @@ func ChunkString[T ~string](str T, size int) []T {
 }
 
 // RuneLength is an alias to utf8.RuneCountInString which returns the number of runes in string.
-// Play: https://go.dev/play/p/tuhgW_lWY8l
+// Play: https://go.dev/play/p/BXT52mBk0zO
 func RuneLength(str string) int {
 	return utf8.RuneCountInString(str)
 }
 
 // PascalCase converts string to pascal case.
-// Play: https://go.dev/play/p/Dy_V_6DUYhe
+// Play: https://go.dev/play/p/uxER7XpRHLB
 func PascalCase(str string) string {
 	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	c, _ := englishTitleCaserPool.Get().(*cases.Caser)
+	defer englishTitleCaserPool.Put(c)
 	for i := range items {
-		items[i] = Capitalize(items[i])
+		items[i] = c.String(items[i])
+	}
+	return strings.Join(items, "")
+}
+
+// PascalCaseWithLanguage converts string to pascal case using language-aware title casing.
+// This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
+func PascalCaseWithLanguage(str string, tag language.Tag) string {
+	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	pool, c := acquireTitleCaser(tag)
+	defer pool.Put(c)
+	for i := range items {
+		items[i] = c.String(items[i])
 	}
 	return strings.Join(items, "")
 }
 
 // CamelCase converts string to camel case.
-// Play: https://go.dev/play/p/Go6aKwUiq59
+// Play: https://go.dev/play/p/4JNDzaMwXkm
 func CamelCase(str string) string {
 	items := Words(str)
-	for i, item := range items {
-		item = strings.ToLower(item)
-		if i > 0 {
-			item = Capitalize(item)
-		}
-		items[i] = item
+	if len(items) == 0 {
+		return ""
+	}
+	lc, _ := englishLowerCaserPool.Get().(*cases.Caser)
+	tc, _ := englishTitleCaserPool.Get().(*cases.Caser)
+	defer englishLowerCaserPool.Put(lc)
+	defer englishTitleCaserPool.Put(tc)
+	items[0] = lc.String(items[0])
+	for i := 1; i < len(items); i++ {
+		items[i] = tc.String(items[i])
+	}
+	return strings.Join(items, "")
+}
+
+// CamelCaseWithLanguage converts string to camel case using language-aware casing.
+// This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
+func CamelCaseWithLanguage(str string, tag language.Tag) string {
+	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	lPool, lc := acquireLowerCaser(tag)
+	tPool, tc := acquireTitleCaser(tag)
+	defer lPool.Put(lc)
+	defer tPool.Put(tc)
+	items[0] = lc.String(items[0])
+	for i := 1; i < len(items); i++ {
+		items[i] = tc.String(items[i])
 	}
 	return strings.Join(items, "")
 }
 
 // KebabCase converts string to kebab case.
-// Play: https://go.dev/play/p/96gT_WZnTVP
+// Play: https://go.dev/play/p/ZBeMB4-pq45
 func KebabCase(str string) string {
 	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	c, _ := englishLowerCaserPool.Get().(*cases.Caser)
+	defer englishLowerCaserPool.Put(c)
 	for i := range items {
-		items[i] = strings.ToLower(items[i])
+		items[i] = c.String(items[i])
+	}
+	return strings.Join(items, "-")
+}
+
+// KebabCaseWithLanguage converts string to kebab case using language-aware lowercasing.
+// This matters for languages such as Turkish where "I" lowercases to "ı" (dotless i), not "i".
+func KebabCaseWithLanguage(str string, tag language.Tag) string {
+	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	pool, c := acquireLowerCaser(tag)
+	defer pool.Put(c)
+	for i := range items {
+		items[i] = c.String(items[i])
 	}
 	return strings.Join(items, "-")
 }
@@ -195,8 +370,28 @@ func KebabCase(str string) string {
 // Play: https://go.dev/play/p/ziB0V89IeVH
 func SnakeCase(str string) string {
 	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	c, _ := englishLowerCaserPool.Get().(*cases.Caser)
+	defer englishLowerCaserPool.Put(c)
 	for i := range items {
-		items[i] = strings.ToLower(items[i])
+		items[i] = c.String(items[i])
+	}
+	return strings.Join(items, "_")
+}
+
+// SnakeCaseWithLanguage converts string to snake case using language-aware lowercasing.
+// This matters for languages such as Turkish where "I" lowercases to "ı" (dotless i), not "i".
+func SnakeCaseWithLanguage(str string, tag language.Tag) string {
+	items := Words(str)
+	if len(items) == 0 {
+		return ""
+	}
+	pool, c := acquireLowerCaser(tag)
+	defer pool.Put(c)
+	for i := range items {
+		items[i] = c.String(items[i])
 	}
 	return strings.Join(items, "_")
 }
@@ -204,47 +399,141 @@ func SnakeCase(str string) string {
 // Words splits string into a slice of its words.
 // Play: https://go.dev/play/p/-f3VIQqiaVw
 func Words(str string) []string {
-	str = splitWordReg.ReplaceAllString(str, `$1$3$5$7 $2$4$6$8$9`)
+	buf := splitWordBoundaries(str)
 	// example: Int8Value => Int 8Value => Int 8 Value
-	str = splitNumberLetterReg.ReplaceAllString(str, "$1 $2")
-	var result strings.Builder
-	result.Grow(len(str))
-	for _, r := range str {
+	buf = splitNumberLetter(buf)
+	return fieldsAlnum(string(buf))
+}
+
+func isASCIILower(c byte) bool  { return 'a' <= c && c <= 'z' }
+func isASCIIUpper(c byte) bool  { return 'A' <= c && c <= 'Z' }
+func isASCIIDigit(c byte) bool  { return '0' <= c && c <= '9' }
+func isASCIILetter(c byte) bool { return isASCIILower(c) || isASCIIUpper(c) }
+
+// splitWordBoundaries inserts a space at case and letter/digit boundaries. It is the
+// manual-scan equivalent of replacing
+// `([a-z])([A-Z0-9])|([a-zA-Z])([0-9])|([0-9])([a-zA-Z])|([A-Z])([A-Z])([a-z])`
+// with `$1$3$5$7 $2$4$6$8$9`, preserving the regexp's non-overlapping
+// leftmost-match consumption.
+func splitWordBoundaries(s string) []byte {
+	out := make([]byte, 0, len(s)+8)
+	i := 0
+	for i < len(s) {
+		c := s[i]
+		if i+1 < len(s) {
+			d := s[i+1]
+			if (isASCIILower(c) && (isASCIIUpper(d) || isASCIIDigit(d))) ||
+				(isASCIILetter(c) && isASCIIDigit(d)) ||
+				(isASCIIDigit(c) && isASCIILetter(d)) {
+				out = append(out, c, ' ', d)
+				i += 2
+				continue
+			}
+			if i+2 < len(s) {
+				if e := s[i+2]; isASCIIUpper(c) && isASCIIUpper(d) && isASCIILower(e) {
+					out = append(out, c, ' ', d, e)
+					i += 3
+					continue
+				}
+			}
+		}
+		out = append(out, c)
+		i++
+	}
+	return out
+}
+
+// splitNumberLetter inserts a space between a digit and a following letter. It is the
+// manual-scan equivalent of replacing `([0-9])([a-zA-Z])` with `$1 $2`,
+// preserving the regexp's non-overlapping leftmost-match consumption.
+func splitNumberLetter(s []byte) []byte {
+	out := make([]byte, 0, len(s)+8)
+	i := 0
+	for i < len(s) {
+		c := s[i]
+		if i+1 < len(s) {
+			if d := s[i+1]; isASCIIDigit(c) && isASCIILetter(d) {
+				out = append(out, c, ' ', d)
+				i += 2
+				continue
+			}
+		}
+		out = append(out, c)
+		i++
+	}
+	return out
+}
+
+// fieldsAlnum returns the maximal runs of unicode letters and digits in s,
+// like strings.Fields after mapping every other rune to a space.
+func fieldsAlnum(s string) []string {
+	count := 0
+	inField := false
+	for _, r := range s {
 		if unicode.IsLetter(r) || unicode.IsDigit(r) {
-			result.WriteRune(r)
+			if !inField {
+				count++
+				inField = true
+			}
 		} else {
-			result.WriteRune(' ')
+			inField = false
 		}
 	}
-	return strings.Fields(result.String())
+
+	fields := make([]string, 0, count)
+	start := -1
+	for i, r := range s {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			if start < 0 {
+				start = i
+			}
+		} else if start >= 0 {
+			fields = append(fields, s[start:i])
+			start = -1
+		}
+	}
+	if start >= 0 {
+		fields = append(fields, s[start:])
+	}
+	return fields
 }
 
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
 // Play: https://go.dev/play/p/uLTZZQXqnsa
 func Capitalize(str string) string {
-	return cases.Title(language.English).String(str)
+	c, _ := englishTitleCaserPool.Get().(*cases.Caser)
+	defer englishTitleCaserPool.Put(c)
+	return c.String(str)
 }
 
-// Ellipsis trims and truncates a string to a specified length **in bytes** and appends an ellipsis
-// if truncated. If the string contains non-ASCII characters (which may occupy multiple bytes in UTF-8),
-// truncating by byte length may split a character in the middle, potentially resulting in garbled output.
+// CapitalizeWithLanguage converts the first character of string to upper case and the remaining to
+// lower case, using language-aware title casing.
+// This matters for languages such as Turkish where the uppercase of "i" is "İ", not "I".
+func CapitalizeWithLanguage(str string, tag language.Tag) string {
+	pool, c := acquireTitleCaser(tag)
+	defer pool.Put(c)
+	return c.String(str)
+}
+
+// Ellipsis trims and truncates a string to a specified length in runes and appends an ellipsis
+// if truncated. The length parameter counts Unicode code points (runes), not bytes, so multi-byte
+// characters such as emoji or CJK ideographs are never split in the middle.
 // Play: https://go.dev/play/p/qE93rgqe1TW
 func Ellipsis(str string, length int) string {
 	str = strings.TrimSpace(str)
 
-	if len(str) > length {
-		if length < 3 {
-			return "..."
+	const ellipsis = "..."
+
+	cutPosition := 0
+	for i := range str {
+		if length == len(ellipsis) {
+			cutPosition = i
 		}
-		return strings.TrimSpace(str[:length-3]) + "..."
+
+		if length--; length < 0 {
+			return strings.TrimSpace(str[:cutPosition]) + ellipsis
+		}
 	}
 
 	return str
-}
-
-// Elipse trims and truncates a string to a specified length and appends an ellipsis if truncated.
-//
-// Deprecated: Use Ellipsis instead.
-func Elipse(str string, length int) string {
-	return Ellipsis(str, length)
 }

@@ -21,13 +21,23 @@ func Keys[K comparable, V any](in ...map[K]V) []K {
 // UniqKeys creates a slice of unique keys in the map.
 // Play: https://go.dev/play/p/TPKAb6ILdHk
 func UniqKeys[K comparable, V any](in ...map[K]V) []K {
+	if len(in) == 0 {
+		return []K{}
+	}
+
+	// The keys of a SINGLE map are already unique, so the dominant single-map call
+	// shape never needs a seen-set at all: just copy the keys out.
+	if len(in) == 1 {
+		return Keys(in[0])
+	}
+
 	size := 0
 	for i := range in {
 		size += len(in[i])
 	}
 
 	seen := make(map[K]struct{}, size)
-	result := make([]K, 0)
+	result := make([]K, 0, size)
 
 	for i := range in {
 		for k := range in[i] {
@@ -76,7 +86,7 @@ func UniqValues[K, V comparable](in ...map[K]V) []V {
 	}
 
 	seen := make(map[V]struct{}, size)
-	result := make([]V, 0)
+	result := make([]V, 0, size)
 
 	for i := range in {
 		for _, v := range in[i] {
@@ -103,7 +113,7 @@ func ValueOr[K comparable, V any](in map[K]V, key K, fallback V) V {
 // PickBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/kdg8GR_QMmf
 func PickBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) bool) Map {
-	r := Map{}
+	r := make(Map, len(in))
 	for k, v := range in {
 		if predicate(k, v) {
 			r[k] = v
@@ -112,10 +122,26 @@ func PickBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, val
 	return r
 }
 
+// PickByErr returns same map type filtered by given predicate.
+// It returns the first error returned by the predicate.
+func PickByErr[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) (bool, error)) (Map, error) {
+	r := make(Map, len(in))
+	for k, v := range in {
+		ok, err := predicate(k, v)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			r[k] = v
+		}
+	}
+	return r, nil
+}
+
 // PickByKeys returns same map type filtered by given keys.
 // Play: https://go.dev/play/p/R1imbuci9qU
 func PickByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
-	r := Map{}
+	r := make(Map, len(keys))
 	for i := range keys {
 		if v, ok := in[keys[i]]; ok {
 			r[keys[i]] = v
@@ -125,9 +151,9 @@ func PickByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
 }
 
 // PickByValues returns same map type filtered by given values.
-// Play: https://go.dev/play/p/1zdzSvbfsJc
+// Play: https://go.dev/play/p/-_PPkSbO1Kc
 func PickByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
-	r := Map{}
+	r := make(Map, len(values))
 
 	seen := Keyify(values)
 	for k, v := range in {
@@ -141,7 +167,7 @@ func PickByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
 // OmitBy returns same map type filtered by given predicate.
 // Play: https://go.dev/play/p/EtBsR43bdsd
 func OmitBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) bool) Map {
-	r := Map{}
+	r := make(Map, len(in))
 	for k, v := range in {
 		if !predicate(k, v) {
 			r[k] = v
@@ -150,10 +176,26 @@ func OmitBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, val
 	return r
 }
 
+// OmitByErr returns same map type filtered by given predicate.
+// It returns the first error returned by the predicate.
+func OmitByErr[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) (bool, error)) (Map, error) {
+	r := make(Map, len(in))
+	for k, v := range in {
+		ok, err := predicate(k, v)
+		if err != nil {
+			return nil, err
+		}
+		if !ok {
+			r[k] = v
+		}
+	}
+	return r, nil
+}
+
 // OmitByKeys returns same map type filtered by given keys.
 // Play: https://go.dev/play/p/t1QjCrs-ysk
 func OmitByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
-	r := Map{}
+	r := make(Map, len(in))
 	for k, v := range in {
 		r[k] = v
 	}
@@ -166,7 +208,7 @@ func OmitByKeys[K comparable, V any, Map ~map[K]V](in Map, keys []K) Map {
 // OmitByValues returns same map type filtered by given values.
 // Play: https://go.dev/play/p/9UYZi-hrs8j
 func OmitByValues[K, V comparable, Map ~map[K]V](in Map, values []V) Map {
-	r := Map{}
+	r := make(Map, len(in))
 
 	seen := Keyify(values)
 	for k, v := range in {
@@ -264,12 +306,7 @@ func ChunkEntries[K comparable, V any](m map[K]V, size int) []map[K]V {
 		return []map[K]V{}
 	}
 
-	chunksNum := count / size
-	if count%size != 0 {
-		chunksNum++
-	}
-
-	result := make([]map[K]V, 0, chunksNum)
+	result := make([]map[K]V, 0, ((count-1)/size)+1)
 
 	for k, v := range m {
 		if len(result) == 0 || len(result[len(result)-1]) == size {
@@ -294,6 +331,22 @@ func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value 
 	return result
 }
 
+// MapKeysErr manipulates map keys and transforms it to a map of another type.
+// It returns the first error returned by the iteratee.
+func MapKeysErr[K comparable, V any, R comparable](in map[K]V, iteratee func(value V, key K) (R, error)) (map[R]V, error) {
+	result := make(map[R]V, len(in))
+
+	for k, v := range in {
+		r, err := iteratee(v, k)
+		if err != nil {
+			return nil, err
+		}
+		result[r] = v
+	}
+
+	return result, nil
+}
+
 // MapValues manipulates map values and transforms it to a map of another type.
 // Play: https://go.dev/play/p/T_8xAfvcf0W
 func MapValues[K comparable, V, R any](in map[K]V, iteratee func(value V, key K) R) map[K]R {
@@ -306,21 +359,53 @@ func MapValues[K comparable, V, R any](in map[K]V, iteratee func(value V, key K)
 	return result
 }
 
+// MapValuesErr manipulates map values and transforms it to a map of another type.
+// It returns the first error returned by the iteratee.
+func MapValuesErr[K comparable, V, R any](in map[K]V, iteratee func(value V, key K) (R, error)) (map[K]R, error) {
+	result := make(map[K]R, len(in))
+
+	for k, v := range in {
+		r, err := iteratee(v, k)
+		if err != nil {
+			return nil, err
+		}
+		result[k] = r
+	}
+
+	return result, nil
+}
+
 // MapEntries manipulates map entries and transforms it to a map of another type.
 // Play: https://go.dev/play/p/VuvNQzxKimT
 func MapEntries[K1 comparable, V1 any, K2 comparable, V2 any](in map[K1]V1, iteratee func(key K1, value V1) (K2, V2)) map[K2]V2 {
 	result := make(map[K2]V2, len(in))
 
-	for k1 := range in {
-		k2, v2 := iteratee(k1, in[k1])
+	for k1, v1 := range in {
+		k2, v2 := iteratee(k1, v1)
 		result[k2] = v2
 	}
 
 	return result
 }
 
+// MapEntriesErr manipulates map entries and transforms it to a map of another type.
+// It returns the first error returned by the iteratee.
+func MapEntriesErr[K1 comparable, V1 any, K2 comparable, V2 any](in map[K1]V1, iteratee func(key K1, value V1) (K2, V2, error)) (map[K2]V2, error) {
+	result := make(map[K2]V2, len(in))
+
+	for k1, v1 := range in {
+		k2, v2, err := iteratee(k1, v1)
+		if err != nil {
+			return nil, err
+		}
+		result[k2] = v2
+	}
+
+	return result, nil
+}
+
 // MapToSlice transforms a map into a slice based on specified iteratee.
-// Play: https://go.dev/play/p/ZuiCZpDt6LD
+// Play: https://go.dev/play/p/4f5hbHyMf5h
 func MapToSlice[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) R) []R {
 	result := make([]R, 0, len(in))
 
@@ -329,6 +414,22 @@ func MapToSlice[K comparable, V, R any](in map[K]V, iteratee func(key K, value V
 	}
 
 	return result
+}
+
+// MapToSliceErr transforms a map into a slice based on specified iteratee.
+// It returns the first error returned by the iteratee.
+func MapToSliceErr[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) (R, error)) ([]R, error) {
+	result := make([]R, 0, len(in))
+
+	for k, v := range in {
+		r, err := iteratee(k, v)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, r)
+	}
+
+	return result, nil
 }
 
 // FilterMapToSlice transforms a map into a slice based on specified iteratee.
@@ -348,11 +449,33 @@ func FilterMapToSlice[K comparable, V, R any](in map[K]V, iteratee func(key K, v
 	return result
 }
 
+// FilterMapToSliceErr transforms a map into a slice based on specified iteratee.
+// The iteratee returns a value, a boolean, and an error. If the boolean is true, the value is added to the result slice.
+// If the boolean is false, the value is not added to the result slice.
+// If an error is returned, iteration stops immediately and returns the error.
+// The order of the keys in the input map is not specified and the order of the keys in the output slice is not guaranteed.
+// Play: https://go.dev/play/p/YjFEORLBWvk
+func FilterMapToSliceErr[K comparable, V, R any](in map[K]V, iteratee func(key K, value V) (R, bool, error)) ([]R, error) {
+	result := make([]R, 0, len(in))
+
+	for k, v := range in {
+		r, ok, err := iteratee(k, v)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			result = append(result, r)
+		}
+	}
+
+	return result, nil
+}
+
 // FilterKeys transforms a map into a slice based on predicate returns true for specific elements.
 // It is a mix of lo.Filter() and lo.Keys().
 // Play: https://go.dev/play/p/OFlKXlPrBAe
 func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) []K {
-	result := make([]K, 0)
+	result := make([]K, 0, len(in))
 
 	for k, v := range in {
 		if predicate(k, v) {
@@ -367,7 +490,7 @@ func FilterKeys[K comparable, V any](in map[K]V, predicate func(key K, value V) 
 // It is a mix of lo.Filter() and lo.Values().
 // Play: https://go.dev/play/p/YVD5r_h-LX-
 func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V) bool) []V {
-	result := make([]V, 0)
+	result := make([]V, 0, len(in))
 
 	for k, v := range in {
 		if predicate(k, v) {
@@ -376,4 +499,48 @@ func FilterValues[K comparable, V any](in map[K]V, predicate func(key K, value V
 	}
 
 	return result
+}
+
+// FilterKeysErr transforms a map into a slice of keys based on predicate that can return an error.
+// It is a mix of lo.Filter() and lo.Keys() with error handling.
+// If the predicate returns true, the key is added to the result slice.
+// If the predicate returns an error, iteration stops immediately and returns the error.
+// The order of the keys in the input map is not specified.
+// Play: https://go.dev/play/p/j2gUQzCTu4t
+func FilterKeysErr[K comparable, V any](in map[K]V, predicate func(key K, value V) (bool, error)) ([]K, error) {
+	result := make([]K, 0, len(in))
+
+	for k, v := range in {
+		ok, err := predicate(k, v)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			result = append(result, k)
+		}
+	}
+
+	return result, nil
+}
+
+// FilterValuesErr transforms a map into a slice of values based on predicate that can return an error.
+// It is a mix of lo.Filter() and lo.Values() with error handling.
+// If the predicate returns true, the value is added to the result slice.
+// If the predicate returns an error, iteration stops immediately and returns the error.
+// The order of the keys in the input map is not specified.
+// Play: https://go.dev/play/p/hKvHlqLzbdE
+func FilterValuesErr[K comparable, V any](in map[K]V, predicate func(key K, value V) (bool, error)) ([]V, error) {
+	result := make([]V, 0, len(in))
+
+	for k, v := range in {
+		ok, err := predicate(k, v)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			result = append(result, v)
+		}
+	}
+
+	return result, nil
 }

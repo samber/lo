@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'lo',
-  tagline: 'A reusable utility library for Go: slices, maps, and more',
+  title: 'samber/lo — Go Generics Utility Library',
+  tagline: 'Type-safe utility library for Go using generics: slices, maps, and more',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -15,24 +15,24 @@ const config: Config = {
       removeLegacyPostBuildHeadAttribute: true,
       useCssCascadeLayers: true,
     },
-    experimental_faster: {
-      swcJsLoader: true,
-      swcJsMinimizer: true,
-      swcHtmlMinimizer: true,
-      lightningCssMinimizer: true,
-      rspackBundler: true,
-      rspackPersistentCache: true,
-      ssgWorkerThreads: true,
-      mdxCrossCompilerCache: true,
-    },
-    experimental_storage: {
-      type: 'localStorage',
-      namespace: true,
+    faster: {
+        swcJsLoader: true,
+        swcJsMinimizer: true,
+        swcHtmlMinimizer: true,
+        lightningCssMinimizer: true,
+        rspackBundler: true,
+        rspackPersistentCache: true,
+        ssgWorkerThreads: true,
+        mdxCrossCompilerCache: true,
     },
   },
+    storage: {
+        type: 'localStorage',
+        namespace: true,
+    },
 
-  // Set the production url of your site here
-  url: 'https://ro.samber.dev',
+    // Set the production url of your site here
+  url: 'https://lo.samber.dev',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -59,10 +59,11 @@ const config: Config = {
   // Optional: Enable hash router for offline support (experimental)
   // Uncomment if you need offline browsing capability
   // router: 'hash',
-  
-  // Future-proofing configurations
+
+    // Future-proofing configurations
   clientModules: [
     require.resolve('./src/theme/prism-include-languages.js'),
+    require.resolve('./src/clientModules/posthog-events.ts'),
   ],
 
   // Even if you don't use internationalization, you can use this field to set
@@ -73,8 +74,24 @@ const config: Config = {
     locales: ['en'],
   },
 
-  headTags: [
-    // DNS prefetch for better performance
+    headTags: [
+	      // SEO
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'msvalidate.01',
+        content: '4576E3F85783A82149A0DB35A150F7EB',
+      },
+    },
+        {
+        tagName: 'script',
+        attributes: {
+            'async': 'true',
+            'src': 'https://analytics.ahrefs.com/analytics.js',
+            'data-key': 'ZlVVDleFCGZPB8Nd2KkKrw'
+        },
+    },
+        // DNS prefetch for better performance
     {
       tagName: 'link',
       attributes: {
@@ -125,14 +142,48 @@ const config: Config = {
         content: '@samuelberthe',
       },
     },
+    // twitter:site complements twitter:creator for card attribution
     {
-      tagName: 'link',
+      tagName: 'meta',
       attributes: {
-        rel: 'canonical',
-        href: 'https://lo.samber.dev',
+        name: 'twitter:site',
+        content: '@samuelberthe',
       },
     },
+    // og:locale signals language/region to crawlers and social platforms
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:locale',
+        content: 'en_US',
+      },
+    },
+    // og:site_name provides branding context in social share cards
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:site_name',
+        content: 'samber/lo',
+      },
+    },
+    // NOTE: do NOT add a global <link rel="canonical"> here.
+    // Docusaurus injects a correct per-page canonical automatically
+    // based on `url` + `baseUrl` + the page path. A static href here
+    // would override every page's canonical to the homepage, causing
+    // Google to treat all docs pages as non-canonical duplicates.
   ],
+
+  customFields: {
+    sponsors: [
+      {
+        name: 'DBOS',
+        url: 'https://www.dbos.dev/?utm_campaign=gh-smbr',
+        title: 'DBOS - Durable workflow orchestration library for Go',
+        logo_light: '/img/sponsors/dbos-black.png',
+        logo_dark: '/img/sponsors/dbos-white.png',
+      },
+    ],
+  },
 
   presets: [
     [
@@ -158,12 +209,12 @@ const config: Config = {
           // Enhanced markdown features
           remarkPlugins: [],
           rehypePlugins: [],
-        },      
-        sitemap: {
+        },
+          sitemap: {
           lastmod: 'date',
           changefreq: 'weekly',
           priority: 0.7,
-          ignorePatterns: ['/tags/**'],
+          ignorePatterns: ['/tags/**', '/search'],
           filename: 'sitemap.xml',
           // Enhanced sitemap features from 3.8+
           createSitemapItems: async (params) => {
@@ -208,10 +259,14 @@ const config: Config = {
         maxTextSize: 50000,
       },
     },
-    
-    // Enhanced metadata
+
+      // Enhanced metadata
+    // og:type defaults to "website"; individual doc pages that need
+    // "article" should override via their page's <Layout> or frontmatter.
     metadata: [
       {name: 'og:type', content: 'website'},
+      // Fallback description for pages that don't set their own
+      {name: 'description', content: 'A Lodash-style utility library for Go. Slices, maps, channels, and more — type-safe, using generics.'},
     ],
 
     navbar: {
@@ -226,8 +281,8 @@ const config: Config = {
           sidebarId: 'docSidebar',
           position: 'left',
           label: 'Doc',
-        }, 
-        {
+        },
+          {
           to: 'https://pkg.go.dev/github.com/samber/lo',
           label: 'GoDoc',
           position: 'left',
@@ -351,10 +406,19 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   themes: ['@docusaurus/theme-mermaid'],
-  
-  plugins: [
-    // Add ideal image plugin for better image optimization
-    [
+
+    plugins: [
+      [
+      "posthog-docusaurus",
+      {
+          apiKey: "phc_uA762TtYyJ6UrbF5nzWutAJojstpC2EDptFpd2bBvWFY",
+          appHost: "https://hogpost.samber.dev",
+          enableInDevelopment: false, // optional,
+          disableSessionRecording: true,
+      },
+  ],
+      // Add ideal image plugin for better image optimization
+      [
       '@docusaurus/plugin-ideal-image',
       {
         quality: 70,

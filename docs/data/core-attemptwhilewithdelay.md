@@ -1,7 +1,7 @@
 ---
 name: AttemptWhileWithDelay
 slug: attemptwhilewithdelay
-sourceRef: retry.go#L223
+sourceRef: retry.go#L225
 category: core
 subCategory: retry
 playUrl: https://go.dev/play/p/mhufUjJfLEF

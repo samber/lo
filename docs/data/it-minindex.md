@@ -1,14 +1,14 @@
 ---
 name: MinIndex
 slug: minindex
-sourceRef: it/find.go#L231
-category: it
+sourceRef: it/find.go#L246
+category: iter
 subCategory: find
 signatures:
   - "func MinIndex[T constraints.Ordered](collection iter.Seq[T]) (T, int)"
-playUrl: "https://go.dev/play/p/4BvOSo-yza"
+playUrl: https://go.dev/play/p/70ncPxECj6l
 variantHelpers:
-  - it#find#minindex
+  - iter#find#minindex
 similarHelpers:
   - core#slice#minindex
 position: 460

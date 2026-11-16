@@ -1,12 +1,13 @@
 ---
 name: Flatten
 slug: flatten
-sourceRef: it/seq.go#L26
-category: it
+sourceRef: it/seq.go#L417
+category: iter
 subCategory: sequence
 signatures:
   - "func Flatten[T any, I ~func(func(T) bool)](collection []I) I"
 variantHelpers: []
+playUrl: https://go.dev/play/p/CCklxuNk7Lm
 similarHelpers:
   - core#slice#flatten
 position: 172

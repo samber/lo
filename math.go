@@ -1,11 +1,13 @@
 package lo
 
 import (
+	"math"
+
 	"github.com/samber/lo/internal/constraints"
 )
 
 // Range creates a slice of numbers (positive and/or negative) with given length.
-// Play: https://go.dev/play/p/0r6VimXAi9H
+// Play: https://go.dev/play/p/rho00R0WuHs
 func Range(elementNum int) []int {
 	step := Ternary(elementNum < 0, -1, 1)
 	length := elementNum * step
@@ -32,22 +34,32 @@ func RangeFrom[T constraints.Integer | constraints.Float](start T, elementNum in
 // step set to zero will return an empty slice.
 // Play: https://go.dev/play/p/0r6VimXAi9H
 func RangeWithSteps[T constraints.Integer | constraints.Float](start, end, step T) []T {
-	result := []T{}
 	if start == end || step == 0 {
-		return result
+		return []T{}
 	}
+
+	capacity := func(count, delta T) int {
+		// Use math.Ceil instead of (count-1)/delta+1 because integer division
+		// fails for floats (e.g., 5.5/2.5=2.2 → ceil=3, not 2).
+		return int(math.Ceil(float64(count) / float64(delta)))
+	}
+
 	if start < end {
 		if step < 0 {
-			return result
+			return []T{}
 		}
+
+		result := make([]T, 0, capacity(end-start, step))
 		for i := start; i < end; i += step {
 			result = append(result, i)
 		}
 		return result
 	}
 	if step > 0 {
-		return result
+		return []T{}
 	}
+
+	result := make([]T, 0, capacity(start-end, -step))
 	for i := start; i > end; i += step {
 		result = append(result, i)
 	}
@@ -85,6 +97,21 @@ func SumBy[T any, R constraints.Float | constraints.Integer | constraints.Comple
 	return sum
 }
 
+// SumByErr summarizes the values in a collection using the given return value from the iteration function.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// If collection is empty 0 and nil error are returned.
+func SumByErr[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) (R, error)) (R, error) {
+	var sum R
+	for i := range collection {
+		v, err := iteratee(collection[i])
+		if err != nil {
+			return sum, err
+		}
+		sum += v
+	}
+	return sum, nil
+}
+
 // Product gets the product of the values in a collection. If collection is empty 1 is returned.
 // Play: https://go.dev/play/p/2_kjM_smtAH
 func Product[T constraints.Float | constraints.Integer | constraints.Complex](collection []T) T {
@@ -103,6 +130,21 @@ func ProductBy[T any, R constraints.Float | constraints.Integer | constraints.Co
 		product *= iteratee(collection[i])
 	}
 	return product
+}
+
+// ProductByErr summarizes the values in a collection using the given return value from the iteration function.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// If collection is empty 1 and nil error are returned.
+func ProductByErr[T any, R constraints.Float | constraints.Integer | constraints.Complex](collection []T, iteratee func(item T) (R, error)) (R, error) {
+	var product R = 1
+	for i := range collection {
+		v, err := iteratee(collection[i])
+		if err != nil {
+			return product, err
+		}
+		product *= v
+	}
+	return product, nil
 }
 
 // Mean calculates the mean of a collection of numbers.
@@ -127,22 +169,84 @@ func MeanBy[T any, R constraints.Float | constraints.Integer](collection []T, it
 	return sum / length
 }
 
+// MeanByErr calculates the mean of a collection of numbers using the given return value from the iteration function.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// If collection is empty 0 and nil error are returned.
+func MeanByErr[T any, R constraints.Float | constraints.Integer](collection []T, iteratee func(item T) (R, error)) (R, error) {
+	length := R(len(collection))
+	if length == 0 {
+		return 0, nil
+	}
+	sum, err := SumByErr(collection, iteratee)
+	if err != nil {
+		return 0, err
+	}
+	return sum / length, nil
+}
+
 // Mode returns the mode (most frequent value) of a collection.
 // If multiple values have the same highest frequency, then multiple values are returned.
-// If the collection is empty, then the zero value of T is returned.
+// If the collection is empty, then an empty slice is returned.
+// Play: https://go.dev/play/p/PbiviqnV5zX
 func Mode[T constraints.Integer | constraints.Float](collection []T) []T {
-	length := T(len(collection))
-	if length == 0 {
+	if len(collection) == 0 {
 		return []T{}
 	}
 
+	// Building a map[T]int frequency table allocates a map header plus buckets,
+	// which dominates the runtime for tiny inputs. For small collections an
+	// allocation-free nested scan (O(n^2), but n is tiny) counts frequencies on
+	// the stack and is faster with zero heap traffic. Both paths run the exact
+	// same running-max + tie-append logic and use the same == equality, so the
+	// output (element order, duplicate/NaN handling, slice capacity) is identical.
+	const smallModeThreshold = 8
+	if len(collection) <= smallModeThreshold {
+		return modeSmall(collection)
+	}
+	return modeLarge(collection)
+}
+
+// modeLarge counts frequencies with a map, then keeps a running max with
+// tie-append. Used for large collections where the map beats the O(n^2) scan.
+func modeLarge[T constraints.Integer | constraints.Float](collection []T) []T {
 	mode := make([]T, 0)
 	maxFreq := 0
-	frequency := make(map[T]int)
+	frequency := make(map[T]int, len(collection))
 
 	for _, item := range collection {
 		frequency[item]++
 		count := frequency[item]
+
+		if count > maxFreq {
+			maxFreq = count
+			mode = []T{item}
+		} else if count == maxFreq {
+			mode = append(mode, item)
+		}
+	}
+
+	return mode
+}
+
+// modeSmall reproduces modeLarge exactly without allocating a map: for
+// each index i it counts how many earlier-or-equal positions hold the same
+// value (count == frequency[item] right after the map's increment), then runs
+// the identical running-max + tie-append pass. The == used here matches the
+// map's key equality, so NaN (which never equals itself, hence count 0, just
+// like the map's unreachable NaN key) and interleaved ties behave identically.
+func modeSmall[T constraints.Integer | constraints.Float](collection []T) []T {
+	mode := make([]T, 0)
+	maxFreq := 0
+
+	for i := range collection {
+		item := collection[i]
+
+		count := 0
+		for j := 0; j <= i; j++ {
+			if collection[j] == item {
+				count++
+			}
+		}
 
 		if count > maxFreq {
 			maxFreq = count

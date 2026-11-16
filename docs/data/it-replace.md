@@ -1,13 +1,13 @@
 ---
 name: Replace
 slug: replace
-sourceRef: it/seq.go#L699
-category: it
+sourceRef: it/seq.go#L912
+category: iter
 subCategory: slice
 signatures:
   - "func Replace[T comparable, I ~func(func(T) bool)](collection I, old, nEw T, n int) I"
 variantHelpers:
-  - it#slice#replace
+  - iter#slice#replace
 similarHelpers:
   - core#slice#replace
 position: 190

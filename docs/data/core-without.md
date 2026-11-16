@@ -1,10 +1,10 @@
 ---
 name: Without
 slug: without
-sourceRef: intersect.go#L181
+sourceRef: intersect.go#L313
 category: core
 subCategory: intersect
-playUrl: https://go.dev/play/p/5j30Ux8TaD0
+playUrl: https://go.dev/play/p/PcAVtYJsEsS
 variantHelpers:
   - core#intersect#without
 similarHelpers:

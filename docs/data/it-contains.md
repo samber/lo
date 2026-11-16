@@ -1,18 +1,18 @@
 ---
 name: Contains
 slug: contains
-sourceRef: it/intersect.go#L13
-category: it
+sourceRef: it/intersect.go#L14
+category: iter
 subCategory: intersect
 signatures:
   - "func Contains[T comparable](collection iter.Seq[T], element T) bool"
 playUrl: "https://go.dev/play/p/1edj7hH3TS2"
 variantHelpers:
-  - it#intersect#contains
+  - iter#intersect#contains
 similarHelpers:
   - core#slice#contains
-  - it#intersect#containsby
-  - it#intersect#some
+  - iter#intersect#containsby
+  - iter#intersect#some
 position: 0
 ---
 

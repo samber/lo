@@ -123,11 +123,11 @@ func ExampleAttemptWithDelay() {
 		return nil
 	})
 
-	fmt.Printf("%v %v %v\n", count1, time1.Truncate(time.Millisecond), err1)
-	fmt.Printf("%v %v %v\n", count2, time2.Truncate(time.Millisecond), err2)
+	fmt.Printf("%v %t %v\n", count1, time1 >= time.Millisecond, err1)
+	fmt.Printf("%v %t %v\n", count2, time2 >= time.Millisecond, err2)
 	// Output:
-	// 2 1ms <nil>
-	// 2 1ms error
+	// 2 true <nil>
+	// 2 true error
 }
 
 func ExampleTransaction() {

@@ -1,17 +1,17 @@
 ---
 name: Splice
 slug: splice
-sourceRef: it/seq.go#L744
-category: it
+sourceRef: it/seq.go#L964
+category: iter
 subCategory: sequence
 signatures:
   - "func Splice[T any, I ~func(func(T) bool)](collection I, index int, elements ...T) I"
 variantHelpers:
-  - it#sequence#splice
+  - iter#sequence#splice
 similarHelpers:
-  - it#sequence#slice
-  - it#sequence#replace
-  - it#sequence#replaceall
+  - iter#sequence#slice
+  - iter#sequence#replace
+  - iter#sequence#replaceall
   - core#slice#splice
 position: 122
 ---
@@ -24,22 +24,22 @@ seq := func(yield func(int) bool) {
     yield(2)
     yield(5)
 }
-result := lo.Splice(seq, 2, 3, 4)
+result := it.Splice(seq, 2, 3, 4)
 // iter.Seq[int] yielding 1, 2, 3, 4, 5
 
-result = lo.Splice(seq, 0, 0)
+result = it.Splice(seq, 0, 0)
 // iter.Seq[int] yielding 0, 1, 2, 5 (insert at beginning)
 
-result = lo.Splice(seq, 3, 6, 7)
+result = it.Splice(seq, 3, 6, 7)
 // iter.Seq[int] yielding 1, 2, 5, 6, 7 (insert at end)
 
 seq = func(yield func(string) bool) {
     yield("a")
     yield("c")
 }
-result = lo.Splice(seq, 1, "b")
+result = it.Splice(seq, 1, "b")
 // iter.Seq[string] yielding "a", "b", "c"
 
-result = lo.Splice(seq, 1, "x", "y")
+result = it.Splice(seq, 1, "x", "y")
 // iter.Seq[string] yielding "a", "x", "y", "c"
 ```

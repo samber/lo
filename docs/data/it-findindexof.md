@@ -1,18 +1,18 @@
 ---
 name: FindIndexOf
 slug: findindexof
-sourceRef: it/find.go#L112
-category: it
+sourceRef: it/find.go#L117
+category: iter
 subCategory: find
 signatures:
   - "func FindIndexOf[T any](collection iter.Seq[T], predicate func(item T) bool) (T, int, bool)"
-playUrl: "https://go.dev/play/p/6TeNM7kg-r"
+playUrl: https://go.dev/play/p/ihchBAEkhXO
 variantHelpers:
-  - it#find#findindexof
+  - iter#find#findindexof
 similarHelpers:
   - core#slice#findindexof
-  - it#find#find
-  - it#find#findlastindexof
+  - iter#find#find
+  - iter#find#findlastindexof
 position: 50
 ---
 

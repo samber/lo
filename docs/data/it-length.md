@@ -2,17 +2,17 @@
 name: Length
 slug: length
 sourceRef: it/seq.go#L16
-category: it
+category: iter
 subCategory: sequence
 signatures:
   - "func Length[T any](collection iter.Seq[T]) int"
 playUrl: "https://go.dev/play/p/3dnbOjTbL-o"
 variantHelpers:
-  - it#sequence#length
+  - iter#sequence#length
 similarHelpers:
   - core#slice#length
-  - it#sequence#isempty
-  - it#sequence#isnotempty
+  - iter#sequence#isempty
+  - iter#sequence#isnotempty
 position: 0
 ---
 

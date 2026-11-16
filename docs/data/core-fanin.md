@@ -1,14 +1,13 @@
 ---
 name: FanIn
 slug: fanin
-sourceRef: channel.go#L18
+sourceRef: channel.go#L260
 category: core
 subCategory: channel
 signatures:
   - "func FanIn[T any](channelBufferCap int, upstreams ...<-chan T) <-chan T"
 similarHelpers:
   - core#channel#fanout
-  - core#channel#channelmerge
   - core#channel#channeldispatcher
 position: 254
 ---

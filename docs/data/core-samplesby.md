@@ -1,10 +1,10 @@
 ---
 name: SamplesBy
 slug: samplesby
-sourceRef: find.go#L686
+sourceRef: find.go#L988
 category: core
 subCategory: find
-playUrl: https://go.dev/play/p/HDmKmMgq0XN
+playUrl: https://go.dev/play/p/Dy9bGDhD_Gw
 variantHelpers:
   - core#find#samplesby
 similarHelpers:

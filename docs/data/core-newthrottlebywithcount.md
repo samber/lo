@@ -1,7 +1,7 @@
 ---
 name: NewThrottleByWithCount
 slug: newthrottlebywithcount
-sourceRef: retry.go#L377
+sourceRef: retry.go#L375
 category: core
 subCategory: concurrency
 playUrl: https://go.dev/play/p/vQk3ECH7_EW

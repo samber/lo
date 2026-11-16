@@ -1,11 +1,12 @@
 ---
 name: IsSortedBy
 slug: issortedby
-sourceRef: it/seq.go#L720
-category: it
+sourceRef: it/seq.go#L947
+category: iter
 subCategory: slice
 signatures:
   - "func IsSortedBy[T any, K constraints.Ordered](collection iter.Seq[T], transform func(item T) K) bool"
+playUrl: https://go.dev/play/p/AfYOiGWa78T
 variantHelpers: []
 similarHelpers:
   - core#slice#issortedby

@@ -1,10 +1,10 @@
 ---
 name: NewTransaction
 slug: newtransaction
-sourceRef: retry.go#L253
+sourceRef: retry.go#L255
 category: core
 subCategory: concurrency
-playUrl: https://go.dev/play/p/Qxrd7MGQGh1
+playUrl: https://go.dev/play/p/7B2o52wEQbj
 variantHelpers:
   - core#concurrency#newtransaction
 similarHelpers:

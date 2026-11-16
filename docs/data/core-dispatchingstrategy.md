@@ -1,7 +1,7 @@
 ---
 name: DispatchingStrategy
 slug: dispatchingstrategy
-sourceRef: channel.go#L78
+sourceRef: channel.go#L12
 category: core
 subCategory: channel
 signatures:

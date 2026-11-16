@@ -1,18 +1,18 @@
 ---
 name: FilterMapToSeq
 slug: filtermaptoseq
-sourceRef: it/map.go#L178
-category: it
+sourceRef: it/map.go#L199
+category: iter
 subCategory: map
 signatures:
   - "func FilterMapToSeq[K comparable, V, R any](in map[K]V, transform func(key K, value V) (R, bool)) iter.Seq[R]"
 variantHelpers:
-  - it#map#filtermaptoseq
+  - iter#map#filtermaptoseq
 similarHelpers:
-  - it#map#maptoseq
+  - iter#map#maptoseq
   - core#map#filtermaptoslice
-  - it#map#filterkeys
-  - it#map#filtervalues
+  - iter#map#filterkeys
+  - iter#map#filtervalues
 position: 54
 ---
 
@@ -25,7 +25,7 @@ m := map[string]int{
     "cherry": 2,
     "date":   0,
 }
-result := lo.FilterMapToSeq(m, func(key string, value int) (string, bool) {
+result := it.FilterMapToSeq(m, func(key string, value int) (string, bool) {
     if value > 0 {
         return fmt.Sprintf("%s:%d", key, value), true
     }
@@ -38,14 +38,14 @@ type Person struct {
     Name string
     Age  int
 }
-result = lo.FilterMapToSeq(personMap, func(name string, age int) (Person, bool) {
+result = it.FilterMapToSeq(personMap, func(name string, age int) (Person, bool) {
     person := Person{Name: name, Age: age}
     return person, age >= 18
 })
 // iter.Seq[Person] yielding {Name: "alice", Age: 25}, {Name: "bob", Age: 30} (only adults)
 
 dataMap := map[string]float64{"a": 1.5, "b": -2.0, "c": 3.14}
-result = lo.FilterMapToSeq(dataMap, func(key string, value float64) (int, bool) {
+result = it.FilterMapToSeq(dataMap, func(key string, value float64) (int, bool) {
     if value > 0 {
         return int(value * 100), true
     }

@@ -3,6 +3,7 @@
 package it
 
 import (
+	"iter"
 	"slices"
 	"testing"
 
@@ -44,26 +45,54 @@ func TestFromSeqPtrOr(t *testing.T) {
 
 func TestToAnySeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	in1 := values(0, 1, 2, 3)
-	in2 := values[int]()
-	out1 := ToAnySeq(in1)
-	out2 := ToAnySeq(in2)
+	tests := []struct {
+		name     string
+		input    iter.Seq[int]
+		expected []any
+	}{
+		{name: "with elements", input: values(0, 1, 2, 3), expected: []any{0, 1, 2, 3}},
+		{name: "empty", input: values[int](), expected: nil},
+	}
 
-	is.Equal([]any{0, 1, 2, 3}, slices.Collect(out1))
-	is.Empty(slices.Collect(out2))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, slices.Collect(ToAnySeq(tt.input)))
+		})
+	}
 }
 
 func TestFromAnySeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	out1 := FromAnySeq[string](values[any]("foobar", 42))
-	out2 := FromAnySeq[string](values[any]("foobar", "42"))
+	tests := []struct {
+		name        string
+		input       iter.Seq[any]
+		expectPanic bool
+		expected    []string
+	}{
+		{name: "type conversion failure panics", input: values[any]("foobar", 42), expectPanic: true},
+		{name: "successful conversion", input: values[any]("foobar", "42"), expected: []string{"foobar", "42"}},
+	}
 
-	is.PanicsWithValue("it.FromAnySeq: type conversion failed", func() { _ = slices.Collect(out1) })
-	is.Equal([]string{"foobar", "42"}, slices.Collect(out2))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			out := FromAnySeq[string](tt.input)
+
+			if tt.expectPanic {
+				is.PanicsWithValue("it.FromAnySeq: type conversion failed", func() { _ = slices.Collect(out) })
+			} else {
+				is.Equal(tt.expected, slices.Collect(out))
+			}
+		})
+	}
 }
 
 func TestEmpty(t *testing.T) {
@@ -75,93 +104,127 @@ func TestEmpty(t *testing.T) {
 
 func TestIsEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.True(IsEmpty(values[string]()))
-	is.False(IsEmpty(values("foo")))
+	tests := []struct {
+		name     string
+		input    iter.Seq[string]
+		expected bool
+	}{
+		{name: "empty sequence", input: values[string](), expected: true},
+		{name: "non-empty sequence", input: values("foo"), expected: false},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, IsEmpty(tt.input))
+		})
+	}
 }
 
 func TestIsNotEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	is.False(IsNotEmpty(values[string]()))
-	is.True(IsNotEmpty(values("foo")))
+	tests := []struct {
+		name     string
+		input    iter.Seq[string]
+		expected bool
+	}{
+		{name: "empty sequence", input: values[string](), expected: false},
+		{name: "non-empty sequence", input: values("foo"), expected: true},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+			is.Equal(tt.expected, IsNotEmpty(tt.input))
+		})
+	}
 }
 
 func TestCoalesceSeq(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	seq0 := values[int]()
 	seq1 := values(1)
 	seq2 := values(1, 2)
 
-	result1, ok1 := CoalesceSeq[int]()
-	result4, ok4 := CoalesceSeq(seq0)
-	result6, ok6 := CoalesceSeq(seq2)
-	result7, ok7 := CoalesceSeq(seq1)
-	result8, ok8 := CoalesceSeq(seq1, seq2)
-	result9, ok9 := CoalesceSeq(seq2, seq1)
-	result10, ok10 := CoalesceSeq(seq0, seq1, seq2)
+	tests := []struct {
+		name       string
+		args       []iter.Seq[int]
+		expected   []int
+		expectedOk bool
+	}{
+		{name: "no sequences", args: nil, expectedOk: false},
+		{name: "single empty sequence", args: []iter.Seq[int]{seq0}, expectedOk: false},
+		{name: "single sequence with two elements", args: []iter.Seq[int]{seq2}, expected: []int{1, 2}, expectedOk: true},
+		{name: "single sequence with one element", args: []iter.Seq[int]{seq1}, expected: []int{1}, expectedOk: true},
+		{name: "first non-empty sequence wins (one then two elements)", args: []iter.Seq[int]{seq1, seq2}, expected: []int{1}, expectedOk: true},
+		{name: "first non-empty sequence wins (two then one elements)", args: []iter.Seq[int]{seq2, seq1}, expected: []int{1, 2}, expectedOk: true},
+		{name: "skips leading empty sequence", args: []iter.Seq[int]{seq0, seq1, seq2}, expected: []int{1}, expectedOk: true},
+	}
 
-	is.NotNil(result1)
-	is.Empty(slices.Collect(result1))
-	is.False(ok1)
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
 
-	is.NotNil(result4)
-	is.Empty(slices.Collect(result4))
-	is.False(ok4)
+			result, ok := CoalesceSeq(tt.args...)
 
-	is.NotNil(result6)
-	is.Equal(slices.Collect(seq2), slices.Collect(result6))
-	is.True(ok6)
+			is.NotNil(result)
+			is.Equal(tt.expectedOk, ok)
 
-	is.NotNil(result7)
-	is.Equal(slices.Collect(seq1), slices.Collect(result7))
-	is.True(ok7)
-
-	is.NotNil(result8)
-	is.Equal(slices.Collect(seq1), slices.Collect(result8))
-	is.True(ok8)
-
-	is.NotNil(result9)
-	is.Equal(slices.Collect(seq2), slices.Collect(result9))
-	is.True(ok9)
-
-	is.NotNil(result10)
-	is.Equal(slices.Collect(seq1), slices.Collect(result10))
-	is.True(ok10)
+			if tt.expectedOk {
+				is.Equal(tt.expected, slices.Collect(result))
+			} else {
+				is.Empty(slices.Collect(result))
+			}
+		})
+	}
 }
 
 func TestCoalesceSeqOrEmpty(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	seq0 := values[int]()
 	seq1 := values(1)
 	seq2 := values(1, 2)
 
-	result1 := CoalesceSeqOrEmpty[int]()
-	result4 := CoalesceSeqOrEmpty(seq0)
-	result6 := CoalesceSeqOrEmpty(seq2)
-	result7 := CoalesceSeqOrEmpty(seq1)
-	result8 := CoalesceSeqOrEmpty(seq1, seq2)
-	result9 := CoalesceSeqOrEmpty(seq2, seq1)
-	result10 := CoalesceSeqOrEmpty(seq0, seq1, seq2)
+	tests := []struct {
+		name       string
+		args       []iter.Seq[int]
+		expected   []int
+		expectHits bool
+	}{
+		{name: "no sequences", args: nil, expectHits: false},
+		{name: "single empty sequence", args: []iter.Seq[int]{seq0}, expectHits: false},
+		{name: "single sequence with two elements", args: []iter.Seq[int]{seq2}, expected: []int{1, 2}, expectHits: true},
+		{name: "single sequence with one element", args: []iter.Seq[int]{seq1}, expected: []int{1}, expectHits: true},
+		{name: "first non-empty sequence wins (one then two elements)", args: []iter.Seq[int]{seq1, seq2}, expected: []int{1}, expectHits: true},
+		{name: "first non-empty sequence wins (two then one elements)", args: []iter.Seq[int]{seq2, seq1}, expected: []int{1, 2}, expectHits: true},
+		{name: "skips leading empty sequence", args: []iter.Seq[int]{seq0, seq1, seq2}, expected: []int{1}, expectHits: true},
+	}
 
-	is.NotNil(result1)
-	is.Empty(slices.Collect(result1))
-	is.NotNil(result4)
-	is.Empty(slices.Collect(result4))
-	is.NotNil(result6)
-	is.Equal(slices.Collect(seq2), slices.Collect(result6))
-	is.NotNil(result7)
-	is.Equal(slices.Collect(seq1), slices.Collect(result7))
-	is.NotNil(result8)
-	is.Equal(slices.Collect(seq1), slices.Collect(result8))
-	is.NotNil(result9)
-	is.Equal(slices.Collect(seq2), slices.Collect(result9))
-	is.NotNil(result10)
-	is.Equal(slices.Collect(seq1), slices.Collect(result10))
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result := CoalesceSeqOrEmpty(tt.args...)
+
+			is.NotNil(result)
+
+			if tt.expectHits {
+				is.Equal(tt.expected, slices.Collect(result))
+			} else {
+				is.Empty(slices.Collect(result))
+			}
+		})
+	}
 }

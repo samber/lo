@@ -1,10 +1,10 @@
 ---
 name: Latest
 slug: latest
-sourceRef: find.go#L508
+sourceRef: find.go#L778
 category: core
 subCategory: find
-playUrl: 
+playUrl: https://go.dev/play/p/dBfdf5s8s-Y
 variantHelpers:
   - core#find#latest
 similarHelpers:

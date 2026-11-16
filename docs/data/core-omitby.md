@@ -1,7 +1,7 @@
 ---
 name: OmitBy
 slug: omitby
-sourceRef: map.go#L142
+sourceRef: map.go#L159
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/EtBsR43bdsd
@@ -15,6 +15,7 @@ similarHelpers:
   - core#map#pickbyvalues
   - core#map#filterkeys
   - core#map#filtervalues
+  - core#map#omitbyerr
 position: 90
 signatures:
   - "func OmitBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) bool) Map"

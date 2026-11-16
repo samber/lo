@@ -21,12 +21,5 @@ func IntN(n int) int {
 // from the default Source.
 func Int64() int64 {
 	// bearer:disable go_gosec_crypto_weak_random
-	n := rand.Int63()
-
-	// bearer:disable go_gosec_crypto_weak_random
-	if rand.Intn(2) == 0 {
-		return -n
-	}
-
-	return n
+	return rand.Int63()
 }

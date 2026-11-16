@@ -1,7 +1,7 @@
 ---
 name: FromEntries
 slug: fromentries
-sourceRef: map.go#L201
+sourceRef: map.go#L237
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/oIr5KHFGCEN

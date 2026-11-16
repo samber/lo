@@ -1,10 +1,10 @@
 ---
 name: WithoutNth
 slug: withoutnth
-sourceRef: intersect.go#L223
+sourceRef: intersect.go#L368
 category: core
 subCategory: intersect
-playUrl: https://go.dev/play/p/5g3F9R2H1xL
+playUrl: https://go.dev/play/p/AIro-_UtL9c
 variantHelpers:
   - core#intersect#withoutnth
 similarHelpers:
@@ -13,7 +13,7 @@ similarHelpers:
   - core#slice#dropbyindex
 position: 140
 signatures:
-  - "func WithoutNth[T comparable, Slice ~[]T](collection Slice, nths ...int) Slice"
+  - "func WithoutNth[T any, Slice ~[]T](collection Slice, nths ...int) Slice"
 ---
 
 Returns a slice excluding the elements at the given indexes.

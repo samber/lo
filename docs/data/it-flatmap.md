@@ -1,19 +1,19 @@
 ---
 name: FlatMap
 slug: flatmap
-sourceRef: it/seq.go#L109
-category: it
+sourceRef: it/seq.go#L120
+category: iter
 subCategory: sequence
 signatures:
   - "func FlatMap[T, R any](collection iter.Seq[T], transform func(item T) iter.Seq[R]) iter.Seq[R]"
   - "func FlatMapI[T, R any](collection iter.Seq[T], transform func(item T, index int) iter.Seq[R]) iter.Seq[R]"
-playUrl: "https://go.dev/play/p/1YsRLPl-wx"
+playUrl: https://go.dev/play/p/6toB9w2gpSy
 variantHelpers:
-  - it#sequence#flatmap
-  - it#sequence#flatmapi
+  - iter#sequence#flatmap
+  - iter#sequence#flatmapi
 similarHelpers:
   - core#slice#flatmap
-  - it#sequence#map
+  - iter#sequence#map
 position: 120
 ---
 

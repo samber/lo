@@ -1,7 +1,7 @@
 ---
 name: Take
 slug: take
-sourceRef: slice.go#L587
+sourceRef: slice.go#L902
 category: core
 subCategory: slice
 variantHelpers:
@@ -14,6 +14,7 @@ similarHelpers:
   - core#slice#first
   - core#slice#filtermap
   - core#slice#takefilter
+  - iter#sequence#take
 position: 175
 signatures:
   - "func Take[T any, Slice ~[]T](collection Slice, n int) Slice"

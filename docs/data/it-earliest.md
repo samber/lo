@@ -1,14 +1,14 @@
 ---
 name: Earliest
 slug: earliest
-sourceRef: it/find.go#L278
-category: it
+sourceRef: it/find.go#L296
+category: iter
 subCategory: find
 signatures:
   - "func Earliest(times iter.Seq[time.Time]) time.Time"
-playUrl: "https://go.dev/play/p/7EyYRV1-zd"
+playUrl: https://go.dev/play/p/fI6_S10H7Py
 variantHelpers:
-  - it#find#earliest
+  - iter#find#earliest
 similarHelpers:
   - core#slice#earliest
 position: 500

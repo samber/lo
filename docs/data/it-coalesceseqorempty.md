@@ -1,15 +1,15 @@
 ---
 name: CoalesceSeqOrEmpty
 slug: coalesceseqorempty
-sourceRef: it/type_manipulation.go#L76
-category: it
+sourceRef: it/type_manipulation.go#L86
+category: iter
 subCategory: type
 signatures:
   - "func CoalesceSeqOrEmpty[T any](v ...iter.Seq[T]) iter.Seq[T]"
 variantHelpers:
-  - it#type#coalesceseqorempty
+  - iter#type#coalesceseqorempty
 similarHelpers:
-  - it#type#coalesceseq
+  - iter#type#coalesceseq
   - core#type#coalesceorempty
   - core#type#coalescesliceorempty
 position: 102
@@ -21,8 +21,8 @@ Returns the first non-empty sequence from the provided arguments, or an empty se
 emptySeq := func(yield func(int) bool) bool {
     return false // empty sequence
 }
-nonEmptySeq := lo.Range(3)
-result := lo.CoalesceSeqOrEmpty(emptySeq, nonEmptySeq, emptySeq)
+nonEmptySeq := it.Range(3)
+result := it.CoalesceSeqOrEmpty(emptySeq, nonEmptySeq, emptySeq)
 // iter.Seq[int] yielding 0, 1, 2
 
 emptyStrSeq := func(yield func(string) bool) bool {
@@ -33,9 +33,9 @@ strSeq := func(yield func(string) bool) bool {
     yield("b")
     return true
 }
-result = lo.CoalesceSeqOrEmpty(emptyStrSeq, strSeq)
+result = it.CoalesceSeqOrEmpty(emptyStrSeq, strSeq)
 // iter.Seq[string] yielding "a", "b"
 
-result = lo.CoalesceSeqOrEmpty(emptySeq, emptyStrSeq)
+result = it.CoalesceSeqOrEmpty(emptySeq, emptyStrSeq)
 // empty sequence (yields nothing)
 ```

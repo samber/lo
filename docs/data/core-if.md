@@ -1,7 +1,7 @@
 ---
 name: If/Else
 slug: if-else
-sourceRef: condition.go#L31
+sourceRef: condition.go#L33
 category: core
 subCategory: condition
 playUrl: https://go.dev/play/p/WSw3ApMxhyW

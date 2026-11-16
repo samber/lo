@@ -1,10 +1,10 @@
 ---
 name: Keyify
 slug: keyify
-sourceRef: slice.go#L429
+sourceRef: slice.go#L832
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/RYhhM_csqIG
+playUrl: https://go.dev/play/p/_d5lXdzfw32
 variantHelpers:
   - core#slice#keyify
 similarHelpers:

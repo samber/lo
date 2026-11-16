@@ -1,7 +1,7 @@
 ---
 name: PickBy
 slug: pickby
-sourceRef: map.go#L106
+sourceRef: map.go#L105
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/kdg8GR_QMmf
@@ -15,6 +15,7 @@ similarHelpers:
   - core#map#pickbyvalues
   - core#map#filterkeys
   - core#map#filtervalues
+  - core#map#pickbyerr
 position: 60
 signatures:
   - "func PickBy[K comparable, V any, Map ~map[K]V](in Map, predicate func(key K, value V) bool) Map"

@@ -1,17 +1,17 @@
 ---
 name: Shuffle
 slug: shuffle
-sourceRef: it/seq.go#L357
-category: it
+sourceRef: it/seq.go#L467
+category: iter
 subCategory: sequence
 signatures:
   - "func Shuffle[T any, I ~func(func(T) bool)](collection I) I"
-playUrl: https://go.dev/play/p/8isgTsyfL-t
+playUrl: https://go.dev/play/p/3WOx-ukGvKK
 variantHelpers:
-  - it#sequence#shuffle
+  - iter#sequence#shuffle
 similarHelpers:
   - core#slice#shuffle
-  - it#sequence#reverse
+  - iter#sequence#reverse
 position: 130
 ---
 

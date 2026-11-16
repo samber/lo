@@ -1,14 +1,16 @@
 ---
 name: ReduceRight
 slug: reduceright
-sourceRef: slice.go#L97
+sourceRef: slice.go#L167
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/Fq3W70l7wXF
 variantHelpers:
   - core#slice#reduceright
 similarHelpers:
+  - core#slice#reducerighterr
   - core#slice#reduce
+  - core#slice#reduceerr
   - core#slice#sum
   - core#slice#product
   - core#slice#mean

@@ -11,17 +11,26 @@ import (
 
 func TestMap(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := Map([]int{1, 2, 3, 4}, func(x, _ int) string {
-		return "Hello"
-	})
-	result2 := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
-		return strconv.FormatInt(x, 10)
+	t.Run("constant transform", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := Map([]int{1, 2, 3, 4}, func(x, _ int) string {
+			return "Hello"
+		})
+		is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, result)
 	})
 
-	is.Equal([]string{"Hello", "Hello", "Hello", "Hello"}, result1)
-	is.Equal([]string{"1", "2", "3", "4"}, result2)
+	t.Run("formats int64 as string", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := Map([]int64{1, 2, 3, 4}, func(x int64, _ int) string {
+			return strconv.FormatInt(x, 10)
+		})
+		is.Equal([]string{"1", "2", "3", "4"}, result)
+	})
 }
 
 func TestForEach(t *testing.T) {
@@ -50,34 +59,42 @@ func TestTimes(t *testing.T) {
 
 func TestGroupBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
-	result1 := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
-		return i % 3
+	t.Run("groups by modulo", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		result := GroupBy([]int{0, 1, 2, 3, 4, 5}, func(i int) int {
+			return i % 3
+		})
+
+		// order
+		for x := range result {
+			sort.Ints(result[x])
+		}
+
+		is.Equal(map[int][]int{
+			0: {0, 3},
+			1: {1, 4},
+			2: {2, 5},
+		}, result)
 	})
 
-	// order
-	for x := range result1 {
-		sort.Ints(result1[x])
-	}
+	t.Run("preserves named slice type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	is.Equal(map[int][]int{
-		0: {0, 3},
-		1: {1, 4},
-		2: {2, 5},
-	}, result1)
-
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := GroupBy(allStrings, func(i string) int {
-		return 42
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty := GroupBy(allStrings, func(i string) int {
+			return 42
+		})
+		is.IsType(nonempty[42], allStrings, "type preserved")
 	})
-	is.IsType(nonempty[42], allStrings, "type preserved")
 }
 
 func TestPartitionBy(t *testing.T) {
 	t.Parallel()
-	is := assert.New(t)
 
 	oddEven := func(x int) string {
 		if x < 0 {
@@ -88,24 +105,40 @@ func TestPartitionBy(t *testing.T) {
 		return "odd"
 	}
 
-	result1 := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
-	result2 := PartitionBy([]int{}, oddEven)
+	t.Run("partitions a non-empty collection", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	// order
-	sort.Slice(result1, func(i, j int) bool {
-		return result1[i][0] < result1[j][0]
+		result := PartitionBy([]int{-2, -1, 0, 1, 2, 3, 4, 5}, oddEven)
+
+		// order
+		sort.Slice(result, func(i, j int) bool {
+			return result[i][0] < result[j][0]
+		})
+		for x := range result {
+			sort.Ints(result[x])
+		}
+
+		is.ElementsMatch(result, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
 	})
-	for x := range result1 {
-		sort.Ints(result1[x])
-	}
 
-	is.ElementsMatch(result1, [][]int{{-2, -1}, {0, 2, 4}, {1, 3, 5}})
-	is.Empty(result2)
+	t.Run("empty collection", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
 
-	type myStrings []string
-	allStrings := myStrings{"", "foo", "bar"}
-	nonempty := PartitionBy(allStrings, func(item string) int {
-		return len(item)
+		result := PartitionBy([]int{}, oddEven)
+		is.Empty(result)
 	})
-	is.IsType(nonempty[0], allStrings, "type preserved")
+
+	t.Run("preserves named slice type", func(t *testing.T) {
+		t.Parallel()
+		is := assert.New(t)
+
+		type myStrings []string
+		allStrings := myStrings{"", "foo", "bar"}
+		nonempty := PartitionBy(allStrings, func(item string) int {
+			return len(item)
+		})
+		is.IsType(nonempty[0], allStrings, "type preserved")
+	})
 }

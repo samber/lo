@@ -1,19 +1,19 @@
 ---
 name: SamplesBy
 slug: samplesby
-sourceRef: it/find.go#L474
-category: it
+sourceRef: it/find.go#L518
+category: iter
 subCategory: find
 signatures:
   - "func SamplesBy[T any, I ~func(func(T) bool)](collection I, count int, randomIntGenerator func(int) int) I"
-playUrl: "https://go.dev/play/p/7YsLP1-zx"
+playUrl: https://go.dev/play/p/fX2FEtixrVG
 variantHelpers:
-  - it#find#samplesby
+  - iter#find#samplesby
 similarHelpers:
   - core#slice#samplesby
-  - it#find#sample
-  - it#find#samples
-  - it#find#sampleby
+  - iter#find#sample
+  - iter#find#samples
+  - iter#find#sampleby
 position: 620
 ---
 

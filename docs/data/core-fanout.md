@@ -1,7 +1,7 @@
 ---
 name: FanOut
 slug: fanout
-sourceRef: channel.go#L18
+sourceRef: channel.go#L287
 category: core
 subCategory: channel
 signatures:
@@ -9,7 +9,7 @@ signatures:
 similarHelpers:
   - core#channel#fanin
   - core#channel#channeldispatcher
-  - it#channel#channelseq
+  - iter#channel#channelseq
 position: 256
 ---
 

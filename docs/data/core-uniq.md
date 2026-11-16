@@ -1,7 +1,7 @@
 ---
 name: Uniq
 slug: uniq
-sourceRef: slice.go#L140
+sourceRef: slice.go#L242
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/DTzbeXZ6iEN
@@ -9,6 +9,8 @@ variantHelpers:
   - core#slice#uniq
 similarHelpers:
   - core#slice#uniqby
+  - core#slice#isuniq
+  - core#slice#isuniqby
   - core#slice#uniqmap
   - core#slice#uniqkeys
   - core#slice#uniqvalues

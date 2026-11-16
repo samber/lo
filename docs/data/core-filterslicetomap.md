@@ -1,10 +1,10 @@
 ---
 name: FilterSliceToMap
 slug: filterslicetomap
-sourceRef: slice.go#L414
+sourceRef: slice.go#L806
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/2z0rDz2ZSGU
+playUrl: https://go.dev/play/p/eurMiQEqey2
 variantHelpers:
   - core#slice#filterslicetomap
 similarHelpers:

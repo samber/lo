@@ -1,7 +1,7 @@
 ---
 name: Switch
 slug: switch
-sourceRef: condition.go#L101
+sourceRef: condition.go#L105
 category: core
 subCategory: condition
 playUrl: https://go.dev/play/p/TGbKUMAeRUd

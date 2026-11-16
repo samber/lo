@@ -1,11 +1,12 @@
 ---
 name: CutSuffix
 slug: cutsuffix
-sourceRef: it/seq.go#L778
-category: it
+sourceRef: it/seq.go#L1059
+category: iter
 subCategory: string
 signatures:
   - "func CutSuffix[T comparable, I ~func(func(T) bool)](collection I, separator []T) (before I, found bool)"
+playUrl: https://go.dev/play/p/CTRh9m1UHrZ
 variantHelpers: []
 similarHelpers:
   - core#string#cutsuffix

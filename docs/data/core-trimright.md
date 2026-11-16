@@ -1,10 +1,10 @@
 ---
 name: TrimRight
 slug: trimright
-sourceRef: slice.go#L873
+sourceRef: slice.go#L1488
 category: core
 subCategory: slice
-playUrl: https://go.dev/play/p/MRpAfR6sf0g
+playUrl: https://go.dev/play/p/9V_N8sRyyiZ
 variantHelpers:
   - core#slice#trimright
 similarHelpers:

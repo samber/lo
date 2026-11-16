@@ -1,11 +1,12 @@
 ---
 name: TrimSuffix
 slug: trimsuffix
-sourceRef: it/seq.go#L778
-category: it
+sourceRef: it/seq.go#L1127
+category: iter
 subCategory: string
 signatures:
   - "func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I"
+playUrl: https://go.dev/play/p/s9nwy9helEi
 variantHelpers: []
 similarHelpers:
   - core#string#trimsuffix

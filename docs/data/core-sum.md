@@ -1,7 +1,7 @@
 ---
 name: Sum
 slug: sum
-sourceRef: math.go#L70
+sourceRef: math.go#L82
 category: core
 subCategory: math
 playUrl: https://go.dev/play/p/upfeJVqs4Bt

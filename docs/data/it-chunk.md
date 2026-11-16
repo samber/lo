@@ -1,17 +1,17 @@
 ---
 name: Chunk
 slug: chunk
-sourceRef: it/seq.go#L264
-category: it
+sourceRef: it/seq.go#L290
+category: iter
 subCategory: sequence
 signatures:
   - "func Chunk[T any](collection iter.Seq[T], size int) iter.Seq[[]T]"
-playUrl: "https://go.dev/play/p/4VpIM8-zu"
+playUrl: https://go.dev/play/p/qo8esZ_L60Q
 variantHelpers:
-  - it#sequence#chunk
+  - iter#sequence#chunk
 similarHelpers:
   - core#slice#chunk
-  - it#sequence#partitionby
+  - iter#sequence#partitionby
 position: 60
 ---
 
@@ -34,3 +34,9 @@ for chunk := range chunks {
 }
 // result contains [1, 2], [3, 4], [5]
 ```
+
+## Note
+
+`it.ChunkString` and `it.Chunk` functions behave inconsistently for empty input: `it.ChunkString("", n)` returns `[""]` instead of `[]`.
+
+See https://github.com/samber/lo/issues/788

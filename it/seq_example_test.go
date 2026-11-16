@@ -5,6 +5,7 @@ package it
 import (
 	"fmt"
 	"iter"
+	"maps"
 	"math"
 	"slices"
 	"strconv"
@@ -214,6 +215,34 @@ func ExampleChunk() {
 	// [4]
 }
 
+func ExampleWindow() {
+	list := slices.Values([]int{1, 2, 3, 4, 5})
+
+	result := Window(list, 3)
+
+	for r := range result {
+		fmt.Printf("%v\n", r)
+	}
+	// Output:
+	// [1 2 3]
+	// [2 3 4]
+	// [3 4 5]
+}
+
+func ExampleSliding() {
+	list := slices.Values([]int{1, 2, 3, 4, 5, 6, 7, 8})
+
+	result := Sliding(list, 2, 3)
+
+	for r := range result {
+		fmt.Printf("%v\n", r)
+	}
+	// Output:
+	// [1 2]
+	// [4 5]
+	// [7 8]
+}
+
 func ExamplePartitionBy() {
 	list := slices.Values([]int{-2, -1, 0, 1, 2, 3, 4})
 
@@ -369,6 +398,15 @@ func ExampleDrop() {
 	// Output: [2 3 4 5]
 }
 
+func ExampleTake() {
+	list := slices.Values([]int{0, 1, 2, 3, 4, 5})
+
+	result := Take(list, 3)
+
+	fmt.Printf("%v", slices.Collect(result))
+	// Output: [0 1 2]
+}
+
 func ExampleDropWhile() {
 	list := slices.Values([]int{0, 1, 2, 3, 4, 5})
 
@@ -380,6 +418,17 @@ func ExampleDropWhile() {
 	// Output: [2 3 4 5]
 }
 
+func ExampleTakeWhile() {
+	list := slices.Values([]int{0, 1, 2, 3, 4, 5})
+
+	result := TakeWhile(list, func(val int) bool {
+		return val < 3
+	})
+
+	fmt.Printf("%v", slices.Collect(result))
+	// Output: [0 1 2]
+}
+
 func ExampleDropByIndex() {
 	list := slices.Values([]int{0, 1, 2, 3, 4, 5})
 
@@ -387,6 +436,28 @@ func ExampleDropByIndex() {
 
 	fmt.Printf("%v", slices.Collect(result))
 	// Output: [0 1 3 4 5]
+}
+
+func ExampleTakeFilter() {
+	list := slices.Values([]int{1, 2, 3, 4, 5, 6})
+
+	result := TakeFilter(list, 2, func(val int) bool {
+		return val%2 == 0
+	})
+
+	fmt.Printf("%v", slices.Collect(result))
+	// Output: [2 4]
+}
+
+func ExampleTakeFilterI() {
+	list := slices.Values([]int{1, 2, 3, 4, 5, 6})
+
+	result := TakeFilterI(list, 2, func(val, index int) bool {
+		return val%2 == 0 && index < 4
+	})
+
+	fmt.Printf("%v", slices.Collect(result))
+	// Output: [2 4]
 }
 
 func ExampleReject() {
@@ -700,4 +771,11 @@ func ExampleTrimSuffix() {
 	// TrimSuffix with suffix {1,2}: [1 2 1 2 3]
 	// TrimSuffix with string suffix: [hello world]
 	// TrimSuffix with suffix {5,6} (not present): [1 2 1 2 3]
+}
+
+func ExampleSeqToSeq2() {
+	result := maps.Collect(SeqToSeq2(slices.Values([]string{"foo", "bar", "baz"})))
+
+	fmt.Printf("%v %v %v %v", len(result), result[0], result[1], result[2])
+	// Output: 3 foo bar baz
 }

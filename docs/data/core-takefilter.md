@@ -1,17 +1,19 @@
 ---
 name: TakeFilter
 slug: takefilter
-sourceRef: slice.go#L643
+sourceRef: slice.go#L985
 category: core
 subCategory: slice
 variantHelpers:
   - core#slice#takefilter
+playUrl: https://go.dev/play/p/l99lvN4gReF
 similarHelpers:
   - core#slice#filter
   - core#slice#take
   - core#slice#takewhile
   - core#slice#filtermap
   - core#slice#filterreject
+  - iter#sequence#takefilter
 position: 125
 signatures:
   - "func TakeFilter[T any, Slice ~[]T](collection Slice, n int, predicate func(item T, index int) bool) Slice"

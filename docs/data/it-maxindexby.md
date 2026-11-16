@@ -1,14 +1,14 @@
 ---
 name: MaxIndexBy
 slug: maxindexby
-sourceRef: it/find.go#L326
-category: it
+sourceRef: it/find.go#L350
+category: iter
 subCategory: find
 signatures:
   - "func MaxIndexBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) (T, int)"
-playUrl: "https://go.dev/play/p/2JdWA6-zi"
+playUrl: https://go.dev/play/p/MXyE6BTILjx
 variantHelpers:
-  - it#find#maxindexby
+  - iter#find#maxindexby
 similarHelpers:
   - core#slice#maxindexby
 position: 490

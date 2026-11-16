@@ -1,7 +1,7 @@
 ---
 name: OmitByValues
 slug: omitbyvalues
-sourceRef: map.go#L167
+sourceRef: map.go#L200
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/9UYZi-hrs8j

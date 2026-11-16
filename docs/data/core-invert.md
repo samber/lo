@@ -1,7 +1,7 @@
 ---
 name: Invert
 slug: invert
-sourceRef: map.go#L222
+sourceRef: map.go#L258
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/rFQ4rak6iA1

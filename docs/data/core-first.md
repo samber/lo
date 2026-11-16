@@ -1,10 +1,10 @@
 ---
 name: First
 slug: first
-sourceRef: find.go#L554
+sourceRef: find.go#L857
 category: core
 subCategory: find
-playUrl: https://go.dev/play/p/ul45Z0y2EFO
+playUrl: https://go.dev/play/p/94lu5X6_cbf
 variantHelpers:
   - core#find#first
 similarHelpers:

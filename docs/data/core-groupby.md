@@ -1,13 +1,14 @@
 ---
 name: GroupBy
 slug: groupby
-sourceRef: slice.go#L180
+sourceRef: slice.go#L413
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/XnQBd_v6brd
 variantHelpers:
   - core#slice#groupby
 similarHelpers:
+  - core#slice#groupbyerr
   - core#slice#groupbymap
   - core#slice#partitionby
   - core#slice#keyby

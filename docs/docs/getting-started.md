@@ -14,6 +14,12 @@ sidebar_position: 1
 go get -u github.com/samber/lo@v1
 ```
 
+**AI Agent Skill:**
+
+```bash
+npx skills add https://github.com/samber/cc-skills-golang --skill golang-samber-lo
+```
+
 ## 🧢 Core Package (`lo`)
 
 The main package provides immutable utility functions for slices, maps, strings, math operations, and more. It's the core of the library with over 300+ functions.

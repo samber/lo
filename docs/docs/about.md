@@ -22,6 +22,9 @@ I wanted a short and memorable name, similar to "Lodash". It's easy to type and 
 
 ```go
 go get -u github.com/samber/lo@v1
+
+# AI Agent Skill
+npx skills add https://github.com/samber/cc-skills-golang --skill golang-samber-lo
 ```
 
 This library is v1 and follows SemVer strictly.

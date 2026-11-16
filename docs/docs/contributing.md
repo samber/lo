@@ -24,8 +24,20 @@ Functions use `~[]T` constraints to accept any slice type, including named slice
 ## Variants
 When applicable, some functions can be added to sub-package as well: `mutable`, `it` and `parallel`. Add a documentation for each helper.
 
+For function variants, use consistent suffixes:
+- `F` suffix for function-based versions (lazy evaluation)
+- `I` suffix for variants having `index int` argument in predicate callback
+- `Err` suffix for variants returning an error in predicate callback
+- `WithContext` suffix when context.Context is provided
+- `X` suffix for helpers with varying arguments (eg: MustX: Must2, Must3, Must4...)
+
 ## Testing
 We try to maintain code coverage above 90%.
+
+### Naming multiple test functions for the same helper
+When a helper needs more than one `Test` function (e.g. to exercise distinct internal code paths, dispatch thresholds, or success/failure scenarios), name each one `TestHelperName_scenario`: the helper name exactly as declared, an underscore, then a lower-case-led scenario label (e.g. `TestUniq_small`, `TestUniq_large`, `TestCut_success`, `TestCut_fail`). This mirrors the convention Go itself uses for `ExampleFoo_suffix` functions, where a suffix that does not name a real symbol must start with a lower-case letter.
+
+Do not add an underscore when the suffix is itself one of the documented variant suffixes from the "Variants" section above (`F`, `I`, `Err`, `WithContext`, `X`, `By`, ...) — e.g. `TestFindDuplicatesByErr` and `TestMustX` are correctly named as-is, since `ByErr` and `X` name real variant helpers/families, not test-only scenarios.
 
 ## Benchmark and performance
 Write performant helpers and limit extra memory consumption. Build an helper for general purpose and don't optimize for a particular use-case.

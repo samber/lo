@@ -1,10 +1,10 @@
 ---
 name: Mode
 slug: mode
-sourceRef: math.go#L149
+sourceRef: math.go#L191
 category: core
 subCategory: math
-playUrl: 
+playUrl: https://go.dev/play/p/PbiviqnV5zX
 variantHelpers:
   - core#math#mode
 similarHelpers:

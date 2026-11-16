@@ -1,10 +1,10 @@
 ---
 name: GroupBy
 slug: groupby
-sourceRef: parallel/slice.go#L73
+sourceRef: parallel/slice.go#L75
 category: parallel
 subCategory: slice
-playUrl: ""
+playUrl: "https://go.dev/play/p/EkyvA0gw4dj"
 similarHelpers:
   - core#slice#groupby
   - core#slice#groupbymap

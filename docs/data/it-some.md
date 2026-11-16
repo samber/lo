@@ -1,18 +1,18 @@
 ---
 name: Some
 slug: some
-sourceRef: it/intersect.go#L52
-category: it
+sourceRef: it/intersect.go#L67
+category: iter
 subCategory: intersect
 signatures:
   - "func Some[T comparable](collection iter.Seq[T], subset ...T) bool"
 playUrl: "https://go.dev/play/p/KmX-fXictQl"
 variantHelpers:
-  - it#intersect#some
+  - iter#intersect#some
 similarHelpers:
   - core#slice#some
-  - it#intersect#every
-  - it#intersect#none
+  - iter#intersect#every
+  - iter#intersect#none
 position: 40
 ---
 

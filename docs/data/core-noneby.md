@@ -1,7 +1,7 @@
 ---
 name: NoneBy
 slug: noneby
-sourceRef: intersect.go#L91
+sourceRef: intersect.go#L107
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/O64WZ32H58S

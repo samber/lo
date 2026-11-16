@@ -1,20 +1,20 @@
 ---
 name: Filter
 slug: filter
-sourceRef: it/seq.go#L33
-category: it
+sourceRef: it/seq.go#L34
+category: iter
 subCategory: sequence
 signatures:
   - "func Filter[T any, I ~func(func(T) bool)](collection I, predicate func(item T) bool) I"
   - "func FilterI[T any, I ~func(func(T) bool)](collection I, predicate func(item T, index int) bool) I"
 playUrl: "https://go.dev/play/p/psenko2KKsX"
 variantHelpers:
-  - it#sequence#filter
-  - it#sequence#filteri
+  - iter#sequence#filter
+  - iter#sequence#filteri
 similarHelpers:
   - core#slice#filter
   - core#slice#filteri
-  - it#sequence#reject
+  - iter#sequence#reject
 position: 10
 ---
 

@@ -41,6 +41,25 @@ func Filter[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 	return result
 }
 
+// FilterErr iterates over elements of collection, returning a slice of all elements predicate returns true for.
+// If the predicate returns an error, iteration stops immediately and returns the error.
+// Play: https://go.dev/play/p/Apjg3WeSi7K
+func FilterErr[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) (bool, error)) (Slice, error) {
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		ok, err := predicate(collection[i], i)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result, nil
+}
+
 // Map manipulates a slice and transforms it to a slice of another type.
 // Play: https://go.dev/play/p/OkPcYAhBo0D
 func Map[T, R any](collection []T, transform func(item T, index int) R) []R {
@@ -53,19 +72,37 @@ func Map[T, R any](collection []T, transform func(item T, index int) R) []R {
 	return result
 }
 
+// MapErr manipulates a slice and transforms it to a slice of another type.
+// It returns the first error returned by the transform function.
+func MapErr[T, R any](collection []T, transform func(item T, index int) (R, error)) ([]R, error) {
+	result := make([]R, len(collection))
+
+	for i := range collection {
+		r, err := transform(collection[i], i)
+		if err != nil {
+			return nil, err
+		}
+		result[i] = r
+	}
+
+	return result, nil
+}
+
 // UniqMap manipulates a slice and transforms it to a slice of another type with unique values.
 // Play: https://go.dev/play/p/fygzLBhvUdB
 func UniqMap[T any, R comparable](collection []T, transform func(item T, index int) R) []R {
+	result := make([]R, 0, len(collection))
 	seen := make(map[R]struct{}, len(collection))
 
 	for i := range collection {
 		r := transform(collection[i], i)
 		if _, ok := seen[r]; !ok {
 			seen[r] = struct{}{}
+			result = append(result, r)
 		}
 	}
 
-	return Keys(seen)
+	return result
 }
 
 // FilterMap returns a slice obtained after both filtering and mapping using the given callback function.
@@ -100,6 +137,24 @@ func FlatMap[T, R any](collection []T, transform func(item T, index int) []R) []
 	return result
 }
 
+// FlatMapErr manipulates a slice and transforms and flattens it to a slice of another type.
+// The transform function can either return a slice or a `nil`, and in the `nil` case
+// no value is added to the final slice.
+// It returns the first error returned by the transform function.
+func FlatMapErr[T, R any](collection []T, transform func(item T, index int) ([]R, error)) ([]R, error) {
+	result := make([]R, 0, len(collection))
+
+	for i := range collection {
+		r, err := transform(collection[i], i)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, r...)
+	}
+
+	return result, nil
+}
+
 // Reduce reduces collection to a value which is the accumulated result of running each element in collection
 // through accumulator, where each successive invocation is supplied the return value of the previous.
 // Play: https://go.dev/play/p/CgHYNUpOd1I
@@ -109,6 +164,22 @@ func Reduce[T, R any](collection []T, accumulator func(agg R, item T, index int)
 	}
 
 	return initial
+}
+
+// ReduceErr reduces collection to a value which is the accumulated result of running each element in collection
+// through accumulator, where each successive invocation is supplied the return value of the previous.
+// It returns the first error returned by the accumulator function.
+func ReduceErr[T, R any](collection []T, accumulator func(agg R, item T, index int) (R, error), initial R) (R, error) {
+	for i := range collection {
+		result, err := accumulator(initial, collection[i], i)
+		if err != nil {
+			var zero R
+			return zero, err
+		}
+		initial = result
+	}
+
+	return initial, nil
 }
 
 // ReduceRight is like Reduce except that it iterates over elements of collection from right to left.
@@ -121,12 +192,38 @@ func ReduceRight[T, R any](collection []T, accumulator func(agg R, item T, index
 	return initial
 }
 
+// ReduceRightErr is like ReduceRight except that the accumulator function can return an error.
+// It returns the first error returned by the accumulator function.
+func ReduceRightErr[T, R any](collection []T, accumulator func(agg R, item T, index int) (R, error), initial R) (R, error) {
+	for i := len(collection) - 1; i >= 0; i-- {
+		result, err := accumulator(initial, collection[i], i)
+		if err != nil {
+			var zero R
+			return zero, err
+		}
+		initial = result
+	}
+
+	return initial, nil
+}
+
 // ForEach iterates over elements of collection and invokes callback for each element.
 // Play: https://go.dev/play/p/oofyiUPRf8t
 func ForEach[T any](collection []T, callback func(item T, index int)) {
 	for i := range collection {
 		callback(collection[i], i)
 	}
+}
+
+// ForEachErr iterates over elements of collection and invokes callback for each element.
+// It returns the first error returned by the iteratee function.
+func ForEachErr[T any](collection []T, callback func(item T, index int) error) error {
+	for i := range collection {
+		if err := callback(collection[i], i); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // ForEachWhile iterates over elements of collection and invokes predicate for each element
@@ -153,10 +250,24 @@ func Times[T any](count int, iteratee func(index int) T) []T {
 	return result
 }
 
+// uniqSmallInputThreshold is the input-size cutoff below which Uniq/UniqBy skip
+// the seen map and rely on a linear scan of already-collected values/keys. For
+// tiny inputs the scan avoids the map allocation and per-element hashing; above
+// it the map's O(1) lookups win. Kept conservative (crossover is ~8-16).
+const uniqSmallInputThreshold = 8
+
 // Uniq returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the slice.
 // Play: https://go.dev/play/p/DTzbeXZ6iEN
 func Uniq[T comparable, Slice ~[]T](collection Slice) Slice {
+	if len(collection) <= uniqSmallInputThreshold {
+		return uniqSmall(collection)
+	}
+	return uniqLarge(collection)
+}
+
+// uniqLarge is the dense-regime implementation backed by a seen map.
+func uniqLarge[T comparable, Slice ~[]T](collection Slice) Slice {
 	result := make(Slice, 0, len(collection))
 	seen := make(map[T]struct{}, len(collection))
 
@@ -172,11 +283,44 @@ func Uniq[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
+// uniqSmall is the small-regime implementation: it detects duplicates by
+// linearly scanning the already-collected result instead of using a map.
+func uniqSmall[T comparable, Slice ~[]T](collection Slice) Slice {
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		seen := false
+		for j := range result {
+			if result[j] == collection[i] {
+				seen = true
+				break
+			}
+		}
+		if seen {
+			continue
+		}
+
+		result = append(result, collection[i])
+	}
+
+	return result
+}
+
 // UniqBy returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept.
 // The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
 // invoked for each element in the slice to generate the criterion by which uniqueness is computed.
 // Play: https://go.dev/play/p/g42Z3QSb53u
 func UniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	// The iteratee is invoked exactly once per element in both paths; see
+	// uniqSmallInputThreshold for the map-vs-scan tradeoff.
+	if len(collection) <= uniqSmallInputThreshold {
+		return uniqBySmall(collection, iteratee)
+	}
+	return uniqByLarge(collection, iteratee)
+}
+
+// uniqByLarge is the dense-regime implementation backed by a seen map.
+func uniqByLarge[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	result := make(Slice, 0, len(collection))
 	seen := make(map[U]struct{}, len(collection))
 
@@ -194,6 +338,96 @@ func UniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(ite
 	return result
 }
 
+// uniqBySmall is the small-regime implementation: it detects duplicate keys
+// by linearly scanning the already-collected keys instead of using a map. The
+// derived keys (type U) are compared, and the iteratee is invoked once per
+// element, matching the map path's semantics exactly.
+func uniqBySmall[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	result := make(Slice, 0, len(collection))
+	// keys mirrors result 1:1 so we can compare derived keys without re-invoking
+	// the (possibly side-effecting) iteratee.
+	keys := make([]U, 0, len(collection))
+
+	for i := range collection {
+		key := iteratee(collection[i])
+
+		seen := false
+		for j := range keys {
+			if keys[j] == key {
+				seen = true
+				break
+			}
+		}
+		if seen {
+			continue
+		}
+
+		keys = append(keys, key)
+		result = append(result, collection[i])
+	}
+
+	return result
+}
+
+// UniqByErr returns a duplicate-free version of a slice, in which only the first occurrence of each element is kept.
+// The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
+// invoked for each element in the slice to generate the criterion by which uniqueness is computed.
+// It returns the first error returned by the iteratee function.
+func UniqByErr[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) (U, error)) (Slice, error) {
+	result := make(Slice, 0, len(collection))
+	seen := make(map[U]struct{}, len(collection))
+
+	for i := range collection {
+		key, err := iteratee(collection[i])
+		if err != nil {
+			return nil, err
+		}
+
+		if _, ok := seen[key]; ok {
+			continue
+		}
+
+		seen[key] = struct{}{}
+		result = append(result, collection[i])
+	}
+
+	return result, nil
+}
+
+// IsUniq returns true if all elements in the slice are unique, false otherwise
+// Returns true for nil and empty slices.
+func IsUniq[T comparable, Slice ~[]T](collection Slice) bool {
+	seen := make(map[T]struct{}, len(collection))
+
+	for i := range collection {
+		if _, ok := seen[collection[i]]; ok {
+			return false
+		}
+
+		seen[collection[i]] = struct{}{}
+	}
+
+	return true
+}
+
+// IsUniqBy returns true if all elements in the slice are unique based on a custom criterion. It accepts `iteratee` which is
+// invoked for each element in the slice to generate the criterion by which uniqueness is computed.
+// Returns true for nil and empty slices.
+func IsUniqBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) bool {
+	seen := make(map[U]struct{}, len(collection))
+
+	for i := range collection {
+		key := iteratee(collection[i])
+		if _, ok := seen[key]; ok {
+			return false
+		}
+
+		seen[key] = struct{}{}
+	}
+
+	return true
+}
+
 // GroupBy returns an object composed of keys generated from the results of running each element of collection through iteratee.
 // Play: https://go.dev/play/p/XnQBd_v6brd
 func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) map[U]Slice {
@@ -208,6 +442,24 @@ func GroupBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(it
 	return result
 }
 
+// GroupByErr returns an object composed of keys generated from the results of running each element of collection through iteratee.
+// It returns the first error returned by the iteratee function.
+// Play: https://go.dev/play/p/BzKPcY3AdX2
+func GroupByErr[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) (U, error)) (map[U]Slice, error) {
+	result := map[U]Slice{}
+
+	for i := range collection {
+		key, err := iteratee(collection[i])
+		if err != nil {
+			return nil, err
+		}
+
+		result[key] = append(result[key], collection[i])
+	}
+
+	return result, nil
+}
+
 // GroupByMap returns an object composed of keys generated from the results of running each element of collection through transform.
 // Play: https://go.dev/play/p/iMeruQ3_W80
 func GroupByMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V)) map[K][]V {
@@ -220,6 +472,23 @@ func GroupByMap[T any, K comparable, V any](collection []T, transform func(item 
 	}
 
 	return result
+}
+
+// GroupByMapErr returns an object composed of keys generated from the results of running each element of collection through transform.
+// It returns the first error returned by the transform function.
+func GroupByMapErr[T any, K comparable, V any](collection []T, transform func(item T) (K, V, error)) (map[K][]V, error) {
+	result := map[K][]V{}
+
+	for i := range collection {
+		k, v, err := transform(collection[i])
+		if err != nil {
+			return nil, err
+		}
+
+		result[k] = append(result[k], v)
+	}
+
+	return result, nil
 }
 
 // Chunk returns a slice of elements split into groups of length size. If the slice can't be split evenly,
@@ -279,6 +548,32 @@ func PartitionBy[T any, K comparable, Slice ~[]T](collection Slice, iteratee fun
 	// return Values[K, []T](groups)
 }
 
+// PartitionByErr partitions a slice into groups determined by a key computed from each element.
+// The order of the partitions is determined by the order they occur in collection. The grouping
+// is generated from the results of running each element of collection through iteratee.
+// It returns the first error returned by the iteratee function.
+func PartitionByErr[T any, K comparable, Slice ~[]T](collection Slice, iteratee func(item T) (K, error)) ([]Slice, error) {
+	result := []Slice{}
+	seen := map[K]int{}
+
+	for i := range collection {
+		key, err := iteratee(collection[i])
+		if err != nil {
+			return nil, err
+		}
+
+		resultIndex, ok := seen[key]
+		if ok {
+			result[resultIndex] = append(result[resultIndex], collection[i])
+		} else {
+			seen[key] = len(result)
+			result = append(result, Slice{collection[i]})
+		}
+	}
+
+	return result, nil
+}
+
 // Flatten returns a slice a single level deep.
 // See also: Concat
 // Play: https://go.dev/play/p/rbp9ORaMpjw
@@ -298,6 +593,7 @@ func Flatten[T any, Slice ~[]T](collection []Slice) Slice {
 
 // Concat returns a new slice containing all the elements in collections. Concat conserves the order of the elements.
 // See also: Flatten, Union.
+// Play: https://go.dev/play/p/Ux2UuR2xpRK
 func Concat[T any, Slice ~[]T](collections ...Slice) Slice {
 	return Flatten(collections)
 }
@@ -315,6 +611,7 @@ func Window[T any, Slice ~[]T](collection Slice, size int) []Slice {
 // Sliding creates a slice of sliding windows of a given size with a given step.
 // If step is equal to size, windows don't overlap (similar to Chunk).
 // If step is less than size, windows overlap.
+// Play: https://go.dev/play/p/aIIU6gWxl2T
 func Sliding[T any, Slice ~[]T](collection Slice, size, step int) []Slice {
 	if size <= 0 {
 		panic("lo.Sliding: size must be greater than 0")
@@ -324,13 +621,14 @@ func Sliding[T any, Slice ~[]T](collection Slice, size, step int) []Slice {
 		panic("lo.Sliding: step must be greater than 0")
 	}
 
-	if len(collection) < size {
+	n := len(collection) - size
+	if n < 0 {
 		return []Slice{}
 	}
 
-	result := make([]Slice, 0)
+	result := make([]Slice, 0, n/step+1)
 
-	for i := 0; i <= len(collection)-size; i += step {
+	for i := 0; i <= n; i += step {
 		window := make(Slice, size)
 		copy(window, collection[i:i+size])
 		result = append(result, window)
@@ -340,7 +638,7 @@ func Sliding[T any, Slice ~[]T](collection Slice, size, step int) []Slice {
 }
 
 // Interleave round-robin alternating input slices and sequentially appending value at index into result.
-// Play: https://go.dev/play/p/-RJkTLQEDVt
+// Play: https://go.dev/play/p/KOVtGUt-tdI
 func Interleave[T any, Slice ~[]T](collections ...Slice) Slice {
 	if len(collections) == 0 {
 		return Slice{}
@@ -398,10 +696,10 @@ func Reverse[T any, Slice ~[]T](collection Slice) Slice {
 // Fill fills elements of a slice with `initial` value.
 // Play: https://go.dev/play/p/VwR34GzqEub
 func Fill[T Clonable[T], Slice ~[]T](collection Slice, initial T) Slice {
-	result := make(Slice, 0, len(collection))
+	result := make(Slice, len(collection))
 
-	for range collection {
-		result = append(result, initial.Clone())
+	for i := range collection {
+		result[i] = initial.Clone()
 	}
 
 	return result
@@ -410,10 +708,10 @@ func Fill[T Clonable[T], Slice ~[]T](collection Slice, initial T) Slice {
 // Repeat builds a slice with N copies of initial value.
 // Play: https://go.dev/play/p/g3uHXbmc3b6
 func Repeat[T Clonable[T]](count int, initial T) []T {
-	result := make([]T, 0, count)
+	result := make([]T, count)
 
 	for i := 0; i < count; i++ {
-		result = append(result, initial.Clone())
+		result[i] = initial.Clone()
 	}
 
 	return result
@@ -422,13 +720,29 @@ func Repeat[T Clonable[T]](count int, initial T) []T {
 // RepeatBy builds a slice with values returned by N calls of callback.
 // Play: https://go.dev/play/p/ozZLCtX_hNU
 func RepeatBy[T any](count int, callback func(index int) T) []T {
-	result := make([]T, 0, count)
+	result := make([]T, count)
 
 	for i := 0; i < count; i++ {
-		result = append(result, callback(i))
+		result[i] = callback(i)
 	}
 
 	return result
+}
+
+// RepeatByErr builds a slice with values returned by N calls of callback.
+// It returns the first error returned by the callback function.
+func RepeatByErr[T any](count int, callback func(index int) (T, error)) ([]T, error) {
+	result := make([]T, 0, count)
+
+	for i := 0; i < count; i++ {
+		r, err := callback(i)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, r)
+	}
+
+	return result, nil
 }
 
 // KeyBy transforms a slice or a slice of structs to a map based on a pivot callback.
@@ -442,6 +756,23 @@ func KeyBy[K comparable, V any](collection []V, iteratee func(item V) K) map[K]V
 	}
 
 	return result
+}
+
+// KeyByErr transforms a slice or a slice of structs to a map based on a pivot callback to compute keys.
+// Iteratee can return an error to stop iteration immediately.
+// Play: https://go.dev/play/p/ccUiUL_Lnel
+func KeyByErr[K comparable, V any](collection []V, iteratee func(item V) (K, error)) (map[K]V, error) {
+	result := make(map[K]V, len(collection))
+
+	for i := range collection {
+		k, err := iteratee(collection[i])
+		if err != nil {
+			return nil, err
+		}
+		result[k] = collection[i]
+	}
+
+	return result, nil
 }
 
 // Associate returns a map containing key-value pairs provided by transform function applied to elements of the given slice.
@@ -491,7 +822,7 @@ func SliceToMapI[T any, K comparable, V any](collection []T, transform func(item
 // If any of two pairs have the same key the last one gets added to the map.
 // The order of keys in returned map is not specified and is not guaranteed to be the same from the original slice.
 // The third return value of the transform function is a boolean that indicates whether the key-value pair should be included in the map.
-// Play: https://go.dev/play/p/2z0rDz2ZSGU
+// Play: https://go.dev/play/p/eurMiQEqey2
 func FilterSliceToMap[T any, K comparable, V any](collection []T, transform func(item T) (K, V, bool)) map[K]V {
 	return FilterSliceToMapI(collection, func(item T, _ int) (K, V, bool) {
 		return transform(item)
@@ -517,7 +848,7 @@ func FilterSliceToMapI[T any, K comparable, V any](collection []T, transform fun
 }
 
 // Keyify returns a map with each unique element of the slice as a key.
-// Play: https://go.dev/play/p/RYhhM_csqIG
+// Play: https://go.dev/play/p/_d5lXdzfw32
 func Keyify[T comparable, Slice ~[]T](collection Slice) map[T]struct{} {
 	result := make(map[T]struct{}, len(collection))
 
@@ -560,7 +891,7 @@ func DropRight[T any, Slice ~[]T](collection Slice, n int) Slice {
 }
 
 // DropWhile drops elements from the beginning of a slice while the predicate returns true.
-// Play: https://go.dev/play/p/7gBPYw2IK16
+// Play: https://go.dev/play/p/b_PYomVQLGy
 func DropWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	i := 0
 	for ; i < len(collection); i++ {
@@ -574,7 +905,7 @@ func DropWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool)
 }
 
 // DropRightWhile drops elements from the end of a slice while the predicate returns true.
-// Play: https://go.dev/play/p/3-n71oEC0Hz
+// Play: https://go.dev/play/p/HBh8pHl-ZZz
 func DropRightWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	i := len(collection) - 1
 	for ; i >= 0; i-- {
@@ -614,6 +945,7 @@ func Take[T any, Slice ~[]T](collection Slice, n int) Slice {
 }
 
 // TakeWhile takes elements from the beginning of a slice while the predicate returns true.
+// Play: https://go.dev/play/p/NJkLGvyRWm4
 func TakeWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice {
 	i := 0
 	for ; i < len(collection); i++ {
@@ -633,34 +965,43 @@ func TakeWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool)
 func DropByIndex[T any, Slice ~[]T](collection Slice, indexes ...int) Slice {
 	initialSize := len(collection)
 	if initialSize == 0 {
-		return make(Slice, 0)
+		return Slice{}
 	}
 
-	for i := range indexes {
-		if indexes[i] < 0 {
-			indexes[i] = initialSize + indexes[i]
+	// do not change the input
+	indexes = append(make([]int, 0, len(indexes)), indexes...)
+
+	for i, index := range indexes {
+		if index < 0 {
+			indexes[i] += initialSize
 		}
 	}
 
-	indexes = Uniq(indexes)
 	sort.Ints(indexes)
 
-	result := make(Slice, 0, initialSize)
-	result = append(result, collection...)
+	prev := -1
+	indexes = mutable.Filter(indexes, func(index int) bool {
+		ok := index != prev && // uniq
+			uint(index) < uint(initialSize) // in range
 
-	for i := range indexes {
-		if indexes[i]-i < 0 || indexes[i]-i >= initialSize-i {
-			continue
-		}
+		prev = index
+		return ok
+	})
 
-		result = append(result[:indexes[i]-i], result[indexes[i]-i+1:]...)
+	result := make(Slice, 0, initialSize-len(indexes))
+
+	i := 0
+	for _, index := range indexes {
+		result = append(result, collection[i:index]...)
+		i = index + 1
 	}
 
-	return result
+	return append(result, collection[i:]...)
 }
 
 // TakeFilter filters elements and takes the first n elements that match the predicate.
 // Equivalent to calling Take(Filter(...)), but more efficient as it stops after finding n matches.
+// Play: https://go.dev/play/p/l99lvN4gReF
 func TakeFilter[T any, Slice ~[]T](collection Slice, n int, predicate func(item T, index int) bool) Slice {
 	if n < 0 {
 		panic("lo.TakeFilter: n must not be negative")
@@ -687,9 +1028,9 @@ func TakeFilter[T any, Slice ~[]T](collection Slice, n int, predicate func(item 
 }
 
 // Reject is the opposite of Filter, this method returns the elements of collection that predicate does not return true for.
-// Play: https://go.dev/play/p/pFCF5WVB225
+// Play: https://go.dev/play/p/7Pl-34c19Va
 func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) bool) Slice {
-	result := Slice{}
+	result := make(Slice, 0, len(collection))
 
 	for i := range collection {
 		if !predicate(collection[i], i) {
@@ -700,6 +1041,25 @@ func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 	return result
 }
 
+// RejectErr is the opposite of FilterErr, this method returns the elements of collection that predicate does not return true for.
+// If the predicate returns an error, iteration stops immediately and returns the error.
+// Play: https://go.dev/play/p/pFCF5WVB225
+func RejectErr[T any, Slice ~[]T](collection Slice, predicate func(item T, index int) (bool, error)) (Slice, error) {
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		match, err := predicate(collection[i], i)
+		if err != nil {
+			return nil, err
+		}
+		if !match {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result, nil
+}
+
 // RejectMap is the opposite of FilterMap, this method returns a slice obtained after both filtering and mapping using the given callback function.
 // The callback function should return two values:
 //   - the result of the mapping operation and
@@ -707,7 +1067,7 @@ func Reject[T any, Slice ~[]T](collection Slice, predicate func(item T, index in
 //
 // Play: https://go.dev/play/p/W9Ug9r0QFkL
 func RejectMap[T, R any](collection []T, callback func(item T, index int) (R, bool)) []R {
-	result := []R{}
+	result := make([]R, 0, len(collection))
 
 	for i := range collection {
 		if r, ok := callback(collection[i], i); !ok {
@@ -751,7 +1111,7 @@ func Count[T comparable](collection []T, value T) int {
 }
 
 // CountBy counts the number of elements in the collection for which predicate is true.
-// Play: https://go.dev/play/p/ByQbNYQQi4X
+// Play: https://go.dev/play/p/5GMQP5vNT4q
 func CountBy[T any](collection []T, predicate func(item T) bool) int {
 	var count int
 
@@ -764,10 +1124,29 @@ func CountBy[T any](collection []T, predicate func(item T) bool) int {
 	return count
 }
 
+// CountByErr counts the number of elements in the collection for which predicate is true.
+// It returns the first error returned by the predicate.
+// Play: https://go.dev/play/p/7BnyPhpG6lW
+func CountByErr[T any](collection []T, predicate func(item T) (bool, error)) (int, error) {
+	var count int
+
+	for i := range collection {
+		ok, err := predicate(collection[i])
+		if err != nil {
+			return 0, err
+		}
+		if ok {
+			count++
+		}
+	}
+
+	return count, nil
+}
+
 // CountValues counts the number of each element in the collection.
 // Play: https://go.dev/play/p/-p-PyLT4dfy
 func CountValues[T comparable](collection []T) map[T]int {
-	result := make(map[T]int)
+	result := make(map[T]int, len(collection))
 
 	for i := range collection {
 		result[collection[i]]++
@@ -780,7 +1159,7 @@ func CountValues[T comparable](collection []T) map[T]int {
 // Is equivalent to chaining lo.Map and lo.CountValues.
 // Play: https://go.dev/play/p/2U0dG1SnOmS
 func CountValuesBy[T any, U comparable](collection []T, transform func(item T) U) map[U]int {
-	result := make(map[U]int)
+	result := make(map[U]int, len(collection))
 
 	for i := range collection {
 		result[transform(collection[i])]++
@@ -812,27 +1191,24 @@ func Subset[T any, Slice ~[]T](collection Slice, offset int, length uint) Slice 
 	return collection[offset : offset+int(length)]
 }
 
-// Slice returns a copy of a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
+// Slice returns a slice from `start` up to, but not including `end`. Like `slice[start:end]`, but does not panic on overflow.
 // Play: https://go.dev/play/p/8XWYhfMMA1h
 func Slice[T any, Slice ~[]T](collection Slice, start, end int) Slice {
-	size := len(collection)
-
 	if start >= end {
 		return Slice{}
 	}
 
-	if start > size {
-		start = size
-	}
+	size := len(collection)
 	if start < 0 {
 		start = 0
+	} else if start > size {
+		start = size
 	}
 
-	if end > size {
-		end = size
-	}
 	if end < 0 {
 		end = 0
+	} else if end > size {
+		end = size
 	}
 
 	return collection[start:end]
@@ -844,10 +1220,18 @@ func Replace[T comparable, Slice ~[]T](collection Slice, old, nEw T, n int) Slic
 	result := make(Slice, len(collection))
 	copy(result, collection)
 
+	if n == 0 {
+		return result
+	}
+
 	for i := range result {
-		if result[i] == old && n != 0 {
+		if result[i] == old {
 			result[i] = nEw
-			n--
+			// Stop scanning once the n first instances have been replaced.
+			// A negative n never reaches 0 and replaces all instances.
+			if n--; n == 0 {
+				break
+			}
 		}
 	}
 
@@ -861,6 +1245,7 @@ func ReplaceAll[T comparable, Slice ~[]T](collection Slice, old, nEw T) Slice {
 }
 
 // Clone returns a shallow copy of the collection.
+// Play: https://go.dev/play/p/66LJ2wAF0rN
 func Clone[T any, Slice ~[]T](collection Slice) Slice {
 	// backporting from slices.Clone in Go 1.21
 	// when we drop support for Go 1.20, this can be replaced with: return slices.Clone(collection)
@@ -976,22 +1361,12 @@ func Cut[T comparable, Slice ~[]T](collection, separator Slice) (before, after S
 // and reports whether it found the prefix.
 // If s doesn't start with prefix, CutPrefix returns collection, false.
 // If prefix is the empty []T, CutPrefix returns collection, true.
-// Play: https://go.dev/play/p/7Plak4a1ICl
+// Play: https://go.dev/play/p/P1scQj53aFa
 func CutPrefix[T comparable, Slice ~[]T](collection, separator Slice) (after Slice, found bool) {
-	if len(separator) == 0 {
-		return collection, true
+	if HasPrefix(collection, separator) {
+		return collection[len(separator):], true
 	}
-	if len(separator) > len(collection) {
-		return collection, false
-	}
-
-	for i := range separator {
-		if collection[i] != separator[i] {
-			return collection, false
-		}
-	}
-
-	return collection[len(separator):], true
+	return collection, false
 }
 
 // CutSuffix returns collection without the provided ending suffix []T and reports
@@ -999,26 +1374,42 @@ func CutPrefix[T comparable, Slice ~[]T](collection, separator Slice) (after Sli
 // If suffix is the empty []T, CutSuffix returns collection, true.
 // Play: https://go.dev/play/p/7FKfBFvPTaT
 func CutSuffix[T comparable, Slice ~[]T](collection, separator Slice) (before Slice, found bool) {
-	if len(separator) == 0 {
-		return collection, true
+	if HasSuffix(collection, separator) {
+		return collection[:len(collection)-len(separator)], true
 	}
-	if len(separator) > len(collection) {
-		return collection, false
-	}
+	return collection, false
+}
 
-	start := len(collection) - len(separator)
-	for i := range separator {
-		if collection[start+i] != separator[i] {
-			return collection, false
+// trimSmallCutset is the cutset-size threshold below which Trim/TrimLeft/TrimRight
+// skip building a Keyify map and test membership with a direct linear scan instead.
+// For tiny cutsets the map's allocation and hashing cost dominate, so an
+// allocation-free scan over a handful of elements is faster; larger cutsets amortize
+// the map build and win on lookup cost.
+const trimSmallCutset = 8
+
+// cutsetContains reports whether value is present in cutset using a linear scan.
+// It is shared by the small-cutset fast paths of Trim/TrimLeft/TrimRight so the
+// three stay in sync, and uses the same == equality as the Keyify map lookup
+// (identical behavior for NaN keys, which are never matched by either path).
+func cutsetContains[T comparable, Slice ~[]T](cutset Slice, value T) bool {
+	for i := range cutset {
+		if cutset[i] == value {
+			return true
 		}
 	}
-
-	return collection[:start], true
+	return false
 }
 
 // Trim removes all the leading and trailing cutset from the collection.
-// Play: https://go.dev/play/p/1an9mxLdRG5
+// Play: https://go.dev/play/p/LZLfLj5C8Lg
 func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	if len(cutset) <= trimSmallCutset {
+		return trimSmall(collection, cutset)
+	}
+	return trimLarge(collection, cutset)
+}
+
+func trimLarge[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	i := 0
@@ -1043,9 +1434,39 @@ func Trim[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	return append(result, collection[i:j+1]...)
 }
 
+func trimSmall[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	i := 0
+	for ; i < len(collection); i++ {
+		if !cutsetContains(cutset, collection[i]) {
+			break
+		}
+	}
+
+	if i >= len(collection) {
+		return Slice{}
+	}
+
+	j := len(collection) - 1
+	for ; j >= 0; j-- {
+		if !cutsetContains(cutset, collection[j]) {
+			break
+		}
+	}
+
+	result := make(Slice, 0, j+1-i)
+	return append(result, collection[i:j+1]...)
+}
+
 // TrimLeft removes all the leading cutset from the collection.
-// Play: https://go.dev/play/p/74aqfAYLmyi
+// Play: https://go.dev/play/p/fJK-AhROy9w
 func TrimLeft[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	if len(cutset) <= trimSmallCutset {
+		return trimLeftSmall(collection, cutset)
+	}
+	return trimLeftLarge(collection, cutset)
+}
+
+func trimLeftLarge[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	return DropWhile(collection, func(item T) bool {
@@ -1054,30 +1475,64 @@ func TrimLeft[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	})
 }
 
+func trimLeftSmall[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	// Mirrors DropWhile exactly (same make cap and append) but tests membership
+	// against cutset directly to stay allocation-free.
+	i := 0
+	for ; i < len(collection); i++ {
+		if !cutsetContains(cutset, collection[i]) {
+			break
+		}
+	}
+
+	result := make(Slice, 0, len(collection)-i)
+	return append(result, collection[i:]...)
+}
+
 // TrimPrefix removes all the leading prefix from the collection.
-// Play: https://go.dev/play/p/SHO6X-YegPg
+// Play: https://go.dev/play/p/8O2RoWYzi8J
 func TrimPrefix[T comparable, Slice ~[]T](collection, prefix Slice) Slice {
 	if len(prefix) == 0 {
 		return collection
 	}
 
-	for {
-		if !HasPrefix(collection, prefix) {
-			return collection
-		}
+	for HasPrefix(collection, prefix) {
 		collection = collection[len(prefix):]
 	}
+
+	return collection
 }
 
 // TrimRight removes all the trailing cutset from the collection.
-// Play: https://go.dev/play/p/MRpAfR6sf0g
+// Play: https://go.dev/play/p/9V_N8sRyyiZ
 func TrimRight[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	if len(cutset) <= trimSmallCutset {
+		return trimRightSmall(collection, cutset)
+	}
+	return trimRightLarge(collection, cutset)
+}
+
+func trimRightLarge[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
 	set := Keyify(cutset)
 
 	return DropRightWhile(collection, func(item T) bool {
 		_, ok := set[item]
 		return ok
 	})
+}
+
+func trimRightSmall[T comparable, Slice ~[]T](collection, cutset Slice) Slice {
+	// Mirrors DropRightWhile exactly (same make cap and append) but tests
+	// membership against cutset directly to stay allocation-free.
+	i := len(collection) - 1
+	for ; i >= 0; i-- {
+		if !cutsetContains(cutset, collection[i]) {
+			break
+		}
+	}
+
+	result := make(Slice, 0, i+1)
+	return append(result, collection[:i+1]...)
 }
 
 // TrimSuffix removes all the trailing suffix from the collection.
@@ -1087,10 +1542,9 @@ func TrimSuffix[T comparable, Slice ~[]T](collection, suffix Slice) Slice {
 		return collection
 	}
 
-	for {
-		if !HasSuffix(collection, suffix) {
-			return collection
-		}
+	for HasSuffix(collection, suffix) {
 		collection = collection[:len(collection)-len(suffix)]
 	}
+
+	return collection
 }

@@ -1,19 +1,19 @@
 ---
 name: Count / CountBy
 slug: count
-sourceRef: it/seq.go#L630
-category: it
+sourceRef: it/seq.go#L834
+category: iter
 subCategory: sequence
 signatures:
   - "func Count[T comparable](collection iter.Seq[T], value T) int"
   - "func CountBy[T any](collection iter.Seq[T], predicate func(item T) bool) int"
-playUrl: "https://go.dev/play/p/1SmFJ5-zr"
+playUrl: https://go.dev/play/p/UcJ-6cANwfY
 variantHelpers:
-  - it#sequence#count
-  - it#sequence#countby
+  - iter#sequence#count
+  - iter#sequence#countby
 similarHelpers:
   - core#slice#count
-  - it#sequence#countvalues
+  - iter#sequence#countvalues
 position: 110
 ---
 

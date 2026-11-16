@@ -12,10 +12,12 @@ import (
 func TestSynchronize(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
 	testWithTimeout(t, 1000*time.Millisecond)
-	is := assert.New(t)
 
 	// check that callbacks are not executed concurrently
-	{
+	t.Run("callbacks are not executed concurrently", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
 		start := time.Now()
 
 		wg := sync.WaitGroup{}
@@ -34,10 +36,13 @@ func TestSynchronize(t *testing.T) { //nolint:paralleltest
 
 		duration := time.Since(start)
 		is.InDelta(500*time.Millisecond, duration, float64(40*time.Millisecond))
-	}
+	})
 
 	// check locker is locked
-	{
+	t.Run("locker is locked", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
 		mu := &sync.Mutex{}
 		s := Synchronize(mu)
 
@@ -49,15 +54,18 @@ func TestSynchronize(t *testing.T) { //nolint:paralleltest
 		Try0(func() {
 			mu.Unlock()
 		})
-	}
+	})
 
 	// check we don't accept multiple arguments
-	{
+	t.Run("panics on multiple arguments", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
 		is.PanicsWithValue("lo.Synchronize: unexpected arguments", func() {
 			mu := &sync.Mutex{}
 			Synchronize(mu, mu, mu)
 		})
-	}
+	})
 }
 
 func TestAsync(t *testing.T) { //nolint:paralleltest
@@ -85,9 +93,11 @@ func TestAsync(t *testing.T) { //nolint:paralleltest
 func TestAsyncX(t *testing.T) { //nolint:paralleltest
 	// t.Parallel()
 	testWithTimeout(t, 100*time.Millisecond)
-	is := assert.New(t)
 
-	{
+	t.Run("Async0", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
 		sync := make(chan struct{})
 
 		ch := Async0(func() {
@@ -101,9 +111,12 @@ func TestAsyncX(t *testing.T) { //nolint:paralleltest
 		case <-time.After(time.Millisecond):
 			is.Fail("Async0 should not block")
 		}
-	}
+	})
 
-	{
+	t.Run("Async1", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
 		sync := make(chan struct{})
 
 		ch := Async1(func() int {
@@ -119,9 +132,12 @@ func TestAsyncX(t *testing.T) { //nolint:paralleltest
 		case <-time.After(time.Millisecond):
 			is.Fail("Async1 should not block")
 		}
-	}
+	})
 
-	{
+	t.Run("Async2", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
 		sync := make(chan struct{})
 
 		ch := Async2(func() (int, string) {
@@ -137,9 +153,12 @@ func TestAsyncX(t *testing.T) { //nolint:paralleltest
 		case <-time.After(time.Millisecond):
 			is.Fail("Async2 should not block")
 		}
-	}
+	})
 
-	{
+	t.Run("Async3", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
 		sync := make(chan struct{})
 
 		ch := Async3(func() (int, string, bool) {
@@ -155,9 +174,12 @@ func TestAsyncX(t *testing.T) { //nolint:paralleltest
 		case <-time.After(time.Millisecond):
 			is.Fail("Async3 should not block")
 		}
-	}
+	})
 
-	{
+	t.Run("Async4", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
 		sync := make(chan struct{})
 
 		ch := Async4(func() (int, string, bool, float64) {
@@ -173,9 +195,12 @@ func TestAsyncX(t *testing.T) { //nolint:paralleltest
 		case <-time.After(time.Millisecond):
 			is.Fail("Async4 should not block")
 		}
-	}
+	})
 
-	{
+	t.Run("Async5", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
 		sync := make(chan struct{})
 
 		ch := Async5(func() (int, string, bool, float64, string) {
@@ -191,9 +216,12 @@ func TestAsyncX(t *testing.T) { //nolint:paralleltest
 		case <-time.After(time.Millisecond):
 			is.Fail("Async5 should not block")
 		}
-	}
+	})
 
-	{
+	t.Run("Async6", func(t *testing.T) { //nolint:paralleltest
+		// t.Parallel()
+		is := assert.New(t)
+
 		sync := make(chan struct{})
 
 		ch := Async6(func() (int, string, bool, float64, string, int) {
@@ -209,7 +237,7 @@ func TestAsyncX(t *testing.T) { //nolint:paralleltest
 		case <-time.After(time.Millisecond):
 			is.Fail("Async6 should not block")
 		}
-	}
+	})
 }
 
 func TestWaitFor(t *testing.T) { //nolint:paralleltest

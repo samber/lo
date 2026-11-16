@@ -1,17 +1,17 @@
 ---
 name: Times
 slug: times
-sourceRef: it/seq.go#L202
-category: it
+sourceRef: it/seq.go#L223
+category: iter
 subCategory: sequence
 signatures:
   - "func Times[T any](count int, callback func(index int) T) iter.Seq[T]"
-playUrl: "https://go.dev/play/p/9QkDH3-zp"
+playUrl: https://go.dev/play/p/0W4IRzQuCEc
 variantHelpers:
-  - it#sequence#times
+  - iter#sequence#times
 similarHelpers:
   - core#slice#times
-  - it#math#range
+  - iter#math#range
 position: 70
 ---
 

@@ -1027,6 +1027,30 @@ func ExampleFind_notFound() {
 	// Output: 0 false
 }
 
+func ExampleFindErr() {
+	result, err := FindErr([]string{"a", "b", "c", "d"}, func(i string) (bool, error) {
+		return i == "b", nil
+	})
+	fmt.Printf("%v %v\n", result, err)
+
+	result, err = FindErr([]string{"foobar"}, func(i string) (bool, error) {
+		return i == "b", nil
+	})
+	fmt.Printf("%v %v\n", result, err)
+
+	result, err = FindErr([]string{"a", "b", "c"}, func(i string) (bool, error) {
+		if i == "b" {
+			return false, errors.New("b is not allowed")
+		}
+		return i == "b", nil
+	})
+	fmt.Printf("%v %v", result, err)
+	// Output:
+	// b <nil>
+	//  <nil>
+	//  b is not allowed
+}
+
 func ExampleFindIndexOf() {
 	list := []int{1, 2, 3, 4, 5}
 
@@ -1211,6 +1235,31 @@ func ExampleFindDuplicatesBy() {
 	// Output: 2
 }
 
+func ExampleFindDuplicatesByErr() {
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	users := []User{
+		{Name: "Alice", Age: 25},
+		{Name: "Bob", Age: 30},
+		{Name: "Charlie", Age: 25},
+		{Name: "David", Age: 30},
+		{Name: "Eve", Age: 35},
+	}
+
+	result, err := FindDuplicatesByErr(users, func(user User) (int, error) {
+		if user.Name == "Charlie" {
+			return 0, errors.New("charlie is not allowed")
+		}
+		return user.Age, nil
+	})
+
+	fmt.Printf("%d %v", len(result), err)
+	// Output: 0 charlie is not allowed
+}
+
 func ExampleMin() {
 	list := []int{3, 1, 4, 1, 5, 9, 2, 6}
 
@@ -1267,6 +1316,29 @@ func ExampleMinBy() {
 	// Output: Alice
 }
 
+func ExampleMinByErr() {
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	users := []User{
+		{Name: "Alice", Age: 25},
+		{Name: "Bob", Age: 30},
+		{Name: "Charlie", Age: 35},
+	}
+
+	result, err := MinByErr(users, func(a, b User) (bool, error) {
+		if a.Name == "Bob" {
+			return false, errors.New("bob is not allowed")
+		}
+		return a.Age < b.Age, nil
+	})
+
+	fmt.Printf("%v %v", result.Name, err)
+	// Output:  bob is not allowed
+}
+
 func ExampleMinIndexBy() {
 	type User struct {
 		Name string
@@ -1285,6 +1357,29 @@ func ExampleMinIndexBy() {
 
 	fmt.Printf("%s %d", result.Name, index)
 	// Output: Alice 0
+}
+
+func ExampleMinIndexByErr() {
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	users := []User{
+		{Name: "Alice", Age: 25},
+		{Name: "Bob", Age: 30},
+		{Name: "Charlie", Age: 35},
+	}
+
+	result, _, err := MinIndexByErr(users, func(a, b User) (bool, error) {
+		if a.Name == "Bob" {
+			return false, errors.New("bob is not allowed")
+		}
+		return a.Age < b.Age, nil
+	})
+
+	fmt.Printf("%v %v", result.Name, err)
+	// Output:  bob is not allowed
 }
 
 func ExampleEarliest() {
@@ -1317,6 +1412,30 @@ func ExampleEarliestBy() {
 
 	fmt.Printf("%s", result.Name)
 	// Output: Event C
+}
+
+func ExampleEarliestByErr() {
+	type Event struct {
+		Name string
+		Time time.Time
+	}
+
+	now := time.Now()
+	events := []Event{
+		{Name: "Event A", Time: now.Add(time.Hour)},
+		{Name: "Event B", Time: now},
+		{Name: "Event C", Time: now.Add(-time.Hour)},
+	}
+
+	_, err := EarliestByErr(events, func(event Event) (time.Time, error) {
+		if event.Name == "Event B" {
+			return time.Time{}, errors.New("event b is not allowed")
+		}
+		return event.Time, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: event b is not allowed
 }
 
 func ExampleMax() {
@@ -1375,6 +1494,29 @@ func ExampleMaxBy() {
 	// Output: Charlie
 }
 
+func ExampleMaxByErr() {
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	users := []User{
+		{Name: "Alice", Age: 25},
+		{Name: "Bob", Age: 30},
+		{Name: "Charlie", Age: 35},
+	}
+
+	_, err := MaxByErr(users, func(a, b User) (bool, error) {
+		if b.Name == "Bob" {
+			return false, errors.New("bob is not allowed")
+		}
+		return a.Age > b.Age, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: bob is not allowed
+}
+
 func ExampleMaxIndexBy() {
 	type User struct {
 		Name string
@@ -1393,6 +1535,29 @@ func ExampleMaxIndexBy() {
 
 	fmt.Printf("%s %d", result.Name, index)
 	// Output: Charlie 2
+}
+
+func ExampleMaxIndexByErr() {
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	users := []User{
+		{Name: "Alice", Age: 25},
+		{Name: "Bob", Age: 30},
+		{Name: "Charlie", Age: 35},
+	}
+
+	_, _, err := MaxIndexByErr(users, func(a, b User) (bool, error) {
+		if b.Name == "Bob" {
+			return false, errors.New("bob is not allowed")
+		}
+		return a.Age > b.Age, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: bob is not allowed
 }
 
 func ExampleLatest() {
@@ -1425,6 +1590,31 @@ func ExampleLatestBy() {
 
 	fmt.Printf("%s", result.Name)
 	// Output: Event A
+}
+
+func ExampleLatestByErr() {
+	type Event struct {
+		Name string
+		Time time.Time
+		Err  error // Simulates error condition
+	}
+
+	now := time.Now()
+	events := []Event{
+		{Name: "Event A", Time: now.Add(time.Hour), Err: nil},
+		{Name: "Event B", Time: now, Err: errors.New("event b error")},
+		{Name: "Event C", Time: now.Add(-time.Hour), Err: nil},
+	}
+
+	_, err := LatestByErr(events, func(event Event) (time.Time, error) {
+		if event.Err != nil {
+			return time.Time{}, event.Err
+		}
+		return event.Time, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: event b error
 }
 
 func ExampleFirst() {
@@ -1627,6 +1817,38 @@ func ExampleWithoutBy() {
 	// [{1 Alice}]
 }
 
+func ExampleWithoutByErr() {
+	type User struct {
+		ID   int
+		Name string
+	}
+	// original users
+	users := []User{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+		{ID: 3, Name: "Charlie"},
+	}
+
+	// exclude users with IDs 2 and 3
+	excludedIDs := []int{2, 3}
+
+	// extract function to get the user ID
+	extractID := func(user User) (int, error) {
+		if user.ID == 2 {
+			return 0, errors.New("user 2 extraction failed")
+		}
+		return user.ID, nil
+	}
+
+	// filtering users
+	filteredUsers, err := WithoutByErr(users, extractID, excludedIDs...)
+
+	// output the filtered users
+	fmt.Printf("%v %v", filteredUsers, err)
+	// Output:
+	// [] user 2 extraction failed
+}
+
 func ExampleKeys() {
 	kv := map[string]int{"foo": 1, "bar": 2}
 	kv2 := map[string]int{"baz": 3}
@@ -1690,6 +1912,20 @@ func ExamplePickBy() {
 	// Output: 2 1 3
 }
 
+func ExamplePickByErr() {
+	kv := map[string]int{"foo": 1, "bar": 2, "baz": 3}
+
+	_, err := PickByErr(kv, func(key string, value int) (bool, error) {
+		if key == "bar" {
+			return false, errors.New("key bar is not allowed")
+		}
+		return value%2 == 1, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: key bar is not allowed
+}
+
 func ExamplePickByKeys() {
 	kv := map[string]int{"foo": 1, "bar": 2, "baz": 3}
 
@@ -1717,6 +1953,20 @@ func ExampleOmitBy() {
 
 	fmt.Printf("%v", result)
 	// Output: map[bar:2]
+}
+
+func ExampleOmitByErr() {
+	kv := map[string]int{"foo": 1, "bar": 2, "baz": 3}
+
+	_, err := OmitByErr(kv, func(key string, value int) (bool, error) {
+		if key == "bar" {
+			return false, errors.New("key bar is not allowed")
+		}
+		return value%2 == 1, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: key bar is not allowed
 }
 
 func ExampleOmitByKeys() {
@@ -1819,6 +2069,20 @@ func ExampleMapKeys() {
 	// Output: 4 1 2 3 4
 }
 
+func ExampleMapKeysErr() {
+	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
+
+	_, err := MapKeysErr(kv, func(_, k int) (string, error) {
+		if k == 3 {
+			return "", errors.New("key 3 is not allowed")
+		}
+		return strconv.FormatInt(int64(k), 10), nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: key 3 is not allowed
+}
+
 func ExampleMapValues() {
 	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
 
@@ -1830,6 +2094,20 @@ func ExampleMapValues() {
 	// Output: 4 "1" "2" "3" "4"
 }
 
+func ExampleMapValuesErr() {
+	kv := map[int]int{1: 1, 2: 2, 3: 3, 4: 4}
+
+	_, err := MapValuesErr(kv, func(v, _ int) (string, error) {
+		if v == 3 {
+			return "", errors.New("value 3 is not allowed")
+		}
+		return strconv.FormatInt(int64(v), 10), nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: value 3 is not allowed
+}
+
 func ExampleMapEntries() {
 	kv := map[string]int{"foo": 1, "bar": 2}
 
@@ -1839,6 +2117,20 @@ func ExampleMapEntries() {
 
 	fmt.Printf("%v", result)
 	// Output: map[1:foo 2:bar]
+}
+
+func ExampleMapEntriesErr() {
+	kv := map[string]int{"foo": 1, "bar": 2}
+
+	_, err := MapEntriesErr(kv, func(k string, v int) (int, string, error) {
+		if k == "foo" {
+			return 0, "", errors.New("entry foo is not allowed")
+		}
+		return v, k, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: entry foo is not allowed
 }
 
 func ExampleMapToSlice() {
@@ -1853,6 +2145,20 @@ func ExampleMapToSlice() {
 	// Output: [1_1 2_2 3_3 4_4]
 }
 
+func ExampleMapToSliceErr() {
+	kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
+
+	_, err := MapToSliceErr(kv, func(k int, v int64) (string, error) {
+		if k == 3 {
+			return "", errors.New("key 3 is not allowed")
+		}
+		return fmt.Sprintf("%d_%d", k, v), nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: key 3 is not allowed
+}
+
 func ExampleFilterMapToSlice() {
 	kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
 
@@ -1863,6 +2169,20 @@ func ExampleFilterMapToSlice() {
 	sort.Strings(result)
 	fmt.Printf("%v", result)
 	// Output: [2_2 4_4]
+}
+
+func ExampleFilterMapToSliceErr() {
+	kv := map[int]int64{1: 1, 2: 2, 3: 3, 4: 4}
+
+	_, err := FilterMapToSliceErr(kv, func(k int, v int64) (string, bool, error) {
+		if k == 3 {
+			return "", false, errors.New("key 3 is not allowed")
+		}
+		return fmt.Sprintf("%d_%d", k, v), k%2 == 0, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: key 3 is not allowed
 }
 
 func ExampleFilterKeys() {
@@ -1885,6 +2205,46 @@ func ExampleFilterValues() {
 
 	fmt.Printf("%v", result)
 	// Output: [foo]
+}
+
+func ExampleFilterKeysErr() {
+	kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
+
+	result, err := FilterKeysErr(kv, func(k int, v string) (bool, error) {
+		if k == 3 {
+			return false, errors.New("key 3 not allowed")
+		}
+		return v == "foo", nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+
+	result, err = FilterKeysErr(kv, func(k int, v string) (bool, error) {
+		return v == "bar", nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+	// Output:
+	// [], key 3 not allowed
+	// [2], <nil>
+}
+
+func ExampleFilterValuesErr() {
+	kv := map[int]string{1: "foo", 2: "bar", 3: "baz"}
+
+	result, err := FilterValuesErr(kv, func(k int, v string) (bool, error) {
+		if k == 3 {
+			return false, errors.New("key 3 not allowed")
+		}
+		return v == "foo", nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+
+	result, err = FilterValuesErr(kv, func(k int, v string) (bool, error) {
+		return v == "bar", nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+	// Output:
+	// [], key 3 not allowed
+	// [bar], <nil>
 }
 
 func ExampleRange() {
@@ -1950,6 +2310,20 @@ func ExampleSumBy() {
 	// Output: 6
 }
 
+func ExampleSumByErr() {
+	list := []string{"foo", "bar", "baz"}
+
+	_, err := SumByErr(list, func(item string) (int, error) {
+		if item == "bar" {
+			return 0, errors.New("bar is not allowed")
+		}
+		return len(item), nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: bar is not allowed
+}
+
 func ExampleProduct() {
 	list := []int{1, 2, 3, 4, 5}
 
@@ -1968,6 +2342,20 @@ func ExampleProductBy() {
 
 	fmt.Printf("%v", result)
 	// Output: 9
+}
+
+func ExampleProductByErr() {
+	list := []string{"foo", "bar", "baz"}
+
+	_, err := ProductByErr(list, func(item string) (int, error) {
+		if item == "bar" {
+			return 0, errors.New("bar is not allowed")
+		}
+		return len(item), nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: bar is not allowed
 }
 
 func ExampleMean() {
@@ -1990,6 +2378,20 @@ func ExampleMeanBy() {
 	// Output: 3
 }
 
+func ExampleMeanByErr() {
+	list := []string{"foo", "bar", "baz"}
+
+	_, err := MeanByErr(list, func(item string) (int, error) {
+		if item == "bar" {
+			return 0, errors.New("bar is not allowed")
+		}
+		return len(item), nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: bar is not allowed
+}
+
 func ExampleFilter() {
 	list := []int64{1, 2, 3, 4}
 
@@ -2001,6 +2403,26 @@ func ExampleFilter() {
 	// Output: [2 4]
 }
 
+func ExampleFilterErr() {
+	list := []int64{1, 2, 3, 4}
+
+	result, err := FilterErr(list, func(nbr int64, index int) (bool, error) {
+		if nbr == 3 {
+			return false, errors.New("number 3 is not allowed")
+		}
+		return nbr%2 == 0, nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+
+	result, err = FilterErr([]int64{1, 2, 4, 6}, func(nbr int64, index int) (bool, error) {
+		return nbr%2 == 0, nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+	// Output:
+	// [], number 3 is not allowed
+	// [2 4 6], <nil>
+}
+
 func ExampleMap() {
 	list := []int64{1, 2, 3, 4}
 
@@ -2010,6 +2432,20 @@ func ExampleMap() {
 
 	fmt.Printf("%v", result)
 	// Output: [2 4 6 8]
+}
+
+func ExampleMapErr() {
+	list := []int64{1, 2, 3, 4}
+
+	_, err := MapErr(list, func(nbr int64, index int) (string, error) {
+		if nbr == 3 {
+			return "", errors.New("number 3 is not allowed")
+		}
+		return strconv.FormatInt(nbr*2, 10), nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: number 3 is not allowed
 }
 
 func ExampleUniqMap() {
@@ -2054,6 +2490,23 @@ func ExampleFlatMap() {
 	// Output: [1 1 2 10 3 11 4 100]
 }
 
+func ExampleFlatMapErr() {
+	list := []int64{1, 2, 3, 4}
+
+	_, err := FlatMapErr(list, func(nbr int64, index int) ([]string, error) {
+		if nbr == 3 {
+			return nil, errors.New("number 3 is not allowed")
+		}
+		return []string{
+			strconv.FormatInt(nbr, 10), // base 10
+			strconv.FormatInt(nbr, 2),  // base 2
+		}, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: number 3 is not allowed
+}
+
 func ExampleReduce() {
 	list := []int64{1, 2, 3, 4}
 
@@ -2065,6 +2518,20 @@ func ExampleReduce() {
 	// Output: 10
 }
 
+func ExampleReduceErr() {
+	list := []int64{1, 2, 3, 4}
+
+	_, err := ReduceErr(list, func(agg, item int64, index int) (int64, error) {
+		if item == 3 {
+			return 0, errors.New("number 3 is not allowed")
+		}
+		return agg + item, nil
+	}, 0)
+
+	fmt.Printf("%v", err)
+	// Output: number 3 is not allowed
+}
+
 func ExampleReduceRight() {
 	list := [][]int{{0, 1}, {2, 3}, {4, 5}}
 
@@ -2074,6 +2541,20 @@ func ExampleReduceRight() {
 
 	fmt.Printf("%v", result)
 	// Output: [4 5 2 3 0 1]
+}
+
+func ExampleReduceRightErr() {
+	list := [][]int{{0, 1}, {2, 3}, {4, 5}}
+
+	_, err := ReduceRightErr(list, func(agg, item []int, index int) ([]int, error) {
+		if index == 0 {
+			return nil, errors.New("index 0 is not allowed")
+		}
+		return append(agg, item...), nil
+	}, []int{})
+
+	fmt.Printf("%v", err)
+	// Output: index 0 is not allowed
 }
 
 func ExampleForEach() {
@@ -2106,6 +2587,24 @@ func ExampleForEachWhile() {
 	// 2
 }
 
+func ExampleForEachErr() {
+	list := []int64{1, 2, -42, 4}
+
+	err := ForEachErr(list, func(x int64, _ int) error {
+		if x < 0 {
+			return fmt.Errorf("%d is not allowed", x)
+		}
+		fmt.Println(x)
+		return nil
+	})
+
+	fmt.Printf("%v\n", err)
+	// Output:
+	// 1
+	// 2
+	// -42 is not allowed
+}
+
 func ExampleTimes() {
 	result := Times(3, func(i int) string {
 		return strconv.FormatInt(int64(i), 10)
@@ -2135,6 +2634,20 @@ func ExampleUniqBy() {
 	// Output: [0 1 2]
 }
 
+func ExampleUniqByErr() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	_, err := UniqByErr(list, func(i int) (int, error) {
+		if i == 3 {
+			return 0, errors.New("number 3 is not allowed")
+		}
+		return i % 3, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: number 3 is not allowed
+}
+
 func ExampleGroupBy() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
@@ -2151,6 +2664,20 @@ func ExampleGroupBy() {
 	// [2 5]
 }
 
+func ExampleGroupByErr() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	_, err := GroupByErr(list, func(i int) (int, error) {
+		if i == 3 {
+			return 0, errors.New("number 3 is not allowed")
+		}
+		return i % 3, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: number 3 is not allowed
+}
+
 func ExampleGroupByMap() {
 	list := []int{0, 1, 2, 3, 4, 5}
 
@@ -2165,6 +2692,20 @@ func ExampleGroupByMap() {
 	// [0 6]
 	// [2 8]
 	// [4 10]
+}
+
+func ExampleGroupByMapErr() {
+	list := []int{0, 1, 2, 3, 4, 5}
+
+	_, err := GroupByMapErr(list, func(i int) (int, int, error) {
+		if i == 3 {
+			return 0, 0, errors.New("number 3 is not allowed")
+		}
+		return i % 3, i * 2, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: number 3 is not allowed
 }
 
 func ExampleChunk() {
@@ -2235,6 +2776,25 @@ func ExamplePartitionBy() {
 	// [-2 -1]
 	// [0 2 4]
 	// [1 3]
+}
+
+func ExamplePartitionByErr() {
+	list := []int{-2, -1, 0, 1, 2, 3, 4}
+
+	_, err := PartitionByErr(list, func(x int) (string, error) {
+		if x == 0 {
+			return "", errors.New("zero is not allowed")
+		}
+		if x < 0 {
+			return "negative", nil
+		} else if x%2 == 0 {
+			return "even", nil
+		}
+		return "odd", nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: zero is not allowed
 }
 
 func ExampleFlatten() {
@@ -2311,6 +2871,18 @@ func ExampleRepeatBy() {
 	// Output: [0 1 4 9 16]
 }
 
+func ExampleRepeatByErr() {
+	result, err := RepeatByErr(5, func(i int) (string, error) {
+		if i == 3 {
+			return "", errors.New("index 3 is not allowed")
+		}
+		return fmt.Sprintf("item-%d", i), nil
+	})
+
+	fmt.Printf("%d %v", len(result), err)
+	// Output: 0 index 3 is not allowed
+}
+
 func ExampleKeyBy() {
 	list := []string{"a", "aa", "aaa"}
 
@@ -2320,6 +2892,20 @@ func ExampleKeyBy() {
 
 	fmt.Printf("%v", result)
 	// Output: map[1:a 2:aa 3:aaa]
+}
+
+func ExampleKeyByErr() {
+	list := []string{"a", "aa", "aaa"}
+
+	_, err := KeyByErr(list, func(str string) (int, error) {
+		if str == "aa" {
+			return 0, errors.New("aa is not allowed")
+		}
+		return len(str), nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: aa is not allowed
 }
 
 func ExampleSliceToMap() {
@@ -2453,6 +3039,26 @@ func ExampleReject() {
 	// Output: [1 3 5]
 }
 
+func ExampleRejectErr() {
+	list := []int64{0, 1, 2, 3, 4, 5}
+
+	result, err := RejectErr(list, func(x int64, index int) (bool, error) {
+		if x == 3 {
+			return false, errors.New("number 3 is not allowed")
+		}
+		return x%2 == 0, nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+
+	result, err = RejectErr([]int64{0, 1, 2, 4, 6}, func(x int64, index int) (bool, error) {
+		return x%2 == 0, nil
+	})
+	fmt.Printf("%v, %v\n", result, err)
+	// Output:
+	// [], number 3 is not allowed
+	// [1], <nil>
+}
+
 func ExampleCount() {
 	list := []int{0, 1, 2, 3, 4, 5, 0, 1, 2, 3}
 
@@ -2471,6 +3077,20 @@ func ExampleCountBy() {
 
 	fmt.Printf("%v", result)
 	// Output: 8
+}
+
+func ExampleCountByErr() {
+	list := []int{0, 1, 2, 3, 4, 5, 0, 1, 2, 3}
+
+	_, err := CountByErr(list, func(i int) (bool, error) {
+		if i == 3 {
+			return false, errors.New("number 3 is not allowed")
+		}
+		return i < 4, nil
+	})
+
+	fmt.Printf("%v", err)
+	// Output: number 3 is not allowed
 }
 
 func ExampleCountValues() {
@@ -3026,6 +3646,94 @@ func ExampleUnzip9() {
 	// Output: [hello] [2] [true] [{bar}] [4.2] [plop] [false] [42] [hello world]
 }
 
+func ExampleUnzipByErr2() {
+	a, b, err := UnzipByErr2([]string{"hello", "error", "world"}, func(str string) (string, int, error) {
+		if str == "error" {
+			return "", 0, errors.New("error string not allowed")
+		}
+		return str, len(str), nil
+	})
+	fmt.Printf("%v %v %v", len(a), len(b), err)
+	// Output: 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr3() {
+	a, b, c, err := UnzipByErr3([]string{"hello", "error", "world"}, func(str string) (string, int, bool, error) {
+		if str == "error" {
+			return "", 0, false, errors.New("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, nil
+	})
+	fmt.Printf("%v %v %v %v", len(a), len(b), len(c), err)
+	// Output: 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr4() {
+	a, b, c, d, err := UnzipByErr4([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, error) {
+		if str == "error" {
+			return "", 0, false, 0, errors.New("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v", len(a), len(b), len(c), len(d), err)
+	// Output: 0 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr5() {
+	a, b, c, d, e, err := UnzipByErr5([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, error) {
+		if str == "error" {
+			return "", 0, false, 0, 0, errors.New("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v %v", len(a), len(b), len(c), len(d), len(e), err)
+	// Output: 0 0 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr6() {
+	a, b, c, d, e, f, err := UnzipByErr6([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, error) {
+		if str == "error" {
+			return "", 0, false, 0, 0, 0, errors.New("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v %v %v", len(a), len(b), len(c), len(d), len(e), len(f), err)
+	// Output: 0 0 0 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr7() {
+	a, b, c, d, e, f, g, err := UnzipByErr7([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, error) {
+		if str == "error" {
+			return "", 0, false, 0, 0, 0, 0, errors.New("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v %v %v %v", len(a), len(b), len(c), len(d), len(e), len(f), len(g), err)
+	// Output: 0 0 0 0 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr8() {
+	a, b, c, d, e, f, g, h, err := UnzipByErr8([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, error) {
+		if str == "error" {
+			return "", 0, false, 0, 0, 0, 0, 0, errors.New("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), int32(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v %v %v %v %v", len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h), err)
+	// Output: 0 0 0 0 0 0 0 0 error string not allowed
+}
+
+func ExampleUnzipByErr9() {
+	a, b, c, d, e, f, g, h, i, err := UnzipByErr9([]string{"hello", "error", "world"}, func(str string) (string, int, bool, float32, float64, int8, int16, int32, int64, error) {
+		if str == "error" {
+			return "", 0, false, 0, 0, 0, 0, 0, 0, errors.New("error string not allowed")
+		}
+		return str, len(str), len(str) > 4, float32(len(str)), float64(len(str)), int8(len(str)), int16(len(str)), int32(len(str)), int64(len(str)), nil
+	})
+	fmt.Printf("%v %v %v %v %v %v %v %v %v %v", len(a), len(b), len(c), len(d), len(e), len(f), len(g), len(h), len(i), err)
+	// Output: 0 0 0 0 0 0 0 0 0 error string not allowed
+}
+
 func ExampleCrossJoin2() {
 	result := CrossJoin2([]string{"a", "b"}, []int{1, 2, 3, 4})
 	for _, r := range result {
@@ -3408,6 +4116,42 @@ func ExampleCrossJoinBy9() {
 	// b-3-false-{bar}-4.2-plop-false-42-hello world
 	// b-4-true-{bar}-4.2-plop-false-42-hello world
 	// b-4-false-{bar}-4.2-plop-false-42-hello world
+}
+
+func ExampleCrossJoinByErr2() {
+	result, err := CrossJoinByErr2([]string{"a", "b"}, []int{1, 2}, func(a string, b int) (string, error) {
+		if a == "b" {
+			return "", errors.New("b not allowed")
+		}
+		return fmt.Sprintf("%v-%v", a, b), nil
+	})
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return
+	}
+	for _, r := range result {
+		fmt.Printf("%v\n", r)
+	}
+	// Output:
+	// error: b not allowed
+}
+
+func ExampleZipByErr2() {
+	result, err := ZipByErr2([]string{"a", "b", "c"}, []int{1, 2, 3}, func(a string, b int) (string, error) {
+		if a == "b" {
+			return "", errors.New("b is not allowed")
+		}
+		return fmt.Sprintf("%v-%v", a, b), nil
+	})
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return
+	}
+	for _, r := range result {
+		fmt.Printf("%v\n", r)
+	}
+	// Output:
+	// error: b is not allowed
 }
 
 func ExampleIntersect() {

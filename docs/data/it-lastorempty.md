@@ -1,14 +1,14 @@
 ---
 name: LastOrEmpty
 slug: lastorempty
-sourceRef: it/find.go#L400
-category: it
+sourceRef: it/find.go#L429
+category: iter
 subCategory: find
 signatures:
   - "func LastOrEmpty[T any](collection iter.Seq[T]) T"
-playUrl: "https://go.dev/play/p/9QkDH3-zp"
+playUrl: https://go.dev/play/p/teODFK4YqM4
 variantHelpers:
-  - it#find#lastorempty
+  - iter#find#lastorempty
 similarHelpers:
   - core#slice#lastorempty
 position: 560

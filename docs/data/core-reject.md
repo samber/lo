@@ -1,7 +1,7 @@
 ---
 name: Reject
 slug: reject
-sourceRef: slice.go#L532
+sourceRef: slice.go#L1012
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/pFCF5WVB225
@@ -9,6 +9,7 @@ variantHelpers:
   - core#slice#reject
 similarHelpers:
   - core#slice#filter
+  - core#slice#rejecterr
   - core#slice#filterreject
   - core#slice#rejectmap
   - core#slice#filterreject

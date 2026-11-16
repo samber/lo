@@ -1,17 +1,17 @@
 ---
 name: Reverse
 slug: reverse
-sourceRef: it/seq.go#L366
-category: it
+sourceRef: it/seq.go#L477
+category: iter
 subCategory: sequence
 signatures:
   - "func Reverse[T any, I ~func(func(T) bool)](collection I) I"
-playUrl: https://go.dev/play/p/9jthUzgF-u
+playUrl: https://go.dev/play/p/R6-lR8yiNwa
 variantHelpers:
-  - it#sequence#reverse
+  - iter#sequence#reverse
 similarHelpers:
   - core#slice#reverse
-  - it#sequence#shuffle
+  - iter#sequence#shuffle
 position: 90
 ---
 

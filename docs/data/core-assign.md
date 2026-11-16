@@ -1,7 +1,7 @@
 ---
 name: Assign
 slug: assign
-sourceRef: map.go#L234
+sourceRef: map.go#L270
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/VhwfJOyxf5o

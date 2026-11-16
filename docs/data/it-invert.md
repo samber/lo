@@ -1,17 +1,17 @@
 ---
 name: Invert
 slug: invert
-sourceRef: it/map.go#L111
-category: it
+sourceRef: it/map.go#L128
+category: iter
 subCategory: map
 signatures:
   - "func Invert[K, V comparable](in iter.Seq2[K, V]) iter.Seq2[V, K]"
-playUrl: "https://go.dev/play/p/H4jR7n2sF8k"
+playUrl: https://go.dev/play/p/Iph19Lgcsx-
 variantHelpers:
-  - it#map#invert
+  - iter#map#invert
 similarHelpers:
   - core#slice#invert
-  - it#map#entries
+  - iter#map#entries
 position: 40
 ---
 

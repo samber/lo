@@ -1,17 +1,17 @@
 ---
 name: Empty
 slug: empty
-sourceRef: it/type_manipulation.go#L44
-category: it
+sourceRef: it/type_manipulation.go#L50
+category: iter
 subCategory: type
 signatures:
   - "func Empty[T any]() iter.Seq[T]"
 playUrl: "https://go.dev/play/p/E5fF1hH8Bc3"
 variantHelpers:
-  - it#type#empty
+  - iter#type#empty
 similarHelpers:
-  - it#type#isempty
-  - it#type#isnotempty
+  - iter#type#isempty
+  - iter#type#isnotempty
 position: 0
 ---
 

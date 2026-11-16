@@ -1,14 +1,14 @@
 ---
 name: ElementsMatch
 slug: elementsmatch
-sourceRef: it/intersect.go#L174
-category: it
+sourceRef: it/intersect.go#L264
+category: iter
 subCategory: intersect
 signatures:
   - "func ElementsMatch[T comparable](list1, list2 iter.Seq[T]) bool"
-playUrl: "https://go.dev/play/p/yGpdBGaWPCA"
+playUrl: "https://go.dev/play/p/24SGQm1yMRe"
 variantHelpers:
-  - it#intersect#elementsmatch
+  - iter#intersect#elementsmatch
 similarHelpers:
   - core#slice#elementsmatch
 position: 720

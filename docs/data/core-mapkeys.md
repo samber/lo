@@ -1,7 +1,7 @@
 ---
 name: MapKeys
 slug: mapkeys
-sourceRef: map.go#L283
+sourceRef: map.go#L314
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/9_4WPIqOetJ
@@ -12,6 +12,7 @@ similarHelpers:
   - core#map#mapentries
   - core#map#keyby
   - core#slice#map
+  - core#map#mapkeyserr
 position: 180
 signatures:
   - "func MapKeys[K comparable, V any, R comparable](in map[K]V, iteratee func(value V, key K) R) map[R]V"

@@ -14,18 +14,16 @@ import (
 // Play: https://go.dev/play/p/U5nBWvR8eUZ
 func Zip2[A, B any](a iter.Seq[A], b iter.Seq[B]) iter.Seq[lo.Tuple2[A, B]] {
 	return func(yield func(lo.Tuple2[A, B]) bool) {
-		var next lo.Tuple2[func() (A, bool), func() (B, bool)]
-		var stop func()
-		next.A, stop = iter.Pull(a)
-		defer stop()
-		next.B, stop = iter.Pull(b)
-		defer stop()
+		nextA, stopA := iter.Pull(a)
+		defer stopA()
+		nextB, stopB := iter.Pull(b)
+		defer stopB()
 
 		for {
 			var item lo.Tuple2[A, B]
 			var ok [2]bool
-			item.A, ok[0] = next.A()
-			item.B, ok[1] = next.B()
+			item.A, ok[0] = nextA()
+			item.B, ok[1] = nextB()
 			if ok == [2]bool{} || !yield(item) {
 				return
 			}
@@ -39,21 +37,19 @@ func Zip2[A, B any](a iter.Seq[A], b iter.Seq[B]) iter.Seq[lo.Tuple2[A, B]] {
 // Play: https://go.dev/play/p/V5wL9xY8nQr
 func Zip3[A, B, C any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C]) iter.Seq[lo.Tuple3[A, B, C]] {
 	return func(yield func(lo.Tuple3[A, B, C]) bool) {
-		var next lo.Tuple3[func() (A, bool), func() (B, bool), func() (C, bool)]
-		var stop func()
-		next.A, stop = iter.Pull(a)
-		defer stop()
-		next.B, stop = iter.Pull(b)
-		defer stop()
-		next.C, stop = iter.Pull(c)
-		defer stop()
+		nextA, stopA := iter.Pull(a)
+		defer stopA()
+		nextB, stopB := iter.Pull(b)
+		defer stopB()
+		nextC, stopC := iter.Pull(c)
+		defer stopC()
 
 		for {
 			var item lo.Tuple3[A, B, C]
 			var ok [3]bool
-			item.A, ok[0] = next.A()
-			item.B, ok[1] = next.B()
-			item.C, ok[2] = next.C()
+			item.A, ok[0] = nextA()
+			item.B, ok[1] = nextB()
+			item.C, ok[2] = nextC()
 			if ok == [3]bool{} || !yield(item) {
 				return
 			}
@@ -67,24 +63,22 @@ func Zip3[A, B, C any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C]) iter.Seq[lo.
 // Play: https://go.dev/play/p/W6xM7zZ9oSt
 func Zip4[A, B, C, D any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D]) iter.Seq[lo.Tuple4[A, B, C, D]] {
 	return func(yield func(lo.Tuple4[A, B, C, D]) bool) {
-		var next lo.Tuple4[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool)]
-		var stop func()
-		next.A, stop = iter.Pull(a)
-		defer stop()
-		next.B, stop = iter.Pull(b)
-		defer stop()
-		next.C, stop = iter.Pull(c)
-		defer stop()
-		next.D, stop = iter.Pull(d)
-		defer stop()
+		nextA, stopA := iter.Pull(a)
+		defer stopA()
+		nextB, stopB := iter.Pull(b)
+		defer stopB()
+		nextC, stopC := iter.Pull(c)
+		defer stopC()
+		nextD, stopD := iter.Pull(d)
+		defer stopD()
 
 		for {
 			var item lo.Tuple4[A, B, C, D]
 			var ok [4]bool
-			item.A, ok[0] = next.A()
-			item.B, ok[1] = next.B()
-			item.C, ok[2] = next.C()
-			item.D, ok[3] = next.D()
+			item.A, ok[0] = nextA()
+			item.B, ok[1] = nextB()
+			item.C, ok[2] = nextC()
+			item.D, ok[3] = nextD()
 			if ok == [4]bool{} || !yield(item) {
 				return
 			}
@@ -98,27 +92,25 @@ func Zip4[A, B, C, D any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Se
 // Play: https://go.dev/play/p/X7yN8aA1pUv
 func Zip5[A, B, C, D, E any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E]) iter.Seq[lo.Tuple5[A, B, C, D, E]] {
 	return func(yield func(lo.Tuple5[A, B, C, D, E]) bool) {
-		var next lo.Tuple5[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool), func() (E, bool)]
-		var stop func()
-		next.A, stop = iter.Pull(a)
-		defer stop()
-		next.B, stop = iter.Pull(b)
-		defer stop()
-		next.C, stop = iter.Pull(c)
-		defer stop()
-		next.D, stop = iter.Pull(d)
-		defer stop()
-		next.E, stop = iter.Pull(e)
-		defer stop()
+		nextA, stopA := iter.Pull(a)
+		defer stopA()
+		nextB, stopB := iter.Pull(b)
+		defer stopB()
+		nextC, stopC := iter.Pull(c)
+		defer stopC()
+		nextD, stopD := iter.Pull(d)
+		defer stopD()
+		nextE, stopE := iter.Pull(e)
+		defer stopE()
 
 		for {
 			var item lo.Tuple5[A, B, C, D, E]
 			var ok [5]bool
-			item.A, ok[0] = next.A()
-			item.B, ok[1] = next.B()
-			item.C, ok[2] = next.C()
-			item.D, ok[3] = next.D()
-			item.E, ok[4] = next.E()
+			item.A, ok[0] = nextA()
+			item.B, ok[1] = nextB()
+			item.C, ok[2] = nextC()
+			item.D, ok[3] = nextD()
+			item.E, ok[4] = nextE()
 			if ok == [5]bool{} || !yield(item) {
 				return
 			}
@@ -132,30 +124,28 @@ func Zip5[A, B, C, D, E any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter
 // Play: https://go.dev/play/p/Y4mN8bB2cXw
 func Zip6[A, B, C, D, E, F any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F]) iter.Seq[lo.Tuple6[A, B, C, D, E, F]] {
 	return func(yield func(lo.Tuple6[A, B, C, D, E, F]) bool) {
-		var next lo.Tuple6[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool), func() (E, bool), func() (F, bool)]
-		var stop func()
-		next.A, stop = iter.Pull(a)
-		defer stop()
-		next.B, stop = iter.Pull(b)
-		defer stop()
-		next.C, stop = iter.Pull(c)
-		defer stop()
-		next.D, stop = iter.Pull(d)
-		defer stop()
-		next.E, stop = iter.Pull(e)
-		defer stop()
-		next.F, stop = iter.Pull(f)
-		defer stop()
+		nextA, stopA := iter.Pull(a)
+		defer stopA()
+		nextB, stopB := iter.Pull(b)
+		defer stopB()
+		nextC, stopC := iter.Pull(c)
+		defer stopC()
+		nextD, stopD := iter.Pull(d)
+		defer stopD()
+		nextE, stopE := iter.Pull(e)
+		defer stopE()
+		nextF, stopF := iter.Pull(f)
+		defer stopF()
 
 		for {
 			var item lo.Tuple6[A, B, C, D, E, F]
 			var ok [6]bool
-			item.A, ok[0] = next.A()
-			item.B, ok[1] = next.B()
-			item.C, ok[2] = next.C()
-			item.D, ok[3] = next.D()
-			item.E, ok[4] = next.E()
-			item.F, ok[5] = next.F()
+			item.A, ok[0] = nextA()
+			item.B, ok[1] = nextB()
+			item.C, ok[2] = nextC()
+			item.D, ok[3] = nextD()
+			item.E, ok[4] = nextE()
+			item.F, ok[5] = nextF()
 			if ok == [6]bool{} || !yield(item) {
 				return
 			}
@@ -169,33 +159,31 @@ func Zip6[A, B, C, D, E, F any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d i
 // Play: https://go.dev/play/p/Z9nA8cC3dXw
 func Zip7[A, B, C, D, E, F, G any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G]) iter.Seq[lo.Tuple7[A, B, C, D, E, F, G]] {
 	return func(yield func(lo.Tuple7[A, B, C, D, E, F, G]) bool) {
-		var next lo.Tuple7[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool), func() (E, bool), func() (F, bool), func() (G, bool)]
-		var stop func()
-		next.A, stop = iter.Pull(a)
-		defer stop()
-		next.B, stop = iter.Pull(b)
-		defer stop()
-		next.C, stop = iter.Pull(c)
-		defer stop()
-		next.D, stop = iter.Pull(d)
-		defer stop()
-		next.E, stop = iter.Pull(e)
-		defer stop()
-		next.F, stop = iter.Pull(f)
-		defer stop()
-		next.G, stop = iter.Pull(g)
-		defer stop()
+		nextA, stopA := iter.Pull(a)
+		defer stopA()
+		nextB, stopB := iter.Pull(b)
+		defer stopB()
+		nextC, stopC := iter.Pull(c)
+		defer stopC()
+		nextD, stopD := iter.Pull(d)
+		defer stopD()
+		nextE, stopE := iter.Pull(e)
+		defer stopE()
+		nextF, stopF := iter.Pull(f)
+		defer stopF()
+		nextG, stopG := iter.Pull(g)
+		defer stopG()
 
 		for {
 			var item lo.Tuple7[A, B, C, D, E, F, G]
 			var ok [7]bool
-			item.A, ok[0] = next.A()
-			item.B, ok[1] = next.B()
-			item.C, ok[2] = next.C()
-			item.D, ok[3] = next.D()
-			item.E, ok[4] = next.E()
-			item.F, ok[5] = next.F()
-			item.G, ok[6] = next.G()
+			item.A, ok[0] = nextA()
+			item.B, ok[1] = nextB()
+			item.C, ok[2] = nextC()
+			item.D, ok[3] = nextD()
+			item.E, ok[4] = nextE()
+			item.F, ok[5] = nextF()
+			item.G, ok[6] = nextG()
 			if ok == [7]bool{} || !yield(item) {
 				return
 			}
@@ -209,36 +197,34 @@ func Zip7[A, B, C, D, E, F, G any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], 
 // Play: https://go.dev/play/p/0XrQKOk-vw
 func Zip8[A, B, C, D, E, F, G, H any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], h iter.Seq[H]) iter.Seq[lo.Tuple8[A, B, C, D, E, F, G, H]] {
 	return func(yield func(lo.Tuple8[A, B, C, D, E, F, G, H]) bool) {
-		var next lo.Tuple8[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool), func() (E, bool), func() (F, bool), func() (G, bool), func() (H, bool)]
-		var stop func()
-		next.A, stop = iter.Pull(a)
-		defer stop()
-		next.B, stop = iter.Pull(b)
-		defer stop()
-		next.C, stop = iter.Pull(c)
-		defer stop()
-		next.D, stop = iter.Pull(d)
-		defer stop()
-		next.E, stop = iter.Pull(e)
-		defer stop()
-		next.F, stop = iter.Pull(f)
-		defer stop()
-		next.G, stop = iter.Pull(g)
-		defer stop()
-		next.H, stop = iter.Pull(h)
-		defer stop()
+		nextA, stopA := iter.Pull(a)
+		defer stopA()
+		nextB, stopB := iter.Pull(b)
+		defer stopB()
+		nextC, stopC := iter.Pull(c)
+		defer stopC()
+		nextD, stopD := iter.Pull(d)
+		defer stopD()
+		nextE, stopE := iter.Pull(e)
+		defer stopE()
+		nextF, stopF := iter.Pull(f)
+		defer stopF()
+		nextG, stopG := iter.Pull(g)
+		defer stopG()
+		nextH, stopH := iter.Pull(h)
+		defer stopH()
 
 		for {
 			var item lo.Tuple8[A, B, C, D, E, F, G, H]
 			var ok [8]bool
-			item.A, ok[0] = next.A()
-			item.B, ok[1] = next.B()
-			item.C, ok[2] = next.C()
-			item.D, ok[3] = next.D()
-			item.E, ok[4] = next.E()
-			item.F, ok[5] = next.F()
-			item.G, ok[6] = next.G()
-			item.H, ok[7] = next.H()
+			item.A, ok[0] = nextA()
+			item.B, ok[1] = nextB()
+			item.C, ok[2] = nextC()
+			item.D, ok[3] = nextD()
+			item.E, ok[4] = nextE()
+			item.F, ok[5] = nextF()
+			item.G, ok[6] = nextG()
+			item.H, ok[7] = nextH()
 			if ok == [8]bool{} || !yield(item) {
 				return
 			}
@@ -252,39 +238,37 @@ func Zip8[A, B, C, D, E, F, G, H any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C
 // Play: https://go.dev/play/p/1SmFJ5-zr
 func Zip9[A, B, C, D, E, F, G, H, I any](a iter.Seq[A], b iter.Seq[B], c iter.Seq[C], d iter.Seq[D], e iter.Seq[E], f iter.Seq[F], g iter.Seq[G], h iter.Seq[H], i iter.Seq[I]) iter.Seq[lo.Tuple9[A, B, C, D, E, F, G, H, I]] {
 	return func(yield func(lo.Tuple9[A, B, C, D, E, F, G, H, I]) bool) {
-		var next lo.Tuple9[func() (A, bool), func() (B, bool), func() (C, bool), func() (D, bool), func() (E, bool), func() (F, bool), func() (G, bool), func() (H, bool), func() (I, bool)]
-		var stop func()
-		next.A, stop = iter.Pull(a)
-		defer stop()
-		next.B, stop = iter.Pull(b)
-		defer stop()
-		next.C, stop = iter.Pull(c)
-		defer stop()
-		next.D, stop = iter.Pull(d)
-		defer stop()
-		next.E, stop = iter.Pull(e)
-		defer stop()
-		next.F, stop = iter.Pull(f)
-		defer stop()
-		next.G, stop = iter.Pull(g)
-		defer stop()
-		next.H, stop = iter.Pull(h)
-		defer stop()
-		next.I, stop = iter.Pull(i)
-		defer stop()
+		nextA, stopA := iter.Pull(a)
+		defer stopA()
+		nextB, stopB := iter.Pull(b)
+		defer stopB()
+		nextC, stopC := iter.Pull(c)
+		defer stopC()
+		nextD, stopD := iter.Pull(d)
+		defer stopD()
+		nextE, stopE := iter.Pull(e)
+		defer stopE()
+		nextF, stopF := iter.Pull(f)
+		defer stopF()
+		nextG, stopG := iter.Pull(g)
+		defer stopG()
+		nextH, stopH := iter.Pull(h)
+		defer stopH()
+		nextI, stopI := iter.Pull(i)
+		defer stopI()
 
 		for {
 			var item lo.Tuple9[A, B, C, D, E, F, G, H, I]
 			var ok [9]bool
-			item.A, ok[0] = next.A()
-			item.B, ok[1] = next.B()
-			item.C, ok[2] = next.C()
-			item.D, ok[3] = next.D()
-			item.E, ok[4] = next.E()
-			item.F, ok[5] = next.F()
-			item.G, ok[6] = next.G()
-			item.H, ok[7] = next.H()
-			item.I, ok[8] = next.I()
+			item.A, ok[0] = nextA()
+			item.B, ok[1] = nextB()
+			item.C, ok[2] = nextC()
+			item.D, ok[3] = nextD()
+			item.E, ok[4] = nextE()
+			item.F, ok[5] = nextF()
+			item.G, ok[6] = nextG()
+			item.H, ok[7] = nextH()
+			item.I, ok[8] = nextI()
 			if ok == [9]bool{} || !yield(item) {
 				return
 			}
@@ -295,7 +279,7 @@ func Zip9[A, B, C, D, E, F, G, H, I any](a iter.Seq[A], b iter.Seq[B], c iter.Se
 // ZipBy2 creates a sequence of transformed elements, the first of which contains the first elements
 // of the given sequences, the second of which contains the second elements of the given sequences, and so on.
 // When collections are different sizes, the Tuple attributes are filled with zero value.
-// Play: https://go.dev/play/p/2TnGK6-zs
+// Play: https://go.dev/play/p/y03uqMEAi1E
 func ZipBy2[A, B, Out any](a iter.Seq[A], b iter.Seq[B], transform func(a A, b B) Out) iter.Seq[Out] {
 	return Map(Zip2(a, b), func(item lo.Tuple2[A, B]) Out {
 		return transform(item.A, item.B)
@@ -375,7 +359,7 @@ func ZipBy9[A, B, C, D, E, F, G, H, I, Out any](a iter.Seq[A], b iter.Seq[B], c 
 // CrossJoin2 combines every item from one list with every item from others.
 // It is the cartesian product of lists received as arguments.
 // Returns an empty list if a list is empty.
-// Play: https://go.dev/play/p/ZBDEXBYj6nU
+// Play: https://go.dev/play/p/OFe8xjZFjWU
 func CrossJoin2[A, B any](listA iter.Seq[A], listB iter.Seq[B]) iter.Seq[lo.Tuple2[A, B]] {
 	return CrossJoinBy2(listA, listB, lo.T2[A, B])
 }
@@ -440,7 +424,7 @@ func CrossJoin9[A, B, C, D, E, F, G, H, I any](listA iter.Seq[A], listB iter.Seq
 // It is the cartesian product of lists received as arguments. The transform function
 // is used to create the output values.
 // Returns an empty list if a list is empty.
-// Play: https://go.dev/play/p/7YsLP1-zx
+// Play: https://go.dev/play/p/6QGp3W-bQU1
 func CrossJoinBy2[A, B, Out any](listA iter.Seq[A], listB iter.Seq[B], transform func(a A, b B) Out) iter.Seq[Out] {
 	return func(yield func(Out) bool) {
 		for a := range listA {

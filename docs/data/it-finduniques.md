@@ -1,18 +1,18 @@
 ---
 name: FindUniques
 slug: finduniques
-sourceRef: it/find.go#L159
-category: it
+sourceRef: it/find.go#L167
+category: iter
 subCategory: find
 signatures:
   - "func FindUniques[T comparable, I ~func(func(T) bool)](collection I) I"
-playUrl: "https://go.dev/play/p/9WhQPJnj-u"
+playUrl: https://go.dev/play/p/O8dwXEbT56F
 variantHelpers:
-  - it#find#finduniques
+  - iter#find#finduniques
 similarHelpers:
   - core#slice#finduniques
-  - it#find#findduplicates
-  - it#find#finduniquesby
+  - iter#find#findduplicates
+  - iter#find#finduniquesby
 position: 80
 ---
 

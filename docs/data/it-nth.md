@@ -1,14 +1,14 @@
 ---
 name: Nth
 slug: nth
-sourceRef: it/find.go#L417
-category: it
+sourceRef: it/find.go#L448
+category: iter
 subCategory: find
 signatures:
   - "func Nth[T any, N constraints.Integer](collection iter.Seq[T], nth N) (T, error)"
-playUrl: https://go.dev/play/p/1SmFJ5-zr
+playUrl: https://go.dev/play/p/FqgCobsKqva
 variantHelpers:
-  - it#find#nth
+  - iter#find#nth
 similarHelpers:
   - core#slice#nth
 position: 580

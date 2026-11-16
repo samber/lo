@@ -1,7 +1,7 @@
 ---
 name: ElementsMatchBy
 slug: elementsmatchby
-sourceRef: intersect.go#L255
+sourceRef: intersect.go#L393
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/XWSEM4Ic_t0

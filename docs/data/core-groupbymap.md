@@ -1,14 +1,16 @@
 ---
 name: GroupByMap
 slug: groupbymap
-sourceRef: slice.go#L194
+sourceRef: slice.go#L445
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/iMeruQ3_W80
 variantHelpers:
   - core#slice#groupbymap
 similarHelpers:
+  - core#slice#groupbymaperr
   - core#slice#groupby
+  - core#slice#groupbyerr
   - core#slice#partitionby
   - core#slice#keyby
   - core#map#associate

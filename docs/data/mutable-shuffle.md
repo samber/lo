@@ -1,7 +1,7 @@
 ---
 name: Shuffle
 slug: shuffle
-sourceRef: mutable/slice.go#L57
+sourceRef: mutable/slice.go#L58
 category: mutable
 subCategory: slice
 playUrl: https://go.dev/play/p/2xb3WdLjeSJ

@@ -1,15 +1,17 @@
 ---
 name: LatestBy
 slug: latestby
-sourceRef: find.go#L530
+sourceRef: find.go#L801
 category: core
 subCategory: find
-playUrl: 
+playUrl: https://go.dev/play/p/p1HA8XumaMU
 variantHelpers:
   - core#find#latestby
 similarHelpers:
+  - core#find#latestbyerr
   - core#find#latest
   - core#find#earliestby
+  - core#find#earliestbyerr
   - core#find#earliest
   - core#find#maxby
   - core#find#minby

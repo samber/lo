@@ -1,13 +1,14 @@
 ---
 name: FromSeqPtr
 slug: fromseqptr
-sourceRef: it/type_manipulation.go#L11
-category: it
+sourceRef: it/type_manipulation.go#L20
+category: iter
 subCategory: type
 signatures:
   - "func FromSeqPtr[T any](collection iter.Seq[*T]) iter.Seq[T]"
 variantHelpers:
-  - it#type#fromseqptror
+  - iter#type#fromseqptror
+playUrl: "https://go.dev/play/p/_eO6scpLcBF"
 similarHelpers:
   - core#type#fromptr
 position: 241

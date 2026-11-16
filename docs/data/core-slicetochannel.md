@@ -1,7 +1,7 @@
 ---
 name: SliceToChannel
 slug: slicetochannel
-sourceRef: channel.go#L18
+sourceRef: channel.go#L161
 category: core
 subCategory: channel
 signatures:
@@ -9,8 +9,8 @@ signatures:
 similarHelpers:
   - core#channel#channeltoslice
   - core#channel#buffer
-  - it#channel#seqtochannel
-  - it#channel#channeltoseq
+  - iter#channel#seqtochannel
+  - iter#channel#channeltoseq
 position: 251
 ---
 

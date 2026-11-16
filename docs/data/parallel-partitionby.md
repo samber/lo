@@ -1,10 +1,10 @@
 ---
 name: PartitionBy
 slug: partitionby
-sourceRef: parallel/slice.go#L92
+sourceRef: parallel/slice.go#L95
 category: parallel
 subCategory: slice
-playUrl: ""
+playUrl: "https://go.dev/play/p/GwBQdMgx2nC"
 similarHelpers:
   - core#slice#partitionby
   - parallel#slice#groupby

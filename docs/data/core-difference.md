@@ -1,7 +1,7 @@
 ---
 name: Difference
 slug: difference
-sourceRef: intersect.go#L124
+sourceRef: intersect.go#L210
 category: core
 subCategory: intersect
 playUrl: https://go.dev/play/p/pKE-JgzqRpz

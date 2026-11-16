@@ -1,7 +1,7 @@
 ---
 name: FilterKeys
 slug: filterkeys
-sourceRef: map.go#L350
+sourceRef: map.go#L467
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/OFlKXlPrBAe
@@ -9,6 +9,7 @@ variantHelpers:
   - core#map#filterkeys
 similarHelpers:
   - core#map#filtervalues
+  - core#map#filterkeyserr
   - core#map#pickbykeys
   - core#map#omitbykeys
   - core#map#pickbyvalues

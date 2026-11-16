@@ -1,18 +1,18 @@
 ---
 name: Min
 slug: min
-sourceRef: it/find.go#L227
-category: it
+sourceRef: it/find.go#L238
+category: iter
 subCategory: find
 signatures:
   - "func Min[T constraints.Ordered](collection iter.Seq[T]) T"
-playUrl: "https://go.dev/play/p/3AuTNRn-yz"
+playUrl: https://go.dev/play/p/0VihyYEaM-M
 variantHelpers:
-  - it#find#min
+  - iter#find#min
 similarHelpers:
   - core#slice#min
-  - it#find#max
-  - it#find#minby
+  - iter#find#max
+  - iter#find#minby
 position: 100
 ---
 

@@ -13,12 +13,12 @@ jobs:
     if: github.triggering_actor == 'samber'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Set up Go
-      uses: actions/setup-go@v6
+      uses: actions/setup-go@v7
       with:
-        go-version: 1.18
+        go-version-file: 'go.mod'
 
     - name: Test
       run: make test
@@ -49,7 +49,7 @@ jobs:
           git push origin ${{ inputs.semver }}
 
     - name: Release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         name: ${{ inputs.semver }}
         tag_name: ${{ inputs.semver }}

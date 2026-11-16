@@ -1,10 +1,10 @@
 ---
 name: Substring
 slug: substring
-sourceRef: string.go#L105
+sourceRef: string.go#L158
 category: core
 subCategory: string
-playUrl: https://go.dev/play/p/TQlxQi82Lu1
+playUrl: https://go.dev/play/p/emzCC9zBjHu
 variantHelpers:
   - core#string#substring
 similarHelpers:
@@ -19,7 +19,7 @@ signatures:
   - "func Substring[T ~string](str T, offset int, length uint) T"
 ---
 
-Returns a substring starting at the given offset with the specified length. Supports negative offsets; out-of-bounds are clamped.
+Returns a substring starting at the given offset with the specified length. Supports negative offsets; out-of-bounds are clamped. Operates on Unicode runes (characters) and is optimized for zero allocations.
 
 ```go
 // Basic usage
@@ -42,9 +42,9 @@ result = lo.Substring("hello", 1, 0)
 result = lo.Substring("hello", 10, 3)
 // result: ""
 
-// With Unicode strings (byte-based)
+// With Unicode strings (rune-aware)
 result = lo.Substring("héllo", 1, 3)
-// result: "él" (note: works with bytes, not runes)
+// result: "él"
 
 // Negative offset with negative values clamped
 result = lo.Substring("hello", -10, 3)

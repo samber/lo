@@ -1,7 +1,7 @@
 ---
 name: NthOrEmpty
 slug: nthorempty
-sourceRef: find.go#L647
+sourceRef: find.go#L955
 category: core
 subCategory: find
 playUrl: https://go.dev/play/p/sHoh88KWt6B

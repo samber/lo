@@ -1,14 +1,14 @@
 ---
 name: ElementsMatchBy
 slug: elementsmatchby
-sourceRef: it/intersect.go#L183
-category: it
+sourceRef: it/intersect.go#L274
+category: iter
 subCategory: intersect
 signatures:
   - "func ElementsMatchBy[T any, K comparable](list1, list2 iter.Seq[T], transform func(item T) K) bool"
-playUrl: "https://go.dev/play/p/5XrQKOk-vw"
+playUrl: "https://go.dev/play/p/I3vFrmQo43E"
 variantHelpers:
-  - it#intersect#elementsmatchby
+  - iter#intersect#elementsmatchby
 similarHelpers:
   - core#slice#elementsmatchby
 position: 730

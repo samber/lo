@@ -1,12 +1,13 @@
 ---
 name: RepeatBy
 slug: repeatby
-sourceRef: slice.go#L362
+sourceRef: slice.go#L702
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/ozZLCtX_hNU
 variantHelpers:
   - core#slice#repeatby
+  - core#slice#repeatbyerr
 similarHelpers:
   - core#slice#times
   - core#slice#repeat

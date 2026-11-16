@@ -1,14 +1,15 @@
 ---
 name: Trim
 slug: trim
-sourceRef: it/seq.go#L778
-category: it
+sourceRef: it/seq.go#L1068
+category: iter
 subCategory: string
 signatures:
   - "func Trim[T comparable, I ~func(func(T) bool)](collection I, cutset ...T) I"
+playUrl: https://go.dev/play/p/k0VCcilk4V1
 variantHelpers:
-  - it#string#trimfirst
-  - it#string#trimlast
+  - iter#string#trimfirst
+  - iter#string#trimlast
 similarHelpers:
   - core#string#trim
 position: 262

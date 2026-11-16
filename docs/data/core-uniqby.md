@@ -1,14 +1,17 @@
 ---
 name: UniqBy
 slug: uniqby
-sourceRef: slice.go#L160
+sourceRef: slice.go#L293
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/g42Z3QSb53u
 variantHelpers:
   - core#slice#uniqby
 similarHelpers:
+  - core#slice#uniqbyerr
   - core#slice#uniq
+  - core#slice#isuniq
+  - core#slice#isuniqby
   - core#slice#uniqmap
   - core#slice#partitionby
 position: 110

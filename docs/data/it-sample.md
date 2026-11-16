@@ -1,19 +1,19 @@
 ---
 name: Sample
 slug: sample
-sourceRef: it/find.go#L455
-category: it
+sourceRef: it/find.go#L493
+category: iter
 subCategory: find
 signatures:
   - "func Sample[T any](collection iter.Seq[T]) T"
-playUrl: "https://go.dev/play/p/4VpIM8-zu"
+playUrl: https://go.dev/play/p/YDJVX0UXYDi
 variantHelpers:
-  - it#find#sample
+  - iter#find#sample
 similarHelpers:
   - core#slice#sample
-  - it#find#samples
-  - it#find#sampleBy
-  - it#find#samplesBy
+  - iter#find#samples
+  - iter#find#sampleby
+  - iter#find#samplesby
 position: 160
 ---
 

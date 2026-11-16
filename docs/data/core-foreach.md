@@ -1,7 +1,7 @@
 ---
 name: ForEach
 slug: foreach
-sourceRef: slice.go#L107
+sourceRef: slice.go#L192
 category: core
 subCategory: slice
 playUrl: https://go.dev/play/p/oofyiUPRf8t

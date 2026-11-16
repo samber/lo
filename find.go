@@ -1,7 +1,6 @@
 package lo
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/samber/lo/internal/constraints"
@@ -81,6 +80,27 @@ func Find[T any](collection []T, predicate func(item T) bool) (T, bool) {
 	return result, false
 }
 
+// FindErr searches for an element in a slice based on a predicate that can return an error.
+// Returns the element and nil error if the element is found.
+// Returns zero value and nil error if the element is not found.
+// If the predicate returns an error, iteration stops immediately and returns zero value and the error.
+// Play: https://go.dev/play/p/XK-qtpQWXJ9
+func FindErr[T any](collection []T, predicate func(item T) (bool, error)) (T, error) {
+	for i := range collection {
+		matches, err := predicate(collection[i])
+		if err != nil {
+			var result T
+			return result, err
+		}
+		if matches {
+			return collection[i], nil
+		}
+	}
+
+	var result T
+	return result, nil
+}
+
 // FindIndexOf searches for an element in a slice based on a predicate and returns the index and true.
 // Returns -1 and false if the element is not found.
 // Play: https://go.dev/play/p/XWSEM4Ic_t0
@@ -97,7 +117,7 @@ func FindIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bo
 
 // FindLastIndexOf searches for the last element in a slice based on a predicate and returns the index and true.
 // Returns -1 and false if the element is not found.
-// Play: https://go.dev/play/p/dPiMRtJ6cUx
+// Play: https://go.dev/play/p/2VhPMiQvX-D
 func FindLastIndexOf[T any](collection []T, predicate func(item T) bool) (T, int, bool) {
 	length := len(collection)
 
@@ -147,9 +167,23 @@ func FindKeyBy[K comparable, V any](object map[K]V, predicate func(key K, value 
 	return Empty[K](), false
 }
 
+// findSmallThreshold is the max collection size for which a nested O(n²) scan
+// (avoiding the map used in the large-collection path) is faster than hashing
+// and allocating for a map-based implementation.
+const findSmallThreshold = 8
+
 // FindUniques returns a slice with all the elements that appear in the collection only once.
 // The order of result values is determined by the order they occur in the collection.
+// Play: https://go.dev/play/p/NV5vMK_2Z_n
 func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
+	if len(collection) <= findSmallThreshold {
+		return findUniquesSmall(collection)
+	}
+	return findUniquesLarge(collection)
+}
+
+// findUniquesLarge builds a map[T]bool tracking seen/duplicated state, best for a large collection.
+func findUniquesLarge[T comparable, Slice ~[]T](collection Slice) Slice {
 	isDupl := make(map[T]bool, len(collection))
 
 	duplicates := 0
@@ -176,10 +210,40 @@ func FindUniques[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
+// findUniquesSmall counts occurrences with a nested linear scan, avoiding map allocations
+// for a small collection. An element appearing exactly once is emitted at its (only) occurrence,
+// so the natural iteration order matches the original collection order.
+func findUniquesSmall[T comparable, Slice ~[]T](collection Slice) Slice {
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		count := 0
+		for j := range collection {
+			if collection[j] == collection[i] {
+				count++
+			}
+		}
+		if count == 1 {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result
+}
+
 // FindUniquesBy returns a slice with all the elements that appear in the collection only once.
 // The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
 // invoked for each element in the slice to generate the criterion by which uniqueness is computed.
+// Play: https://go.dev/play/p/2vmxCs4kW_m
 func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	if len(collection) <= findSmallThreshold {
+		return findUniquesBySmall(collection, iteratee)
+	}
+	return findUniquesByLarge(collection, iteratee)
+}
+
+// findUniquesByLarge builds a map[U]bool tracking seen/duplicated key state, best for a large collection.
+func findUniquesByLarge[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
 	duplicates := 0
@@ -210,9 +274,44 @@ func FindUniquesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee f
 	return result
 }
 
+// findUniquesBySmall counts key occurrences with a nested linear scan, avoiding map allocations
+// for a small collection. The iteratee is invoked exactly once per element (keys are
+// precomputed), matching the single-invocation contract of the map-based path.
+func findUniquesBySmall[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	keys := make([]U, len(collection))
+	for i := range collection {
+		keys[i] = iteratee(collection[i])
+	}
+
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		count := 0
+		for j := range keys {
+			if keys[j] == keys[i] {
+				count++
+			}
+		}
+		if count == 1 {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result
+}
+
 // FindDuplicates returns a slice with the first occurrence of each duplicated element in the collection.
 // The order of result values is determined by the order they occur in the collection.
+// Play: https://go.dev/play/p/muFgL_XBwoP
 func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
+	if len(collection) <= findSmallThreshold {
+		return findDuplicatesSmall(collection)
+	}
+	return findDuplicatesLarge(collection)
+}
+
+// findDuplicatesLarge builds a map[T]bool tracking seen/duplicated state, best for a large collection.
+func findDuplicatesLarge[T comparable, Slice ~[]T](collection Slice) Slice {
 	isDupl := make(map[T]bool, len(collection))
 
 	duplicates := 0
@@ -240,10 +339,45 @@ func FindDuplicates[T comparable, Slice ~[]T](collection Slice) Slice {
 	return result
 }
 
+// findDuplicatesSmall scans linearly for duplicates, avoiding map allocations for a small
+// collection. A distinct duplicated value is emitted at its FIRST occurrence in the
+// collection (matching the map-based path, which classifies every value's total count
+// before its emission pass runs), then skipped on later occurrences.
+func findDuplicatesSmall[T comparable, Slice ~[]T](collection Slice) Slice {
+	result := make(Slice, 0, len(collection))
+
+	for i := range collection {
+		if Contains(result, collection[i]) {
+			continue // already emitted
+		}
+
+		count := 0
+		for j := range collection {
+			if collection[j] == collection[i] {
+				count++
+			}
+		}
+		if count >= 2 {
+			result = append(result, collection[i])
+		}
+	}
+
+	return result
+}
+
 // FindDuplicatesBy returns a slice with the first occurrence of each duplicated element in the collection.
 // The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
 // invoked for each element in the slice to generate the criterion by which uniqueness is computed.
+// Play: https://go.dev/play/p/LKdYdNHuGJG
 func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	if len(collection) <= findSmallThreshold {
+		return findDuplicatesBySmall(collection, iteratee)
+	}
+	return findDuplicatesByLarge(collection, iteratee)
+}
+
+// findDuplicatesByLarge builds a map[U]bool tracking seen/duplicated key state, best for a large collection.
+func findDuplicatesByLarge[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
 	isDupl := make(map[U]bool, len(collection))
 
 	duplicates := 0
@@ -275,9 +409,89 @@ func FindDuplicatesBy[T any, U comparable, Slice ~[]T](collection Slice, iterate
 	return result
 }
 
-// Min search the minimum value of a collection.
+// findDuplicatesBySmall scans linearly for duplicate keys, avoiding map allocations for a small
+// collection. The iteratee is invoked exactly once per element (keys are precomputed). A
+// distinct duplicated key is emitted at its FIRST occurrence (matching the map-based path,
+// which classifies every key's total count before its emission pass runs).
+func findDuplicatesBySmall[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) U) Slice {
+	keys := make([]U, len(collection))
+	for i := range collection {
+		keys[i] = iteratee(collection[i])
+	}
+
+	result := make(Slice, 0, len(collection))
+	emittedKeys := make([]U, 0, len(collection))
+
+	for i := range collection {
+		if Contains(emittedKeys, keys[i]) {
+			continue // already emitted
+		}
+
+		count := 0
+		for j := range keys {
+			if keys[j] == keys[i] {
+				count++
+			}
+		}
+		if count >= 2 {
+			result = append(result, collection[i])
+			emittedKeys = append(emittedKeys, keys[i])
+		}
+	}
+
+	return result
+}
+
+// FindDuplicatesByErr returns a slice with the first occurrence of each duplicated element in the collection.
+// The order of result values is determined by the order they occur in the slice. It accepts `iteratee` which is
+// invoked for each element in the slice to generate the criterion by which uniqueness is computed.
+// If the iteratee returns an error, iteration stops immediately and the error is returned with a nil slice.
+// Play: https://go.dev/play/p/HiVILQqdFP0
+func FindDuplicatesByErr[T any, U comparable, Slice ~[]T](collection Slice, iteratee func(item T) (U, error)) (Slice, error) {
+	isDupl := make(map[U]bool, len(collection))
+
+	duplicates := 0
+
+	// First pass: identify duplicates
+	for i := range collection {
+		key, err := iteratee(collection[i])
+		if err != nil {
+			var result Slice
+			return result, err
+		}
+
+		duplicated, seen := isDupl[key]
+		if !duplicated {
+			isDupl[key] = seen
+
+			if seen {
+				duplicates++
+			}
+		}
+	}
+
+	result := make(Slice, 0, duplicates)
+
+	// Second pass: collect first occurrences of duplicates
+	for i := range collection {
+		key, err := iteratee(collection[i])
+		if err != nil {
+			var result Slice
+			return result, err
+		}
+
+		if duplicated := isDupl[key]; duplicated {
+			result = append(result, collection[i])
+			isDupl[key] = false
+		}
+	}
+
+	return result, nil
+}
+
+// Min searches the minimum value of a collection.
 // Returns zero value when the collection is empty.
-// Play: https://go.dev/play/p/r6e-Z8JozS8
+// Play: https://go.dev/play/p/fJFLwpY8eMN
 func Min[T constraints.Ordered](collection []T) T {
 	var mIn T
 
@@ -298,8 +512,9 @@ func Min[T constraints.Ordered](collection []T) T {
 	return mIn
 }
 
-// MinIndex search the minimum value of a collection and the index of the minimum value.
+// MinIndex searches the minimum value of a collection and the index of the minimum value.
 // Returns (zero value, -1) when the collection is empty.
+// Play: https://go.dev/play/p/RxAidik4p50
 func MinIndex[T constraints.Ordered](collection []T) (T, int) {
 	var (
 		mIn   T
@@ -324,9 +539,10 @@ func MinIndex[T constraints.Ordered](collection []T) (T, int) {
 	return mIn, index
 }
 
-// MinBy search the minimum value of a collection using the given comparison function.
+// MinBy searches the minimum value of a collection using the given comparison function.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns zero value when the collection is empty.
+// Play: https://go.dev/play/p/-B1PsrHVnfx
 func MinBy[T any](collection []T, less func(a, b T) bool) T {
 	var mIn T
 
@@ -347,9 +563,40 @@ func MinBy[T any](collection []T, less func(a, b T) bool) T {
 	return mIn
 }
 
-// MinIndexBy search the minimum value of a collection using the given comparison function and the index of the minimum value.
+// MinByErr searches the minimum value of a collection using the given comparison function.
+// If several values of the collection are equal to the smallest value, returns the first such value.
+// Returns zero value and nil error when the collection is empty.
+// If the comparison function returns an error, iteration stops and the error is returned.
+// Play: https://go.dev/play/p/nvDYGS8q895
+func MinByErr[T any](collection []T, less func(a, b T) (bool, error)) (T, error) {
+	var mIn T
+
+	if len(collection) == 0 {
+		return mIn, nil
+	}
+
+	mIn = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
+
+		isLess, err := less(item, mIn)
+		if err != nil {
+			var zero T
+			return zero, err
+		}
+		if isLess {
+			mIn = item
+		}
+	}
+
+	return mIn, nil
+}
+
+// MinIndexBy searches the minimum value of a collection using the given comparison function and the index of the minimum value.
 // If several values of the collection are equal to the smallest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
+// Play: https://go.dev/play/p/zwwPRqWhnUY
 func MinIndexBy[T any](collection []T, less func(a, b T) bool) (T, int) {
 	var (
 		mIn   T
@@ -374,8 +621,44 @@ func MinIndexBy[T any](collection []T, less func(a, b T) bool) (T, int) {
 	return mIn, index
 }
 
-// Earliest search the minimum time.Time of a collection.
+// MinIndexByErr searches the minimum value of a collection using the given comparison function and the index of the minimum value.
+// If several values of the collection are equal to the smallest value, returns the first such value.
+// Returns (zero value, -1) when the collection is empty.
+// Comparison function can return an error to stop iteration immediately.
+// Play: https://go.dev/play/p/MUqi_NvTKM1
+func MinIndexByErr[T any](collection []T, less func(a, b T) (bool, error)) (T, int, error) {
+	var (
+		mIn   T
+		index int
+	)
+
+	if len(collection) == 0 {
+		return mIn, -1, nil
+	}
+
+	mIn = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
+
+		isLess, err := less(item, mIn)
+		if err != nil {
+			var zero T
+			return zero, -1, err
+		}
+
+		if isLess {
+			mIn = item
+			index = i
+		}
+	}
+
+	return mIn, index, nil
+}
+
+// Earliest searches the minimum time.Time of a collection.
 // Returns zero value when the collection is empty.
+// Play: https://go.dev/play/p/pRyy0c6hsBs
 func Earliest(times ...time.Time) time.Time {
 	var mIn time.Time
 
@@ -396,8 +679,9 @@ func Earliest(times ...time.Time) time.Time {
 	return mIn
 }
 
-// EarliestBy search the minimum time.Time of a collection using the given iteratee function.
+// EarliestBy searches the minimum time.Time of a collection using the given iteratee function.
 // Returns zero value when the collection is empty.
+// Play: https://go.dev/play/p/0XvCF6vuLXC
 func EarliestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 	var earliest T
 
@@ -420,9 +704,41 @@ func EarliestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 	return earliest
 }
 
+// EarliestByErr searches the minimum time.Time of a collection using the given iteratee function.
+// Returns zero value and nil error when the collection is empty.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// Play: https://go.dev/play/p/zJUBUj7ANvq
+func EarliestByErr[T any](collection []T, iteratee func(item T) (time.Time, error)) (T, error) {
+	var earliest T
+
+	if len(collection) == 0 {
+		return earliest, nil
+	}
+
+	earliestTime, err := iteratee(collection[0])
+	if err != nil {
+		return earliest, err
+	}
+	earliest = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		itemTime, err := iteratee(collection[i])
+		if err != nil {
+			return earliest, err
+		}
+
+		if itemTime.Before(earliestTime) {
+			earliest = collection[i]
+			earliestTime = itemTime
+		}
+	}
+
+	return earliest, nil
+}
+
 // Max searches the maximum value of a collection.
 // Returns zero value when the collection is empty.
-// Play: https://go.dev/play/p/r6e-Z8JozS8
+// Play: https://go.dev/play/p/wYvG8gRRFw-
 func Max[T constraints.Ordered](collection []T) T {
 	var mAx T
 
@@ -445,6 +761,7 @@ func Max[T constraints.Ordered](collection []T) T {
 
 // MaxIndex searches the maximum value of a collection and the index of the maximum value.
 // Returns (zero value, -1) when the collection is empty.
+// Play: https://go.dev/play/p/RFkB4Mzb1qt
 func MaxIndex[T constraints.Ordered](collection []T) (T, int) {
 	var (
 		mAx   T
@@ -469,14 +786,14 @@ func MaxIndex[T constraints.Ordered](collection []T) (T, int) {
 	return mAx, index
 }
 
-// MaxBy search the maximum value of a collection using the given comparison function.
+// MaxBy searches the maximum value of a collection using the given comparison function.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns zero value when the collection is empty.
 //
 // Note: the comparison function is inconsistent with most languages, since we use the opposite of the usual convention.
 // See https://github.com/samber/lo/issues/129
 //
-// Play: https://go.dev/play/p/JW1qu-ECwF7
+// Play: https://go.dev/play/p/PJCc-ThrwX1
 func MaxBy[T any](collection []T, greater func(a, b T) bool) T {
 	var mAx T
 
@@ -497,14 +814,47 @@ func MaxBy[T any](collection []T, greater func(a, b T) bool) T {
 	return mAx
 }
 
-// MaxIndexBy search the maximum value of a collection using the given comparison function and the index of the maximum value.
+// MaxByErr searches the maximum value of a collection using the given comparison function.
+// If several values of the collection are equal to the greatest value, returns the first such value.
+// Returns zero value and nil error when the collection is empty.
+// If the comparison function returns an error, iteration stops and the error is returned.
+//
+// Note: the comparison function is inconsistent with most languages, since we use the opposite of the usual convention.
+// See https://github.com/samber/lo/issues/129
+//
+// Play: https://go.dev/play/p/s-63-6_9zqM
+func MaxByErr[T any](collection []T, greater func(a, b T) (bool, error)) (T, error) {
+	var mAx T
+
+	if len(collection) == 0 {
+		return mAx, nil
+	}
+
+	mAx = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
+
+		isGreater, err := greater(item, mAx)
+		if err != nil {
+			return mAx, err
+		}
+		if isGreater {
+			mAx = item
+		}
+	}
+
+	return mAx, nil
+}
+
+// MaxIndexBy searches the maximum value of a collection using the given comparison function and the index of the maximum value.
 // If several values of the collection are equal to the greatest value, returns the first such value.
 // Returns (zero value, -1) when the collection is empty.
 //
 // Note: the comparison function is inconsistent with most languages, since we use the opposite of the usual convention.
 // See https://github.com/samber/lo/issues/129
 //
-// Play: https://go.dev/play/p/uaUszc-c9QK
+// Play: https://go.dev/play/p/5yd4W7pe2QJ
 func MaxIndexBy[T any](collection []T, greater func(a, b T) bool) (T, int) {
 	var (
 		mAx   T
@@ -529,8 +879,45 @@ func MaxIndexBy[T any](collection []T, greater func(a, b T) bool) (T, int) {
 	return mAx, index
 }
 
-// Latest search the maximum time.Time of a collection.
+// MaxIndexByErr searches the maximum value of a collection using the given comparison function and the index of the maximum value.
+// If several values of the collection are equal to the greatest value, returns the first such value.
+// Returns (zero value, -1, nil) when the collection is empty.
+// If the comparison function returns an error, iteration stops and the error is returned.
+//
+// Note: the comparison function is inconsistent with most languages, since we use the opposite of the usual convention.
+// See https://github.com/samber/lo/issues/129
+func MaxIndexByErr[T any](collection []T, greater func(a, b T) (bool, error)) (T, int, error) {
+	var (
+		mAx   T
+		index int
+	)
+
+	if len(collection) == 0 {
+		return mAx, -1, nil
+	}
+
+	mAx = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		item := collection[i]
+
+		isGreater, err := greater(item, mAx)
+		if err != nil {
+			var zero T
+			return zero, -1, err
+		}
+		if isGreater {
+			mAx = item
+			index = i
+		}
+	}
+
+	return mAx, index, nil
+}
+
+// Latest searches the maximum time.Time of a collection.
 // Returns zero value when the collection is empty.
+// Play: https://go.dev/play/p/dBfdf5s8s-Y
 func Latest(times ...time.Time) time.Time {
 	var mAx time.Time
 
@@ -551,8 +938,9 @@ func Latest(times ...time.Time) time.Time {
 	return mAx
 }
 
-// LatestBy search the maximum time.Time of a collection using the given iteratee function.
+// LatestBy searches the maximum time.Time of a collection using the given iteratee function.
 // Returns zero value when the collection is empty.
+// Play: https://go.dev/play/p/p1HA8XumaMU
 func LatestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 	var latest T
 
@@ -575,8 +963,40 @@ func LatestBy[T any](collection []T, iteratee func(item T) time.Time) T {
 	return latest
 }
 
+// LatestByErr searches the maximum time.Time of a collection using the given iteratee function.
+// Returns zero value and nil error when the collection is empty.
+// If the iteratee returns an error, iteration stops and the error is returned.
+// Play: https://go.dev/play/p/WpBUptwnxuG
+func LatestByErr[T any](collection []T, iteratee func(item T) (time.Time, error)) (T, error) {
+	var latest T
+
+	if len(collection) == 0 {
+		return latest, nil
+	}
+
+	latestTime, err := iteratee(collection[0])
+	if err != nil {
+		return latest, err
+	}
+	latest = collection[0]
+
+	for i := 1; i < len(collection); i++ {
+		itemTime, err := iteratee(collection[i])
+		if err != nil {
+			return latest, err
+		}
+
+		if itemTime.After(latestTime) {
+			latest = collection[i]
+			latestTime = itemTime
+		}
+	}
+
+	return latest, nil
+}
+
 // First returns the first element of a collection and check for availability of the first element.
-// Play: https://go.dev/play/p/ul45Z0y2EFO
+// Play: https://go.dev/play/p/94lu5X6_cbf
 func First[T any](collection []T) (T, bool) {
 	length := len(collection)
 
@@ -589,14 +1009,14 @@ func First[T any](collection []T) (T, bool) {
 }
 
 // FirstOrEmpty returns the first element of a collection or zero value if empty.
-// Play: https://go.dev/play/p/ul45Z0y2EFO
+// Play: https://go.dev/play/p/i200n9wgrDA
 func FirstOrEmpty[T any](collection []T) T {
 	i, _ := First(collection)
 	return i
 }
 
 // FirstOr returns the first element of a collection or the fallback value if empty.
-// Play: https://go.dev/play/p/ul45Z0y2EFO
+// Play: https://go.dev/play/p/x9CxQyRFXeZ
 func FirstOr[T any](collection []T, fallback T) T {
 	i, ok := First(collection)
 	if !ok {
@@ -639,28 +1059,40 @@ func LastOr[T any](collection []T, fallback T) T {
 
 // Nth returns the element at index `nth` of collection. If `nth` is negative, the nth element
 // from the end is returned. An error is returned when nth is out of slice bounds.
-// Play: https://go.dev/play/p/sHoh88KWt6B
+// Play: https://go.dev/play/p/mNFI9-kIZZ5
 func Nth[T any, N constraints.Integer](collection []T, nth N) (T, error) {
-	n := int(nth)
+	value, ok := sliceNth(collection, nth)
+
+	return value, Validate(ok, "nth: %d out of slice bounds", nth)
+}
+
+func sliceNth[T any, N constraints.Integer](collection []T, nth N) (T, bool) {
 	l := len(collection)
-	if n >= l || -n > l {
-		var t T
-		return t, fmt.Errorf("nth: %d out of slice bounds", n)
+
+	if nth >= 0 {
+		// Compared in an unsigned domain: int(nth) would wrap negative for a
+		// large unsigned N and then take the count-from-the-end branch below.
+		if uint64(nth) >= uint64(l) {
+			return Empty[T](), false
+		}
+		return collection[int(nth)], true
 	}
 
-	if n >= 0 {
-		return collection[n], nil
+	// Compared in a signed domain: -nth overflows back to nth when nth is the
+	// minimum value of its type, so the bound must be tested without negating.
+	if int64(nth) < int64(-l) {
+		return Empty[T](), false
 	}
-	return collection[l+n], nil
+	return collection[l+int(nth)], true
 }
 
 // NthOr returns the element at index `nth` of collection.
 // If `nth` is negative, it returns the nth element from the end.
 // If `nth` is out of slice bounds, it returns the fallback value instead of an error.
-// Play: https://go.dev/play/p/sHoh88KWt6B
+// Play: https://go.dev/play/p/njKcNhBBVsF
 func NthOr[T any, N constraints.Integer](collection []T, nth N, fallback T) T {
-	value, err := Nth(collection, nth)
-	if err != nil {
+	value, ok := sliceNth(collection, nth)
+	if !ok {
 		return fallback
 	}
 	return value
@@ -671,11 +1103,7 @@ func NthOr[T any, N constraints.Integer](collection []T, nth N, fallback T) T {
 // If `nth` is out of slice bounds, it returns the zero value (empty value) for that type.
 // Play: https://go.dev/play/p/sHoh88KWt6B
 func NthOrEmpty[T any, N constraints.Integer](collection []T, nth N) T {
-	value, err := Nth(collection, nth)
-	if err != nil {
-		var zeroValue T
-		return zeroValue
-	}
+	value, _ := sliceNth(collection, nth)
 	return value
 }
 
@@ -686,8 +1114,7 @@ type randomIntGenerator func(n int) int
 // Sample returns a random item from collection.
 // Play: https://go.dev/play/p/vCcSJbh5s6l
 func Sample[T any](collection []T) T {
-	result := SampleBy(collection, xrand.IntN)
-	return result
+	return SampleBy(collection, xrand.IntN)
 }
 
 // SampleBy returns a random item from collection, using randomIntGenerator as the random index generator.
@@ -701,34 +1128,65 @@ func SampleBy[T any](collection []T, randomIntGenerator randomIntGenerator) T {
 }
 
 // Samples returns N random unique items from collection.
-// Play: https://go.dev/play/p/vCcSJbh5s6l
+// Play: https://go.dev/play/p/QYRD8aufD0C
 func Samples[T any, Slice ~[]T](collection Slice, count int) Slice {
 	return SamplesBy(collection, count, xrand.IntN)
 }
 
 // SamplesBy returns N random unique items from collection, using randomIntGenerator as the random index generator.
-// Play: https://go.dev/play/p/HDmKmMgq0XN
+// Play: https://go.dev/play/p/Dy9bGDhD_Gw
 func SamplesBy[T any, Slice ~[]T](collection Slice, count int, randomIntGenerator randomIntGenerator) Slice {
+	if count <= 0 {
+		return Slice{}
+	}
+
 	size := len(collection)
 
 	if size < count {
 		count = size
 	}
 
-	cOpy := append(Slice{}, collection...)
-
 	results := make(Slice, count)
 
-	for i := 0; i < count; i++ {
-		copyLength := size - i
+	// When only a small fraction of the collection is sampled, track displaced
+	// indexes in a map instead of materializing the whole index permutation,
+	// keeping time and memory proportional to count instead of size. Both
+	// paths consume the random generator and select elements identically.
+	if count <= size/16 {
+		displaced := make(map[int]int, count)
 
-		index := randomIntGenerator(copyLength)
-		results[i] = cOpy[index]
+		for i, n := 0, size; i < count; i, n = i+1, n-1 {
+			index := randomIntGenerator(n)
 
-		// Removes element.
+			j, ok := displaced[index]
+			if !ok {
+				j = index
+			}
+			results[i] = collection[j]
+
+			// Removes index: swap it with the last (virtual) element.
+			last, ok := displaced[n-1]
+			if !ok {
+				last = n - 1
+			}
+			displaced[index] = last
+		}
+
+		return results
+	}
+
+	indexes := Range(size)
+
+	for i := range results {
+		n := len(indexes)
+
+		index := randomIntGenerator(n)
+		results[i] = collection[indexes[index]]
+
+		// Removes index.
 		// It is faster to swap with last element and remove it.
-		cOpy[index] = cOpy[copyLength-1]
-		cOpy = cOpy[:copyLength-1]
+		indexes[index] = indexes[n-1]
+		indexes = indexes[:n-1]
 	}
 
 	return results

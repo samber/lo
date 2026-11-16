@@ -1,7 +1,7 @@
 ---
 name: ToPairs
 slug: topairs
-sourceRef: map.go#L195
+sourceRef: map.go#L231
 category: core
 subCategory: map
 playUrl: https://go.dev/play/p/3Dhgx46gawJ

@@ -1,16 +1,18 @@
 ---
 name: Sliding
 slug: sliding
-sourceRef: slice.go#L313
+sourceRef: slice.go#L595
 category: core
 subCategory: slice
 variantHelpers:
   - core#slice#sliding
+playUrl: https://go.dev/play/p/aIIU6gWxl2T
 similarHelpers:
   - core#slice#window
   - core#slice#chunk
   - core#slice#partitionby
   - core#slice#flatten
+  - iter#sequence#sliding
 position: 150
 signatures:
   - "func Sliding[T any, Slice ~[]T](collection Slice, size, step int) []Slice"

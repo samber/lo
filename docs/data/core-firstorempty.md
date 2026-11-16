@@ -1,10 +1,10 @@
 ---
 name: FirstOrEmpty
 slug: firstorempty
-sourceRef: find.go#L567
+sourceRef: find.go#L870
 category: core
 subCategory: find
-playUrl: https://go.dev/play/p/ul45Z0y2EFO
+playUrl: https://go.dev/play/p/i200n9wgrDA
 variantHelpers:
   - core#find#firstorempty
 similarHelpers:

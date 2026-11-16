@@ -1,13 +1,14 @@
 ---
 name: MinIndexBy
 slug: minindexby
-sourceRef: find.go#L337
+sourceRef: find.go#L457
 category: core
 subCategory: find
-playUrl: 
+playUrl: https://go.dev/play/p/zwwPRqWhnUY
 variantHelpers:
   - core#find#minindexby
 similarHelpers:
+  - core#find#minindexbyerr
   - core#find#min
   - core#find#minby
   - core#find#minindex

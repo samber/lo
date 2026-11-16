@@ -1,10 +1,10 @@
 ---
 name: MinIndex
 slug: minindex
-sourceRef: find.go#L287
+sourceRef: find.go#L375
 category: core
 subCategory: find
-playUrl: 
+playUrl: https://go.dev/play/p/RxAidik4p50
 variantHelpers:
   - core#find#minindex
 similarHelpers:

@@ -1,14 +1,14 @@
 ---
 name: WithoutNth
 slug: withoutnth
-sourceRef: it/intersect.go#L167
-category: it
+sourceRef: it/intersect.go#L253
+category: iter
 subCategory: intersect
 signatures:
-  - "func WithoutNth[T comparable, I ~func(func(T) bool)](collection I, nths ...int) I"
-playUrl: "https://go.dev/play/p/7XrQKOk-vw"
+  - "func WithoutNth[T any, I ~func(func(T) bool)](collection I, nths ...int) I"
+playUrl: "https://go.dev/play/p/KGE7Lpsk18P"
 variantHelpers:
-  - it#intersect#withoutnth
+  - iter#intersect#withoutnth
 similarHelpers:
   - core#slice#withoutnth
 position: 710

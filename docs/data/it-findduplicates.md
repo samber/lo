@@ -1,18 +1,18 @@
 ---
 name: FindDuplicates
 slug: findduplicates
-sourceRef: it/find.go#L196
-category: it
+sourceRef: it/find.go#L205
+category: iter
 subCategory: find
 signatures:
   - "func FindDuplicates[T comparable, I ~func(func(T) bool)](collection I) I"
-playUrl: "https://go.dev/play/p/1YsRLPl-wx"
+playUrl: https://go.dev/play/p/dw-VLQXKijT
 variantHelpers:
-  - it#find#findduplicates
+  - iter#find#findduplicates
 similarHelpers:
   - core#slice#findduplicates
-  - it#find#finduniques
-  - it#find#findduplicatesby
+  - iter#find#finduniques
+  - iter#find#findduplicatesby
 position: 90
 ---
 

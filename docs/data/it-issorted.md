@@ -1,11 +1,12 @@
 ---
 name: IsSorted
 slug: issorted
-sourceRef: it/seq.go#L720
-category: it
+sourceRef: it/seq.go#L940
+category: iter
 subCategory: slice
 signatures:
   - "func IsSorted[T constraints.Ordered](collection iter.Seq[T]) bool"
+playUrl: https://go.dev/play/p/o-BD4UOn-0U
 variantHelpers: []
 similarHelpers:
   - core#slice#issorted

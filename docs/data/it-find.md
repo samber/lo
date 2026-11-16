@@ -1,18 +1,18 @@
 ---
 name: Find
 slug: find
-sourceRef: it/find.go#L105
-category: it
+sourceRef: it/find.go#L103
+category: iter
 subCategory: find
 signatures:
   - "func Find[T any](collection iter.Seq[T], predicate func(item T) bool) (T, bool)"
-playUrl: "https://go.dev/play/p/5SdLM6jf-q"
+playUrl: https://go.dev/play/p/4w28pF_l58a
 variantHelpers:
-  - it#find#find
+  - iter#find#find
 similarHelpers:
   - core#slice#find
-  - it#find#findindexof
-  - it#find#findorelse
+  - iter#find#findindexof
+  - iter#find#findorelse
 position: 40
 ---
 

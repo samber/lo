@@ -1,14 +1,14 @@
 ---
 name: MaxIndex
 slug: maxindex
-sourceRef: it/find.go#L299
-category: it
+sourceRef: it/find.go#L320
+category: iter
 subCategory: find
 signatures:
   - "func MaxIndex[T constraints.Ordered](collection iter.Seq[T]) (T, int)"
-playUrl: "https://go.dev/play/p/0HbUY4-zg"
+playUrl: https://go.dev/play/p/zeu2wUvhl5e
 variantHelpers:
-  - it#find#maxindex
+  - iter#find#maxindex
 similarHelpers:
   - core#slice#maxindex
 position: 480

@@ -1,11 +1,12 @@
 ---
 name: TakeWhile
 slug: takewhile
-sourceRef: slice.go#L605
+sourceRef: slice.go#L929
 category: core
 subCategory: slice
 variantHelpers:
   - core#slice#takewhile
+playUrl: https://go.dev/play/p/NJkLGvyRWm4
 similarHelpers:
   - core#slice#take
   - core#slice#dropwhile
@@ -13,6 +14,7 @@ similarHelpers:
   - core#slice#filter
   - core#slice#takefilter
   - core#slice#first
+  - iter#sequence#takewhile
 position: 195
 signatures:
   - "func TakeWhile[T any, Slice ~[]T](collection Slice, predicate func(item T) bool) Slice"

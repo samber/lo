@@ -1,11 +1,12 @@
 ---
 name: Keyify
 slug: keyify
-sourceRef: it/seq.go#L720
-category: it
+sourceRef: it/seq.go#L616
+category: iter
 subCategory: slice
 signatures:
   - "func Keyify[T comparable](collection iter.Seq[T]) map[T]struct{}"
+playUrl: https://go.dev/play/p/aHOD29_l-rF
 variantHelpers: []
 similarHelpers:
   - core#slice#keyby
