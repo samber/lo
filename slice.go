@@ -991,6 +991,9 @@ func TakeFilter[T any, Slice ~[]T](collection Slice, n int, predicate func(item 
 		return make(Slice, 0)
 	}
 
+	if n > len(collection) {
+		n = len(collection)
+	}
 	result := make(Slice, 0, n)
 	count := 0
 

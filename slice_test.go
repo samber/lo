@@ -2782,6 +2782,48 @@ func TestTakeFilter(t *testing.T) {
 	is.Equal(myStrings{"foo", "bar"}, filtered)
 }
 
+func TestTakeFilter_largeLimit(t *testing.T) {
+	t.Parallel()
+	type values []int
+	for _, test := range []struct {
+		name  string
+		input values
+		n     int
+		want  values
+		calls int
+	}{
+		{name: "nil", n: math.MaxInt, want: values{}},
+		{name: "empty", input: values{}, n: math.MaxInt, want: values{}},
+		{name: "matches", input: values{1, 2, 3, 4}, n: math.MaxInt, want: values{2, 4}, calls: 4},
+		{name: "no matches", input: values{1, 3}, n: math.MaxInt, want: values{}, calls: 2},
+		{name: "bounded", input: values{1, 2, 3, 4}, n: 1, want: values{2}, calls: 2},
+	} {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			before := append(values{}, test.input...)
+			calls := 0
+			var got values
+			if !assert.NotPanics(t, func() {
+				got = TakeFilter(test.input, test.n, func(item, index int) bool {
+					assert.Equal(t, calls, index)
+					calls++
+					return item%2 == 0
+				})
+			}) {
+				return
+			}
+			assert.Equal(t, test.want, got)
+			assert.Equal(t, test.calls, calls)
+			assert.Equal(t, before, append(values{}, test.input...))
+			if len(got) != 0 {
+				got[0] = -1
+				assert.Equal(t, before, test.input)
+			}
+		})
+	}
+}
+
 func TestDropByIndex(t *testing.T) {
 	t.Parallel()
 	is := assert.New(t)
@@ -4079,6 +4121,21 @@ func TestTrimSuffix(t *testing.T) {
 			is := assert.New(t)
 
 			is.Equal(tt.expected, TrimSuffix(tt.input, tt.suffix))
+		})
+	}
+}
+
+func BenchmarkTakeFilterShortInput(b *testing.B) {
+	for _, limit := range []int{4, 65536} {
+		b.Run(strconv.Itoa(limit), func(b *testing.B) {
+			input := []int{1, 2, 3, 4}
+			predicate := func(item, _ int) bool { return item%2 == 0 }
+			b.ReportAllocs()
+			for i := 0; i < b.N; i++ {
+				if got := TakeFilter(input, limit, predicate); len(got) != 2 {
+					b.Fatal(got)
+				}
+			}
 		})
 	}
 }
