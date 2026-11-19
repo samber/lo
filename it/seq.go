@@ -1131,34 +1131,54 @@ func TrimSuffix[T comparable, I ~func(func(T) bool)](collection I, suffix []T) I
 	}
 
 	return func(yield func(T) bool) {
-		var i int
+		// Track overlapping prefix candidates with a failure table. Pending
+		// values are repetitions of suffix followed by a prefix, so they can
+		// still be represented by a count rather than retained input values.
+		failure := make([]int, n)
+		for i, j := 1, 0; i < n; i++ {
+			for j > 0 && suffix[i] != suffix[j] {
+				j = failure[j-1]
+			}
+			if suffix[i] == suffix[j] {
+				j++
+			}
+			failure[i] = j
+		}
+
+		pending, matched := 0, 0
 		for item := range collection {
-			if item == suffix[i%n] {
-				i++
+			for matched > 0 && (matched == n || item != suffix[matched]) {
+				matched = failure[matched-1]
+			}
+			if item == suffix[matched] {
+				matched++
+			}
+
+			if item == suffix[pending%n] {
+				pending++
 				continue
 			}
 
-			for j := range i {
+			flush := pending
+			if matched > 0 {
+				flush -= matched - 1
+			}
+			for j := range flush {
 				if !yield(suffix[j%n]) {
 					return
 				}
 			}
-
-			i = 0
-			if item == suffix[0] {
-				i++
-				continue
-			}
-
-			if !yield(item) {
+			pending = matched
+			if matched == 0 && !yield(item) {
 				return
 			}
 		}
-		if i%n != 0 {
-			for j := range i {
-				if !yield(suffix[j%n]) {
-					return
-				}
+		if matched == n {
+			pending %= n
+		}
+		for j := range pending {
+			if !yield(suffix[j%n]) {
+				return
 			}
 		}
 	}
