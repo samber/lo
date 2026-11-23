@@ -4,6 +4,7 @@ package it
 
 import (
 	"iter"
+	"sync/atomic"
 
 	"github.com/samber/lo"
 )
@@ -70,18 +71,46 @@ func IsNotEmpty[T any](collection iter.Seq[T]) bool {
 
 // CoalesceSeq returns the first non-empty sequence.
 // Will iterate through each sub-sequence at most once.
+// The first element of the returned sequence is kept, so single-use sequences
+// such as ChannelToSeq do not lose it. Consume the returned sequence to
+// release the resources held while it waits.
 // Play: https://go.dev/play/p/wep4z2KJLCO
 func CoalesceSeq[T any](v ...iter.Seq[T]) (iter.Seq[T], bool) {
 	for i := range v {
-		for range v[i] {
-			return v[i], true
+		next, stop := iter.Pull(v[i])
+		first, ok := next()
+		if !ok {
+			stop()
+			continue
 		}
+
+		var started atomic.Bool
+		original := v[i]
+		return func(yield func(T) bool) {
+			if started.Swap(true) {
+				// Later passes start the source again, as before.
+				original(yield)
+				return
+			}
+
+			defer stop()
+			if !yield(first) {
+				return
+			}
+			for {
+				item, ok := next()
+				if !ok || !yield(item) {
+					return
+				}
+			}
+		}, true
 	}
 	return Empty[T](), false
 }
 
 // CoalesceSeqOrEmpty returns the first non-empty sequence.
 // Will iterate through each sub-sequence at most once.
+// See CoalesceSeq for how the first element is kept.
 // Play: https://go.dev/play/p/3KZPAFRQr8B
 func CoalesceSeqOrEmpty[T any](v ...iter.Seq[T]) iter.Seq[T] {
 	result, _ := CoalesceSeq(v...)
