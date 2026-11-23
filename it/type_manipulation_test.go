@@ -228,3 +228,39 @@ func TestCoalesceSeqOrEmpty(t *testing.T) {
 		})
 	}
 }
+
+func TestCoalesceSeqSingleUse(t *testing.T) {
+	t.Parallel()
+
+	newChan := func(items ...int) iter.Seq[int] {
+		ch := make(chan int, len(items))
+		for _, item := range items {
+			ch <- item
+		}
+		close(ch)
+		return ChannelToSeq(ch)
+	}
+
+	tests := []struct {
+		name     string
+		items    []int
+		expected []int
+	}{
+		{name: "one item", items: []int{10}, expected: []int{10}},
+		{name: "three items", items: []int{10, 20, 30}, expected: []int{10, 20, 30}},
+	}
+
+	for _, tt := range tests {
+		tt := tt //nolint:modernize
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			is := assert.New(t)
+
+			result, ok := CoalesceSeq(Empty[int](), newChan(tt.items...))
+			is.True(ok)
+			is.Equal(tt.expected, slices.Collect(result))
+
+			is.Equal(tt.expected, slices.Collect(CoalesceSeqOrEmpty(Empty[int](), newChan(tt.items...))))
+		})
+	}
+}
