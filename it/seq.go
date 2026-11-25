@@ -338,31 +338,32 @@ func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
 	}
 
 	return func(yield func([]T) bool) {
-		buffer := make([]T, size)
-		count := 0
+		var buffer []T
 		offset := step - size
 
 		switch {
 		case offset == 0:
 			// Adjacent windows: no overlap, no gap.
-			for buffer[count] = range collection {
-				if count++; count == size {
-					if !yield(append(make([]T, 0, size), buffer...)) {
+			for item := range collection {
+				buffer = append(buffer, item)
+				if len(buffer) == size {
+					if !yield(slices.Clone(buffer)) {
 						return
 					}
-					count = 0
+					buffer = buffer[:0]
 				}
 			}
 
 		case offset < 0:
 			// Overlap: next window starts inside the current one; keep tail in buffer.
-			for buffer[count] = range collection {
-				if count++; count == size {
-					if !yield(append(make([]T, 0, size), buffer...)) {
+			for item := range collection {
+				buffer = append(buffer, item)
+				if len(buffer) == size {
+					if !yield(slices.Clone(buffer)) {
 						return
 					}
-					count -= step
 					copy(buffer, buffer[step:])
+					buffer = buffer[:size-step]
 				}
 			}
 
@@ -374,12 +375,12 @@ func Sliding[T any](collection iter.Seq[T], size, step int) iter.Seq[[]T] {
 					skip--
 					continue
 				}
-				buffer[count] = item
-				if count++; count == size {
-					if !yield(append(make([]T, 0, size), buffer...)) {
+				buffer = append(buffer, item)
+				if len(buffer) == size {
+					if !yield(slices.Clone(buffer)) {
 						return
 					}
-					count = 0
+					buffer = buffer[:0]
 					skip = offset
 				}
 			}
