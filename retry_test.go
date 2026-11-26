@@ -918,3 +918,58 @@ func TestNewThrottleByWithCount(t *testing.T) { //nolint:paralleltest
 		is.Equal(6, callCountB)
 	})
 }
+
+func TestNewThrottleResetFromCallback(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
+	is := assert.New(t)
+
+	callCount := 0
+	var reset func()
+	th, resetFn := NewThrottle(time.Hour, func() {
+		callCount++
+		reset()
+	})
+	reset = resetFn
+
+	done := make(chan struct{})
+	go func() {
+		th()
+		close(done)
+	}()
+	select {
+	case <-done:
+	case <-time.After(5 * time.Second):
+		t.Fatal("throttled call blocked when the callback called reset")
+	}
+	is.Equal(1, callCount)
+
+	// The reset inside the callback cleared the window, so an immediate
+	// second call is worked as well.
+	th()
+	is.Equal(2, callCount)
+}
+
+func TestNewThrottleByResetFromCallback(t *testing.T) { //nolint:paralleltest
+	// t.Parallel()
+	is := assert.New(t)
+
+	callCount := 0
+	var reset func()
+	th, resetFn := NewThrottleBy[string](time.Hour, func(key string) {
+		callCount++
+		reset()
+	})
+	reset = resetFn
+
+	done := make(chan struct{})
+	go func() {
+		th("a")
+		close(done)
+	}()
+	select {
+	case <-done:
+	case <-time.After(5 * time.Second):
+		t.Fatal("throttled call blocked when the callback called reset")
+	}
+	is.Equal(1, callCount)
+}
