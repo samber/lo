@@ -313,19 +313,24 @@ type throttleBy[T comparable] struct {
 
 func (th *throttleBy[T]) throttledFunc(key T) {
 	th.mu.Lock()
-	defer th.mu.Unlock()
-
-	if th.count[key] < th.countLimit {
+	invoke := th.count[key] < th.countLimit
+	if invoke {
 		th.count[key]++
-
-		for _, f := range th.callbacks {
-			f(key)
-		}
 	}
 	if th.timer == nil {
 		th.timer = time.AfterFunc(th.interval, func() {
 			th.reset()
 		})
+	}
+	th.mu.Unlock()
+
+	// Callbacks run after the mutex is released: they are user code and may
+	// call back into the throttle (for example the reset function), which
+	// would deadlock on the non-reentrant mutex.
+	if invoke {
+		for _, f := range th.callbacks {
+			f(key)
+		}
 	}
 }
 
