@@ -279,10 +279,11 @@ func PascalCase(str string) string {
 	}
 	c, _ := englishTitleCaserPool.Get().(*cases.Caser)
 	defer englishTitleCaserPool.Put(c)
-	for i := range items {
-		items[i] = c.String(items[i])
+	if len(items) == 1 {
+		return c.String(items[0])
 	}
-	return strings.Join(items, "")
+	// Title-case all words in one call, then remove the spaces between them.
+	return strings.ReplaceAll(c.String(strings.Join(items, " ")), " ", "")
 }
 
 // PascalCaseWithLanguage converts string to pascal case using language-aware title casing.
@@ -311,11 +312,12 @@ func CamelCase(str string) string {
 	tc, _ := englishTitleCaserPool.Get().(*cases.Caser)
 	defer englishLowerCaserPool.Put(lc)
 	defer englishTitleCaserPool.Put(tc)
-	items[0] = lc.String(items[0])
-	for i := 1; i < len(items); i++ {
-		items[i] = tc.String(items[i])
+	first := lc.String(items[0])
+	if len(items) == 1 {
+		return first
 	}
-	return strings.Join(items, "")
+	// Title-case the other words in one call, then remove the spaces between them.
+	return first + strings.ReplaceAll(tc.String(strings.Join(items[1:], " ")), " ", "")
 }
 
 // CamelCaseWithLanguage converts string to camel case using language-aware casing.
@@ -345,10 +347,7 @@ func KebabCase(str string) string {
 	}
 	c, _ := englishLowerCaserPool.Get().(*cases.Caser)
 	defer englishLowerCaserPool.Put(c)
-	for i := range items {
-		items[i] = c.String(items[i])
-	}
-	return strings.Join(items, "-")
+	return c.String(strings.Join(items, "-"))
 }
 
 // KebabCaseWithLanguage converts string to kebab case using language-aware lowercasing.
@@ -375,10 +374,7 @@ func SnakeCase(str string) string {
 	}
 	c, _ := englishLowerCaserPool.Get().(*cases.Caser)
 	defer englishLowerCaserPool.Put(c)
-	for i := range items {
-		items[i] = c.String(items[i])
-	}
-	return strings.Join(items, "_")
+	return c.String(strings.Join(items, "_"))
 }
 
 // SnakeCaseWithLanguage converts string to snake case using language-aware lowercasing.
