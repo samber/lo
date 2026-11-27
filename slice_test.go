@@ -3538,6 +3538,19 @@ func TestCompact(t *testing.T) {
 	is.IsType(nonempty, allStrings, "type preserved")
 }
 
+func TestIsSorted_nan(t *testing.T) {
+	t.Parallel()
+	for _, input := range [][]float64{
+		{math.NaN(), math.NaN(), 1, 2},
+		{1, math.NaN()},
+		{2, math.NaN(), 1},
+	} {
+		want := sort.Float64sAreSorted(input)
+		assert.Equal(t, want, IsSorted(input))
+		assert.Equal(t, want, IsSortedBy(input, func(v float64) float64 { return v }))
+	}
+}
+
 func TestIsSorted(t *testing.T) {
 	t.Parallel()
 

@@ -951,7 +951,7 @@ func IsSortedBy[T any, K constraints.Ordered](collection iter.Seq[T], transform 
 		key := transform(item)
 		if first {
 			first = false
-		} else if prev > key {
+		} else if constraints.Less(key, prev) {
 			return false
 		}
 		prev = key

@@ -9,3 +9,8 @@ package constraints
 type Ordered interface {
 	Integer | Float | ~string
 }
+
+// Less orders floating-point NaNs before other values, as in the standard library.
+func Less[T Ordered](x, y T) bool {
+	return x < y || (x != x && y == y)
+}

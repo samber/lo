@@ -1259,7 +1259,7 @@ func Compact[T comparable, Slice ~[]T](collection Slice) Slice {
 // Play: https://go.dev/play/p/mc3qR-t4mcx
 func IsSorted[T constraints.Ordered](collection []T) bool {
 	for i := 1; i < len(collection); i++ {
-		if collection[i-1] > collection[i] {
+		if constraints.Less(collection[i], collection[i-1]) {
 			return false
 		}
 	}
@@ -1272,7 +1272,8 @@ func IsSortedBy[T any, K constraints.Ordered](collection []T, iteratee func(item
 	size := len(collection)
 
 	for i := 0; i < size-1; i++ {
-		if iteratee(collection[i]) > iteratee(collection[i+1]) {
+		left, right := iteratee(collection[i]), iteratee(collection[i+1])
+		if constraints.Less(right, left) {
 			return false
 		}
 	}

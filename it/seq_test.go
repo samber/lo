@@ -2117,6 +2117,19 @@ func TestCompact(t *testing.T) {
 	})
 }
 
+func TestIsSorted_nan(t *testing.T) {
+	t.Parallel()
+	for _, input := range [][]float64{
+		{math.NaN(), math.NaN(), 1, 2},
+		{1, math.NaN()},
+		{2, math.NaN(), 1},
+	} {
+		want := slices.IsSorted(input)
+		assert.Equal(t, want, IsSorted(slices.Values(input)))
+		assert.Equal(t, want, IsSortedBy(slices.Values(input), func(v float64) float64 { return v }))
+	}
+}
+
 func TestIsSorted(t *testing.T) {
 	t.Parallel()
 	t.Run("ints", func(t *testing.T) {
