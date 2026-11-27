@@ -385,6 +385,12 @@ func TestReduceLast(t *testing.T) {
 
 func TestReduceLastI(t *testing.T) {
 	t.Parallel()
+	t.Run("original indexes", func(t *testing.T) {
+		weighted := ReduceLastI(values(1, 2, 3, 4), func(sum, item, index int) int {
+			return sum + item*index
+		}, 0)
+		assert.Equal(t, 20, weighted)
+	})
 	t.Run("slice concatenation", func(t *testing.T) {
 		t.Parallel()
 		is := assert.New(t)

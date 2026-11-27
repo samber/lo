@@ -174,7 +174,7 @@ func ReduceLast[T, R any](collection iter.Seq[T], accumulator func(agg R, item T
 // Long input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/5CwPTPz-zb
 func ReduceLastI[T, R any](collection iter.Seq[T], accumulator func(agg R, item T, index int) R, initial R) R {
-	return ReduceI(Reverse(collection), accumulator, initial)
+	return lo.ReduceRight(slices.Collect(collection), accumulator, initial)
 }
 
 // ForEach iterates over elements of collection and invokes callback for each element.
