@@ -522,6 +522,9 @@ func TestWords(t *testing.T) {
 		{"UPPERCASE", []string{"UPPERCASE"}},
 		{"HTTPCode", []string{"HTTP", "Code"}},
 		{"Int8Value", []string{"Int", "8", "Value"}},
+		{"Cafe\u0301 au lait", []string{"Cafe\u0301", "au", "lait"}},
+		{"हिन्दी नाम", []string{"हिन्दी", "नाम"}},
+		{"\u0301alpha-\u0301beta", []string{"alpha", "beta"}},
 	}
 	for _, tc := range testCases {
 		tc := tc
@@ -530,6 +533,11 @@ func TestWords(t *testing.T) {
 			assert.Equalf(t, tc.want, Words(tc.in), "Words(%v)", tc.in)
 		})
 	}
+}
+
+func TestSnakeCasePreservesCombiningMarks(t *testing.T) {
+	t.Parallel()
+	assert.Equal(t, "हिन्दी_नाम", SnakeCase("हिन्दी नाम"))
 }
 
 func TestCapitalize(t *testing.T) {
