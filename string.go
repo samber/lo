@@ -464,13 +464,12 @@ func splitNumberLetter(s []byte) []byte {
 	return out
 }
 
-// fieldsAlnum returns the maximal runs of unicode letters and digits in s,
-// like strings.Fields after mapping every other rune to a space.
+// fieldsAlnum splits on non-alphanumeric runes, keeping combining marks with the word they modify.
 func fieldsAlnum(s string) []string {
 	count := 0
 	inField := false
 	for _, r := range s {
-		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+		if isWordRune(r, inField) {
 			if !inField {
 				count++
 				inField = true
@@ -483,7 +482,7 @@ func fieldsAlnum(s string) []string {
 	fields := make([]string, 0, count)
 	start := -1
 	for i, r := range s {
-		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+		if isWordRune(r, start >= 0) {
 			if start < 0 {
 				start = i
 			}
@@ -496,6 +495,10 @@ func fieldsAlnum(s string) []string {
 		fields = append(fields, s[start:])
 	}
 	return fields
+}
+
+func isWordRune(r rune, inWord bool) bool {
+	return unicode.IsLetter(r) || unicode.IsDigit(r) || (inWord && unicode.IsMark(r))
 }
 
 // Capitalize converts the first character of string to upper case and the remaining to lower case.
